@@ -1,0 +1,42 @@
+From 908762b5f1516d033d5e7b5ae28aaebb3b2e972b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 28 Sep 2018 17:32:21 +0900
+Subject: [PATCH 4/5] controller: change msg format in ConnectionThread
+
+ConnectionThread is a message broker between primary and controller.
+To apply with the change of primary's message format, it is change
+to send JSON messages to controller.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/conn_thread.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/controller/conn_thread.py b/src/controller/conn_thread.py
+index 8bddfc0..ff0697e 100644
+--- a/src/controller/conn_thread.py
++++ b/src/controller/conn_thread.py
+@@ -29,7 +29,7 @@ class ConnectionThread(threading.Thread):
+         self.stop_event.set()
+ 
+     def run(self):
+-        cmd_str = 'hello'
++        cmd_str = ''
+ 
+         # infinite loop so that function do not terminate and thread do not
+         # end.
+@@ -238,9 +238,9 @@ class PrimaryThread(threading.Thread):
+                     data = conn.recv(spp_common.SOCK_BUF_SIZE)
+                     if data:
+                         spp_common.PRIMARY2MAIN.put(
+-                            "recv:%s:{%s}" % (str(addr), data.decode('utf-8')))
++                                    data.decode('utf-8').strip('\0'))
+                     else:
+-                        spp_common.PRIMARY2MAIN.put("closing:" + str(addr))
++                        spp_common.PRIMARY2MAIN.put('{"status": "closed"}')
+                         conn.close()
+                         self.sock_opened = False
+                         break
+-- 
+2.7.4
+

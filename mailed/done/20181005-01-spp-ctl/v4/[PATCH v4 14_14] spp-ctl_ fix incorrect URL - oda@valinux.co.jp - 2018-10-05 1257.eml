@@ -1,0 +1,105 @@
+X-Account-Key: account4
+X-UIDL: 00007fd056a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 44D3B400234
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 42C537F314; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 37DF17F2E4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 2A18D639937
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 1B80A639934
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AVLYZgx+J5ZTvW/9uRHGN80YQeigqvan1NQcJ65?=
+ =?us-ascii?q?0hzohDabmn44+7ZBeN6f5ohRrSRYCDsbRJgO6Qtbz8H2cHp5SZ4zgZaJIZcR?=
+ =?us-ascii?q?gDhI0NmhA4RtafABj8IPfCcSU+HcJfRBlu+De5KRsdA97wMnvVpHD69jsOAl?=
+ =?us-ascii?q?P6PAtxKP7yH9vVg82fyem2+pvOc0NDg3y/eeoofi+7pgjQqMQaxLBaBPxgkk?=
+ =?us-ascii?q?nvpX1FM6RazmZhYEmLmk6moMq7+Nhl7zgWsPVn9dYSGaP9N781S7BVFlFEey?=
+ =?us-ascii?q?g8+dHruB/fTACO+mpUU2MYlQBNChTE6xeyV4n4sy/zvO5wkCeAOsi+QbcxUD?=
+ =?us-ascii?q?Wkp6BlLX2gwCALPhYn+WXWjNFgyqlc5hC55lR+z4PSfICJJa9mZKqONdgeRG?=
+ =?us-ascii?q?dHQoNQT3kbW9v6NtFfSbtZe78E/Oyf7xMUoBCzBBehHrbjwTpBw2Tu2PVgle?=
+ =?us-ascii?q?kqFUfAwBBmFNVIsmyHybe9fKoUT+2xy7HFiDvZaPYDkzDx4aDWexQgp+ycG7?=
+ =?us-ascii?q?l3N8jJgxpKdUuNnhCLpIrpMinAnOMBukCF5u5hU/+/zWUg7QNp6Gvn1oInjY?=
+ =?us-ascii?q?/HgZgQw1bP+HBiwYo7EsakUk9wfYf+QqFdvCybKYZ6B/gabTs55XQczbsL8d?=
+ =?us-ascii?q?63dy0DjY8/wkaFLfGMd86O/g6lX+HXIy8qzHRiMKmygRq/6y3CgqX1S9W03V?=
+ =?us-ascii?q?BWryFEjsiEt3YD0AbW49SGTf0191mo2DKG3QTeou9eJkV8ma3eIp8nirk+8/?=
+ =?us-ascii?q?hb+UPPFwfokUH3irKGME4jvOqwqqzmbrjgup6AJtpxgwD6PL4pn5/aY6xwOQ?=
+ =?us-ascii?q?wPUm6HvOWkgee6pQugGuUM36Vwy/WK+IrXLskauKOjVgNe149m8A66V23g3d?=
+ =?us-ascii?q?8c238bMBROf1SFl9uMWRmGLfbmAPO4m1npni1swqWMObHoKovEKnnFjaendr?=
+ =?us-ascii?q?E76VYWm29RhZhPoolZDL0MOqe5XUP4nMLRCh4/LhzyyOGhCs03hcsOHGmIBK?=
+ =?us-ascii?q?GeKqbbt1SFs/kuL+e7f5MPuT3hcql317vVlXY83GQlU+ys1JoTZmq/G607cV?=
+ =?us-ascii?q?uQZXvqn8dHGmBMvBJsFLW22m3HaiZaYjOJZ4x5/isyUd/0E47HR4awkPqK22?=
+ =?us-ascii?q?G5Bs8Oaw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggJpbQMECyiMCV+NUJZegXooEAGEQAKERAYwDQ0BAwEBAgE?=
+ =?us-ascii?q?BAQFtKIU6BoEJIDEsKwcSgyEBggClbIgugWSHDoFagluCAIhrhg8ChlYHhz5?=
+ =?us-ascii?q?xjlAJhkqJayKPb5ckOIFVhCwJkFswMHkBAQEBix2CTQEB?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 91DE7240CE0; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 14/14] spp-ctl: fix incorrect URL
+Date: Fri,  5 Oct 2018 12:57:57 +0900
+Message-Id: <20181005035757.23122-15-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+This patch fixes an incorrect URL.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index ee47f2f..ddf6513 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -171,7 +171,7 @@ class V1VFHandler(BaseHandler):
+                    callback=self.vf_comp_start)
+         self.route('/<sec_id:int>/components/<name>', 'DELETE',
+                    callback=self.vf_comp_stop)
+-        self.route('/<sec_id:int>/components/<name>', 'PUT',
++        self.route('/<sec_id:int>/components/<name>/ports', 'PUT',
+                    callback=self.vf_comp_port)
+         self.route('/<sec_id:int>/classifier_table', 'PUT',
+                    callback=self.vf_classifier)
+-- 
+2.17.1
+
+

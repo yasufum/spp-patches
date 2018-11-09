@@ -1,0 +1,61 @@
+From e64319cf900d26ac6271a95004d531c55f4fa6c7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 18 Oct 2018 18:09:42 +0900
+Subject: [PATCH 0/9] Change SPP controller to use spp-ctl
+
+SPP controller manages primary and secondary processes, and create TCP
+sessions while launching. Other process is not allowed to manage SPP
+processes directly without using management port. It is difficult to
+manage from other process via management port for supporting detailed
+operations.
+
+It is better to manage SPP by spp-ctl and to change SPP controller as a
+client because it is allowed to maange it from multiple controllers via
+well-defined REST APIs. This update is to change SPP controller to a
+client of spp-ctl.
+
+For requesting spp-ctl, add SppCtlClient class to send and receive
+messages as a client. SppCtlClient communicates with spp-ctl via port
+7777 and using REST APIS. The previous TCP connections between from SPP
+controller to each of SPP processes are obsolated for the update.
+
+This series of patches also include refactors of 'shell.py' to improve
+maintainability. Each of SPP commands, for instance pri or sec, are
+moved to deligator classes SppPrimary or SppSecondary contained in
+'commands' directory.
+
+Yasufumi Ogawa (9):
+  controller: add spp-ctl client for SPP controller
+  controller: change controller to use spp-ctl
+  spp-ctl: add IP address binding
+  controller: add IP address and port binding
+  controller: move pri command to SppPrimary
+  controller: move sec command to SppSecondary
+  controller: move topo command to SppTopo
+  controller: move topo_resize command to SppTopo
+  controller: move bye command to SppBye
+
+ src/controller/commands/__init__.py   |   0
+ src/controller/commands/bye.py        |  48 ++++
+ src/controller/commands/pri.py        | 123 +++++++++
+ src/controller/commands/sec.py        | 194 ++++++++++++++
+ src/controller/{ => commands}/topo.py | 264 ++++++++++++------
+ src/controller/conn_thread.py         | 251 ------------------
+ src/controller/shell.py               | 485 ++++++++--------------------------
+ src/controller/spp.py                 |  96 +------
+ src/controller/spp_common.py          |  43 ---
+ src/controller/spp_ctl_client.py      |  58 ++++
+ src/spp-ctl/spp_ctl.py                |  15 +-
+ src/spp-ctl/spp_webapi.py             |   5 +-
+ 12 files changed, 726 insertions(+), 856 deletions(-)
+ create mode 100644 src/controller/commands/__init__.py
+ create mode 100644 src/controller/commands/bye.py
+ create mode 100644 src/controller/commands/pri.py
+ create mode 100644 src/controller/commands/sec.py
+ rename src/controller/{ => commands}/topo.py (53%)
+ delete mode 100644 src/controller/conn_thread.py
+ create mode 100644 src/controller/spp_ctl_client.py
+
+-- 
+2.13.1
+

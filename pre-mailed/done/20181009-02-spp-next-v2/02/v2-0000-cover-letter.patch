@@ -1,0 +1,44 @@
+From 88fc568ae4e31c4a98bf13099cf4e3c80f51f07d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 11 Oct 2018 19:20:36 +0900
+Subject: [PATCH v2 0/4] Update response of status of spp_nfv and spp_vm
+
+Hi,
+
+I updated calling port_add and port_del methods to be simple. Here is
+the change of definition of port_add(), and port_del() is also the same.
+
+  -    def port_add(self, if_type, if_num):
+  -        return "add {if_type} {if_num}".format(**locals())
+  +    def port_add(self, port):
+  +        return "add {port}".format(**locals())
+
+Thanks,
+Yasufumi
+
+>Spp-ctl provides a set of REST APIs for managing all of SPP processes in
+>a unified way. If the REST API is called, spp-ctl sets up a request for
+>SPP process by parsing user's request and replies to the user.
+>
+>This update is to update spp_nfv and spp_vm to return responses as JSON
+>as similar to spp_vf for better maintaince of spp-ctl.
+
+Yasufumi Ogawa (4):
+  shared: update status format of spp_nfv
+  controller: update parsing status message
+  spp-ctl: update syntax of add and del command
+  spp-ctl: update parsing status
+
+ src/controller/shell.py   |  21 +++---
+ src/nfv/nfv.c             |  10 +--
+ src/shared/common.c       | 179 ++++++++++++++++++++++++++++++++++++----------
+ src/shared/common.h       |  14 +++-
+ src/spp-ctl/spp_proc.py   |   8 +--
+ src/spp-ctl/spp_webapi.py |  39 +++-------
+ src/vm/init.c             |   2 +-
+ src/vm/main.c             |   8 +--
+ 8 files changed, 189 insertions(+), 92 deletions(-)
+
+-- 
+2.7.4
+

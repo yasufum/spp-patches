@@ -1,0 +1,29 @@
+From 3c048ea2091379d9a06890ef4c52358e89b5a035 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 5 Oct 2018 13:51:38 +0900
+Subject: [PATCH v2 0/4] Change format of sec status to JSON
+
+Update the output format of the status to be more understandable.
+
+  spp > sec 1;status
+  - status: idling
+  - ports:
+    - phy:0 -> ring:0
+    - phy:1
+
+Yasufumi Ogawa (4):
+  shared: change sec status to JSON format
+  spp_nfv: update retrieving status
+  spp_vm: update retrieving status
+  controller: update for parsing JSON status
+
+ src/controller/shell.py | 61 +++++++++++++++--------------------
+ src/nfv/nfv.c           | 10 +++---
+ src/shared/common.c     | 84 +++++++++++++++++++++++++++++--------------------
+ src/shared/common.h     |  2 +-
+ src/vm/main.c           | 10 +++---
+ 5 files changed, 87 insertions(+), 80 deletions(-)
+
+-- 
+2.7.4
+

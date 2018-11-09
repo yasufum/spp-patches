@@ -1,0 +1,77 @@
+X-Account-Key: account4
+X-UIDL: 0000807356a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 8208B4006B8
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 80BF123BB4D; Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 7FAEC23BB43
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 63CCF125;
+	Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 4DE73119;
+	Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/6] spp_vm: fix to use uint16_t port_id in do_add
+Date: Tue,  9 Oct 2018 19:53:58 +0900
+Message-Id: <20181009105400.42817-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Modify to use uint16_t type for port_id.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 3807370..2813fca 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -373,7 +373,7 @@ static int
+ do_add(char *res_uid)
+ {
+ 	enum port_type type = UNDEF;
+-	int port_id = PORT_RESET;
++	uint16_t port_id = PORT_RESET;
+ 	char *p_type;
+ 	int p_id;
+ 	int res;
+@@ -384,11 +384,13 @@ do_add(char *res_uid)
+ 
+ 	if (!strcmp(p_type, "ring")) {
+ 		type = RING;
+-		port_id = add_ring_pmd(p_id);
++		res = add_ring_pmd(p_id);
+ 	}
+ 
+-	if (port_id < 0)
++	if (res < 0)
+ 		return -1;
++	else
++		port_id = (uint16_t) res;
+ 
+ 	port_map[port_id].id = p_id;
+ 	port_map[port_id].port_type = type;
+-- 
+2.7.4
+
+

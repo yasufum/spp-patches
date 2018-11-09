@@ -1,0 +1,61 @@
+X-Account-Key: account4
+X-UIDL: 000081a956a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 9D8D8400B10
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 9AEA723BB55; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 99EED23BAF6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 7F8D0139
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 73D4A193
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 5/5] controller: remove SECONDARY_LIST
+Date: Thu, 18 Oct 2018 19:05:39 +0900
+Message-Id: <20181018100539.75277-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+SECONDARY_LIST is a list of secondary IDs running on, but no need
+anymore because running secondary IDs can be retrieved from spp-ctl.
+This update is to remove SECONDARY_LIST.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/spp_common.py | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index 20c6bc8..1a15bcc 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -5,8 +5,6 @@
+ import logging
+ import os
+ 
+-SECONDARY_LIST = []
+-
+ PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+ # Maximum num of sock queues for secondaries
+-- 
+2.13.1
+
+

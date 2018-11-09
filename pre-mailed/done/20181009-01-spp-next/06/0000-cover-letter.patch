@@ -1,0 +1,30 @@
+From 9d5eee9b001a2e1c68e0ceeaa22f1a34818d065f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 14:01:12 +0900
+Subject: [PATCH 0/6] Fix bug of assigning ports
+
+This series of patches is to fix the error for adding, deleting and
+patching incorrect ports which is cannot craete or does not exist. To
+fix the bug, correct determining the existing port with
+parse_resource_uid(). One of the reasons for the bug is that is
+imcomplete to catch up with changing to uint16_t for port_id and Some of
+checking port_id are incorrect.
+
+This update is to correct the bug of managing ports, and also refactor
+log messages for add, del and patch commands.
+
+Yasufumi Ogawa (6):
+  spp_nfv: fix bug of do_del if port does not exist
+  spp_nfv: refactor log of patch command
+  spp_vm: fix bug of do_del if port does not exist
+  spp_vm: fix to use uint16_t port_id in do_add
+  spp_vm: correct error handling if patch cmd failed
+  spp_vm: refactor log of patch command
+
+ src/nfv/nfv.c |  98 ++++++++++++++++++++++++++++++++++++++++----------------
+ src/vm/main.c | 101 ++++++++++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 144 insertions(+), 55 deletions(-)
+
+-- 
+2.7.4
+

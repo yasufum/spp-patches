@@ -1,0 +1,225 @@
+X-Account-Key: account4
+X-UIDL: 000081ad56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E7EAF400860
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:57 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id E52BA7F0B4; Thu, 18 Oct 2018 19:05:57 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id E34A57F074
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:57 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id CFC1B12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:57 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id B8AB911F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:57 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/4] controller: add vf command to SPP controller
+Date: Thu, 18 Oct 2018 19:05:50 +0900
+Message-Id: <20181018100551.75330-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100551.75330-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100551.75330-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To manage spp_vf from 'spp.py', add 'vf' command to Shell class. Spp_vf
+might have several instances as similar to spp_nfv, and deciding which
+of ones is also similar to. 'vf' command consists of a indicator and
+actual command. Here is an example.
+
+  spp > vf 3; component start fw1 5 forward
+
+In this example, indicator 'vf 3;' is before spp_vf's command 'component
+start ...'. The number in indicator is a secondary ID actually, so you
+cannot assign the same ID of others.
+
+You can refer the usage of 'vf' command with 'help' command.
+
+  spp > help vf
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 103 +++++++++++++++++++++++++++++++++++++++++++++++-
+ src/controller/spp.py   |  19 ++++-----
+ 2 files changed, 110 insertions(+), 12 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 9fce6f4..529d61e 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -8,6 +8,7 @@ from .commands import bye
+ from .commands import pri
+ from .commands import sec
+ from .commands import topo
++from .commands import vf
+ import os
+ import re
+ import readline
+@@ -41,6 +42,11 @@ class Shell(cmd.Cmd, object):
+         self.spp_ctl_cli = spp_ctl_cli
+         self.spp_primary = pri.SppPrimary(self.spp_ctl_cli)
+         self.spp_secondary = sec.SppSecondary(self.spp_ctl_cli)
++
++        self.spp_vfs = {}
++        for sec_id in self.get_sec_ids('vf'):
++            self.spp_vfs[sec_id] = vf.SppVf(self.spp_ctl_cli, sec_id)
++
+         self.spp_topo = topo.SppTopo(self.spp_ctl_cli, {}, self.topo_size)
+         self.spp_bye = bye.SppBye(self.spp_ctl_cli, self.spp_primary,
+                                   self.spp_secondary)
+@@ -269,7 +275,7 @@ class Shell(cmd.Cmd, object):
+         tmparg = self.clean_cmd(cmd)
+         cmds = tmparg.split(';')
+         if len(cmds) < 2:
+-            print("Required an ID and ';' before command.")
++            print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+             sec_id = int(cmds[0])
+             if self.check_sec_cmds(cmds[1]):
+@@ -287,6 +293,101 @@ class Shell(cmd.Cmd, object):
+         return self.spp_secondary.complete(
+                 self.get_sec_ids('nfv'), text, line, begidx, endidx)
+ 
++    def do_vf(self, cmd):
++        """Send a command to spp_vf.
++
++        SPP VF is a secondary process for pseudo SR-IOV features. This
++        command has four sub commands.
++          * status
++          * component
++          * port
++          * classifier_table
++
++        Each of sub commands other than 'status' takes several parameters
++        for detailed operations. Notice that 'start' for launching a worker
++        is replaced with 'stop' for terminating. 'add' is also replaced with
++        'del' for deleting.
++
++        Examples:
++
++        # (1) show status of worker threads and resources
++        spp > vf 1; status
++
++        # (2) launch or terminate a worker thread with arbitrary name
++        #   NAME: arbitrary name used as identifier
++        #   CORE_ID: one of unused cores referred from status
++        #   ROLE: role of workers, 'forward', 'merge' or 'classifier_mac'
++        spp > vf 1; component start NAME CORE_ID ROLE
++        spp > vf 1; component stop NAME CORE_ID ROLE
++
++        # (3) add or delete a port to worker of NAME
++        #   RES_UID: resource UID such as 'ring:0' or 'vhost:1'
++        #   DIR: 'rx' or 'tx'
++        spp > vf 1; port add RES_UID DIR NAME
++        spp > vf 1; port del RES_UID DIR NAME
++
++        # (4) add or delete a port with vlan ID to worker of NAME
++        #   VID: vlan ID
++        #   PCP: priority code point defined in IEEE 802.1p
++        spp > vf 1; port add RES_UID DIR NAME add_vlantag VID PCP
++        spp > vf 1; port del RES_UID DIR NAME add_vlantag VID PCP
++
++        # (5) add a port of deleting vlan tag
++        spp > vf 1; port add RES_UID DIR NAME del_vlantag
++
++        # (6) add or delete an entry of MAC address and resource to classify
++        spp > vf 1; classifier_table add mac MAC_ADDR RES_UID
++        spp > vf 1; classifier_table del mac MAC_ADDR RES_UID
++
++        # (7) add or delete an entry of MAC address and resource with vlan ID
++        spp > vf 1; classifier_table add vlan VID MAC_ADDR RES_UID
++        spp > vf 1; classifier_table del vlan VID MAC_ADDR RES_UID
++        """
++
++        # remove unwanted spaces to avoid invalid command error
++        # TODO change self.spp_vf to self.spp_vfs
++        tmparg = self.clean_cmd(cmd)
++        cmds = tmparg.split(';')
++        if len(cmds) < 2:
++            print("Required an ID and ';' before the command.")
++        elif str.isdigit(cmds[0]):
++            self.spp_vfs[int(cmds[0])].run(cmds[1])
++        else:
++            print('Invalid command: %s' % tmparg)
++
++    def complete_vf(self, text, line, begidx, endidx):
++        """Completion for vf command"""
++
++        line = self.clean_cmd(line)
++
++        tokens = line.split(';')
++        if len(tokens) == 1:
++            # Add SppVf of sec_id if it is not exist
++            sec_ids = self.get_sec_ids('vf')
++            for idx in sec_ids:
++                if self.spp_vfs[idx] is None:
++                    self.spp_vfs[idx] = vf.SppVf(self.spp_ctl_cli, idx)
++
++            if len(line.split()) == 1:
++                res = [str(i)+';' for i in sec_ids]
++            else:
++                if not (';' in line):
++                    res = [str(i)+';'
++                           for i in sec_ids
++                           if (str(i)+';').startswith(text)]
++            return res
++        elif len(tokens) == 2:
++            first_tokens = tokens[0].split(' ')  # 'vf 1' => ['vf', '1']
++            if len(first_tokens) == 2:
++                idx = int(first_tokens[1])
++
++                # Add SppVf of sec_id if it is not exist
++                if self.spp_vfs[idx] is None:
++                    self.spp_vfs[idx] = vf.SppVf(self.spp_ctl_cli, idx)
++
++                return self.spp_vfs[idx].complete(self.get_sec_ids('vf'),
++                                                  text, line, begidx, endidx)
++
+     def do_record(self, fname):
+         """Save commands as a recipe file.
+ 
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 5211ec9..2e1c173 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -19,17 +19,14 @@ def main(argv):
+                         help='bind address, default=7777')
+     args = parser.parse_args()
+ 
+-    try:
+-        spp_ctl_cli = spp_ctl_client.SppCtlClient(args.bind_addr,
+-                                                  args.api_port)
+-        if spp_ctl_cli.is_server_running() is False:
+-            print('Is not spp-ctl running, nor correct IP address?')
+-            exit()
+-        shell = Shell(spp_ctl_cli)
+-        shell.cmdloop()
+-        shell = None
+-    except Exception as e:
+-        print(e)
++    spp_ctl_cli = spp_ctl_client.SppCtlClient(args.bind_addr,
++                                              args.api_port)
++    if spp_ctl_cli.is_server_running() is False:
++        print('Is not spp-ctl running, nor correct IP address?')
++        exit()
++    shell = Shell(spp_ctl_cli)
++    shell.cmdloop()
++    shell = None
+ 
+ 
+ if __name__ == "__main__":
+-- 
+2.13.1
+
+

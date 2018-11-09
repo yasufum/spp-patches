@@ -1,0 +1,291 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:ab3:3a1:0:0:0:0:0 with SMTP id 30-v6csp3055ltc;
+        Thu, 4 Oct 2018 22:06:41 -0700 (PDT)
+X-Google-Smtp-Source: ACcGV63yfajJygJ2w2+a0gcdr2hothxV59xGDd886Qk8lk4DLUUbN7xyMRUA13HP5S+uGezugrtA
+X-Received: by 2002:a50:c299:: with SMTP id o25-v6mr11545973edf.188.1538716001677;
+        Thu, 04 Oct 2018 22:06:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1538716001; cv=none;
+        d=google.com; s=arc-20160816;
+        b=x8HQmR4xBtPhg9StaWRqfL2KDQbO7DctV6MF+tmiaTMOPf6BfmoCgFqhOg41Pq5Mqv
+         mXwppV6/4AueFfW6tSwR2kxrbfb/2/L+YWCza7u6E4U4mbyRcG+8AdDX2pdXA6RY1pKL
+         1aABDZkWlLUxLN7eq27PoF74qXwxgPHBZV4tQo+Hn++SEPr8u9ia9+vuxcDDWP2BAlOa
+         HIWW0SkmnrSRLfXfUoY94NDMGpbF5oZL/acOPZyuqpe7RNJlxrl4BjwoNKNCPQwAo7zP
+         LECBg3wPHvI0FsN4ejDqWAqpKN2llInRiw8t+1bjS7AkNU6St7c42Z31kWTHNGvzrS+1
+         YQ/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=OXGCw4SFWgZAhSwmM0DUkpRPtRUcHZEW5v0DYWBU0ZA=;
+        b=OVV5AH+XkNSkvfPP0P1hQ2ctdvPS7Jwdlemw/5ws3IFXgCjn3lg+S3/DiFgKCsYNbF
+         PR9NQTwhokLvA6HqGebOfjL1v83Eg648Vp8b5rYvrINniipJxBBqaRggE7Xjv88JlOYD
+         kPNWHe071KmDo0QV/6YG6BJsyVXfRSLjenTR/IKkZK+CgwYcljDC5Xhj8+3vfBRfV3cQ
+         XpkcEoUFMnmfXUfnWIo6wOuT4O7prUZeVACaNEFzIsH57JSoqCQ1gkqL8Sm4njaDglEX
+         Y9jtoGbJzX2HDYqodIlfky+M3T1ipqGPoaVyHnrFFQebqHHhqLYrmy3GG5qhxYTi7sSP
+         bI+Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id i19-v6si4406237ejd.111.2018.10.04.22.06.41;
+        Thu, 04 Oct 2018 22:06:41 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5F86E5F16;
+	Fri,  5 Oct 2018 07:06:41 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 918495F0D
+ for <spp@dpdk.org>; Fri,  5 Oct 2018 07:06:39 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id w9556cwA027394;
+ Fri, 5 Oct 2018 14:06:38 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 471F6EA8812;
+ Fri,  5 Oct 2018 14:06:38 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 255F8EA8811;
+ Fri,  5 Oct 2018 14:06:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  5 Oct 2018 14:06:27 +0900
+Message-Id: <20181005050630.10661-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181005050630.10661-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181004055918.5922-1-ogawa.yasufumi@lab.ntt.co.j>
+ <20181005050630.10661-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 1/4] shared: change sec status to JSON format
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp_nfv or spp_vm returns its status as a YAML-like format for
+simplicity and requires clients to parse the response. It is better the
+format to parse if it is standardized format.
+
+This update is to change the response to JSON format.
+
+  {
+    "status": "running",
+    "ports": [
+      {"src":"phy:0","dst": "ring:0"},
+      {"src":"ring:0","dst": "null"}
+    ]
+  }
+
+Function retrieving the status is changed from print_active_port() to
+get_sec_status_json() to return not only ports info but also running
+status.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 84 +++++++++++++++++++++++++++++++----------------------
+ src/shared/common.h |  2 +-
+ 2 files changed, 51 insertions(+), 35 deletions(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index fa33fcc..56f89df 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -233,21 +233,33 @@ spp_atoi(const char *str, int *val)
+ }
+ 
+ /*
+- * Print port status in forward array
++ * Get status of spp_nfv or spp_vm as JSON format. It consists of running
++ * status and patch info of ports.
+  *
+- * Each of port status is formatted as
+- * "port_id:[PORT_ID],[IN_PORT_STAT],[TYPE],output:[OUTPORT_STAT]"
++ * Here is an example of well-formatted JSON status to better understand.
++ * Actual status has no spaces and new lines inserted as
++ * '{"status":"running","ports":[{"src":"phy:0","dst":"ring:0"},...]}'
++ *
++ *   {
++ *     "status": "running",
++ *     "ports": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "null"}
++ *     ]
++ *   }
+  */
+ void
+-print_active_ports(char *str,
++get_sec_stats_json(char *str, const char *running_stat,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map)
+ {
+ 	unsigned int i;
+-	const char *port_prefix = "ports: '";
++	unsigned int has_ports = 0;  // for checking having port at last
++
++	sprintf(str, "%s",  "{\"status\":");
++	sprintf(str + strlen(str), "\"%s\",", running_stat);
++	sprintf(str + strlen(str), "\"ports\":[");
+ 
+-	/* Every elements value */
+-	sprintf(str, "%s",  port_prefix);
+ 	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
+ 		if (ports_fwd_array[i].in_port_id == PORT_RESET)
+ 			continue;
+@@ -256,80 +268,79 @@ print_active_ports(char *str,
+ 		RTE_LOG(INFO, APP, "Status %d\n",
+ 			ports_fwd_array[i].in_port_id);
+ 
+-		/* in_port_id is same value as port_id */
+-		/**
+-		 * NOTE(yasuufm)
+-		 * in_port_id cannot be PORT_RESET currently and it is
+-		 * meaningless, but not remove for future possible change
+-		 */
+-		// if (ports_fwd_array[i].in_port_id != PORT_RESET)
+-		// 	sprintf(str + strlen(str), "on,");
+-		// else
+-		// 	sprintf(str + strlen(str), "off,");
++		sprintf(str + strlen(str), "{\"src\":");
+ 
+ 		switch (port_map[i].port_type) {
+ 		case PHY:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: PHY\n");
+-			sprintf(str + strlen(str), "phy:%u-",
++			sprintf(str + strlen(str), "\"phy:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case RING:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: RING\n");
+-			sprintf(str + strlen(str), "ring:%u-",
++			sprintf(str + strlen(str), "\"ring:%u\",",
+ 				port_map[i].id);
+ 			break;
+ 		case VHOST:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: VHOST\n");
+-			sprintf(str + strlen(str), "vhost:%u-",
++			sprintf(str + strlen(str), "{\"vhost:%u\",",
+ 				port_map[i].id);
+ 			break;
+ 		case PCAP:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: PCAP\n");
+-			sprintf(str + strlen(str), "pcap:%u-",
++			sprintf(str + strlen(str), "\"pcap:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case NULLPMD:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: NULLPMD\n");
+-			sprintf(str + strlen(str), "nullpmd:%u-",
++			sprintf(str + strlen(str), "\"nullpmd:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case UNDEF:
++			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+-			sprintf(str + strlen(str), "udf-");
++			sprintf(str + strlen(str), "\"udf\",");
+ 			break;
+ 		}
+ 
++		sprintf(str + strlen(str), "\"dst\":");
++
+ 		RTE_LOG(INFO, APP, "Out Port ID %d\n",
+ 				ports_fwd_array[i].out_port_id);
+ 		if (ports_fwd_array[i].out_port_id == PORT_RESET) {
+-			sprintf(str + strlen(str), "%s", "null,");
++			sprintf(str + strlen(str), "%s", "\"null\"");
+ 		} else {
+ 			unsigned int j = ports_fwd_array[i].out_port_id;
+ 			switch (port_map[j].port_type) {
+ 			case PHY:
+ 				RTE_LOG(INFO, APP, "Type: PHY\n");
+-				sprintf(str + strlen(str), "phy:%u,",
++				sprintf(str + strlen(str), "\"phy:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case RING:
+ 				RTE_LOG(INFO, APP, "Type: RING\n");
+-				sprintf(str + strlen(str), "ring:%u,",
++				sprintf(str + strlen(str), "\"ring:%u\"",
+ 					port_map[j].id);
+ 				break;
+ 			case VHOST:
+ 				RTE_LOG(INFO, APP, "Type: VHOST\n");
+-				sprintf(str + strlen(str), "vhost:%u,",
++				sprintf(str + strlen(str), "\"vhost:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case PCAP:
+ 				RTE_LOG(INFO, APP, "Type: PCAP\n");
+-				sprintf(str + strlen(str), "pcap:%u,",
++				sprintf(str + strlen(str), "\"pcap:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case NULLPMD:
+ 				RTE_LOG(INFO, APP, "Type: NULLPMD\n");
+-				sprintf(str + strlen(str), "nullpmd:%u,",
++				sprintf(str + strlen(str), "\"nullpmd:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case UNDEF:
+@@ -338,18 +349,23 @@ print_active_ports(char *str,
+ 				 * TODO(yasufum) Need to remove print for
+ 				 * undefined ?
+ 				 */
+-				sprintf(str + strlen(str), "udf,");
++				sprintf(str + strlen(str), "\"udf\"");
+ 				break;
+ 			}
+ 		}
++
++		sprintf(str + strlen(str), "},");
+ 	}
+ 
+-	// If there are no ports, it's formatted as "ports: ''"
+-	if (strcmp(str, port_prefix) == 0) {
+-		sprintf(str + strlen(str), "'");
++	// Check the number of ports to remove "," if it has one or more ports.
++	if (has_ports == 0) {
++		sprintf(str + strlen(str), "]");
+ 	} else {  // Remove last ','
+-		sprintf(str + strlen(str) - 1, "'");
++		sprintf(str + strlen(str) - 1, "]");
+ 	}
++
++	sprintf(str + strlen(str), "}");
++
+ 	// make sure to be terminated with null character
+ 	sprintf(str + strlen(str), "%c", '\0');
+ }
+diff --git a/src/shared/common.h b/src/shared/common.h
+index f030ecd..52a9a65 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -192,7 +192,7 @@ int parse_portmask(struct port_info *ports, uint16_t max_ports,
+ int parse_num_clients(uint16_t *num_clients, const char *clients);
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
+-void print_active_ports(char *str,
++void get_sec_stats_json(char *str, const char *running_stat,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
+-- 
+2.7.4
+

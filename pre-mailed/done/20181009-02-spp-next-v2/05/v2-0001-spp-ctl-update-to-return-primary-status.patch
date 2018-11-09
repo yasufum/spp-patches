@@ -1,0 +1,45 @@
+From 9530cab109f3fb6d9e88f694141cc384cb2ae8bc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 8 Oct 2018 22:28:25 +0900
+Subject: [PATCH v2] spp-ctl: update to return primary status
+
+Status command of primary is changed to return statistics of each of
+ports. This update is to change spp-ctl to return the reponse.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index c81d0b7..6768aed 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -325,7 +325,6 @@ class V1NFVHandler(BaseHandler):
+         # that it has no dst port.
+         #   {"status":"idling","ports":[{"src":"phy:0","dst":"null"},...
+ 
+-        # TODO(yasufum) modify after nfv and vm is updated for new data definition.
+         try:
+             nfv = json.loads(data)
+         except json.JSONDecodeError as e:
+@@ -398,10 +397,12 @@ class V1PrimaryHandler(BaseHandler):
+         return proc
+ 
+     def convert_status(self, data):
+-        # no data returned at the moment.
+-        # some data will be returned when the primary becomes to
+-        # return statistical information.
+-        return {}
++        stat = {}
++        try:
++            stat = json.loads(data)
++        except json.JSONDecodeError as e:
++            print("%s" % e)
++        return stat
+ 
+     def get_status(self):
+         proc = self._get_proc()
+-- 
+2.7.4
+

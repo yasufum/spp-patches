@@ -1,0 +1,96 @@
+From 500e5d445ddbf0cbcdfd2fb7cba72abd20b69742 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 6 Sep 2018 12:51:43 +0900
+Subject: [PATCH 4/8] tools/sppc: add paths to Dockerfiles of SPP
+
+If you clone a custom SPP repo and its directory name is not 'spp',
+you failed to launch an appcontainer script because the scripts does
+not know the name of custom repo and cannot find SPP's executable file.
+
+To be found the executable in container, this patch adds PATH entries
+of the executables of custom repo to Dockerfile. By this change.
+appcontainer can find the executables without the custom repo's name
+while launching appcontainer.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04  | 8 ++++++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04  | 8 ++++++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest | 9 +++++++--
+ 3 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+index b55f056..27311ea 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+@@ -9,13 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index 8377623..f2afa74 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -9,13 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index 3b96080..246ceb8 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -9,12 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
++ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+-- 
+2.7.4
+

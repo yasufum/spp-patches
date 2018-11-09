@@ -1,0 +1,72 @@
+X-Account-Key: account4
+X-UIDL: 000081a756a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 86708400B10
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 83C197F0B4; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 824567F074
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 7130B12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 5BA3C11F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/5] controller: move spp_history to home directory
+Date: Thu, 18 Oct 2018 19:05:37 +0900
+Message-Id: <20181018100539.75277-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Move history file from project root to user's home directory as
+'~/.spp_history'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 2c170e9..383d2f1 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -19,17 +19,15 @@ import subprocess
+ class Shell(cmd.Cmd, object):
+     """SPP command prompt."""
+ 
+-    # TODO(yasufum) move hist_file to $HOME as default
+-    hist_file = '.spp_history'
++    recorded_file = None
++    hist_file = os.path.expanduser('~/.spp_history')
++    HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+ 
+     intro = 'Welcome to the spp.   Type help or ? to list commands.\n'
+     prompt = 'spp > '
+-    recorded_file = None
+ 
+     PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+-    HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+-
+     PLUGIN_DIR = 'plugins'
+     topo_size = '60%'
+ 
+-- 
+2.13.1
+
+

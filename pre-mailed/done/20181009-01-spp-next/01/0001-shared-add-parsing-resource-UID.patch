@@ -1,0 +1,65 @@
+From 9ab907c49a0d3c520c3fa9ca777826f902ebb19d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 4 Oct 2018 21:53:38 +0900
+Subject: [PATCH 1/4] shared: add parsing resource UID
+
+Resource UID is defined as a combination of port type and ID, and
+separated with ':' such as 'ring:0'. This patch is to add a utility
+function parse_resource_uid() to extract port type and ID.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 24 ++++++++++++++++++++++++
+ src/shared/common.h |  1 +
+ 2 files changed, 25 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 56f89df..56ef8c5 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -217,6 +217,30 @@ parse_server(char **server_ip, int *server_port, char *server_addr)
+ 	return 0;
+ }
+ 
++/**
++ * Retieve port type and ID from resource UID. For example, resource UID
++ * 'ring:0' is  parsed to retrieve port tyep 'ring' and ID '0'.
++ */
++int
++parse_resource_uid(char *str, char **port_type, int *port_id)
++{
++	char *token;
++	char delim[] = ":";
++	char *endp;
++
++	*port_type = strtok(str, delim);
++
++	token = strtok(NULL, delim);
++	*port_id = strtol(token, &endp, 10);
++
++	if (*endp) {
++		RTE_LOG(ERR, APP, "Bad integer value: %s\n", str);
++		return -1;
++	}
++
++	return 0;
++}
++
+ int
+ spp_atoi(const char *str, int *val)
+ {
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 52a9a65..1580b08 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -196,6 +196,7 @@ void get_sec_stats_json(char *str, const char *running_stat,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
++int parse_resource_uid(char *str, char **port_type, int *port_id);
+ int spp_atoi(const char *str, int *val);
+ 
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+-- 
+2.7.4
+

@@ -1,0 +1,62 @@
+X-Account-Key: account4
+X-UIDL: 00007eb556a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id DF143400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 12:14:22 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id DD4EB7F653; Mon,  1 Oct 2018 12:14:22 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id DC34C7F5EB
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 12:14:22 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id C310C63889A;
+	Mon,  1 Oct 2018 12:14:22 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id AB206638705;
+	Mon,  1 Oct 2018 12:14:22 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com
+Cc: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [PATCH 1/5] shared: change socket buffer length
+Date: Mon,  1 Oct 2018 12:14:09 +0900
+Message-Id: <20181001031413.75652-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Size of message via socket might exceed 1000 if network configuration is
+complexed. This patch is for extending the size to 2048.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/common.h b/src/shared/common.h
+index f39163d..f030ecd 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -27,7 +27,7 @@
+ #include <rte_ring.h>
+ 
+ #define MAX_CLIENT  99
+-#define MSG_SIZE    1000
++#define MSG_SIZE 2048  /* socket buffer len */
+ #define SOCK_RESET  -1
+ #define PORT_RESET  UINT16_MAX
+ 
+-- 
+2.7.4
+
+

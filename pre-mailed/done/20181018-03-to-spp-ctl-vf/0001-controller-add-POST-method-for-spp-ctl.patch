@@ -1,0 +1,31 @@
+From f6e0c91bcdfc21097c09aa72e9402c591a2f139d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 18 Oct 2018 17:17:12 +0900
+Subject: [PATCH 1/4] controller: add POST method for spp-ctl
+
+To send a request of POST, add post() method to SppCtlClient class.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/spp_ctl_client.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/controller/spp_ctl_client.py b/src/controller/spp_ctl_client.py
+index 0f8687a..3713326 100644
+--- a/src/controller/spp_ctl_client.py
++++ b/src/controller/spp_ctl_client.py
+@@ -53,6 +53,11 @@ class SppCtlClient(object):
+         return requests.put(url, json=params)
+ 
+     @request_handler
++    def post(self, req, params):
++        url = '%s/%s' % (self.base_url, req)
++        return requests.post(url, json=params)
++
++    @request_handler
+     def delete(self, req):
+         url = '%s/%s' % (self.base_url, req)
+         return requests.delete(url)
+-- 
+2.13.1
+

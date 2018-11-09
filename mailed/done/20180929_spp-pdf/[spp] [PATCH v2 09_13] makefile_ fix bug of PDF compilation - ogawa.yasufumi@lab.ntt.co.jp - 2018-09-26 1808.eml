@@ -1,0 +1,131 @@
+X-Account-Key: account3
+X-UIDL: 12047.zp1V3HsLClO8EFZTVLqavPcsy1s=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw007.ocn.ad.jp (LHLO md-lpx-nw007) (153.138.217.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:52 +0900 (JST)
+Received: from md-mta-cb008.ocn.ad.jp ([153.138.211.103])
+	by md-lpx-nw007 with LMTP id +OnRBRxNq1tOKQAACd8mRg
+	; Wed, 26 Sep 2018 18:10:52 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-cb008.ocn.ad.jp (Postfix) with ESMTP id 0881414003633
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:52 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id AAFFD9C028C
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:51 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 218EC1B13B;
+	Wed, 26 Sep 2018 11:10:51 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 499247EDC
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:49 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9Amha006975;
+ Wed, 26 Sep 2018 18:10:48 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 22968140;
+ Wed, 26 Sep 2018 18:10:48 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 0CD39110;
+ Wed, 26 Sep 2018 18:10:48 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:37 +0900
+Message-Id: <1537952921-20397-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 09/13] makefile: fix bug of PDF compilation
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch includes bug fix and refactor of Makefile.
+
+In target 'doc-pdf', PDF images embedded into the document is removed
+immediately after sphinx command is executed. However, it possibly
+remove PDF images before sphinx refers them. It is resulted in a
+failure of file not found.
+To fix the bug, move removing PDF images from 'doc-pdf' to 'doc-clean'
+to avoid the error.
+
+For refactoring, remove 'compile-doc.sh' for running Makefile in
+'docs/guides' directory and do the task from project root Makefile.
+'compile-doc.sh' is no needed any more.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ Makefile                   | 11 +++++++----
+ docs/guides/compile-doc.sh | 11 -----------
+ 2 files changed, 7 insertions(+), 15 deletions(-)
+ delete mode 100644 docs/guides/compile-doc.sh
+
+diff --git a/Makefile b/Makefile
+index 6d29dcc..47fa4cb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -47,17 +47,20 @@ include $(RTE_SDK)/mk/rte.extsubdir.mk
+ DOC_ROOT = docs/guides
+ 
+ # Compile RST documents
++.PHONY: doc-pdf
++doc-all: doc-pdf doc-html
++
+ .PHONY: doc-html
+ doc-html:
+-	sh $(DOC_ROOT)/compile-doc.sh doc-html
++	make -C $(DOC_ROOT) html
+ 
+ .PHONY: doc-pdf
+ doc-pdf:
+ 	python $(DOC_ROOT)/gen_pdf_imgs.py
+-	sh $(DOC_ROOT)/compile-doc.sh doc-pdf
+-	find $(DOC_ROOT)/images/ -type f -name "*.pdf" -delete
++	make -C $(DOC_ROOT) latexpdf
+ 	@echo "Succeeded to generate '$(DOC_ROOT)/_build/latex/SoftPatchPanel.pdf'"
+ 
+ .PHONY: doc-clean
+ doc-clean:
+-	sh $(DOC_ROOT)/compile-doc.sh clean
++	find $(DOC_ROOT)/images/ -type f -name "*.pdf" -delete
++	make -C $(DOC_ROOT) clean
+diff --git a/docs/guides/compile-doc.sh b/docs/guides/compile-doc.sh
+deleted file mode 100644
+index 237c526..0000000
+--- a/docs/guides/compile-doc.sh
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#!/bin/sh
+-
+-cd `dirname ${0}`
+-
+-if [ $1 = 'doc-html' ]; then
+-	make html
+-elif [ $1 = 'doc-pdf' ]; then
+-	make latexpdf
+-elif [ $1 = 'clean' ]; then
+-	make clean
+-fi
+-- 
+2.7.4
+
+

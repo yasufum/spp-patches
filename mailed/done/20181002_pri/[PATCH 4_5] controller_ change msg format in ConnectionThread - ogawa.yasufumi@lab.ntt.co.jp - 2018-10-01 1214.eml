@@ -1,0 +1,75 @@
+X-Account-Key: account4
+X-UIDL: 00007eb856a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E43C1400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E316F23BD9B; Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id E278D23BD75
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D1FF363889A;
+	Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id C395B638705;
+	Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com
+Cc: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [PATCH 4/5] controller: change msg format in ConnectionThread
+Date: Mon,  1 Oct 2018 12:14:12 +0900
+Message-Id: <20181001031413.75652-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+ConnectionThread is a message broker between primary and controller.
+To apply with the change of primary's message format, it is change
+to send JSON messages to controller.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/conn_thread.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/controller/conn_thread.py b/src/controller/conn_thread.py
+index 8bddfc0..ff0697e 100644
+--- a/src/controller/conn_thread.py
++++ b/src/controller/conn_thread.py
+@@ -29,7 +29,7 @@ class ConnectionThread(threading.Thread):
+         self.stop_event.set()
+ 
+     def run(self):
+-        cmd_str = 'hello'
++        cmd_str = ''
+ 
+         # infinite loop so that function do not terminate and thread do not
+         # end.
+@@ -238,9 +238,9 @@ class PrimaryThread(threading.Thread):
+                     data = conn.recv(spp_common.SOCK_BUF_SIZE)
+                     if data:
+                         spp_common.PRIMARY2MAIN.put(
+-                            "recv:%s:{%s}" % (str(addr), data.decode('utf-8')))
++                                    data.decode('utf-8').strip('\0'))
+                     else:
+-                        spp_common.PRIMARY2MAIN.put("closing:" + str(addr))
++                        spp_common.PRIMARY2MAIN.put('{"status": "closed"}')
+                         conn.close()
+                         self.sock_opened = False
+                         break
+-- 
+2.7.4
+
+

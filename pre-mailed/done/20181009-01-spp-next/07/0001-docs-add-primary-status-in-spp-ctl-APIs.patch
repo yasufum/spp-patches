@@ -1,0 +1,137 @@
+From e4a8605c81622ce93ac44578c97d45907101c4f9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 12:36:13 +0900
+Subject: [PATCH] docs: add primary status in spp-ctl APIs
+
+Add response parameters and its example of status of spp_primary in the
+API reference.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 110 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 108 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 23bc8db..3ae90fd 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -125,8 +125,114 @@ Request example
+ Response
+ ^^^^^^^^
+ 
+-There is no data at the moment. The statistical information will be returned
+-when ``spp_primary`` implements it.
++.. _table_spp_ctl_primary_status:
++
++.. table:: Response params of primary status.
++
++    +------------+-------+-------------------------------------------+
++    | Name       | Type  | Description                               |
++    |            |       |                                           |
++    +============+=======+===========================================+
++    | phy_ports  | array | An array of statistics of physical ports. |
++    +------------+-------+-------------------------------------------+
++    | ring_ports | array | An array of statistics of ring ports.     |
++    +------------+-------+-------------------------------------------+
++
++Physical port object.
++
++.. _table_spp_ctl_primary_status_phy:
++
++.. table:: Attributes of physical port of primary status.
++
++    +---------+---------+-----------------------------------------------------+
++    | Name    | Type    | Description                                         |
++    |         |         |                                                     |
++    +=========+=========+=====================================================+
++    | id      | integer | Port ID of the physical port.                       |
++    +---------+---------+-----------------------------------------------------+
++    | rx      | integer | The total number of received packets.               |
++    +---------+---------+-----------------------------------------------------+
++    | tx      | integer | The total number of transferred packets.            |
++    +---------+---------+-----------------------------------------------------+
++    | tx_drop | integer | The total number of dropped packets of transferred. |
++    +---------+---------+-----------------------------------------------------+
++    | eth     | string  | MAC address of the port.                            |
++    +---------+---------+-----------------------------------------------------+
++
++Ring port object.
++
++.. _table_spp_ctl_primary_status_ring:
++
++.. table:: Attributes of ring port of primary status.
++
++    +---------+---------+-----------------------------------------------------+
++    | Name    | Type    | Description                                         |
++    |         |         |                                                     |
++    +=========+=========+=====================================================+
++    | id      | integer | Port ID of the ring port.                           |
++    +---------+---------+-----------------------------------------------------+
++    | rx      | integer | The total number of received packets.               |
++    +---------+---------+-----------------------------------------------------+
++    | rx_drop | integer | The total number of dropped packets of received.    |
++    +---------+---------+-----------------------------------------------------+
++    | tx      | integer | The total number of transferred packets.            |
++    +---------+---------+-----------------------------------------------------+
++    | tx_drop | integer | The total number of dropped packets of transferred. |
++    +---------+---------+-----------------------------------------------------+
++
++Response example
++^^^^^^^^^^^^^^^^
++
++.. code-block:: json
++
++    {
++      "phy_ports": [
++        {
++          "id": 0,
++          "rx": 0,
++          "tx": 0,
++          "tx_drop": 0,
++          "eth": "56:48:4f:53:54:00"
++        },
++        {
++          "id": 1,
++          "rx": 0,
++          "tx": 0,
++          "tx_drop": 0,
++          "eth": "56:48:4f:53:54:01"
++        }
++      ],
++      "ring_ports": [
++        {
++          "id": 0,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 1,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 2,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 3,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        }
++      ]
++    }
+ 
+ 
+ DELETE /v1/primary/status
+-- 
+2.7.4
+

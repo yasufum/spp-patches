@@ -1,0 +1,101 @@
+X-Account-Key: account4
+X-UIDL: 00007fcc56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 162FF40021C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 149F923BB23; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 0A50F23BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id F2C96EA87FF
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E7833EA879B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3A39e1oxzw8Vj2w4vXCy+N+z0kezQntrPoPwUc9p?=
+ =?us-ascii?q?sgjfd0f7+++4j5ZRSEt/lmiVaMRp3es6gChuHS9ab8RSoL5tCDqCNKa4RCAj?=
+ =?us-ascii?q?kCj8hehAk8GIidE0SuK/LjRzIzGMVESU8j9Hb9M1AGUN3maQj0pXu/pSUXBg?=
+ =?us-ascii?q?25MAN0IurvHYuHiMi+//67/5zVfhUOjz37Y6srdkeMoA7ct9cbjc5ZEohrm0?=
+ =?us-ascii?q?ObhHxOdqwWyWhtLBeIhxOkvIG995ol9ThM/fkmscxYA+38eOwjQLpUAS5DUS?=
+ =?us-ascii?q?h97dD3tRTFUQqE52cNGmQQnB1SBgHZ7Rb8Fp7vuyr+v+B51WGUJ8rzBbwzXD?=
+ =?us-ascii?q?2j6e9sRnqKwG8AOzcR7mjTi8ptnORQp1Sjv103woLZZp2UKOsrZrnULpsRQW?=
+ =?us-ascii?q?tMWNoUVjQUWNrkKdJVX6xQZaAB89qYxRNGtxa1CAiyCfm6xjRNjzrtxahiia?=
+ =?us-ascii?q?IsGgWA2hA8WdkJ9nbM/7CXfO8fV/64yK7QwHDNdfRTjH365IHgbBkloPeRTf?=
+ =?us-ascii?q?R7dozT0QN8cmGNxkXVsoHjMz6Pg64Kv2Gz8eNkVOSymygsrEdzunL8jtdpgY?=
+ =?us-ascii?q?7PiIUPz1nC/igs24c5K+qjVFR6asL9SslquiqXNpV7ToYZe08y6Xto7LoAtN?=
+ =?us-ascii?q?b7cCMPwdE83xuHMbqKeIzO5A7/Eu2WZzVg1jpjf/qkihC+/FLFqKW0X9So0F?=
+ =?us-ascii?q?tMsitOk8Xd/nEL2RvJ78GbS/x7tk6/0DeL3grX56lKO0cx3abcLpcgxPY3mP?=
+ =?us-ascii?q?9x+QzEEibehkzyjamLZgMv/a6q86WvY7nroIOdK54hjwj/Nqo0ncnsZIZweg?=
+ =?us-ascii?q?MKXmWd5aG9zOi5pBW/Ge8ayKxu1PCF49jAKM8Wp7C0GVpZ2YMqrg2nCm/8lt?=
+ =?us-ascii?q?kTmT8BME4DcxXBjZC6XjOGaP3+E/q7hEyh1TlxwPWTdLrtC73TJ3zClqrxO7?=
+ =?us-ascii?q?16rUxEgllWr5gX99dPB7cNLeimEEj9vfTGBxs4NRGkhe3gTtdlnNBWSSeEBa?=
+ =?us-ascii?q?mXN7nXuFmD67c0IuWCU5QJojf2N6F0tc6rtmcwnBomRYfs2JIWbH6iGfE/fh?=
+ =?us-ascii?q?eHaH7thMoRV2wN+AgmHrSz1A+yFAVLbnP3ZJoSoykhAdv7X5nKQoGrnazH1y?=
+ =?us-ascii?q?D9HIUEPm0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggKBVgMECyiMCV+NUJZegXo4AYRAAoREBjANDQEDAQECAQE?=
+ =?us-ascii?q?BAW0ohToGgQkgMSwrBxKDIYIBpWyILoFkhw6BWoJbggCOWCIChlYHiC+OUAm?=
+ =?us-ascii?q?QNSKBPY4ylyQ4gVWELJBkMDB5AQEBAY1qAQE?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:58 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 603FB240CD5; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 05/14] docs: add spp-ctl to index of doc root
+Date: Fri,  5 Oct 2018 12:57:48 +0900
+Message-Id: <20181005035757.23122-6-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+To be referred from index of document root, add spp-ctl to the index.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/docs/guides/index.rst b/docs/guides/index.rst
+index d0242d6..9d62b30 100644
+--- a/docs/guides/index.rst
++++ b/docs/guides/index.rst
+@@ -39,3 +39,4 @@ SPP documentation
+    commands/index
+    tools/index
+    spp_vf/index
++   spp-ctl/index
+-- 
+2.17.1
+
+

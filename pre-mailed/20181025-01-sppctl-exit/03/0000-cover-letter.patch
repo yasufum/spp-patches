@@ -1,0 +1,31 @@
+From ae05adf90bb2d0d0f83da0f60354c83373252bdc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 26 Oct 2018 17:34:35 +0900
+Subject: [PATCH 0/3] Update documentation for spp-ctl
+
+Hi,
+
+For spp-ctl is added as a new features of controller, documentation
+should be updated. Explanations of spp-ctl itself and commands are
+updated, but overview section and how to use section are still needed to
+be updated.
+
+This series of patches is for the purpose. It also includes a fix of
+misc warning of duplicated labels in spp_vf command section.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (3):
+  docs: update how to use section for using spp-ctl
+  docs: correct duplicated labels in APIs reference
+  docs: correct inappropriate labels in spp_vf
+
+ docs/guides/commands/spp_vf.rst       |   2 +-
+ docs/guides/setup/howto_use.rst       | 159 +++++++++++++++++++++++++---------
+ docs/guides/spp-ctl/api-reference.rst |   2 +-
+ 3 files changed, 121 insertions(+), 42 deletions(-)
+
+-- 
+2.13.1
+

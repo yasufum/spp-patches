@@ -1,0 +1,34 @@
+From d566aa01630a8f0df9907c7f1089bb5de367dea3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 18 Oct 2018 19:00:21 +0900
+Subject: [PATCH 0/4] Add commands of spp_vf to SPP controller
+
+Spp_vf has dedicated controller 'spp_vf.py' and is not managed from
+'spp.py'. It is confusing to users.
+
+Thanks to spp-ctl, it is easy to send a request to spp_vf from 'spp.py'
+without any effort. This update is to add SppVf class behaviour as a
+client for spp-ctl. An instance of the class is intended to be used
+from do_vf() and complete_vf() methods of Shell class in 'spp.py'.
+
+'spp_vf.py' is removed in this update because all of this features are
+moved to 'spp.py' and is not used anymore.
+
+Yasufumi Ogawa (4):
+  controller: add POST method for spp-ctl
+  controller: add SppVf class
+  controller: add vf command to SPP controller
+  spp_vf: remove spp_vf controller
+
+ src/controller/commands/vf.py    | 470 ++++++++++++++++++++++++++++++++++++
+ src/controller/shell.py          | 103 +++++++-
+ src/controller/spp.py            |  19 +-
+ src/controller/spp_ctl_client.py |   5 +
+ src/spp_vf.py                    | 507 ---------------------------------------
+ 5 files changed, 585 insertions(+), 519 deletions(-)
+ create mode 100644 src/controller/commands/vf.py
+ delete mode 100755 src/spp_vf.py
+
+-- 
+2.13.1
+

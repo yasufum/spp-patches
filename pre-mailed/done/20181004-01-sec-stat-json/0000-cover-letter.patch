@@ -1,0 +1,42 @@
+From 280f2893d8be676272aff07ec08fbccf0b9688ec Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 4 Oct 2018 14:38:21 +0900
+Subject: [PATCH 0/4] Change format of sec status to JSON
+
+Spp_nfv or spp_vm returns its status as a YAML-like format for
+simplicity and requires clients to parse the response. It is better the
+format to parse if it is standardized format.
+
+This update is to change the response to JSON format from spp_nfv and
+spp_vm.
+
+  {
+    "status": "running",
+    "ports": [
+      {"src":"phy:0","dst": "ring:0"},
+      {"src":"ring:0","dst": "null"}
+    ]
+  }
+
+SPP controller is also updated to parse the new format.
+
+In shared/common.c and shared/common.h, function retrieving the status
+is changed from print_active_port() to get_sec_status_json() to return
+not only ports info but also whole of info including running status.
+
+Yasufumi Ogawa (4):
+  shared: change sec status to JSON format
+  spp_nfv: update retrieving status
+  spp_vm: update retrieving status
+  controller: update for parsing JSON status
+
+ src/controller/shell.py | 50 ++++++++++-------------------
+ src/nfv/nfv.c           | 10 +++---
+ src/shared/common.c     | 84 +++++++++++++++++++++++++++++--------------------
+ src/shared/common.h     |  2 +-
+ src/vm/main.c           | 10 +++---
+ 5 files changed, 77 insertions(+), 79 deletions(-)
+
+-- 
+2.7.4
+

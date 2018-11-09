@@ -1,0 +1,207 @@
+X-Account-Key: account3
+X-UIDL: 12042.AsmCffcicxrfSAm6kFSIpbyBRds=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw005.ocn.ad.jp (LHLO md-lpx-nw005) (153.138.217.18)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:48 +0900 (JST)
+Received: from md-mta-cb001.ocn.ad.jp ([153.138.211.69])
+	by md-lpx-nw005 with LMTP id IBFyBxhNq1saDgAA2u8eSg
+	; Wed, 26 Sep 2018 18:10:48 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-cb001.ocn.ad.jp (Postfix) with ESMTP id 12CD94401AC35
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:48 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 5F3D6A8026A
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:47 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7C1601B123;
+	Wed, 26 Sep 2018 11:10:45 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 6A6E01B122
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:43 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9Agif006957;
+ Wed, 26 Sep 2018 18:10:42 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 31FC5140;
+ Wed, 26 Sep 2018 18:10:42 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 1A8A7110;
+ Wed, 26 Sep 2018 18:10:42 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:31 +0900
+Message-Id: <1537952921-20397-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 03/13] docs: resize figures of SPP
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is for resizing figures in SPP docs for PDF format.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/experimental.rst |  6 +++---
+ docs/guides/overview.rst              |  7 ++++---
+ docs/guides/setup/use_cases.rst       | 24 ++++++++----------------
+ 3 files changed, 15 insertions(+), 22 deletions(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index 42ba371..81dceac 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -94,7 +94,7 @@ and save this script as
+ .. _figure_topo_term_exp:
+ 
+ .. figure:: ../images/commands/expr/topo_term_exp.*
+-   :width: 440 em
++   :width: 67%
+ 
+    topo term example
+ 
+@@ -202,7 +202,7 @@ following.
+ .. _figure_topo_subg_before:
+ 
+ .. figure:: ../images/commands/expr/topo_subg_before.*
+-   :width: 440 em
++   :width: 67%
+ 
+    Before using topo_subgraph
+ 
+@@ -223,7 +223,7 @@ In this case, add subgraph ``guest_vm`` and includes resoures
+ .. _figure_topo_subg_after:
+ 
+ .. figure:: ../images/commands/expr/topo_subg_after.*
+-   :width: 440 em
++   :width: 67%
+ 
+    After using topo_subgraph
+ 
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index fd1415f..9e1c426 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -40,9 +40,10 @@ Overview
+ functionality for Service Function Chaining in
+ NFV (Network Function Virtualization).
+ 
+-.. image:: images/overview/spp_overview.svg
+-   :height: 350 em
+-   :width: 350 em
++.. figure:: images/overview/spp_overview.*
++    :width: 50%
++
++    SPP overview
+ 
+ With SPP, user is able to configure network easily and dynamically
+ via simple patch panel like interface.
+diff --git a/docs/guides/setup/use_cases.rst b/docs/guides/setup/use_cases.rst
+index 2c83fe0..1e31949 100644
+--- a/docs/guides/setup/use_cases.rst
++++ b/docs/guides/setup/use_cases.rst
+@@ -86,8 +86,7 @@ Confirm that status of ``sec 1`` is updated.
+ .. _figure_spp_nfv_as_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_nfv_l2fwd.*
+-   :height: 380 em
+-   :width: 380 em
++   :width: 52%
+ 
+    spp_nfv as l2fwd
+ 
+@@ -149,8 +148,7 @@ from ``phy:1`` to ``phy:0`` for ``sec 2``.
+ .. _figure_spp_two_nfv_as_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_two_nfv_l2fwd.*
+-   :height: 420 em
+-   :width: 420 em
++   :width: 52%
+ 
+    Two spp_nfv as l2fwd
+ 
+@@ -171,8 +169,7 @@ Patch ``phy:0`` to ``phy:0`` for ``sec 1`` and
+ .. _figure_spp_two_nfv_loopback:
+ 
+ .. figure:: ../images/setup/use_cases/spp_two_nfv_loopback.*
+-   :height: 420 em
+-   :width: 420 em
++   :width: 52%
+ 
+    Two spp_nfv for loopback
+ 
+@@ -240,8 +237,7 @@ Then, connect it with ``patch`` subcommand.
+ .. _figure_spp_uni_directional_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_unidir_l2fwd.*
+-   :height: 460 em
+-   :width: 460 em
++   :width: 52%
+ 
+    Uni-Directional l2fwd
+ 
+@@ -295,8 +291,7 @@ Then, add ``ring 0`` and ``ring 1`` to ``sec 2``.
+ .. _figure_spp_bi_directional_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_bidir_l2fwd.*
+-   :height: 460 em
+-   :width: 460 em
++   :width: 52%
+ 
+    Bi-Directional l2fwd
+ 
+@@ -361,8 +356,7 @@ with ``sec 2``.
+ .. _figure_spp_uni_directional_l2fwd_vhost:
+ 
+ .. figure:: ../images/setup/use_cases/spp_unidir_l2fwd_vhost.*
+-   :height: 460 em
+-   :width: 460 em
++   :width: 52%
+ 
+    Uni-Directional l2fwd with vhost
+ 
+@@ -419,8 +413,7 @@ As the first usecase, add a pcap PMD and capture incoming packets from
+ .. _figure_spp_pcap_incoming:
+ 
+ .. figure:: ../images/setup/use_cases/spp_pcap_incoming.*
+-   :height: 380 em
+-   :width: 380 em
++   :width: 50%
+ 
+    Rapture incoming packets
+ 
+@@ -461,8 +454,7 @@ Then, add pcap PMD to another ``spp_nfv`` with index ``2``.
+ .. _figure_spp_pcap_restoring:
+ 
+ .. figure:: ../images/setup/use_cases/spp_pcap_restoring.*
+-   :height: 380 em
+-   :width: 380 em
++   :width: 52%
+ 
+    Restore dumped packets
+ 
+-- 
+2.7.4
+
+

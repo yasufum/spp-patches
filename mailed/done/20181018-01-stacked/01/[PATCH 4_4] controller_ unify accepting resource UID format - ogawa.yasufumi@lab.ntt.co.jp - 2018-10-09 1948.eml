@@ -1,0 +1,95 @@
+X-Account-Key: account4
+X-UIDL: 0000806156a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 56DC1400161
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:49:00 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 559E723BB4D; Tue,  9 Oct 2018 19:49:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 54A4523BB2D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:49:00 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 3F298125;
+	Tue,  9 Oct 2018 19:49:00 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 28CBD119;
+	Tue,  9 Oct 2018 19:49:00 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/4] controller: unify accepting resource UID format
+Date: Tue,  9 Oct 2018 19:48:47 +0900
+Message-Id: <20181009104847.42502-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009104847.42502-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009104847.42502-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Delimiter of resource UID is different between patch command and add/del
+commands.
+
+  spp > sec 1;add ring 0  # separated with ' '
+  spp > sec 1;patch ring:0 ring:1  # separated with ':'
+
+It should be same format because confusing. This update is to change
+add/del commands to use delimiter ':'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 2808440..09b9e86 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -249,7 +249,7 @@ class Shell(cmd.Cmd, object):
+     def is_patched_ids_valid(self, id1, id2, delim=':'):
+         """Check if port IDs are valid
+ 
+-        Supported format is port ID of integer or resource ID such as
++        Supported format is port ID of integer or resource UID such as
+         'phy:0' or 'ring:1'. Default delimiter ':' can be overwritten
+         by giving 'delim' option.
+         """
+@@ -279,17 +279,21 @@ class Shell(cmd.Cmd, object):
+         if length == 1:
+             if cmdlist[0] in level1:
+                 valid = 1
++
+         elif length == 2:
+             if cmdlist[0] == 'patch':
+                 if cmdlist[1] in patch_args:
+                     valid = 1
++
++            elif cmdlist[0] == 'add' or cmdlist[0] == 'del':
++                p_type, p_id = cmdlist[1].split(':')
++                if p_type in add_del_args:
++                    if str.isdigit(p_id):
++                        valid = 1
++
+         elif length == 3:
+             if cmdlist[0] in level2:
+-                if cmdlist[0] == 'add' or cmdlist[0] == 'del':
+-                    if cmdlist[1] in add_del_args:
+-                        if str.isdigit(cmdlist[2]):
+-                            valid = 1
+-                elif cmdlist[0] == 'patch':
++                if cmdlist[0] == 'patch':
+                     if self.is_patched_ids_valid(cmdlist[1], cmdlist[2]):
+                         valid = 1
+ 
+-- 
+2.7.4
+
+

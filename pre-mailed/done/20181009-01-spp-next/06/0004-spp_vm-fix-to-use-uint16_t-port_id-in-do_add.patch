@@ -1,0 +1,44 @@
+From 3a79624383d664396cfaa08ee4cdf2a17351425d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 09:50:50 +0900
+Subject: [PATCH 4/6] spp_vm: fix to use uint16_t port_id in do_add
+
+Modify to use uint16_t type for port_id.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 3807370..2813fca 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -373,7 +373,7 @@ static int
+ do_add(char *res_uid)
+ {
+ 	enum port_type type = UNDEF;
+-	int port_id = PORT_RESET;
++	uint16_t port_id = PORT_RESET;
+ 	char *p_type;
+ 	int p_id;
+ 	int res;
+@@ -384,11 +384,13 @@ do_add(char *res_uid)
+ 
+ 	if (!strcmp(p_type, "ring")) {
+ 		type = RING;
+-		port_id = add_ring_pmd(p_id);
++		res = add_ring_pmd(p_id);
+ 	}
+ 
+-	if (port_id < 0)
++	if (res < 0)
+ 		return -1;
++	else
++		port_id = (uint16_t) res;
+ 
+ 	port_map[port_id].id = p_id;
+ 	port_map[port_id].port_type = type;
+-- 
+2.7.4
+

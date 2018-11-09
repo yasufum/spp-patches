@@ -1,0 +1,24 @@
+From ed55244cf52eab93d18ac25fb531152365313127 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 11 Oct 2018 20:03:44 +0900
+Subject: [PATCH 0/4] Revise help messages of commands and documentation
+
+Revise help messages of SPP controller for updating old, adding new and
+correcting wrong descriptions. Documents of commands are also revised
+in this update.
+
+Yasufumi Ogawa (4):
+  controller: revise help messages
+  docs: update primary command reference
+  docs: update secondary command reference
+  docs: update common command reference
+
+ docs/guides/commands/common.rst    |  55 ++++++++++-----
+ docs/guides/commands/primary.rst   |  29 ++++----
+ docs/guides/commands/secondary.rst |  84 ++++++++++++++---------
+ src/controller/shell.py            | 134 ++++++++++++++++++++++++-------------
+ 4 files changed, 199 insertions(+), 103 deletions(-)
+
+-- 
+2.7.4
+

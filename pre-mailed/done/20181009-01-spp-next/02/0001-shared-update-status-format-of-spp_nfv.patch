@@ -1,0 +1,394 @@
+From e2fc0e2c95d0a2a42f4656ed8a2d3237e784e25b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 6 Oct 2018 15:08:10 +0900
+Subject: [PATCH 1/4] shared: update status format of spp_nfv
+
+Update message format of get_sec_status_json() for considering spp-ctl's
+API. The message should be the same as the response params of spp-ctl
+for maintainance. 'client_id' is added to the args for including it to
+the message.
+
+This update also changes spp_nfv and spp_vm for adding 'client_id'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/nfv.c       |  10 +--
+ src/shared/common.c | 179 ++++++++++++++++++++++++++++++++++++++++------------
+ src/shared/common.h |  14 +++-
+ src/vm/init.c       |   2 +-
+ src/vm/main.c       |   8 +--
+ 5 files changed, 163 insertions(+), 50 deletions(-)
+
+diff --git a/src/nfv/nfv.c b/src/nfv/nfv.c
+index 0ccabac..931269d 100644
+--- a/src/nfv/nfv.c
++++ b/src/nfv/nfv.c
+@@ -709,11 +709,11 @@ parse_command(char *str)
+ 		RTE_LOG(DEBUG, APP, "status\n");
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+-			get_sec_stats_json(str, "running", ports_fwd_array,
+-					port_map);
++			get_sec_stats_json(str, client_id, "running",
++					ports_fwd_array, port_map);
+ 		else
+-			get_sec_stats_json(str, "idling", ports_fwd_array,
+-					port_map);
++			get_sec_stats_json(str, client_id, "idling",
++					ports_fwd_array, port_map);
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+ 		memset(str, '\0', MSG_SIZE);
+@@ -891,7 +891,7 @@ main(int argc, char *argv[])
+ 			rte_socket_id(), NO_FLAGS);
+ 		if (mz == NULL)
+ 			rte_exit(EXIT_FAILURE,
+-				"Cannot reserve memory zone for port information\n");
++				"Cannot reserve memzone for port info\n");
+ 		memset(mz->addr, 0, sizeof(*ports));
+ 		ports = mz->addr;
+ 	}
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 56ef8c5..c78ee7b 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -162,7 +162,7 @@ parse_portmask(struct port_info *ports, uint16_t max_ports,
+ 		if (pm & 0x01) { /* bit is set in mask, use port */
+ 			if (count >= max_ports)
+ 				RTE_LOG(WARNING, APP,
+-					"requested port %u not present - ignoring\n",
++					"port %u not present - ignoring\n",
+ 					count);
+ 			else
+ 				ports->id[ports->num_ports++] = count;
+@@ -266,25 +266,114 @@ spp_atoi(const char *str, int *val)
+  *
+  *   {
+  *     "status": "running",
+- *     "ports": [
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"],
++ *     "patches": [
+  *       {"src":"phy:0","dst": "ring:0"},
+- *       {"src":"ring:0","dst": "null"}
++ *       {"src":"ring:0","dst": "vhost:0"}
+  *     ]
+  *   }
+  */
+ void
+-get_sec_stats_json(char *str, const char *running_stat,
++get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map)
+ {
+-	unsigned int i;
+-	unsigned int has_ports = 0;  // for checking having port at last
++	sprintf(str, "{\"client-id\":%d,", client_id);
+ 
+-	sprintf(str, "%s",  "{\"status\":");
++	sprintf(str + strlen(str), "\"status\":");
+ 	sprintf(str + strlen(str), "\"%s\",", running_stat);
++
++	append_port_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), ",");
++
++	append_patch_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), "}");
++
++	// make sure to be terminated with null character
++	sprintf(str + strlen(str), "%c", '\0');
++}
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"]
++ */
++int
++append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_port = 0;  // for checking having port at last
++
+ 	sprintf(str + strlen(str), "\"ports\":[");
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		has_port = 1;
++		switch (port_map[i].port_type) {
++		case PHY:
++			sprintf(str + strlen(str), "\"phy:%u\",",
++					port_map[i].id);
++			break;
++		case RING:
++			sprintf(str + strlen(str), "\"ring:%u\",",
++				port_map[i].id);
++			break;
++		case VHOST:
++			sprintf(str + strlen(str), "\"vhost:%u\",",
++				port_map[i].id);
++			break;
++		case PCAP:
++			sprintf(str + strlen(str), "\"pcap:%u\",",
++					port_map[i].id);
++			break;
++		case NULLPMD:
++			sprintf(str + strlen(str), "\"nullpmd:%u\",",
++					port_map[i].id);
++			break;
++		case UNDEF:
++			/* TODO(yasufum) Need to remove print for undefined ? */
++			sprintf(str + strlen(str), "\"udf\",");
++			break;
++		}
++	}
++
++	// Check if it has at least one port to remove ",".
++	if (has_port == 0) {
++		sprintf(str + strlen(str), "]");
++	} else {  // Remove last ','
++		sprintf(str + strlen(str) - 1, "]");
++	}
++
++	return 0;
++}
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "patches": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "vhost:0"}
++ *      ]
++ */
++int
++append_patch_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_patch = 0;  // for checking having patch at last
+ 
++	char patch_str[128];
++	sprintf(str + strlen(str), "\"patches\":[");
+ 	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
+ 		if (ports_fwd_array[i].in_port_id == PORT_RESET)
+ 			continue;
+ 
+@@ -292,104 +381,116 @@ get_sec_stats_json(char *str, const char *running_stat,
+ 		RTE_LOG(INFO, APP, "Status %d\n",
+ 			ports_fwd_array[i].in_port_id);
+ 
+-		sprintf(str + strlen(str), "{\"src\":");
++		memset(patch_str, '\0', sizeof(patch_str));
++
++		sprintf(patch_str, "{\"src\":");
+ 
+ 		switch (port_map[i].port_type) {
+ 		case PHY:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: PHY\n");
+-			sprintf(str + strlen(str), "\"phy:%u\",",
++			sprintf(patch_str + strlen(patch_str),
++					"\"phy:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case RING:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: RING\n");
+-			sprintf(str + strlen(str), "\"ring:%u\",",
+-				port_map[i].id);
++			sprintf(patch_str + strlen(patch_str),
++					"\"ring:%u\",",
++					port_map[i].id);
+ 			break;
+ 		case VHOST:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: VHOST\n");
+-			sprintf(str + strlen(str), "{\"vhost:%u\",",
+-				port_map[i].id);
++			sprintf(patch_str + strlen(patch_str),
++					"\"vhost:%u\",",
++					port_map[i].id);
+ 			break;
+ 		case PCAP:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: PCAP\n");
+-			sprintf(str + strlen(str), "\"pcap:%u\",",
++			sprintf(patch_str + strlen(patch_str),
++					"\"pcap:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case NULLPMD:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: NULLPMD\n");
+-			sprintf(str + strlen(str), "\"nullpmd:%u\",",
++			sprintf(patch_str + strlen(patch_str),
++					"\"nullpmd:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case UNDEF:
+-			has_ports = 1;
+ 			RTE_LOG(INFO, APP, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+-			sprintf(str + strlen(str), "\"udf\",");
++			sprintf(patch_str + strlen(patch_str),
++					"\"udf\",");
+ 			break;
+ 		}
+ 
+-		sprintf(str + strlen(str), "\"dst\":");
++		sprintf(patch_str + strlen(patch_str), "\"dst\":");
+ 
+ 		RTE_LOG(INFO, APP, "Out Port ID %d\n",
+ 				ports_fwd_array[i].out_port_id);
++
+ 		if (ports_fwd_array[i].out_port_id == PORT_RESET) {
+-			sprintf(str + strlen(str), "%s", "\"null\"");
++			//sprintf(patch_str + strlen(patch_str), "%s", "\"\"");
++			continue;
+ 		} else {
++			has_patch = 1;
+ 			unsigned int j = ports_fwd_array[i].out_port_id;
+ 			switch (port_map[j].port_type) {
+ 			case PHY:
+ 				RTE_LOG(INFO, APP, "Type: PHY\n");
+-				sprintf(str + strlen(str), "\"phy:%u\"",
++				sprintf(patch_str + strlen(patch_str),
++						"\"phy:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case RING:
+ 				RTE_LOG(INFO, APP, "Type: RING\n");
+-				sprintf(str + strlen(str), "\"ring:%u\"",
+-					port_map[j].id);
++				sprintf(patch_str + strlen(patch_str),
++						"\"ring:%u\"",
++						port_map[j].id);
+ 				break;
+ 			case VHOST:
+ 				RTE_LOG(INFO, APP, "Type: VHOST\n");
+-				sprintf(str + strlen(str), "\"vhost:%u\"",
++				sprintf(patch_str + strlen(patch_str),
++						"\"vhost:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case PCAP:
+ 				RTE_LOG(INFO, APP, "Type: PCAP\n");
+-				sprintf(str + strlen(str), "\"pcap:%u\"",
++				sprintf(patch_str + strlen(patch_str),
++						"\"pcap:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case NULLPMD:
+ 				RTE_LOG(INFO, APP, "Type: NULLPMD\n");
+-				sprintf(str + strlen(str), "\"nullpmd:%u\"",
++				sprintf(patch_str + strlen(patch_str),
++						"\"nullpmd:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case UNDEF:
+ 				RTE_LOG(INFO, APP, "Type: UDF\n");
+-				/**
++				/*
+ 				 * TODO(yasufum) Need to remove print for
+ 				 * undefined ?
+ 				 */
+-				sprintf(str + strlen(str), "\"udf\"");
++				sprintf(patch_str + strlen(patch_str),
++						"\"udf\"");
+ 				break;
+ 			}
+ 		}
+ 
+-		sprintf(str + strlen(str), "},");
++		sprintf(patch_str + strlen(patch_str), "},");
++
++		if (has_patch != 0)
++			sprintf(str + strlen(str), "%s", patch_str);
+ 	}
+ 
+-	// Check the number of ports to remove "," if it has one or more ports.
+-	if (has_ports == 0) {
++
++	// Check if it has at least one patch to remove ",".
++	if (has_patch == 0) {
+ 		sprintf(str + strlen(str), "]");
+ 	} else {  // Remove last ','
+ 		sprintf(str + strlen(str) - 1, "]");
+ 	}
+ 
+-	sprintf(str + strlen(str), "}");
+-
+-	// make sure to be terminated with null character
+-	sprintf(str + strlen(str), "%c", '\0');
++	return 0;
+ }
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 1580b08..a30f0da 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -192,7 +192,19 @@ int parse_portmask(struct port_info *ports, uint16_t max_ports,
+ int parse_num_clients(uint16_t *num_clients, const char *clients);
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
+-void get_sec_stats_json(char *str, const char *running_stat,
++/* Get status of spp_nfv or spp_vm as JSON format. */
++void get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append port info to sec status, called from get_sec_stats_json(). */
++int append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append patch info to sec status, called from get_sec_stats_json(). */
++int append_patch_info_json(char *str,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
+diff --git a/src/vm/init.c b/src/vm/init.c
+index c222ed0..dd4353d 100644
+--- a/src/vm/init.c
++++ b/src/vm/init.c
+@@ -83,7 +83,7 @@ init(int argc, char *argv[])
+ 			rte_socket_id(), NO_FLAGS);
+ 		if (mz == NULL)
+ 			rte_exit(EXIT_FAILURE,
+-				"Cannot reserve memory zone for port information\n");
++				"Cannot reserve memzone for port info\n");
+ 		memset(mz->addr, 0, sizeof(*ports));
+ 	}
+ 	ports = mz->addr;
+diff --git a/src/vm/main.c b/src/vm/main.c
+index c32faaf..7aec126 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -399,11 +399,11 @@ parse_command(char *str)
+ 		RTE_LOG(DEBUG, APP, "status\n");
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+-			get_sec_stats_json(str, "running", ports_fwd_array,
+-					port_map);
++			get_sec_stats_json(str, client_id, "running",
++					ports_fwd_array, port_map);
+ 		else
+-			get_sec_stats_json(str, "idling", ports_fwd_array,
+-					port_map);
++			get_sec_stats_json(str, client_id, "idling",
++					ports_fwd_array, port_map);
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+ 		memset(str, '\0', MSG_SIZE);
+-- 
+2.7.4
+

@@ -1,0 +1,44 @@
+From 29f08c8b7a91c29f3b94a5f6755ef59e79b91382 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 18 Oct 2018 18:15:39 +0900
+Subject: [PATCH 0/5] Refactor SPP controller
+
+This series of patches is for misc updates of SPP controller.
+
+* Change the name of directory of dynamically loaded commands. It is
+  named as 'command', but ambiguous with 'commands' directory of
+  delegator classes. So its name is changed to 'plugins'.
+
+* Terminate SPP controller while launching if spp-ctl is not running
+  because spp-ctl must be required for requesting and it is no meaning
+  to run just SPP controller.
+
+* Move '.spp_history' to home directory to be referred from any of
+  directory.
+
+* Move to the definition of port types to 'spp_common.py'.
+
+* Remove SECONDARY_LIST in 'spp_common.py' because it is not used
+  anymore.
+
+Yasufumi Ogawa (5):
+  controller: change name of plugins directory
+  controller: exit controller if spp-ctl not running
+  controller: move spp_history to home directory
+  controller: move PORT_TYPES to spp_common
+  controller: remove SECONDARY_LIST
+
+ src/controller/commands/topo.py                 | 19 ++++++-------
+ src/controller/{command => plugins}/__init__.py |  0
+ src/controller/{command => plugins}/hello.py    |  0
+ src/controller/shell.py                         | 37 +++++++++++--------------
+ src/controller/spp.py                           | 14 ++++++++--
+ src/controller/spp_common.py                    | 10 +++----
+ src/controller/spp_ctl_client.py                |  6 ++++
+ 7 files changed, 47 insertions(+), 39 deletions(-)
+ rename src/controller/{command => plugins}/__init__.py (100%)
+ rename src/controller/{command => plugins}/hello.py (100%)
+
+-- 
+2.13.1
+

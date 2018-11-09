@@ -1,0 +1,175 @@
+X-Account-Key: account4
+X-UIDL: 000081a656a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 7C8E7400B10
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 7AA3823BB7D; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 7909123BAF6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 6590C138
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 4F0F8139
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/5] controller: exit controller if spp-ctl not running
+Date: Thu, 18 Oct 2018 19:05:36 +0900
+Message-Id: <20181018100539.75277-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+SPP controller expects spp-ctl is running, so it should notice a user
+while launching if it cannot access to spp-ctl. SPP controller already
+does notify, but not while launching.
+
+This update is to add 'is_server_running()' to SppCtlClient class to
+check if spp-ctl is running. It also fixes incorrect notify of SppTopo
+if it cannot access to spp-ctl.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/topo.py  | 19 +++++++++----------
+ src/controller/shell.py          |  6 ++----
+ src/controller/spp.py            | 13 ++++++++++---
+ src/controller/spp_ctl_client.py |  6 ++++++
+ 4 files changed, 27 insertions(+), 17 deletions(-)
+
+diff --git a/src/controller/commands/topo.py b/src/controller/commands/topo.py
+index 53cc8b5..e8afa4a 100644
+--- a/src/controller/commands/topo.py
++++ b/src/controller/commands/topo.py
+@@ -22,32 +22,31 @@ class SppTopo(object):
+ 
+     delim_node = '_'
+ 
+-    def __init__(self, spp_ctl_cli, sec_ids, subgraphs, size):
++    def __init__(self, spp_ctl_cli, subgraphs, size):
+         self.spp_ctl_cli = spp_ctl_cli
+-        self.sec_ids = sec_ids
+         self.subgraphs = subgraphs
+         self.graph_size = size
+ 
+-    def run(self, args):
++    def run(self, args, sec_ids):
+         args_ary = args.split()
+         if len(args_ary) == 0:
+             print("Usage: topo dst [ftype]")
+             return False
+         elif (args_ary[0] == "term") or (args_ary[0] == "http"):
+-            self.show(args_ary[0], self.graph_size)
++            self.show(args_ary[0], sec_ids, self.graph_size)
+         elif len(args_ary) == 1:
+             ftype = args_ary[0].split(".")[-1]
+-            self.output(args_ary[0], ftype)
++            self.output(args_ary[0], sec_ids, ftype)
+         elif len(args_ary) == 2:
+-            self.output(args_ary[0], args_ary[1])
++            self.output(args_ary[0], sec_ids, args_ary[1])
+         else:
+             print("Usage: topo dst [ftype]")
+ 
+-    def show(self, dtype, size):
++    def show(self, dtype, sec_ids, size):
+         res_ary = []
+         error_codes = self.spp_ctl_cli.rest_common_error_codes
+ 
+-        for sec_id in self.sec_ids:
++        for sec_id in sec_ids:
+             res = self.spp_ctl_cli.get('nfvs/%d' % sec_id)
+             if res.status_code == 200:
+                 res_ary.append(res.json())
+@@ -65,11 +64,11 @@ class SppTopo(object):
+         else:
+             print("Invalid file type")
+ 
+-    def output(self, fname, ftype="dot"):
++    def output(self, fname, sec_ids, ftype="dot"):
+         res_ary = []
+         error_codes = self.spp_ctl_cli.rest_common_error_codes
+ 
+-        for sec_id in self.sec_ids:
++        for sec_id in sec_ids:
+             res = self.spp_ctl_cli.get('nfvs/%d' % sec_id)
+             if res.status_code == 200:
+                 res_ary.append(res.json())
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 28ae86e..2c170e9 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -44,9 +44,7 @@ class Shell(cmd.Cmd, object):
+         self.spp_ctl_cli = spp_ctl_cli
+         self.spp_primary = pri.SppPrimary(self.spp_ctl_cli)
+         self.spp_secondary = sec.SppSecondary(self.spp_ctl_cli)
+-        self.spp_topo = topo.SppTopo(self.spp_ctl_cli,
+-                                     self.get_sec_ids('nfv'),
+-                                     {}, self.topo_size)
++        self.spp_topo = topo.SppTopo(self.spp_ctl_cli, {}, self.topo_size)
+         self.spp_bye = bye.SppBye(self.spp_ctl_cli, self.spp_primary,
+                                   self.spp_secondary)
+ 
+@@ -660,7 +658,7 @@ class Shell(cmd.Cmd, object):
+         spp > topo network_conf.js# text
+         """
+ 
+-        self.spp_topo.run(args)
++        self.spp_topo.run(args, self.get_sec_ids('nfv'))
+ 
+     def complete_topo(self, text, line, begidx, endidx):
+ 
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 6b0d99c..99cdda3 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -19,9 +19,16 @@ def main(argv):
+                         help='bind address, default=7777')
+     args = parser.parse_args()
+ 
+-    shell = Shell(spp_ctl_client.SppCtlClient(args.bind_addr, args.api_port))
+-    shell.cmdloop()
+-    shell = None
++    try:
++        spp_ctl_cli = spp_ctl_client.SppCtlClient(args.bind_addr, args.api_port)
++        if spp_ctl_cli.is_server_running() == False:
++            print('Is not spp-ctl running, nor correct IP address?')
++            exit()
++        shell = Shell(spp_ctl_cli)
++        shell.cmdloop()
++        shell = None
++    except Exception as e:
++        print(e)
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/src/controller/spp_ctl_client.py b/src/controller/spp_ctl_client.py
+index 8a88fa4..0f8687a 100644
+--- a/src/controller/spp_ctl_client.py
++++ b/src/controller/spp_ctl_client.py
+@@ -56,3 +56,9 @@ class SppCtlClient(object):
+     def delete(self, req):
+         url = '%s/%s' % (self.base_url, req)
+         return requests.delete(url)
++
++    def is_server_running(self):
++        if self.get('processes') is None:
++            return False
++        else:
++            return True
+-- 
+2.13.1
+
+

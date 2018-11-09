@@ -1,0 +1,73 @@
+From 85a90035ba4f162571b4ece3a96cc32d5b10e94b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 15 Oct 2018 00:15:50 +0900
+Subject: [PATCH 1/5] controller: change name of plugins directory
+
+Refactor directory name of command plugins from 'command' to 'plugins'
+because commands of not plugin are moved to 'commands' directory and
+the name of plugins is ambiguous from 'command'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/{command => plugins}/__init__.py |  0
+ src/controller/{command => plugins}/hello.py    |  0
+ src/controller/shell.py                         | 15 +++++++--------
+ 3 files changed, 7 insertions(+), 8 deletions(-)
+ rename src/controller/{command => plugins}/__init__.py (100%)
+ rename src/controller/{command => plugins}/hello.py (100%)
+
+diff --git a/src/controller/command/__init__.py b/src/controller/plugins/__init__.py
+similarity index 100%
+rename from src/controller/command/__init__.py
+rename to src/controller/plugins/__init__.py
+diff --git a/src/controller/command/hello.py b/src/controller/plugins/hello.py
+similarity index 100%
+rename from src/controller/command/hello.py
+rename to src/controller/plugins/hello.py
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index ec5f481..28ae86e 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -30,7 +30,7 @@ class Shell(cmd.Cmd, object):
+ 
+     HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+ 
+-    PLUGIN_DIR = 'command'
++    PLUGIN_DIR = 'plugins'
+     topo_size = '60%'
+ 
+     # setup history file
+@@ -669,24 +669,23 @@ class Shell(cmd.Cmd, object):
+     def do_load_cmd(self, args):
+         """Load command plugin.
+ 
+-        Path of plugin file is 'spp/src/controller/command'.
++        Path of plugin file is 'spp/src/controller/plugins'.
+ 
+-        spp > load hello
++        spp > load_cmd hello
+         """
+ 
+         args = re.sub(',', ' ', args)
+         args = re.sub(r'\s+', ' ', args)
+         list_args = args.split(' ')
+ 
+-        libdir = 'command'
++        libdir = self.PLUGIN_DIR
+         mod_name = list_args[0]
+         method_name = 'do_%s' % mod_name
+-        loaded = '%s.%s' % (libdir, mod_name)
+-        exec('import %s' % loaded)
+-        do_cmd = '%s.%s' % (loaded, method_name)
++        exec('from .%s import %s' % (libdir, mod_name))
++        do_cmd = '%s.%s' % (mod_name, method_name)
+         exec('Shell.%s = %s' % (method_name, do_cmd))
+ 
+-        print("Module '%s' loaded." % loaded)
++        print("Module '%s' loaded." % mod_name)
+ 
+     def complete_load_cmd(self, text, line, begidx, endidx):
+         """Complete command plugins
+-- 
+2.13.1
+

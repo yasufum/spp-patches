@@ -1,0 +1,127 @@
+X-Account-Key: account4
+X-UIDL: 0000807456a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2411A4006B8
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 22BFA23BB4D; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 21AE823BB43
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 0D9CB125;
+	Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id EBA50119;
+	Tue,  9 Oct 2018 19:54:10 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 5/6] spp_vm: correct error handling if patch cmd failed
+Date: Tue,  9 Oct 2018 19:53:59 +0900
+Message-Id: <20181009105400.42817-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Refactor of patch command in which find_port_id() is used. This update
+is to show an error message in log without terminating the process if
+patched port is not found.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 54 ++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 42 insertions(+), 12 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 2813fca..997db5b 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -402,6 +402,7 @@ do_add(char *res_uid)
+ 	return 0;
+ }
+ 
++/* Return -1 if exit command is called to terminate the process */
+ static int
+ parse_command(char *str)
+ {
+@@ -473,23 +474,52 @@ parse_command(char *str)
+ 			/* reset forward array*/
+ 			forward_array_reset();
+ 		} else {
+-			int in_port;
+-			int out_port;
++			uint16_t in_port;
++			uint16_t out_port;
+ 
+ 			if (max_token <= 2)
+ 				return 0;
+ 
+-			char *p_type;
+-			int p_id;
+-
+-			parse_resource_uid(token_list[1], &p_type, &p_id);
+-			in_port = find_port_id(p_id, get_port_type(p_type));
+-
+-			parse_resource_uid(token_list[2], &p_type, &p_id);
+-			out_port = find_port_id(p_id, get_port_type(p_type));
+-
+-			if (in_port < 0 || out_port < 0)
++			char *in_p_type;
++			char *out_p_type;
++			int in_p_id;
++			int out_p_id;
++
++			parse_resource_uid(token_list[1], &in_p_type, &in_p_id);
++			in_port = find_port_id(in_p_id,
++					get_port_type(in_p_type));
++
++			parse_resource_uid(token_list[2],
++					&out_p_type, &out_p_id);
++			out_port = find_port_id(out_p_id,
++					get_port_type(out_p_type));
++
++			if (in_port == PORT_RESET && out_port == PORT_RESET) {
++				char err_msg[128];
++				memset(err_msg, '\0', sizeof(err_msg));
++				sprintf(err_msg, "%s '%s:%d' and '%s:%d' %s",
++						"Failed to patch, both of",
++						in_p_type, in_p_id,
++						out_p_type, out_p_id,
++						"not found");
++				RTE_LOG(ERR, APP, "%s\n", err_msg);
++				return 0;
++			} else if (in_port == PORT_RESET) {
++				char err_msg[128];
++				memset(err_msg, '\0', sizeof(err_msg));
++				sprintf(err_msg, "%s '%s:%d' not found",
++						"Failed to patch, in_port",
++						in_p_type, in_p_id);
++				RTE_LOG(ERR, APP, "%s\n", err_msg);
+ 				return 0;
++			} else if (out_port == PORT_RESET) {
++				char err_msg[128];
++				memset(err_msg, '\0', sizeof(err_msg));
++				sprintf(err_msg, "%s '%s:%d' not found",
++						"Failed to patch, out_port",
++						out_p_type, out_p_id);
++				RTE_LOG(ERR, APP, "%s\n", err_msg);
++			}
+ 
+ 			add_patch(in_port, out_port);
+ 		}
+-- 
+2.7.4
+
+

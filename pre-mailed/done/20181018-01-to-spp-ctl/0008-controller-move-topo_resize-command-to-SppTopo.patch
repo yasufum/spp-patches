@@ -1,0 +1,114 @@
+From 36d4f3e0d98384e3dedfe93c1eb18421ba124705 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 14 Oct 2018 22:20:44 +0900
+Subject: [PATCH 8/9] controller: move topo_resize command to SppTopo
+
+Add graph size to SppTopo and change 'topo_resize' command to change
+this attiribute.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/topo.py | 23 +++++++++++++++++++----
+ src/controller/shell.py         | 18 +++---------------
+ 2 files changed, 22 insertions(+), 19 deletions(-)
+
+diff --git a/src/controller/commands/topo.py b/src/controller/commands/topo.py
+index fc22a98..53cc8b5 100644
+--- a/src/controller/commands/topo.py
++++ b/src/controller/commands/topo.py
+@@ -1,4 +1,3 @@
+-#!/usr/bin/env python
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+ 
+@@ -23,18 +22,19 @@ class SppTopo(object):
+ 
+     delim_node = '_'
+ 
+-    def __init__(self, spp_ctl_cli, sec_ids, subgraphs):
++    def __init__(self, spp_ctl_cli, sec_ids, subgraphs, size):
+         self.spp_ctl_cli = spp_ctl_cli
+         self.sec_ids = sec_ids
+         self.subgraphs = subgraphs
++        self.graph_size = size
+ 
+-    def run(self, args, topo_size):
++    def run(self, args):
+         args_ary = args.split()
+         if len(args_ary) == 0:
+             print("Usage: topo dst [ftype]")
+             return False
+         elif (args_ary[0] == "term") or (args_ary[0] == "http"):
+-            self.show(args_ary[0], topo_size)
++            self.show(args_ary[0], self.graph_size)
+         elif len(args_ary) == 1:
+             ftype = args_ary[0].split(".")[-1]
+             self.output(args_ary[0], ftype)
+@@ -320,6 +320,21 @@ class SppTopo(object):
+             topo_doc += "commands/experimental.html"
+             print("See '%s' for required packages." % topo_doc)
+ 
++    def resize_graph(self, args):
++        if args == '':
++            print(self.graph_size)
++        else:
++            if '%' in args:
++                self.graph_size = args
++                print(self.graph_size)
++            elif '.' in args:
++                ii = float(args) * 100
++                self.graph_size = str(ii) + '%'
++                print(self.graph_size)
++            else:  # TODO(yasufum) add check for no number
++                self.graph_size = str(float(args) * 100) + '%'
++                print(self.graph_size)
++
+     def format_sec_status(self, sec_id, stat):
+         """Return formatted secondary status as a hash
+ 
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 0f95447..bdc41fe 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -48,7 +48,7 @@ class Shell(cmd.Cmd, object):
+         self.spp_secondary = sec.SppSecondary(self.spp_ctl_cli)
+         self.spp_topo = topo.SppTopo(self.spp_ctl_cli,
+                                      self.get_sec_ids('nfv'),
+-                                     {})
++                                     {}, self.topo_size)
+ 
+     def default(self, line):
+         """Define defualt behaviour.
+@@ -664,19 +664,7 @@ class Shell(cmd.Cmd, object):
+ 
+         """
+ 
+-        if args == '':
+-            print(self.topo_size)
+-        else:
+-            if '%' in args:
+-                self.topo_size = args
+-                print(self.topo_size)
+-            elif '.' in args:
+-                ii = float(args) * 100
+-                self.topo_size = str(ii) + '%'
+-                print(self.topo_size)
+-            else:  # TODO(yasufum) add check for no number
+-                self.topo_size = str(float(args) * 100) + '%'
+-                print(self.topo_size)
++        self.spp_topo.resize_graph(args)
+ 
+     def do_topo(self, args):
+         """Output network topology.
+@@ -694,7 +682,7 @@ class Shell(cmd.Cmd, object):
+         spp > topo network_conf.js# text
+         """
+ 
+-        self.spp_topo.run(args, self.topo_size)
++        self.spp_topo.run(args)
+ 
+     def complete_topo(self, text, line, begidx, endidx):
+ 
+-- 
+2.13.1
+

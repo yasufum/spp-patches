@@ -1,0 +1,28 @@
+From ae05adf90bb2d0d0f83da0f60354c83373252bdc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 25 Oct 2018 15:52:12 +0900
+Subject: [PATCH 3/3] docs: correct inappropriate labels in spp_vf
+
+Fix inappropriate labels of command syntax in spp_vf.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/spp_vf.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/spp_vf.rst b/docs/guides/commands/spp_vf.rst
+index aa2b1f4..baa1e45 100644
+--- a/docs/guides/commands/spp_vf.rst
++++ b/docs/guides/commands/spp_vf.rst
+@@ -302,7 +302,7 @@ a table of classifier.
+     spp > vf SEC_ID; classifier_table add mac MAC_ADDR RES_UID
+ 
+     # delete entry
+-    spp > vf SEC_ID; classifier_table del mac [MAC_ADDRESS] [RES_ID]
++    spp > vf SEC_ID; classifier_table del mac MAC_ADDRESS RES_ID
+ 
+ This is an example to register MAC address ``52:54:00:01:00:01``
+ with port ``ring:0``.
+-- 
+2.13.1
+

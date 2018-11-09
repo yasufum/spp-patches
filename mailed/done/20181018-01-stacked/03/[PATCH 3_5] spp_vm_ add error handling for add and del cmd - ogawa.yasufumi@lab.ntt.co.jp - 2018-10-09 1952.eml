@@ -1,0 +1,109 @@
+X-Account-Key: account4
+X-UIDL: 0000806a56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 3DDB24006A0
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:52:18 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 3C66323BB4D; Tue,  9 Oct 2018 19:52:18 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 3B5EE23BB2D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:52:18 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 2842C125;
+	Tue,  9 Oct 2018 19:52:18 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 1B9EB119;
+	Tue,  9 Oct 2018 19:52:18 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/5] spp_vm: add error handling for add and del cmd
+Date: Tue,  9 Oct 2018 19:52:05 +0900
+Message-Id: <20181009105207.42636-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009105207.42636-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009105207.42636-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add error handling in do_add() and do_del() to avoid segmentation fault
+caused if parse_resource_uid() is falied.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 7aec126..55592df 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -230,8 +230,11 @@ do_del(char *res_uid)
+ 	int port_id = PORT_RESET;
+ 	char *p_type;
+ 	int p_id;
++	int res;
+ 
+-	parse_resource_uid(res_uid, &p_type, &p_id);
++	res = parse_resource_uid(res_uid, &p_type, &p_id);
++	if (res < 0)
++		return -1;
+ 
+ 	if (!strcmp(p_type, "ring")) {
+ 		char name[RTE_ETH_NAME_MAX_LEN];
+@@ -349,11 +352,13 @@ do_add(char *res_uid)
+ {
+ 	enum port_type type = UNDEF;
+ 	int port_id = PORT_RESET;
+-
+ 	char *p_type;
+ 	int p_id;
++	int res;
+ 
+-	parse_resource_uid(res_uid, &p_type, &p_id);
++	res = parse_resource_uid(res_uid, &p_type, &p_id);
++	if (res < 0)
++		return -1;
+ 
+ 	if (!strcmp(p_type, "ring")) {
+ 		type = RING;
+@@ -430,8 +435,9 @@ parse_command(char *str)
+ 		cmd = FORWARD;
+ 
+ 	} else if (strncmp(token_list[0], "add", 3) == 0) {
+-		RTE_LOG(DEBUG, APP, "add\n");
+-		do_add(token_list[1]);
++		RTE_LOG(DEBUG, APP, "Received add command\n");
++		if (do_add(token_list[1]) < 0)
++			RTE_LOG(ERR, APP, "Failed to do_add()\n");
+ 
+ 	} else if (!strcmp(token_list[0], "patch")) {
+ 		RTE_LOG(DEBUG, APP, "patch\n");
+@@ -464,10 +470,12 @@ parse_command(char *str)
+ 			add_patch(in_port, out_port);
+ 		}
+ 	} else if (strncmp(str, "del", 3) == 0) {
+-		RTE_LOG(DEBUG, APP, "del\n");
++		RTE_LOG(DEBUG, APP, "Received del command\n");
+ 
+ 		cmd = STOP;
+-		do_del(token_list[1]);
++
++		if (do_del(token_list[1]) < 0)
++			RTE_LOG(ERR, APP, "Failed to do_del()\n");
+ 	}
+ 
+ 	return ret;
+-- 
+2.7.4
+
+

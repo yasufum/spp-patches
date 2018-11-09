@@ -1,0 +1,43 @@
+From 4e15a72104b92ec2d23262ad23645df511750d40 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 25 Oct 2018 10:01:52 +0900
+Subject: [PATCH 5/5] docs: remove exit from pri command
+
+Update command reference for removing `exit` sub command of `pri` which
+is not recommended to use.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index e49f990..590461f 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -24,22 +24,6 @@ Show forwarding statistics of each of ports.
+        1        9208        9203           0           5
+        ...
+ 
+-exit
+-----
+-
+-Terminate primary process.
+-
+-.. code-block:: console
+-
+-    spp > pri; exit
+-
+-.. note::
+-
+-    You should not use this command if one or more secondary processes
+-    are still running because terminating primary before secondaries may
+-    cause an error. You shold use ``bye`` command instead of
+-    ``pri; exit``.
+-
+ clear
+ -----
+ 
+-- 
+2.7.4
+

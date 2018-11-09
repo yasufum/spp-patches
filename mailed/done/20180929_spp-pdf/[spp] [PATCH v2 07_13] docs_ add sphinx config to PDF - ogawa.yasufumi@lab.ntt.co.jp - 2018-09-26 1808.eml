@@ -1,0 +1,101 @@
+X-Account-Key: account3
+X-UIDL: 12045.NCr4coyjpsz0iWFPMGsF4zAvhPs=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw003.ocn.ad.jp (LHLO md-lpx-nw003) (153.138.217.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:50 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-nw003 with LMTP id 6H74MRpNq1sqFgAABYl6EA
+	; Wed, 26 Sep 2018 18:10:50 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id C592F3C005004
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 70B939C027D
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id F02961B125;
+	Wed, 26 Sep 2018 11:10:49 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 2E3491B111
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:47 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9AkBO006969;
+ Wed, 26 Sep 2018 18:10:46 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 49BE9140;
+ Wed, 26 Sep 2018 18:10:46 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 33D84110;
+ Wed, 26 Sep 2018 18:10:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:35 +0900
+Message-Id: <1537952921-20397-8-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 07/13] docs: add sphinx config to PDF
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To activate compile of PDF document, add attributes for latex
+to 'conf.py' of sphinx.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/conf.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/conf.py b/docs/guides/conf.py
+index 8b78931..1d340b8 100644
+--- a/docs/guides/conf.py
++++ b/docs/guides/conf.py
+@@ -124,11 +124,12 @@ htmlhelp_basename = 'SoftPatchPaneldoc'
+ latex_elements = {
+     # The paper size ('letterpaper' or 'a4paper').
+     #
+-    # 'papersize': 'letterpaper',
++    'papersize': 'letterpaper',
++    # 'papersize': 'a4paper',
+ 
+     # The font size ('10pt', '11pt' or '12pt').
+     #
+-    # 'pointsize': '10pt',
++    'pointsize': '11pt',
+ 
+     # Additional stuff for the LaTeX preamble.
+     #
+@@ -136,7 +137,7 @@ latex_elements = {
+ 
+     # Latex figure (float) alignment
+     #
+-    # 'figure_align': 'htbp',
++    'figure_align': 'htbp',
+ }
+ 
+ # Grouping the document tree into LaTeX files. List of tuples
+-- 
+2.7.4
+
+

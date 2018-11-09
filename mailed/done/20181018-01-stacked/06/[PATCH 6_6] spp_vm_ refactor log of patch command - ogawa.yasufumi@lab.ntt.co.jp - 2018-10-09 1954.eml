@@ -1,0 +1,131 @@
+X-Account-Key: account4
+X-UIDL: 0000807556a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id CEEFE40030D
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id CD98E23BB4D; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id CC8E623BB43
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id B884E125;
+	Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id A2241119;
+	Tue,  9 Oct 2018 19:54:11 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 6/6] spp_vm: refactor log of patch command
+Date: Tue,  9 Oct 2018 19:54:00 +0900
+Message-Id: <20181009105400.42817-7-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009105400.42817-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To describe the result of patch command correctly, refactor log message.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 997db5b..1d7d83a 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -260,17 +260,19 @@ do_del(char *res_uid)
+ 	return 0;
+ }
+ 
++/* Return 0 if invalid */
+ static int
+-is_valid_port(int port_id)
++is_valid_port(uint16_t port_id)
+ {
+-	if (port_id < 0 || port_id > RTE_MAX_ETHPORTS)
++	if (port_id > RTE_MAX_ETHPORTS)
+ 		return 0;
+ 
+ 	return port_map[port_id].id != PORT_RESET;
+ }
+ 
++/* Return -1 as an error if given patch is invalid */
+ static int
+-add_patch(int in_port, int out_port)
++add_patch(uint16_t in_port, uint16_t out_port)
+ {
+ 	if (!is_valid_port(in_port) || !is_valid_port(out_port))
+ 		return -1;
+@@ -497,31 +499,35 @@ parse_command(char *str)
+ 			if (in_port == PORT_RESET && out_port == PORT_RESET) {
+ 				char err_msg[128];
+ 				memset(err_msg, '\0', sizeof(err_msg));
+-				sprintf(err_msg, "%s '%s:%d' and '%s:%d' %s",
+-						"Failed to patch, both of",
++				sprintf(err_msg, "%s '%s:%d' and '%s:%d'",
++						"Patch not found, both of",
+ 						in_p_type, in_p_id,
+-						out_p_type, out_p_id,
+-						"not found");
++						out_p_type, out_p_id);
+ 				RTE_LOG(ERR, APP, "%s\n", err_msg);
+-				return 0;
+ 			} else if (in_port == PORT_RESET) {
+ 				char err_msg[128];
+ 				memset(err_msg, '\0', sizeof(err_msg));
+-				sprintf(err_msg, "%s '%s:%d' not found",
+-						"Failed to patch, in_port",
++				sprintf(err_msg, "%s '%s:%d'",
++						"Patch not found, in_port",
+ 						in_p_type, in_p_id);
+ 				RTE_LOG(ERR, APP, "%s\n", err_msg);
+-				return 0;
+ 			} else if (out_port == PORT_RESET) {
+ 				char err_msg[128];
+ 				memset(err_msg, '\0', sizeof(err_msg));
+-				sprintf(err_msg, "%s '%s:%d' not found",
+-						"Failed to patch, out_port",
++				sprintf(err_msg, "%s '%s:%d'",
++						"Patch not found, out_port",
+ 						out_p_type, out_p_id);
+ 				RTE_LOG(ERR, APP, "%s\n", err_msg);
+ 			}
+ 
+-			add_patch(in_port, out_port);
++			if (add_patch(in_port, out_port) == 0)
++				RTE_LOG(INFO, APP,
++					"Patched '%s:%d' and '%s:%d'\n",
++					in_p_type, in_p_id,
++					out_p_type, out_p_id);
++			else
++				RTE_LOG(ERR, APP, "Failed to patch\n");
++			ret = 0;
+ 		}
+ 	} else if (strncmp(str, "del", 3) == 0) {
+ 		RTE_LOG(DEBUG, APP, "Received del command\n");
+@@ -646,7 +652,7 @@ main(int argc, char *argv[])
+ 		RTE_LOG(DEBUG, APP, "Received string: %s\n", str);
+ 
+ 		ret = parse_command(str);
+-		if (ret < 0)
++		if (ret < 0)  /* terminate process if exit is called */
+ 			break;
+ 
+ 		/*Send the message back to client*/
+-- 
+2.7.4
+
+

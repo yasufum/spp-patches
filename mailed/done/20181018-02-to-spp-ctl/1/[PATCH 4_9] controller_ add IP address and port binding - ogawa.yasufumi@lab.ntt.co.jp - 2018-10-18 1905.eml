@@ -1,0 +1,117 @@
+X-Account-Key: account4
+X-UIDL: 0000819e56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id BF232400860
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id BD17123BB55; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id BC16223BAF6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id AA2B0244
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 8C51C12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/9] controller: add IP address and port binding
+Date: Thu, 18 Oct 2018 19:05:13 +0900
+Message-Id: <20181018100518.75224-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100518.75224-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100518.75224-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add IP address and port support for connecting spp-ctl. IP address
+option is '-b' or '--bind-addr', and port is '-a' or '--api-port'.
+
+  $ python src/spp.py -b 192.168.1.10 -a 7777
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py          | 5 ++---
+ src/controller/spp.py            | 7 ++++++-
+ src/controller/spp_ctl_client.py | 4 +---
+ 3 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 1363fc5..f1c9ccd 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -10,7 +10,6 @@ import re
+ import readline
+ from .shell_lib import common
+ from . import spp_common
+-from . import spp_ctl_client
+ from .spp_common import logger
+ import subprocess
+ from . import topo
+@@ -47,9 +46,9 @@ class Shell(cmd.Cmd, object):
+     else:
+         readline.write_history_file(hist_file)
+ 
+-    def __init__(self):
++    def __init__(self, spp_ctl_cli):
+         cmd.Cmd.__init__(self)
+-        self.spp_ctl_cli = spp_ctl_client.SppCtlClient()
++        self.spp_ctl_cli = spp_ctl_cli
+ 
+     def default(self, line):
+         """Define defualt behaviour.
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 373bb93..6b0d99c 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -6,15 +6,20 @@ from __future__ import absolute_import
+ 
+ import argparse
+ from .shell import Shell
++from . import spp_ctl_client
+ import sys
+ 
+ 
+ def main(argv):
+ 
+     parser = argparse.ArgumentParser(description="SPP Controller")
++    parser.add_argument('-b', '--bind-addr', type=str, default='127.0.0.1',
++                        help='bind address, default=127.0.0.1')
++    parser.add_argument('-a', '--api-port', type=int, default=7777,
++                        help='bind address, default=7777')
+     args = parser.parse_args()
+ 
+-    shell = Shell()
++    shell = Shell(spp_ctl_client.SppCtlClient(args.bind_addr, args.api_port))
+     shell.cmdloop()
+     shell = None
+ 
+diff --git a/src/controller/spp_ctl_client.py b/src/controller/spp_ctl_client.py
+index 6de1ae4..a1d6d93 100644
+--- a/src/controller/spp_ctl_client.py
++++ b/src/controller/spp_ctl_client.py
+@@ -7,10 +7,8 @@ import requests
+ 
+ class SppCtlClient(object):
+ 
+-    def __init__(self):
++    def __init__(self, ip_addr='localhost', port=7777):
+         api_ver = 'v1'
+-        ip_addr = '127.0.0.1'
+-        port = 7777
+         self.base_url = 'http://%s:%d/%s' % (ip_addr, port, api_ver)
+ 
+     def request_handler(func):
+-- 
+2.13.1
+
+

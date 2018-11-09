@@ -1,0 +1,64 @@
+From 02562ee982b90d901b1d87685de8817f3570063b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 11 Sep 2018 05:26:02 +0900
+Subject: [PATCH 7/8] tools/sppc: add paths to Dockerfiles of pktgen
+
+If you clone a custom pktgenrepo and its directory name is not
+'pktgen-dpdk',
+you failed to launch an appcontainer script because the scripts does
+not know the name of custom repo and cannot find executable.
+
+To be found the executable in container, this patch adds PATH entries
+of the executables of custom repo to Dockerfile. By this change.
+appcontainer can find the executables without the custom repo's name
+while launching appcontainer.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04  | 2 ++
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 2 ++
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+index dc2c503..dac5a2a 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 31632e4..6a0640d 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index fa4b8fb..3f0508d 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+-- 
+2.7.4
+

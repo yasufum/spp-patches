@@ -1,0 +1,1273 @@
+X-Account-Key: account4
+X-UIDL: 00007fd656a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id DA4E6400234
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id D4D9223BB23; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-imss01.ecl.ntt.co.jp (bcmv-imss01.ecl.ntt.co.jp [129.60.83.122])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id D219C23BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcmv-imss01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id B015B12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcma-spm01.ecl.ntt.co.jp (bcma-spm01.ecl.ntt.co.jp [129.60.253.41])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id A3E9FB1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Authentication-Results: bcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3A5CqnsxAIkQRnQlqTsETwUyQJPHJ1kqjoPgMT9p?=
+ =?us-ascii?q?ssgq5PdaLmxZn5IUjD/qw11w3DVoDSrulcjrKP9a3rXSoG/YrHu3dEcoQfHw?=
+ =?us-ascii?q?Qdh5AwmAotSNWAFVW9NOTjOis2FexcXVtk+Wyrd0NSXsTmNBXJunPnyzkUF1?=
+ =?us-ascii?q?3kMBZtYOH8G4rclcOygue+8rXNagFJgietJ7h1aheu9F+DjMQdjIp8J6p08S?=
+ =?us-ascii?q?Pn+CoQKcJRw24gZViYmh+5/d+1pMcl/i9U/fQ964hLVuP4Z/ZwS7sQFzkgP2?=
+ =?us-ascii?q?0vga+j/RDeUQuC4GcdWWQKg1JJBQbC9hTzQpb2tGPzqON83CCQOcC+Q6ozXH?=
+ =?us-ascii?q?yu6KJiSRmgjyliVXZx923eotJ5iKNdvQLnrBs5wZaVKICZOfxif7/MKMsATD?=
+ =?us-ascii?q?kJVcJQWipdR4KkOtFWV6xYZ7Ye/tG7/gddyHn2TROhD+7u1DJS03X92KR/yP?=
+ =?us-ascii?q?wkSViA0QckWdQSrDLfq5P3LPR3M6j9wa/WwDHEd/4T1y367d2CdRwoie+FWb?=
+ =?us-ascii?q?N2bNqXwk5pFRuP3TDy4cT1eiiY0OgAqT3R6OZpffymj28hthE3qT/pxN9m2c?=
+ =?us-ascii?q?HZw4kSzF7D7yBwxo04cMa5REBMesK+EZBM7nvIDYZ9T8I8Tm0tgx4UkOxb67?=
+ =?us-ascii?q?i8eiVCiJ4swheacOSCK9HO7xnnEuCNPXFzgzRnYOD3gRH66kWmxuDmM6v8mF?=
+ =?us-ascii?q?9XsipIlMXNvXERxlTS7MaAUP504kam336GyQnS7uhOJU18m7DcLtYtxbs5l5?=
+ =?us-ascii?q?xbtkqmfGe+n0n/pLGfckQi5/ju4OOhYK2n7p6QOoloix3vZ6Enm8ixG+M9YW?=
+ =?us-ascii?q?1sFyCQ/eWx0qGm/FWsGuwSyKRswu+I6NaDeZdTvKOyDg5L35x24R26BnK9yN?=
+ =?us-ascii?q?FAxD8KJ1YDfg6byYPufVPWc5WaRb+yhUqhlDBzyrXIJLrkV9/KInHrjr7lfL?=
+ =?us-ascii?q?Bg+whXz0wx1ZoMgvAcQqFEO//1VkLr4ZbfAhYRLQWwwuD6GJN20cUcQSjcSr?=
+ =?us-ascii?q?/cO6TUv1iS4+spKOTZf44ZtgHmN+Ik7OK33C0J3GQFdKzs5qM5LXWxH/BoOU?=
+ =?us-ascii?q?KcOCe+nN4FEGEXrkw1S6rokA/aCGIBVzOJR6s5owoDJse+F46aG9KzibiA2j?=
+ =?us-ascii?q?qrWJZRIGJeWAiB?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0CRAACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUwUBAQsBggJpbQMECyiMaI1QgnaQXoMKFIFmMAgBgyZFVQKERAYyCw0?=
+ =?us-ascii?q?BAwEBAgEBAQFtKIU6BhoBMT0eAjElBysHEoMhAYF8BBClXIN7MAGEAoFkhw6?=
+ =?us-ascii?q?BWoJbggCBEYQ7GQGBQA6BVz0GhQoiAoZWB4F4hUZxjlAJhkqJayKPb45LiGA?=
+ =?us-ascii?q?KJ4FVhCwJgimOMjAwAXgBAQEBjWoBAQ?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by bcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 04A22240CDD; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 11/14] docs: add request examples of spp-ctl
+Date: Fri,  5 Oct 2018 12:57:54 +0900
+Message-Id: <20181005035757.23122-12-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: No
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add request examples of spp-ctl using curl command.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 887 ++++++++++++++------------
+ 1 file changed, 465 insertions(+), 422 deletions(-)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 4d2a641..285526e 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -51,6 +51,14 @@ Show the SPP processes connected to the ``spp-ctl``.
+ 
+ * Normarl response codes: 200
+ 
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/processes
++
+ Response
+ ^^^^^^^^
+ 
+@@ -86,13 +94,59 @@ Response example
+     ]
+ 
+ 
+-API for spp_vf
+-==============
++API for spp_primary
++===================
+ 
+-GET /v1/vfs/{client_id}
+------------------------
++GET /v1/primary/status
++----------------------
+ 
+-Get the information of the ``spp_vf`` process.
++Show statistical information.
++
++* Normal response codes: 200
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/primary/status
++
++Response
++^^^^^^^^
++
++There is no data at the moment. The statistical information will be returned
++when ``spp_primary`` implements it.
++
++
++DELETE /v1/primary/status
++-------------------------
++
++Clear statistical information.
++
++* Normal response codes: 204
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X DELETE -H 'application/json' \
++    http://127.0.0.1:7777/v1/primary/status
++
++Response
++^^^^^^^^
++
++There is no body content for the response of a successful ``PUT`` request.
++
++
++API for spp_nfv/spp_vm
++======================
++
++GET /v1/nfvs/{client_id}
++------------------------
++
++Get the information of the ``spp_nfv`` or ``spp_vm`` process.
+ 
+ * Normal response codes: 200
+ * Error response codes: 400, 404
+@@ -106,70 +160,38 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
+-Response
+-^^^^^^^^
+-
+-+------------------+---------+-----------------------------------------------+
+-| Name             | Type    | Description                                   |
+-+==================+=========+===============================================+
+-| client-id        | integer | client id.                                    |
+-+------------------+---------+-----------------------------------------------+
+-| ports            | array   | an array of port ids used by the process.     |
+-+------------------+---------+-----------------------------------------------+
+-| components       | array   | an array of component objects in the process. |
+-+------------------+---------+-----------------------------------------------+
+-| classifier_table | array   | an array of classifier tables in the process. |
+-+------------------+---------+-----------------------------------------------+
+-
+-component object:
+-
+-+---------+---------+---------------------------------------------------------------------+
+-| Name    | Type    | Description                                                         |
+-+=========+=========+=====================================================================+
+-| core    | integer | core id running on the component                                    |
+-+---------+---------+---------------------------------------------------------------------+
+-| name    | string  | an array of port ids used by the process.                           |
+-+---------+---------+---------------------------------------------------------------------+
+-| type    | string  | an array of component objects in the process.                       |
+-+---------+---------+---------------------------------------------------------------------+
+-| rx_port | array   | an array of port objects connected to the rx side of the component. |
+-+---------+---------+---------------------------------------------------------------------+
+-| tx_port | array   | an array of port objects connected to the tx side of the component. |
+-+---------+---------+---------------------------------------------------------------------+
++Request example
++^^^^^^^^^^^^^^^
+ 
+-port object:
++.. code-block:: console
+ 
+-+---------+---------+---------------------------------------------------------------+
+-| Name    | Type    | Description                                                   |
+-+=========+=========+===============================================================+
+-| port    | string  | port id. port id is the form {interface_type}:{interface_id}. |
+-+---------+---------+---------------------------------------------------------------+
+-| vlan    | object  | vlan operation which is applied to the port.                  |
+-+---------+---------+---------------------------------------------------------------+
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/nfvs/1
+ 
+-vlan object:
++Response
++^^^^^^^^
+ 
+-+-----------+---------+-------------------------------+
+-| Name      | Type    | Description                   |
+-+===========+=========+===============================+
+-| operation | string  | ``add``, ``del`` or ``none``. |
+-+-----------+---------+-------------------------------+
+-| id        | integer | vlan id.                      |
+-+-----------+---------+-------------------------------+
+-| pcp       | integer | vlan pcp.                     |
+-+-----------+---------+-------------------------------+
+++-----------+---------+-------------------------------------------+
++| Name      | Type    | Description                               |
+++===========+=========+===========================================+
++| client-id | integer | client id.                                |
+++-----------+---------+-------------------------------------------+
++| status    | string  | ``Running`` or ``Idle``.                  |
+++-----------+---------+-------------------------------------------+
++| ports     | array   | an array of port ids used by the process. |
+++-----------+---------+-------------------------------------------+
++| patches   | array   | an array of patches.                      |
+++-----------+---------+-------------------------------------------+
+ 
+-classifier table:
++patch objest
+ 
+-+-----------+--------+------------------------------------------------------------+
+-| Name      | Type   | Description                                                |
+-+===========+========+============================================================+
+-| type      | string | ``mac`` or ``vlan``.                                       |
+-+-----------+--------+------------------------------------------------------------+
+-| value     | string | mac_address for ``mac``, vlan_id/mac_address for ``vlan``. |
+-+-----------+--------+------------------------------------------------------------+
+-| port      | string | port id applied to classify.                               |
+-+-----------+--------+------------------------------------------------------------+
+++------+--------+----------------------+
++| Name | Type   | Description          |
+++======+========+======================+
++| src  | string | source port id.      |
+++------+--------+----------------------+
++| dst  | string | destination port id. |
+++------+--------+----------------------+
+ 
+ Response example
+ ^^^^^^^^^^^^^^^^
+@@ -178,106 +200,20 @@ Response example
+ 
+     {
+       "client-id": 1,
++      "status": "Running",
+       "ports": [
+         "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1", "ring:2", "ring:3"
+       ],
+-      "components": [
+-        {
+-          "core": 2,
+-          "name": "forward_0_tx",
+-          "type": "forward",
+-          "rx_port": [
+-            {
+-            "port": "ring:0",
+-            "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ],
+-          "tx_port": [
+-            {
+-              "port": "vhost:0",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ]
+-        },
+-        {
+-          "core": 3,
+-          "type": "unuse"
+-        },
+-        {
+-          "core": 4,
+-          "type": "unuse"
+-        },
+-        {
+-          "core": 5,
+-          "name": "forward_1_rx",
+-          "type": "forward",
+-          "rx_port": [
+-            {
+-            "port": "vhost:1",
+-            "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ],
+-          "tx_port": [
+-            {
+-              "port": "ring:3",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ]
+-        },
+-        {
+-          "core": 6,
+-          "name": "classifier",
+-          "type": "classifier_mac",
+-          "rx_port": [
+-            {
+-              "port": "phy:0",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ],
+-          "tx_port": [
+-            {
+-              "port": "ring:0",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            },
+-            {
+-              "port": "ring:2",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ]
+-        },
++      "patches": [
+         {
+-          "core": 7,
+-          "name": "merger",
+-          "type": "merge",
+-          "rx_port": [
+-            {
+-              "port": "ring:1",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            },
+-            {
+-              "port": "ring:3",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ],
+-          "tx_port": [
+-            {
+-              "port": "phy:0",
+-              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
+-            }
+-          ]
++          "src": "vhost:0", "dst": "ring:0"
+         },
+-      ],
+-      "classifier_table": [
+         {
+-          "type": "mac",
+-          "value": "FA:16:3E:7D:CC:35",
+-          "port": "ring:0"
++          "src": "ring:1", "dst": "vhost:1"
+         }
+       ]
+     }
+ 
+-The component which type is ``unused`` is to indicate unused core.
+-
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -286,10 +222,10 @@ Equivalent CLI command
+     sec {client_id};status
+ 
+ 
+-POST /v1/vfs/{client_id}/components
+------------------------------------
++PUT /v1/nfvs/{client_id}/forward
++--------------------------------
+ 
+-Start the component.
++Start or Stop forwarding.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -303,80 +239,99 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
+-
+-Request(body)
+-^^^^^^^^^^^^^
+-
+-+-----------+---------+----------------------------------------------------------------------+
+-| Name      | Type    | Description                                                          |
+-+===========+=========+======================================================================+
+-| name      | string  | component name. must be unique in the process.                       |
+-+-----------+---------+----------------------------------------------------------------------+
+-| core      | integer | core id.                                                             |
+-+-----------+---------+----------------------------------------------------------------------+
+-| type      | string  | component type. one of ``forward``, ``merge`` or ``classifier_mac``. |
+-+-----------+---------+----------------------------------------------------------------------+
+-
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: console
+ 
+-    {
+-      "name": "forwarder1",
+-      "core": 12,
+-      "type": "forward"
+-    }
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "start"}' \
++    http://127.0.0.1:7777/v1/nfvs/1/forward
++
++Request(body)
++^^^^^^^^^^^^^
++
+++--------+--------+------------------------+
++| Name   | Type   | Description            |
+++========+========+========================+
++| action | string | ``start`` or ``stop``. |
+++--------+--------+------------------------+
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no body content for the response of a successful ``POST`` request.
++There is no body content for the response of a successful ``PUT`` request.
+ 
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++action is ``start``
+ 
+-    sec {client_id};component start {name} {core} {type}
++.. code-block:: yaml
+ 
++    sec {client_id};forward
+ 
+-DELETE /v1/vfs/{sec id}/components/{name}
+------------------------------------------
++action is ``stop``
+ 
+-Stop the component.
++.. code-block:: yaml
++
++    sec {client_id};stop
++
++
++PUT /v1/nfvs/{client_id}/ports
++------------------------------
++
++Add or Delete port.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+ 
+-Request(path)
+-^^^^^^^^^^^^^
++Request(path)
++^^^^^^^^^^^^^
++
+++-----------+---------+-------------+
++| Name      | Type    | Description |
+++===========+=========+=============+
++| client_id | integer | client id.  |
+++-----------+---------+-------------+
++
++Request(body)
++^^^^^^^^^^^^^
++
+++--------+--------+---------------------------------------------------------------+
++| Name   | Type   | Description                                                   |
+++========+========+===============================================================+
++| action | string | ``add`` or ``del``.                                           |
+++--------+--------+---------------------------------------------------------------+
++| port   | string | port id. port id is the form {interface_type}:{interface_id}. |
+++--------+--------+---------------------------------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
+ 
+-+-----------+---------+-----------------+
+-| Name      | Type    | Description     |
+-+===========+=========+=================+
+-| client_id | integer | client id.      |
+-+-----------+---------+-----------------+
+-| name      | string  | component name. |
+-+-----------+---------+-----------------+
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "add", "port": "ring:0"}' \
++    http://127.0.0.1:7777/v1/nfvs/1/ports
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no body content for the response of a successful ``POST`` request.
++There is no body content for the response of a successful ``PUT`` request.
+ 
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+ .. code-block:: console
+ 
+-    sec {client_id};component stop {name}
++    sec {client_id};{action} {interface_type} {interface_id}
+ 
+ 
+-PUT /v1/vfs/{client_id}/components/{name}/ports
+------------------------------------------------
++PUT /v1/nfvs/{client_id}/patches
++--------------------------------
+ 
+-Add or Delete port to the component.
++Add a patch.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -384,92 +339,49 @@ Add or Delete port to the component.
+ Request(path)
+ ^^^^^^^^^^^^^
+ 
+-+-----------+---------+-----------------+
+-| Name      | Type    | Description     |
+-+===========+=========+=================+
+-| client_id | integer | client id.      |
+-+-----------+---------+-----------------+
+-| name      | string  | component name. |
+-+-----------+---------+-----------------+
+++-----------+---------+-------------+
++| Name      | Type    | Description |
+++===========+=========+=============+
++| client_id | integer | client id.  |
+++-----------+---------+-------------+
+ 
+ Request(body)
+ ^^^^^^^^^^^^^
+ 
+-+---------+---------+-----------------------------------------------------------------+
+-| Name    | Type    | Description                                                     |
+-+=========+=========+=================================================================+
+-| action  | string  | ``attach`` or ``detach``.                                       |
+-+---------+---------+-----------------------------------------------------------------+
+-| port    | string  | port id. port id is the form {interface_type}:{interface_id}.   |
+-+---------+---------+-----------------------------------------------------------------+
+-| dir     | string  | ``rx`` or ``tx``.                                               |
+-+---------+---------+-----------------------------------------------------------------+
+-| vlan    | object  | vlan operation which is applied to the port. it can be omitted. |
+-+---------+---------+-----------------------------------------------------------------+
+-
+-vlan object:
+-
+-+-----------+---------+----------------------------------------------------------+
+-| Name      | Type    | Description                                              |
+-+===========+=========+==========================================================+
+-| operation | string  | ``add``, ``del`` or ``none``.                            |
+-+-----------+---------+----------------------------------------------------------+
+-| id        | integer | vlan id. ignored when operation is ``del`` or ``none``.  |
+-+-----------+---------+----------------------------------------------------------+
+-| pcp       | integer | vlan pcp. ignored when operation is ``del`` or ``none``. |
+-+-----------+---------+----------------------------------------------------------+
+++------+--------+----------------------+
++| Name | Type   | Description          |
+++======+========+======================+
++| src  | string | source port id.      |
+++------+--------+----------------------+
++| dst  | string | destination port id. |
+++------+--------+----------------------+
+ 
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
+-
+-    {
+-      "action": "attach",
+-      "port": "vhost:1",
+-      "dir": "rx",
+-      "vlan": {
+-        "operation": "add",
+-        "id": 677,
+-        "pcp": 0
+-      }
+-    }
+-
+-.. code-block:: yaml
+-
+-    {
+-      "action": "detach",
+-      "port": "vhost:0",
+-      "dir": "tx"
+-    }
++.. code-block:: console
+ 
++    curl -X PUT -H 'application/json' \
++    -d '{"src": "ring:0", "dst": "ring:1"}' \
++    http://127.0.0.1:7777/v1/nfvs/1/patches
+ 
+ Response
+ ^^^^^^^^
+ 
+ There is no body content for the response of a successful ``PUT`` request.
+ 
+-
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-action is ``attach``
+-
+-.. code-block:: console
+-
+-    sec {client_id};port add {port} {dir} {name} [add_vlantag {id} {pcp} | del_vlantag]
+-
+-action is ``detach``
+-
+ .. code-block:: console
+ 
+-    sec {client_id};port del {port} {dir} {name}
++    sec {client_id};patch {src} {dst}
+ 
+ 
+-PUT /v1/vfs/{sec id}/classifier_table
+--------------------------------------
++DELETE /v1/nfvs/{client_id}/patches
++-----------------------------------
+ 
+-Set or Unset classifier table.
++Reset patches.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -483,74 +395,34 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
+-Request(body)
+-^^^^^^^^^^^^^
+-
+-+-------------+-----------------+----------------------------------------------------+
+-| Name        | Type            | Description                                        |
+-+=============+=================+====================================================+
+-| action      | string          | ``add`` or ``del``.                                |
+-+-------------+-----------------+----------------------------------------------------+
+-| type        | string          | ``mac`` or ``vlan``.                               |
+-+-------------+-----------------+----------------------------------------------------+
+-| vlan        | integer or null | vlan id for ``vlan``. null or omitted for ``mac``. |
+-+-------------+-----------------+----------------------------------------------------+
+-| mac_address | string          | mac address.                                       |
+-+-------------+-----------------+----------------------------------------------------+
+-| port        | string          | port id.                                           |
+-+-------------+-----------------+----------------------------------------------------+
+-
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
+-
+-    {
+-      "action": "add",
+-      "type": "mac",
+-      "mac_address": "FA:16:3E:7D:CC:35",
+-      "port": "ring:0"
+-    }
+-
+-.. code-block:: yaml
+-
+-    {
+-      "action": "del",
+-      "type": "vlan",
+-      "vlan": 475,
+-      "mac_address": "FA:16:3E:7D:CC:35",
+-      "port": "ring:0"
+-    }
++.. code-block:: console
+ 
++    curl -X DELETE -H 'application/json' \
++    http://127.0.0.1:7777/v1/nfvs/1/patches
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no body content for the response of a successful ``PUT`` request.
++There is no body content for the response of a successful ``DELETE`` request.
+ 
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-type is ``mac``
+-
+-.. code-block:: console
+-
+-    classifier_table {action} mac {mac_address} {port}
+-
+-type is ``vlan``
+-
+ .. code-block:: console
+ 
+-    classifier_table {action} vlan {vlan} {mac_address} {port}
++    sec {client_id};patch reset
+ 
+ 
+-API for spp_nfv/spp_vm
+-======================
++API for spp_vf
++==============
+ 
+-GET /v1/nfvs/{client_id}
+-------------------------
++GET /v1/vfs/{client_id}
++-----------------------
+ 
+-Get the information of the ``spp_nfv`` or ``spp_vm`` process.
++Get the information of the ``spp_vf`` process.
+ 
+ * Normal response codes: 200
+ * Error response codes: 400, 404
+@@ -564,30 +436,78 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/vfs/1
++
+ Response
+ ^^^^^^^^
+ 
+-+-----------+---------+-------------------------------------------+
+-| Name      | Type    | Description                               |
+-+===========+=========+===========================================+
+-| client-id | integer | client id.                                |
+-+-----------+---------+-------------------------------------------+
+-| status    | string  | ``Running`` or ``Idle``.                  |
+-+-----------+---------+-------------------------------------------+
+-| ports     | array   | an array of port ids used by the process. |
+-+-----------+---------+-------------------------------------------+
+-| patches   | array   | an array of patches.                      |
+-+-----------+---------+-------------------------------------------+
+++------------------+---------+-----------------------------------------------+
++| Name             | Type    | Description                                   |
+++==================+=========+===============================================+
++| client-id        | integer | client id.                                    |
+++------------------+---------+-----------------------------------------------+
++| ports            | array   | an array of port ids used by the process.     |
+++------------------+---------+-----------------------------------------------+
++| components       | array   | an array of component objects in the process. |
+++------------------+---------+-----------------------------------------------+
++| classifier_table | array   | an array of classifier tables in the process. |
+++------------------+---------+-----------------------------------------------+
+ 
+-patch objest
++component object:
+ 
+-+------+--------+----------------------+
+-| Name | Type   | Description          |
+-+======+========+======================+
+-| src  | string | source port id.      |
+-+------+--------+----------------------+
+-| dst  | string | destination port id. |
+-+------+--------+----------------------+
+++---------+---------+---------------------------------------------------------------------+
++| Name    | Type    | Description                                                         |
+++=========+=========+=====================================================================+
++| core    | integer | core id running on the component                                    |
+++---------+---------+---------------------------------------------------------------------+
++| name    | string  | an array of port ids used by the process.                           |
+++---------+---------+---------------------------------------------------------------------+
++| type    | string  | an array of component objects in the process.                       |
+++---------+---------+---------------------------------------------------------------------+
++| rx_port | array   | an array of port objects connected to the rx side of the component. |
+++---------+---------+---------------------------------------------------------------------+
++| tx_port | array   | an array of port objects connected to the tx side of the component. |
+++---------+---------+---------------------------------------------------------------------+
++
++port object:
++
+++---------+---------+---------------------------------------------------------------+
++| Name    | Type    | Description                                                   |
+++=========+=========+===============================================================+
++| port    | string  | port id. port id is the form {interface_type}:{interface_id}. |
+++---------+---------+---------------------------------------------------------------+
++| vlan    | object  | vlan operation which is applied to the port.                  |
+++---------+---------+---------------------------------------------------------------+
++
++vlan object:
++
+++-----------+---------+-------------------------------+
++| Name      | Type    | Description                   |
+++===========+=========+===============================+
++| operation | string  | ``add``, ``del`` or ``none``. |
+++-----------+---------+-------------------------------+
++| id        | integer | vlan id.                      |
+++-----------+---------+-------------------------------+
++| pcp       | integer | vlan pcp.                     |
+++-----------+---------+-------------------------------+
++
++classifier table:
++
+++-----------+--------+------------------------------------------------------------+
++| Name      | Type   | Description                                                |
+++===========+========+============================================================+
++| type      | string | ``mac`` or ``vlan``.                                       |
+++-----------+--------+------------------------------------------------------------+
++| value     | string | mac_address for ``mac``, vlan_id/mac_address for ``vlan``. |
+++-----------+--------+------------------------------------------------------------+
++| port      | string | port id applied to classify.                               |
+++-----------+--------+------------------------------------------------------------+
+ 
+ Response example
+ ^^^^^^^^^^^^^^^^
+@@ -596,20 +516,106 @@ Response example
+ 
+     {
+       "client-id": 1,
+-      "status": "Running",
+       "ports": [
+         "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1", "ring:2", "ring:3"
+       ],
+-      "patches": [
++      "components": [
++        {
++          "core": 2,
++          "name": "forward_0_tx",
++          "type": "forward",
++          "rx_port": [
++            {
++            "port": "ring:0",
++            "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ],
++          "tx_port": [
++            {
++              "port": "vhost:0",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ]
++        },
++        {
++          "core": 3,
++          "type": "unuse"
++        },
++        {
++          "core": 4,
++          "type": "unuse"
++        },
++        {
++          "core": 5,
++          "name": "forward_1_rx",
++          "type": "forward",
++          "rx_port": [
++            {
++            "port": "vhost:1",
++            "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ],
++          "tx_port": [
++            {
++              "port": "ring:3",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ]
++        },
+         {
+-          "src": "vhost:0", "dst": "ring:0"
++          "core": 6,
++          "name": "classifier",
++          "type": "classifier_mac",
++          "rx_port": [
++            {
++              "port": "phy:0",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ],
++          "tx_port": [
++            {
++              "port": "ring:0",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            },
++            {
++              "port": "ring:2",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ]
+         },
+         {
+-          "src": "ring:1", "dst": "vhost:1"
++          "core": 7,
++          "name": "merger",
++          "type": "merge",
++          "rx_port": [
++            {
++              "port": "ring:1",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            },
++            {
++              "port": "ring:3",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ],
++          "tx_port": [
++            {
++              "port": "phy:0",
++              "vlan": { "operation": "none", "id": 0, "pcp": 0 }
++            }
++          ]
++        },
++      ],
++      "classifier_table": [
++        {
++          "type": "mac",
++          "value": "FA:16:3E:7D:CC:35",
++          "port": "ring:0"
+         }
+       ]
+     }
+ 
++The component which type is ``unused`` is to indicate unused core.
++
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+@@ -618,10 +624,10 @@ Equivalent CLI command
+     sec {client_id};status
+ 
+ 
+-PUT /v1/nfvs/{client_id}/forward
+---------------------------------
++POST /v1/vfs/{client_id}/components
++-----------------------------------
+ 
+-Start or Stop forwarding.
++Start the component.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -635,47 +641,46 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
++
+ Request(body)
+ ^^^^^^^^^^^^^
+ 
+-+--------+--------+------------------------+
+-| Name   | Type   | Description            |
+-+========+========+========================+
+-| action | string | ``start`` or ``stop``. |
+-+--------+--------+------------------------+
+++-----------+---------+----------------------------------------------------------------------+
++| Name      | Type    | Description                                                          |
+++===========+=========+======================================================================+
++| name      | string  | component name. must be unique in the process.                       |
+++-----------+---------+----------------------------------------------------------------------+
++| core      | integer | core id.                                                             |
+++-----------+---------+----------------------------------------------------------------------+
++| type      | string  | component type. one of ``forward``, ``merge`` or ``classifier_mac``. |
+++-----------+---------+----------------------------------------------------------------------+
+ 
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: console
+ 
+-    {"action": "start"}
++    curl -X POST -H 'application/json' \
++    -d '{"name": "forwarder1", "core": 12, "type": "forward"}' \
++    http://127.0.0.1:7777/v1/vfs/1/components
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no body content for the response of a successful ``PUT`` request.
++There is no body content for the response of a successful ``POST`` request.
+ 
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-action is ``start``
+-
+-.. code-block:: yaml
+-
+-    sec {client_id};forward
+-
+-action is ``stop``
+-
+-.. code-block:: yaml
++.. code-block:: console
+ 
+-    sec {client_id};stop
++    sec {client_id};component start {name} {core} {type}
+ 
+ 
+-PUT /v1/nfvs/{client_id}/ports
+-------------------------------
++DELETE /v1/vfs/{sec id}/components/{name}
++-----------------------------------------
+ 
+-Add or Delete port.
++Stop the component.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -683,48 +688,39 @@ Add or Delete port.
+ Request(path)
+ ^^^^^^^^^^^^^
+ 
+-+-----------+---------+-------------+
+-| Name      | Type    | Description |
+-+===========+=========+=============+
+-| client_id | integer | client id.  |
+-+-----------+---------+-------------+
+-
+-Request(body)
+-^^^^^^^^^^^^^
+-
+-+--------+--------+---------------------------------------------------------------+
+-| Name   | Type   | Description                                                   |
+-+========+========+===============================================================+
+-| action | string | ``add`` or ``del``.                                           |
+-+--------+--------+---------------------------------------------------------------+
+-| port   | string | port id. port id is the form {interface_type}:{interface_id}. |
+-+--------+--------+---------------------------------------------------------------+
+++-----------+---------+-----------------+
++| Name      | Type    | Description     |
+++===========+=========+=================+
++| client_id | integer | client id.      |
+++-----------+---------+-----------------+
++| name      | string  | component name. |
+++-----------+---------+-----------------+
+ 
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
+-
+-    {"action": "add", "port": "vhost:0"}
++.. code-block:: console
+ 
++    curl -X DELETE -H 'application/json' \
++    http://127.0.0.1:7777/v1/vfs/1/components/forwarder1
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no body content for the response of a successful ``PUT`` request.
++There is no body content for the response of a successful ``POST`` request.
+ 
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+ .. code-block:: console
+ 
+-    sec {client_id};{action} {interface_type} {interface_id}
++    sec {client_id};component stop {name}
+ 
+ 
+-PUT /v1/nfvs/{client_id}/patches
+---------------------------------
++PUT /v1/vfs/{client_id}/components/{name}/ports
++-----------------------------------------------
+ 
+-Add a patch.
++Add or Delete port to the component.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -732,29 +728,56 @@ Add a patch.
+ Request(path)
+ ^^^^^^^^^^^^^
+ 
+-+-----------+---------+-------------+
+-| Name      | Type    | Description |
+-+===========+=========+=============+
+-| client_id | integer | client id.  |
+-+-----------+---------+-------------+
+++-----------+---------+-----------------+
++| Name      | Type    | Description     |
+++===========+=========+=================+
++| client_id | integer | client id.      |
+++-----------+---------+-----------------+
++| name      | string  | component name. |
+++-----------+---------+-----------------+
+ 
+ Request(body)
+ ^^^^^^^^^^^^^
+ 
+-+------+--------+----------------------+
+-| Name | Type   | Description          |
+-+======+========+======================+
+-| src  | string | source port id.      |
+-+------+--------+----------------------+
+-| dst  | string | destination port id. |
+-+------+--------+----------------------+
+++---------+---------+-----------------------------------------------------------------+
++| Name    | Type    | Description                                                     |
+++=========+=========+=================================================================+
++| action  | string  | ``attach`` or ``detach``.                                       |
+++---------+---------+-----------------------------------------------------------------+
++| port    | string  | port id. port id is the form {interface_type}:{interface_id}.   |
+++---------+---------+-----------------------------------------------------------------+
++| dir     | string  | ``rx`` or ``tx``.                                               |
+++---------+---------+-----------------------------------------------------------------+
++| vlan    | object  | vlan operation which is applied to the port. it can be omitted. |
+++---------+---------+-----------------------------------------------------------------+
++
++vlan object:
++
+++-----------+---------+----------------------------------------------------------+
++| Name      | Type    | Description                                              |
+++===========+=========+==========================================================+
++| operation | string  | ``add``, ``del`` or ``none``.                            |
+++-----------+---------+----------------------------------------------------------+
++| id        | integer | vlan id. ignored when operation is ``del`` or ``none``.  |
+++-----------+---------+----------------------------------------------------------+
++| pcp       | integer | vlan pcp. ignored when operation is ``del`` or ``none``. |
+++-----------+---------+----------------------------------------------------------+
+ 
+ Request example
+ ^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: console
++
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "attach", "port": "vhost:1", "dir": "rx", \
++         "vlan": {"operation": "add", "id": 677, "pcp": 0}}' \
++    http://127.0.0.1:7777/v1/vfs/1/components/forwarder1/ports
++
++.. code-block:: console
+ 
+-    {"src": "vhost:0", "dst": "ring:0"}
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "detach", "port": "vhost:0", "dir": "tx"} \
++    http://127.0.0.1:7777/v1/vfs/1/components/forwarder1/ports
+ 
+ Response
+ ^^^^^^^^
+@@ -764,15 +787,23 @@ There is no body content for the response of a successful ``PUT`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
++action is ``attach``
++
+ .. code-block:: console
+ 
+-    sec {client_id};patch {src} {dst}
++    sec {client_id};port add {port} {dir} {name} [add_vlantag {id} {pcp} | del_vlantag]
+ 
++action is ``detach``
+ 
+-DELETE /v1/nfvs/{client_id}/patches
+------------------------------------
++.. code-block:: console
+ 
+-Reset patches.
++    sec {client_id};port del {port} {dir} {name}
++
++
++PUT /v1/vfs/{sec id}/classifier_table
++-------------------------------------
++
++Set or Unset classifier table.
+ 
+ * Normal response codes: 204
+ * Error response codes: 400, 404
+@@ -786,44 +817,56 @@ Request(path)
+ | client_id | integer | client id.  |
+ +-----------+---------+-------------+
+ 
+-Response
+-^^^^^^^^
++Request(body)
++^^^^^^^^^^^^^
+ 
+-There is no body content for the response of a successful ``DELETE`` request.
+++-------------+-----------------+----------------------------------------------------+
++| Name        | Type            | Description                                        |
+++=============+=================+====================================================+
++| action      | string          | ``add`` or ``del``.                                |
+++-------------+-----------------+----------------------------------------------------+
++| type        | string          | ``mac`` or ``vlan``.                               |
+++-------------+-----------------+----------------------------------------------------+
++| vlan        | integer or null | vlan id for ``vlan``. null or omitted for ``mac``. |
+++-------------+-----------------+----------------------------------------------------+
++| mac_address | string          | mac address.                                       |
+++-------------+-----------------+----------------------------------------------------+
++| port        | string          | port id.                                           |
+++-------------+-----------------+----------------------------------------------------+
+ 
+-Equivalent CLI command
+-^^^^^^^^^^^^^^^^^^^^^^
++Request example
++^^^^^^^^^^^^^^^
+ 
+ .. code-block:: console
+ 
+-    sec {client_id};patch reset
+-
+-
+-API for spp_primary
+-===================
+-
+-GET /v1/primary/status
+-----------------------
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "add", "type": "mac", "mac_address": "FA:16:3E:7D:CC:35", \
++       "port": "ring:0"}' \
++    http://127.0.0.1:7777/v1/vfs/1/classifier_table
+ 
+-Show statistical information.
++.. code-block:: console
+ 
+-* Normal response codes: 200
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "del", "type": "vlan", "vlan": 475, \
++       "mac_address": "FA:16:3E:7D:CC:35", "port": "ring:0"}' \
++    http://127.0.0.1:7777/v1/vfs/1/classifier_table
+ 
+ Response
+ ^^^^^^^^
+ 
+-There is no data at the moment. The statistical information will be returned
+-when ``spp_primary`` implements it.
++There is no body content for the response of a successful ``PUT`` request.
+ 
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
+ 
+-DELETE /v1/primary/status
+--------------------------
++type is ``mac``
+ 
+-Clear statistical information.
++.. code-block:: console
+ 
+-* Normal response codes: 204
++    classifier_table {action} mac {mac_address} {port}
+ 
+-Response
+-^^^^^^^^
++type is ``vlan``
+ 
+-There is no body content for the response of a successful ``PUT`` request.
++.. code-block:: console
++
++    classifier_table {action} vlan {vlan} {mac_address} {port}
+-- 
+2.17.1
+
+

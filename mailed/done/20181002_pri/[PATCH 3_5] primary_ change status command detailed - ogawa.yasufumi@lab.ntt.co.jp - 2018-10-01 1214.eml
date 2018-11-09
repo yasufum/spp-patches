@@ -1,0 +1,179 @@
+X-Account-Key: account4
+X-UIDL: 00007eb756a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 06BCE400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 031C87F653; Mon,  1 Oct 2018 12:14:25 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id EC3737F5EB
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 12:14:24 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id DA0F763889A;
+	Mon,  1 Oct 2018 12:14:24 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id CAA35638705;
+	Mon,  1 Oct 2018 12:14:24 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com
+Cc: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [PATCH 3/5] primary: change status command detailed
+Date: Mon,  1 Oct 2018 12:14:11 +0900
+Message-Id: <20181001031413.75652-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Status command of primary simply returns 'running' or 'idling'. This
+update is to change to stats of each fo ports as json instead of running
+status. Here is an example.
+
+  {
+      "phy_ports": [
+          {
+              "eth": "56:48:4f:12:34:00",
+              "id": 0,
+              "rx": 78932932,
+              "tx": 78932931,
+              "tx_drop": 1,
+          }
+          ...
+      ],
+      "ring_ports": [
+          {
+              "id": 0,
+              "rx": 89283,
+              "rx_drop": 0,
+              "tx": 89283,
+              "tx_drop": 0
+          },
+          ...
+      ]
+  }
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 77 insertions(+), 4 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 7ad8f54..7d5e0a2 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -152,6 +152,81 @@ do_send(int *connected, int *sock, char *str)
+ 	return 0;
+ }
+ 
++/**
++ * Retrieve all of statu of ports as JSON format managed by primary.
++ *
++ * Here is an exmaple.
++ *
++ * {
++ *     "ring_ports": [
++ *     {
++ *         "id": 0,
++ *             "rx": 0,
++ *             "rx_drop": 0,
++ *             "tx": 0,
++ *             "tx_drop": 0
++ *     },
++ *     ...
++ *     ],
++ *     "phy_ports": [
++ *     {
++ *         "eth": "56:48:4f:53:54:00",
++ *         "id": 0,
++ *         "rx": 0,
++ *         "tx": 0,
++ *         "tx_drop": 0
++ *     },
++ *     ...
++ *     ]
++ * }
++ */
++static int
++get_status_json(char *str)
++{
++	int i;
++	char phy_ports[512];
++	char ring_ports[1024];
++	memset(phy_ports, '\0', 512);
++	memset(ring_ports, '\0', 1024);
++
++	for (i = 0; i < ports->num_ports; i++) {
++		sprintf(phy_ports, "%s{\"id\": %u, \"eth\": \"%s\", "
++				"\"rx\": %"PRIu64", \"tx\": %"PRIu64", "
++				"\"tx_drop\": %"PRIu64"}",
++				phy_ports,
++				ports->id[i],
++				get_printable_mac_addr(ports->id[i]),
++				ports->port_stats[i].rx,
++				ports->port_stats[i].tx,
++				ports->client_stats[i].tx_drop);
++
++		if (i < ports->num_ports - 1)
++			sprintf(phy_ports, "%s,", phy_ports);
++	}
++
++	for (i = 0; i < num_clients; i++) {
++		sprintf(ring_ports, "%s{\"id\": %u, \"rx\": %"PRIu64", "
++			"\"rx_drop\": %"PRIu64", "
++			"\"tx\": %"PRIu64", \"tx_drop\": %"PRIu64"}",
++			ring_ports,
++			i,
++			ports->client_stats[i].rx,
++			ports->client_stats[i].rx_drop,
++			ports->client_stats[i].tx,
++			ports->client_stats[i].tx_drop);
++
++		if (i < num_clients - 1)
++			sprintf(ring_ports, "%s,", ring_ports);
++	}
++
++	RTE_LOG(DEBUG, APP, "{\"phy_ports\": [%s], \"ring_ports\": [%s]}",
++			phy_ports, ring_ports);
++	sprintf(str, "{\"phy_ports\": [%s], \"ring_ports\": [%s]}",
++			phy_ports, ring_ports);
++
++	return 0;
++}
++
+ static int
+ parse_command(char *str)
+ {
+@@ -171,10 +246,7 @@ parse_command(char *str)
+ 		RTE_LOG(DEBUG, APP, "status\n");
+ 
+ 		memset(str, '\0', MSG_SIZE);
+-		if (cmd == START)
+-			sprintf(str, "Server Running\n");
+-		else
+-			sprintf(str, "Server Idling\n");
++		ret = get_status_json(str);
+ 
+ 	} else if (!strcmp(token_list[0], "exit")) {
+ 		RTE_LOG(DEBUG, APP, "exit\n");
+@@ -183,6 +255,7 @@ parse_command(char *str)
+ 		ret = -1;
+ 
+ 	} else if (!strcmp(token_list[0], "clear")) {
++		sprintf(str, "{\"status\": \"cleared\"}");
+ 		clear_stats();
+ 	}
+ 
+-- 
+2.7.4
+
+

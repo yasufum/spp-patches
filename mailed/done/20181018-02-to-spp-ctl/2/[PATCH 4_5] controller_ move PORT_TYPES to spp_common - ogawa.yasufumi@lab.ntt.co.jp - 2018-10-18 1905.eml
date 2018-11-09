@@ -1,0 +1,124 @@
+X-Account-Key: account4
+X-UIDL: 000081a856a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 93B7E400B10
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 91A1823BB7D; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 909CB23BAF6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 7E626138
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 677AB1B7
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/5] controller: move PORT_TYPES to spp_common
+Date: Thu, 18 Oct 2018 19:05:38 +0900
+Message-Id: <20181018100539.75277-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Move PORT_TYPES defining all of port types in SPP to spp_common module.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py      |  8 ++++----
+ src/controller/spp.py        |  5 +++--
+ src/controller/spp_common.py | 12 +++++++-----
+ 3 files changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 383d2f1..9fce6f4 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -12,6 +12,7 @@ import os
+ import re
+ import readline
+ from .shell_lib import common
++from . import spp_common
+ from .spp_common import logger
+ import subprocess
+ 
+@@ -26,8 +27,6 @@ class Shell(cmd.Cmd, object):
+     intro = 'Welcome to the spp.   Type help or ? to list commands.\n'
+     prompt = 'spp > '
+ 
+-    PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+-
+     PLUGIN_DIR = 'plugins'
+     topo_size = '60%'
+ 
+@@ -148,8 +147,9 @@ class Shell(cmd.Cmd, object):
+             if re.match(ptn, id1) and re.match(ptn, id2):
+                 pt1 = id1.split(delim)[0]
+                 pt2 = id2.split(delim)[0]
+-                if (pt1 in self.PORT_TYPES) and (pt2 in self.PORT_TYPES):
+-                    return True
++                if (pt1 in spp_common.PORT_TYPES) \
++                        and (pt2 in spp_common.PORT_TYPES):
++                            return True
+         return False
+ 
+     def check_sec_cmds(self, cmds):
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 99cdda3..5211ec9 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -20,8 +20,9 @@ def main(argv):
+     args = parser.parse_args()
+ 
+     try:
+-        spp_ctl_cli = spp_ctl_client.SppCtlClient(args.bind_addr, args.api_port)
+-        if spp_ctl_cli.is_server_running() == False:
++        spp_ctl_cli = spp_ctl_client.SppCtlClient(args.bind_addr,
++                                                  args.api_port)
++        if spp_ctl_cli.is_server_running() is False:
+             print('Is not spp-ctl running, nor correct IP address?')
+             exit()
+         shell = Shell(spp_ctl_cli)
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index 809bee5..20c6bc8 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -5,6 +5,13 @@
+ import logging
+ import os
+ 
++SECONDARY_LIST = []
++
++PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
++
++# Maximum num of sock queues for secondaries
++MAX_SECONDARY = 16
++
+ # Setup logger object
+ logger = logging.getLogger(__name__)
+ # handler = logging.StreamHandler()
+@@ -18,8 +25,3 @@ formatter = logging.Formatter(
+ handler.setFormatter(formatter)
+ logger.setLevel(logging.DEBUG)
+ logger.addHandler(handler)
+-
+-SECONDARY_LIST = []
+-
+-# Maximum num of sock queues for secondaries
+-MAX_SECONDARY = 16
+-- 
+2.13.1
+
+

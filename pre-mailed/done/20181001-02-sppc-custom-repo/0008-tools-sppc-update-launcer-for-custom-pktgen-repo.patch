@@ -1,0 +1,47 @@
+From 379a00a8d8c65a495f804111b09f17b4933d0b49 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 11 Sep 2018 05:29:13 +0900
+Subject: [PATCH 8/8] tools/sppc: update launcer for custom pktgen repo
+
+To launch executable in custom repo, change the path from absolute
+path to just filename. Path of the file is defined as PATH in each
+of Dockerfiles and no need to use absolute path by previous change.
+In addition, pktgen should be launched from the directory which includes
+`Pktgen.lua` but cannot found it if you use custom repo. To avoid it,
+add specifying workdir for launching from the directory.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/app/pktgen.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/tools/sppc/app/pktgen.py b/tools/sppc/app/pktgen.py
+index 0b79bd3..708633b 100755
+--- a/tools/sppc/app/pktgen.py
++++ b/tools/sppc/app/pktgen.py
+@@ -74,16 +74,16 @@ def main():
+     sock_files = app_helper.sock_files(dev_ids_list)
+ 
+     # Setup docker command.
++    if args.workdir is not None:
++        wd = args.workdir
++    else:
++        wd = '/root/pktgen-dpdk'
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+     docker_opts = app_helper.setup_docker_opts(
+-        args, target_name, sock_files,
+-        '%s/../pktgen-dpdk' % env.RTE_SDK)
+-
+-    cmd_path = '%s/../pktgen-dpdk/app/%s/pktgen' % (
+-        env.RTE_SDK, env.RTE_TARGET)
++            args, target_name, sock_files, wd)
+ 
+     # Setup pktgen command
+-    pktgen_cmd = [cmd_path, '\\']
++    pktgen_cmd = ['pktgen', '\\']
+ 
+     file_prefix = 'spp-pktgen-container%d' % dev_ids_list[0]
+     eal_opts = app_helper.setup_eal_opts(args, file_prefix)
+-- 
+2.7.4
+

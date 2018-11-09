@@ -1,0 +1,71 @@
+From 1e427190be1d13e263acc5faf148dcd7efbdb7fd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 09:45:06 +0900
+Subject: [PATCH 3/6] spp_vm: fix bug of do_del if port does not exist
+
+Fix bug of do_del() causing segmentation fault if not existing port is
+deleted. It is because determining the result of find_port_id() is
+incorrect and tries to delete invalid port.
+
+This update is to correct the result of find_port_id() and determining
+port ID.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 63d5684..3807370 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -205,11 +205,15 @@ forward_array_remove(int port_id)
+ 	}
+ }
+ 
+-static int
++/*
++ * Return actual port ID which is assigned by system internally, or PORT_RESET
++ * if port is not found.
++ */
++static uint16_t
+ find_port_id(int id, enum port_type type)
+ {
+-	int port_id = PORT_RESET;
+-	unsigned int i;
++	uint16_t port_id = PORT_RESET;
++	uint16_t i;
+ 
+ 	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
+ 		if (port_map[i].port_type != type)
+@@ -227,21 +231,24 @@ find_port_id(int id, enum port_type type)
+ static int
+ do_del(char *res_uid)
+ {
+-	int port_id = PORT_RESET;
++	uint16_t port_id = PORT_RESET;
+ 	char *p_type;
+ 	int p_id;
+ 	int res;
+ 
+ 	res = parse_resource_uid(res_uid, &p_type, &p_id);
+-	if (res < 0)
++	if (res < 0) {
++		RTE_LOG(ERR, APP,
++			"Failed to parse resource UID\n");
+ 		return -1;
++	}
+ 
+ 	if (!strcmp(p_type, "ring")) {
+ 		char name[RTE_ETH_NAME_MAX_LEN];
+ 
+ 		RTE_LOG(DEBUG, APP, "Del ring id %d\n", p_id);
+ 		port_id = find_port_id(p_id, RING);
+-		if (port_id < 0)
++		if (port_id == PORT_RESET)
+ 			return -1;
+ 
+ 		rte_eth_dev_detach(port_id, name);
+-- 
+2.7.4
+

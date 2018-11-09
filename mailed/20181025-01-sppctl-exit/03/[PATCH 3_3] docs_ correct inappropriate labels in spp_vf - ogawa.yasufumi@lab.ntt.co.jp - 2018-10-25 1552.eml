@@ -1,0 +1,61 @@
+X-Account-Key: account4
+X-UIDL: 000082aa56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id D0DEE40078E
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id CD9757F3D6; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id CBE6B7F2E1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id AF4A61A5;
+	Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 999E5126;
+	Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/3] docs: correct inappropriate labels in spp_vf
+Date: Thu, 25 Oct 2018 15:52:12 +0900
+Message-Id: <20181025065212.18970-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181025065212.18970-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025065212.18970-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Fix inappropriate labels of command syntax in spp_vf.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/spp_vf.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/spp_vf.rst b/docs/guides/commands/spp_vf.rst
+index aa2b1f4..baa1e45 100644
+--- a/docs/guides/commands/spp_vf.rst
++++ b/docs/guides/commands/spp_vf.rst
+@@ -302,7 +302,7 @@ a table of classifier.
+     spp > vf SEC_ID; classifier_table add mac MAC_ADDR RES_UID
+ 
+     # delete entry
+-    spp > vf SEC_ID; classifier_table del mac [MAC_ADDRESS] [RES_ID]
++    spp > vf SEC_ID; classifier_table del mac MAC_ADDRESS RES_ID
+ 
+ This is an example to register MAC address ``52:54:00:01:00:01``
+ with port ``ring:0``.
+-- 
+2.13.1
+
+

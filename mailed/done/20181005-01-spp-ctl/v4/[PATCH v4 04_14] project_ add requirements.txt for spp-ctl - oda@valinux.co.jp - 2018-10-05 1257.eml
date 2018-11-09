@@ -1,0 +1,112 @@
+X-Account-Key: account4
+X-UIDL: 00007fca56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id EAF4640021C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id E8B167F314; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id DDE1C7F2E4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D195FEA87FF
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id C6874EA879B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3A5dQEDhfwQX3hY4juXcn4vIVulGMj4e+mFxMJ6p?=
+ =?us-ascii?q?chl7NFe7ii+JKnBkHE+PFxlwaRBtfX4PdNzvHOtvi6H2EL5dCHrGxEe5sKVQ?=
+ =?us-ascii?q?dWwd4OkVkGB8iIQVb+MOasdzYzScNOXXd79nW6N1VFXs35IV/K8TWp9TBHPB?=
+ =?us-ascii?q?L5OEJuI/jtXIvbjsC5zee3rprfai1WjT68Z65iah6x6wfJ75NEu4ZpJ6cvxx?=
+ =?us-ascii?q?eMmUNmIbUOl0VvI1/b3xr3487154Zmq34WtvklschcTePxeOI6Ve4QCjNuKG?=
+ =?us-ascii?q?0z6MDx0HuLBQKS+nsRVHkXmRtUEkDE6h/9RJL4rir9sKJ0xiCbOcT8Sb18Vy?=
+ =?us-ascii?q?6l6u9nTxrhiSFPMDBckimfjcB5pLxSpBOnugw5yImSYpnUfPtyc6XBfM8LEH?=
+ =?us-ascii?q?JbV5UZXChAD4WgKooXWrBYZaAB9dm79gNI9EftYGvkTPniwTJJmHLsiKEx1u?=
+ =?us-ascii?q?1kChnDhFZmEtkK9nLIsJP+M+EQSbPQruGAwDPdYvdRwTq45pLPd0Vrpv2Fda?=
+ =?us-ascii?q?x5dcvX1FlpHASDjE3a+umHd3uFk/8AtWSW9b8qUu6mo3AurwB3vyjpzcBqiJ?=
+ =?us-ascii?q?GD1coFj1vD8yt+2oM8I9a1HVV6bdCTC4dKtiqGbtEkeM4pTmB2tSp/8YUo48?=
+ =?us-ascii?q?/mLg4NzplvhxLUbvXCaJCNukilWe2VZzFkmDRuf/S9n0T690/o0eD6WsSutT?=
+ =?us-ascii?q?QC5iNYjtnBsGwM3B3P+4CGTPV65EKoxTeI0Uja9OhFJUk+kaeTJYQmx/Y8kZ?=
+ =?us-ascii?q?8asEKLGSGT+g2+i6OfXlst/umu9vShabKgpIfdf454hwfiM7g/z8m2AOA2KA?=
+ =?us-ascii?q?8LDA35say30Lzu+1G8Qa0f1KRu1PCD4NaLfYJC+v3xGQJe34c95gzqAzyj2Z?=
+ =?us-ascii?q?EDhXxfdhRIcxbBiZT1fVrJZvLgXpLdyxyhlilmw/feM/jvGJLIezLEnL7JY7?=
+ =?us-ascii?q?956khB2Ew4ypZd/9gHb9NJaOK2QUL3uNHCW1U+PwWc3e/jCdNgxsUVXiSNGu?=
+ =?us-ascii?q?XKeLOXuliO6OU1JuCKb4JAozfxJc8+++TvhmNgyA0tOJKx1J5SU0iWW/FvIk?=
+ =?us-ascii?q?GXe33p24pTD24OvwwjXKrhjxuASWwLPirgb+cH/jg+TbmeI8LbXIn03e6f1S?=
+ =?us-ascii?q?O6GIBGIGtBTFKUQy/l?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BKAACI4LZb/w5agNJbHQEBBQEHBQG?=
+ =?us-ascii?q?BUQgBCwGCAoFWAwQLKIwJX41Qll6BejgBhEAChEQGMA0NAQMBAQIBAQEBbSi?=
+ =?us-ascii?q?FOgaBCSAxLCsHEoMhggGlbIgugWSHDoFagluCAI56AoZWB4gvjlAJkDUigT2?=
+ =?us-ascii?q?OMpckOIFVgUCCbJBkMDB5AQEBAY1qAQE?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:58 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 2C44B240CD4; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 04/14] project: add requirements.txt for spp-ctl
+Date: Fri,  5 Oct 2018 12:57:47 +0900
+Message-Id: <20181005035757.23122-5-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+`requirements.txt` is for listing python packages installed via `pip`
+as below.
+
+  $ pip install -r requirements.txt
+
+It contains a list of packages for `spp-ctl`.
+
+* eventlet
+* bottle
+* netaddr
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ requirements.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 requirements.txt
+
+diff --git a/requirements.txt b/requirements.txt
+new file mode 100644
+index 0000000..7d0b774
+--- /dev/null
++++ b/requirements.txt
+@@ -0,0 +1,4 @@
++# spp-ctl
++eventlet
++bottle
++netaddr
+-- 
+2.17.1
+
+

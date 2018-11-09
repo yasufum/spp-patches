@@ -1,0 +1,143 @@
+X-Account-Key: account4
+X-UIDL: 00007eb956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2A3C2400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 12:14:27 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 292BE23BD9B; Mon,  1 Oct 2018 12:14:27 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 288ED23BD75
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 12:14:27 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 166C163889A;
+	Mon,  1 Oct 2018 12:14:27 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id E8D9E638705;
+	Mon,  1 Oct 2018 12:14:26 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com
+Cc: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [PATCH 5/5] controller: simply print primary status
+Date: Mon,  1 Oct 2018 12:14:13 +0900
+Message-Id: <20181001031413.75652-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001031413.75652-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Change printing primary status of law JSON format to be more intuitive.
+Here is an example.
+
+  Physical Ports:
+    ID          rx          tx     tx_drop  mac_addr
+     0    78932932    78932931           1  56:48:4f:53:54:00
+  Ring Ports:
+    ID          rx          tx     rx_drop     rx_drop
+     0       89283       89283           0           0
+               ...
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 61 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 3497073..fb30d5d 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -95,6 +95,62 @@ class Shell(cmd.Cmd, object):
+         for i in spp_common.SECONDARY_LIST:
+             print("Connected secondary id: %d" % i)
+ 
++    def print_pri_status(self, json_obj):
++        """Parse SPP primary's status and print.
++
++        Primary returns the status as JSON format, but it is just a little
++        long.
++
++            {
++                "phy_ports": [
++                    {
++                        "eth": "56:48:4f:12:34:00",
++                        "id": 0,
++                        "rx": 78932932,
++                        "tx": 78932931,
++                        "tx_drop": 1,
++                    }
++                    ...
++                ],
++                "ring_ports": [
++                    {
++                        "id": 0,
++                        "rx": 89283,
++                        "rx_drop": 0,
++                        "tx": 89283,
++                        "tx_drop": 0
++                    },
++                    ...
++                ]
++            }
++
++        It is formatted to be simple and more understandable.
++
++            Physical Ports:
++              ID          rx          tx     tx_drop  mac_addr
++               0    78932932    78932931           1  56:48:4f:53:54:00
++            Ring Ports:
++              ID          rx          tx     rx_drop     rx_drop
++               0       89283       89283           0           0
++               ...
++        """
++
++        if json_obj.has_key('phy_ports'):
++            print('Physical Ports:')
++            print('  ID          rx          tx     tx_drop  mac_addr')
++            for pports in json_obj['phy_ports']:
++                print('  %2d  %10d  %10d  %10d  %s' % (
++                    pports['id'], pports['rx'],  pports['tx'],
++                    pports['tx_drop'], pports['eth']))
++
++        if json_obj.has_key('ring_ports'):
++            print('Ring Ports:')
++            print('  ID          rx          tx     rx_drop     rx_drop')
++            for rports in json_obj['ring_ports']:
++                print('  %2d  %10d  %10d  %10d  %10d' % (
++                    rports['id'], rports['rx'],  rports['tx'],
++                    rports['rx_drop'], rports['tx_drop']))
++
+     def print_sec_status(self, msg):
+         """Parse and print message from SPP secondary
+ 
+@@ -144,7 +200,8 @@ class Shell(cmd.Cmd, object):
+         if spp_common.PRIMARY:
+             spp_common.MAIN2PRIMARY.put(command.encode('utf-8'))
+             recv = spp_common.PRIMARY2MAIN.get(True)
+-            print(recv)
++            json_obj = json.loads(recv)
++            self.print_pri_status(json_obj)
+             return self.CMD_OK, recv
+         else:
+             recv = "primary not started"
+@@ -508,7 +565,9 @@ class Shell(cmd.Cmd, object):
+         if cmds[0] == 'sec':
+             self.close_all_secondary()
+         elif cmds[0] == 'all':
++            print('Closing secondary ...')
+             self.close_all_secondary()
++            print('Closing primary ...')
+             self.command_primary('exit')
+         elif cmds[0] == '':
+             print('Thank you for using Soft Patch Panel')
+-- 
+2.7.4
+
+

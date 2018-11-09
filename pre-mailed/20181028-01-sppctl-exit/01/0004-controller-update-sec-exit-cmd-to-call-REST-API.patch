@@ -1,0 +1,37 @@
+From cb6ed6d79d56ee388d7b43feb4a65bcf4825f12f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 25 Oct 2018 06:38:20 +0900
+Subject: [PATCH 4/5] controller: update sec exit cmd to call REST API
+
+To send `exit` command to spp_nfv or spp_vm, change to call REST API of
+spp-ctl.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/sec.py | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/src/controller/commands/sec.py b/src/controller/commands/sec.py
+index 77cfe62..ec1da58 100644
+--- a/src/controller/commands/sec.py
++++ b/src/controller/commands/sec.py
+@@ -107,7 +107,15 @@ class SppSecondary(object):
+                         print('Error: unknown response.')
+ 
+         elif cmd == 'exit':
+-            print('do nothing.')
++            res = self.spp_ctl_cli.delete('nfvs/%d' % sec_id)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print('Exit sec %d' % sec_id)
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
+ 
+         else:
+             print('Invalid command "%s".' % cmd)
+-- 
+2.7.4
+

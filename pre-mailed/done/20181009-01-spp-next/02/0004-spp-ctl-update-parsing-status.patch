@@ -1,0 +1,63 @@
+From a8bfb3df78d783a9175c956c1852498c8cbec0bf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 7 Oct 2018 11:34:53 +0900
+Subject: [PATCH 4/4] spp-ctl: update parsing status
+
+Update parsing the result of status. Spp_nfv and spp_vm are changed to
+return the same status message as spp-ctl, so it can be used without
+modifying.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 34 ++++++++--------------------------
+ 1 file changed, 8 insertions(+), 26 deletions(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index ddf6513..9c16af6 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -321,33 +321,15 @@ class V1NFVHandler(BaseHandler):
+     def convert_nfv_info(self, sec_id, data):
+         nfv = {}
+ 
+-        # spp_nfv returns status info in two lines. First line is
+-        # status of running or idling, and second is patch info.
+-        # 'null' means that it has no dst port.
+-        #   "status: idling\nports: 'phy:0-phy:1,phy:1-null'\x00\x00.."
+-        entries = data.split('\n')
+-        if len(entries) != 2:
+-            return {}
+-
+-        nfv['client_id'] = int(sec_id)
+-        nfv['status'] = entries[0].split()[1]
+-
+-        patch_list = entries[1].split()[1].replace("'", '')
+-
+-        ports = []
+-        nfv['patches'] = []
+-
+-        for port_cmb in patch_list.split(','):
+-            p_src, p_dst = port_cmb.split('-')
+-            if p_src != 'null' and p_dst != 'null':
+-                nfv['patches'].append({'src': p_src, 'dst': p_dst})
+-
+-            for port in [p_src, p_dst]:
+-                if port != 'null':
+-                    ports.append(port)
+-
+-        nfv['ports'] = list(set(ports))
++        # spp_nfv returns status info in JSON format. 'null' means
++        # that it has no dst port.
++        #   {"status":"idling","ports":[{"src":"phy:0","dst":"null"},...
+ 
++        # TODO(yasufum) modify after nfv and vm is updated for new data definition.
++        try:
++            nfv = json.loads(data)
++        except json.JSONDecodeError as e:
++            print("%s" % e)
+         return nfv
+ 
+     def nfv_get(self, proc):
+-- 
+2.7.4
+

@@ -1,0 +1,105 @@
+X-Account-Key: account4
+X-UIDL: 000080dd56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 4785E400673
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 4535D7F367; Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 43A0F7F354
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 30075125;
+	Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 1A406105;
+	Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/4] docs: update primary command reference
+Date: Thu, 11 Oct 2018 20:12:05 +0900
+Message-Id: <20181011111207.49604-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update description of primary commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 0a338e9..85c1c68 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -38,29 +38,35 @@ Primary process is managed with ``pri`` command.
+ status
+ ------
+ 
+-Show status of primary.
++Show forwarding statistics of each of ports.
+ 
+ .. code-block:: console
+ 
+-    spp > pri status
+-    recv:('127.0.0.1', 50524):{Server Running}
+-
++    spp > pri; status
++    Physical Ports:
++      ID          rx          tx     tx_drop  mac_addr
++       0    78932932    78932931           1  56:48:4f:53:54:00
++    Ring Ports:
++      ID          rx          tx     rx_drop     tx_drop
++       0       89283       89283           0           0
++       1        9208        9203           0           5
++       ...
+ 
+ exit
+ ----
+ 
+-Terminate primary.
++Terminate primary process.
+ 
+ .. code-block:: console
+ 
+-    spp > pri exit
+-    closing:('127.0.0.1', 50524)
++    spp > pri; exit
+ 
+ .. note::
+ 
+-    You should not use this command because terminating primary before
+-    secondaries may cause an error.
+-    You shold use ``bye`` command instead of ``pri exit``.
++    You should not use this command if one or more secondary processes
++    are still running because terminating primary before secondaries may
++    cause an error. You shold use ``bye`` command instead of
++    ``pri; exit``.
+ 
+ clear
+ -----
+@@ -69,5 +75,4 @@ Clear statistics.
+ 
+ .. code-block:: console
+ 
+-    spp > pri clear
+-    recv:('127.0.0.1', 50524):{clear stats}
++    spp > pri; clear
+-- 
+2.7.4
+
+

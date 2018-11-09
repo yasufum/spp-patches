@@ -1,0 +1,104 @@
+X-Account-Key: account4
+X-UIDL: 000081a556a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6D880400B10
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6B93223BB55; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6A92623BAF6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 58CAB193
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 4320912E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/5] controller: change name of plugins directory
+Date: Thu, 18 Oct 2018 19:05:35 +0900
+Message-Id: <20181018100539.75277-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100539.75277-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Refactor directory name of command plugins from 'command' to 'plugins'
+because commands of not plugin are moved to 'commands' directory and
+the name of plugins is ambiguous from 'command'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/{command => plugins}/__init__.py |  0
+ src/controller/{command => plugins}/hello.py    |  0
+ src/controller/shell.py                         | 15 +++++++--------
+ 3 files changed, 7 insertions(+), 8 deletions(-)
+ rename src/controller/{command => plugins}/__init__.py (100%)
+ rename src/controller/{command => plugins}/hello.py (100%)
+
+diff --git a/src/controller/command/__init__.py b/src/controller/plugins/__init__.py
+similarity index 100%
+rename from src/controller/command/__init__.py
+rename to src/controller/plugins/__init__.py
+diff --git a/src/controller/command/hello.py b/src/controller/plugins/hello.py
+similarity index 100%
+rename from src/controller/command/hello.py
+rename to src/controller/plugins/hello.py
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index ec5f481..28ae86e 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -30,7 +30,7 @@ class Shell(cmd.Cmd, object):
+ 
+     HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+ 
+-    PLUGIN_DIR = 'command'
++    PLUGIN_DIR = 'plugins'
+     topo_size = '60%'
+ 
+     # setup history file
+@@ -669,24 +669,23 @@ class Shell(cmd.Cmd, object):
+     def do_load_cmd(self, args):
+         """Load command plugin.
+ 
+-        Path of plugin file is 'spp/src/controller/command'.
++        Path of plugin file is 'spp/src/controller/plugins'.
+ 
+-        spp > load hello
++        spp > load_cmd hello
+         """
+ 
+         args = re.sub(',', ' ', args)
+         args = re.sub(r'\s+', ' ', args)
+         list_args = args.split(' ')
+ 
+-        libdir = 'command'
++        libdir = self.PLUGIN_DIR
+         mod_name = list_args[0]
+         method_name = 'do_%s' % mod_name
+-        loaded = '%s.%s' % (libdir, mod_name)
+-        exec('import %s' % loaded)
+-        do_cmd = '%s.%s' % (loaded, method_name)
++        exec('from .%s import %s' % (libdir, mod_name))
++        do_cmd = '%s.%s' % (mod_name, method_name)
+         exec('Shell.%s = %s' % (method_name, do_cmd))
+ 
+-        print("Module '%s' loaded." % loaded)
++        print("Module '%s' loaded." % mod_name)
+ 
+     def complete_load_cmd(self, text, line, begidx, endidx):
+         """Complete command plugins
+-- 
+2.13.1
+
+

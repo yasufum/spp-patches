@@ -1,0 +1,112 @@
+X-Account-Key: account4
+X-UIDL: 0000819c56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id ACC3F400860
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id AA2227F0B4; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id A7CC67F074
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 9805611F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 7FA8F138
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 18 Oct 2018 19:05:31 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/9] spp-ctl: add IP address binding
+Date: Thu, 18 Oct 2018 19:05:12 +0900
+Message-Id: <20181018100518.75224-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181018100518.75224-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181018100518.75224-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl accepts requests only from localhost. This update is to add
+supporting IP address binding with '-b' or '--bind-addr' option.
+
+  $ python3 src/spp-ctl/spp-ctl -b 192.168.1.10
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    | 15 +++++++++------
+ src/spp-ctl/spp_webapi.py |  5 +++--
+ 2 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index e168747..80a78b6 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -23,8 +23,8 @@ MSG_SIZE = 4096
+ 
+ class Controller(object):
+ 
+-    def __init__(self, pri_port, sec_port, api_port):
+-        self.web_server = spp_webapi.WebServer(self, api_port)
++    def __init__(self, host, pri_port, sec_port, api_port):
++        self.web_server = spp_webapi.WebServer(self, host, api_port)
+         self.procs = {}
+         self.init_connection(pri_port, sec_port)
+ 
+@@ -144,15 +144,18 @@ class Controller(object):
+ 
+ def main():
+     parser = argparse.ArgumentParser(description="SPP Controller")
++    parser.add_argument("-b", '--bind-addr', type=str, default='localhost',
++                        help="bind address, default=localhost")
+     parser.add_argument("-p", dest='pri_port', type=int, default=5555,
+-                        action='store', help="primary port")
++                        action='store', help="primary port, default=5555")
+     parser.add_argument("-s", dest='sec_port', type=int, default=6666,
+-                        action='store', help="secondary port")
++                        action='store', help="secondary port, default=6666")
+     parser.add_argument("-a", dest='api_port', type=int, default=7777,
+-                        action='store', help="web api port")
++                        action='store', help="web api port, default=7777")
+     args = parser.parse_args()
+ 
+     logging.basicConfig(level=logging.DEBUG)
+ 
+-    controller = Controller(args.pri_port, args.sec_port, args.api_port)
++    controller = Controller(args.bind_addr, args.pri_port, args.sec_port,
++                            args.api_port)
+     controller.start()
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 6768aed..b2fbe3b 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -118,8 +118,9 @@ class WebServer(BaseHandler):
+        /primary    V1PrimaryHandler
+     """
+ 
+-    def __init__(self, controller, api_port):
++    def __init__(self, controller, host, api_port):
+         super(WebServer, self).__init__(controller)
++        self.host = host
+         self.api_port = api_port
+ 
+         self.mount("/v1", V1Handler(controller))
+@@ -129,7 +130,7 @@ class WebServer(BaseHandler):
+         self.add_hook("after_request", self.log_response)
+ 
+     def start(self):
+-        self.run(server='eventlet', host='localhost', port=self.api_port,
++        self.run(server='eventlet', host=self.host, port=self.api_port,
+                  quiet=True)
+ 
+ 
+-- 
+2.13.1
+
+

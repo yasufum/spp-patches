@@ -1,0 +1,88 @@
+From 08a6af3b63eb5f31f17ecb28a61f5bb2b1881ce6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 26 Aug 2018 14:11:36 +0900
+Subject: [PATCH 2/5] controller: change socket buffer length
+
+Size of message via socket might exceed 1000 if network configuration is
+complexed. This patch is for defining `spp_common.SOCK_BUF_SIZE` and its
+size to 2048.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/conn_thread.py | 10 ++++------
+ src/controller/spp.py         |  2 +-
+ src/controller/spp_common.py  |  3 +++
+ 3 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/src/controller/conn_thread.py b/src/controller/conn_thread.py
+index e524e84..8bddfc0 100644
+--- a/src/controller/conn_thread.py
++++ b/src/controller/conn_thread.py
+@@ -52,8 +52,7 @@ class ConnectionThread(threading.Thread):
+ 
+             # Receiving from secondary
+             try:
+-                # 1024 stands for bytes of data to be received
+-                data = self.conn.recv(1024)
++                data = self.conn.recv(spp_common.SOCK_BUF_SIZE)
+                 if data:
+                     msg = "%s" % data.decode('utf-8')
+                     spp_common.SEC2MAIN[self.client_id].put(msg)
+@@ -99,7 +98,7 @@ class AcceptThread(threading.Thread):
+         except KeyError:
+             return -1
+ 
+-        data = conn.recv(1024)
++        data = conn.recv(spp_common.SOCK_BUF_SIZE)
+         if data is None:
+             return -1
+ 
+@@ -140,7 +139,7 @@ class AcceptThread(threading.Thread):
+ 
+         msg = "_set_client_id %u" % free_client_id
+         conn.send(msg.encode('utf-8'))
+-        data = conn.recv(1024)
++        data = conn.recv(spp_common.SOCK_BUF_SIZE)
+ 
+         return free_client_id
+ 
+@@ -236,8 +235,7 @@ class PrimaryThread(threading.Thread):
+ 
+                 # Receiving from primary
+                 try:
+-                    # 1024 stands for bytes of data to be received
+-                    data = conn.recv(1024)
++                    data = conn.recv(spp_common.SOCK_BUF_SIZE)
+                     if data:
+                         spp_common.PRIMARY2MAIN.put(
+                             "recv:%s:{%s}" % (str(addr), data.decode('utf-8')))
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 57604de..80b1fab 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -24,7 +24,7 @@ class CmdRequestHandler(socketserver.BaseRequestHandler):
+     CMD = None  # contains a instance of Shell class
+ 
+     def handle(self):
+-        self.data = self.request.recv(1024).strip()
++        self.data = self.request.recv(spp_common.SOCK_BUF_SIZE).strip()
+         cur_thread = threading.currentThread()
+         print(cur_thread.getName())
+         print(self.client_address[0])
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index 80fab76..0cac2d9 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -30,6 +30,9 @@ PRIMARY2MAIN = Queue()
+ # Maximum num of sock queues for secondaries
+ MAX_SECONDARY = 16
+ 
++# Should be as same as MSG_SIZE in src/shared/common.h
++SOCK_BUF_SIZE = 2048
++
+ PRIMARY = ''
+ SECONDARY_COUNT = 0
+ 
+-- 
+2.7.4
+

@@ -1,0 +1,78 @@
+From 471b8d677ea8427060e599e783c3b7d717ea45f3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 29 Sep 2018 07:02:46 +0900
+Subject: [PATCH 0/5] Change primary status command to be detailed
+
+Status command of primary simply returns 'running' or 'idling'. It is no
+meaning because primary is always running and does not have status
+'idling'. It would be helpful for users if status command returns stats
+of port forwarding info instead of running status.
+
+This series of patches is for changing status command to show the stats.
+
+  spp > pri;status
+  Physical Ports:
+    ID          rx          tx     tx_drop  mac_addr
+     0    78932932    78932931           1  56:48:4f:53:54:00
+  Ring Ports:
+    ID          rx          tx     rx_drop     rx_drop
+     0       89283       89283           0           0
+     ...
+
+For this update, the message format from primary to controller is
+changed to be structured as JSON. Socket buffer length is also changed
+to 2048 because it might exceed 1000 if network configuration is
+complexed. Here is an example of the message format from primary.
+
+  {
+      "phy_ports": [
+      {
+          "eth":
+              "56:48:4f:12:34:00",
+              "id":
+                  0,
+              "rx":
+                  78932932,
+              "tx":
+                  78932931,
+              "tx_drop":
+                  1,
+      }
+      ...
+      ],
+      "ring_ports":
+          [
+          {
+              "id":
+                  0,
+              "rx":
+                  89283,
+              "rx_drop":
+                  0,
+              "tx":
+                  89283,
+              "tx_drop":
+                  0
+          },
+      ...
+          ]
+  }
+
+Yasufumi Ogawa (5):
+  shared: change socket buffer length
+  controller: change socket buffer length
+  primary: change status command detailed
+  controller: change msg format in ConnectionThread
+  controller: simply print primary status
+
+ src/controller/conn_thread.py | 16 ++++-----
+ src/controller/shell.py       | 61 +++++++++++++++++++++++++++++++-
+ src/controller/spp.py         |  2 +-
+ src/controller/spp_common.py  |  3 ++
+ src/primary/main.c            | 81 ++++++++++++++++++++++++++++++++++++++++---
+ src/shared/common.h           |  2 +-
+ 6 files changed, 149 insertions(+), 16 deletions(-)
+
+-- 
+2.7.4
+

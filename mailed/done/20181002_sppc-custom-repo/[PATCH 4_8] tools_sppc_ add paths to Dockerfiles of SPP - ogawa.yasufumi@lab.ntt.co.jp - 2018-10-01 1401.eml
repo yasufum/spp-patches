@@ -1,0 +1,129 @@
+X-Account-Key: account4
+X-UIDL: 00007ecc56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 4DCD4400994
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 14:02:00 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 4B4D723BDBF; Mon,  1 Oct 2018 14:02:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 4006F23BAF8
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 14:02:00 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 2AE32125;
+	Mon,  1 Oct 2018 14:02:00 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 14C2755;
+	Mon,  1 Oct 2018 14:02:00 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/8] tools/sppc: add paths to Dockerfiles of SPP
+Date: Mon,  1 Oct 2018 14:01:44 +0900
+Message-Id: <20181001050148.77373-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+If you clone a custom SPP repo and its directory name is not 'spp',
+you failed to launch an appcontainer script because the scripts does
+not know the name of custom repo and cannot find SPP's executable file.
+
+To be found the executable in container, this patch adds PATH entries
+of the executables of custom repo to Dockerfile. By this change.
+appcontainer can find the executables without the custom repo's name
+while launching appcontainer.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04  | 8 ++++++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04  | 8 ++++++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest | 9 +++++++--
+ 3 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+index b55f056..27311ea 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+@@ -9,13 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index 8377623..f2afa74 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -9,13 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index 3b96080..246ceb8 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -9,12 +9,17 @@ ARG spp_repo
+ ARG spp_branch
+ ARG spp_dir
+ 
+-ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV http_proxy ${http_proxy}
+-ENV https_proxy $https_proxy
++ENV https_proxy ${https_proxy}
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
++ENV SPP_DIR ${spp_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
++ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+-- 
+2.7.4
+
+

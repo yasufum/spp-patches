@@ -1,0 +1,62 @@
+From b87d438b1f5925be40d335cf02e0a5937e579307 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 4 Oct 2018 22:23:46 +0900
+Subject: [PATCH 4/4] controller: unify accepting resource UID format
+
+Delimiter of resource UID is different between patch command and add/del
+commands.
+
+  spp > sec 1;add ring 0  # separated with ' '
+  spp > sec 1;patch ring:0 ring:1  # separated with ':'
+
+It should be same format because confusing. This update is to change
+add/del commands to use delimiter ':'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 2808440..09b9e86 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -249,7 +249,7 @@ class Shell(cmd.Cmd, object):
+     def is_patched_ids_valid(self, id1, id2, delim=':'):
+         """Check if port IDs are valid
+ 
+-        Supported format is port ID of integer or resource ID such as
++        Supported format is port ID of integer or resource UID such as
+         'phy:0' or 'ring:1'. Default delimiter ':' can be overwritten
+         by giving 'delim' option.
+         """
+@@ -279,17 +279,21 @@ class Shell(cmd.Cmd, object):
+         if length == 1:
+             if cmdlist[0] in level1:
+                 valid = 1
++
+         elif length == 2:
+             if cmdlist[0] == 'patch':
+                 if cmdlist[1] in patch_args:
+                     valid = 1
++
++            elif cmdlist[0] == 'add' or cmdlist[0] == 'del':
++                p_type, p_id = cmdlist[1].split(':')
++                if p_type in add_del_args:
++                    if str.isdigit(p_id):
++                        valid = 1
++
+         elif length == 3:
+             if cmdlist[0] in level2:
+-                if cmdlist[0] == 'add' or cmdlist[0] == 'del':
+-                    if cmdlist[1] in add_del_args:
+-                        if str.isdigit(cmdlist[2]):
+-                            valid = 1
+-                elif cmdlist[0] == 'patch':
++                if cmdlist[0] == 'patch':
+                     if self.is_patched_ids_valid(cmdlist[1], cmdlist[2]):
+                         valid = 1
+ 
+-- 
+2.7.4
+

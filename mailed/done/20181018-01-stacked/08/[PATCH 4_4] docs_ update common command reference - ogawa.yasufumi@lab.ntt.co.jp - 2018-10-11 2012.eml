@@ -1,0 +1,139 @@
+X-Account-Key: account4
+X-UIDL: 000080df56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6EE83400B70
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 11 Oct 2018 20:12:21 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 1B1AB7F367; Thu, 11 Oct 2018 20:12:21 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 199AE7F354
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 11 Oct 2018 20:12:21 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 054CB125;
+	Thu, 11 Oct 2018 20:12:21 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id E3A76105;
+	Thu, 11 Oct 2018 20:12:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/4] docs: update common command reference
+Date: Thu, 11 Oct 2018 20:12:07 +0900
+Message-Id: <20181011111207.49604-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update description of common commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/common.rst | 55 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 15 deletions(-)
+
+diff --git a/docs/guides/commands/common.rst b/docs/guides/commands/common.rst
+index ebd1fa1..36573f5 100644
+--- a/docs/guides/commands/common.rst
++++ b/docs/guides/commands/common.rst
+@@ -30,7 +30,7 @@
+ 
+ 
+ Common Commands
+-====================
++===============
+ 
+ status
+ ------
+@@ -48,16 +48,34 @@ It also show a list of secondary IDs
+     Connected secondary id: 2
+ 
+ 
++playback
++--------
++
++Restore network configuration from a recipe file which defines a set
++of SPP commands.
++You can prepare a recipe file by using ``record`` command or editing
++file by hand.
++
++It is recommended to use extension ``.rcp`` to be self-sxplanatory as
++a recipe, although you can use any of extensions such as ``.txt`` or
++``.log``.
++
++.. code-block:: console
++
++    spp > playback /path/to/my.rcp
++
++
+ record
+ ------
+ 
+-Start recording user's input and create a history file for ``playback``
+-commnad.
+-Recording is stopped by executing ``exit`` or ``playback`` command.
++Start recording user's input and create a recipe file for loading
++from ``playback`` commnad.
++Recording recipe is stopped by executing ``exit`` or ``playback``
++command.
+ 
+ .. code-block:: console
+ 
+-    spp > record 2nfv_uni.config
++    spp > record /path/to/my.rcp
+ 
+ .. note::
+ 
+@@ -67,21 +85,28 @@ Recording is stopped by executing ``exit`` or ``playback`` command.
+     next relase.
+ 
+ 
+-playback
+---------
++history
++-------
+ 
+-Restore configuration from a config file.
+-Content of config file is just a series of SPP commnad.
+-You prepare a config file by using ``record`` command or editing a text
+-file by hand.
++Show command history. Command history is recorded in a file named
++``$HOME/.spp_history``. It does not add some command which are no
++meaning for history, ``bye``, ``exit``, ``history`` and ``redo``.
+ 
+-It is recommended to use extension ``.config`` to be self-sxplanatory
+-as a config, although you can use any of extensions such as ``.txt`` or
+-``.log``.
++.. code-block:: console
++
++    spp > history
++      1  ls
++      2  cat file.txt
++
++
++redo
++----
++
++Execute command of index of history.
+ 
+ .. code-block:: console
+ 
+-    spp> playback 2nfv_uni.config
++    spp > redo 5  # exec 5th command in the history
+ 
+ 
+ pwd
+-- 
+2.7.4
+
+

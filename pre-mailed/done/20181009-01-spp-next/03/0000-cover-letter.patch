@@ -1,0 +1,29 @@
+From 521d5d577623696d5260fd258864351a4c8afd34 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 13:59:44 +0900
+Subject: [PATCH 0/5] Add error handling for add and del commands
+
+There is no strict checking for returned value of parsing resource UID
+for add and del commands. It might cause a fatal error if no existing
+resource is accessed for inappropriate resource UID.
+
+To avoid inappropriate accessing, add checking for the resource UID and
+correct determining of the returned value. This update also includes
+refactors of log messages in add_ring_pmd() to create a ring port
+correctly.
+
+Yasufumi Ogawa (5):
+  shared: add error handling for invalid res UID
+  spp_nfv: add error handling for add and del cmd
+  spp_vm: add error handling for add and del cmd
+  spp_nfv: refactor add_ring_pmd
+  spp_vm: refactor add_ring_pmd
+
+ src/nfv/nfv.c       | 66 ++++++++++++++++++++++++++++++++++++-----------------
+ src/shared/common.c |  7 ++++++
+ src/vm/main.c       | 57 +++++++++++++++++++++++++++++++--------------
+ 3 files changed, 92 insertions(+), 38 deletions(-)
+
+-- 
+2.7.4
+

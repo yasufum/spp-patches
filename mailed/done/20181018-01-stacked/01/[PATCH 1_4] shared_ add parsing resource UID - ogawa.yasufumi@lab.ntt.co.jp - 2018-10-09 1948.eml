@@ -1,0 +1,98 @@
+X-Account-Key: account4
+X-UIDL: 0000805e56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id F27304006B8
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:48:57 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id F033323BB4D; Tue,  9 Oct 2018 19:48:57 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id EF09123BB2D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:48:57 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id DBE82125;
+	Tue,  9 Oct 2018 19:48:57 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C58B2119;
+	Tue,  9 Oct 2018 19:48:57 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/4] shared: add parsing resource UID
+Date: Tue,  9 Oct 2018 19:48:44 +0900
+Message-Id: <20181009104847.42502-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009104847.42502-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009104847.42502-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Resource UID is defined as a combination of port type and ID, and
+separated with ':' such as 'ring:0'. This patch is to add a utility
+function parse_resource_uid() to extract port type and ID.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 24 ++++++++++++++++++++++++
+ src/shared/common.h |  1 +
+ 2 files changed, 25 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 56f89df..56ef8c5 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -217,6 +217,30 @@ parse_server(char **server_ip, int *server_port, char *server_addr)
+ 	return 0;
+ }
+ 
++/**
++ * Retieve port type and ID from resource UID. For example, resource UID
++ * 'ring:0' is  parsed to retrieve port tyep 'ring' and ID '0'.
++ */
++int
++parse_resource_uid(char *str, char **port_type, int *port_id)
++{
++	char *token;
++	char delim[] = ":";
++	char *endp;
++
++	*port_type = strtok(str, delim);
++
++	token = strtok(NULL, delim);
++	*port_id = strtol(token, &endp, 10);
++
++	if (*endp) {
++		RTE_LOG(ERR, APP, "Bad integer value: %s\n", str);
++		return -1;
++	}
++
++	return 0;
++}
++
+ int
+ spp_atoi(const char *str, int *val)
+ {
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 52a9a65..1580b08 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -196,6 +196,7 @@ void get_sec_stats_json(char *str, const char *running_stat,
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
++int parse_resource_uid(char *str, char **port_type, int *port_id);
+ int spp_atoi(const char *str, int *val);
+ 
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+-- 
+2.7.4
+
+

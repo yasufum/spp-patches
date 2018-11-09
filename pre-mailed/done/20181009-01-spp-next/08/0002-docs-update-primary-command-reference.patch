@@ -1,0 +1,72 @@
+From 6dbfaae4e5201fa0d91b6f4637036afa68a8b084 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 10 Oct 2018 21:28:38 +0900
+Subject: [PATCH 2/4] docs: update primary command reference
+
+Update description of primary commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 0a338e9..85c1c68 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -38,29 +38,35 @@ Primary process is managed with ``pri`` command.
+ status
+ ------
+ 
+-Show status of primary.
++Show forwarding statistics of each of ports.
+ 
+ .. code-block:: console
+ 
+-    spp > pri status
+-    recv:('127.0.0.1', 50524):{Server Running}
+-
++    spp > pri; status
++    Physical Ports:
++      ID          rx          tx     tx_drop  mac_addr
++       0    78932932    78932931           1  56:48:4f:53:54:00
++    Ring Ports:
++      ID          rx          tx     rx_drop     tx_drop
++       0       89283       89283           0           0
++       1        9208        9203           0           5
++       ...
+ 
+ exit
+ ----
+ 
+-Terminate primary.
++Terminate primary process.
+ 
+ .. code-block:: console
+ 
+-    spp > pri exit
+-    closing:('127.0.0.1', 50524)
++    spp > pri; exit
+ 
+ .. note::
+ 
+-    You should not use this command because terminating primary before
+-    secondaries may cause an error.
+-    You shold use ``bye`` command instead of ``pri exit``.
++    You should not use this command if one or more secondary processes
++    are still running because terminating primary before secondaries may
++    cause an error. You shold use ``bye`` command instead of
++    ``pri; exit``.
+ 
+ clear
+ -----
+@@ -69,5 +75,4 @@ Clear statistics.
+ 
+ .. code-block:: console
+ 
+-    spp > pri clear
+-    recv:('127.0.0.1', 50524):{clear stats}
++    spp > pri; clear
+-- 
+2.7.4
+

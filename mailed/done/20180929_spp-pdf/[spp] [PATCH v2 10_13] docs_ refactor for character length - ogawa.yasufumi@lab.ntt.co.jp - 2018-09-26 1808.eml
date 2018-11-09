@@ -1,0 +1,478 @@
+X-Account-Key: account3
+X-UIDL: 12049.XZKgQnhFIIMPHDS+FcWGfjy2nFg=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:53 +0900 (JST)
+Received: from md-mta-nw003.ocn.ad.jp ([153.138.216.231])
+	by md-lpx-nw008 with LMTP id cJj3MR1Nq1uxcQAAqFjg7g
+	; Wed, 26 Sep 2018 18:10:53 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw003.ocn.ad.jp (Postfix) with ESMTP id C5F0F3C01281F
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:53 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id E4DCCD402A3
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:52 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 32AE71B11E;
+	Wed, 26 Sep 2018 11:10:52 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 4B0D21B134
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:50 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9AnEn006978;
+ Wed, 26 Sep 2018 18:10:49 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 18582140;
+ Wed, 26 Sep 2018 18:10:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 08F0E110;
+ Wed, 26 Sep 2018 18:10:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:38 +0900
+Message-Id: <1537952921-20397-11-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 10/13] docs: refactor for character length
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For documentation, lines should be less than 80 characters and expecially
+must be in literals blocks. This patch is for revising for the rule.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview.rst                  |  3 +-
+ docs/guides/setup/getting_started.rst     | 16 ++++-----
+ docs/guides/setup/howto_use.rst           |  9 ++---
+ docs/guides/setup/performance_opt.rst     | 16 +++++----
+ docs/guides/spp_vf/commands/secondary.rst | 22 ++++++------
+ docs/guides/spp_vf/gsg/build.rst          | 59 +++++++++++++++++++++----------
+ docs/guides/tools/sppc/app_launcher.rst   | 20 +++++------
+ 7 files changed, 84 insertions(+), 61 deletions(-)
+
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index 9e1c426..ed74152 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -71,4 +71,5 @@ interface to the manager.
+ Reference
+ ---------
+ 
+-* [1] `Implementation and Testing of Soft Patch Panel <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
++* [1] `Implementation and Testing of Soft Patch Panel
++  <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 52940e4..cee58aa 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -266,10 +266,10 @@ Find ports for binding to DPDK by running the tool with ``-s`` option.
+ 
+     Network devices using kernel driver
+     ===================================
+-    0000:29:00.0 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp41s0f0 drv=e1000e unused=
+-    0000:29:00.1 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp41s0f1 drv=e1000e unused=
+-    0000:2a:00.0 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp42s0f0 drv=e1000e unused=
+-    0000:2a:00.1 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp42s0f1 drv=e1000e unused=
++    0000:29:00.0 '82571EB ... 10bc' if=enp41s0f0 drv=e1000e unused=
++    0000:29:00.1 '82571EB ... 10bc' if=enp41s0f1 drv=e1000e unused=
++    0000:2a:00.0 '82571EB ... 10bc' if=enp42s0f0 drv=e1000e unused=
++    0000:2a:00.1 '82571EB ... 10bc' if=enp42s0f1 drv=e1000e unused=
+ 
+     Other Network devices
+     =====================
+@@ -300,13 +300,13 @@ cannot find it by using ``ifconfig`` or ``ip``.
+ 
+     Network devices using DPDK-compatible driver
+     ============================================
+-    0000:2a:00.0 '82571EB Gigabit Ethernet Controller (Copper) 10bc' drv=uio_pci_generic unused=vfio-pci
+-    0000:2a:00.1 '82571EB Gigabit Ethernet Controller (Copper) 10bc' drv=uio_pci_generic unused=vfio-pci
++    0000:2a:00.0 '82571EB ... 10bc' drv=uio_pci_generic unused=vfio-pci
++    0000:2a:00.1 '82571EB ... 10bc' drv=uio_pci_generic unused=vfio-pci
+ 
+     Network devices using kernel driver
+     ===================================
+-    0000:29:00.0 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp41s0f0 drv=e1000e unused=vfio-pci,uio_pci_generic
+-    0000:29:00.1 '82571EB Gigabit Ethernet Controller (Copper) 10bc' if=enp41s0f1 drv=e1000e unused=vfio-pci,uio_pci_generic
++    0000:29:00.0 '...' if=enp41s0f0 drv=e1000e unused=vfio-pci,uio_pci_generic
++    0000:29:00.1 '...' if=enp41s0f1 drv=e1000e unused=vfio-pci,uio_pci_generic
+ 
+     Other Network devices
+     =====================
+diff --git a/docs/guides/setup/howto_use.rst b/docs/guides/setup/howto_use.rst
+index 42b0d93..c2302ff 100644
+--- a/docs/guides/setup/howto_use.rst
++++ b/docs/guides/setup/howto_use.rst
+@@ -212,13 +212,14 @@ devices.
+         -hda /path/to/image.qcow2 \
+         -m 4096 \
+         -smp cores=4,threads=1,sockets=1 \
+-        -object memory-backend-file,id=mem,size=4096M,mem-path=/dev/hugepages,share=on \
++        -object \
++        memory-backend-file,id=mem,size=4096M,mem-path=/dev/hugepages,share=on \
+         -device e1000,netdev=net0,mac=00:AD:BE:B3:11:00 \
+         -netdev tap,id=net0,ifname=net0,script=/path/to/qemu-ifup \
+         -nographic \
+-        -chardev socket,id=chr0,path=/tmp/sock0 \                   # /tmp/sock0
+-        -netdev vhost-user,id=net1,chardev=chr0,vhostforce \        # netdev for vhost-user
+-        -device virtio-net-pci,netdev=net1,mac=00:AD:BE:B4:11:00 \  # device for virtio-net-pci
++        -chardev socket,id=chr0,path=/tmp/sock0 \  # /tmp/sock0
++        -netdev vhost-user,id=net1,chardev=chr0,vhostforce \
++        -device virtio-net-pci,netdev=net1,mac=00:AD:BE:B4:11:00 \
+         -monitor telnet::44911,server,nowait
+ 
+ This VM has two network interfaces.
+diff --git a/docs/guides/setup/performance_opt.rst b/docs/guides/setup/performance_opt.rst
+index 2bf8a5e..7e8c113 100644
+--- a/docs/guides/setup/performance_opt.rst
++++ b/docs/guides/setup/performance_opt.rst
+@@ -62,8 +62,8 @@ and ``pstree`` command for threads launched from QEMU process.
+ .. code-block:: console
+ 
+     $ ps ea
+-       PID TTY      STAT   TIME COMMAND
+-    192606 pts/11   Sl+    4:42 ./x86_64-softmmu/qemu-system-x86_64 -cpu host ...
++       PID TTY     STAT  TIME COMMAND
++    192606 pts/11  Sl+   4:42 ./x86_64-softmmu/qemu-system-x86_64 -cpu host ...
+ 
+ Run ``pstree`` with ``-p`` and this PID to find all threads launched from QEMU.
+ 
+@@ -100,7 +100,11 @@ and so on.
+ Reference
+ ---------
+ 
+-* [1] `Best pinning strategy for latency/performance trade-off <https://www.redhat.com/archives/vfio-users/2017-February/msg00010.html>`_
+-* [2] `PVP reference benchmark setup using testpmd <http://dpdk.org/doc/guides/howto/pvp_reference_benchmark.html>`_
+-* [3] `Enabling Additional Functionality <http://dpdk.org/doc/guides/linux_gsg/enable_func.html>`_
+-* [4] `How to get best performance with NICs on Intel platforms <http://dpdk.org/doc/guides/linux_gsg/nic_perf_intel_platform.html>`_
++* [1] `Best pinning strategy for latency/performance trade-off
++  <https://www.redhat.com/archives/vfio-users/2017-February/msg00010.html>`_
++* [2] `PVP reference benchmark setup using testpmd
++  <http://dpdk.org/doc/guides/howto/pvp_reference_benchmark.html>`_
++* [3] `Enabling Additional Functionality
++  <http://dpdk.org/doc/guides/linux_gsg/enable_func.html>`_
++* [4] `How to get best performance with NICs on Intel platforms
++  <http://dpdk.org/doc/guides/linux_gsg/nic_perf_intel_platform.html>`_
+diff --git a/docs/guides/spp_vf/commands/secondary.rst b/docs/guides/spp_vf/commands/secondary.rst
+index de0e819..f13adc3 100644
+--- a/docs/guides/spp_vf/commands/secondary.rst
++++ b/docs/guides/spp_vf/commands/secondary.rst
+@@ -44,7 +44,7 @@ owned by secondary process.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];[SUB_CMD]
++    spp > sec [SID];[SUB_CMD]
+ 
+ 
+ status
+@@ -76,7 +76,7 @@ options.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];component start [NAME] [CORE_ID] [DIRECTIVE]
++    spp > sec [SID];component start [NAME] [CORE_ID] [DIRECTIVE]
+ 
+ * ``NAME`` is used as an identifier of the component.
+ * ``DIRECTIVE`` is a role of the component and corresponds to three types
+@@ -99,7 +99,7 @@ same as ``component start`` command..
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];component stop [NAME] [CORE_ID] [DIRECTIVE]
++    spp > sec [SID];component stop [NAME] [CORE_ID] [DIRECTIVE]
+ 
+ This is an example for stopping three types of components.
+ 
+@@ -123,7 +123,7 @@ SPP VF is able to treat VLAN tag by adding port with VLAN options.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];port add [RES_ID] [PORT_TYPE] [NAME]
++    spp > sec [SID];port add [RES_ID] [PORT_TYPE] [NAME]
+ 
+ * ``RES_ID`` is a resource ID and defined as a combination of resource
+   type and number separated with delimiter ``:``.
+@@ -146,11 +146,11 @@ This is an example for adding port ``phy:0`` to ``classifier1`` as
+ 
+ For VLAN support, you need to add options for ``port add`` command.
+ To add VLAN tag, additional option ``add_vlantag`` with its options
+-``VLAN_ID`` and ``PCP`` are required.
++``VID`` and ``PCP`` are required.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];port add [RES_ID] [PORT_TYPE] [NAME] add_vlantag [VLAN_ID] [PCP]
++    spp > sec [SID];port add [RES_ID] [PORT_TYPE] [NAME] add_vlantag [VID] [PCP]
+ 
+ * ``PCP`` (Priority Code Point) is an attribute for priority defined in
+   IEEE 802.1p standard. It is ranged from 0 to 7 and
+@@ -160,7 +160,7 @@ Or to delete VLAN tag, ``del_vlantag`` option is required.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];port add [RES_ID] [PORT_TYPE] [NAME] del_vlantag
++    spp > sec [SID];port add [RES_ID] [PORT_TYPE] [NAME] del_vlantag
+ 
+ This is an example for adding a port with ``add_vlantag`` or
+ ``del_vlantag``.
+@@ -186,7 +186,7 @@ same as ``port add`` command..
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];port del [RES_ID] [PORT_TYPE] [NAME]
++    spp > sec [SID];port del [RES_ID] [PORT_TYPE] [NAME]
+ 
+ This is an example for deleting port added in previous example.
+ 
+@@ -207,7 +207,7 @@ to classifier table.
+ 
+ .. code-block:: console
+ 
+-    spp > sec [SEC_ID];classifier_table add mac [MAC_ADDRESS] [RES_ID]
++    spp > sec [SID];classifier_table add mac [MAC_ADDRESS] [RES_ID]
+ 
+ This is an example to register MAC address ``52:54:00:01:00:01``
+ with resource ID ``ring:0``.
+@@ -230,7 +230,7 @@ Register an entry with a VLAN ID to classifier table.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;classifier_table add vlan [VLAN_ID] [MAC_ADDRESS] [RES_ID]
++    spp > sec 1;classifier_table add vlan [VID] [MAC_ADDRESS] [RES_ID]
+ 
+ This is an example to register MAC address ``52:54:00:01:00:01``
+ with VLAN ID and resource ID ``ring:0``.
+@@ -265,7 +265,7 @@ Delete an entry with a VLAN ID.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;classifier_table del vlan [VLAN_ID] [MAC_ADDRESS] [RES_ID]
++    spp > sec 1;classifier_table del vlan [VID] [MAC_ADDRESS] [RES_ID]
+ 
+ This is an example to delete an entry with VLAN ID 101.
+ 
+diff --git a/docs/guides/spp_vf/gsg/build.rst b/docs/guides/spp_vf/gsg/build.rst
+index faeb664..5416035 100644
+--- a/docs/guides/spp_vf/gsg/build.rst
++++ b/docs/guides/spp_vf/gsg/build.rst
+@@ -67,13 +67,16 @@ Change grub config for hugepages and isolcpus.
+ 
+     # /etc/default/grub
+ 
+-    GRUB_CMDLINE_LINUX_DEFAULT="isolcpus=2,4,6,8,10,12-18,20,22,24,26-42,44,46 hugepagesz=1G hugepages=36 default_hugepagesz=1G"
++    GRUB_CMDLINE_LINUX_DEFAULT="isolcpus=2,...,46 hugepagesz=1G hugepages=36 default_hugepagesz=1G"
+ 
+ For hugepages, isolcpus, refer to the dpdk documentation below.
+ 
+-* `Use of Hugepages in the Linux Environment <http://dpdk.org/doc/guides/linux_gsg/sys_reqs.html#running-dpdk-applications>`_
+-* `Using Linux Core Isolation to Reduce Context Switches <http://dpdk.org/doc/guides/linux_gsg/enable_func.html#using-linux-core-isolation-to-reduce-context-switches>`_
+-* `Linux boot command line <http://dpdk.org/doc/guides/linux_gsg/nic_perf_intel_platform.html#linux-boot-command-line>`_
++* `Use of Hugepages in the Linux Environment
++  <http://dpdk.org/doc/guides/linux_gsg/sys_reqs.html#running-dpdk-applications>`_
++* `Using Linux Core Isolation to Reduce Context Switches
++  <http://dpdk.org/doc/guides/linux_gsg/enable_func.html#using-linux-core-isolation-to-reduce-context-switches>`_
++* `Linux boot command line
++  <http://dpdk.org/doc/guides/linux_gsg/nic_perf_intel_platform.html#linux-boot-command-line>`_
+ 
+ You need to run ``update-grub`` and reboot to activate grub config.
+ 
+@@ -96,10 +99,10 @@ You can check hugepage settings as following.
+     Hugepagesize:    1048576 kB		#	/etc/default/grub
+ 
+     $ mount | grep -i huge
+-    cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb,release_agent=/run/cgmanager/agents/cgm-release-agent.hugetlb,nsroot=/)
++    cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,...,nsroot=/)
+     hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime)
+-    hugetlbfs-kvm on /run/hugepages/kvm type hugetlbfs (rw,relatime,mode=775,gid=117)
+-    hugetlb on /run/lxcfs/controllers/hugetlb type cgroup (rw,relatime,hugetlb,release_agent=/run/cgmanager/agents/cgm-release-agent.hugetlb,nsroot=/)
++    hugetlbfs-kvm on /run/hugepages/kvm type hugetlbfs (rw,...,gid=117)
++    hugetlb on /run/lxcfs/controllers/hugetlb type cgroup (rw,...,nsroot=/)
+ 
+ Finally, you umount default hugepage.
+ 
+@@ -181,6 +184,9 @@ virtinst, bridge-utils packages via ``apt-get`` install to run ``virt-install``.
+ ``virsh`` is a command line interface that can be used to create, destroy,
+ stop start and edit VMs and configure. After create an image file,
+ you can setup it with ``virt-install``.
++``--location`` is a URL of installer and it should be
++``http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/``
++for amd64.
+ 
+ .. code-block:: console
+ 
+@@ -194,7 +200,7 @@ you can setup it with ``virt-install``.
+    --network network=default \
+    --graphics none \
+    --console pty,target_type=serial \
+-   --location 'http://archive.ubuntu.com/ubuntu/dists/xenial/main/installer-amd64/' \
++   --location '[LOCATION]' \
+    --extra-args 'console=ttyS0,115200n8 serial'
+ 
+ You may need type the following commands through ssh to activate console.
+@@ -211,10 +217,18 @@ Edit VM configuration with virsh.
+ 
+     $ virsh edit [VM_NAME]
+ 
+-You need to add ``xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'`` into the domain tag because of adding ``<qemu:commandline>`` tag.
+-In addition, you need to add the tag enclosed by ``<memoryBacking>`` and ``</memoryBacking>``, ``<qemu:commandline>`` and ``</qemu:commandline>`` because SPP uses vhost-user as interface with VM.
+-Note that number used in those tags should be the same value (e.g. chr0,sock0,vhost-net0) and these values should correspond to "add vhost N" (in this example 0).
+-MAC address used in ``<qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>`` can be specified when registering MAC address to classifier using Secondary command.
++You need to add ``xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'``
++into the domain tag because of adding ``<qemu:commandline>`` tag.
++In addition, you need to add the tag enclosed by ``<memoryBacking>`` and
++``</memoryBacking>``, ``<qemu:commandline>`` and ``</qemu:commandline>``
++because SPP uses vhost-user as interface with VM.
++Note that number used in those tags should be the same value
++(e.g. chr0,sock0,vhost-net0) and these values should correspond
++to "add vhost N" (in this example 0).
++MAC address used in
++``<qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>``
++can be specified when registering MAC address to classifier
++using Secondary command.
+ 
+         The following is an example of modified xml file:
+ 
+@@ -257,17 +271,20 @@ MAC address used in ``<qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:5
+           <address type='drive' controller='0' bus='1' target='0' unit='0'/>
+         </disk>
+         <controller type='usb' index='0'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
++          <address type='pci' domain='0x0000' bus='0x00' slot='0x01'
++          function='0x2'/>
+         </controller>
+         <controller type='pci' index='0' model='pci-root'/>
+         <controller type='ide' index='0'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
++          <address type='pci' domain='0x0000' bus='0x00' slot='0x01'
++          function='0x1'/>
+         </controller>
+         <interface type='network'>
+           <mac address='52:54:00:99:aa:7f'/>
+           <source network='default'/>
+           <model type='rtl8139'/>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
++          <address type='pci' domain='0x0000' bus='0x00' slot='0x02'
++          function='0x0'/>
+         </interface>
+         <serial type='pty'>
+           <target type='isa-serial' port='0'/>
+@@ -276,27 +293,31 @@ MAC address used in ``<qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:5
+           <target type='serial' port='0'/>
+         </console>
+         <memballoon model='virtio'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
++          <address type='pci' domain='0x0000' bus='0x00' slot='0x03'
++          function='0x0'/>
+         </memballoon>
+       </devices>
+       <qemu:commandline>
+         <qemu:arg value='-cpu'/>
+         <qemu:arg value='host'/>
+         <qemu:arg value='-object'/>
+-        <qemu:arg value='memory-backend-file,id=mem,size=4096M,mem-path=/run/hugepages/kvm,share=on'/>
++        <qemu:arg
++        value='memory-backend-file,id=mem,size=4096M,mem-path=/run/hugepages/kvm,share=on'/>
+         <qemu:arg value='-numa'/>
+         <qemu:arg value='node,memdev=mem'/>
+         <qemu:arg value='-mem-prealloc'/>
+         <qemu:arg value='-chardev'/>
+         <qemu:arg value='socket,id=chr0,path=/tmp/sock0,server'/>
+         <qemu:arg value='-device'/>
+-        <qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>
++        <qemu:arg
++        value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>
+         <qemu:arg value='-netdev'/>
+         <qemu:arg value='vhost-user,id=vhost-net0,chardev=chr0,vhostforce'/>
+         <qemu:arg value='-chardev'/>
+         <qemu:arg value='socket,id=chr1,path=/tmp/sock1,server'/>
+         <qemu:arg value='-device'/>
+-        <qemu:arg value='virtio-net-pci,netdev=vhost-net1,mac=52:54:00:12:34:57'/>
++        <qemu:arg
++        value='virtio-net-pci,netdev=vhost-net1,mac=52:54:00:12:34:57'/>
+         <qemu:arg value='-netdev'/>
+         <qemu:arg value='vhost-user,id=vhost-net1,chardev=chr1,vhostforce'/>
+       </qemu:commandline>
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index 02b46c0..c3c7475 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -512,7 +512,7 @@ It shows options without of EAL and container.
+                       [--eth-peer ETH_PEER] [--pkt-filter-mode PKT_FILTER_MODE]
+                       [--pkt-filter-report-hash PKT_FILTER_REPORT_HASH]
+                       [--pkt-filter-size PKT_FILTER_SIZE]
+-                      [--pkt-filter-flexbytes-offset PKT_FILTER_FLEXBYTES_OFFSET]
++                      [--pkt-filter-flexbytes-offset PKT_FILTER_FLEXBYTES...]
+                       [--pkt-filter-drop-queue PKT_FILTER_DROP_QUEUE]
+                       [--disable-crc-strip] [--enable-lro] [--enable-rx-cksum]
+                       [--enable-scatter] [--enable-hw-vlan]
+@@ -548,7 +548,7 @@ It shows options without of EAL and container.
+       --no-privileged       Disable docker's privileged mode if it's needed
+       --pci                 Enable PCI (default is None)
+       -i, --interactive     Run in interactive mode (default is None)
+-      -a, --auto-start      Start forwarding on initialization (default is None)
++      -a, --auto-start      Start forwarding on initialization (default ...)
+       --tx-first            Start forwarding, after sending a burst of packets
+                             first
+       --stats-period STATS_PERIOD
+@@ -616,10 +616,10 @@ It shows options without of EAL and container.
+                             'ieee1588', 'tm'
+       --rss-ip              Set RSS functions for IPv4/IPv6 only
+       --rss-udp             Set RSS functions for IPv4/IPv6 and UDP
+-      --rxq RXQ             Number of RX queues per port, 1-65535 (default is 1)
++      --rxq RXQ             Number of RX queues per port, 1-65535 (default ...)
+       --rxd RXD             Number of descriptors in the RX rings
+                             (default is 128)
+-      --txq TXQ             Number of TX queues per port, 1-65535 (default is 1)
++      --txq TXQ             Number of TX queues per port, 1-65535 (default ...)
+       --txd TXD             Number of descriptors in the TX rings
+                             (default is 512)
+       --burst BURST         Number of packets per burst, 1-512 (default is 32)
+@@ -627,17 +627,13 @@ It shows options without of EAL and container.
+       --rxpt RXPT           Prefetch threshold register of RX rings
+                             (default is 8)
+       --rxht RXHT           Host threshold register of RX rings (default is 8)
+-      --rxfreet RXFREET     Free threshold of RX descriptors,0-'rxd' (default is
+-                            0)
++      --rxfreet RXFREET     Free threshold of RX descriptors,0-'rxd' (...)
+       --rxwt RXWT           Write-back threshold register of RX rings
+                             (default is 4)
+-      --txpt TXPT           Prefetch threshold register of TX rings (default is
+-                            36)
++      --txpt TXPT           Prefetch threshold register of TX rings (...)
+       --txht TXHT           Host threshold register of TX rings (default is 0)
+-      --txwt TXWT           Write-back threshold register of TX rings (default
+-                            is 0)
+-      --txfreet TXFREET     Free threshold of RX descriptors, 0-'txd' (default
+-                            is 0)
++      --txwt TXWT           Write-back threshold register of TX rings (...)
++      --txfreet TXFREET     Free threshold of RX descriptors, 0-'txd' (...)
+       --txrst TXRST         Transmit RS bit threshold of TX rings, 0-'txd'
+                             (default is 0)
+       --rx-queue-stats-mapping RX_QUEUE_STATS_MAPPING
+-- 
+2.7.4
+
+

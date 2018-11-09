@@ -1,0 +1,30 @@
+From 29f08c8b7a91c29f3b94a5f6755ef59e79b91382 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 16 Oct 2018 09:12:00 +0900
+Subject: [PATCH 5/5] controller: remove SECONDARY_LIST
+
+SECONDARY_LIST is a list of secondary IDs running on, but no need
+anymore because running secondary IDs can be retrieved from spp-ctl.
+This update is to remove SECONDARY_LIST.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/spp_common.py | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index 20c6bc8..1a15bcc 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -5,8 +5,6 @@
+ import logging
+ import os
+ 
+-SECONDARY_LIST = []
+-
+ PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+ # Maximum num of sock queues for secondaries
+-- 
+2.13.1
+

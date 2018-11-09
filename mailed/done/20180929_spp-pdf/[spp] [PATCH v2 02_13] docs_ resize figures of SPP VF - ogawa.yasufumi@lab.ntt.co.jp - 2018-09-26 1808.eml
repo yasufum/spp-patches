@@ -1,0 +1,100 @@
+X-Account-Key: account3
+X-UIDL: 12041.xQZVL1TSMqxhlmjCNYpDGqC1q0k=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb010.ocn.ad.jp (LHLO md-lpx-cb010) (153.138.210.83)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:46 +0900 (JST)
+Received: from md-mta-cb004.ocn.ad.jp ([153.138.211.72])
+	by md-lpx-cb010 with LMTP id OD0+OBVNq1taPQAA/ui1sQ
+	; Wed, 26 Sep 2018 18:10:45 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-cb004.ocn.ad.jp (Postfix) with ESMTP id DFE37C009224
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:45 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 3C79C500288
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:45 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 600E61B11E;
+	Wed, 26 Sep 2018 11:10:43 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 0AFAF1B111
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:41 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9AehM006954;
+ Wed, 26 Sep 2018 18:10:40 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C6AB3140;
+ Wed, 26 Sep 2018 18:10:40 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id B0EC2110;
+ Wed, 26 Sep 2018 18:10:40 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:30 +0900
+Message-Id: <1537952921-20397-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 02/13] docs: resize figures of SPP VF
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to change the size of figures defined in RST files for
+supporing PDF output. For html, size is adjusted appropriately if it is
+too large. However, it is not adjusted in PDF.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/overview.rst           | 2 +-
+ docs/guides/spp_vf/use_cases/usecase1.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index fa6e8b9..6d9e47a 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -56,6 +56,6 @@ Incoming packets from rx on host1 are sent to each of vhosts of VM
+ by looking up destination MAC address in the packet.
+ 
+ .. figure:: ../images/spp_vf/spp_vf_overview.*
+-    :width: 80%
++    :width: 70%
+ 
+     Overview of SPP VF
+diff --git a/docs/guides/spp_vf/use_cases/usecase1.rst b/docs/guides/spp_vf/use_cases/usecase1.rst
+index 84efa34..a107578 100644
+--- a/docs/guides/spp_vf/use_cases/usecase1.rst
++++ b/docs/guides/spp_vf/use_cases/usecase1.rst
+@@ -42,7 +42,7 @@ port.
+ .. _figure_simple_ssh_login:
+ 
+ .. figure:: ../../images/spp_vf/usecase1_overview.*
+-    :width: 60%
++    :width: 55%
+ 
+     Simple SSH Login
+ 
+-- 
+2.7.4
+
+

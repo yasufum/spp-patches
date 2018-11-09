@@ -1,0 +1,42 @@
+From b87d438b1f5925be40d335cf02e0a5937e579307 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 13:59:22 +0900
+Subject: [PATCH 0/4] Port management with resource UID
+
+Resource UID (called resource ID previously) consists of port type and
+port ID was introduced to specify a port. For example, users can patch
+ports as following.
+
+  spp > sec 1; patch phy:0 ring:0  # instead of 'patch 0 1'
+
+However, add and del commands are still remained using old style of
+resource UID.
+
+  spp > sec 1; add ring 0  # should be updated to 'add ring:0'
+
+This series of patches is to update the usage of resource UID.
+
+* Add a common function parse_resource_uid() to extract port type and ID
+  from resource UID.
+
+* Update spp_nfv and spp_vm to use parse_resource_uid().
+
+* Update add and del command in SPP controller to use the latest style
+  of resource UID.
+
+Yasufumi Ogawa (4):
+  shared: add parsing resource UID
+  spp_nfv: change to use parse_resource_uid
+  spp_vm: change to use parse_resource_uid
+  controller: unify accepting resource UID format
+
+ src/controller/shell.py |  16 ++++--
+ src/nfv/nfv.c           | 143 ++++++++++++++----------------------------------
+ src/shared/common.c     |  24 ++++++++
+ src/shared/common.h     |   1 +
+ src/vm/main.c           | 103 ++++++++++------------------------
+ 5 files changed, 104 insertions(+), 183 deletions(-)
+
+-- 
+2.7.4
+

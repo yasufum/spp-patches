@@ -1,0 +1,104 @@
+X-Account-Key: account4
+X-UIDL: 000082a356a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E9D214006C6
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 25 Oct 2018 14:20:37 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id E33937F3D6; Thu, 25 Oct 2018 14:20:37 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id E1F417F2E1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 25 Oct 2018 14:20:37 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D4B07EA7CFC;
+	Thu, 25 Oct 2018 14:20:37 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id BD3F9EA7C7B;
+	Thu, 25 Oct 2018 14:20:37 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/5] controller: change pri exit cmd to call REST API
+Date: Thu, 25 Oct 2018 14:20:21 +0900
+Message-Id: <20181025052023.17190-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181025052023.17190-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025052023.17190-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To send `exit` command to spp_primary, change to call REST API of
+spp-ctl.
+
+This patch includes update for removing `exit` from `pri` command
+to avoid terminating spp_primary while running secondary processes.
+Use `bye all` command for graceful terminating.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/bye.py |  2 +-
+ src/controller/commands/pri.py | 16 ++++++++++++----
+ 2 files changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/src/controller/commands/bye.py b/src/controller/commands/bye.py
+index e5ca3bb..3ffc259 100644
+--- a/src/controller/commands/bye.py
++++ b/src/controller/commands/bye.py
+@@ -28,7 +28,7 @@ class SppBye(object):
+             print('Closing secondary ...')
+             self.close_all_secondary(sec_ids)
+             print('Closing primary ...')
+-            self.spp_primary.run('exit')
++            self.spp_primary.do_exit()
+ 
+     def complete(self, text, line, begidx, endidx):
+ 
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index b51138d..51da7ab 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -13,7 +13,7 @@ class SppPrimary(object):
+     """
+ 
+     # All of primary commands used for validation and completion.
+-    PRI_CMDS = ['status', 'exit', 'clear']
++    PRI_CMDS = ['status', 'clear']
+ 
+     def __init__(self, spp_ctl_cli):
+         self.spp_ctl_cli = spp_ctl_cli
+@@ -46,12 +46,20 @@ class SppPrimary(object):
+                 else:
+                     print('Error: unknown response.')
+ 
+-        elif cmd == 'exit':
+-            print('"pri; exit" is deprecated.')
+-
+         else:
+             print('Invalid pri command!')
+ 
++    def do_exit(self):
++        res = self.spp_ctl_cli.delete('primary')
++        if res is not None:
++            error_codes = self.spp_ctl_cli.rest_common_error_codes
++            if res.status_code == 204:
++                print('Exit primary')
++            elif res.status_code in error_codes:
++                pass
++            else:
++                print('Error: unknown response.')
++
+     def print_status(self, json_obj):
+         """Parse SPP primary's status and print.
+ 
+-- 
+2.7.4
+
+

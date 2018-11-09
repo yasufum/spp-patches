@@ -1,0 +1,29 @@
+From a24591a634aa7cc7944690f9ea0e38cfdf3ce0fe Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 26 Aug 2018 13:43:13 +0900
+Subject: [PATCH 1/5] shared: change socket buffer length
+
+Size of message via socket might exceed 1000 if network configuration is
+complexed. This patch is for extending the size to 2048.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/common.h b/src/shared/common.h
+index f39163d..f030ecd 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -27,7 +27,7 @@
+ #include <rte_ring.h>
+ 
+ #define MAX_CLIENT  99
+-#define MSG_SIZE    1000
++#define MSG_SIZE 2048  /* socket buffer len */
+ #define SOCK_RESET  -1
+ #define PORT_RESET  UINT16_MAX
+ 
+-- 
+2.7.4
+

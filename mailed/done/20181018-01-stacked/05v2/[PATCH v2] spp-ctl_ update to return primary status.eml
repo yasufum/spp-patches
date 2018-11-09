@@ -1,0 +1,78 @@
+X-Account-Key: account4
+X-UIDL: 000080d956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 427504009F2
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 11 Oct 2018 19:40:45 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 408CD23BB75; Thu, 11 Oct 2018 19:40:45 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 3F86823BB2A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 11 Oct 2018 19:40:45 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 25DC8125;
+	Thu, 11 Oct 2018 19:40:45 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 071CE105;
+	Thu, 11 Oct 2018 19:40:45 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2] spp-ctl: update to return primary status
+Date: Thu, 11 Oct 2018 19:40:38 +0900
+Message-Id: <20181011104038.48872-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181009105324.42757-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181009105324.42757-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Status command of primary is changed to return statistics of each of
+ports. This update is to change spp-ctl to return the reponse.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index c81d0b7..6768aed 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -325,7 +325,6 @@ class V1NFVHandler(BaseHandler):
+         # that it has no dst port.
+         #   {"status":"idling","ports":[{"src":"phy:0","dst":"null"},...
+ 
+-        # TODO(yasufum) modify after nfv and vm is updated for new data definition.
+         try:
+             nfv = json.loads(data)
+         except json.JSONDecodeError as e:
+@@ -398,10 +397,12 @@ class V1PrimaryHandler(BaseHandler):
+         return proc
+ 
+     def convert_status(self, data):
+-        # no data returned at the moment.
+-        # some data will be returned when the primary becomes to
+-        # return statistical information.
+-        return {}
++        stat = {}
++        try:
++            stat = json.loads(data)
++        except json.JSONDecodeError as e:
++            print("%s" % e)
++        return stat
+ 
+     def get_status(self):
+         proc = self._get_proc()
+-- 
+2.7.4
+
+

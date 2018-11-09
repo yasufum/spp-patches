@@ -1,0 +1,258 @@
+X-Account-Key: account4
+X-UIDL: 00007fce56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 666B840021C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6458123BB23; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 63B8823BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 544EB639937
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4879B639934
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AMROCrxPxwyWx+qniNogl6mtXPHoOpqn0MwgJ65?=
+ =?us-ascii?q?Eul7NJdOGZ8o//OFDEvK023lPCWIye8OpB07OQvqvkH2oc/dCKtzYAaM8ETA?=
+ =?us-ascii?q?cL3OMRmQFoG8uZEQvjNve/aCAzNNpLUF5j4mH9Ok8TGt6tL0bKrCiU6jgfUg?=
+ =?us-ascii?q?76KRIzI+30HoDIiMHi0Oy704PaZwROmSr7arQ0Lg3v91fru8IbgJVvJuMK8j?=
+ =?us-ascii?q?WT8yMaXeNQyCsoKVmWllPn/sLopdhu+CAWve49scVHF6fiLew+SvRDATIqPn?=
+ =?us-ascii?q?pQhoWjvATfTQaJ+noXU3kH2htODQ/f6RjmX5D3+iLkv+t50SOeMIX4V7cxET?=
+ =?us-ascii?q?il6q5qTlfvhkJlf3Y+/Gj/lMV0jaRGsFSqoFp928+cYY2YMuZ/YrKIZckTFi?=
+ =?us-ascii?q?JKWsdcUTAEA5vpNdJXSbNbbaAJ98+k+whrz1P2HwSnCeLxxyUdinTz1Oghy+?=
+ =?us-ascii?q?F5SEfL1whmGc4S9n/T6tftZ8JwGai4yrfFyTLbYrZYwzD4vcLPfhkJv/iIXL?=
+ =?us-ascii?q?RtYYzazg8tD0mW6zfY4ZygJD6T2ukX5iKc4+NIS+urimg6u0d6pX6t3o1/wp?=
+ =?us-ascii?q?mMjYUTxFfe8Cx/y4tgPty0RnlgfcSlG4cJ7XOgOoB7Q90vTyRTgAhgm+BUn5?=
+ =?us-ascii?q?m9cWBKxJ8izlvEc/nfKs6F6RalUvqNZzx/wnB9Kvq5gF6p/E6sx/eZNIH82U?=
+ =?us-ascii?q?tWridDjtjHt2wcnx3V5M+dT/Jh/0CnkT+R3gHX4+tALAg6j63eY5Imx7cxkN?=
+ =?us-ascii?q?IUvyGhVmfxlEzekqaSd0M56q6j7KLlevSup5ORMZN1lhCrN60vnsKlBuFrV2?=
+ =?us-ascii?q?pGF2Of+Om6yPji5RijGe0M16dm1PiB9smGdowBq6W0AhFYyNMv4BO2Siy+1Y?=
+ =?us-ascii?q?xB23QMKBRDZA7BhI+vOUmdRZKwRfq5nVmoly9mgv7cObi0SJLBJ1DdmbPge6?=
+ =?us-ascii?q?ttrUVbjggrh4M6hdocGvQaLfT/V1Wk/tvUBzcnOgi1xfv3Tt56kIEGEzHHEu?=
+ =?us-ascii?q?qSN6XctkWN7+QkLryXZYMbjy3hMfku+6e/3098okcUeOyS5bVSbXm5Gvp8JE?=
+ =?us-ascii?q?DAPCjyi9MAF3oa+AE5Cu7y2gXbDWxjIk2qVqd53QkVTZq8BN6eFJ6khL2HwT?=
+ =?us-ascii?q?f9FZoQZHgUUl0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggJpbQMECyiMCV+NUJZeFIFmKBABhEAChEQGMA0NAQMBAQI?=
+ =?us-ascii?q?BAQEBbRwMhToGgQkgMSwrBxKDIQGCAKVsiC6BZIcOgVqCW4IAgRKHVYYTAoZ?=
+ =?us-ascii?q?WB4FuhV9iS44FCYZKiWsigheNWJckOIFVhCwJiESIFzAweQEBAQGNagEB?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id AB70F240CD6; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 07/14] spp-ctl: add Controller class
+Date: Fri,  5 Oct 2018 12:57:50 +0900
+Message-Id: <20181005035757.23122-8-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+Controller is main class of spp-ctl for setting up connection between
+SPP processes and initializing WebServer class for receiving requests.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_ctl.py | 158 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 158 insertions(+)
+ create mode 100644 src/spp-ctl/spp_ctl.py
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+new file mode 100644
+index 0000000..e168747
+--- /dev/null
++++ b/src/spp-ctl/spp_ctl.py
+@@ -0,0 +1,158 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++import eventlet
++eventlet.monkey_patch()
++
++import argparse
++import errno
++import json
++import logging
++import socket
++import subprocess
++
++import spp_proc
++import spp_webapi
++
++
++LOG = logging.getLogger(__name__)
++
++
++MSG_SIZE = 4096
++
++
++class Controller(object):
++
++    def __init__(self, pri_port, sec_port, api_port):
++        self.web_server = spp_webapi.WebServer(self, api_port)
++        self.procs = {}
++        self.init_connection(pri_port, sec_port)
++
++    def start(self):
++        self.web_server.start()
++
++    def init_connection(self, pri_port, sec_port):
++        self.pri_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
++        self.pri_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
++        self.pri_sock.bind(('127.0.0.1', pri_port))
++        self.pri_sock.listen(1)
++        self.primary_listen_thread = eventlet.greenthread.spawn(
++            self.accept_primary)
++
++        self.sec_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
++        self.sec_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
++        self.sec_sock.bind(('127.0.0.1', sec_port))
++        self.sec_sock.listen(1)
++        self.secondary_listen_thread = eventlet.greenthread.spawn(
++            self.accept_secondary)
++
++    def accept_primary(self):
++        while True:
++            conn, _ = self.pri_sock.accept()
++            proc = self.procs.get(spp_proc.ID_PRIMARY)
++            if proc is not None:
++                LOG.warning("spp_primary reconnect !")
++                with proc.sem:
++                    try:
++                        proc.conn.close()
++                    except Exception:
++                        pass
++                    proc.conn = conn
++                # NOTE: when spp_primary restart, all secondarys must be
++                # restarted. this is out of controle of spp-ctl.
++            else:
++                LOG.info("primary connected.")
++                self.procs[spp_proc.ID_PRIMARY] = spp_proc.PrimaryProc(conn)
++
++    def accept_secondary(self):
++        while True:
++            conn, _ = self.sec_sock.accept()
++            LOG.debug("sec accepted: get process id")
++            proc = self._get_proc(conn)
++            if proc is None:
++                LOG.error("get process id failed")
++                conn.close()
++                continue
++            old_proc = self.procs.get(proc.id)
++            if old_proc:
++                LOG.warning("%s(%d) reconnect !", old_proc.type, old_proc.id)
++                if old_proc.type != proc.type:
++                    LOG.warning("type changed ! new type: %s", proc.type)
++                with old_proc.sem:
++                    try:
++                        old_proc.conn.close()
++                    except Exception:
++                        pass
++            else:
++                LOG.info("%s(%d) connected.", proc.type, proc.id)
++            self.procs[proc.id] = proc
++
++    @staticmethod
++    def _continue_recv(conn):
++        try:
++            # must set non-blocking to recieve remining data not to happen
++            # blocking here.
++            # NOTE: usually MSG_DONTWAIT flag is used for this purpose but
++            # this flag is not supported under eventlet.
++            conn.setblocking(False)
++            data = b""
++            while True:
++                try:
++                    rcv_data = conn.recv(MSG_SIZE)
++                    data += rcv_data
++                    if len(rcv_data) < MSG_SIZE:
++                        break
++                except socket.error as e:
++                    if e.args[0] == errno.EAGAIN:
++                        # OK, no data remining. this happens when recieve data
++                        # length is just multiple of MSG_SIZE.
++                        break
++                    raise e
++            return data
++        finally:
++            conn.setblocking(True)
++
++    @staticmethod
++    def _send_command(conn, command):
++        conn.sendall(command.encode())
++        data = conn.recv(MSG_SIZE)
++        if data and len(data) == MSG_SIZE:
++            # could not receive data at once. recieve remining data.
++            data += self._continue_recv(conn)
++        if data:
++            data = data.decode()
++        return data
++
++    def _get_proc(self, conn):
++        # it is a bit ad hoc. send "_get_clinet_id" command and try to
++        # decode reply for each proc type. if success, that is the type.
++        data = self._send_command(conn, "_get_client_id")
++        for proc in [spp_proc.VfProc, spp_proc.NfvProc]:
++            sec_id = proc._decode_client_id(data)
++            if sec_id is not None:
++                return proc(sec_id, conn)
++
++    def get_processes(self):
++        procs = []
++        for proc in self.procs.values():
++            p = {"type": proc.type}
++            if proc.id != spp_proc.ID_PRIMARY:
++                p["client-id"] = proc.id
++            procs.append(p)
++        return procs
++
++
++def main():
++    parser = argparse.ArgumentParser(description="SPP Controller")
++    parser.add_argument("-p", dest='pri_port', type=int, default=5555,
++                        action='store', help="primary port")
++    parser.add_argument("-s", dest='sec_port', type=int, default=6666,
++                        action='store', help="secondary port")
++    parser.add_argument("-a", dest='api_port', type=int, default=7777,
++                        action='store', help="web api port")
++    args = parser.parse_args()
++
++    logging.basicConfig(level=logging.DEBUG)
++
++    controller = Controller(args.pri_port, args.sec_port, args.api_port)
++    controller.start()
+-- 
+2.17.1
+
+

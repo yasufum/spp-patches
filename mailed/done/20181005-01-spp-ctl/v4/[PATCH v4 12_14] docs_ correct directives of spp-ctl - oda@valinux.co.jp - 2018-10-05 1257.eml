@@ -1,0 +1,385 @@
+X-Account-Key: account4
+X-UIDL: 00007fd356a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 769C1400234
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 74FA723BB23; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-imss01.ecl.ntt.co.jp (bcmv-imss01.ecl.ntt.co.jp [129.60.83.122])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 7355023BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcmv-imss01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id 5EC4C12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcma-spm01.ecl.ntt.co.jp (bcma-spm01.ecl.ntt.co.jp [129.60.253.41])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id 4A118B1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Authentication-Results: bcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AXhrrYhYaF6xMiVkcdoQRZ0r/LSx94efdIxIV55?=
+ =?us-ascii?q?w7irlHbqWk+dHYMVfC4el21QeSD4/Q7vsBkPLT6/mmVGcEp5CdrDYJd9pOT0?=
+ =?us-ascii?q?xNkt0YyionBsPNEkjnNLjydSVvG8hLfEFs+3C9LFgTE8G4ZUWB6maq42s0HR?=
+ =?us-ascii?q?PyfRFwOvyzH4fTi8qt0OXn/JHaSxtBgDu7fKM0JxLwrx2I7JssjIBvK7g8xl?=
+ =?us-ascii?q?7ymlUSKrwE42RuKBrTlR3574Kr5Js7qmJdsPZn8dJcF679OaYgH/ReC3w9Pm?=
+ =?us-ascii?q?Y56deO11GLRBaT5nYaTmQdkwZZSwnD4hbgW57tsyz8/uNj0SieNMfyQPg6Qz?=
+ =?us-ascii?q?Onp6tsTRbpjm8AOVtbuCnQhsVYkqtfoRS8t1p0xMjWeMDdNfZzeL/cYcJPXX?=
+ =?us-ascii?q?BIDY5aUy1MBJ/5bpNaVbNZe78C/8+s/x1X8UjbZ0HkHu7kxz5Wi2Wj16Y/2q?=
+ =?us-ascii?q?E6CQSehUotFNZItmjI6t7ycqUKAoXXhOHFyyvOa/RO1HLz8o/NJ1omrfikQ7?=
+ =?us-ascii?q?t0cMzM2Q8kEEXHlh/DzO6tdyPQzekLv2WBuqBnWeuHlWcjqgdssn6kwYEuks?=
+ =?us-ascii?q?OazpJQwVfC+yJjxY8zLtDtU093b+m/DIFRvD3DbdlMT8gvQn9ltGMB8pNc6M?=
+ =?us-ascii?q?PpWi8MxdxnzRXaYrmca43Qu1TuX+LXJytkwnliPrCn1V609gC7x+vwW9PRsh?=
+ =?us-ascii?q?4CpzdZktTKqnEG1gDCosmBRPxn+0692DGJnwnN4+BAKEowmOLVMZkkirI3k5?=
+ =?us-ascii?q?MStwzEEEqU0A3xgKa+aEwg++61+6LsZfPkvt7UNoN5jB3/LrV7n8W+BeoiNQ?=
+ =?us-ascii?q?1dOgrTse+41bDl4Qj4WOAQ16Vwy/OJ9sGCY51H9eajDgRY05gu8UO1BDKvlc?=
+ =?us-ascii?q?8AmCFeal9OfFSBk5SvMFaIIuiraJX3y1mqjjpvwOjLe7P7BZCYZH/PmZ//dL?=
+ =?us-ascii?q?J87VNMjgE0i9JHrcExaPlJMLfoV0n9ucaNRBg1OiSqyuLmDshtkIgZH2CXSP?=
+ =?us-ascii?q?zRIObZtlmG4fgqKu+HadoOuTrzHOM5/f/lkSZoy29YRrGg2N4sUF79G/1nJ0?=
+ =?us-ascii?q?uDZn+134UfGGMLuBcuCuftzl+aA2YKOySCGpkk7zR+M7qISJ/ZT9nw0qKI2C?=
+ =?us-ascii?q?a9A40QbWcACEjeSXo=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggJpbQMECyiMCV+NUJZeFIFmOAGEQAKERAYwDQ0BAwEBAgE?=
+ =?us-ascii?q?BAQFtKIU6BoEJIDEsKwcSgyEBggClbIgugWSHDoFagluCAIESh3lDhQoiAoZ?=
+ =?us-ascii?q?WB4F4hUZxhQCJUAmQNSKPb5ckOIFVhCyQZDAwAXgBAQEBjWoBAQ?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by bcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 2F7FE240CDF; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 12/14] docs: correct directives of spp-ctl
+Date: Fri,  5 Oct 2018 12:57:55 +0900
+Message-Id: <20181005035757.23122-13-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: No
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of code-block directives are incorrect, and section headers are not
+applied with the documentation guidelines of DPDK. This patch is to
+correct following directives.
+
+* Mistaken code-block directives.
+
+* Section headers.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 74 +++++++++++++--------------
+ 1 file changed, 37 insertions(+), 37 deletions(-)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 285526e..3263934 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -3,17 +3,16 @@
+ 
+ .. _spp_ctl_api_ref:
+ 
+-=============
+ API Reference
+ =============
+ 
+ Overview
+-========
++--------
+ 
+ ``spp-ctl`` provides simple REST like API. It supports http only, not https.
+ 
+ Request and Response
+---------------------
++~~~~~~~~~~~~~~~~~~~~
+ 
+ Request body is JSON format.
+ It is accepted both ``text/plain`` and ``application/json``
+@@ -26,7 +25,8 @@ If a request fails, the response is a text which shows error reason
+ and the content-type is ``text/plain``.
+ 
+ Error code
+-----------
++~~~~~~~~~~
++
+ 
+ ``spp-ctl`` does basic syntax and lexical check of a request.
+ 
+@@ -42,10 +42,10 @@ Error code
+ 
+ 
+ API independent of the process type
+-===================================
++-----------------------------------
+ 
+ GET /v1/processes
+------------------
++~~~~~~~~~~~~~~~~~
+ 
+ Show the SPP processes connected to the ``spp-ctl``.
+ 
+@@ -77,7 +77,7 @@ process object:
+ Response example
+ ^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: json
+ 
+     [
+       {
+@@ -95,10 +95,10 @@ Response example
+ 
+ 
+ API for spp_primary
+-===================
++-------------------
+ 
+ GET /v1/primary/status
+-----------------------
++~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Show statistical information.
+ 
+@@ -120,7 +120,7 @@ when ``spp_primary`` implements it.
+ 
+ 
+ DELETE /v1/primary/status
+--------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Clear statistical information.
+ 
+@@ -141,10 +141,10 @@ There is no body content for the response of a successful ``PUT`` request.
+ 
+ 
+ API for spp_nfv/spp_vm
+-======================
++----------------------
+ 
+ GET /v1/nfvs/{client_id}
+-------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Get the information of the ``spp_nfv`` or ``spp_vm`` process.
+ 
+@@ -196,7 +196,7 @@ patch objest
+ Response example
+ ^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: json
+ 
+     {
+       "client-id": 1,
+@@ -217,13 +217,13 @@ Response example
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};status
+ 
+ 
+ PUT /v1/nfvs/{client_id}/forward
+---------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Start or Stop forwarding.
+ 
+@@ -267,19 +267,19 @@ Equivalent CLI command
+ 
+ action is ``start``
+ 
+-.. code-block:: yaml
++.. code-block:: none
+ 
+     sec {client_id};forward
+ 
+ action is ``stop``
+ 
+-.. code-block:: yaml
++.. code-block:: none
+ 
+     sec {client_id};stop
+ 
+ 
+ PUT /v1/nfvs/{client_id}/ports
+-------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Add or Delete port.
+ 
+@@ -323,13 +323,13 @@ There is no body content for the response of a successful ``PUT`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};{action} {interface_type} {interface_id}
+ 
+ 
+ PUT /v1/nfvs/{client_id}/patches
+---------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Add a patch.
+ 
+@@ -373,13 +373,13 @@ There is no body content for the response of a successful ``PUT`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};patch {src} {dst}
+ 
+ 
+ DELETE /v1/nfvs/{client_id}/patches
+------------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Reset patches.
+ 
+@@ -411,16 +411,16 @@ There is no body content for the response of a successful ``DELETE`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};patch reset
+ 
+ 
+ API for spp_vf
+-==============
++--------------
+ 
+ GET /v1/vfs/{client_id}
+------------------------
++~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Get the information of the ``spp_vf`` process.
+ 
+@@ -512,7 +512,7 @@ classifier table:
+ Response example
+ ^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: yaml
++.. code-block:: json
+ 
+     {
+       "client-id": 1,
+@@ -619,13 +619,13 @@ The component which type is ``unused`` is to indicate unused core.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};status
+ 
+ 
+ POST /v1/vfs/{client_id}/components
+------------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Start the component.
+ 
+@@ -672,13 +672,13 @@ There is no body content for the response of a successful ``POST`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};component start {name} {core} {type}
+ 
+ 
+ DELETE /v1/vfs/{sec id}/components/{name}
+------------------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Stop the component.
+ 
+@@ -712,13 +712,13 @@ There is no body content for the response of a successful ``POST`` request.
+ Equivalent CLI command
+ ^^^^^^^^^^^^^^^^^^^^^^
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};component stop {name}
+ 
+ 
+ PUT /v1/vfs/{client_id}/components/{name}/ports
+------------------------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Add or Delete port to the component.
+ 
+@@ -789,19 +789,19 @@ Equivalent CLI command
+ 
+ action is ``attach``
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};port add {port} {dir} {name} [add_vlantag {id} {pcp} | del_vlantag]
+ 
+ action is ``detach``
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     sec {client_id};port del {port} {dir} {name}
+ 
+ 
+ PUT /v1/vfs/{sec id}/classifier_table
+--------------------------------------
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Set or Unset classifier table.
+ 
+@@ -861,12 +861,12 @@ Equivalent CLI command
+ 
+ type is ``mac``
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     classifier_table {action} mac {mac_address} {port}
+ 
+ type is ``vlan``
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     classifier_table {action} vlan {vlan} {mac_address} {port}
+-- 
+2.17.1
+
+

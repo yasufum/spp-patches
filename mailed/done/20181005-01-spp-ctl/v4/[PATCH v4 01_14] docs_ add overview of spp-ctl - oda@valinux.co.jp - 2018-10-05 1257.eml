@@ -1,0 +1,219 @@
+X-Account-Key: account4
+X-UIDL: 00007fc856a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6992940021C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6806323BB23; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6759623BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5900863993B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4D9A1639937
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AkeIfqhO+B9z/7Tqa3RAl6mtXPHoOpqn0MwgJ65?=
+ =?us-ascii?q?Eul7NJdOGZ8o//OFDEvK023lPCWIye8OpB07OQvqvkH2oc/dCKtzYAaM8ETA?=
+ =?us-ascii?q?cL3OMRmQFoG8uZEQvjNve/aCAzNNpLUF5j4mH9Ok8TGt6tL0bKrCiU6jgfUg?=
+ =?us-ascii?q?76KRIzI+30HoDIiMHi0Oy704PaZwROmSr7arQ0Lg3v91fru8IbgJVvJuMK8j?=
+ =?us-ascii?q?WT8yMaXeNQyCsoKVmWllPn/sLopdhu+CAWve49scVHF6fiLew+SvRDATIqPn?=
+ =?us-ascii?q?pQhoWjvATfTQaJ+noXU3kH2htODQ/f6RjmX5D3+iLkv+t50SOeMIX4V7cxET?=
+ =?us-ascii?q?il6q5qTlfvhkJlf3Y+/Gj/lMV0jaRGsFSqoFp928+cYY2YMuZ/YrKIZckTFi?=
+ =?us-ascii?q?JKWsdcUTAEA5vpNdJXSbNbbaAJ98+k+whrz1P2HwSnCeLxxyUdinTz1Oghy+?=
+ =?us-ascii?q?F5SEfL1whmGc4S9n/T6tftZ8JwGai4yrfFyTLbYrZYwzD4vcLPfhkJv/iIXL?=
+ =?us-ascii?q?RtYYzazg8tD0mW6zfY4ZygJD6T2ukX5iKc4+NIS+urimg6u0d6pX6t3o1/wp?=
+ =?us-ascii?q?mMjYUTxFfe8Cx/y4tgPty0RnlgfcSlG4cJ7XOgOoB7Q90vTyRTgAhgm+BUn5?=
+ =?us-ascii?q?m9cWBKxJ8izlvEc/nfKs6F6RalUvqNZzx/wnB9Kvq5gF6p/E6sx/eZNIH82U?=
+ =?us-ascii?q?tWridDjtjHt2wcnx3V5M+dT/Jh/0CnkT+R3gHX4+tALAg6j63eY5Imx7cxkN?=
+ =?us-ascii?q?IUvyGhVmfxlEzekqaSd0M56q6j7KLlevSup5ORMZN1lhCrN60vnsKlBuFrV2?=
+ =?us-ascii?q?pGF2Of+Om6yPji5RijGe0M16dm1PiB9smGdowBq6W0AhFYyNMv4BO2Siy+1Y?=
+ =?us-ascii?q?xB23QMKBRDZA7BhI+vOUmdRZKwRfq5nVmoly9mgv7cObi0SJLBJ1DdmbPge6?=
+ =?us-ascii?q?ttrUVbjggrh4M6hdocGvQaLfT/V1Wk/tvUBzcnOgi1xfv3Tt56kIEGEzHHEu?=
+ =?us-ascii?q?qSN6XctkWN7+QkLryXZYMbjy3hMfku+6e/3098okcUeOyS5bVSbXm5Gvp8JE?=
+ =?us-ascii?q?DAPCjyi9MAF3oa+AE5Cu7y2gXbDWxjIk2qVqd53QkVTZq8BN6eFJ6khL2HwT?=
+ =?us-ascii?q?f9FZoQZHgUUl0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BLAACI4LZb/w5agNJbHQEBBQEHBQG?=
+ =?us-ascii?q?BUQgBCwGCAmltAwQLKIwJX41QjXeIZxSBZjAIAYRAAoREBjANDQEDAQECAQE?=
+ =?us-ascii?q?BAW0cDIU6BoEJHQMxLB0OBxKDIQGCABClXIQzB4N0gWSHDoFagluCAIEShi0?=
+ =?us-ascii?q?CgSaFcSIChlYHgWYShUYPYo1/UQmGSolrIoFMS41YiQSDGIsIOIFVhCwJhXq?=
+ =?us-ascii?q?EWTuFTTAweQEBAQGNagEB?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:57 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 77AD1240C79; Fri,  5 Oct 2018 12:57:57 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 01/14] docs: add overview of spp-ctl
+Date: Fri,  5 Oct 2018 12:57:44 +0900
+Message-Id: <20181005035757.23122-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+Add overview section of spp-ctl.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/spp-ctl/overview.rst | 119 +++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
+ create mode 100644 docs/guides/spp-ctl/overview.rst
+
+diff --git a/docs/guides/spp-ctl/overview.rst b/docs/guides/spp-ctl/overview.rst
+new file mode 100644
+index 0000000..4c7181c
+--- /dev/null
++++ b/docs/guides/spp-ctl/overview.rst
+@@ -0,0 +1,119 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++.. _spp_ctl_overview:
++
++spp-ctl
++=======
++
++Overview
++--------
++
++``spp-ctl`` is an alternative SPP controller which provides a REST-like
++APIs.
++
++It maintains connections between SPP processes for managing them
++via the REST-like APIs for users or other processes.
++
++Background and Motivation
++-------------------------
++
++``spp-ctl`` is designed for supporting to manage SPP from several
++controllers.
++
++There are some usecases where SPP is managed from other
++process without user inputs.
++For example, you need a intermediate process if you think of using SPP
++from a framework, such as OpenStack.
++`networking-spp
++<https://github.com/openstack/networking-spp>`_
++is a Neutron ML2 plugin for SPP and `spp-agent` works as a
++SPP controller.
++
++It is a problem to prepare several controllers for each of usages for
++CLI, OpenStack or others because it would be hard to maintain for
++updates.
++
++Spp-ctl is designed to solve the problem of several controllers with
++application-independent REST APIs.
++You can manage SPP by requesting via this APIs.
++
++Architecture
++------------
++
++The design goal of spp-ctl is to be as simple as possible.
++It is stateless.
++Basically, spp-ctl only converts API requests into commands of SPP
++processes and throws request, thouth it does syntax and lexical check
++for API requests.
++
++``spp-ctl`` adopts
++`bottle
++<https://bottlepy.org/docs/dev/>`_
++which is simple and well known as a web framework and
++`eventlet
++<http://eventlet.net/>`_
++for parallel processing.
++``spp-ctl`` accepts multiple requests at the same time and serializes them
++internally.
++
++
++Setup
++=====
++
++You are required to install Python3 and packages described in
++``requirements.txt`` via ``pip3`` for launching ``spp-ctl``.
++You might need to run ``pip3`` with ``sudo``.
++
++.. code-block:: console
++
++    $ sudo apt update
++    $ sudo apt install python3
++    $ sudo apt install python3-pip
++    $ pip3 install -r requirements.txt
++
++Usage
++-----
++
++.. code-block:: console
++
++    usage: spp-ctl [-p PRI_PORT] [-s SEC_PORT] [-a API_PORT]
++
++    optional arguments:
++      -p PRI_PORT  primary port. default is 5555.
++      -s SEC_PORT  secondary port. default is 6666.
++      -a API_PORT  web api port. default is 7777.
++
++Using systemd
++-------------
++
++`spp-ctl` is assumed to be launched as a daemon process, or managed
++by `systemd`.
++Here is a simple example of service file for systemd.
++
++::
++
++    [Unit]
++    Description = SPP Controller
++
++    [Service]
++    ExecStart = /usr/bin/python3 /path/to/spp/src/spp-ctl/spp-ctl
++    User = root
++
++
++REST APIs
++=========
++
++You can try to call ``spp-ctl`` APIs with ``curl`` command as following.
++
++.. code-block:: console
++
++    $ curl http://localhost:7777/v1/processes
++    [{"type": "primary"}, ..., {"client-id": 2, "type": "vf"}]
++    $ curl http://localhost:7777/v1/vfs/1
++    ... snip
++    $ curl -X POST http://localhost:7777/v1/vfs/1/components \
++      -d '{"core": 2, "name": "forward_0_tx", "type": "forward"}'
++
++For more details, see
++:ref:`API Reference<spp_ctl_api_ref>`.
+-- 
+2.17.1
+
+

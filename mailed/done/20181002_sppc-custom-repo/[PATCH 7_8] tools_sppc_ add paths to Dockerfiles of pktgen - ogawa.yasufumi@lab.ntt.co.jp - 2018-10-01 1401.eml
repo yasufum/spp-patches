@@ -1,0 +1,97 @@
+X-Account-Key: account4
+X-UIDL: 00007ecf56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 812F1400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 7A4A17F60F; Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 78C0A7F378
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 634C6125;
+	Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 4D70855;
+	Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 7/8] tools/sppc: add paths to Dockerfiles of pktgen
+Date: Mon,  1 Oct 2018 14:01:47 +0900
+Message-Id: <20181001050148.77373-8-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+If you clone a custom pktgenrepo and its directory name is not
+'pktgen-dpdk',
+you failed to launch an appcontainer script because the scripts does
+not know the name of custom repo and cannot find executable.
+
+To be found the executable in container, this patch adds PATH entries
+of the executables of custom repo to Dockerfile. By this change.
+appcontainer can find the executables without the custom repo's name
+while launching appcontainer.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04  | 2 ++
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 2 ++
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+index dc2c503..dac5a2a 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 31632e4..6a0640d 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index fa4b8fb..3f0508d 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -16,6 +16,8 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+-- 
+2.7.4
+
+

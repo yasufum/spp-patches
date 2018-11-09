@@ -1,0 +1,199 @@
+From 83f7e6260ef512d1cab56e92782751f04695cb3f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 5 Oct 2018 17:49:06 +0900
+Subject: [PATCH] controller: add history and redo commands
+
+SPP controller has no history for commands. It is useful if user inputs
+several commands and check it step by step. It is also useful to redo
+the commands by referring the history.
+
+This update is to add history and redo commands. History command shows
+the list of command with index number. Command history is saved as
+'.spp_history' which is created in the project root directory.
+
+  spp > history
+    1  sec 1;status
+    2  pri;status
+    ...
+
+User can redo a previous command with index number.
+
+  spp > redo 1  # run 'sec 1;status' from redo command
+  - status: running
+  - port:
+    - phy:0 -> ring:0
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .gitignore              |  1 +
+ src/controller/shell.py | 92 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 92 insertions(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 37bba66..b31ab54 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -5,3 +5,4 @@ docs/guides/_build/*
+ docs/guides/images/**/*.pdf
+ src/controller/3rd_party/*
+ tools/sppc/build/*/*/env.sh
++.spp_history
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index fb30d5d..393699c 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -9,6 +9,7 @@ import json
+ import os
+ from queue import Empty
+ import re
++import readline
+ from .shell_lib import common
+ from . import spp_common
+ from .spp_common import logger
+@@ -19,6 +20,8 @@ from . import topo
+ class Shell(cmd.Cmd, object):
+     """SPP command prompt"""
+ 
++    hist_file = '.spp_history'
++
+     intro = 'Welcome to the spp.   Type help or ? to list commands.\n'
+     prompt = 'spp > '
+     recorded_file = None
+@@ -35,10 +38,18 @@ class Shell(cmd.Cmd, object):
+     SEC_SUBCMDS = ['vhost', 'ring', 'pcap', 'nullpmd']
+     BYE_CMDS = ['sec', 'all']
+ 
++    HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
++
+     PLUGIN_DIR = 'command'
+     subgraphs = {}
+     topo_size = '60%'
+ 
++    # setup history file
++    if os.path.exists(hist_file):
++        readline.read_history_file(hist_file)
++    else:
++        readline.write_history_file(hist_file)
++
+     def default(self, line):
+         """Define defualt behaviour
+ 
+@@ -48,6 +59,7 @@ class Shell(cmd.Cmd, object):
+ 
+         if common.is_comment_line(line):
+             print("%s" % line.strip())
++
+         else:
+             super(Shell, self).default(line)
+ 
+@@ -59,6 +71,25 @@ class Shell(cmd.Cmd, object):
+         """
+         pass
+ 
++    def clean_hist_file(self):
++        """Remove useless entries in history file."""
++
++        entries = []
++
++        try:
++            for line in open(self.hist_file):
++                l = line.strip()
++                if not (l.split(' ')[0] in self.HIST_EXCEPT):
++                    entries.append(l)
++            f = open(self.hist_file, "w+")
++            contents = '\n'.join(entries)
++            contents += '\n'
++            f.write(contents)
++            f.close()
++        except IOError:
++            print('Error: Cannot open history file "%s"' %
++                    self.hist_file)
++
+     def close_all_secondary(self):
+         """Terminate all secondary processes"""
+ 
+@@ -587,7 +618,7 @@ class Shell(cmd.Cmd, object):
+         return completions
+ 
+     def do_cat(self, arg):
+-        """View contents of a file
++        """View contents of a file.
+ 
+         spp > cat file
+         """
+@@ -597,6 +628,64 @@ class Shell(cmd.Cmd, object):
+         else:
+             print("No such a directory.")
+ 
++    def do_redo(self, args):
++        """Execute command of index of history."""
++
++        idx = int(args)
++        cmdline = None
++        cnt = 1
++        try:
++            for line in open(self.hist_file):
++                if cnt == idx:
++                    cmdline = line.strip()
++                    break
++                cnt += 1
++
++            if cmdline.find('pri;') > -1:
++                cmdline = cmdline.replace(';', ' ;')
++                print(cmdline)
++            cmd_ary = cmdline.split(' ')
++            cmd = cmd_ary.pop(0)
++            cmd_options = ' '.join(cmd_ary)
++            eval('self.do_%s(cmd_options)' % cmd)
++        except IOError:
++            print('Error: Cannot open history file "%s"' %
++                    self.hist_file)
++
++    def do_history(self, arg):
++        """Show history.
++
++        spp > history
++          1  ls
++          2  cat file.txt
++          ...
++        """
++
++        # flush all of history to the hist_file.
++        readline.write_history_file(self.hist_file)
++
++        # remove commands defined in `self.HIST_EXCEPT`
++        self.clean_hist_file()
++
++        try:
++            f = open(self.hist_file)
++
++            # setup output format
++            nof_lines = len(f.readlines())
++            f.seek(0)
++            lines_digit = len(str(nof_lines))
++            hist_format = '  %' + str(lines_digit) + 'd  %s'
++
++            cnt = 1
++            for line in f:
++                l = line.strip()
++                print(hist_format % (cnt, l))
++                cnt += 1
++            f.close()
++        except IOError:
++            print('Error: Cannot open history file "%s"' %
++                    self.hist_file)
++
+     def complete_cat(self, text, line, begidx, endidx):
+         return common.compl_common(text, line)
+ 
+@@ -621,6 +710,7 @@ class Shell(cmd.Cmd, object):
+ 
+         spp > exit
+         """
++
+         self.close()
+         print('Thank you for using Soft Patch Panel')
+         return True
+-- 
+2.7.4
+

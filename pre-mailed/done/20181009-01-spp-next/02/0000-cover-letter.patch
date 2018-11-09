@@ -1,0 +1,31 @@
+From a8bfb3df78d783a9175c956c1852498c8cbec0bf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 9 Oct 2018 13:59:34 +0900
+Subject: [PATCH 0/4] Update response of status of spp_nfv and spp_vm
+
+Spp-ctl provides a set of REST APIs for managing all of SPP processes in
+a unified way. If the REST API is called, spp-ctl sets up a request for
+SPP process by parsing user's request and replies to the user.
+
+This update is to update spp_nfv and spp_vm to return responses as JSON
+as similar to spp_vf for better maintaince of spp-ctl.
+
+Yasufumi Ogawa (4):
+  shared: update status format of spp_nfv
+  controller: update parsing status message
+  spp-ctl: update syntax of add and del command
+  spp-ctl: update parsing status
+
+ src/controller/shell.py   |  21 +++---
+ src/nfv/nfv.c             |  10 +--
+ src/shared/common.c       | 179 ++++++++++++++++++++++++++++++++++++----------
+ src/shared/common.h       |  14 +++-
+ src/spp-ctl/spp_proc.py   |   4 +-
+ src/spp-ctl/spp_webapi.py |  34 +++------
+ src/vm/init.c             |   2 +-
+ src/vm/main.c             |   8 +--
+ 8 files changed, 185 insertions(+), 87 deletions(-)
+
+-- 
+2.7.4
+

@@ -1,0 +1,101 @@
+X-Account-Key: account3
+X-UIDL: 11960.n505mGTAYYM4QVZu2bDm+oo8jzg=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw007.ocn.ad.jp (LHLO md-lpx-nw007) (153.138.217.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 21 Sep 2018 13:21:04 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw007 with LMTP id SAT1MbBxpFvwLAAACd8mRg
+	; Fri, 21 Sep 2018 13:21:04 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id C1F3A3400440C
+	for <geminoa@juno.ocn.ne.jp>; Fri, 21 Sep 2018 13:21:04 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 65FD9A8026D
+	for <geminoa@juno.ocn.ne.jp>; Fri, 21 Sep 2018 13:21:04 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 98ADF1B53;
+	Fri, 21 Sep 2018 06:21:01 +0200 (CEST)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 000C91B19
+ for <spp@dpdk.org>; Fri, 21 Sep 2018 06:20:59 +0200 (CEST)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id w8L4KvWw024891;
+ Fri, 21 Sep 2018 13:20:57 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id w8L4KvTE030361;
+ Fri, 21 Sep 2018 13:20:57 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id PAA29055;
+ Fri, 21 Sep 2018 13:17:02 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id w8L4H26u018078;
+ Fri, 21 Sep 2018 13:17:02 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ w8L4H25D018075; Fri, 21 Sep 2018 13:17:02 +0900
+Message-Id: <201809210417.w8L4H25D018075@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id w8L4H2f1026947 ; Fri, 21 Sep 2018 13:17:02 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Fri, 21 Sep 2018 13:17:02 +0900
+X-Mailer: git-send-email 2.18.0
+X-TM-AS-MML: No
+Subject: [spp] [PATCH] docs: update qemu-ifup
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+To fix errors in `qemu-ifup`, remove the first erroneous line and
+correct the paths of tunctl and brctl for Ubuntu's apt.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/samples/qemu-ifup | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/docs/samples/qemu-ifup b/docs/samples/qemu-ifup
+index 4538b65..8fbf700 100755
+--- a/docs/samples/qemu-ifup
++++ b/docs/samples/qemu-ifup
+@@ -1,14 +1,13 @@
+-vi /etc/qemu-ifup
+ #!/bin/sh
+ set -x
+ 
+ switch=virbr0
+ 
+ if [ -n "$1" ];then
+-        /usr/bin/sudo /usr/sbin/tunctl -u `whoami` -t $1
++        /usr/bin/sudo /usr/bin/tunctl -u `whoami` -t $1
+         /usr/bin/sudo /sbin/ip link set $1 up
+         sleep 0.5s
+-        /usr/bin/sudo /usr/sbin/brctl addif $switch $1
++        /usr/bin/sudo /sbin/brctl addif $switch $1
+         exit 0
+ else
+         echo "Error: no interface specified"
+-- 
+2.18.0
+
+

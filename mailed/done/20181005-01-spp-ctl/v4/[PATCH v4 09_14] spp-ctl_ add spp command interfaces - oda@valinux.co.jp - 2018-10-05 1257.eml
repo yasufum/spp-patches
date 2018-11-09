@@ -1,0 +1,286 @@
+X-Account-Key: account4
+X-UIDL: 00007fcf56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 798E940021C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 775F67F314; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 763EA7F2E4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 6752E639934
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5BACF639938
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:57:59 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AwcdWQBw9gDqS//rXCy+N+z0kezQntrPoPwUc9p?=
+ =?us-ascii?q?sgjfd0f7+++4j5ZRSEt/lmiVaMRp3es6sChuHS9ab8RSoL5tCDqCNKa4RCAj?=
+ =?us-ascii?q?kCj8hehAk8GIidE0SuK/LjRzIzGMVESU8j9Hb9M1AGUN3maQj0pXu/pSUXBg?=
+ =?us-ascii?q?25MAN0IurvHYuHiMi+//67/5zVfhUOjz37Y6srdkeMoA7ct9cbjc5ZEohrm0?=
+ =?us-ascii?q?ObhHxOdqwWyWhtLBeIhxOkv4G995ol9ThM/fkmscxYA+38eOwjQLpUAS5DUS?=
+ =?us-ascii?q?h97dD3tRTFUQqE52cNGmQQnB1SBgHZ7Rb8Fp7vuyr+v+B51WGUJ8rzBbwzXD?=
+ =?us-ascii?q?2j6e9sRnqKwG8AOzcR7mjTi8ptnORQp1Sjv103woLZZp2UKOsrZrnULpsRQW?=
+ =?us-ascii?q?tMWNoUVjQUWNrkKdJVX6xQZaAB89qYxRNGtxa1CAiyCfm6xjRNjzrtxahiiq?=
+ =?us-ascii?q?IsGgWA2hA8WdkJ9nbM/7CXfO8fV/64yK7QwHDNdfRTjH365IHgbBkloPeRTf?=
+ =?us-ascii?q?R7dozT0QN8cmGNxkXVsoHjMz6Pg64Kv2Gz8eNkVOSymygsrEdzunL8jtdpgY?=
+ =?us-ascii?q?7PiIUPz1nC/igs24c5K+qjVFR6asL9SslquiqXNpV7ToYZe08y6Xto7LoAtN?=
+ =?us-ascii?q?b7cCMPwdE83xuHMrqKeIzO5A7/Eu2WZzVg1jpjf/qkihC+/FLFqKW0X9So0F?=
+ =?us-ascii?q?tMsitOk8Xd/nEL2RvJ78GbS/x7tk6/0DeL3grX56lKO0cx3abcLpcgxPY3mP?=
+ =?us-ascii?q?9x+QzEEibehkzyjamLZgMv/a6q86WvY7nroIOdK54hjwj/Nqo0ncnsZIZweg?=
+ =?us-ascii?q?MKXmWd5aG9zOi5pBW/Ge8ayKxu1PCF49jAKM8Wp7C0GVpZ2YMqrg2nCm//lt?=
+ =?us-ascii?q?kTmT8BME4DcxXBjZC6XjOGaP3+E/q7hEyh1TlxwPWTdLrtC73TJ3zClqrxO7?=
+ =?us-ascii?q?16rUxEgllWr5gX99dPB7cNLeimEEj9vfTGBxs4NRGkhe3gTtdlnNBWSSeEBa?=
+ =?us-ascii?q?mXN7nXuFmD67c0IuWCU5QJojf2N6F0tc6rtmcwnBomRYfs2JIWbH6iGfE/fh?=
+ =?us-ascii?q?eHaH7thMoRV2wN+AgmHrSz1A+yFAVLbnP3ZJoSoykhAdv7X5nKQoGrnazH1y?=
+ =?us-ascii?q?D9HIUEPm0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggJpbQMECyiMCV+NUJZeFIFmKBABhEAChEQGMA0NAQMBAQI?=
+ =?us-ascii?q?BAQEBbRwMhToGgQkgMSwrBxKDIQGCAKVsiC6BZIcOgVqCW4IAgRKHVSSFbwK?=
+ =?us-ascii?q?GVgeHTWKOUAmGSolrIoIXjViXJDiBVYQsCYhEiBcwMHkBAQEBjWoBAQ?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id D1805240CD9; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 09/14] spp-ctl: add spp command interfaces
+Date: Fri,  5 Oct 2018 12:57:52 +0900
+Message-Id: <20181005035757.23122-10-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+Add API classes for each of SPP processes.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_proc.py | 187 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 187 insertions(+)
+ create mode 100644 src/spp-ctl/spp_proc.py
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+new file mode 100644
+index 0000000..aa83b76
+--- /dev/null
++++ b/src/spp-ctl/spp_proc.py
+@@ -0,0 +1,187 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++import bottle
++import eventlet
++import json
++import logging
++
++import spp_ctl
++
++
++LOG = logging.getLogger(__name__)
++
++ID_PRIMARY = 0
++TYPE_PRIMARY = "primary"
++TYPE_VF = "vf"
++TYPE_NFV = "nfv"
++
++
++def exec_command(func):
++    """Decorator for Sending command and receiving reply.
++
++    Define the common function for sending command and receiving reply
++    as a decorator. Each of methods for executing command has only to
++    return command string.
++
++    exp)
++    @exec_command
++    def some_command(self, ...):
++        return "command string of some_command"
++    """
++    def wrapper(self, *args, **kwargs):
++        with self.sem:
++            command = func(self, *args, **kwargs)
++            LOG.info("%s(%d) command executed: %s", self.type, self.id,
++                     command)
++            data = spp_ctl.Controller._send_command(self.conn, command)
++            if data is None:
++                raise RuntimeError("%s(%d): %s: no-data returned" %
++                                   (self.type, self.id, command))
++            LOG.debug("reply: %s", data)
++            return self._decode_reply(data)
++    return wrapper
++
++
++class SppProc(object):
++    def __init__(self, proc_type, id, conn):
++        self.id = id
++        self.type = proc_type
++        # NOTE: executing command is serialized by using a semaphore
++        # for each process.
++        self.sem = eventlet.semaphore.Semaphore(value=1)
++        self.conn = conn
++
++
++class VfProc(SppProc):
++
++    def __init__(self, id, conn):
++        super(VfProc, self).__init__(TYPE_VF, id, conn)
++
++    @staticmethod
++    def _decode_reply(data):
++        data = json.loads(data)
++        result = data["results"][0]
++        if result["result"] == "error":
++            msg = result["error_details"]["message"]
++            raise bottle.HTTPError(400, "command error: %s" % msg)
++        return data
++
++    @staticmethod
++    def _decode_client_id(data):
++        try:
++            data = VfProc._decode_reply(data)
++            return data["client_id"]
++        except:
++            return None
++
++    @exec_command
++    def get_status(self):
++        return "status"
++
++    @exec_command
++    def start_component(self, comp_name, core_id, comp_type):
++        return ("component start {comp_name} {core_id} {comp_type}"
++                .format(**locals()))
++
++    @exec_command
++    def stop_component(self, comp_name):
++        return "component stop {comp_name}".format(**locals())
++
++    @exec_command
++    def port_add(self, port, direction, comp_name, op, vlan_id, pcp):
++        command = "port add {port} {direction} {comp_name}".format(**locals())
++        if op != "none":
++            command += " %s" % op
++            if op == "add_vlantag":
++                command += " %d %d" % (vlan_id, pcp)
++        return command
++
++    @exec_command
++    def port_del(self, port, direction, comp_name):
++        return "port del {port} {direction} {comp_name}".format(**locals())
++
++    @exec_command
++    def set_classifier_table(self, mac_address, port):
++        return ("classifier_table add mac {mac_address} {port}"
++                .format(**locals()))
++
++    @exec_command
++    def clear_classifier_table(self, mac_address, port):
++        return ("classifier_table del mac {mac_address} {port}"
++                .format(**locals()))
++
++    @exec_command
++    def set_classifier_table_with_vlan(self, mac_address, port,
++                                       vlan_id):
++        return ("classifier_table add vlan {vlan_id} {mac_address} {port}"
++                .format(**locals()))
++
++    @exec_command
++    def clear_classifier_table_with_vlan(self, mac_address, port,
++                                         vlan_id):
++        return ("classifier_table del vlan {vlan_id} {mac_address} {port}"
++                .format(**locals()))
++
++
++class NfvProc(SppProc):
++
++    def __init__(self, id, conn):
++        super(NfvProc, self).__init__(TYPE_NFV, id, conn)
++
++    @staticmethod
++    def _decode_reply(data):
++        return data.strip('\0')
++
++    @staticmethod
++    def _decode_client_id(data):
++        try:
++            return int(NfvProc._decode_reply(data))
++        except:
++            return None
++
++    @exec_command
++    def get_status(self):
++        return "status"
++
++    @exec_command
++    def port_add(self, if_type, if_num):
++        return "add {if_type} {if_num}".format(**locals())
++
++    @exec_command
++    def port_del(self, if_type, if_num):
++        return "del {if_type} {if_num}".format(**locals())
++
++    @exec_command
++    def patch_add(self, src_port, dst_port):
++        return "patch {src_port} {dst_port}".format(**locals())
++
++    @exec_command
++    def patch_reset(self):
++        return "patch reset"
++
++    @exec_command
++    def forward(self):
++        return "forward"
++
++    @exec_command
++    def stop(self):
++        return "stop"
++
++
++class PrimaryProc(SppProc):
++
++    def __init__(self, conn):
++        super(PrimaryProc, self).__init__(TYPE_PRIMARY, ID_PRIMARY, conn)
++
++    @staticmethod
++    def _decode_reply(data):
++        return data.strip('\0')
++
++    @exec_command
++    def status(self):
++        return "status"
++
++    @exec_command
++    def clear(self):
++        return "clear"
+-- 
+2.17.1
+
+

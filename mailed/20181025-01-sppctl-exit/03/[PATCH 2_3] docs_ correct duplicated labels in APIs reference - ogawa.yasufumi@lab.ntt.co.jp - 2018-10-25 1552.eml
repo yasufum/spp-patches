@@ -1,0 +1,62 @@
+X-Account-Key: account4
+X-UIDL: 000082a956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 0A3FD40078E
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 077A37F3D6; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 05DAF7F2E1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 25 Oct 2018 15:52:22 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id DDAC41A5;
+	Thu, 25 Oct 2018 15:52:21 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C794E126;
+	Thu, 25 Oct 2018 15:52:21 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/3] docs: correct duplicated labels in APIs reference
+Date: Thu, 25 Oct 2018 15:52:11 +0900
+Message-Id: <20181025065212.18970-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181025065212.18970-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025065212.18970-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+There are duplicated labels in REST APIs warned while compiling
+document. Fix this warning by correcting the labels.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 3ae90fd..bb8409c 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -690,7 +690,7 @@ vlan object:
+ 
+ classifier table:
+ 
+-.. _table_spp_ctl_spp_vf_res_vlan:
++.. _table_spp_ctl_spp_vf_res_cls:
+ 
+ .. table:: Vlan objects of getting spp_vf.
+ 
+-- 
+2.13.1
+
+

@@ -1,0 +1,90 @@
+X-Account-Key: account3
+X-UIDL: 12044.SjjTP1V22Uqy+qujHOcpe42g6zo=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 26 Sep 2018 18:10:50 +0900 (JST)
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-cb004 with LMTP id EEE2GRpNq1uQcAAAuuTZ3g
+	; Wed, 26 Sep 2018 18:10:50 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id 611D61000822A
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 01B7DD402AE
+	for <geminoa@juno.ocn.ne.jp>; Wed, 26 Sep 2018 18:10:49 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id CEB431B11D;
+	Wed, 26 Sep 2018 11:10:47 +0200 (CEST)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 8146B1B118
+ for <spp@dpdk.org>; Wed, 26 Sep 2018 11:10:46 +0200 (CEST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id w8Q9Ajbh006966;
+ Wed, 26 Sep 2018 18:10:45 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 513A7140;
+ Wed, 26 Sep 2018 18:10:45 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 3BB58110;
+ Wed, 26 Sep 2018 18:10:45 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 26 Sep 2018 18:08:34 +0900
+Message-Id: <1537952921-20397-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1537952921-20397-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 06/13] project: update gitignore to exclude PDF
+	files
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To compile a PDF document, the format of images included in the
+document should also be PDF. It means that SVG images should be
+converted to PDF while the PDF document is generated and not be
+managed from git.
+
+To exclude temporarily generated PDF images, add an entry to
+'.gitignore'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitignore b/.gitignore
+index ff9ba64..37bba66 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,5 +2,6 @@
+ *.pyc
+ *.log
+ docs/guides/_build/*
++docs/guides/images/**/*.pdf
+ src/controller/3rd_party/*
+ tools/sppc/build/*/*/env.sh
+-- 
+2.7.4
+
+

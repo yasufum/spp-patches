@@ -1,0 +1,118 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:ab3:3a1:0:0:0:0:0 with SMTP id 30-v6csp3089ltc;
+        Thu, 4 Oct 2018 22:06:43 -0700 (PDT)
+X-Google-Smtp-Source: ACcGV63sk1Mbt43cs1oRMd6qN8UqNUZQq/ziK0SsZPxZZHo6is1RiHlqkiDltqdlVjdSJRXQfSvb
+X-Received: by 2002:a17:906:52c2:: with SMTP id w2-v6mr3623936ejn.133.1538716003837;
+        Thu, 04 Oct 2018 22:06:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1538716003; cv=none;
+        d=google.com; s=arc-20160816;
+        b=AKzdnqIsQYXH2VY4cx7mOji/seDWua5O3Ytdrlhdn3b7ixCtpsNfWfxCXywXsYWzBg
+         qCOwbXPzc7flOuThj/9DJ1PFHPrPjwWY8/PhGs86/khyVPMgvHSmkWJvAUDTZqfUxVuu
+         jHl4PLSKfccH4xi2FcTMuslF/Cs5T49/fB4sEXAc/2AVt0cO256s8+elOcLudfWG1+ZJ
+         Mv7gzQqIBTEO8dvXA3q12d8JtOgzXt7mXj+UpC4X2wNxAC/B6c0Pnt9N0+Xog49sJmQm
+         0CwKN2vQRr/S/A597jIuHEiXzpEr/l/V3wQU9b9lmAngcQWnlvnjUJGjCCl6ClKlPOqX
+         H8Yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=t5CEhT1vgaziqS1myiETS81rgSznbpQMa3QyacgYqSc=;
+        b=Pmh6zJ5dIe4LBuWoRT03CunAMZujfTgwRbGN8GRgRNDf0osOTaQoQqrA2bCjBOZIem
+         0jWFAM0MwOWPdk8PQrOtJSJrst6Q+Xhicy6I6oQu90S5FKdzfuIvcAmhZUhIKjKn8dO4
+         sZKtTRdBEQpJSqeXykNPFEUI+uEz3XaJfQi2GOAy4AGBFVv5MsJf8I2CtuqZyfxC0unn
+         fkbJwvwBoKqoRLTKNPfsilyObuj/INdHFN+qcH650ihPo/assLtLzZJICDJz3nVNqkAn
+         XJAW3N967aTHL6NgLoVFmpnXbX67Z06FVpzb19SGqB5SVR653gDP06xgi3ezVf9g0nPG
+         7Tlg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id j20-v6si3017112ejr.199.2018.10.04.22.06.43;
+        Thu, 04 Oct 2018 22:06:43 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 87AD65F12;
+	Fri,  5 Oct 2018 07:06:43 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 6CED65F19
+ for <spp@dpdk.org>; Fri,  5 Oct 2018 07:06:41 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id w9556etu017216;
+ Fri, 5 Oct 2018 14:06:40 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 35D8EEA880F;
+ Fri,  5 Oct 2018 14:06:40 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 14E95EA880D;
+ Fri,  5 Oct 2018 14:06:40 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  5 Oct 2018 14:06:29 +0900
+Message-Id: <20181005050630.10661-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181005050630.10661-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181004055918.5922-1-ogawa.yasufumi@lab.ntt.co.j>
+ <20181005050630.10661-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 3/4] spp_vm: update retrieving status
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Change from print_active_ports() to get_sec_status_json() to create a
+response for status command.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vm/main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/vm/main.c b/src/vm/main.c
+index 16b4c6b..4f3511b 100644
+--- a/src/vm/main.c
++++ b/src/vm/main.c
+@@ -397,7 +397,6 @@ parse_command(char *str)
+ 	char *token_list[MAX_PARAMETER] = {NULL};
+ 	int max_token = 0;
+ 	int ret = 0;
+-	int i;
+ 
+ 	if (!str)
+ 		return 0;
+@@ -418,14 +417,15 @@ parse_command(char *str)
+ 		RTE_LOG(DEBUG, APP, "status\n");
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+-			i = sprintf(str, "status: running\n");
++			get_sec_stats_json(str, "running", ports_fwd_array,
++					port_map);
+ 		else
+-			i = sprintf(str, "status: idling\n");
+-		print_active_ports(str + i, ports_fwd_array, port_map);
++			get_sec_stats_json(str, "idling", ports_fwd_array,
++					port_map);
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+ 		memset(str, '\0', MSG_SIZE);
+-		i = sprintf(str, "%d", client_id);
++		sprintf(str, "%d", client_id);
+ 
+ 	} else if (!strcmp(token_list[0], "_set_client_id")) {
+ 		int id;
+-- 
+2.7.4
+

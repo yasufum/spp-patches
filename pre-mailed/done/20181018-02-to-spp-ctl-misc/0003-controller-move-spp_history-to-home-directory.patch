@@ -1,0 +1,41 @@
+From 000eb852262586e134b448bf58cce622dd394887 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 16 Oct 2018 08:47:04 +0900
+Subject: [PATCH 3/5] controller: move spp_history to home directory
+
+Move history file from project root to user's home directory as
+'~/.spp_history'.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 2c170e9..383d2f1 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -19,17 +19,15 @@ import subprocess
+ class Shell(cmd.Cmd, object):
+     """SPP command prompt."""
+ 
+-    # TODO(yasufum) move hist_file to $HOME as default
+-    hist_file = '.spp_history'
++    recorded_file = None
++    hist_file = os.path.expanduser('~/.spp_history')
++    HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+ 
+     intro = 'Welcome to the spp.   Type help or ? to list commands.\n'
+     prompt = 'spp > '
+-    recorded_file = None
+ 
+     PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+-    HIST_EXCEPT = ['bye', 'exit', 'history', 'redo']
+-
+     PLUGIN_DIR = 'plugins'
+     topo_size = '60%'
+ 
+-- 
+2.13.1
+

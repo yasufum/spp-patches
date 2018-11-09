@@ -1,0 +1,26 @@
+From 47f21cec44ced42ae073f314da08120989ec65fe Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 25 Oct 2018 10:09:04 +0900
+Subject: [PATCH 0/5] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (5):
+  spp_nfv: chage to return msg of exit command
+  spp-ctl: add exit cmd support for spp_nfv
+  spp_vm: chage to return msg of exit command
+  controller: update sec exit cmd to call REST API
+  docs: add DELETE method for exiting spp_nfv
+
+ docs/guides/spp-ctl/api-reference.rst | 43 +++++++++++++++++++++++++++++++++++
+ src/controller/commands/sec.py        | 10 +++++++-
+ src/nfv/nfv.c                         | 10 ++++----
+ src/spp-ctl/spp_ctl.py                |  9 ++++++++
+ src/spp-ctl/spp_proc.py               |  4 ++++
+ src/spp-ctl/spp_webapi.py             |  5 ++++
+ src/vm/main.c                         | 12 ++++++----
+ 7 files changed, 83 insertions(+), 10 deletions(-)
+
+-- 
+2.7.4
+

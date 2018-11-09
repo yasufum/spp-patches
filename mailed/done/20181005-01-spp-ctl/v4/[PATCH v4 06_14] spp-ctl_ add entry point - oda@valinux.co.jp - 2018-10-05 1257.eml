@@ -1,0 +1,113 @@
+X-Account-Key: account4
+X-UIDL: 00007fd256a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 5DFB8400234
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 588A323BB23; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-imss01.ecl.ntt.co.jp (bcmv-imss01.ecl.ntt.co.jp [129.60.83.122])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 4D37B23BB1A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcmv-imss01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id 35C5C12E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Received: from bcma-spm01.ecl.ntt.co.jp (bcma-spm01.ecl.ntt.co.jp [129.60.253.41])
+	by bcmv-imss01.ecl.ntt.co.jp (Postfix) with ESMTP id 24E45B1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri,  5 Oct 2018 12:58:00 +0900 (JST)
+Authentication-Results: bcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (bcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=bcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3A9jXAFhT6BmxWIY4jTfB8VuFjodpsv++ubCcI9p?=
+ =?us-ascii?q?oqja5Pea2//pPkeXbS/uhpkESQBd6J4flBgq/Nq6W4ACoN6pLHtmweNpdLER?=
+ =?us-ascii?q?0d2o0NhwJ1JsmDBAXgKeLyKTQgFZFFWFZN4Xi/ME5ICID1YBvQui769iYcTz?=
+ =?us-ascii?q?P4Mwc9PeHpAsjXhsWz2fq1/sjUbwxgmjO5YLVvPFO9qkPTrpBM07FvIasw1B?=
+ =?us-ascii?q?bF50BwVb4HnTFOIlSe11b27cK5uYV79nwJ/f8q84hGTbm8dKN+T6QKRDIhe3?=
+ =?us-ascii?q?s44sHmr3yhBUOG+2ccX2MKkxFJHxmN7Rf0WY30uzf7sew10TeTPMn/R7Q5ET?=
+ =?us-ascii?q?q46KIjRBjtgSYBfzk3lQOfwst8hYpFqRagoQFvhYXTJoONdbJ/cq7bYdIGVD?=
+ =?us-ascii?q?9ZRM8CHydFA466c84OF79bZL4e9tOt4QpW60LiVmzOTKv1xzRFh2H7x/gw2O?=
+ =?us-ascii?q?EoVBre2VR5Wd8FtDLSsMmzP6BUU/jmqcuAhTjFcf5S3i/wrYbSdRV06/aAVJ?=
+ =?us-ascii?q?pueM7Qz1Q/UQjCyFeI49+AXXvdxqEWvm6X4vA1H+WjgkY5ogVwpCW/gMwrzI?=
+ =?us-ascii?q?vRzNFd2hXP8iN3x5wwLNuzRRtgYNKqJ4BMrSCRK9IsEPkvSGxppis2j4Y+l8?=
+ =?us-ascii?q?TqIXosz5Iqj17VYPmONpOQ50q6EuuaJXF+mG4jc7X5hQ7guU6ngvbxUMW5yj?=
+ =?us-ascii?q?Mo5mJMj8XMu3YR1hfS9tnPS/1z+V2k0CqO0Aab4/9NIEQ9n67WY5A7xbt4mp?=
+ =?us-ascii?q?0WuEXFVij4/Se+xKiaf2068+yp7fn3JL7h4J2Edsd1hgz4LqUyi5m6COU8PB?=
+ =?us-ascii?q?IJWjv+m6z037ni8EvlBbRS26dvyu+A6sCcdJxd//LqSxVY2Ysi9RulWj2t1d?=
+ =?us-ascii?q?1dhmECdAsDdRmDyY71JxfFJ7b6FaTa4RzknTF1yvTBJrCkDI/KKy2Jl7voVa?=
+ =?us-ascii?q?h0709a1Rp1xtcZ5YoeWdRjaLrjH1T8stDVFEpzNAC96/juDNR7y5NYUmXJAL?=
+ =?us-ascii?q?fTY+vC9FSP4OwoOeyFYoQY7S38J/YS/OL0jHQlwA5PTeySxZISLUuAMLFjKk?=
+ =?us-ascii?q?Sdb2Drh45cQ3kDugs4Ufysg1rEUyYBPy/uDZJ53SkyDcedNamGXpqk2eHTwi?=
+ =?us-ascii?q?6/H5tLdiZNDRaOCSWweg=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A1AACI4LZb/w5agNJbHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggKBVgMECyiMCV+NUJZeFIFmOAGEQAKERAYwDQ0BAwEBAgE?=
+ =?us-ascii?q?BAQFtKIU6BoEJIDEsKwcSgyGCAaVsiC6BZIcOgVqCW4IAgRKHVYYTAoZWB4d?=
+ =?us-ascii?q?NYo5QCZA1Io9vlyQ4gVWELJBkMDB5AQEBAY1qAQE?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by bcma-spm01.ecl.ntt.co.jp with ESMTP; 05 Oct 2018 12:57:59 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 80051240CD7; Fri,  5 Oct 2018 12:57:58 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v4 06/14] spp-ctl: add entry point
+Date: Fri,  5 Oct 2018 12:57:49 +0900
+Message-Id: <20181005035757.23122-7-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181005035757.23122-1-oda@valinux.co.jp>
+References: <20180913082544.2D36.277DD91C@valinux.co.jp>
+ <20181005035757.23122-1-oda@valinux.co.jp>
+X-TM-AS-MML: No
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+Add `spp-ctl` launched in a terminal as the entry point. Spp-ctl is
+expected to be launched from Python3.
+
+  $ python3 /path/to/spp/src/spp-ctl/spp-ctl
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp-ctl | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 src/spp-ctl/spp-ctl
+
+diff --git a/src/spp-ctl/spp-ctl b/src/spp-ctl/spp-ctl
+new file mode 100644
+index 0000000..645611b
+--- /dev/null
++++ b/src/spp-ctl/spp-ctl
+@@ -0,0 +1,11 @@
++#!/usr/bin/python3
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++import sys
++
++from spp_ctl import main
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+-- 
+2.17.1
+
+

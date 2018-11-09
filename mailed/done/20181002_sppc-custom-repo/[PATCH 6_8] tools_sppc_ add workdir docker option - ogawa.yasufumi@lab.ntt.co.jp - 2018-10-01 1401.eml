@@ -1,0 +1,68 @@
+X-Account-Key: account4
+X-UIDL: 00007ece56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id D7BFB400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 14:02:01 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id CF4737F60F; Mon,  1 Oct 2018 14:02:01 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id C8EEF7F378
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 14:02:01 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id A8239125;
+	Mon,  1 Oct 2018 14:02:01 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 929C555;
+	Mon,  1 Oct 2018 14:02:01 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 6/8] tools/sppc: add workdir docker option
+Date: Mon,  1 Oct 2018 14:01:46 +0900
+Message-Id: <20181001050148.77373-7-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of apps require to be launched from specific directory even if PATH
+is configured properly. For instance, pktgen should be launched from
+project root because for finding `Pktgen.lua` in the directory.
+
+This update is for adding workdir option for specifying a directory
+from which the app is launched.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/lib/app_helper.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index c15c852..38c9ade 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -102,6 +102,10 @@ def add_sppc_args(parser):
+         default='latest',
+         help="Version of Linux distribution")
+     parser.add_argument(
++        '--workdir',
++        type=str,
++        help="Path of directory in which the command is launched")
++    parser.add_argument(
+         '-ci', '--container-image',
+         type=str,
+         help="Name of container image")
+-- 
+2.7.4
+
+

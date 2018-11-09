@@ -1,0 +1,211 @@
+X-Account-Key: account4
+X-UIDL: 000081e856a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 4DF95400B81
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 19 Oct 2018 16:05:46 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 4C89123BAF3; Fri, 19 Oct 2018 16:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 4BD7423BAEB
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 19 Oct 2018 16:05:46 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3807C639099;
+	Fri, 19 Oct 2018 16:05:46 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 16A6A639068;
+	Fri, 19 Oct 2018 16:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: tim.odriscoll@intel.com,
+	jim.st.leger@intel.com,
+	tdelanerolle@linuxfoundation.org
+Subject: [PATCH 5/9] docs: convert license of spp_vf commands to SPDX
+Date: Fri, 19 Oct 2018 16:05:30 +0900
+Message-Id: <20181019070534.81134-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181019070534.81134-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181019070534.81134-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Convert license of command references of spp_vf to SPDX short style.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/commands/common.rst    | 31 ++----------------------------
+ docs/guides/spp_vf/commands/index.rst     | 31 ++----------------------------
+ docs/guides/spp_vf/commands/primary.rst   | 32 ++-----------------------------
+ docs/guides/spp_vf/commands/secondary.rst | 31 ++----------------------------
+ 4 files changed, 8 insertions(+), 117 deletions(-)
+
+diff --git a/docs/guides/spp_vf/commands/common.rst b/docs/guides/spp_vf/commands/common.rst
+index 438d345..b270f49 100644
+--- a/docs/guides/spp_vf/commands/common.rst
++++ b/docs/guides/spp_vf/commands/common.rst
+@@ -1,32 +1,5 @@
+-..  BSD LICENSE
+-    Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+-    All rights reserved.
+-
+-    Redistribution and use in source and binary forms, with or without
+-    modification, are permitted provided that the following conditions
+-    are met:
+-
+-    * Redistributions of source code must retain the above copyright
+-    notice, this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright
+-    notice, this list of conditions and the following disclaimer in
+-    the documentation and/or other materials provided with the
+-    distribution.
+-    * Neither the name of Intel Corporation nor the names of its
+-    contributors may be used to endorse or promote products derived
+-    from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ .. _spp_vf_commands_spp_vf_common:
+ 
+diff --git a/docs/guides/spp_vf/commands/index.rst b/docs/guides/spp_vf/commands/index.rst
+index 620d4e0..ecd4b73 100644
+--- a/docs/guides/spp_vf/commands/index.rst
++++ b/docs/guides/spp_vf/commands/index.rst
+@@ -1,32 +1,5 @@
+-..  BSD LICENSE
+-    Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+-    All rights reserved.
+-
+-    Redistribution and use in source and binary forms, with or without
+-    modification, are permitted provided that the following conditions
+-    are met:
+-
+-    * Redistributions of source code must retain the above copyright
+-    notice, this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright
+-    notice, this list of conditions and the following disclaimer in
+-    the documentation and/or other materials provided with the
+-    distribution.
+-    * Neither the name of Intel Corporation nor the names of its
+-    contributors may be used to endorse or promote products derived
+-    from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ SPP VF Commands
+ ===============
+diff --git a/docs/guides/spp_vf/commands/primary.rst b/docs/guides/spp_vf/commands/primary.rst
+index d4f13a8..b34b77b 100644
+--- a/docs/guides/spp_vf/commands/primary.rst
++++ b/docs/guides/spp_vf/commands/primary.rst
+@@ -1,33 +1,5 @@
+-..  BSD LICENSE
+-    Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+-    All rights reserved.
+-
+-    Redistribution and use in source and binary forms, with or without
+-    modification, are permitted provided that the following conditions
+-    are met:
+-
+-    * Redistributions of source code must retain the above copyright
+-    notice, this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright
+-    notice, this list of conditions and the following disclaimer in
+-    the documentation and/or other materials provided with the
+-    distribution.
+-    * Neither the name of Intel Corporation nor the names of its
+-    contributors may be used to endorse or promote products derived
+-    from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ Primary Commands
+ ====================
+diff --git a/docs/guides/spp_vf/commands/secondary.rst b/docs/guides/spp_vf/commands/secondary.rst
+index f13adc3..ab89698 100644
+--- a/docs/guides/spp_vf/commands/secondary.rst
++++ b/docs/guides/spp_vf/commands/secondary.rst
+@@ -1,32 +1,5 @@
+-..  BSD LICENSE
+-    Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+-    All rights reserved.
+-
+-    Redistribution and use in source and binary forms, with or without
+-    modification, are permitted provided that the following conditions
+-    are met:
+-
+-    * Redistributions of source code must retain the above copyright
+-    notice, this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright
+-    notice, this list of conditions and the following disclaimer in
+-    the documentation and/or other materials provided with the
+-    distribution.
+-    * Neither the name of Intel Corporation nor the names of its
+-    contributors may be used to endorse or promote products derived
+-    from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ .. _spp_vf_commands_spp_vf_secondary:
+ 
+-- 
+2.13.1
+
+

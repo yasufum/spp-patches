@@ -1,0 +1,111 @@
+X-Account-Key: account4
+X-UIDL: 0000829b56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id CD348400B1B
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 25 Oct 2018 14:19:53 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id C9AE77F3D6; Thu, 25 Oct 2018 14:19:53 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id C8ABA7F2E1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 25 Oct 2018 14:19:53 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id BB50CEA7CFC;
+	Thu, 25 Oct 2018 14:19:53 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9F735EA7CEC;
+	Thu, 25 Oct 2018 14:19:53 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/5] spp-ctl: add exit cmd support for spp_nfv
+Date: Thu, 25 Oct 2018 14:19:40 +0900
+Message-Id: <20181025051943.17129-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181025051943.17129-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025051943.17129-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl does not support exit spp_nfv and spp_vm, but it is required
+using from `spp.py`. This update is to add a REST API for exiting the
+process. It also add `do_exit()` method into spp-ctl to send `exit`
+command to spp_nfv.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    | 9 +++++++++
+ src/spp-ctl/spp_proc.py   | 4 ++++
+ src/spp-ctl/spp_webapi.py | 5 +++++
+ 3 files changed, 18 insertions(+)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index 80a78b6..81a2fe0 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -141,6 +141,15 @@ class Controller(object):
+             procs.append(p)
+         return procs
+ 
++    def do_exit(self, sec_type, sec_id):
++        target_key = None
++        for k, proc in self.procs.items():
++            if proc.type == sec_type and proc.id == sec_id:
++                target_key = k
++                break
++        if target_key is not None:
++            del self.procs[target_key]
++
+ 
+ def main():
+     parser = argparse.ArgumentParser(description="SPP Controller")
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 3b01e3f..aa928f2 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -168,6 +168,10 @@ class NfvProc(SppProc):
+     def stop(self):
+         return "stop"
+ 
++    @exec_command
++    def do_exit(self):
++        return "exit"
++
+ 
+ class PrimaryProc(SppProc):
+ 
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index b2fbe3b..8332cab 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -310,6 +310,7 @@ class V1NFVHandler(BaseHandler):
+ 
+     def set_route(self):
+         self.route('/<sec_id:int>', 'GET', callback=self.nfv_get)
++        self.route('/<sec_id:int>', 'DELETE', callback=self.nfv_exit)
+         self.route('/<sec_id:int>/forward', 'PUT',
+                    callback=self.nfv_forward)
+         self.route('/<sec_id:int>/ports', 'PUT',
+@@ -377,6 +378,10 @@ class V1NFVHandler(BaseHandler):
+     def nfv_patch_del(self, proc):
+         proc.patch_reset()
+ 
++    def nfv_exit(self, proc):
++        self.ctrl.do_exit(proc.type, proc.id)
++        proc.do_exit()
++
+ 
+ class V1PrimaryHandler(BaseHandler):
+ 
+-- 
+2.7.4
+
+

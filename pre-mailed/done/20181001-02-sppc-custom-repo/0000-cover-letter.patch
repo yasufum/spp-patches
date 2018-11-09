@@ -1,0 +1,41 @@
+From 379a00a8d8c65a495f804111b09f17b4933d0b49 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 29 Sep 2018 10:41:32 +0900
+Subject: [PATCH 0/8] Build image with custom repo name
+
+SPP container tools support for building an image with fixed repository
+name of DPDK, SPP and pktgen. It means that you cannot use, for
+example, `custom-dpdk` as the name of your DPDK repository. This update
+is to enable users to use any of repository name.
+
+The name of repository is extracted from the URL. For example, it
+extracts `custom-dpdk` from `https://github.com/user/custom-dpdk.git`.
+
+Yasufumi Ogawa (8):
+  tools/sppc: build image with custom git repo
+  tools/sppc: dockerfile for custom SPP repo
+  tools/sppc: dockerfile for custom Pktgen repo
+  tools/sppc: add paths to Dockerfiles of SPP
+  tools/sppc: update app launcer for custom SPP repo
+  tools/sppc: add workdir docker option
+  tools/sppc: add paths to Dockerfiles of pktgen
+  tools/sppc: update launcer for custom pktgen repo
+
+ tools/sppc/app/pktgen.py                         | 12 +++----
+ tools/sppc/app/spp-nfv.py                        |  5 +--
+ tools/sppc/app/spp-primary.py                    |  5 +--
+ tools/sppc/app/spp-vm.py                         |  5 +--
+ tools/sppc/build/main.py                         | 46 +++++++++++++++++-------
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04  | 14 +++++---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 14 +++++---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 14 +++++---
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04     | 20 +++++++----
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04     | 20 +++++++----
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest    | 20 +++++++----
+ tools/sppc/conf/env.py                           |  1 -
+ tools/sppc/lib/app_helper.py                     |  4 +++
+ 13 files changed, 113 insertions(+), 67 deletions(-)
+
+-- 
+2.7.4
+

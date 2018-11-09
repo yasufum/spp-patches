@@ -1,0 +1,34 @@
+From 01fec522bd20954cff56ddf0f54c92991ea5e4ad Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 7 Oct 2018 11:30:39 +0900
+Subject: [PATCH 3/4] spp-ctl: update syntax of add and del command
+
+Because add and del command are updated to use resource UID, spp-ctl is
+also updated to use resource UID.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_proc.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index aa83b76..726de3e 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -146,11 +146,11 @@ class NfvProc(SppProc):
+ 
+     @exec_command
+     def port_add(self, if_type, if_num):
+-        return "add {if_type} {if_num}".format(**locals())
++        return "add {if_type}:{if_num}".format(**locals())
+ 
+     @exec_command
+     def port_del(self, if_type, if_num):
+-        return "del {if_type} {if_num}".format(**locals())
++        return "del {if_type}:{if_num}".format(**locals())
+ 
+     @exec_command
+     def patch_add(self, src_port, dst_port):
+-- 
+2.7.4
+

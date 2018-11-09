@@ -1,0 +1,80 @@
+X-Account-Key: account4
+X-UIDL: 00007ed056a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2A08B400398
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  1 Oct 2018 14:02:03 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 27BDF23BDBF; Mon,  1 Oct 2018 14:02:03 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 26BBB23BAF8
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  1 Oct 2018 14:02:03 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 12BAD125;
+	Mon,  1 Oct 2018 14:02:03 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id F0B5C55;
+	Mon,  1 Oct 2018 14:02:02 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 8/8] tools/sppc: update launcer for custom pktgen repo
+Date: Mon,  1 Oct 2018 14:01:48 +0900
+Message-Id: <20181001050148.77373-9-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181001050148.77373-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To launch executable in custom repo, change the path from absolute
+path to just filename. Path of the file is defined as PATH in each
+of Dockerfiles and no need to use absolute path by previous change.
+In addition, pktgen should be launched from the directory which includes
+`Pktgen.lua` but cannot found it if you use custom repo. To avoid it,
+add specifying workdir for launching from the directory.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/app/pktgen.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/tools/sppc/app/pktgen.py b/tools/sppc/app/pktgen.py
+index 0b79bd3..708633b 100755
+--- a/tools/sppc/app/pktgen.py
++++ b/tools/sppc/app/pktgen.py
+@@ -74,16 +74,16 @@ def main():
+     sock_files = app_helper.sock_files(dev_ids_list)
+ 
+     # Setup docker command.
++    if args.workdir is not None:
++        wd = args.workdir
++    else:
++        wd = '/root/pktgen-dpdk'
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+     docker_opts = app_helper.setup_docker_opts(
+-        args, target_name, sock_files,
+-        '%s/../pktgen-dpdk' % env.RTE_SDK)
+-
+-    cmd_path = '%s/../pktgen-dpdk/app/%s/pktgen' % (
+-        env.RTE_SDK, env.RTE_TARGET)
++            args, target_name, sock_files, wd)
+ 
+     # Setup pktgen command
+-    pktgen_cmd = [cmd_path, '\\']
++    pktgen_cmd = ['pktgen', '\\']
+ 
+     file_prefix = 'spp-pktgen-container%d' % dev_ids_list[0]
+     eal_opts = app_helper.setup_eal_opts(args, file_prefix)
+-- 
+2.7.4
+
+

@@ -1,0 +1,218 @@
+X-Account-Key: account4
+X-UIDL: 000080de56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 49742400B77
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 11 Oct 2018 20:12:20 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 3FAB57F36E; Thu, 11 Oct 2018 20:12:20 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 33A4A7F367
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 11 Oct 2018 20:12:20 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 16DD4125;
+	Thu, 11 Oct 2018 20:12:20 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 00041105;
+	Thu, 11 Oct 2018 20:12:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/4] docs: update secondary command reference
+Date: Thu, 11 Oct 2018 20:12:06 +0900
+Message-Id: <20181011111207.49604-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181011111207.49604-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update description of secondary ommands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary.rst | 84 ++++++++++++++++++++++++--------------
+ 1 file changed, 53 insertions(+), 31 deletions(-)
+
+diff --git a/docs/guides/commands/secondary.rst b/docs/guides/commands/secondary.rst
+index d3566ad..0c4d417 100644
+--- a/docs/guides/commands/secondary.rst
++++ b/docs/guides/commands/secondary.rst
+@@ -29,7 +29,7 @@
+     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ Secondary Commands
+-======================
++==================
+ 
+ Each of secondary processes is managed with ``sec`` command.
+ It is for sending sub commands to secondary with specific ID called
+@@ -44,48 +44,70 @@ owned by secondary process.
+ 
+     spp > sec [SEC_ID];[SUB_CMD]
+ 
++All of Sub commands are referred with ``help`` command.
++
++.. code-block:: console
++
++    spp > help sec
++
++    Send a command to secondary process specified with ID.
++
++        SPP secondary process is specified with secondary ID and takes
++        sub commands.
++
++        spp > sec 1; status
++        spp > sec 1; add ring:0
++        spp > sec 1; patch phy:0 ring:0
++
++        You can refer all of sub commands by pressing TAB after
++        'sec 1;'.
++
++        spp > sec 1;  # press TAB
++        add     del     exit    forward patch   status  stop
+ 
+ status
+ ------
+ 
+-Show running status and resources.
++Show running status and ports assigned to the process. If a port is
++patched to other port, source and destination ports are shown, or only
++source if it is not patched.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0 -> ring:0
++      - phy:1
+ 
+ 
+ add
+ ---
+ 
+-Add a PMD to the secondary with resource ID.
++Add a port to the secondary with resource ID.
+ 
+-Adding ring 0 by
++For example, adding ``ring:0`` by
+ 
+ .. code-block:: console
+ 
+-    spp> sec 1;add ring 0
++    spp> sec 1; add ring:0
+ 
+-Or adding vhost 0 by
++Or adding ``vhost:0`` by
+ 
+ .. code-block:: console
+ 
+-    spp> sec 1;add vhost 0
++    spp> sec 1; add vhost:0
+ 
+ 
+ patch
+ ------
+ 
+ Create a path between two ports, source and destination ports.
+-This command just creates path and does not start forwarding.
++This command just creates a path and does not start forwarding.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 ring:0
++    spp > sec 1; patch phy:0 ring:0
+ 
+ 
+ forward
+@@ -95,18 +117,18 @@ Start forwarding.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;forward
++    spp > sec 1; forward
+ 
+ Running status is changed from ``idling`` to ``running`` by
+ executing it.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;status
+-    status: running
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
++    spp > sec 1; status
++    - status: running
++    - ports:
++      - phy:0
++      - phy:1
+ 
+ 
+ stop
+@@ -116,36 +138,36 @@ Stop forwarding.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;stop
++    spp > sec 1; stop
+ 
+ Running status is changed from ``running`` to ``idling`` by
+ executing it.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
+ 
+ 
+ del
+ ---
+ 
+-Delete PMD added by ``add`` subcommand from the secondary.
++Delete a port from the secondary.
+ 
+ .. code-block:: console
+ 
+-    spp> sec 1;del ring 0
++    spp> sec 1; del ring:0
+ 
+ 
+ exit
+ ----
+ 
+-Terminate the secondary. For terminating all secondaries, use ``bye sec``
+-command instead of it.
++Terminate the secondary. For terminating all secondaries,
++use ``bye sec`` command instead of it.
+ 
+ .. code-block:: console
+ 
+-    spp> sec 1;exit
++    spp> sec 1; exit
+-- 
+2.7.4
+
+

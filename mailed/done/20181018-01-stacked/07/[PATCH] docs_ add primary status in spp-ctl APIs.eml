@@ -1,0 +1,168 @@
+X-Account-Key: account4
+X-UIDL: 0000807656a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A94FC40030D
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  9 Oct 2018 19:54:28 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id A76347F304; Tue,  9 Oct 2018 19:54:28 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id A56A87F049
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  9 Oct 2018 19:54:28 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 8F3FF125;
+	Tue,  9 Oct 2018 19:54:28 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 78CAA119;
+	Tue,  9 Oct 2018 19:54:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] docs: add primary status in spp-ctl APIs
+Date: Tue,  9 Oct 2018 19:54:20 +0900
+Message-Id: <20181009105420.42875-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add response parameters and its example of status of spp_primary in the
+API reference.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 110 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 108 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 23bc8db..3ae90fd 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -125,8 +125,114 @@ Request example
+ Response
+ ^^^^^^^^
+ 
+-There is no data at the moment. The statistical information will be returned
+-when ``spp_primary`` implements it.
++.. _table_spp_ctl_primary_status:
++
++.. table:: Response params of primary status.
++
++    +------------+-------+-------------------------------------------+
++    | Name       | Type  | Description                               |
++    |            |       |                                           |
++    +============+=======+===========================================+
++    | phy_ports  | array | An array of statistics of physical ports. |
++    +------------+-------+-------------------------------------------+
++    | ring_ports | array | An array of statistics of ring ports.     |
++    +------------+-------+-------------------------------------------+
++
++Physical port object.
++
++.. _table_spp_ctl_primary_status_phy:
++
++.. table:: Attributes of physical port of primary status.
++
++    +---------+---------+-----------------------------------------------------+
++    | Name    | Type    | Description                                         |
++    |         |         |                                                     |
++    +=========+=========+=====================================================+
++    | id      | integer | Port ID of the physical port.                       |
++    +---------+---------+-----------------------------------------------------+
++    | rx      | integer | The total number of received packets.               |
++    +---------+---------+-----------------------------------------------------+
++    | tx      | integer | The total number of transferred packets.            |
++    +---------+---------+-----------------------------------------------------+
++    | tx_drop | integer | The total number of dropped packets of transferred. |
++    +---------+---------+-----------------------------------------------------+
++    | eth     | string  | MAC address of the port.                            |
++    +---------+---------+-----------------------------------------------------+
++
++Ring port object.
++
++.. _table_spp_ctl_primary_status_ring:
++
++.. table:: Attributes of ring port of primary status.
++
++    +---------+---------+-----------------------------------------------------+
++    | Name    | Type    | Description                                         |
++    |         |         |                                                     |
++    +=========+=========+=====================================================+
++    | id      | integer | Port ID of the ring port.                           |
++    +---------+---------+-----------------------------------------------------+
++    | rx      | integer | The total number of received packets.               |
++    +---------+---------+-----------------------------------------------------+
++    | rx_drop | integer | The total number of dropped packets of received.    |
++    +---------+---------+-----------------------------------------------------+
++    | tx      | integer | The total number of transferred packets.            |
++    +---------+---------+-----------------------------------------------------+
++    | tx_drop | integer | The total number of dropped packets of transferred. |
++    +---------+---------+-----------------------------------------------------+
++
++Response example
++^^^^^^^^^^^^^^^^
++
++.. code-block:: json
++
++    {
++      "phy_ports": [
++        {
++          "id": 0,
++          "rx": 0,
++          "tx": 0,
++          "tx_drop": 0,
++          "eth": "56:48:4f:53:54:00"
++        },
++        {
++          "id": 1,
++          "rx": 0,
++          "tx": 0,
++          "tx_drop": 0,
++          "eth": "56:48:4f:53:54:01"
++        }
++      ],
++      "ring_ports": [
++        {
++          "id": 0,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 1,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 2,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        },
++        {
++          "id": 3,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        }
++      ]
++    }
+ 
+ 
+ DELETE /v1/primary/status
+-- 
+2.7.4
+
+

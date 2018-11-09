@@ -1,0 +1,35 @@
+From 07748bec4d8a93326e3cd34c28f0d9016290740d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 11 Sep 2018 04:38:31 +0900
+Subject: [PATCH 6/8] tools/sppc: add workdir docker option
+
+Some of apps require to be launched from specific directory even if PATH
+is configured properly. For instance, pktgen should be launched from
+project root because for finding `Pktgen.lua` in the directory.
+
+This update is for adding workdir option for specifying a directory
+from which the app is launched.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/lib/app_helper.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index c15c852..38c9ade 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -102,6 +102,10 @@ def add_sppc_args(parser):
+         default='latest',
+         help="Version of Linux distribution")
+     parser.add_argument(
++        '--workdir',
++        type=str,
++        help="Path of directory in which the command is launched")
++    parser.add_argument(
+         '-ci', '--container-image',
+         type=str,
+         help="Name of container image")
+-- 
+2.7.4
+

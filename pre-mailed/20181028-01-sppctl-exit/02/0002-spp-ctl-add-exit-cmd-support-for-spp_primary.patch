@@ -1,0 +1,50 @@
+From 4326ea36164ba7acbf91198a5b29017766f21447 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 25 Oct 2018 09:30:45 +0900
+Subject: [PATCH 2/5] spp-ctl: add exit cmd support for spp_primary
+
+Spp-ctl does not support to exit spp_primary, but it is required using
+from `spp.py`. This update is to add a REST API for exiting the process.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_proc.py   | 4 ++++
+ src/spp-ctl/spp_webapi.py | 6 ++++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index aa928f2..83c59ea 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -189,3 +189,7 @@ class PrimaryProc(SppProc):
+     @exec_command
+     def clear(self):
+         return "clear"
++
++    @exec_command
++    def do_exit(self):
++        return "exit"
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 8332cab..8d0510c 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -395,6 +395,7 @@ class V1PrimaryHandler(BaseHandler):
+     def set_route(self):
+         self.route('/status', 'GET', callback=self.get_status)
+         self.route('/status', 'DELETE', callback=self.clear_status)
++        self.route('/', 'DELETE', callback=self.do_exit)
+ 
+     def _get_proc(self):
+         proc = self.ctrl.procs.get(spp_proc.ID_PRIMARY)
+@@ -417,3 +418,8 @@ class V1PrimaryHandler(BaseHandler):
+     def clear_status(self):
+         proc = self._get_proc()
+         proc.clear()
++
++    def do_exit(self):
++        proc = self._get_proc()
++        self.ctrl.do_exit(proc.type, proc.id)
++        proc.do_exit()
+-- 
+2.7.4
+

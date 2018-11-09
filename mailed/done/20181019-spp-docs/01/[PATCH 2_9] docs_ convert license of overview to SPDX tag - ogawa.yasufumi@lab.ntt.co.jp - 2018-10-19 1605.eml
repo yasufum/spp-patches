@@ -1,0 +1,90 @@
+X-Account-Key: account4
+X-UIDL: 000081e556a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 1645C400B81
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 19 Oct 2018 16:05:44 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 142D37F360; Fri, 19 Oct 2018 16:05:44 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 132B37F29C
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 19 Oct 2018 16:05:44 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 0174E639099;
+	Fri, 19 Oct 2018 16:05:44 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id DC2A4639068;
+	Fri, 19 Oct 2018 16:05:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: tim.odriscoll@intel.com,
+	jim.st.leger@intel.com,
+	tdelanerolle@linuxfoundation.org
+Subject: [PATCH 2/9] docs: convert license of overview to SPDX tag
+Date: Fri, 19 Oct 2018 16:05:27 +0900
+Message-Id: <20181019070534.81134-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181019070534.81134-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181019070534.81134-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Convert license of overview section to SPDX short style.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview.rst | 31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
+
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index ed74152..2529f77 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -1,32 +1,5 @@
+-..  BSD LICENSE
+-    Copyright(c) 2010-2014 Intel Corporation. All rights reserved.
+-    All rights reserved.
+-
+-    Redistribution and use in source and binary forms, with or without
+-    modification, are permitted provided that the following conditions
+-    are met:
+-
+-    * Redistributions of source code must retain the above copyright
+-    notice, this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright
+-    notice, this list of conditions and the following disclaimer in
+-    the documentation and/or other materials provided with the
+-    distribution.
+-    * Neither the name of Intel Corporation nor the names of its
+-    contributors may be used to endorse or promote products derived
+-    from this software without specific prior written permission.
+-
+-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+-    OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ Soft Patch Panel
+ ==================
+-- 
+2.13.1
+
+
