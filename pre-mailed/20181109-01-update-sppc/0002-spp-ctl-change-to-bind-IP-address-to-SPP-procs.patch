@@ -1,0 +1,57 @@
+From 2457953998c7e378f3ce344be9021e9087aed34c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 27 Oct 2018 22:37:46 +0900
+Subject: [PATCH 2/2] spp-ctl: change to bind IP address to SPP procs
+
+Spp-ctl creates a socket with address `localhost` for SPP processes.
+However, it should be able to change for some cases. For instance, SPP
+container process requires to access spp-ctl running on host. It cannot
+find spp-ctl from inside of container if the address is `localhost`.
+This update is to change binding IP address to be found.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index a22d589..0576ae1 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -26,6 +26,7 @@ class Controller(object):
+     def __init__(self, host, pri_port, sec_port, api_port):
+         self.web_server = spp_webapi.WebServer(self, host, api_port)
+         self.procs = {}
++        self.ip_addr = host
+         self.init_connection(pri_port, sec_port)
+ 
+     def start(self):
+@@ -34,14 +35,14 @@ class Controller(object):
+     def init_connection(self, pri_port, sec_port):
+         self.pri_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+         self.pri_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+-        self.pri_sock.bind(('127.0.0.1', pri_port))
++        self.pri_sock.bind((self.ip_addr, pri_port))
+         self.pri_sock.listen(1)
+         self.primary_listen_thread = eventlet.greenthread.spawn(
+             self.accept_primary)
+ 
+         self.sec_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+         self.sec_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+-        self.sec_sock.bind(('127.0.0.1', sec_port))
++        self.sec_sock.bind((self.ip_addr, sec_port))
+         self.sec_sock.listen(1)
+         self.secondary_listen_thread = eventlet.greenthread.spawn(
+             self.accept_secondary)
+@@ -142,7 +143,7 @@ class Controller(object):
+         return procs
+ 
+     def do_exit(self, proc_type, proc_id):
+-            removed_id = None  # remove proc info of ID from self.procs
++        removed_id = None  # remove proc info of ID from self.procs
+         for proc in self.procs.values():
+             if proc.type == proc_type and proc.id == proc_id:
+                 removed_id = proc.id
+-- 
+2.7.4
+

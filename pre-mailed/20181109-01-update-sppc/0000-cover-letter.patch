@@ -1,0 +1,26 @@
+From 2457953998c7e378f3ce344be9021e9087aed34c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 9 Nov 2018 16:04:42 +0900
+Subject: [PATCH 0/2] Update of SPP Container
+
+Hi,
+
+This update is for SPP Container. Fix bug of creating `env.sh` and
+change binding IP address in spp-ctl from `127.0.0.1` to given IP
+address to be enabled to find from inside containers. If IP address
+is not given from user, default `localhost` is assigned.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (2):
+  tools/sppc: fix bug of creating env file
+  spp-ctl: change to bind IP address to SPP procs
+
+ src/spp-ctl/spp_ctl.py   |  7 ++++---
+ tools/sppc/build/main.py | 21 ++++++++++++++-------
+ 2 files changed, 18 insertions(+), 10 deletions(-)
+
+-- 
+2.7.4
+
