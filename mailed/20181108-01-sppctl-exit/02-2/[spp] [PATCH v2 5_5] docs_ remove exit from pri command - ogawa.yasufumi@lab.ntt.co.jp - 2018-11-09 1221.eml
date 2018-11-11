@@ -1,0 +1,99 @@
+X-Account-Key: account3
+X-UIDL: 12544.73qtWxWdSIRc6MuIfaFrlk4B1BU=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw006.ocn.ad.jp (LHLO md-lpx-nw006) (153.138.217.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 9 Nov 2018 12:21:58 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-nw006 with LMTP id uEd9KFb95FvDSwAA0AKT/w
+	; Fri, 09 Nov 2018 12:21:58 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id 9A947C00F02C
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:58 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 4DF609C0280
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:58 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0CDA54CAD;
+	Fri,  9 Nov 2018 04:21:57 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id D65194CBB
+ for <spp@dpdk.org>; Fri,  9 Nov 2018 04:21:54 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wA93Lq7S017036;
+ Fri, 9 Nov 2018 12:21:53 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id BA7F5638493;
+ Fri,  9 Nov 2018 12:21:52 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 52C46638483;
+ Fri,  9 Nov 2018 12:21:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  9 Nov 2018 12:21:38 +0900
+Message-Id: <20181109032138.90520-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025052023.17190-1-ogawa.yasufumi@lab.ntt.co.jp>
+ <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 5/5] docs: remove exit from pri command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update command reference for removing `exit` sub command of `pri` which
+is not recommended to use.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 16 ----------------
+ 1 file changed, 16 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index e49f990..590461f 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -24,22 +24,6 @@ Show forwarding statistics of each of ports.
+        1        9208        9203           0           5
+        ...
+ 
+-exit
+-----
+-
+-Terminate primary process.
+-
+-.. code-block:: console
+-
+-    spp > pri; exit
+-
+-.. note::
+-
+-    You should not use this command if one or more secondary processes
+-    are still running because terminating primary before secondaries may
+-    cause an error. You shold use ``bye`` command instead of
+-    ``pri; exit``.
+-
+ clear
+ -----
+ 
+-- 
+2.7.4
+
+

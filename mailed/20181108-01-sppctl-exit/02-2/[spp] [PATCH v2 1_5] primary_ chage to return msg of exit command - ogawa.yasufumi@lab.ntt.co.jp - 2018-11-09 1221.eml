@@ -1,0 +1,105 @@
+X-Account-Key: account3
+X-UIDL: 12542.X83y2R6FZGTKXWie1+,rAXVeHS8=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 9 Nov 2018 12:21:56 +0900 (JST)
+Received: from md-mta-cb009.ocn.ad.jp ([153.138.211.104])
+	by md-lpx-nw008 with LMTP id iOhVIFT95FvfdwAAqFjg7g
+	; Fri, 09 Nov 2018 12:21:56 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb009.ocn.ad.jp (Postfix) with ESMTP id 797564403C4EE
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:56 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id F28F0A80266
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:55 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id C4D5F4C96;
+	Fri,  9 Nov 2018 04:21:53 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 2DABB1BE0
+ for <spp@dpdk.org>; Fri,  9 Nov 2018 04:21:49 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wA93LmGk030419;
+ Fri, 9 Nov 2018 12:21:48 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 97D2163850F;
+ Fri,  9 Nov 2018 12:21:48 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 7B3246380F3;
+ Fri,  9 Nov 2018 12:21:48 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  9 Nov 2018 12:21:34 +0900
+Message-Id: <20181109032138.90520-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025052023.17190-1-ogawa.yasufumi@lab.ntt.co.jp>
+ <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 1/5] primary: chage to return msg of exit command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to fix error of receiving data of PrimaryProc in spp-ctl.
+Spp_primary returns no message after exit command while spp-ctl expects
+to get any of message as a result. To fix, change to return empty
+message.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 33f4143..d991bca 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -383,6 +383,7 @@ main(int argc, char *argv[])
+ 	int sock = SOCK_RESET;
+ 	int connected = 0;
+ 	char str[MSG_SIZE];
++	int flg_exit;  // used as res of parse_command() to exit if -1
+ 	int ret;
+ 
+ 	/* Register signals */
+@@ -413,13 +414,14 @@ main(int argc, char *argv[])
+ 
+ 		RTE_LOG(DEBUG, APP, "Received string: %s\n", str);
+ 
+-		ret = parse_command(str);
+-		if (ret < 0)
+-			break;
++		flg_exit = parse_command(str);
+ 
+ 		/* Send the message back to client */
+ 		ret = do_send(&connected, &sock, str);
+-		if (ret < 0)
++
++		if (flg_exit < 0)  /* terminate process if exit is called */
++			break;
++		else if (ret < 0)
+ 			continue;
+ 	}
+ 
+-- 
+2.7.4
+
+

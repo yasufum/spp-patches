@@ -1,0 +1,138 @@
+X-Account-Key: account3
+X-UIDL: 12541.QNnKw6,,1rNkiDHg7bahD3cxFwA=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw009.ocn.ad.jp (LHLO md-lpx-nw009) (153.138.217.82)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 9 Nov 2018 12:21:56 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw009 with LMTP id ePCHBVT95Fs0NgAAkTVMFA
+	; Fri, 09 Nov 2018 12:21:56 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 0A28C3401E237
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:56 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 6603FA802B6
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 12:21:55 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DB1594C9F;
+	Fri,  9 Nov 2018 04:21:53 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id A202A4C6C
+ for <spp@dpdk.org>; Fri,  9 Nov 2018 04:21:50 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wA93Lnrp030422;
+ Fri, 9 Nov 2018 12:21:49 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 7D001638483;
+ Fri,  9 Nov 2018 12:21:49 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 6477F638493;
+ Fri,  9 Nov 2018 12:21:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  9 Nov 2018 12:21:35 +0900
+Message-Id: <20181109032138.90520-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20181025052023.17190-1-ogawa.yasufumi@lab.ntt.co.jp>
+ <20181109032138.90520-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 2/5] spp-ctl: add exit cmd support for spp_primary
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl does not support to exit spp_primary, but it is required using
+from `spp.py`. This update is to add a REST API for exiting the process.
+
+This update is includes to change prefix of args of do_exit() in
+`spp_ctl.py` from `sec_` to `proc_` because this method supports both
+of primary and secondary by this change.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Reviewed-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    | 14 +++++++-------
+ src/spp-ctl/spp_proc.py   |  4 ++++
+ src/spp-ctl/spp_webapi.py |  6 ++++++
+ 3 files changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index 81a2fe0..a22d589 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -141,14 +141,14 @@ class Controller(object):
+             procs.append(p)
+         return procs
+ 
+-    def do_exit(self, sec_type, sec_id):
+-        target_key = None
+-        for k, proc in self.procs.items():
+-            if proc.type == sec_type and proc.id == sec_id:
+-                target_key = k
++    def do_exit(self, proc_type, proc_id):
++            removed_id = None  # remove proc info of ID from self.procs
++        for proc in self.procs.values():
++            if proc.type == proc_type and proc.id == proc_id:
++                removed_id = proc.id
+                 break
+-        if target_key is not None:
+-            del self.procs[target_key]
++        if removed_id is not None:
++            del self.procs[removed_id]
+ 
+ 
+ def main():
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index aa928f2..83c59ea 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -189,3 +189,7 @@ class PrimaryProc(SppProc):
+     @exec_command
+     def clear(self):
+         return "clear"
++
++    @exec_command
++    def do_exit(self):
++        return "exit"
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 8332cab..49ef971 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -395,6 +395,7 @@ class V1PrimaryHandler(BaseHandler):
+     def set_route(self):
+         self.route('/status', 'GET', callback=self.get_status)
+         self.route('/status', 'DELETE', callback=self.clear_status)
++        self.route('/', 'DELETE', callback=self.pri_exit)
+ 
+     def _get_proc(self):
+         proc = self.ctrl.procs.get(spp_proc.ID_PRIMARY)
+@@ -417,3 +418,8 @@ class V1PrimaryHandler(BaseHandler):
+     def clear_status(self):
+         proc = self._get_proc()
+         proc.clear()
++
++    def pri_exit(self):
++        proc = self._get_proc()
++        self.ctrl.do_exit(proc.type, proc.id)
++        proc.do_exit()
+-- 
+2.7.4
+
+
