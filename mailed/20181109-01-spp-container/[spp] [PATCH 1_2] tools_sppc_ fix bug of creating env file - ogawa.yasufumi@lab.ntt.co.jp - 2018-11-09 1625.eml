@@ -1,0 +1,118 @@
+X-Account-Key: account3
+X-UIDL: 12549.68YXNXrvcdCVJVnqvKhBrPiKMF4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw004.ocn.ad.jp (LHLO md-lpx-nw004) (153.138.217.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 9 Nov 2018 16:28:10 +0900 (JST)
+Received: from md-mta-cb010.ocn.ad.jp ([153.138.211.105])
+	by md-lpx-nw004 with LMTP id EFx3Awo35VtbZwAAxo9yvA
+	; Fri, 09 Nov 2018 16:28:10 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb010.ocn.ad.jp (Postfix) with ESMTP id 032A71403DA34
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 16:28:10 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 5A663D40278
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 16:28:09 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id AEDC14C9F;
+	Fri,  9 Nov 2018 08:28:07 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id B723D4C96
+ for <spp@dpdk.org>; Fri,  9 Nov 2018 08:28:05 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wA97S4c5026310;
+ Fri, 9 Nov 2018 16:28:04 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1F66EEA72C3;
+ Fri,  9 Nov 2018 16:28:04 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 11CFEEA7284;
+ Fri,  9 Nov 2018 16:28:04 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  9 Nov 2018 16:25:48 +0900
+Message-Id: <1541748349-15538-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1541748349-15538-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1541748349-15538-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] tools/sppc: fix bug of creating env file
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Build script create `env.sh` to activate config of env on the container.
+This patch is to fix bug failed to created the file.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/main.py | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
+
+diff --git a/tools/sppc/build/main.py b/tools/sppc/build/main.py
+index 9618bab..dcde412 100755
+--- a/tools/sppc/build/main.py
++++ b/tools/sppc/build/main.py
+@@ -86,9 +86,12 @@ def create_env_sh(dst_dir, rte_sdk, target, target_dir):
+     elif target == 'spp':
+         contents += "export SPP_DIR=%s" % target_dir
+ 
+-    f = open('%s/env.sh' % dst_dir, 'w')
+-    f.write(contents)
+-    f.close()
++    try:
++        f = open('%s/env.sh' % dst_dir, 'w')
++        f.write(contents)
++        f.close()
++    except IOError:
++        print('Error: Failed to create env.sh.')
+ 
+ 
+ def main():
+@@ -142,10 +145,12 @@ def main():
+     # Check for just creating env.sh, or run docker build.
+     if args.only_envsh is True:
+         if args.dry_run is False:
+-            if target == 'pktgen':
+-                create_env_sh(dockerfile_dir, rte_sdk, target, pktgen_dir)
+-            elif target == 'spp':
+-                create_env_sh(dockerfile_dir, rte_sdk, target, spp_dir)
++            if args.target == 'pktgen':
++                create_env_sh(dockerfile_dir, rte_sdk, args.target, pktgen_dir)
++            elif args.target == 'spp':
++                create_env_sh(dockerfile_dir, rte_sdk, args.target, spp_dir)
++            elif args.target == 'dpdk':
++                create_env_sh(dockerfile_dir, rte_sdk, args.target, dpdk_dir)
+             print("Info: '%s/env.sh' created." % dockerfile_dir)
+             exit()
+         else:
+@@ -157,6 +162,8 @@ def main():
+             create_env_sh(dockerfile_dir, rte_sdk, args.target, pktgen_dir)
+         elif args.target == 'spp':
+             create_env_sh(dockerfile_dir, rte_sdk, args.target, spp_dir)
++        elif args.target == 'dpdk':
++            create_env_sh(dockerfile_dir, rte_sdk, args.target, dpdk_dir)
+ 
+     # Setup environment variables on host to pass 'docker build'.
+     env_opts = [
+-- 
+2.7.4
+
+

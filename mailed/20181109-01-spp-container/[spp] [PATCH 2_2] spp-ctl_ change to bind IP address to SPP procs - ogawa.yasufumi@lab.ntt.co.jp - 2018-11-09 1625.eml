@@ -1,0 +1,113 @@
+X-Account-Key: account3
+X-UIDL: 12550.JNItitW3xb9bUsZsPOcPFdY+6LI=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb007.ocn.ad.jp (LHLO md-lpx-cb007) (153.138.210.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 9 Nov 2018 16:28:11 +0900 (JST)
+Received: from md-mta-cb010.ocn.ad.jp ([153.138.211.105])
+	by md-lpx-cb007 with LMTP id yGYJBAs35VtaMQAAz4+SuQ
+	; Fri, 09 Nov 2018 16:28:11 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb010.ocn.ad.jp (Postfix) with ESMTP id 0C5EC1403E215
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 16:28:11 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 4D89650027D
+	for <geminoa@juno.ocn.ne.jp>; Fri,  9 Nov 2018 16:28:10 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id BA0D04CA2;
+	Fri,  9 Nov 2018 08:28:08 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 62D7E4C96
+ for <spp@dpdk.org>; Fri,  9 Nov 2018 08:28:07 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wA97S6FP026313;
+ Fri, 9 Nov 2018 16:28:06 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 51EA4EA72C3;
+ Fri,  9 Nov 2018 16:28:06 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4489CEA7284;
+ Fri,  9 Nov 2018 16:28:06 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri,  9 Nov 2018 16:25:49 +0900
+Message-Id: <1541748349-15538-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1541748349-15538-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1541748349-15538-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] spp-ctl: change to bind IP address to SPP procs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl creates a socket with address `localhost` for SPP processes.
+However, it should be able to change for some cases. For instance, SPP
+container process requires to access spp-ctl running on host. It cannot
+find spp-ctl from inside of container if the address is `localhost`.
+This update is to change binding IP address to be found.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index a22d589..0576ae1 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -26,6 +26,7 @@ class Controller(object):
+     def __init__(self, host, pri_port, sec_port, api_port):
+         self.web_server = spp_webapi.WebServer(self, host, api_port)
+         self.procs = {}
++        self.ip_addr = host
+         self.init_connection(pri_port, sec_port)
+ 
+     def start(self):
+@@ -34,14 +35,14 @@ class Controller(object):
+     def init_connection(self, pri_port, sec_port):
+         self.pri_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+         self.pri_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+-        self.pri_sock.bind(('127.0.0.1', pri_port))
++        self.pri_sock.bind((self.ip_addr, pri_port))
+         self.pri_sock.listen(1)
+         self.primary_listen_thread = eventlet.greenthread.spawn(
+             self.accept_primary)
+ 
+         self.sec_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+         self.sec_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+-        self.sec_sock.bind(('127.0.0.1', sec_port))
++        self.sec_sock.bind((self.ip_addr, sec_port))
+         self.sec_sock.listen(1)
+         self.secondary_listen_thread = eventlet.greenthread.spawn(
+             self.accept_secondary)
+@@ -142,7 +143,7 @@ class Controller(object):
+         return procs
+ 
+     def do_exit(self, proc_type, proc_id):
+-            removed_id = None  # remove proc info of ID from self.procs
++        removed_id = None  # remove proc info of ID from self.procs
+         for proc in self.procs.values():
+             if proc.type == proc_type and proc.id == proc_id:
+                 removed_id = proc.id
+-- 
+2.7.4
+
+
