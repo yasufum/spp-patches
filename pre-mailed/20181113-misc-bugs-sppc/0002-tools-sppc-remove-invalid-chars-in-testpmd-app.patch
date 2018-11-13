@@ -1,0 +1,29 @@
+From 64567ee1330d4c6ba3a50dbd89e7da8300202c5d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 14 Nov 2018 00:09:33 +0900
+Subject: [PATCH 2/2] tools/sppc: remove invalid chars in testpmd app
+
+This update is to remove characters of invalid code from the help
+message of `testpmd.py`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/app/testpmd.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/sppc/app/testpmd.py b/tools/sppc/app/testpmd.py
+index 8d4057c..487bb9f 100755
+--- a/tools/sppc/app/testpmd.py
++++ b/tools/sppc/app/testpmd.py
+@@ -250,7 +250,7 @@ def parse_args():
+     parser.add_argument(
+         '--no-flush-rx',
+         action='store_true',
+-        help="Don’t flush the RX streams before starting forwarding, " +
++        help="Don't flush the RX streams before starting forwarding, " +
+         "Used mainly with the PCAP PMD")
+     parser.add_argument(
+         '--txpkts',
+-- 
+2.7.4
+

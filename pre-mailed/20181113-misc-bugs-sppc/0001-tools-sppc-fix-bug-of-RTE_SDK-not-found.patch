@@ -1,0 +1,30 @@
+From 7ef9b0a595560fb3f6d27ba0e9ea4c8bf4181998 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 13 Nov 2018 23:57:34 +0900
+Subject: [PATCH 1/2] tools/sppc: fix bug of RTE_SDK not found
+
+Environmental variable RTE_SDK should be defiend in containers running
+DPDK sample apps to find compiled binary, but not defined and failed to
+launch. This update is add the variable as config activated while the
+container is launched.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/conf/env.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/sppc/conf/env.py b/tools/sppc/conf/env.py
+index 549b4dc..f6df15a 100644
+--- a/tools/sppc/conf/env.py
++++ b/tools/sppc/conf/env.py
+@@ -4,6 +4,7 @@
+ 
+ 
+ HOMEDIR = '/root'
++RTE_SDK = '/root/dpdk'
+ RTE_TARGET = 'x86_64-native-linuxapp-gcc'
+ 
+ CONTAINER_IMG_NAME = {
+-- 
+2.7.4
+

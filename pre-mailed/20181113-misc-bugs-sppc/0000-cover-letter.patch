@@ -1,0 +1,29 @@
+From 64567ee1330d4c6ba3a50dbd89e7da8300202c5d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 14 Nov 2018 00:44:34 +0900
+Subject: [PATCH 0/2] Fix bugs of SPP container
+
+Hi,
+
+SPP container has problems for launching some of app containers. This
+series of patches is to fix the bugs.
+
+* Not defined env variable RTE_SDK for launching DPDK sample apps.
+
+* Failed to lauch testpmd app because its launcher includes a invalid
+  char codes.
+
+Thanks,
+Yasufumi Ogawa
+
+Yasufumi Ogawa (2):
+  tools/sppc: fix bug of RTE_SDK not found
+  tools/sppc: remove invalid chars in testpmd app
+
+ tools/sppc/app/testpmd.py | 2 +-
+ tools/sppc/conf/env.py    | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+-- 
+2.7.4
+
