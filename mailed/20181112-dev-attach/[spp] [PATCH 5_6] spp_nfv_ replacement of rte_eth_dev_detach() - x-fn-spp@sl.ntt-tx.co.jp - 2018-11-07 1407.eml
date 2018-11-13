@@ -1,0 +1,112 @@
+X-Account-Key: account3
+X-UIDL: 12537.JanZyIP8dqW9MTkAeyZhklwwJgk=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb009.ocn.ad.jp (LHLO md-lpx-cb009) (153.138.210.82)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 7 Nov 2018 14:08:52 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb009 with LMTP id CPZgI2Rz4lv5UAAA4uB72A
+	; Wed, 07 Nov 2018 14:08:52 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id 864A03C00EC0B
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:52 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id C435AD40277
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:51 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0B6DD4CA2;
+	Wed,  7 Nov 2018 06:08:48 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 8819734F3
+ for <spp@dpdk.org>; Wed,  7 Nov 2018 06:08:46 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wA758j4W017862;
+ Wed, 7 Nov 2018 14:08:45 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wA758jR5030949;
+ Wed, 7 Nov 2018 14:08:45 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA30278;
+ Wed, 7 Nov 2018 14:07:33 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wA757WN7008896;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wA757WTj008893; Wed, 7 Nov 2018 14:07:32 +0900
+Message-Id: <201811070507.wA757WTj008893@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id wA757WhQ024524 ; Wed, 7 Nov 2018 14:07:32 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed,  7 Nov 2018 14:07:31 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 5/6] spp_nfv: replacement of rte_eth_dev_detach()
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Replace rte_eth_dev_detach() with detach() for nfv.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/nfv/nfv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/nfv/nfv.c b/src/nfv/nfv.c
+index e53037e..926180a 100644
+--- a/src/nfv/nfv.c
++++ b/src/nfv/nfv.c
+@@ -316,7 +316,7 @@ do_del(char *res_uid)
+ 		if (port_id == PORT_RESET)
+ 			return -1;
+ 
+-		rte_eth_dev_detach(port_id, name);
++		detach(port_id, name);
+ 
+ 	} else if (!strcmp(p_type, "pcap")) {
+ 		char name[RTE_ETH_NAME_MAX_LEN];
+@@ -325,7 +325,7 @@ do_del(char *res_uid)
+ 		if (port_id == PORT_RESET)
+ 			return -1;
+ 
+-		rte_eth_dev_detach(port_id, name);
++		detach(port_id, name);
+ 
+ 	} else if (!strcmp(p_type, "nullpmd")) {
+ 		char name[RTE_ETH_NAME_MAX_LEN];
+@@ -334,7 +334,7 @@ do_del(char *res_uid)
+ 		if (port_id == PORT_RESET)
+ 			return -1;
+ 
+-		rte_eth_dev_detach(port_id, name);
++		detach(port_id, name);
+ 
+ 	}
+ 
+-- 
+2.18.0
+
+

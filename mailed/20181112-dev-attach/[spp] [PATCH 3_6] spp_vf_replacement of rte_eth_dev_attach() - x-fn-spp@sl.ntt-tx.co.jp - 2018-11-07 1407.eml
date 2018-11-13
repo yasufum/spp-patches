@@ -1,0 +1,97 @@
+X-Account-Key: account3
+X-UIDL: 12535.ODs+8++J4fS1DtrQXjsxBt,Idm4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw009.ocn.ad.jp (LHLO md-lpx-nw009) (153.138.217.82)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 7 Nov 2018 14:08:51 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-nw009 with LMTP id KD/PN2Jz4lv1LAAAkTVMFA
+	; Wed, 07 Nov 2018 14:08:50 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id DB1FDC02FE0B
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 7BF95D402AD
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id CE2FC34F3;
+	Wed,  7 Nov 2018 06:08:47 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 46E042BB1
+ for <spp@dpdk.org>; Wed,  7 Nov 2018 06:08:46 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wA758jko017850;
+ Wed, 7 Nov 2018 14:08:45 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wA758igm030925;
+ Wed, 7 Nov 2018 14:08:44 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA30270;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wA757W6t008886;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wA757Wbm008880; Wed, 7 Nov 2018 14:07:32 +0900
+Message-Id: <201811070507.wA757Wbm008880@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id wA757WhO024524 ; Wed, 7 Nov 2018 14:07:32 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed,  7 Nov 2018 14:07:29 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 3/6] spp_vf:replacement of rte_eth_dev_attach()
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Replace rte_eth_dev_attach() with attach() for vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/spp_vf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 2a77ec6..425b88c 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -222,9 +222,9 @@ add_vhost_pmd(int index, int client)
+ 
+ 	sprintf(devargs, "%s,iface=%s,queues=%d,client=%d",
+ 			name, iface, nr_queues, client);
+-	ret = rte_eth_dev_attach(devargs, &vhost_port_id);
++	ret = attach(devargs, &vhost_port_id);
+ 	if (unlikely(ret < 0)) {
+-		RTE_LOG(ERR, APP, "rte_eth_dev_attach error. (ret = %d)\n",
++		RTE_LOG(ERR, APP, "attach error. (ret = %d)\n",
+ 				ret);
+ 		return ret;
+ 	}
+-- 
+2.18.0
+
+

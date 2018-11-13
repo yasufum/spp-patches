@@ -1,0 +1,157 @@
+X-Account-Key: account3
+X-UIDL: 12538.w2+bl8ICoOzkWkHeP22F0K14rSc=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb008.ocn.ad.jp (LHLO md-lpx-cb008) (153.138.210.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 7 Nov 2018 14:08:55 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb008 with LMTP id WP+oMWdz4lthMAAArMKwLw
+	; Wed, 07 Nov 2018 14:08:55 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id BE4613C030E7E
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:55 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 05647A80277
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:55 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 01D224C94;
+	Wed,  7 Nov 2018 06:08:48 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 5BC36325F
+ for <spp@dpdk.org>; Wed,  7 Nov 2018 06:08:46 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wA758jAl017858;
+ Wed, 7 Nov 2018 14:08:45 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wA758j20030939;
+ Wed, 7 Nov 2018 14:08:45 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA30272;
+ Wed, 7 Nov 2018 14:07:33 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wA757Wsd008892;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wA757WFn008883; Wed, 7 Nov 2018 14:07:32 +0900
+Message-Id: <201811070507.wA757WFn008883@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id wA757WhP024524 ; Wed, 7 Nov 2018 14:07:32 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed,  7 Nov 2018 14:07:30 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 4/6] shared: addition of detach()
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+>From DPDK 18.08, rte_eth_dev_detach becomes deprecated and will be
+deleted in 18.11. There exists several places in spp where uses the
+API and those should be replaced with rte_eth_hotplug_remove.
+As the first step, this patch creates new function named
+spp_rte_eth_dev_detach under shared directory so that primary,nfv,vm,
+vf can refer this new function.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/shared/common.c | 38 ++++++++++++++++++++++++++++++++++++++
+ src/shared/common.h | 15 +++++++++++++++
+ 2 files changed, 53 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index aba2309..b91b16c 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -526,3 +526,41 @@ attach(const char *devargs, uint16_t *port_id)
+ 
+ 	return ret;
+ }
++
++/* detach the device, then store the name of the device */
++int
++detach(uint16_t port_id, char *name __rte_unused)
++{
++	struct rte_device *dev;
++	struct rte_bus *bus;
++	uint32_t dev_flags;
++	int ret = -1;
++
++	if (rte_eth_devices[port_id].data == NULL) {
++		RTE_LOG(INFO, APP,
++			"rte_eth_devices[%d].data is  NULL\n", port_id);
++		return 0;
++	}
++	dev_flags = rte_eth_devices[port_id].data->dev_flags;
++	if (dev_flags & RTE_ETH_DEV_BONDED_SLAVE) {
++		RTE_LOG(ERR, APP,
++			"Port %"PRIu16" is bonded, cannot detach\n", port_id);
++		return -ENOTSUP;
++	}
++
++	dev = rte_eth_devices[port_id].device;
++	if (dev == NULL)
++		return -EINVAL;
++
++	bus = rte_bus_find_by_device(dev);
++	if (bus == NULL)
++		return -ENOENT;
++
++	ret = rte_eal_hotplug_remove(bus->name, dev->name);
++	if (ret < 0)
++		return ret;
++
++	rte_eth_dev_release_port(&rte_eth_devices[port_id]);
++
++	return 0;
++}
+diff --git a/src/shared/common.h b/src/shared/common.h
+index a97943a..104337a 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -234,4 +234,19 @@ int spp_atoi(const char *str, int *val);
+ int
+ attach(const char *devargs, uint16_t *port_id);
+ 
++/**
++ * Detach a Ethernet device specified by port identifier.
++ * This function must be called when the device is in the
++ * closed state.
++ *
++ * @param port_id
++ *   The port identifier of the device to detach.
++ * @param devname
++ *   A pointer to a buffer that will be filled with the device name.
++ *   This buffer must be at least RTE_DEV_NAME_MAX_LEN long.
++ * @return
++ *  0 on success and devname is filled, negative on error
++ */
++int detach(uint16_t port_id, char *devname);
++
+ #endif
+-- 
+2.18.0
+
+

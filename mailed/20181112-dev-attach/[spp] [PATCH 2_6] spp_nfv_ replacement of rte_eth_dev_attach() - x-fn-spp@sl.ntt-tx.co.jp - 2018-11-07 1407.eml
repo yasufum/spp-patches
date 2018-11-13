@@ -1,0 +1,112 @@
+X-Account-Key: account3
+X-UIDL: 12532.bvmStpHMmqJUK0muwhZYFvV9qKw=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw003.ocn.ad.jp (LHLO md-lpx-nw003) (153.138.217.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 7 Nov 2018 14:08:50 +0900 (JST)
+Received: from md-mta-nw010.ocn.ad.jp ([153.138.217.137])
+	by md-lpx-nw003 with LMTP id wCeQKGJz4lv6YQAABYl6EA
+	; Wed, 07 Nov 2018 14:08:50 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-nw010.ocn.ad.jp (Postfix) with ESMTP id 9F1673C023C9A
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 454B29C0277
+	for <geminoa@juno.ocn.ne.jp>; Wed,  7 Nov 2018 14:08:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id EAFC94C80;
+	Wed,  7 Nov 2018 06:08:47 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 4312A2B94
+ for <spp@dpdk.org>; Wed,  7 Nov 2018 06:08:46 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wA758iX8017842;
+ Wed, 7 Nov 2018 14:08:44 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wA758iO4030911;
+ Wed, 7 Nov 2018 14:08:44 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA30260;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wA757WQq008879;
+ Wed, 7 Nov 2018 14:07:32 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wA757WdI008874; Wed, 7 Nov 2018 14:07:32 +0900
+Message-Id: <201811070507.wA757WdI008874@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id wA757WhN024524 ; Wed, 7 Nov 2018 14:07:32 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed,  7 Nov 2018 14:07:28 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181107050732.28344-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 2/6] spp_nfv: replacement of rte_eth_dev_attach()
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Replace rte_eth_dev_attach() with attach() for nfv.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/nfv/nfv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/nfv/nfv.c b/src/nfv/nfv.c
+index 05290ed..e53037e 100644
+--- a/src/nfv/nfv.c
++++ b/src/nfv/nfv.c
+@@ -442,7 +442,7 @@ add_vhost_pmd(int index)
+ 	iface = get_vhost_iface_name(index);
+ 
+ 	sprintf(devargs, "%s,iface=%s,queues=%d", name, iface, nr_queues);
+-	ret = rte_eth_dev_attach(devargs, &vhost_port_id);
++	ret = attach(devargs, &vhost_port_id);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -560,7 +560,7 @@ add_pcap_pmd(int index)
+ 	sprintf(devargs,
+ 			"%s,rx_pcap=%s,tx_pcap=%s",
+ 			name, rx_fpath, tx_fpath);
+-	ret = rte_eth_dev_attach(devargs, &pcap_pmd_port_id);
++	ret = attach(devargs, &pcap_pmd_port_id);
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -623,7 +623,7 @@ add_null_pmd(int index)
+ 
+ 	name = get_null_pmd_name(index);
+ 	sprintf(devargs, "%s", name);
+-	ret = rte_eth_dev_attach(devargs, &null_pmd_port_id);
++	ret = attach(devargs, &null_pmd_port_id);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.18.0
+
+
