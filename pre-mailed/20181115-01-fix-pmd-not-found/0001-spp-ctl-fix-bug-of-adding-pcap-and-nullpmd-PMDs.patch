@@ -1,0 +1,32 @@
+From 3e1506834515345e040ece6cca59c137de33f148 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 16 Nov 2018 06:17:50 +0900
+Subject: [PATCH] spp-ctl: fix bug of adding pcap and nullpmd PMDs
+
+Spp-ctl does not support to add pcap and nullpmd PMDs of spp_nfv. It
+cause an error if the PMD is added to spp_nfv because spp-ctl does not
+have them in the list of PMDs for checking. This update is to add pcap
+and nullpmd to the list.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Reported-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 49ef971..48cc1c4 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -50,7 +50,7 @@ class BaseHandler(bottle.Bottle):
+     def _validate_port(self, port):
+         try:
+             if_type, if_num = port.split(":")
+-            if if_type not in ["phy", "vhost", "ring"]:
++            if if_type not in ["phy", "vhost", "ring", "pcap", "nullpmd"]:
+                 raise
+             int(if_num)
+         except:
+-- 
+2.7.4
+
