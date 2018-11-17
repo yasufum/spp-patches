@@ -1,0 +1,27 @@
+From 2056b43c30f2447d67fd9922ca8d958d726c9c1c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 17 Nov 2018 17:32:41 +0900
+Subject: [PATCH 0/4] Update docs to the latest desigin
+
+This series patches is to update docs to the latest design and behavior
+of SPP. Assigning resources and outputs of commands are also updated in
+this patches.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (4):
+  docs: update overview section
+  docs: update getting started section
+  docs: update how to use section
+  docs: update usecases section
+
+ docs/guides/overview.rst              |  41 ++++--
+ docs/guides/setup/getting_started.rst |  16 ++-
+ docs/guides/setup/howto_use.rst       |   4 +-
+ docs/guides/setup/use_cases.rst       | 245 ++++++++++++++++++++--------------
+ 4 files changed, 186 insertions(+), 120 deletions(-)
+
+-- 
+2.13.1
+
