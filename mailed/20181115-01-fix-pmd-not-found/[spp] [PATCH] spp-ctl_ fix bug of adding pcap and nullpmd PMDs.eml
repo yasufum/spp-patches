@@ -1,0 +1,86 @@
+X-Account-Key: account3
+X-UIDL: 12568.0lzAL0lIRuECMm5CAq+BhdqLR7w=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb006.ocn.ad.jp (LHLO md-lpx-cb006) (153.138.210.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 15 Nov 2018 23:02:22 +0900 (JST)
+Received: from md-mta-nw005.ocn.ad.jp ([153.138.216.233])
+	by md-lpx-cb006 with LMTP id IOsWM2587VvIJgAAO5fBhA
+	; Thu, 15 Nov 2018 23:02:22 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw005.ocn.ad.jp (Postfix) with ESMTP id C75123C016A36
+	for <geminoa@juno.ocn.ne.jp>; Thu, 15 Nov 2018 23:02:22 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 578BE50026B
+	for <geminoa@juno.ocn.ne.jp>; Thu, 15 Nov 2018 23:02:22 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id E25595424;
+	Thu, 15 Nov 2018 15:02:19 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 7AE6F4F9B
+ for <spp@dpdk.org>; Thu, 15 Nov 2018 15:02:17 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id wAFE2GjX021668;
+ Thu, 15 Nov 2018 23:02:16 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 208D6EA80FE;
+ Thu, 15 Nov 2018 23:02:16 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 09F9CEA80BA;
+ Thu, 15 Nov 2018 23:02:16 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 15 Nov 2018 23:00:05 +0900
+Message-Id: <1542290405-25029-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] spp-ctl: fix bug of adding pcap and nullpmd PMDs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl does not support to add pcap and nullpmd PMDs of spp_nfv. It
+cause an error if the PMD is added to spp_nfv because spp-ctl does not
+have them in the list of PMDs for checking. This update is to add pcap
+and nullpmd to the list.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Reported-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 49ef971..48cc1c4 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -50,7 +50,7 @@ class BaseHandler(bottle.Bottle):
+     def _validate_port(self, port):
+         try:
+             if_type, if_num = port.split(":")
+-            if if_type not in ["phy", "vhost", "ring"]:
++            if if_type not in ["phy", "vhost", "ring", "pcap", "nullpmd"]:
+                 raise
+             int(if_num)
+         except:
+-- 
+2.7.4
+
+
