@@ -1,0 +1,104 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:ab3:5f83:0:0:0:0:0 with SMTP id w3csp5095538ltc;
+        Tue, 13 Nov 2018 08:28:17 -0800 (PST)
+X-Google-Smtp-Source: AJdET5d58p2zW3qfIiD4Bv0SZL2sAndfvCj6qp3IMoBorfBBOf6o+ZaMksGfu81Fb2vhqNuwJeai
+X-Received: by 2002:a50:9784:: with SMTP id e4mr6221811edb.165.1542126497249;
+        Tue, 13 Nov 2018 08:28:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542126497; cv=none;
+        d=google.com; s=arc-20160816;
+        b=T5Wpk8Q1usB5SIt5vxhbXXtdXo84vg8iXF0kpsGm3oqg/H3DgK8gi+nYKjoD7XL1Hw
+         23jwLbACV2U0N4FhHXTffEad1yd00urw8JfhHf6FxxpOySERbgi8yMFAh5owGuPXd9Yc
+         p40lT23Ja+gH8w8UgBfPS7HIWyztEwMwDbQ/VhakF4acA5KgyQE6gwurG+P80J3AO1gv
+         MFXx4bIwj/foTwbfdffk/CzhqpmGK4PI7pcqhqfqXyh274bzbwikDer52UV6TT2H5KEq
+         xM0FtOOINmFM3D7PFOYHBvfWzXS0/GO+0LKE0HA6UJuX+3iBzxqcAL8zA1hPOR+lwhbv
+         CZOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject
+         :content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:to:from;
+        bh=Q/Kh0Ww7RzdBTnUvO16nowAuZOgrJH3pY8EAKt8zGdc=;
+        b=m5kuqaOb8eABy10nky+VS3EJrk7yMvDM+s6oTyDu6rZffFfij9gtn4uVglRk70ehqd
+         K3R1cqV/5g3/muJnKDnjMWsHQAc7tpM6MBOfztJAxDfcFAtXQYTz4ugkZHhvsdnR4FnQ
+         pCEQAcVKMZ3zPRo/orBUDBNh9lZNw8LemqtG2Iptuq8uhStxHEWuPEl7WSvqw8wNJqcR
+         gvsgaoy0sNlxoozpnNBy6n/aaxpfdXI5JR8jhP2jmKHtGqHa/POTNR79kIYf8RX2ZWII
+         Rb+N8Xahm2/jD/WchSsZax0Lh7Nw9z1zksybhKA/35atbMrunX0FfUeNsRr25BEYjyMW
+         RdIg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id l4si4823703edd.374.2018.11.13.08.28.17;
+        Tue, 13 Nov 2018 08:28:17 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id EF4B04CC3;
+	Tue, 13 Nov 2018 17:28:16 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id C37902F42
+ for <spp@dpdk.org>; Tue, 13 Nov 2018 17:28:15 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wADGSEcg020396;
+ Wed, 14 Nov 2018 01:28:14 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 82992154;
+ Wed, 14 Nov 2018 01:28:14 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 6CF2BE8;
+ Wed, 14 Nov 2018 01:28:14 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 14 Nov 2018 01:25:58 +0900
+Message-Id: <1542126358-11856-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542126358-11856-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542126358-11856-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] tools/sppc: remove invalid chars in testpmd app
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to remove characters of invalid code from the help
+message of `testpmd.py`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/app/testpmd.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/sppc/app/testpmd.py b/tools/sppc/app/testpmd.py
+index 8d4057c..487bb9f 100755
+--- a/tools/sppc/app/testpmd.py
++++ b/tools/sppc/app/testpmd.py
+@@ -250,7 +250,7 @@ def parse_args():
+     parser.add_argument(
+         '--no-flush-rx',
+         action='store_true',
+-        help="Don’t flush the RX streams before starting forwarding, " +
++        help="Don't flush the RX streams before starting forwarding, " +
+         "Used mainly with the PCAP PMD")
+     parser.add_argument(
+         '--txpkts',
+-- 
+2.7.4
+
