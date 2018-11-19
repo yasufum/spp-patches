@@ -1,7 +1,7 @@
 From b981d900628bb61f498ed7049ae71b8103cd91ea Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 16 Nov 2018 13:49:25 +0900
-Subject: [PATCH 3/4] docs: update how to use section
+Subject: [PATCH 3/5] docs: update how to use section
 
 Update the exmaple of adding vhost because it is changed from `vhost 0`
 to specify resource UID as `vhost:0`.

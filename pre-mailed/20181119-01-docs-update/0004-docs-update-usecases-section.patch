@@ -1,7 +1,7 @@
 From 2056b43c30f2447d67fd9922ca8d958d726c9c1c Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 16 Nov 2018 14:12:44 +0900
-Subject: [PATCH 4/4] docs: update usecases section
+Subject: [PATCH 4/5] docs: update usecases section
 
 Update command examples of old version.
 

@@ -1,7 +1,7 @@
 From 4da0a67d8dbc0c3ef0cb86f0bcef024c8d2ec0ea Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 16 Nov 2018 13:03:36 +0900
-Subject: [PATCH 2/4] docs: update getting started section
+Subject: [PATCH 2/5] docs: update getting started section
 
 * Correct configuration of PCAP PMD.
 

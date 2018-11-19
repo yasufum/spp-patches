@@ -1,7 +1,7 @@
 From dc522bb406ec1956a4cce598f55b5dbe31ce3975 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 16 Nov 2018 01:32:16 +0900
-Subject: [PATCH 1/4] docs: update overview section
+Subject: [PATCH 1/5] docs: update overview section
 
 Some of contents of overview section is old and needd to be updated.
 This patch is to update for the latest design of SPP controller which
