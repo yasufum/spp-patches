@@ -1,0 +1,135 @@
+X-Account-Key: account1
+X-UIDL: 0000882456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 0160440092D
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon, 19 Nov 2018 17:02:25 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id F33F77F2EE; Mon, 19 Nov 2018 17:02:24 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id F1C497F2A0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon, 19 Nov 2018 17:02:24 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id DD2FB125;
+	Mon, 19 Nov 2018 17:02:24 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C7C6C164;
+	Mon, 19 Nov 2018 17:02:24 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 5/5] docs: add how to compile for docs
+Date: Mon, 19 Nov 2018 17:00:04 +0900
+Message-Id: <1542614404-18171-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Add installation of pakages for compiling HTML and PDF files.
+
+* Add descriptions for compiling docs.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 62 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 16ff5d6..ca639db 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -6,6 +6,8 @@
+ Getting Started
+ ===============
+ 
++This documentation is described for Ubuntu 16.04 and later.
++
+ Setup
+ -----
+ 
+@@ -139,6 +141,21 @@ Clone repository and compile DPDK in any directory.
+     $ cd /path/to/any
+     $ git clone http://dpdk.org/git/dpdk
+ 
++To compile DPDK, required to install libnuma-devel library.
++
++.. code-block:: console
++
++    $ sudo apt install libnuma-dev
++
++Python and pip are also required if not installed.
++
++.. code-block:: console
++
++    # Python2
++    $ sudo apt install python python-pip
++
++    # Python3
++    $ sudo apt install python3 python3-pip
+ 
+ SPP provides libpcap-based PMD for dumping packet to a file or retrieve
+ it from the file.
+@@ -323,3 +340,48 @@ for EAL or application.
+ Refer to `L2 Forwarding Sample Application
+ <https://dpdk.org/doc/guides/sample_app_ug/l2_forward_real_virtual.html>`_
+ for more details.
++
++
++Build Documentation
++-------------------
++
++This documentation is able to be biult as HTML and PDF formats from make
++command. Before compiling the documentation, you need to install some of
++packages required to compile.
++
++For HTML documentation, install sphinx and additional theme.
++
++.. code-block:: console
++
++    $ pip install sphinx
++    $ pip install sphinx-rtd-theme
++
++For PDF, inkscape and latex packages are required.
++
++.. code-block:: console
++
++    $ sudo apt install inkscape
++    $ sudo apt install texlive-latex-extra
++    $ sudo apt install texlive-latex-recommended
++
++HTML documentation is compiled by running make with ``doc-html``. This
++command launch sphinx for compiling HTML documents.
++Compiled HTML files are created in ``docs/guides/_build/html/`` and
++You can find the top page ``index.html`` in the directory.
++
++.. code-block:: console
++
++    $ make doc-html
++
++PDF documentation is compiled with ``doc-pdf`` which runs latex for.
++Compiled PDF file is created as ``docs/guides/_build/html/SoftPatchPanel.pdf``.
++
++.. code-block:: console
++
++    $ make doc-pdf
++
++You can also compile both of HTML and PDF documentations with ``doc-all``.
++
++.. code-block:: console
++
++    $ make doc-all
+-- 
+2.13.1
+
+
+

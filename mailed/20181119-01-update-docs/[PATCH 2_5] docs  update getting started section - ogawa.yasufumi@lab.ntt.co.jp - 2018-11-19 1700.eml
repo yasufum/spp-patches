@@ -1,0 +1,107 @@
+X-Account-Key: account1
+X-UIDL: 0000882156a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 1117A40092D
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon, 19 Nov 2018 17:02:20 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 0ECB57F2EE; Mon, 19 Nov 2018 17:02:20 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 0D4247F2A0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon, 19 Nov 2018 17:02:20 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id ED49B12D;
+	Mon, 19 Nov 2018 17:02:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id E13A9125;
+	Mon, 19 Nov 2018 17:02:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/5] docs: update getting started section
+Date: Mon, 19 Nov 2018 17:00:01 +0900
+Message-Id: <1542614404-18171-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Correct configuration of PCAP PMD.
+
+* Add description for version of Python and Python2 is going to be
+  deprecated.
+
+* Revise confirmation of running l2fwd because the purpose is not clear.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 1d026bd..16ff5d6 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -152,13 +152,15 @@ is included in ``wireshark``.
+     $ sudo apt install wireshark
+ 
+ PCAP is disabled by default in DPDK configuration.
+-``CONFIG_RTE_LIBRTE_PMD_PCAP`` defines the configuration and enabled
+-it to ``y``.
++``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` define the
++configuration and enabled it to ``y``.
+ 
+ .. code-block:: console
+ 
+     # dpdk/config/common_base
+     CONFIG_RTE_LIBRTE_PMD_PCAP=y
++    ...
++    CONFIG_RTE_PORT_PCAP=y
+ 
+ Compile DPDK with target environment.
+ 
+@@ -188,6 +190,8 @@ Python 2 or 3 ?
+ 
+ You need to install Python for using usertools of DPDK or SPP controller.
+ DPDK and SPP support both of Python2 and 3.
++Howevrer, Python2 will not be maintained after 2020 and SPP is going to update
++only supporting Python3.
+ 
+ 
+ Binding Network Ports to DPDK
+@@ -289,8 +293,9 @@ cannot find it by using ``ifconfig`` or ``ip``.
+ Confirm DPDK is setup properly
+ ------------------------------
+ 
+-You should run DPDK sample application ``l2fwd`` before SPP
+-to confirm that DPDK is setup properly.
++You can confirm if you are ready to use DPDK by running DPDK's sample
++application. ``l2fwd`` is good choice to confirm it before SPP because
++it is very similar to SPP's worker process for forwarding.
+ 
+ .. code-block:: console
+ 
+@@ -301,7 +306,8 @@ to confirm that DPDK is setup properly.
+      INSTALL-APP l2fwd
+      INSTALL-MAP l2fwd.map
+ 
+-In this case, run this application with two options.
++In this case, run this application simply with just two options
++while DPDK has many kinds of options.
+ 
+   - -l: core list
+   - -p: port mask
+-- 
+2.13.1
+
+
+
