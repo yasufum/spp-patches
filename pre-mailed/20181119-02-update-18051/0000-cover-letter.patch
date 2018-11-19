@@ -1,0 +1,26 @@
+From c9c0ee674ffbe9a0b256e2283d9a1a89766963cd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 19 Nov 2018 19:09:46 +0900
+Subject: [PATCH 0/1] Update to 18.05.1
+
+Hi,
+
+SPP is largely updated from v18.05. SPP controller is divided into
+spp-ctl and CLI to support multiple controllers. In addition, several
+bug fixes and updates of documentation are made from v18.05. Now it the
+time to update SPP to v18.05.1.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (1):
+  version: 18.05.1
+
+ CONTRIBUTING.txt    | 3 ++-
+ Makefile            | 2 +-
+ docs/guides/conf.py | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+-- 
+2.13.1
+

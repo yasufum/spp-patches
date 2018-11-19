@@ -1,0 +1,56 @@
+From c9c0ee674ffbe9a0b256e2283d9a1a89766963cd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 19 Nov 2018 18:37:53 +0900
+Subject: [PATCH 1/1] version: 18.05.1
+
+This patch is to update to v18.05.1 because SPP is largely changed from
+v18.05. Spp-ctl is added to support REST APIs for managing from
+frameworks such as OpenStack.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ CONTRIBUTING.txt    | 3 ++-
+ Makefile            | 2 +-
+ docs/guides/conf.py | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/CONTRIBUTING.txt b/CONTRIBUTING.txt
+index 01e1b65..2467547 100644
+--- a/CONTRIBUTING.txt
++++ b/CONTRIBUTING.txt
+@@ -48,4 +48,5 @@ Coding Guidelines
+ Maintainer
+ ----------
+ 
+-The SPP maintainer is: Ferruh Yigit <ferruh.yigit@intel.com>
++* Ferruh Yigit <ferruh.yigit@intel.com>
++* Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+diff --git a/Makefile b/Makefile
+index 47fa4cb..d5423ca 100644
+--- a/Makefile
++++ b/Makefile
+@@ -29,7 +29,7 @@
+ #   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+-VERSION = 18.05
++VERSION = 18.05.1
+ 
+ ifeq ($(RTE_SDK),)
+ $(error "Please define RTE_SDK environment variable")
+diff --git a/docs/guides/conf.py b/docs/guides/conf.py
+index 1d340b8..a2f9c20 100644
+--- a/docs/guides/conf.py
++++ b/docs/guides/conf.py
+@@ -57,7 +57,7 @@ author = ''
+ # built documents.
+ #
+ # The short X.Y version.
+-version = u'v18.05'
++version = u'v18.05.1'
+ # The full version, including alpha/beta/rc tags.
+ release = version
+ 
+-- 
+2.13.1
+
