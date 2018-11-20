@@ -1,0 +1,28 @@
+From 6b39499811750201e9e2ea97ae2eb1fb62bcc14a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 20 Nov 2018 18:44:50 +0900
+Subject: [PATCH v2 0/5] Update docs to the latest desigin
+
+This is v2 patches for updating docs. All of IP addresses of command
+examples in `How to Use` section are changed to be the same,
+`192.168.1.100` in this case, as required.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (5):
+  docs: update overview section
+  docs: update getting started section
+  docs: update how to use section
+  docs: update usecases section
+  docs: add how to compile for docs
+
+ docs/guides/overview.rst              |  41 ++++--
+ docs/guides/setup/getting_started.rst |  78 ++++++++++-
+ docs/guides/setup/howto_use.rst       |  12 +-
+ docs/guides/setup/use_cases.rst       | 245 ++++++++++++++++++++--------------
+ 4 files changed, 252 insertions(+), 124 deletions(-)
+
+-- 
+2.13.1
+
