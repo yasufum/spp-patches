@@ -1,0 +1,145 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp452128eda;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+X-Google-Smtp-Source: AFSGD/Xzw6DefgAQkCMuieEK3NhUreAZ3kJYKyNf1PcY94e4eY9r8RTccN021sCClNA9A+K7VVqL
+X-Received: by 2002:a50:9a83:: with SMTP id p3mr1689679edb.279.1542707756596;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542707756; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Ll2L3FZ4DvMjzkYdm42X6jsOhh+n4h1IlyQRtTvCfdYLXKr47qurvL2gKWOIjQPPrP
+         j8rEzOqkoNF/jI8sxaF/GKATCnrsfXgdAqqWxoKdFrIzGp1lWILiiz4D5eoIOqjpy6VH
+         LpKQruLGN3Al/ur2WHFIbzOkTury2Pc/7K6WxfA6wQaScVMkTkxWcdwH9eiRXvzogEJk
+         dEuBEMOpXgFCSAOzLwFC/x3CcjAcGwfjlYip3GAPoomEv2KxcJGRSiZT9yJpqjzKxflA
+         Uf0ccxMqa0T9YUDtpZVGJxz62Rd/rjPzk+4w8u9eu/Cp4jfMwjypqDTHyJgPNIlfhtN7
+         OEjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=bzw/EH9TFMd63whRP8LaRh2IHmoeRa8kwihe90ShuPc=;
+        b=LC0WMSP6XcduCnCYB9ASK5tP/u5itjXmzrhHn1s/bnZa+GO92VpTkJZyb3C58ao98q
+         wyaLIu2lEoapNRqnz4AEiebcofW1EkoN6cJXbZLbQepwotJIOj+dkVfX7ZWRbv5i8BaD
+         SO/s1OVaLDKTJ/07emLwZXgMq9Ha1WjuMWWpVhI1926D1lSdsDJGXs7ekNjNZbsUujt0
+         AUKtGy8qmoJLlXXf8YGgQN4CiCYn0xJbkDQUTSV+KTBT3NIhEJQuZheeDJGGvv52DPgN
+         UOJMsIGnL90IDKeqCV8wb5u9hN0PnvJtzrDVyQ3lgIixIsj26ub6+R2KKM86ZIZE06nr
+         SG/A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id 34-v6si9809873edn.257.2018.11.20.01.55.56;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3F8DB58C6;
+	Tue, 20 Nov 2018 10:55:56 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 87125326C
+ for <spp@dpdk.org>; Tue, 20 Nov 2018 10:55:54 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wAK9trTS002850;
+ Tue, 20 Nov 2018 18:55:53 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 49ED512D;
+ Tue, 20 Nov 2018 18:55:53 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 33115125;
+ Tue, 20 Nov 2018 18:55:53 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 20 Nov 2018 18:53:36 +0900
+Message-Id: <1542707619-25195-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 2/5] docs: update getting started section
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Correct configuration of PCAP PMD.
+
+* Add description for version of Python and Python2 is going to be
+  deprecated.
+
+* Revise confirmation of running l2fwd because the purpose is not clear.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 1d026bd..16ff5d6 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -152,13 +152,15 @@ is included in ``wireshark``.
+     $ sudo apt install wireshark
+ 
+ PCAP is disabled by default in DPDK configuration.
+-``CONFIG_RTE_LIBRTE_PMD_PCAP`` defines the configuration and enabled
+-it to ``y``.
++``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` define the
++configuration and enabled it to ``y``.
+ 
+ .. code-block:: console
+ 
+     # dpdk/config/common_base
+     CONFIG_RTE_LIBRTE_PMD_PCAP=y
++    ...
++    CONFIG_RTE_PORT_PCAP=y
+ 
+ Compile DPDK with target environment.
+ 
+@@ -188,6 +190,8 @@ Python 2 or 3 ?
+ 
+ You need to install Python for using usertools of DPDK or SPP controller.
+ DPDK and SPP support both of Python2 and 3.
++Howevrer, Python2 will not be maintained after 2020 and SPP is going to update
++only supporting Python3.
+ 
+ 
+ Binding Network Ports to DPDK
+@@ -289,8 +293,9 @@ cannot find it by using ``ifconfig`` or ``ip``.
+ Confirm DPDK is setup properly
+ ------------------------------
+ 
+-You should run DPDK sample application ``l2fwd`` before SPP
+-to confirm that DPDK is setup properly.
++You can confirm if you are ready to use DPDK by running DPDK's sample
++application. ``l2fwd`` is good choice to confirm it before SPP because
++it is very similar to SPP's worker process for forwarding.
+ 
+ .. code-block:: console
+ 
+@@ -301,7 +306,8 @@ to confirm that DPDK is setup properly.
+      INSTALL-APP l2fwd
+      INSTALL-MAP l2fwd.map
+ 
+-In this case, run this application with two options.
++In this case, run this application simply with just two options
++while DPDK has many kinds of options.
+ 
+   - -l: core list
+   - -p: port mask
+-- 
+2.13.1
+

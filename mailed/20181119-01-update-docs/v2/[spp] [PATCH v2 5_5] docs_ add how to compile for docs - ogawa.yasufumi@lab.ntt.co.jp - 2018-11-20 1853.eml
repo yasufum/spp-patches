@@ -1,0 +1,173 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp452182eda;
+        Tue, 20 Nov 2018 01:55:59 -0800 (PST)
+X-Google-Smtp-Source: AJdET5cCjZSf812QZLTb/TKJKDje1H4bHxLiN9audOZSex+4SS6yKkcFiY6eEnLnSnFGW4eR0i50
+X-Received: by 2002:a17:906:6898:: with SMTP id n24-v6mr1444874ejr.189.1542707759807;
+        Tue, 20 Nov 2018 01:55:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542707759; cv=none;
+        d=google.com; s=arc-20160816;
+        b=GsGTrtT7LugNL7Vhf02dj9en+oLToDlJ6y2RwuafgjXA8sqIyZSLhOqFInWiPnXBAx
+         TDBhzuPknnHMIKGLG7ynzBLGvBK1ASxKvoW7h6endmNMNvOKJz1ucaVFmHoAqyIR2HSM
+         DqjHMmQE0N0vnINM1CYXm7QSlZqB2GEMMaCCds0K4ezQDhGtfWv5oHQ0bVj6Mlyk2MFw
+         yRuOivkPE4pvJZk/aY6hTV9TrM8a7zsKuJSbrWjqMBADS+Kp5zc6pK6McIsChIIj636s
+         WEIZgst5g2NV8OTvmIgfooHYDbyHG2X1bUEVb2gvsGASjK+05Hcc7K3t7X5kfhEP780C
+         pl4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=Vn7NuZ/gwtI7Z5Ln+qJeujX8X/vzNYihk5dFzt6IxLU=;
+        b=Conpqv7kn8Stubhf2nbbTveZXtNtQrPhxpqKowY9MNidAeV+cEwB7D55Kxs6e/Az4l
+         RM0y+bYzhiYPZM2EWk67auyI/KJf62Ia5yScPvTMYrrXHyY0INtMP1Z6ghF2hT007w3j
+         iepec6huEviq3TpGTb9NnM7F36zSAoP6HGkuH5poiPX0mpTlSU1MIp5vuXOHv4i7hD2i
+         OYYP9Sk8lcAUnFeI7sUKIp9WzlnvTLgOoSLlPukuvUkQH0czP8vIlCCyauNQYeuNnuCB
+         0pINGDXK4bR4VZs8nNlWqj+kDrX5cQuyAlmYRww5KB0vkzTGKzlTF2ITsmLawip3YJci
+         2o6g==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id u26-v6si1295042ejg.201.2018.11.20.01.55.59;
+        Tue, 20 Nov 2018 01:55:59 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6710B4F9A;
+	Tue, 20 Nov 2018 10:55:59 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 42D9F2C52
+ for <spp@dpdk.org>; Tue, 20 Nov 2018 10:55:57 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wAK9tu9v002859;
+ Tue, 20 Nov 2018 18:55:56 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 0518012D;
+ Tue, 20 Nov 2018 18:55:56 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id E2BAC125;
+ Tue, 20 Nov 2018 18:55:55 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 20 Nov 2018 18:53:39 +0900
+Message-Id: <1542707619-25195-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 5/5] docs: add how to compile for docs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Add installation of pakages for compiling HTML and PDF files.
+
+* Add descriptions for compiling docs.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 62 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 16ff5d6..ca639db 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -6,6 +6,8 @@
+ Getting Started
+ ===============
+ 
++This documentation is described for Ubuntu 16.04 and later.
++
+ Setup
+ -----
+ 
+@@ -139,6 +141,21 @@ Clone repository and compile DPDK in any directory.
+     $ cd /path/to/any
+     $ git clone http://dpdk.org/git/dpdk
+ 
++To compile DPDK, required to install libnuma-devel library.
++
++.. code-block:: console
++
++    $ sudo apt install libnuma-dev
++
++Python and pip are also required if not installed.
++
++.. code-block:: console
++
++    # Python2
++    $ sudo apt install python python-pip
++
++    # Python3
++    $ sudo apt install python3 python3-pip
+ 
+ SPP provides libpcap-based PMD for dumping packet to a file or retrieve
+ it from the file.
+@@ -323,3 +340,48 @@ for EAL or application.
+ Refer to `L2 Forwarding Sample Application
+ <https://dpdk.org/doc/guides/sample_app_ug/l2_forward_real_virtual.html>`_
+ for more details.
++
++
++Build Documentation
++-------------------
++
++This documentation is able to be biult as HTML and PDF formats from make
++command. Before compiling the documentation, you need to install some of
++packages required to compile.
++
++For HTML documentation, install sphinx and additional theme.
++
++.. code-block:: console
++
++    $ pip install sphinx
++    $ pip install sphinx-rtd-theme
++
++For PDF, inkscape and latex packages are required.
++
++.. code-block:: console
++
++    $ sudo apt install inkscape
++    $ sudo apt install texlive-latex-extra
++    $ sudo apt install texlive-latex-recommended
++
++HTML documentation is compiled by running make with ``doc-html``. This
++command launch sphinx for compiling HTML documents.
++Compiled HTML files are created in ``docs/guides/_build/html/`` and
++You can find the top page ``index.html`` in the directory.
++
++.. code-block:: console
++
++    $ make doc-html
++
++PDF documentation is compiled with ``doc-pdf`` which runs latex for.
++Compiled PDF file is created as ``docs/guides/_build/html/SoftPatchPanel.pdf``.
++
++.. code-block:: console
++
++    $ make doc-pdf
++
++You can also compile both of HTML and PDF documentations with ``doc-all``.
++
++.. code-block:: console
++
++    $ make doc-all
+-- 
+2.13.1
+

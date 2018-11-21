@@ -1,0 +1,142 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp452148eda;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+X-Google-Smtp-Source: AJdET5eGQmQx7dJk3utTWdFDNHs1hMcDkvgYAU0qxttBEnBgMfQ/guYNrQkc0csdT9VmDhZy+yTx
+X-Received: by 2002:a17:906:5118:: with SMTP id w24-v6mr1448604ejk.215.1542707757632;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542707757; cv=none;
+        d=google.com; s=arc-20160816;
+        b=BeYJ3NLZs/mEn+xiOV4BuS2vFPQsifbzI9ZaNqhjaaCXVjTgLLD8jm9VxVcjsOWtnB
+         EKH0v4g69OO9zf9dBbAyumQhgzHiC7NVzOhn8N/EXpRAJG6Js6ghdkvRDIQZTLMcfWCz
+         3ucrDEviwriqXvjINV14+TB81dM7BMthjNqVesfPvquyNUy6ITDrunM4GqHVEij+CyX4
+         0SjhnFllKk/oxnc4oLZg82R0u8RNfY6rGlMrgjZUdGuKuMVJxrueIheeioljEzRDk9Ai
+         6OSmlf+EKt0nFiWwpyw5TtPOXZ1KsbLLTb43Ie01T+QqaQYFgfVacAyRI0o8xPM73ycZ
+         vCag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=Dv/Pk3qm59M18Fw6+ipNfeP3PNhPACpzpKUYyDHm4HU=;
+        b=cla46So6wiYowAY+KjmkfNKUXQaA0CFKRUJU3Wk+aMVqVK3fyNOy4LX8BLf0HwF8J8
+         62PzuoAokWzPcrE7svxOmK+1Jv/7uIr3JcLxCDrJ+Z7efRx+MUiLZlQUAyEljH6njwEI
+         7qiyb3cknwkMfrFOJGlo4QcbbDf1PtYMZhvFKReBp5uW5WlOC7Tdby3LC0TE2a/Ww1/3
+         I/yMgYxYIlXSMmoinn70Ghf5RTqoYNpN+BKRhbR6KOKZkT1mR+WmKdsfdgU7OGvKdj8X
+         F8JQPUVq8CPDD3HhjVrc27izwYcTfqI0oZ4IrYd3DAihlmZ6wjSrHcmku4lfOjQwJT0G
+         Pe/w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id u11-v6si4095487ejf.108.2018.11.20.01.55.57;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 4EBCE58EC;
+	Tue, 20 Nov 2018 10:55:57 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 48A522C52
+ for <spp@dpdk.org>; Tue, 20 Nov 2018 10:55:55 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wAK9tsYB002853;
+ Tue, 20 Nov 2018 18:55:54 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 1013A12D;
+ Tue, 20 Nov 2018 18:55:54 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id EE38B125;
+ Tue, 20 Nov 2018 18:55:53 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 20 Nov 2018 18:53:37 +0900
+Message-Id: <1542707619-25195-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 3/5] docs: update how to use section
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update the exmaple of adding vhost because it is changed from `vhost 0`
+to specify resource UID as `vhost:0`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/howto_use.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/docs/guides/setup/howto_use.rst b/docs/guides/setup/howto_use.rst
+index d52a38a..5e96919 100644
+--- a/docs/guides/setup/howto_use.rst
++++ b/docs/guides/setup/howto_use.rst
+@@ -134,7 +134,7 @@ To launch primary, run ``spp_primary`` with options.
+         -- \
+         -p 0x03 \
+         -n 10 \
+-        -s 192.168.122.1:5555
++        -s 192.168.1.100:5555
+ 
+ SPP primary takes EAL options before other application specific options.
+ 
+@@ -169,7 +169,7 @@ physical ports.
+         -- \
+         -p 0x03 \
+         -n 10 \
+-        -s 192.168.122.1:5555
++        -s 192.168.1.100:5555
+ 
+ - EAL options:
+ 
+@@ -211,7 +211,7 @@ Run ``spp_nfv`` with options.
+         --proc-type=secondary \
+         -- \
+         -n 1 \
+-        -s 192.168.122.1:6666
++        -s 192.168.1.100:6666
+ 
+ - EAL options:
+ 
+@@ -239,11 +239,11 @@ create ``vhost-user`` and ``virtio-net-pci`` devices on the VM.
+ 
+ Before launching VM, you need to prepare a socket file for creating
+ ``vhost-user`` device.
+-Socket file is created from SPP secondary as following.
++Run ``add`` command with resource UID ``vhost:0`` to create socket file.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add vhost 0
++    spp > sec 1;add vhost:0
+ 
+ In this example, create socket file with index 0 from secondary of ID 1.
+ Socket file is created as ``/tmp/sock0``.
+@@ -307,7 +307,7 @@ Run ``spp_vm`` with options.
+         -- \
+         -p 0x01 \
+         -n 1 \
+-        -s 192.168.122.1:6666
++        -s 192.168.1.100:6666
+ 
+ - EAL options:
+ 
+-- 
+2.13.1
+

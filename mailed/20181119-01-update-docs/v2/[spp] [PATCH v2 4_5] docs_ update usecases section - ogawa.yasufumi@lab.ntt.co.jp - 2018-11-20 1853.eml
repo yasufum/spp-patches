@@ -1,0 +1,503 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp452151eda;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+X-Google-Smtp-Source: AFSGD/WVgkbk3Chzj3XVnW3jd37bCzdAkbt7Aoi/uPC0siv4Muoa3b1zKlgqm6E1h0Kk2ipJC4UA
+X-Received: by 2002:aa7:ca4b:: with SMTP id j11mr1610177edt.213.1542707757709;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542707757; cv=none;
+        d=google.com; s=arc-20160816;
+        b=fbt+vtCeIj/f/gxf2EQs0pDKB/Ve9Vbczd68Ko8WdOHNK76cmc2F6hnDhRinaoVK4r
+         NdJkMxJFQi0P7fLpLSKT1pJMUKmSZT0auWIvGw3MB7VGa9WDC7GqUh7j3xl0O256wuET
+         Cz99zZkDYVP0M+y8ZAz3/Y79k7FnK9LwOEJ1h6t+w1NmxOlZVvpmbP89X8VZZK/Xg5BU
+         FBZI7XCcaGqK8ks5zioU8n0NYkCipRzEGXCRc27Dsfu1kFry0Y3eN3OZNhfukdL1Y8mO
+         4m+rjlbnwjtDKnxTtu77jtR1iwt7R4vCSvy0SdUWbVC972d/FKH51yHO0A10NZ5UWOqQ
+         uc+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=qThyVwykgDdIQIxF0xC9Ms8WVFCuIXEObQEcP67fwV8=;
+        b=Pd3LTFd+L/K+tUHJ2cv+QZXcw+376gAkPF3nV5nLwHESmtyTbDQcS4r94eE2qaoHUT
+         CCxffngVwVVknRFL1FW0kQH8syM6Fop9vmZi16STB8SYrQUseA8SaLtzE5qpTXT7nS+8
+         J69qHfNtwGNiJr4IhYzO8lxdxgD9zqw+4DjdkBs1gjdRk5XYPpGe5sIJL4Bjdg1++MrN
+         L+j2nsLd7rLCydCo9PT7MAXq2T9TVKoE7I8H0AvUDpkeZJ2eIXWfDwMHS7laU6bYw0Vq
+         MF2n/A3UX17dXOP7wRq5UNlZcqclqDqR7+JPuSgPPWeiElV3JD0S4/j9Eib4iuVOZN19
+         UR8w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id b22-v6si4002252ejp.176.2018.11.20.01.55.57;
+        Tue, 20 Nov 2018 01:55:57 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5AF3158FE;
+	Tue, 20 Nov 2018 10:55:57 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 009182C52
+ for <spp@dpdk.org>; Tue, 20 Nov 2018 10:55:55 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wAK9tsl6002856;
+ Tue, 20 Nov 2018 18:55:54 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id A291512D;
+ Tue, 20 Nov 2018 18:55:54 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 8EC91125;
+ Tue, 20 Nov 2018 18:55:54 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 20 Nov 2018 18:53:38 +0900
+Message-Id: <1542707619-25195-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 4/5] docs: update usecases section
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update command examples of old version.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/use_cases.rst | 245 ++++++++++++++++++++++++----------------
+ 1 file changed, 146 insertions(+), 99 deletions(-)
+
+diff --git a/docs/guides/setup/use_cases.rst b/docs/guides/setup/use_cases.rst
+index c2d7270..b8ce7d2 100644
+--- a/docs/guides/setup/use_cases.rst
++++ b/docs/guides/setup/use_cases.rst
+@@ -23,13 +23,13 @@ First of all, Check the status of ``spp_nfv`` from SPP controller.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
+ 
+-This message explains that ``sec 1`` has two physical ports.
++This status message explains that ``sec 1`` has two physical ports.
+ 
+ 
+ Configure spp_nfv as L2fwd
+@@ -42,19 +42,23 @@ which means it is bi-directional connection.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 phy:1
+-    spp > sec 1;patch phy:1 phy:0
+-    spp > sec 1;forward
++    spp > sec 1; patch phy:0 phy:1
++    Patch ports (phy:0 -> phy:1).
++    spp > sec 1; patch phy:1 phy:0
++    Patch ports (phy:1 -> phy:0).
++    spp > sec 1; forward
++    Start forwarding.
+ 
+-Confirm that status of ``sec 1`` is updated.
++Confirm that status of ``sec 1`` is updated to ``running`` and ports are
++patches as you defined.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;status
+-    status: running
+-    ports:
+-      - 'phy:0 -> phy:1'
+-      - 'phy:1 -> phy:0'
++    spp > sec 1; status
++    - status: running
++    - ports:
++      - phy:0 -> phy:1
++      - phy:1 -> phy:0
+ 
+ .. _figure_spp_nfv_as_l2fwd:
+ 
+@@ -65,11 +69,14 @@ Confirm that status of ``sec 1`` is updated.
+ 
+ 
+ Stop forwarding and reset patch to clear configuration.
++``patch reset`` is to clear all of patch configurations.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;stop
+-    spp > sec 1;patch reset
++    spp > sec 1; stop
++    Stop forwarding.
++    spp > sec 1; patch reset
++    Clear all of patches.
+ 
+ 
+ Configure spp_nfv for Loopback
+@@ -80,9 +87,12 @@ for loopback.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 phy:0
+-    spp > sec 1;patch phy:1 phy:1
+-    spp > sec 1;forward
++    spp > sec 1; patch phy:0 phy:0
++    Patch ports (phy:0 -> phy:0).
++    spp > sec 1; patch phy:1 phy:1
++    Patch ports (phy:1 -> phy:1).
++    spp > sec 1; forward
++    Start forwarding.
+ 
+ 
+ Dual spp_nfv
+@@ -113,10 +123,14 @@ from ``phy:1`` to ``phy:0`` for ``sec 2``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 phy:1
+-    spp > sec 2;patch phy:1 phy:0
+-    spp > sec 1;forward
+-    spp > sec 2;forward
++    spp > sec 1; patch phy:0 phy:1
++    Patch ports (phy:0 -> phy:1).
++    spp > sec 2; patch phy:1 phy:0
++    Patch ports (phy:1 -> phy:0).
++    spp > sec 1; forward
++    Start forwarding.
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ .. _figure_spp_two_nfv_as_l2fwd:
+ 
+@@ -134,10 +148,14 @@ Patch ``phy:0`` to ``phy:0`` for ``sec 1`` and
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 phy:0
+-    spp > sec 2;patch phy:1 phy:1
+-    spp > sec 1;forward
+-    spp > sec 2;forward
++    spp > sec 1; patch phy:0 phy:0
++    Patch ports (phy:0 -> phy:0).
++    spp > sec 2; patch phy:1 phy:1
++    Patch ports (phy:1 -> phy:1).
++    spp > sec 1; forward
++    Start forwarding.
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ .. _figure_spp_two_nfv_loopback:
+ 
+@@ -167,14 +185,14 @@ All of ring PMDs is showed with ``status`` subcommand.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add ring 0
+-    addring0
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
+-      - 'ring:0'
++    spp > sec 1; add ring:0
++    Add ring:0.
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
++      - ring:0
+ 
+ Notice that ``ring:0`` is added to ``sec 1``.
+ You can delete it with ``del`` command if you do not need to
+@@ -182,30 +200,36 @@ use it anymore.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;del ring 0
+-    delring0
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
++    spp > sec 1; del ring:0
++    Delete ring:0.
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
+ 
+ 
+ Uni-Directional L2fwd
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+ Add a ring PMD and connect two ``spp_nvf`` processes.
+-To configure network path, add ``ring 0`` to ``sec 1`` and ``sec 2``.
++To configure network path, add ``ring:0`` to ``sec 1`` and ``sec 2``.
+ Then, connect it with ``patch`` subcommand.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add ring 0
+-    spp > sec 2;add ring 0
+-    spp > sec 1;patch phy:0 ring:0
+-    spp > sec 2;patch ring:0 phy:1
+-    spp > sec 1;forward
+-    spp > sec 2;forward
++    spp > sec 1; add ring:0
++    Add ring:0.
++    spp > sec 2; add ring:0
++    Add ring:0.
++    spp > sec 1; patch phy:0 ring:0
++    Patch ports (phy:0 -> ring:0).
++    spp > sec 2; patch ring:0 phy:1
++    Patch ports (ring:0 -> phy:1).
++    spp > sec 1; forward
++    Start forwarding.
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ .. _figure_spp_uni_directional_l2fwd:
+ 
+@@ -220,46 +244,55 @@ Bi-Directional L2fwd
+ 
+ Add two ring PMDs to two ``spp_nvf`` processes.
+ For bi-directional forwarding,
+-patch ``ring 0`` for a path from ``sec 1`` to ``sec 2``
+-and ``ring 1`` for another path from ``sec 2`` to ``sec 1``.
++patch ``ring:0`` for a path from ``sec 1`` to ``sec 2``
++and ``ring:1`` for another path from ``sec 2`` to ``sec 1``.
+ 
+-First, add ``ring 0`` and ``ring 1`` to ``sec 1``.
++First, add ``ring:0`` and ``ring:1`` to ``sec 1``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add ring 0
+-    spp > sec 1;add ring 1
+-    spp > sec 1;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
+-      - 'ring:0'
+-      - 'ring:1'
++    spp > sec 1; add ring:0
++    Add ring:0.
++    spp > sec 1; add ring:1
++    Add ring:1.
++    spp > sec 1; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
++      - ring:0
++      - ring:1
+ 
+-
+-Then, add ``ring 0`` and ``ring 1`` to ``sec 2``.
++Then, add ``ring:0`` and ``ring:1`` to ``sec 2``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 2;add ring 0
+-    spp > sec 2;add ring 1
+-    spp > sec 2;status
+-    status: idling
+-    ports:
+-      - 'phy:0'
+-      - 'phy:1'
+-      - 'ring:0'
+-      - 'ring:1'
++    spp > sec 2; add ring:0
++    Add ring:0.
++    spp > sec 2; add ring:1
++    Add ring:1.
++    spp > sec 2; status
++    - status: idling
++    - ports:
++      - phy:0
++      - phy:1
++      - ring:0
++      - ring:1
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 ring:0
+-    spp > sec 1;patch ring:1 phy:0
+-    spp > sec 2;patch phy:1 ring:1
+-    spp > sec 2;patch ring:0 phy:1
+-    spp > sec 1;forward
+-    spp > sec 2;forward
++    spp > sec 1; patch phy:0 ring:0
++    Patch ports (phy:0 -> ring:0).
++    spp > sec 1; patch ring:1 phy:0
++    Patch ports (ring:1 -> phy:0).
++    spp > sec 2; patch phy:1 ring:1
++    Patch ports (phy:1 -> ring:0).
++    spp > sec 2; patch ring:0 phy:1
++    Patch ports (ring:0 -> phy:1).
++    spp > sec 1; forward
++    Start forwarding.
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ .. _figure_spp_bi_directional_l2fwd:
+ 
+@@ -284,10 +317,10 @@ vhost must be created by ``add`` subcommand before the VM is launched.
+ Setup Vhost PMD
+ ~~~~~~~~~~~~~~~
+ 
+-In this use case, add ``vhost 0`` to ``sec 1`` for communicating
++In this use case, add ``vhost:0`` to ``sec 1`` for communicating
+ with the VM.
+ First, check if ``/tmp/sock0`` is already exist.
+-You have to remove it already exist to avoid failure of socket file
++You should remove it already exist to avoid a failure of socket file
+ creation.
+ 
+ .. code-block:: console
+@@ -302,13 +335,15 @@ Create ``/tmp/sock0`` from ``sec 1``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add vhost 0
++    spp > sec 1; add vhost:0
++    Add vhost:0.
+ 
+ 
+ Uni-Directional L2fwd with Vhost PMD
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+-Start a VM with vhost interface as described in
++Launch a VM by using the vhost interface created as previous step.
++Lauunching VM is described in
+ :doc:`How to Use<howto_use>`
+ and launch ``spp_vm`` with secondary ID 2.
+ You find ``sec 2`` from controller after launched.
+@@ -320,11 +355,16 @@ with ``sec 2``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;patch phy:0 vhost:0
+-    spp > sec 1;patch vhost:0 phy:1
+-    spp > sec 2;patch phy:0 phy:0
+-    spp > sec 1;forward
+-    spp > sec 2;forward
++    spp > sec 1; patch phy:0 vhost:0
++    Patch ports (phy:0 -> vhost:0).
++    spp > sec 1; patch vhost:0 phy:1
++    Patch ports (vhost:0 -> phy:1).
++    spp > sec 2; patch phy:0 phy:0
++    Patch ports (phy:0 -> phy:0).
++    spp > sec 1; forward
++    Start forwarding.
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ .. _figure_spp_uni_directional_l2fwd_vhost:
+ 
+@@ -341,7 +381,7 @@ PCAP PMD
+ 
+ Pcap PMD is an interface for capturing or restoring traffic.
+ For usign pcap PMD, you should set ``CONFIG_RTE_LIBRTE_PMD_PCAP``
+-to ``y`` and compile DPDK before SPP.
++and ``CONFIG_RTE_PORT_PCAP`` to ``y`` and compile DPDK before SPP.
+ Refer to
+ :ref:`Install DPDK and SPP<install_dpdk_spp>`
+ for details of setting up.
+@@ -352,11 +392,11 @@ packets.
+ For rx device, you can use any of pcap files other than SPP's pcap PMD.
+ 
+ To start using pcap pmd, just using ``add`` subcommand as ring.
+-Here is an example for creating pcap PMD with index ``1``.
++Here is an example for creating pcap PMD ``pcap:1``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add pcap 1
++    spp > sec 1; add pcap:1
+ 
+ After running it, you can find two of pcap files in ``/tmp``.
+ 
+@@ -379,9 +419,12 @@ As the first usecase, add a pcap PMD and capture incoming packets from
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add pcap 1
+-    spp > sec 1;patch phy:0 pcap:1
+-    spp > sec 1;forward
++    spp > sec 1; add pcap 1
++    Add pcap:1.
++    spp > sec 1; patch phy:0 pcap:1
++    Patch ports (phy:0 -> pcap:1).
++    spp > sec 1; forward
++    Start forwarding.
+ 
+ .. _figure_spp_pcap_incoming:
+ 
+@@ -404,7 +447,8 @@ To stop capturing, simply stop forwarding of ``spp_nfv``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;stop
++    spp > sec 1; stop
++    Stop forwarding.
+ 
+ You can analyze the dumped pcap file with other tools like as wireshark.
+ 
+@@ -418,11 +462,12 @@ Copy ``spp-tx1.pcap`` to ``spp-rx2.pcap`` first.
+ 
+     $ sudo cp /tmp/spp-tx1.pcap /tmp/spp-rx2.pcap
+ 
+-Then, add pcap PMD to another ``spp_nfv`` with index ``2``.
++Then, add pcap PMD ``pcap:2`` to another ``spp_nfv``.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 2;add pcap 2
++    spp > sec 2; add pcap:2
++    Add pcap:2.
+ 
+ .. _figure_spp_pcap_restoring:
+ 
+@@ -447,7 +492,9 @@ and watch received packets on pktgen.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 2;patch pcap:2 phy:1
+-    spp > sec 2;forward
++    spp > sec 2; patch pcap:2 phy:1
++    Patch ports (pcap:2 -> phy:1).
++    spp > sec 2; forward
++    Start forwarding.
+ 
+ After started forwarding, you can see that packet count is increased.
+-- 
+2.13.1
+

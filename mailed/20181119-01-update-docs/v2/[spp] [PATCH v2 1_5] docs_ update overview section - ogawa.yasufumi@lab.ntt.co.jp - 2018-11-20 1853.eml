@@ -1,0 +1,150 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp452126eda;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+X-Google-Smtp-Source: AFSGD/XmkgxH7argzpEQ7AnxZ7/kUmgsVbxO/tbduDTOAaO+B+UwqCOGQgNE1pE4AMEeq5TrGf8E
+X-Received: by 2002:a50:87d9:: with SMTP id 25mr1728188edz.280.1542707756518;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542707756; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Jcx8bCVe91NZ4TCC9U0gal71zbsVvUSp4F5Ju/LM/J9N02KSkRgNml7S8thGKLCraE
+         ZDPsVO/swyq4Hmg4uqoigH0qgR+8Dk9aSX2IT6cmOJsTdEdVl7PeqRy+daWprgeHV1gI
+         jAYq5zprxBk0VC3um+sYrSnZ/izCkFvvsNNO2pJOmNU1jqX+Opnse4eB4xsT+NXeAR8D
+         izKuY7jzzVIFgI3h1isDPx22t3l06/AAQKsDrj6CtCrACNJXTDZV1mnnVV8Ltbs62zC2
+         N5QAvR9Iy6nLh5D5M68pvuEJS16DTnVY2uX5ufl3O1LKKtGzbD6tZAClR3Zlj7Fze0im
+         w7Qw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=EeoSpc9Bsb6A1gs81TVq3S+R4/dSVNySkAbiV2Ov7Mc=;
+        b=C+dT1xMFYwtT+yrRYmkh3sVb7OU8Vb3OdwLO3yhnhij67QCFTrXpkLIG19L0f0b9vW
+         lufcDN2DOlMfhBa3n3EXvujg/Ho0Qb30ej70AHbbKXD8Z2166pb/fSUhNZ/avjO3un6U
+         ns6uIIe5PTGiT7MKfcpIFy1+/JNAnaVOYh93czN7m/el9OxYjKBg/BkwgaUbxDZ+hxdP
+         eGp4L5P+FwZ4/ALgqeM4Bh8lzSQIf7oaDIQe7dTV1XYf5Rq97pE9NMpkT1X0p6KfRcrW
+         hqDKap9fUPv5JG8sM9MY5lyA5s5JhBop0gG0cVMmYW3tQLtNTAbvPH05ACK6igQ70RIk
+         Z/aA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id x23-v6si483382eje.10.2018.11.20.01.55.56;
+        Tue, 20 Nov 2018 01:55:56 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 2953A548B;
+	Tue, 20 Nov 2018 10:55:56 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 784B62C52
+ for <spp@dpdk.org>; Tue, 20 Nov 2018 10:55:54 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wAK9tqbu002847;
+ Tue, 20 Nov 2018 18:55:52 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 7919212D;
+ Tue, 20 Nov 2018 18:55:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 6B924125;
+ Tue, 20 Nov 2018 18:55:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 20 Nov 2018 18:53:35 +0900
+Message-Id: <1542707619-25195-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1542614404-18171-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1542707619-25195-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH v2 1/5] docs: update overview section
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of contents of overview section is old and needd to be updated.
+This patch is to update for the latest design of SPP controller which
+is devided into front-end CLI and back-end server. It is also added
+an explanation of OpenStack plugin `networking-spp`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview.rst | 41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
+
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index 2529f77..386ac49 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -21,28 +21,41 @@ NFV (Network Function Virtualization).
+ With SPP, user is able to configure network easily and dynamically
+ via simple patch panel like interface.
+ 
+-The goal of SPP is to easily interconnect DPDK applications together,
+-and assign resources dynamically to these applications to build a
+-pipeline.
++The goal of SPP is to easily interconnect NFV applications via high
++thoughput network interfaces provided by DPDK and change configurations
++of resources dynamically to applications to build pipelines.
++
+ 
+ Design
+ ------
+ 
+-SPP is composed of a primary DPDK application that is
+-responsible for resource management. This primary application doesn't
+-interact with any traffic, and is used to manage creation and freeing of
+-resources only.
++SPP is composed of several DPDK processes and controller processes [1].
++
++In terms of DPDK processes, SPP is derived from DPDK's multi-process sample
++application and it consists of a primary process and multiple secondary
++processes.
++SPP primary process is responsible for resource management, for example, ports,
++mbufs or shared memory. On the other hand, secondary processes are working for
++tasks.
++
++SPP is controlled from python based management framework. It consists of
++front-end CLI and back-end server process.
++SPP's front-end CLI provides a patch panel like interface for users.
++This CLI process parses user input and sends request to the back-end via REST
++APIs. It means that the back-end server process accepts requests from other
++than CLI. It enables developers to implement control interface such as GUI, or
++plugin for other framework.
++`networking-spp
++<https://github.com/openstack/networking-spp>`_
++is a Neutron ML2 plugin for using SPP with OpenStack.
++By using networking-spp and doing some of extra tunings for optimization, you
++can deploy high-performance NFV services on OpenStack [2].
+ 
+-A Python based management interface, SPP controller, is provided to
+-control the primary
+-DPDK application to create resources, which are then to be used by
+-secondary applications.
+-This management application provides a socket
+-based interface for the primary and secondary DPDK applications to
+-interface to the manager.
+ 
+ Reference
+ ---------
+ 
+ * [1] `Implementation and Testing of Soft Patch Panel
+   <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
++* [2] `Integrating OpenStack with DPDK for High Performance Applications
++  <https://www.openstack.org/summit/vancouver-2018/summit-schedule/events/20826>`_
+-- 
+2.13.1
+
