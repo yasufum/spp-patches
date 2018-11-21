@@ -1,0 +1,169 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp1637655eda;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+X-Google-Smtp-Source: AFSGD/X+q//bWMV0abR1RyEUln3tHyXe1sMCLW45pIbvw68HPA61+syNiE2QbxZxcaG6usRg7HM5
+X-Received: by 2002:aa7:d394:: with SMTP id x20mr4604694edq.193.1542783684904;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542783684; cv=none;
+        d=google.com; s=arc-20160816;
+        b=hNKUM4a++8zSupB934wmOQlMyhWIUejFaN2FwbSJO8F40d3dj+23Bbf4x3cUOJxcWy
+         vcMbi1UDCSDN4pokTfapWuksmSTklG9wbxKAurSpr3AAASnZFGEy8lRvAdsuO8C+Ixvb
+         e0ssNBCXrdc3evmYfaNMH0TjQvITntYejUNPa/n3ZZQuNh33eWMLOb2S92CN0dQcwPpr
+         osVq9puy16BeKkvIT29msjjvjLaU/qzA4fCXZV6Ex5BxMbDqPKQfv+jGaAwfEJ0SgBqH
+         6BjusHNKAwvVXnqUqh1ieyXsWGVacZGQdBQZ0jsPMv/ZEr1QjDC1t2p7crO1koMYymw1
+         RPOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :date:cc:to:from:message-id;
+        bh=MTRxJJVbd5V0jgsUIiMSmEIHLQ3GnCsv0HDVg7I79Yk=;
+        b=WssVKedrSfeLmk91jEXzhOC+qTXOPvNRCtkHAP137dbQw8vjdPgVtvbrSwwjFVbHRC
+         9OPCotoTSoCit0JpGtdAuCkjONIMSDsCiIbx8m8AV8hWU8n0OxHdixx0ahmS6kCPHBxm
+         4Jwh/caa9cfUaKHTEhXpDSi8XJIujphPswcAAW7pmsUNGq+oCF5krMiVdAB/dJ0Yjlh2
+         YJYc60Z1phZBTMAiBo/kp5Ag9+F16FjcRVT5H0e+J/IFBujzhS3F/Mw4XFqx3NCvlhnw
+         2G246tjX1yfP3rNNUv0H27ReeqXgMmcjRBZRP38IYfQvPw3lBDkmwTL9kopZNSOwOG0x
+         1jOw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id k22si154226ede.433.2018.11.20.23.01.24;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0ABAE5B26;
+	Wed, 21 Nov 2018 08:01:24 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 198B758C6
+ for <spp@dpdk.org>; Wed, 21 Nov 2018 08:01:21 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL71KfY012574;
+ Wed, 21 Nov 2018 16:01:20 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL71Kqg031860;
+ Wed, 21 Nov 2018 16:01:20 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id RAA28654;
+ Wed, 21 Nov 2018 15:52:20 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL6qKH0011056;
+ Wed, 21 Nov 2018 15:52:20 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wAL6qKJe011052; Wed, 21 Nov 2018 15:52:20 +0900
+Message-Id: <201811210652.wAL6qKJe011052@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id wAL6qJ5O008934 ; Wed, 21 Nov 2018 15:52:20 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed, 21 Nov 2018 15:52:14 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <201811070507.wA757WWo008866@imss03.silk.ntt-tx.co.jp>
+References: <201811070507.wA757WWo008866@imss03.silk.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 1/6] shared: add dev_attach_by_devargs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+SPP uses deprecated APIs removed in DPDK v18.11. Using rte_eth_hotplug_add()
+is recommended instead of rte_eth_dev_attach()[1]. This patch is to add
+dev_attach_by_devargs() to shared directory so that spp_primary, spp_nfv,
+spp_vm and spp_vf can refer this new function.
+
+[1]https://mails.dpdk.org/archives/dev/2018-October/117115.html
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/shared/common.c | 26 ++++++++++++++++++++++++++
+ src/shared/common.h | 17 +++++++++++++++++
+ 2 files changed, 43 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index f1754db..c88ce14 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -500,3 +500,29 @@ append_patch_info_json(char *str,
+ 
+ 	return 0;
+ }
++
++/* attach the new device, then store port_id of the device */
++int
++dev_attach_by_devargs(const char *devargs, uint16_t *port_id)
++{
++	int ret = -1;
++	struct rte_devargs da;
++
++	memset(&da, 0, sizeof(da));
++
++	/* parse devargs */
++	if (rte_devargs_parse(&da, devargs))
++		return -1;
++
++	ret = rte_eal_hotplug_add(da.bus->name, da.name, da.args);
++	if (ret < 0) {
++		free(da.args);
++		return ret;
++	}
++
++	ret = rte_eth_dev_get_port_by_name(da.name, port_id);
++
++	free(da.args);
++
++	return ret;
++}
+diff --git a/src/shared/common.h b/src/shared/common.h
+index a5395aa..60514e5 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -18,7 +18,9 @@
+ #include <rte_common.h>
+ #include <rte_config.h>
+ #include <rte_eal.h>
++#include <rte_devargs.h>
+ #include <rte_ethdev.h>
++#include <rte_ethdev_driver.h>
+ #include <rte_launch.h>
+ #include <rte_lcore.h>
+ #include <rte_log.h>
+@@ -217,4 +219,19 @@ int spp_atoi(const char *str, int *val);
+ 
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
++/**
++ * Attach a new Ethernet device specified by arguments.
++ *
++ * @param devargs
++ *  A pointer to a strings array describing the new device
++ *  to be attached. The strings should be a pci address like
++ *  '0000:01:00.0' or virtual device name like 'net_pcap0'.
++ * @param port_id
++ *  A pointer to a port identifier actually attached.
++ * @return
++ *  0 on success and port_id is filled, negative on error
++ */
++int
++dev_attach_by_devargs(const char *devargs, uint16_t *port_id);
++
+ #endif
+-- 
+2.18.0
+

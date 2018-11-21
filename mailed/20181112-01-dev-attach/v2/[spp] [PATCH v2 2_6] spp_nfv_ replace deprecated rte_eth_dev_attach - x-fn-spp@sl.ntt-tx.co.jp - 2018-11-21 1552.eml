@@ -1,0 +1,126 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:9405:0:0:0:0:0 with SMTP id p5csp1637654eda;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+X-Google-Smtp-Source: AJdET5ebZ8hpi0499hhLCbtC7yrFzynnSXmGc+6feGK+eicX4tiq5Bt2UTO+W3TGVYEyoMKXtQOU
+X-Received: by 2002:a17:906:228d:: with SMTP id p13-v6mr4176585eja.159.1542783684896;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1542783684; cv=none;
+        d=google.com; s=arc-20160816;
+        b=NNwyQUiGJXmKfchW+3heLu5G7BWucvTVXCvuNCXuDooycfVHxFwDdYX5ofTIXwh2xy
+         43Nb47SUgaxKYegA+LYecF5H0yn6JClLQbD4J8Lspn76SjiJ/WnHrqmJOzxuxKWkzgTo
+         hFtgLY8oVWDklLngazOwjhKQb9O6bTPzuCX61nzYl0ho0Q4YN168YQqNn7q5BILr4MpQ
+         7bGQVlu3+lHvyZS2fqMdzTFuYY1FuUqD+UzJUjdrI0/X/+fwif1841joNegWPL6onnns
+         QiiQIWnAX80IHUKg+8VyxtgH92C6+cbjDvBWWd759siqehif/hb012MtfMuhYQMPn1rc
+         nizQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :date:cc:to:from:message-id;
+        bh=YY9dIvzq/qUt3+YmbYSy/MFFctg5Rcwnx9uSlzhY0hg=;
+        b=ZXxXmt/fmP52kvvWwDCTFo9KJZ0I+shPxFWCEk7R3XNKmDb8qELQXpZFy3by7cCigI
+         KJySqUI0hPMUT+JW23mF5FLx69543QNqQo3AG5LpCa3jLqF5mbK8BtPkZYhhCkKczpTo
+         cXLC3oi6kb3muLSFgWnGdLcEnmQj2f1jZOaiCchLxN8Ke/7zGGw9omCVtXil4CWWePxO
+         zyFyPqun+11fGcjLAlueodeiqxk4U7cdtLUPg3B53LI7sDzQU5CvkXocyI+COtfyI4iG
+         Ug3G3gclakZT47vnnHKmeznXKyDz1L2RKALH9eqisn3B5SwBCcfD/umsWt+6mczTSq4M
+         2rxA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id p26-v6si1227478ejd.280.2018.11.20.23.01.24;
+        Tue, 20 Nov 2018 23:01:24 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id EE31B5B16;
+	Wed, 21 Nov 2018 08:01:23 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 3118858F6
+ for <spp@dpdk.org>; Wed, 21 Nov 2018 08:01:21 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL71LrL012578;
+ Wed, 21 Nov 2018 16:01:21 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL71KwV031871;
+ Wed, 21 Nov 2018 16:01:20 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id RAA28655;
+ Wed, 21 Nov 2018 15:52:20 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL6qKRU011066;
+ Wed, 21 Nov 2018 15:52:20 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ wAL6qKcQ011058; Wed, 21 Nov 2018 15:52:20 +0900
+Message-Id: <201811210652.wAL6qKcQ011058@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id wAL6qJ5P008934 ; Wed, 21 Nov 2018 15:52:20 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Wed, 21 Nov 2018 15:52:15 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <201811070507.wA757WWo008866@imss03.silk.ntt-tx.co.jp>
+References: <201811070507.wA757WWo008866@imss03.silk.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 2/6] spp_nfv: replace deprecated rte_eth_dev_attach
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Replace rte_eth_dev_attach() with dev_attach_by_devargs() for spp_nfv.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/nfv/nfv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/nfv/nfv.c b/src/nfv/nfv.c
+index 05290ed..bf16d81 100644
+--- a/src/nfv/nfv.c
++++ b/src/nfv/nfv.c
+@@ -442,7 +442,7 @@ add_vhost_pmd(int index)
+ 	iface = get_vhost_iface_name(index);
+ 
+ 	sprintf(devargs, "%s,iface=%s,queues=%d", name, iface, nr_queues);
+-	ret = rte_eth_dev_attach(devargs, &vhost_port_id);
++	ret = dev_attach_by_devargs(devargs, &vhost_port_id);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -560,7 +560,7 @@ add_pcap_pmd(int index)
+ 	sprintf(devargs,
+ 			"%s,rx_pcap=%s,tx_pcap=%s",
+ 			name, rx_fpath, tx_fpath);
+-	ret = rte_eth_dev_attach(devargs, &pcap_pmd_port_id);
++	ret = dev_attach_by_devargs(devargs, &pcap_pmd_port_id);
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -623,7 +623,7 @@ add_null_pmd(int index)
+ 
+ 	name = get_null_pmd_name(index);
+ 	sprintf(devargs, "%s", name);
+-	ret = rte_eth_dev_attach(devargs, &null_pmd_port_id);
++	ret = dev_attach_by_devargs(devargs, &null_pmd_port_id);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.18.0
+
