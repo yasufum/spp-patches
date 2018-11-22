@@ -1,0 +1,777 @@
+X-Account-Key: account4
+X-UIDL: 0000888256a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E37B0400B55
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id DF51423BAE6; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id DEAA823B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D1924EA7711
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A8FE9EA7873
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AakmwWhGTFIlQPiJ+jNuScp1GYnJ96ZzpIg4Y7I?=
+ =?us-ascii?q?YmgLtSc6Oluq7vJ1Hb+e401QCbUY7e4rdfk++O6ebtUmhG54qd9nsFNp5UBF?=
+ =?us-ascii?q?cekctDpwU7G4aeDFHjaubwZnkqWcpEEUR951mgNQ5TBNq7e02UqXr07yZBUg?=
+ =?us-ascii?q?7nO19NL//uUpXXk9zx0umz/5PJZAAdlH+zZ/ZpNA2etgGXsNUKxJdybK02jB?=
+ =?us-ascii?q?nR+yEaQeldyGJ2KF7WpC7SuJ/vrqZq6D8Y+/4q8scFSr3/J/5+QLdcSjI6Ly?=
+ =?us-ascii?q?Y+44vprUuLQQyK73oaGmIY93gASxiA4he/RY/pmjD+8OxhxGyGLYv9SvY2QX?=
+ =?us-ascii?q?yu4rxqRxnhlCocf2RgqCeN0ZY21/8d/kPprgcaocaceIyPMftiYq7RNcgXQ2?=
+ =?us-ascii?q?ZMRIcZViBMBJ+9c5paF/AIbq5Tq4jwoUdLrAPrX1D0Qrm0kHkT2zmojP5fsa?=
+ =?us-ascii?q?xpCwzN0Q0+EshbvH/RpZDuLKJKC6a4x62OyynfKfhRnzXlu+2qOlgsp++BWb?=
+ =?us-ascii?q?VofI/f004qQknVy1uW7Jf9JxuO0qILr3Te8/omXuXpiXZt+GQT6nC/g9whjI?=
+ =?us-ascii?q?XEnNdf2hXK82Bi2J4dPtn+TlJnJMK0VpBX8SOCfdgTIItqUyRjvyA0zacDsJ?=
+ =?us-ascii?q?iwcX0RyZgp8AXDcf2Mb9vA8lf5We2WOzs9mGN9def1mUOp6Ub5gL6ZNIH8wB?=
+ =?us-ascii?q?NQoyFCiNWJqn0dy0mZ9J2cUvUktk7z3D+O01iIrOBPOgYyibaeN45nybl2lI?=
+ =?us-ascii?q?J20wyLF33zkUTy1PPQd04/vO6096H7cvPtodmeL8d92AT3M6B2x4q+Cv9+NB?=
+ =?us-ascii?q?QSGnSLv++7kr/7mC+xCLwYi/Q3lvGH9pHRPoIdurL8Hx8T2YFl6Q73BmWj2d?=
+ =?us-ascii?q?UcxSZBLVlePhSbk831KxfFJ7b6FZLdyxylwjJixvSebvvgCY6LKGTf1avxO7?=
+ =?us-ascii?q?16rUxEgAsrkYIFvsoSUOpbZqmuHBag6bm6Rlc4K1Dmmb+/To8mjMVFBCTWU/?=
+ =?us-ascii?q?HRMbuO4wXRvqR1eLPKP9JT5mu1KuB5taS31TljwgVbJvTvg8Vffnm8Gr4/eR?=
+ =?us-ascii?q?ejbHHhg8kMHSIxhiRgFba4sFSZSnYTa323Vucn/jRjUsSrBoOFQJyxxreGmi?=
+ =?us-ascii?q?WjTNVaYWVPC1bEFnmNFc3MS7ICbmeJOtdJiThCU6S9DpMxkxqp8g3ig7ZqNe?=
+ =?us-ascii?q?vb/CQEuImrjoEtobeIz1dpqHoqXoyUyATvBylsk3kNRiMq0aw3ukF7xlqZkO?=
+ =?us-ascii?q?B5j/FeCd1P9qZMWwY+O4Tbyr8yANTzVwTdO9aRHQz/GpP8Wmt3FY93nY5dBi?=
+ =?us-ascii?q?Q1U8+vhR3CwSewVrMekrXOH4Qxqvia0nP1YcBh1zDN0+8jlwpDIIMHOGu4i6?=
+ =?us-ascii?q?p47wWWCZTOlhDTh+Okc+EHxDbl72PFy3aS+V1IFgV3F6fdFyN6BAOevZHi60?=
+ =?us-ascii?q?XOQqX7Q6RiPA0E0taaArBOLNv1kRBaVLHoP5Lceyji/gX4TQbNzbSKYo3wfm?=
+ =?us-ascii?q?wb1yiIE0kInTcI4WyHPhRtTjfkuW/VCyZiUE7+e065u/crs2u1FwVnqmPCJ1?=
+ =?us-ascii?q?0kzbe+/QQZwOCRW+9GlKxRoz8v8n19TlO03taOUJyBrBEnerlAJM8tplxAk2?=
+ =?us-ascii?q?DB0m41dpXyKqljggZCNQV8pAXoywkyFpUGms9srmtixVh3IKOciA4HdjiDm5?=
+ =?us-ascii?q?bsJvjLOi/5+1atc8u0khnXgtOf+6NXtrI5oE6luh21U1YytX5gldtNm3LO45?=
+ =?us-ascii?q?zLCFJNF5P6SQAx6wQ/u6GcaS575ZuxtzUkOPuxuz7Gg4JvBeA+jBC8Y5JDIO?=
+ =?us-ascii?q?WPE0nwC4UbH5T8crVy3QLyNFRfYaYLpfNRXYvuduPaivTyZKA6x2jg1jkBud?=
+ =?us-ascii?q?EjmkOUq3gmE7aOhc1fharFmFXaHzbk0AX765ixw9seI2pPWDThgT7tAIobP/?=
+ =?us-ascii?q?wgTcMwEW6rZvaP6JB7jp/pVWRf8Qf8VUgCnsm1ZV+Ofxr22ktSzRZO+CD1qW?=
+ =?us-ascii?q?6D1zVx1goRgO+HxiWXnLb5cFwBJnIOWHkkhlCqI5Dm1t0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDJ1IQIAwlD0gHEoMhggGrJDOIf4E?=
+ =?us-ascii?q?sh1qBZ4RagRGEZoJmhh8ChxYHggSFc3aPbQmRKhiBWI8pLIk+kAOCDYQsgic?=
+ =?us-ascii?q?OCY4rMAEBATABizwEgkkBAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:12 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f8TF002717;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f6Z8004521;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01816;
+	 Wed, 21 Nov 2018 10:36:00 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a06v009645; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0w0009642; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0w0009642@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWd008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 11/23] spp_vf: change reference of management data
+Date: Wed, 21 Nov 2018 10:35:46 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Change referring management data for previous update. Management data is
+retrieved with `spp_get_mng_data_add()`.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c  |   5 +-
+ src/vf/common/command_proc.c |  52 +++++++---
+ src/vf/common/spp_proc.c     | 183 ++++++++++++++++++++---------------
+ 3 files changed, 147 insertions(+), 93 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 35066c2..1b08650 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -68,7 +68,10 @@ const char *PORT_ABILITY_STRINGS[] = {
+ static enum spp_component_type
+ spp_get_component_type_update(unsigned int lcore_id)
+ {
+-	struct core_mng_info *info = &g_core_info[lcore_id];
++	struct core_mng_info *core_info;
++
++	spp_get_mng_data_addr(NULL, NULL, NULL, &core_info, NULL, NULL, NULL);
++	struct core_mng_info *info = (core_info + lcore_id);
+ 	return info->core[info->upd_index].type;
+ }
+ 
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 02c41b6..d30acf3 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -88,7 +88,11 @@ const char *CLASSIFILER_TYPE_STATUS_STRINGS[] = {
+ static int
+ spp_get_client_id(void)
+ {
+-	return g_startup_param.client_id;
++	struct startup_param *startup_param;
++
++	spp_get_mng_data_addr(&startup_param,
++			NULL, NULL, NULL, NULL, NULL, NULL);
++	return startup_param->client_id;
+ }
+ 
+ /* Check if port has been flushed. */
+@@ -204,10 +208,17 @@ spp_update_component(
+ 	struct spp_component_info *component = NULL;
+ 	struct core_info *core = NULL;
+ 	struct core_mng_info *info = NULL;
++	struct spp_component_info *component_info = NULL;
++	struct core_mng_info *core_info = NULL;
++	int *change_core = NULL;
++	int *change_component = NULL;
++
++	spp_get_mng_data_addr(NULL, NULL, &component_info, &core_info,
++				&change_core, &change_component, NULL);
+ 
+ 	switch (action) {
+ 	case SPP_CMD_ACTION_START:
+-		info = &g_core_info[lcore_id];
++		info = (core_info + lcore_id);
+ 		if (info->status == SPP_CORE_UNUSE) {
+ 			RTE_LOG(ERR, APP, "Core %d is not available because "
+ 				"it is in SPP_CORE_UNUSE state.\n", lcore_id);
+@@ -236,7 +247,7 @@ spp_update_component(
+ 			return SPP_RET_NG;
+ 		}
+ 
+-		component = &g_component_info[component_id];
++		component = (component_info + component_id);
+ 		memset(component, 0x00, sizeof(struct spp_component_info));
+ 		strcpy(component->name, name);
+ 		component->type		= type;
+@@ -248,7 +259,7 @@ spp_update_component(
+ 		core->num++;
+ 		ret = SPP_RET_OK;
+ 		tmp_lcore_id = lcore_id;
+-		g_change_component[component_id] = 1;
++		*(change_component + component_id) = 1;
+ 		break;
+ 
+ 	case SPP_CMD_ACTION_STOP:
+@@ -256,11 +267,11 @@ spp_update_component(
+ 		if (component_id < 0)
+ 			return SPP_RET_OK;
+ 
+-		component = &g_component_info[component_id];
++		component = (component_info + component_id);
+ 		tmp_lcore_id = component->lcore_id;
+ 		memset(component, 0x00, sizeof(struct spp_component_info));
+ 
+-		info = &g_core_info[tmp_lcore_id];
++		info = (core_info + tmp_lcore_id);
+ 		core = &info->core[info->upd_index];
+ 		ret_del = del_component_info(component_id,
+ 				core->num, core->id);
+@@ -272,14 +283,14 @@ spp_update_component(
+ 			core->type = SPP_COMPONENT_UNUSE;
+ 
+ 		ret = SPP_RET_OK;
+-		g_change_component[component_id] = 0;
++		*(change_component + component_id) = 0;
+ 		break;
+ 
+ 	default:
+ 		break;
+ 	}
+ 
+-	g_change_core[tmp_lcore_id] = 1;
++	*(change_core + tmp_lcore_id) = 1;
+ 	return ret;
+ }
+ 
+@@ -300,6 +311,8 @@ spp_update_port(enum spp_command_action action,
+ 	struct spp_port_info *port_info = NULL;
+ 	int *num = NULL;
+ 	struct spp_port_info **ports = NULL;
++	struct spp_component_info *component_info = NULL;
++	int *change_component = NULL;
+ 
+ 	component_id = spp_get_component_id(name);
+ 	if (component_id < 0) {
+@@ -308,7 +321,9 @@ spp_update_port(enum spp_command_action action,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	component = &g_component_info[component_id];
++	spp_get_mng_data_addr(NULL, NULL,
++			&component_info, NULL, NULL, &change_component, NULL);
++	component = (component_info + component_id);
+ 	port_info = get_iface_info(port->iface_type, port->iface_no);
+ 	if (rxtx == SPP_PORT_RXTX_RX) {
+ 		num = &component->num_rx_port;
+@@ -369,11 +384,12 @@ spp_update_port(enum spp_command_action action,
+ 
+ 		ret = SPP_RET_OK;
+ 		break;
++
+ 	default:
+ 		break;
+ 	}
+ 
+-	g_change_component[component_id] = 1;
++	*(change_component + component_id) = 1;
+ 	return ret;
+ }
+ 
+@@ -382,6 +398,10 @@ static int
+ spp_flush(void)
+ {
+ 	int ret = -1;
++	struct cancel_backup_info *backup_info = NULL;
++
++	spp_get_mng_data_addr(NULL, NULL, NULL,
++				NULL, NULL, NULL, &backup_info);
+ 
+ 	/* Initial setting of each interface. */
+ 	ret = flush_port();
+@@ -394,7 +414,7 @@ spp_flush(void)
+ 	/* Flush of component */
+ 	ret = flush_component();
+ 
+-	backup_mng_info(&g_backup_info);
++	backup_mng_info(backup_info);
+ 	return ret;
+ }
+ 
+@@ -471,13 +491,17 @@ spp_iterate_classifier_table(
+ static int
+ spp_get_dpdk_port(enum port_type iface_type, int iface_no)
+ {
++	struct iface_info *iface_info = NULL;
++
++	spp_get_mng_data_addr(NULL, &iface_info,
++				NULL, NULL, NULL, NULL, NULL);
+ 	switch (iface_type) {
+ 	case PHY:
+-		return g_iface_info.nic[iface_no].dpdk_port;
++		return iface_info->nic[iface_no].dpdk_port;
+ 	case RING:
+-		return g_iface_info.ring[iface_no].dpdk_port;
++		return iface_info->ring[iface_no].dpdk_port;
+ 	case VHOST:
+-		return g_iface_info.vhost[iface_no].dpdk_port;
++		return iface_info->vhost[iface_no].dpdk_port;
+ 	default:
+ 		return -1;
+ 	}
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 5bb8571..37179f5 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -64,6 +64,7 @@ dump_buff(const char *name, const void *addr, const size_t size)
+ 	}
+ }
+ 
++/* generation of the ring port */
+ int
+ add_ring_pmd(int ring_id)
+ {
+@@ -85,6 +86,7 @@ add_ring_pmd(int ring_id)
+ 	return ring_port_id;
+ }
+ 
++/* generation of the vhost port */
+ int
+ add_vhost_pmd(int index, int client)
+ {
+@@ -170,7 +172,7 @@ add_vhost_pmd(int index, int client)
+ enum spp_core_status
+ spp_get_core_status(unsigned int lcore_id)
+ {
+-	return g_core_info[lcore_id].status;
++	return (g_mng_data_addr.p_core_info + lcore_id)->status;
+ }
+ 
+ /**
+@@ -184,7 +186,8 @@ check_core_status(enum spp_core_status status)
+ {
+ 	unsigned int lcore_id = 0;
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		if (g_core_info[lcore_id].status != status) {
++		if ((g_mng_data_addr.p_core_info + lcore_id)->status !=
++								status) {
+ 			/* Status is mismatched */
+ 			return -1;
+ 		}
+@@ -212,7 +215,7 @@ void
+ set_core_status(unsigned int lcore_id,
+ 		enum spp_core_status status)
+ {
+-	g_core_info[lcore_id].status = status;
++	(g_mng_data_addr.p_core_info + lcore_id)->status = status;
+ }
+ 
+ /* Set all core to given status */
+@@ -221,7 +224,7 @@ set_all_core_status(enum spp_core_status status)
+ {
+ 	unsigned int lcore_id = 0;
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		g_core_info[lcore_id].status = status;
++		(g_mng_data_addr.p_core_info + lcore_id)->status = status;
+ 	}
+ }
+ 
+@@ -237,7 +240,8 @@ stop_process(int signal)
+ 		return;
+ 	}
+ 
+-	g_core_info[g_main_lcore_id].status = SPP_CORE_STOP_REQUEST;
++	(g_mng_data_addr.p_core_info + g_mng_data_addr.main_lcore_id)->status =
++							SPP_CORE_STOP_REQUEST;
+ 	set_all_core_status(SPP_CORE_STOP_REQUEST);
+ }
+ 
+@@ -249,13 +253,15 @@ stop_process(int signal)
+ struct spp_port_info *
+ get_iface_info(enum port_type iface_type, int iface_no)
+ {
++	struct iface_info *iface_info = g_mng_data_addr.p_iface_info;
++
+ 	switch (iface_type) {
+ 	case PHY:
+-		return &g_iface_info.nic[iface_no];
++		return &iface_info->nic[iface_no];
+ 	case VHOST:
+-		return &g_iface_info.vhost[iface_no];
++		return &iface_info->vhost[iface_no];
+ 	case RING:
+-		return &g_iface_info.ring[iface_no];
++		return &iface_info->ring[iface_no];
+ 	default:
+ 		return NULL;
+ 	}
+@@ -425,13 +431,19 @@ copy_mng_info(
+ void
+ backup_mng_info(struct cancel_backup_info *backup)
+ {
+-	dump_all_mng_info(g_core_info, g_component_info, &g_iface_info);
++	dump_all_mng_info(g_mng_data_addr.p_core_info,
++			g_mng_data_addr.p_component_info,
++			g_mng_data_addr.p_iface_info);
+ 	copy_mng_info(backup->core, backup->component, &backup->interface,
+-			g_core_info, g_component_info, &g_iface_info,
++			g_mng_data_addr.p_core_info,
++			g_mng_data_addr.p_component_info,
++			g_mng_data_addr.p_iface_info,
+ 			COPY_MNG_FLG_ALLCOPY);
+ 	dump_all_mng_info(backup->core, backup->component, &backup->interface);
+-	memset(g_change_core, 0x00, sizeof(g_change_core));
+-	memset(g_change_component, 0x00, sizeof(g_change_component));
++	memset(g_mng_data_addr.p_change_core, 0x00,
++				sizeof(int)*RTE_MAX_LCORE);
++	memset(g_mng_data_addr.p_change_component, 0x00,
++				sizeof(int)*RTE_MAX_LCORE);
+ }
+ 
+ /**
+@@ -443,79 +455,77 @@ static void
+ init_iface_info(void)
+ {
+ 	int port_cnt;  /* increment ether ports */
+-	memset(&g_iface_info, 0x00, sizeof(g_iface_info));
++	struct iface_info *p_iface_info = g_mng_data_addr.p_iface_info;
++	memset(p_iface_info, 0x00, sizeof(struct iface_info));
+ 	for (port_cnt = 0; port_cnt < RTE_MAX_ETHPORTS; port_cnt++) {
+-		g_iface_info.nic[port_cnt].iface_type = UNDEF;
+-		g_iface_info.nic[port_cnt].iface_no   = port_cnt;
+-		g_iface_info.nic[port_cnt].dpdk_port  = -1;
+-		g_iface_info.nic[port_cnt].class_id.vlantag.vid =
++		p_iface_info->nic[port_cnt].iface_type = UNDEF;
++		p_iface_info->nic[port_cnt].iface_no   = port_cnt;
++		p_iface_info->nic[port_cnt].dpdk_port  = -1;
++		p_iface_info->nic[port_cnt].class_id.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+-		g_iface_info.vhost[port_cnt].iface_type = UNDEF;
+-		g_iface_info.vhost[port_cnt].iface_no   = port_cnt;
+-		g_iface_info.vhost[port_cnt].dpdk_port  = -1;
+-		g_iface_info.vhost[port_cnt].class_id.vlantag.vid =
++		p_iface_info->vhost[port_cnt].iface_type = UNDEF;
++		p_iface_info->vhost[port_cnt].iface_no   = port_cnt;
++		p_iface_info->vhost[port_cnt].dpdk_port  = -1;
++		p_iface_info->vhost[port_cnt].class_id.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+-		g_iface_info.ring[port_cnt].iface_type = UNDEF;
+-		g_iface_info.ring[port_cnt].iface_no   = port_cnt;
+-		g_iface_info.ring[port_cnt].dpdk_port  = -1;
+-		g_iface_info.ring[port_cnt].class_id.vlantag.vid =
++		p_iface_info->ring[port_cnt].iface_type = UNDEF;
++		p_iface_info->ring[port_cnt].iface_no   = port_cnt;
++		p_iface_info->ring[port_cnt].dpdk_port  = -1;
++		p_iface_info->ring[port_cnt].class_id.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+ 	}
+ }
+ 
+-/**
+- * Initialize g_component_info
+- */
++/* Initialize g_component_info */
+ static void
+ init_component_info(void)
+ {
+ 	int cnt;
+-	memset(&g_component_info, 0x00, sizeof(g_component_info));
++	memset(g_mng_data_addr.p_component_info, 0x00,
++			sizeof(struct spp_component_info)*RTE_MAX_LCORE);
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++)
+-		g_component_info[cnt].component_id = cnt;
+-	memset(g_change_component, 0x00, sizeof(g_change_component));
++		(g_mng_data_addr.p_component_info + cnt)->component_id = cnt;
++	memset(g_mng_data_addr.p_change_component, 0x00,
++			sizeof(int)*RTE_MAX_LCORE);
+ }
+ 
+-/**
+- * Initialize g_core_info
+- */
++/* Initialize g_core_info */
+ static void
+ init_core_info(void)
+ {
+ 	int cnt = 0;
+-	memset(&g_core_info, 0x00, sizeof(g_core_info));
++	struct core_mng_info *p_core_info = g_mng_data_addr.p_core_info;
++	memset(p_core_info, 0x00,
++			sizeof(struct core_mng_info)*RTE_MAX_LCORE);
+ 	set_all_core_status(SPP_CORE_STOP);
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		g_core_info[cnt].ref_index = 0;
+-		g_core_info[cnt].upd_index = 1;
++		(p_core_info + cnt)->ref_index = 0;
++		(p_core_info + cnt)->upd_index = 1;
+ 	}
+-	memset(g_change_core, 0x00, sizeof(g_change_core));
++	memset(g_mng_data_addr.p_change_core, 0x00, sizeof(int)*RTE_MAX_LCORE);
+ }
+ 
+-/**
+- * Setup port info of port on host
+- */
++/* Setup port info of port on host */
+ static int
+ set_nic_interface(void)
+ {
+ 	int nic_cnt = 0;
++	struct iface_info *p_iface_info = g_mng_data_addr.p_iface_info;
+ 
+ 	/* NIC Setting */
+-	g_iface_info.num_nic = rte_eth_dev_count_avail();
+-	if (g_iface_info.num_nic > RTE_MAX_ETHPORTS)
+-		g_iface_info.num_nic = RTE_MAX_ETHPORTS;
++	p_iface_info->num_nic = rte_eth_dev_count_avail();
++	if (p_iface_info->num_nic > RTE_MAX_ETHPORTS)
++		p_iface_info->num_nic = RTE_MAX_ETHPORTS;
+ 
+-	for (nic_cnt = 0; nic_cnt < g_iface_info.num_nic; nic_cnt++) {
+-		g_iface_info.nic[nic_cnt].iface_type   = PHY;
+-		g_iface_info.nic[nic_cnt].dpdk_port = nic_cnt;
++	for (nic_cnt = 0; nic_cnt < p_iface_info->num_nic; nic_cnt++) {
++		p_iface_info->nic[nic_cnt].iface_type   = PHY;
++		p_iface_info->nic[nic_cnt].dpdk_port = nic_cnt;
+ 	}
+ 
+ 	return 0;
+ }
+ 
+-/**
+- * Setup management info for spp_vf
+- */
++/* Setup management info for spp_vf */
+ int
+ init_mng_data(void)
+ {
+@@ -532,9 +542,7 @@ init_mng_data(void)
+ }
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+-/**
+- * Print statistics of time for packet processing in ring interface
+- */
++/* Print statistics of time for packet processing in ring interface */
+ static void
+ print_ring_latency_stats(void)
+ {
+@@ -547,10 +555,11 @@ print_ring_latency_stats(void)
+ 	struct spp_ringlatencystats_ring_latency_stats stats[RTE_MAX_ETHPORTS];
+ 	memset(&stats, 0x00, sizeof(stats));
+ 
++	struct iface_info *p_iface_info = g_mng_data_addr.p_iface_info;
+ 	printf("RING Latency\n");
+ 	printf(" RING");
+ 	for (ring_cnt = 0; ring_cnt < RTE_MAX_ETHPORTS; ring_cnt++) {
+-		if (g_iface_info.ring[ring_cnt].iface_type == UNDEF)
++		if (p_iface_info->ring[ring_cnt].iface_type == UNDEF)
+ 			continue;
+ 
+ 		spp_ringlatencystats_get_stats(ring_cnt, &stats[ring_cnt]);
+@@ -562,7 +571,7 @@ print_ring_latency_stats(void)
+ 			stats_cnt++) {
+ 		printf("%3dns", stats_cnt);
+ 		for (ring_cnt = 0; ring_cnt < RTE_MAX_ETHPORTS; ring_cnt++) {
+-			if (g_iface_info.ring[ring_cnt].iface_type == UNDEF)
++			if (p_iface_info->ring[ring_cnt].iface_type == UNDEF)
+ 				continue;
+ 
+ 			printf(", 0x%-16lx", stats[ring_cnt].slot[stats_cnt]);
+@@ -579,7 +588,7 @@ del_vhost_sockfile(struct spp_port_info *vhost)
+ 	int cnt;
+ 
+ 	/* Do not remove for if it is running in vhost-client mode. */
+-	if (g_startup_param.vhost_client != 0)
++	if (g_mng_data_addr.p_startup_param->vhost_client != 0)
+ 		return;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+@@ -596,7 +605,7 @@ del_vhost_sockfile(struct spp_port_info *vhost)
+ enum spp_component_type
+ spp_get_component_type(unsigned int lcore_id)
+ {
+-	struct core_mng_info *info = &g_core_info[lcore_id];
++	struct core_mng_info *info = (g_mng_data_addr.p_core_info + lcore_id);
+ 	return info->core[info->ref_index].type;
+ }
+ 
+@@ -604,7 +613,8 @@ spp_get_component_type(unsigned int lcore_id)
+ unsigned int
+ spp_get_component_core(int component_id)
+ {
+-	struct spp_component_info *info = &g_component_info[component_id];
++	struct spp_component_info *info =
++			(g_mng_data_addr.p_component_info + component_id);
+ 	return info->lcore_id;
+ }
+ 
+@@ -612,7 +622,7 @@ spp_get_component_core(int component_id)
+ struct core_info *
+ get_core_info(unsigned int lcore_id)
+ {
+-	struct core_mng_info *info = &g_core_info[lcore_id];
++	struct core_mng_info *info = (g_mng_data_addr.p_core_info + lcore_id);
+ 	return &(info->core[info->ref_index]);
+ }
+ 
+@@ -620,13 +630,14 @@ get_core_info(unsigned int lcore_id)
+ int
+ spp_check_core_update(unsigned int lcore_id)
+ {
+-	struct core_mng_info *info = &g_core_info[lcore_id];
++	struct core_mng_info *info = (g_mng_data_addr.p_core_info + lcore_id);
+ 	if (info->ref_index == info->upd_index)
+ 		return SPP_RET_OK;
+ 	else
+ 		return SPP_RET_NG;
+ }
+ 
++/* Check if component is using port. */
+ int
+ spp_check_used_port(
+ 		enum port_type iface_type,
+@@ -637,12 +648,14 @@ spp_check_used_port(
+ 	struct spp_component_info *component = NULL;
+ 	struct spp_port_info **port_array = NULL;
+ 	struct spp_port_info *port = get_iface_info(iface_type, iface_no);
++	struct spp_component_info *component_info =
++					g_mng_data_addr.p_component_info;
+ 
+ 	if (port == NULL)
+ 		return SPP_RET_NG;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		component = &g_component_info[cnt];
++		component = (component_info + cnt);
+ 		if (component->type == SPP_COMPONENT_UNUSE)
+ 			continue;
+ 
+@@ -671,14 +684,14 @@ set_component_change_port(struct spp_port_info *port, enum spp_port_rxtx rxtx)
+ 		ret = spp_check_used_port(port->iface_type, port->iface_no,
+ 				SPP_PORT_RXTX_RX);
+ 		if (ret >= 0)
+-			g_change_component[ret] = 1;
++			*(g_mng_data_addr.p_change_component + ret) = 1;
+ 	}
+ 
+ 	if ((rxtx == SPP_PORT_RXTX_TX) || (rxtx == SPP_PORT_RXTX_ALL)) {
+ 		ret = spp_check_used_port(port->iface_type, port->iface_no,
+ 				SPP_PORT_RXTX_TX);
+ 		if (ret >= 0)
+-			g_change_component[ret] = 1;
++			*(g_mng_data_addr.p_change_component + ret) = 1;
+ 	}
+ }
+ 
+@@ -686,9 +699,12 @@ set_component_change_port(struct spp_port_info *port, enum spp_port_rxtx rxtx)
+ int
+ get_free_component(void)
+ {
++	struct spp_component_info *component_info =
++					g_mng_data_addr.p_component_info;
++
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (g_component_info[cnt].type == SPP_COMPONENT_UNUSE)
++		if ((component_info + cnt)->type == SPP_COMPONENT_UNUSE)
+ 			return cnt;
+ 	}
+ 	return -1;
+@@ -698,12 +714,15 @@ get_free_component(void)
+ int
+ spp_get_component_id(const char *name)
+ {
++	struct spp_component_info *component_info =
++					g_mng_data_addr.p_component_info;
++
+ 	int cnt = 0;
+ 	if (name[0] == '\0')
+ 		return SPP_RET_NG;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (strcmp(name, g_component_info[cnt].name) == 0)
++		if (strcmp(name, (component_info + cnt)->name) == 0)
+ 			return cnt;
+ 	}
+ 	return SPP_RET_NG;
+@@ -785,13 +804,14 @@ flush_port(void)
+ 	int ret = 0;
+ 	int cnt = 0;
+ 	struct spp_port_info *port = NULL;
++	struct iface_info *p_iface_info = g_mng_data_addr.p_iface_info;
+ 
+ 	/* Initialize added vhost. */
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+-		port = &g_iface_info.vhost[cnt];
++		port = &p_iface_info->vhost[cnt];
+ 		if ((port->iface_type != UNDEF) && (port->dpdk_port < 0)) {
+ 			ret = add_vhost_pmd(port->iface_no,
+-					g_startup_param.vhost_client);
++				g_mng_data_addr.p_startup_param->vhost_client);
+ 			if (ret < 0)
+ 				return SPP_RET_NG;
+ 			port->dpdk_port = ret;
+@@ -800,7 +820,7 @@ flush_port(void)
+ 
+ 	/* Initialize added ring. */
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+-		port = &g_iface_info.ring[cnt];
++		port = &p_iface_info->ring[cnt];
+ 		if ((port->iface_type != UNDEF) && (port->dpdk_port < 0)) {
+ 			ret = add_ring_pmd(port->iface_no);
+ 			if (ret < 0)
+@@ -817,19 +837,21 @@ flush_core(void)
+ {
+ 	int cnt = 0;
+ 	struct core_mng_info *info = NULL;
++	struct core_mng_info *p_core_info = g_mng_data_addr.p_core_info;
++	int *p_change_core = g_mng_data_addr.p_change_core;
+ 
+ 	/* Changed core has changed index. */
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (g_change_core[cnt] != 0) {
+-			info = &g_core_info[cnt];
++		if (*(p_change_core + cnt) != 0) {
++			info = (p_core_info + cnt);
+ 			info->upd_index = info->ref_index;
+ 		}
+ 	}
+ 
+ 	/* Waiting for changed core change. */
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (g_change_core[cnt] != 0) {
+-			info = &g_core_info[cnt];
++		if (*(p_change_core + cnt) != 0) {
++			info = (p_core_info + cnt);
+ 			while (likely(info->ref_index == info->upd_index))
+ 				rte_delay_us_block(SPP_CHANGE_UPDATE_INTERVAL);
+ 
+@@ -847,19 +869,26 @@ flush_component(void)
+ 	int ret = 0;
+ 	int cnt = 0;
+ 	struct spp_component_info *component_info = NULL;
++	int *p_change_component = g_mng_data_addr.p_change_component;
++	struct spp_component_info *p_component_info =
++					g_mng_data_addr.p_component_info;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (g_change_component[cnt] == 0)
++		if (*(p_change_component + cnt) == 0)
+ 			continue;
+ 
+-		component_info = &g_component_info[cnt];
++		component_info = (p_component_info + cnt);
+ 		spp_port_ability_update(component_info);
+ 
++#ifdef SPP_VF_MODULE
+ 		if (component_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
+ 			ret = spp_classifier_mac_update(component_info);
+ 		else
+ 			ret = spp_forward_update(component_info);
+-
++#endif /* SPP_VF_MODULE */
++#ifdef SPP_MIRROR_MODULE
++		ret = spp_mirror_update(component_info);
++#endif /* SPP_MIRROR_MODULE */
+ 		if (unlikely(ret < 0)) {
+ 			RTE_LOG(ERR, APP, "Flush error. "
+ 					"( component = %s, type = %d)\n",
+@@ -898,9 +927,7 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ 	return 0;
+ }
+ 
+-/**
+- * Change mac address of 'aa:bb:cc:dd:ee:ff' to int64 and return it
+- */
++/* Change mac address of 'aa:bb:cc:dd:ee:ff' to int64 and return it */
+ int64_t
+ spp_change_mac_str_to_int64(const char *mac)
+ {
+-- 
+2.18.0
+
+

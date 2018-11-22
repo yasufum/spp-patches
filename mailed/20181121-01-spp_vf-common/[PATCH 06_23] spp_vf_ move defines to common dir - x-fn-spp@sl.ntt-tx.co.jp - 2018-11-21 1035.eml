@@ -1,0 +1,782 @@
+X-Account-Key: account4
+X-UIDL: 0000888656a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 749AC400A75
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 681F523BB53; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6775D23B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 6BBD763890F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:14 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A30A6638877
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AO8HR3BSCTC4QSruZIbnm6QnX6tpsv++ubCcI9p?=
+ =?us-ascii?q?oqja5Pea2//pPkeXbS/uhpkESQBNqJ5/lBgq/Nq6W4AyoN6pLHtmweNpdLER?=
+ =?us-ascii?q?0d2o0NhwJ1OMeeEgXgKeLyKTQgFZFSEVFjumqjKWBOHID4e0GXvm305jlUGA?=
+ =?us-ascii?q?2sfRFtKLHNE5XJx9+yy/j0/pTSZwtSgz/ocfZ8KlCttR35rc1Qh5d+b7ohjB?=
+ =?us-ascii?q?DO5HlQIr4E/25jKFONkhq53f+eosY8oRxZoOlpt8JLVKy/ZLw9FeYeAT8idW?=
+ =?us-ascii?q?Yp+Ivgsl/BVVnH6nwZW2QQ2h1GZmqNpAG/UJG0qTPinvF5ni+GIYjqXfY/Xn?=
+ =?us-ascii?q?Kg9+9nRQTphyEOKzMiuDuO0ooq1/gd+0/n+U03ypWxAsndLPdke6LBYd4WDX?=
+ =?us-ascii?q?FMWMpcTW0JA4+xaZcOE/tUJfxR/MH2o1oDqwf7BBH5Xrq3jGUT3DmtgOtkgr?=
+ =?us-ascii?q?dEc0mOxgErEtMQvW6BoN7wPeIJSeXtlu/FxjGFae9Knzz6rorQIXVD6bmBW6?=
+ =?us-ascii?q?x9dc3JxAwhDQTA2x+A7ILjeiiNzswWty6d8/YlSfLpgGlhqRk78V3Njo88z5?=
+ =?us-ascii?q?LEgI4Y0AWO5WB3xsMuPcWQU0o9Z8K4VYdA8SqdcYluCJBHISkgqGMxzbsIvo?=
+ =?us-ascii?q?S+dS4BxcE8xhLRXOebaYmD/kGrRKOLLDx/nn4gZKOnikP47x270uOlHJrRsh?=
+ =?us-ascii?q?4Cvm9fn9LLrHxIyxHD9p3NVK5m5kn4kT/d0gnS7rkfZ0E/juzdN4Jk3q52nZ?=
+ =?us-ascii?q?1Vs1ymfGe+kRfzha6SLhli++OzreL7fvD6ttmXMMl2kkn3YKEnm8jnXKI5OR?=
+ =?us-ascii?q?NIWXSHvPiskrbku0/hJdcCxvRkl6DYtMiEY8UQvei/HxMQzpZl4BH5DS/u2Y?=
+ =?us-ascii?q?YdlHgDdA0DeRmcyY71JxTSMLbzCrG9mzHO2H9ilfXPP7m5UtPMJWOFlqv9OK?=
+ =?us-ascii?q?ptrUVbjggrhdFHu8AOU+lHeqmpHBSs8oWJU3pbe0S127q1UowlkNlFAyTUX+?=
+ =?us-ascii?q?nAYf2asEfUtLh2e6/WP9VT42u7daVt5uay3yVgwRlHJvPvhsZRNi7wCP1iJw?=
+ =?us-ascii?q?/AOyjWj9wMEHkHsk8FdMK00QfQaTdIfD7yU6k573QgEIf+V8HOTYTrhqCdmi?=
+ =?us-ascii?q?y8WJ9ONChKDVWFEHGgcIvhOb9EeGecJIp6iiQsTrznTZM9kA2+8gT9jbh/Zu?=
+ =?us-ascii?q?bZ4SwXs5v/2cM9vbSL00tpr3ovUoLDgimEVAQW1isQSiUz3bxjrEA10VqF3a?=
+ =?us-ascii?q?ViwrRZGdFV+/JVQ1I/PJ/YwfZ9DoO6UQbAc9GVDVe+F4//WXdrFYh3mIJIPR?=
+ =?us-ascii?q?cufrfqxgrO1CerHbIPwrCAAZVx6brZhyK3Ks15jXDayO8qiB8kWpgqVyXui6?=
+ =?us-ascii?q?hh+gzUH4OMnV+ekvPgZeES2mvW7H+r1m7Iul1EFRJgF67CG3IHLBizz5yx9g?=
+ =?us-ascii?q?bZQrmiBK5yeBsEx8jHMbNSQsbty1NaWLL/KJLVZCSzgy3jYHTAjqPJZ43sdW?=
+ =?us-ascii?q?IH2SzbA0VRiAEf80GdKRI/DTvy63KbFjFlEkjjJl/96eQr4m3uVVc6lkvZCi?=
+ =?us-ascii?q?8pn6rw4BMeguaQDu8ezq5R8jl0sC16RR60jdffCt7Y/Exgd74aZ88hpUtXk2?=
+ =?us-ascii?q?ne8Q5lW/7oZ6kwg1cfd1wr+ULlzFNxFpkFjdhsp3RszhI6IPCd2VJFL27e3J?=
+ =?us-ascii?q?vrfLvLNizu7FakbOjUwjS8mJ6fqKIG6fBg9RPitxrvEFY+tml3ldJSlXmErp?=
+ =?us-ascii?q?yYCQMTVcquFEc87F58u62ffjl77ISS12UJU+H8u23H0tMtXLtjyx27OdFDLO?=
+ =?us-ascii?q?aYBEn5FIsYH4CvMLB4wQHxKEhfZqYJqehtbp7DFbPO2bb3brw5xHT81j4Bu9?=
+ =?us-ascii?q?07ixPSvytkFryShs5DmarCmFDaEWmhxFa57pKtwNgCP2pIWDHij3a6TJhYYq?=
+ =?us-ascii?q?k4JNdZOSKVO8Syg+5GqdvoUn9c+kSkAgpZitStPxyOcxnhzUtb0gIVuS7+wH?=
+ =?us-ascii?q?fq/3lPizgs65Gn8mnW2e27K0gcPihNWHUnkUeqKo/yjchIBUU=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ACAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUgQBAQEBCwGCAIE4IQMHCCeMb40tlzeBeoR5AjWDYQEFMAg?=
+ =?us-ascii?q?NAQMBAQIBAQEBFAEBAQEBBhgGWIU9AwMnUhAgDCUPSAcSgyGCAaskM4h/gSy?=
+ =?us-ascii?q?HWkWBIoRagRGHTIN5giYChxYHgXoKhXN2T48eCZEqGIFYjyksiT6QBQOCCIF?=
+ =?us-ascii?q?AgmyCJw4JjiswAQEBMAGLPASCSQEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:11 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f6lt002659;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f5Cj004454;
+	Wed, 21 Nov 2018 10:41:05 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01778;
+	 Wed, 21 Nov 2018 10:36:00 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0Ix009617; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0XA009614; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0XA009614@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWY008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 06/23] spp_vf: move defines to common dir
+Date: Wed, 21 Nov 2018 10:35:41 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Move defines of consts, enums and structs of spp_vf and spp_mirror
+common directory.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/spp_proc.h | 309 ++++++++++++++++++++++++++++++++++++++-
+ src/vf/spp_vf.c          |  88 -----------
+ src/vf/spp_vf.h          | 196 -------------------------
+ 3 files changed, 307 insertions(+), 286 deletions(-)
+
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index 125af52..f90b2ac 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -16,8 +16,313 @@
+ #include "common.h"
+ 
+ /**
+- * Make a hexdump of an array data in every 4 byte.
+- * This function is used to dump core_info or component info.
++ * TODO(Yamashita) change type names.
++ *  "merge" -> "merger", "forward" -> "forwarder".
++ */
++/** Identifier string for each component (status command) */
++#define SPP_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
++#define SPP_TYPE_MERGE_STR          "merge"
++#define SPP_TYPE_FORWARD_STR        "forward"
++#define SPP_TYPE_UNUSE_STR          "unuse"
++
++/** Identifier string for each interface */
++#define SPP_IFTYPE_NIC_STR   "phy"
++#define SPP_IFTYPE_VHOST_STR "vhost"
++#define SPP_IFTYPE_RING_STR  "ring"
++
++/** Update wait timer (micro sec) */
++#define SPP_CHANGE_UPDATE_INTERVAL 10
++
++/** The max number of buffer for management */
++#define SPP_INFO_AREA_MAX 2
++
++/** The length of shortest character string */
++#define SPP_MIN_STR_LEN   32
++
++/** The length of NAME string */
++#define SPP_NAME_STR_LEN  128
++
++/** Maximum number of port abilities available */
++#define SPP_PORT_ABILITY_MAX 4
++
++/** Number of VLAN ID */
++#define SPP_NUM_VLAN_VID 4096
++
++/** Maximum VLAN PCP */
++#define SPP_VLAN_PCP_MAX 7
++
++/* Max number of core status check */
++#define SPP_CORE_STATUS_CHECK_MAX 5
++
++/** Character sting for default port of classifier */
++#define SPP_DEFAULT_CLASSIFIED_SPEC_STR     "default"
++
++/** Value for default MAC address of classifier */
++#define SPP_DEFAULT_CLASSIFIED_DMY_ADDR     0x010000000000
++
++/** Character sting for default MAC address of classifier */
++#define SPP_DEFAULT_CLASSIFIED_DMY_ADDR_STR "00:00:00:00:00:01"
++
++/* Sampling interval timer for latency evaluation */
++#define SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL 1000000
++
++/**
++ * TODO(Yamashita) change type names.
++ *  "merge" -> "merger", "forward" -> "forwarder".
++ */
++/* Name string for each component */
++#define CORE_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
++#define CORE_TYPE_MERGE_STR          "merge"
++#define CORE_TYPE_FORWARD_STR        "forward"
++
++/* State on component */
++enum spp_core_status {
++	SPP_CORE_UNUSE,        /**< Not used */
++	SPP_CORE_STOP,         /**< Stopped */
++	SPP_CORE_IDLE,         /**< Idling */
++	SPP_CORE_FORWARD,      /**< Forwarding  */
++	SPP_CORE_STOP_REQUEST, /**< Request stopping */
++	SPP_CORE_IDLE_REQUEST /**< Request idling */
++};
++
++/* Process type for each component */
++enum spp_component_type {
++	SPP_COMPONENT_UNUSE,          /**< Not used */
++	SPP_COMPONENT_CLASSIFIER_MAC, /**< Classifier_mac */
++	SPP_COMPONENT_MERGE,          /**< Merger */
++	SPP_COMPONENT_FORWARD,        /**< Forwarder */
++};
++
++/* Classifier Type */
++enum spp_classifier_type {
++	SPP_CLASSIFIER_TYPE_NONE, /**< Type none */
++	SPP_CLASSIFIER_TYPE_MAC,  /**< MAC address */
++	SPP_CLASSIFIER_TYPE_VLAN  /**< VLAN ID */
++};
++
++enum spp_return_value {
++	SPP_RET_OK = 0,  /**< succeeded */
++	SPP_RET_NG = -1, /**< failed */
++};
++
++/**
++ * Port type (rx or tx) to indicate which direction packet goes
++ * (e.g. receiving or transmitting)
++ */
++enum spp_port_rxtx {
++	SPP_PORT_RXTX_NONE, /**< none */
++	SPP_PORT_RXTX_RX,   /**< rx port */
++	SPP_PORT_RXTX_TX,   /**< tx port */
++	SPP_PORT_RXTX_ALL,  /**< rx/tx port */
++};
++
++/**
++ * Port ability operation which indicates vlan tag operation on the port
++ * (e.g. add vlan tag or delete vlan tag)
++ */
++enum spp_port_ability_ope {
++	SPP_PORT_ABILITY_OPE_NONE,	  /**< none */
++	SPP_PORT_ABILITY_OPE_ADD_VLANTAG, /**< add VLAN tag */
++	SPP_PORT_ABILITY_OPE_DEL_VLANTAG, /**< delete VLAN tag */
++};
++
++/* getopt_long return value for long option */
++enum SPP_LONGOPT_RETVAL {
++	SPP_LONGOPT_RETVAL__ = 127,
++
++	/*
++	 * Return value definition for getopt_long()
++	 * Only for long option
++	 */
++	SPP_LONGOPT_RETVAL_CLIENT_ID,   /* --client-id    */
++	SPP_LONGOPT_RETVAL_VHOST_CLIENT /* --vhost-client */
++};
++
++/* Flag of processing type to copy management information */
++enum copy_mng_flg {
++	COPY_MNG_FLG_NONE,
++	COPY_MNG_FLG_UPDCOPY,
++	COPY_MNG_FLG_ALLCOPY,
++};
++
++/**
++ * Interface information structure
++ */
++struct spp_port_index {
++	enum port_type  iface_type; /**< Interface type (phy/vhost/ring) */
++	int             iface_no;   /**< Interface number */
++};
++
++/** VLAN tag information */
++struct spp_vlantag_info {
++	int vid; /**< VLAN ID */
++	int pcp; /**< Priority Code Point */
++	int tci; /**< Tag Control Information */
++};
++
++/**
++ * Data for each port ability which indicates vlantag related information
++ * for the port
++ */
++union spp_ability_data {
++	/** VLAN tag information */
++	struct spp_vlantag_info vlantag;
++};
++
++/** Port ability information */
++struct spp_port_ability {
++	enum spp_port_ability_ope ope; /**< Operation */
++	enum spp_port_rxtx rxtx;       /**< rx/tx identifier */
++	union spp_ability_data data;   /**< Port ability data */
++};
++
++/** Port class identifier for classifying */
++struct spp_port_class_identifier {
++	uint64_t mac_addr;                      /**< Mac address (binary) */
++	char     mac_addr_str[SPP_MIN_STR_LEN]; /**< Mac address (text) */
++	struct spp_vlantag_info vlantag;        /**< VLAN tag information */
++};
++
++/* Port info */
++struct spp_port_info {
++	enum port_type iface_type;      /**< Interface type (phy/vhost/ring) */
++	int            iface_no;        /**< Interface number */
++	int            dpdk_port;       /**< DPDK port number */
++	struct spp_port_class_identifier class_id;
++					/**< Port class identifier */
++	struct spp_port_ability ability[SPP_PORT_ABILITY_MAX];
++					/**< Port ability */
++};
++
++/* Component info */
++struct spp_component_info {
++	char name[SPP_NAME_STR_LEN];	/**< Component name */
++	enum spp_component_type type;	/**< Component type */
++	unsigned int lcore_id;		/**< Logical core ID for component */
++	int component_id;		/**< Component ID */
++	int num_rx_port;		/**< The number of rx ports */
++	int num_tx_port;		/**< The number of tx ports */
++	struct spp_port_info *rx_ports[RTE_MAX_ETHPORTS];
++					/**< Array of pointers to rx ports */
++	struct spp_port_info *tx_ports[RTE_MAX_ETHPORTS];
++					/**< Array of pointers to tx ports */
++};
++
++/* Manage given options as global variable */
++struct startup_param {
++	int client_id;		/* Client ID */
++	char server_ip[INET_ADDRSTRLEN];
++				/* IP address stiring of spp-ctl */
++	int server_port;	/* Port Number of spp-ctl */
++	int vhost_client;	/* Flag for --vhost-client option */
++};
++
++/* Manage number of interfaces  and port information as global variable */
++struct iface_info {
++	int num_nic;		/* The number of phy */
++	int num_vhost;		/* The number of vhost */
++	int num_ring;		/* The number of ring */
++	struct spp_port_info nic[RTE_MAX_ETHPORTS];
++				/* Port information of phy */
++	struct spp_port_info vhost[RTE_MAX_ETHPORTS];
++				/* Port information of vhost */
++	struct spp_port_info ring[RTE_MAX_ETHPORTS];
++				/* Port information of ring */
++};
++
++/* Manage component running in core as global variable */
++struct core_info {
++	volatile enum spp_component_type type;
++			       /* Component type */
++	int num;	       /* The number of IDs below */
++	int id[RTE_MAX_LCORE]; /* ID list of components executed on cpu core */
++};
++
++/* Manage core status and component information as global variable */
++struct core_mng_info {
++	/* Status of cpu core */
++	volatile enum spp_core_status status;
++
++	/* Index number of core information for reference */
++	volatile int ref_index;
++
++	/* Index number of core information for updating */
++	volatile int upd_index;
++
++	/* Core information of each cpu core */
++	struct core_info core[SPP_INFO_AREA_MAX];
++};
++
++/* Manage data to be backup */
++struct cancel_backup_info {
++	/* Backup data of core information */
++	struct core_mng_info core[RTE_MAX_LCORE];
++
++	/* Backup data of component information */
++	struct spp_component_info component[RTE_MAX_LCORE];
++
++	/* Backup data of interface information */
++	struct iface_info interface;
++};
++
++struct spp_iterate_core_params;
++/**
++ * definition of iterated core element procedure function
++ * which is member of spp_iterate_core_params structure.
++ * Above structure is used when listing core information
++ * (e.g) create resonse to status command.
++ */
++typedef int (*spp_iterate_core_element_proc)(
++		struct spp_iterate_core_params *params,
++		const unsigned int lcore_id,
++		const char *name,
++		const char *type,
++		const int num_rx,
++		const struct spp_port_index *rx_ports,
++		const int num_tx,
++		const struct spp_port_index *tx_ports);
++
++/**
++ * iterate core table parameters which is
++ * used when listing core table content
++ * (e.g.) create response to status command.
++ */
++struct spp_iterate_core_params {
++	/** Output buffer */
++	char *output;
++
++	/** The function for creating core information */
++	spp_iterate_core_element_proc element_proc;
++};
++
++struct spp_iterate_classifier_table_params;
++/**
++ * definition of iterated classifier element procedure function
++ * which is member of spp_iterate_classifier_table_params structure.
++ * Above structure is used when listing classifier table information
++ * (e.g) create resonse to status command.
++ */
++typedef int (*spp_iterate_classifier_element_proc)(
++		struct spp_iterate_classifier_table_params *params,
++		enum spp_classifier_type type,
++		int vid, const char *mac,
++		const struct spp_port_index *port);
++
++/**
++ * iterate classifier table parameters which is
++ * used when listing classifier table content
++ * (e.g.) create response to status command.
++ */
++struct spp_iterate_classifier_table_params {
++	/* Output buffer */
++	void *output;
++
++	/* The function for creating classifier table information */
++	spp_iterate_classifier_element_proc element_proc;
++};
++
++/**
++ * Make a hexdump of an array data in every 4 byte
+  *
+  * @param name
+  *  dump name.
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index accef02..62ceb20 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -18,94 +18,6 @@
+ #include "command_proc.h"
+ #include "spp_port.h"
+ 
+-/* Max number of core status check */
+-#define SPP_CORE_STATUS_CHECK_MAX 5
+-
+-/* Sampling interval timer for latency evaluation */
+-#define SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL 1000000
+-
+-/* Name string for each component */
+-#define CORE_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
+-#define CORE_TYPE_MERGE_STR          "merge"
+-#define CORE_TYPE_FORWARD_STR        "forward"
+-
+-/* getopt_long return value for long option */
+-enum SPP_LONGOPT_RETVAL {
+-	SPP_LONGOPT_RETVAL__ = 127,
+-
+-	/*
+-	 * Return value definition for getopt_long()
+-	 * Only for long option
+-	 */
+-	SPP_LONGOPT_RETVAL_CLIENT_ID,   /* --client-id    */
+-	SPP_LONGOPT_RETVAL_VHOST_CLIENT /* --vhost-client */
+-};
+-
+-/* Flag of processing type to copy management information */
+-enum copy_mng_flg {
+-	COPY_MNG_FLG_NONE,
+-	COPY_MNG_FLG_UPDCOPY,
+-	COPY_MNG_FLG_ALLCOPY,
+-};
+-
+-/* Manage given options as global variable */
+-struct startup_param {
+-	int client_id;          /* Client ID of spp_vf */
+-	char server_ip[INET_ADDRSTRLEN];
+-				/* IP address sting of spp controller */
+-	int server_port;        /* Port Number of spp controller */
+-	int vhost_client;       /* Flag for --vhost-client option */
+-};
+-
+-/* Manage number of interfaces  and port information as global variable */
+-struct iface_info {
+-	int num_nic;            /* The number of phy */
+-	int num_vhost;          /* The number of vhost */
+-	int num_ring;           /* The number of ring */
+-	struct spp_port_info nic[RTE_MAX_ETHPORTS];
+-				/* Port information of phy */
+-	struct spp_port_info vhost[RTE_MAX_ETHPORTS];
+-				/* Port information of vhost */
+-	struct spp_port_info ring[RTE_MAX_ETHPORTS];
+-				/* Port information of ring */
+-};
+-
+-/* Manage component running in core as global variable */
+-struct core_info {
+-	volatile enum spp_component_type type;
+-				/* Component type */
+-	int num;                /* The number of IDs below */
+-	int id[RTE_MAX_LCORE];
+-			/* ID list of components executed on cpu core */
+-};
+-
+-/* Manage core status and component information as global variable */
+-struct core_mng_info {
+-	/* Status of cpu core */
+-	volatile enum spp_core_status status;
+-
+-	/* Index number of core information for reference */
+-	volatile int ref_index;
+-
+-	/* Index number of core information for updating */
+-	volatile int upd_index;
+-
+-	/* Core information of each cpu core */
+-	struct core_info core[SPP_INFO_AREA_MAX];
+-};
+-
+-/* Manage data to be backup */
+-struct cancel_backup_info {
+-	/* Backup data of core information */
+-	struct core_mng_info core[RTE_MAX_LCORE];
+-
+-	/* Backup data of component information */
+-	struct spp_component_info component[RTE_MAX_LCORE];
+-
+-	/* Backup data of interface information */
+-	struct iface_info interface;
+-};
+-
+ /* Declare global variables */
+ /* Logical core ID for main process */
+ static unsigned int g_main_lcore_id = 0xffffffff;
+diff --git a/src/vf/spp_vf.h b/src/vf/spp_vf.h
+index 5586207..1d05e66 100644
+--- a/src/vf/spp_vf.h
++++ b/src/vf/spp_vf.h
+@@ -15,99 +15,9 @@
+ 
+ #include "common.h"
+ 
+-/** Identifier string for each component (status command) @{*/
+-#define SPP_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
+-#define SPP_TYPE_MERGE_STR          "merge"
+-#define SPP_TYPE_FORWARD_STR        "forward"
+-#define SPP_TYPE_UNUSE_STR          "unuse"
+-/**@}*/
+-
+-/** Identifier string for each interface @{*/
+-#define SPP_IFTYPE_NIC_STR   "phy"
+-#define SPP_IFTYPE_VHOST_STR "vhost"
+-#define SPP_IFTYPE_RING_STR  "ring"
+-/**@}*/
+-
+ /** The max number of client ID */
+ #define SPP_CLIENT_MAX    128
+ 
+-/** The max number of buffer for management */
+-#define SPP_INFO_AREA_MAX 2
+-
+-/** The length of shortest character string */
+-#define SPP_MIN_STR_LEN   32
+-
+-/** The length of NAME string */
+-#define SPP_NAME_STR_LEN  128
+-
+-/** Update wait timer (micro sec) */
+-#define SPP_CHANGE_UPDATE_INTERVAL 10
+-
+-/** Character sting for default port of classifier */
+-#define SPP_DEFAULT_CLASSIFIED_SPEC_STR     "default"
+-
+-/** Character sting for default MAC address of classifier */
+-#define SPP_DEFAULT_CLASSIFIED_DMY_ADDR_STR "00:00:00:00:00:01"
+-
+-/** Value for default MAC address of classifier */
+-#define SPP_DEFAULT_CLASSIFIED_DMY_ADDR     0x010000000000
+-
+-/** Maximum number of port abilities available */
+-#define SPP_PORT_ABILITY_MAX 4
+-
+-/** Number of VLAN ID */
+-#define SPP_NUM_VLAN_VID 4096
+-
+-/** Maximum VLAN PCP */
+-#define SPP_VLAN_PCP_MAX 7
+-
+-/**
+- * State on component
+- */
+-enum spp_core_status {
+-	SPP_CORE_UNUSE,        /**< Not used */
+-	SPP_CORE_STOP,         /**< Stopped */
+-	SPP_CORE_IDLE,         /**< Idling */
+-	SPP_CORE_FORWARD,      /**< Forwarding  */
+-	SPP_CORE_STOP_REQUEST, /**< Request stopping */
+-	SPP_CORE_IDLE_REQUEST  /**< Request idling */
+-};
+-
+-/**
+- * Process type for each component
+- */
+-enum spp_component_type {
+-	SPP_COMPONENT_UNUSE,          /**< Not used */
+-	SPP_COMPONENT_CLASSIFIER_MAC, /**< Classifier_mac */
+-	SPP_COMPONENT_MERGE,          /**< Merger */
+-	SPP_COMPONENT_FORWARD,        /**< Forwarder */
+-};
+-
+-/**
+- * Classifier Type
+- */
+-enum spp_classifier_type {
+-	SPP_CLASSIFIER_TYPE_NONE, /**< Type none */
+-	SPP_CLASSIFIER_TYPE_MAC,  /**< MAC address */
+-	SPP_CLASSIFIER_TYPE_VLAN  /**< VLAN ID */
+-};
+-
+-/**
+- * API Return value
+- */
+-enum spp_return_value {
+-	SPP_RET_OK = 0,  /**< succeeded */
+-	SPP_RET_NG = -1, /**< failed */
+-};
+-
+-/** Port type (rx or tx) */
+-enum spp_port_rxtx {
+-	SPP_PORT_RXTX_NONE, /**< none */
+-	SPP_PORT_RXTX_RX,   /**< rx port */
+-	SPP_PORT_RXTX_TX,   /**< tx port */
+-	SPP_PORT_RXTX_ALL,  /**< rx/tx port */
+-};
+-
+ /** command setting type */
+ enum spp_command_action {
+ 	SPP_CMD_ACTION_NONE,  /**< none */
+@@ -117,77 +27,6 @@ enum spp_command_action {
+ 	SPP_CMD_ACTION_DEL,   /**< delete */
+ };
+ 
+-/** Port ability operation */
+-enum spp_port_ability_ope {
+-	SPP_PORT_ABILITY_OPE_NONE,        /**< none */
+-	SPP_PORT_ABILITY_OPE_ADD_VLANTAG, /**< add VLAN tag */
+-	SPP_PORT_ABILITY_OPE_DEL_VLANTAG, /**< delete VLAN tag */
+-};
+-
+-/**
+- * Interface information structure
+- */
+-struct spp_port_index {
+-	enum port_type  iface_type; /**< Interface type (phy/vhost/ring) */
+-	int             iface_no;   /**< Interface number */
+-};
+-
+-/** VLAN tag information */
+-struct spp_vlantag_info {
+-	int vid; /**< VLAN ID */
+-	int pcp; /**< Priority Code Point */
+-	int tci; /**< Tag Control Information */
+-};
+-
+-/** Data for each port ability */
+-union spp_ability_data {
+-	/** VLAN tag information */
+-	struct spp_vlantag_info vlantag;
+-};
+-
+-/** Port ability information */
+-struct spp_port_ability {
+-	enum spp_port_ability_ope ope; /**< Operation */
+-	enum spp_port_rxtx rxtx;       /**< rx/tx identifier */
+-	union spp_ability_data data;   /**< Port ability data */
+-};
+-
+-/** Port class identifier for classifying */
+-struct spp_port_class_identifier {
+-	uint64_t mac_addr;                      /**< Mac address (binary) */
+-	char     mac_addr_str[SPP_MIN_STR_LEN]; /**< Mac address (text) */
+-	struct spp_vlantag_info vlantag;        /**< VLAN tag information */
+-};
+-
+-/**
+- * Port info
+- */
+-struct spp_port_info {
+-	enum port_type iface_type;      /**< Interface type (phy/vhost/ring) */
+-	int            iface_no;        /**< Interface number */
+-	int            dpdk_port;       /**< DPDK port number */
+-	struct spp_port_class_identifier class_id;
+-					/**< Port class identifier */
+-	struct spp_port_ability ability[SPP_PORT_ABILITY_MAX];
+-					/**< Port ability */
+-};
+-
+-/**
+- * Component info
+- */
+-struct spp_component_info {
+-	char name[SPP_NAME_STR_LEN];    /**< Component name */
+-	enum spp_component_type type;   /**< Component type */
+-	unsigned int lcore_id;          /**< Logical core ID for component */
+-	int component_id;               /**< Component ID */
+-	int num_rx_port;                /**< The number of rx ports */
+-	int num_tx_port;                /**< The number of tx ports */
+-	struct spp_port_info *rx_ports[RTE_MAX_ETHPORTS];
+-					/**< Array of pointers to rx ports */
+-	struct spp_port_info *tx_ports[RTE_MAX_ETHPORTS];
+-					/**< Array of pointers to tx ports */
+-};
+-
+ /**
+  * Get client ID
+  *
+@@ -267,27 +106,6 @@ int spp_update_port(
+  */
+ int spp_flush(void);
+ 
+-struct spp_iterate_core_params;
+-/** definition of iterated core element procedure function */
+-typedef int (*spp_iterate_core_element_proc)(
+-		struct spp_iterate_core_params *params,
+-		const unsigned int lcore_id,
+-		const char *name,
+-		const char *type,
+-		const int num_rx,
+-		const struct spp_port_index *rx_ports,
+-		const int num_tx,
+-		const struct spp_port_index *tx_ports);
+-
+-/** iterate core information parameters */
+-struct spp_iterate_core_params {
+-	/** Output buffer */
+-	char *output;
+-
+-	/** The function for creating core information */
+-	spp_iterate_core_element_proc element_proc;
+-};
+-
+ /**
+  * Iterate core information
+  *
+@@ -300,20 +118,6 @@ struct spp_iterate_core_params {
+  */
+ int spp_iterate_core_info(struct spp_iterate_core_params *params);
+ 
+-struct spp_iterate_classifier_table_params;
+-/** definition of iterated classifier element procedure function */
+-typedef int (*spp_iterate_classifier_element_proc)(
+-		struct spp_iterate_classifier_table_params *params,
+-		enum spp_classifier_type type,
+-		int vid, const char *mac,
+-		const struct spp_port_index *port);
+-
+-/** iterate classifier table parameters */
+-struct spp_iterate_classifier_table_params {
+-	void *output;
+-	spp_iterate_classifier_element_proc element_proc;
+-};
+-
+ /**
+  * Iterate Classifier_table
+  *
+-- 
+2.18.0
+
+

@@ -1,0 +1,649 @@
+X-Account-Key: account4
+X-UIDL: 0000888a56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2B90A400A75
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 215C623BAF6; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 202E123B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D21756387DA
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 92A1C6387A2
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3Ar2uOmh3UWoKuf/FesmDT+zVfTzU7u7jyIg8e44?=
+ =?us-ascii?q?YmjLQLSKm44pD+JxWGuqdhh1rAGJ7D7qodzefdt+bmRXBG6pHHsmhROIdUWU?=
+ =?us-ascii?q?o9gN4N1xclHNbDEVfyee6vYSp/B9xafERhuXenLQ1JCID1YBvQui769iYcTy?=
+ =?us-ascii?q?32LhE9PeHpAsjXhsWz2fq1/sjDJgtOwSGleZtpKFOwsRmUqtlQiowkKL5okE?=
+ =?us-ascii?q?nzr3BFevpbySZTHXzNx0mu3s6r59Yj/y9Vsrc678sYCOP3dKB+S6BESj8hdW?=
+ =?us-ascii?q?IttoXnshzKTA3H4XV5MC1egl9GBU3e9AnSRZO3tDfm8/ZtniKde8/uBbw5Qj?=
+ =?us-ascii?q?Wt6a53RQSg0n5fcWRiqieM14ou3epSu3fD71RnzpTRYZ2JOfY2Za7bcd4ABC?=
+ =?us-ascii?q?JAUstXSy1dE9akdYJcR+EFPOtes8z8vw5U9EP4X1L2QriyjGEZ1RqUleUg3u?=
+ =?us-ascii?q?8sEB/LxlksFNcH9W/MqY2scqoZVaaz0LWOxjKFbesFvFW1oIXObB0lpumBGL?=
+ =?us-ascii?q?xqds+Eg1lqGQWAlU2IgZfheTWJyqERoy6Q6KxiTaj87gxv4xE0uTWpyso238?=
+ =?us-ascii?q?PZw4wTj0vc7Q1ixMAzOcH9VF49atniEoMa5ET4f8NmB8glRW9voiMzzLYL7I?=
+ =?us-ascii?q?W6cCY904g9xhXDOLSXNpKF6RX5WKONMC910Th7LamniU/4oi3CgqXsE9O521?=
+ =?us-ascii?q?FQom9Zn8nQ4zoTggfL5JHPQ6l490algW3J1gvIrOdYPQUohezQLNgj2ttS3t?=
+ =?us-ascii?q?Ia40HKHyuuxAP3h7TQcFk4v/S4re/gJLf+7pbOMoZ1jlmjdKUlgYq5Hfh9Lh?=
+ =?us-ascii?q?hIVG/d+/zZtvWr9B/8SbRO1qNwk6LC9pbGOYEHtuiyBElXys4quRO2DjP+j5?=
+ =?us-ascii?q?IZlmJBKk5ZPQ6XyYPufVPWRZKwRf7thl2tlG87gfHNJfvnHomIMmiFm7Cnf6?=
+ =?us-ascii?q?416lYAmlBqlZYFvMgSUexHeaOuPy25/N3AUk1jalTymb29To4gkNpPByqOGv?=
+ =?us-ascii?q?PLavqK9wXTvKR0fq/SOccUoGqvcaF9oaS11zlixBlDI+G/1J8TIiniTM5rKE?=
+ =?us-ascii?q?iYf3fgx+w5PzlT5FgGRffxwB2OWjtaIm2qWvploDwwDMSgEZuFTYfrgqTTlC?=
+ =?us-ascii?q?u8G5RXYChBBDXuWT/4MouCHuwUcAqJJolnjiBBSajnQIhn1wnmuALhyrVhJ/?=
+ =?us-ascii?q?bZ4WVC7MqljoMvobaO009jvTVvaqbVm3mAVWR1gn8FS3ct0aZzrFY8glaP3K?=
+ =?us-ascii?q?5kguBJQNla5vdHSAA/ZtbXy+13Dcy3WxqUJI7RDgz9GJP9XHdvH4FUoZdGeU?=
+ =?us-ascii?q?t2FtS8gwqW0yGvCvoOj7nTXdo5+aaa2WTtYc16jXTeh8xDxxErRNVCMWq+i+?=
+ =?us-ascii?q?tx7Q/WUsTZ1kuf0r2ybYwH2GjL6HvG0XrIt0YeUhY6AsCnFTgPI1Dbq9j0/B?=
+ =?us-ascii?q?aIX/qgD/E8KhNp0srELLdWL8H5y15BAvX7coe7ASr5iyK7AhCGwamJZYzhdj?=
+ =?us-ascii?q?AG3SnTP1MYiQEY4SXOJU0kCyymuW6bEC12GAelfRb36ecn4iDeLAd830SQYk?=
+ =?us-ascii?q?Zmzbbw5hMFmanWVaYIxrxd8C5zrjx1GA7mmdPdEJyGuxYkYLUaatR74k8ity?=
+ =?us-ascii?q?qRvl54N52kd/wkh1UFNQJrowbyx1N8DcNCiYAj/nYjzQ4qdOSZ20gHcS+EmI?=
+ =?us-ascii?q?zgfLbQbGvqmXLnI6eE31jf1I7IvKYE87I+t0mmoBHvHU1k8W0v2otQ2nqYvs?=
+ =?us-ascii?q?qMDQEJF5TtTgMr515xoPfYekxfr8vdh3hlMK3s4nnD0MlvAvc5jwqwOdxYdq?=
+ =?us-ascii?q?GcXA7qT59AXpDocrdw3QP0KEtVYYUwvOY1J5/0LaLenvTwZqA7wXT/3DoP4Z?=
+ =?us-ascii?q?ghgBjVr2wmEbSOhMtDnazQ3xPbBW2l1BH76Zqxwt0CO29aCGO7zWK9VdxhI5?=
+ =?us-ascii?q?ZqdINOMl+AZsi+x9FwnZnoAiEK71rlAU8andO5PxGVKV7lj1QJiRYn5Ee/kC?=
+ =?us-ascii?q?799ARa1ikzp/PAjjfKheL+aF8bKihAQy9glQW1LA=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAB/tvRbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDJ1IQIAwlD0gHEoMhggGrJDOIfoE?=
+ =?us-ascii?q?sh1qBZ4RagRGNawKHFgeBegqFc3ZPjx4JkSoYgViPKSyJPpADgg2BQIJsgic?=
+ =?us-ascii?q?OCY4rMAEBATABjgkBAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:13 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f9va002741;
+	Wed, 21 Nov 2018 10:41:09 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f81I004626;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01890;
+	 Wed, 21 Nov 2018 10:36:02 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a19f009713; Wed, 21 Nov 2018 10:36:02 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a1be009709; Wed, 21 Nov 2018 10:36:01 +0900
+Message-Id: <201811210136.wAL1a1be009709@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWn008346 ; Wed, 21 Nov 2018 10:36:01 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 21/23] spp_vf: add vlantag command check flag
+Date: Wed, 21 Nov 2018 10:35:56 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add a flag to override VLAN tag. If it is disabled, `port add` command
+is failed to. This update is for allowing to execute `add_vlantag' even
+if existing port.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c | 305 +++++++++++++++++++++++++-----------
+ 1 file changed, 216 insertions(+), 89 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 9a49185..82cd619 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -14,34 +14,34 @@
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ 
+ /* command string  */
+-#define SPP_COMMAND_CLASSFIER_TABLE_STR	"classifier_table"
+-#define SPP_COMMAND_GET_CLIENT_ID_STR	"_get_client_id"
+-#define SPP_COMMAND_STATUS_STR		"status"
+-#define SPP_COMMAND_EXIT_STR		"exit"
+-#define SPP_COMMAND_COMPONENT_STR	"component"
+-#define SPP_COMMAND_PORT_STR		"port"
++#define SPP_COMMAND_CLASSFIER_TABLE_STR "classifier_table"
++#define SPP_COMMAND_GET_CLIENT_ID_STR   "_get_client_id"
++#define SPP_COMMAND_STATUS_STR          "status"
++#define SPP_COMMAND_EXIT_STR            "exit"
++#define SPP_COMMAND_COMPONENT_STR       "component"
++#define SPP_COMMAND_PORT_STR            "port"
+ 
+ /* classifiler_type string */
+-#define SPP_CLASSIFLER_NONE_STR		"none"
+-#define SPP_CLASSIFLER_MAC_STR		"mac"
+-#define SPP_CLASSIFLER_VLAN_STR		"vlan"
++#define SPP_CLASSIFLER_NONE_STR         "none"
++#define SPP_CLASSIFLER_MAC_STR          "mac"
++#define SPP_CLASSIFLER_VLAN_STR         "vlan"
+ 
+ /* command action string */
+-#define SPP_ACTION_NONE_STR		"none"
+-#define SPP_ACTION_START_STR		"start"
+-#define SPP_ACTION_STOP_STR		"stop"
+-#define SPP_ACTION_ADD_STR		"add"
+-#define SPP_ACTION_DEL_STR		"del"
++#define SPP_ACTION_NONE_STR             "none"
++#define SPP_ACTION_START_STR            "start"
++#define SPP_ACTION_STOP_STR             "stop"
++#define SPP_ACTION_ADD_STR              "add"
++#define SPP_ACTION_DEL_STR              "del"
+ 
+ /* port rx/tx string */
+-#define SPP_PORT_RXTX_NONE_STR		"none"
+-#define SPP_PORT_RXTX_RX_STR		"rx"
+-#define SPP_PORT_RXTX_TX_STR		"tx"
++#define SPP_PORT_RXTX_NONE_STR          "none"
++#define SPP_PORT_RXTX_RX_STR            "rx"
++#define SPP_PORT_RXTX_TX_STR            "tx"
+ 
+ /* port ability string */
+-#define SPP_ABILITY_NONE_STR		"none"
+-#define SPP_ABILITY_ADD_VLANTAG_STR	"add_vlantag"
+-#define SPP_ABILITY_DEL_VLANTAG_STR	"del_vlantag"
++#define SPP_ABILITY_NONE_STR            "none"
++#define SPP_ABILITY_ADD_VLANTAG_STR     "add_vlantag"
++#define SPP_ABILITY_DEL_VLANTAG_STR     "del_vlantag"
+ 
+ /*
+  * classifier type string list
+@@ -344,7 +344,8 @@ decode_core_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_action_value(void *output, const char *arg_val)
++decode_component_action_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+@@ -369,7 +370,8 @@ decode_component_action_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_name_value(void *output, const char *arg_val)
++decode_component_name_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct spp_command_component *component = output;
+@@ -390,7 +392,8 @@ decode_component_name_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of core id for component command */
+ static int
+-decode_component_core_value(void *output, const char *arg_val)
++decode_component_core_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	struct spp_command_component *component = output;
+ 
+@@ -403,7 +406,8 @@ decode_component_core_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of type for component command */
+ static int
+-decode_component_type_value(void *output, const char *arg_val)
++decode_component_type_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	enum spp_component_type org_type, set_type;
+ 	struct spp_command_component *component = output;
+@@ -435,7 +439,8 @@ decode_component_type_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for port command */
+ static int
+-decode_port_action_value(void *output, const char *arg_val)
++decode_port_action_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+@@ -460,7 +465,7 @@ decode_port_action_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of port for port command */
+ static int
+-decode_port_port_value(void *output, const char *arg_val)
++decode_port_port_value(void *output, const char *arg_val, int allow_override)
+ {
+ 	int ret = SPP_RET_NG;
+ 	struct spp_port_index tmp_port;
+@@ -470,17 +475,20 @@ decode_port_port_value(void *output, const char *arg_val)
+ 	if (ret < SPP_RET_OK)
+ 		return SPP_RET_NG;
+ 
+-	if ((port->action == SPP_CMD_ACTION_ADD) &&
+-			(spp_check_used_port(tmp_port.iface_type,
+-					tmp_port.iface_no,
+-					SPP_PORT_RXTX_RX) >= 0) &&
+-			(spp_check_used_port(tmp_port.iface_type,
+-					tmp_port.iface_no,
+-					SPP_PORT_RXTX_TX) >= 0)) {
+-		RTE_LOG(ERR, SPP_COMMAND_PROC,
++	/* add vlantag command check */
++	if (allow_override == 0) {
++		if ((port->action == SPP_CMD_ACTION_ADD) &&
++				(spp_check_used_port(tmp_port.iface_type,
++						tmp_port.iface_no,
++						SPP_PORT_RXTX_RX) >= 0) &&
++				(spp_check_used_port(tmp_port.iface_type,
++						tmp_port.iface_no,
++						SPP_PORT_RXTX_TX) >= 0)) {
++			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Port in used. (port command) val=%s\n",
+ 				arg_val);
+-		return SPP_RET_NG;
++			return SPP_RET_NG;
++		}
+ 	}
+ 
+ 	port->port.iface_type = tmp_port.iface_type;
+@@ -490,7 +498,7 @@ decode_port_port_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of rxtx type for port command */
+ static int
+-decode_port_rxtx_value(void *output, const char *arg_val)
++decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct spp_command_port *port = output;
+@@ -502,13 +510,16 @@ decode_port_rxtx_value(void *output, const char *arg_val)
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if ((port->action == SPP_CMD_ACTION_ADD) &&
+-			(spp_check_used_port(port->port.iface_type,
++	/* add vlantag command check */
++	if (allow_override == 0) {
++		if ((port->action == SPP_CMD_ACTION_ADD) &&
++				(spp_check_used_port(port->port.iface_type,
+ 					port->port.iface_no, ret) >= 0)) {
+-		RTE_LOG(ERR, SPP_COMMAND_PROC,
++			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Port in used. (port command) val=%s\n",
+ 				arg_val);
+-		return SPP_RET_NG;
++			return SPP_RET_NG;
++		}
+ 	}
+ 
+ 	port->rxtx = ret;
+@@ -517,7 +528,8 @@ decode_port_rxtx_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of component name for port command */
+ static int
+-decode_port_name_value(void *output, const char *arg_val)
++decode_port_name_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 
+@@ -531,9 +543,10 @@ decode_port_name_value(void *output, const char *arg_val)
+ 	return decode_str_value(output, arg_val);
+ }
+ 
+-/* decoding procedure of port ability for port command */
++/* decoding procedure of vlan operation for port command */
+ static int
+-decode_port_ability_value(void *output, const char *arg_val)
++decode_port_vlan_operation(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct spp_command_port *port = output;
+@@ -552,29 +565,62 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 		ability->rxtx = port->rxtx;
+ 		break;
+ 	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
+-		if (ability->data.vlantag.pcp == 0) {
+-			ret = get_int_value(&ability->data.vlantag.vid,
+-					arg_val, 0, ETH_VLAN_ID_MAX);
+-			if (unlikely(ret < 0)) {
+-				RTE_LOG(ERR, SPP_COMMAND_PROC,
+-						"Bad VLAN ID. val=%s\n",
+-						arg_val);
+-				return SPP_RET_NG;
+-			}
+-			ability->data.vlantag.pcp = -1;
+-		} else {
+-			ret = get_int_value(&ability->data.vlantag.pcp,
+-					arg_val, 0, SPP_VLAN_PCP_MAX);
+-			if (unlikely(ret < 0)) {
+-				RTE_LOG(ERR, SPP_COMMAND_PROC,
+-						"Bad VLAN PCP. val=%s\n",
+-						arg_val);
+-				return SPP_RET_NG;
+-			}
++		/* Nothing to do. */
++		break;
++	default:
++		/* Not used. */
++		break;
++	}
++
++	return SPP_RET_OK;
++}
++
++/* decoding procedure of vid  for port command */
++static int
++decode_port_vid(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
++{
++	int ret = SPP_RET_OK;
++	struct spp_command_port *port = output;
++	struct spp_port_ability *ability = &port->ability;
++
++	switch (ability->ope) {
++	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++		ret = get_int_value(&ability->data.vlantag.vid,
++			arg_val, 0, ETH_VLAN_ID_MAX);
++		if (unlikely(ret < SPP_RET_OK)) {
++			RTE_LOG(ERR, SPP_COMMAND_PROC,
++					"Bad VLAN ID. val=%s\n", arg_val);
++			return SPP_RET_NG;
+ 		}
++		ability->data.vlantag.pcp = -1;
+ 		break;
+-	case SPP_PORT_ABILITY_OPE_DEL_VLANTAG:
+-		/* Nothing to do. */
++	default:
++		/* Not used. */
++		break;
++	}
++
++	return SPP_RET_OK;
++}
++
++/* decoding procedure of pcp for port command */
++static int
++decode_port_pcp(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
++{
++	int ret = SPP_RET_OK;
++	struct spp_command_port *port = output;
++	struct spp_port_ability *ability = &port->ability;
++
++	switch (ability->ope) {
++	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++		ret = get_int_value(&ability->data.vlantag.pcp,
++				arg_val, 0, SPP_VLAN_PCP_MAX);
++		if (unlikely(ret < SPP_RET_OK)) {
++			RTE_LOG(ERR, SPP_COMMAND_PROC,
++					"Bad VLAN PCP. val=%s\n", arg_val);
++			return SPP_RET_NG;
++		}
+ 		break;
+ 	default:
+ 		/* Not used. */
+@@ -586,7 +632,8 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of mac address string */
+ static int
+-decode_mac_addr_str_value(void *output, const char *arg_val)
++decode_mac_addr_str_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int64_t ret = SPP_RET_OK;
+ 	const char *str_val = arg_val;
+@@ -608,7 +655,8 @@ decode_mac_addr_str_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for classifier_table command */
+ static int
+-decode_classifier_action_value(void *output, const char *arg_val)
++decode_classifier_action_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+@@ -631,7 +679,8 @@ decode_classifier_action_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of type for classifier_table command */
+ static int
+-decode_classifier_type_value(void *output, const char *arg_val)
++decode_classifier_type_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, CLASSIFILER_TYPE_STRINGS);
+@@ -648,7 +697,8 @@ decode_classifier_type_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of vlan id for classifier_table command */
+ static int
+-decode_classifier_vid_value(void *output, const char *arg_val)
++decode_classifier_vid_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_NG;
+ 	ret = get_int_value(output, arg_val, 0, ETH_VLAN_ID_MAX);
+@@ -662,7 +712,8 @@ decode_classifier_vid_value(void *output, const char *arg_val)
+ 
+ /* decoding procedure of port for classifier_table command */
+ static int
+-decode_classifier_port_value(void *output, const char *arg_val)
++decode_classifier_port_value(void *output, const char *arg_val,
++				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct spp_command_classifier_table *classifier_table = output;
+@@ -717,7 +768,7 @@ decode_classifier_port_value(void *output, const char *arg_val)
+ struct decode_parameter_list {
+ 	const char *name;       /* Parameter name */
+ 	size_t offset;          /* Offset value of struct spp_command */
+-	int (*func)(void *output, const char *arg_val);
++	int (*func)(void *output, const char *arg_val, int allow_override);
+ 				/* Pointer to parameter handling function */
+ };
+ 
+@@ -834,30 +885,31 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ 			.func = decode_port_name_value
+ 		},
+ 		{
+-			.name = "port ability 1",
++			.name = "port vlan operation",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_ability_value
++			.func = decode_port_vlan_operation
+ 		},
+ 		{
+-			.name = "port ability 2",
++			.name = "port vid",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_ability_value
++			.func = decode_port_vid
+ 		},
+ 		{
+-			.name = "port ability 3",
++			.name = "port pcp",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_ability_value
++			.func = decode_port_pcp
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+ 	},
+ 	{ DECODE_PARAMETER_LIST_EMPTY }, /* termination      */
+ };
+ 
+-/* check by list for each command line parameter */
++/* check by list for each command line parameter component */
+ static int
+-decode_command_parameter_in_list(struct spp_command_request *request,
++decode_command_parameter_component(struct spp_command_request *request,
+ 				int argc, char *argv[],
+-				struct spp_command_decode_error *error)
++				struct spp_command_decode_error *error,
++				int maxargc __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 	int ci = request->commands[0].type;
+@@ -867,7 +919,7 @@ decode_command_parameter_in_list(struct spp_command_request *request,
+ 		list = &parameter_list[ci][pi-1];
+ 		ret = (*list->func)((void *)
+ 				((char *)&request->commands[0]+list->offset),
+-				argv[pi]);
++				argv[pi], 0);
+ 		if (unlikely(ret < 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Bad value. command=%s, name=%s, "
+@@ -880,31 +932,105 @@ decode_command_parameter_in_list(struct spp_command_request *request,
+ 	return SPP_RET_OK;
+ }
+ 
++/* check by list for each command line parameter clssfier_table */
++static int
++decode_command_parameter_cls_table(struct spp_command_request *request,
++				int argc, char *argv[],
++				struct spp_command_decode_error *error,
++				int maxargc)
++{
++	return decode_command_parameter_component(request,
++						argc,
++						argv,
++						error,
++						maxargc);
++}
++/* check by list for each command line parameter clssfier_table(vlan) */
++static int
++decode_command_parameter_cls_table_vlan(struct spp_command_request *request,
++				int argc, char *argv[],
++				struct spp_command_decode_error *error,
++				int maxargc __attribute__ ((unused)))
++{
++	int ret = SPP_RET_OK;
++	int ci = request->commands[0].type;
++	int pi = 0;
++	struct decode_parameter_list *list = NULL;
++	for (pi = 1; pi < argc; pi++) {
++		list = &parameter_list[ci][pi-1];
++		ret = (*list->func)((void *)
++				((char *)&request->commands[0]+list->offset),
++				argv[pi], 0);
++		if (unlikely(ret < SPP_RET_OK)) {
++			RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad value. "
++				"command=%s, name=%s, index=%d, value=%s\n",
++					argv[0], list->name, pi, argv[pi]);
++			return set_string_value_decode_error(error, argv[pi],
++				list->name);
++		}
++	}
++	return SPP_RET_OK;
++}
++
++/* check by list for each command line parameter port */
++static int
++decode_command_parameter_port(struct spp_command_request *request,
++				int argc, char *argv[],
++				struct spp_command_decode_error *error,
++				int maxargc)
++{
++	int ret = SPP_RET_OK;
++	int ci = request->commands[0].type;
++	int pi = 0;
++	struct decode_parameter_list *list = NULL;
++	int flag = 0;
++
++	/* check add vlatag */
++	if (argc == maxargc)
++		flag = 1;
++
++	for (pi = 1; pi < argc; pi++) {
++		list = &parameter_list[ci][pi-1];
++		ret = (*list->func)((void *)
++				((char *)&request->commands[0]+list->offset),
++				argv[pi], flag);
++		if (unlikely(ret < SPP_RET_OK)) {
++			RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad value. "
++				"command=%s, name=%s, index=%d, value=%s\n",
++					argv[0], list->name, pi, argv[pi]);
++			return set_string_value_decode_error(error, argv[pi],
++				list->name);
++		}
++	}
++	return SPP_RET_OK;
++}
++
+ /* command list for decoding */
+ struct decode_command_list {
+ 	const char *name;       /* Command name */
+ 	int   param_min;        /* Min number of parameters */
+ 	int   param_max;        /* Max number of parameters */
+ 	int (*func)(struct spp_command_request *request, int argc,
+-			char *argv[], struct spp_command_decode_error *error);
++			char *argv[], struct spp_command_decode_error *error,
++			int maxargc);
+ 				/* Pointer to command handling function */
+ };
+ 
+ /* command list */
+ static struct decode_command_list command_list[] = {
+ 	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 5, 5,
+-		decode_command_parameter_in_list },
+-						/* classifier_table(mac) */
++		decode_command_parameter_cls_table  },
++						/* classifier_table(mac)  */
+ 	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 6, 6,
+-		decode_command_parameter_in_list },
++		decode_command_parameter_cls_table_vlan },
+ 						/* classifier_table(vlan) */
+ 	{ SPP_COMMAND_GET_CLIENT_ID_STR, 1, 1, NULL }, /* _get_client_id  */
+-	{ SPP_COMMAND_STATUS_STR,	 1, 1, NULL }, /* status	  */
+-	{ SPP_COMMAND_EXIT_STR,		 1, 1, NULL }, /* exit		  */
++	{ SPP_COMMAND_STATUS_STR,	 1, 1, NULL }, /* status          */
++	{ SPP_COMMAND_EXIT_STR,		 1, 1, NULL }, /* exit            */
+ 	{ SPP_COMMAND_COMPONENT_STR,	 3, 5,
+-		decode_command_parameter_in_list },    /* component	  */
++		decode_command_parameter_component  }, /* component       */
+ 	{ SPP_COMMAND_PORT_STR,		 5, 8,
+-		decode_command_parameter_in_list },    /* port		  */
++		decode_command_parameter_port       }, /* port            */
+ 	{ "",				 0, 0, NULL }  /* termination     */
+ };
+ 
+@@ -947,7 +1073,8 @@ decode_command_in_list(struct spp_command_request *request,
+ 
+ 		request->commands[0].type = i;
+ 		if (list->func != NULL)
+-			return (*list->func)(request, argc, argv, error);
++			return (*list->func)(request, argc, argv, error,
++							list->param_max);
+ 
+ 		return SPP_RET_OK;
+ 	}
+-- 
+2.18.0
+
+

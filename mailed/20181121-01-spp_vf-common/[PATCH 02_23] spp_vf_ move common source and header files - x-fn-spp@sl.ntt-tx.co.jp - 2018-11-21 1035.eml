@@ -1,0 +1,200 @@
+X-Account-Key: account4
+X-UIDL: 0000887856a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E69DB400B53
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E1F1023BAE6; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id E155C23B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D54A8EA7711
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id C1AB8EA7723
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3A0gMQehIETQge2iURztmcpTVXNAE6p7X5OBIU4Z?=
+ =?us-ascii?q?M7irVIN56u5InmIFeGvKo/gFTMVMDA8/cc0qzbuKSmX3Acp52G9nIaI9RXTx?=
+ =?us-ascii?q?FQscwNhEQ7BdKdT1XhJav6KiI8Wd9aTHd++ze9LVQQBNa4bFqUoGXhpSUKFE?=
+ =?us-ascii?q?DHPBFubv/wBpaUis220+6o/JiGc0BGgn+meataNxHwqxnN89UGx4BlbKQpk0?=
+ =?us-ascii?q?GbmHZDduVIyG8tHmq9wU6jtP+554Ursyhbvvtk7NZFCfy8cq88C7pEEHItNC?=
+ =?us-ascii?q?Y3/J+juR7GRAqJrnwSNwde2goNDQ6A9wnidoz19C3mqq9hyG+ROov0Vfg4VC?=
+ =?us-ascii?q?+j4KFiVBLzwH1eb3hjqzuR0ZE20vMTqQnExVQ324POZYCJKPdyNrjQe98XXy?=
+ =?us-ascii?q?sJX8pcUTBAHpLpd5EGXKIKOedVqZW4pkNb90LmQ1P3XqW0l3kW1yyTv+Vyye?=
+ =?us-ascii?q?kqHADY0RZ1E9kLuTHPtNCtbeEfWuTzyrXUiz7EKfFOilKfoMDFdA4spfaUUP?=
+ =?us-ascii?q?d+a83UnAM/Ug3Dy06IsaT+O3WTyvhIr3jd5O0mV/rl2AtF40lh5yOiwMshkN?=
+ =?us-ascii?q?yDlscbzBXf7T1R24JzI8GkDVJrJ9WjVplI/XL/VcM+UoYpRGdmvzw/w7sNtM?=
+ =?us-ascii?q?ugfSQE/4873R/Ud6/PY82S7xnkTurUPSZgiScvZueknxjruxvFqKW0Royu3V?=
+ =?us-ascii?q?1NtCYAjtTcqiVHyUnI8sbeAvIv+06g3W7UkQHY8adCPVxxibqdIJlnwKZV9N?=
+ =?us-ascii?q?JbuBbGFy7ywBmwjaSNMEM45q20+6LsZfPkvteVZYp9iwWmb+Ivkdf5B/gkdx?=
+ =?us-ascii?q?QeGWOcv+aksd+rtUSrRbxLiqVo1KjSq9bcOdheur7/CAgT0J5r4kS6BjaiiI?=
+ =?us-ascii?q?tenHIcalRZZFebn87iPBfMOJWaRb+20VGlkTMzl7bHNaanBInRa2TT1rzmO7?=
+ =?us-ascii?q?Rlo09ElFhplIgZvckOTOpcZquiByqT/JTZFkNraVXshby8UpMmi8VHCDzHA7?=
+ =?us-ascii?q?fFYvmL6RnSvbhpeLTKOtJduS6heaJ8v7i01iV/wgJbI/fhy5ITbDrhRKZcLk?=
+ =?us-ascii?q?6UYGThjpI6KUlU51BsdOXxkxXCXTVWbjOpR6dkv3c2A4bgC5vfAIuqxr6Zjm?=
+ =?us-ascii?q?+3GZhfZ2YODV7pcz+gZ8CKXbIXcDq6OcsnlCAYEKSxDYQmkxO2/AP30LtoKO?=
+ =?us-ascii?q?PI9zZQ78u7koIuvauIyFdspHR9FKH/mymVQntxn38USjN+x615rUFnix+C3a?=
+ =?us-ascii?q?V+n/1EBIlW7vJNXB09MM2UxOh7BtbuHwPZK43QEBD8GY/gWmx3EINipr1GK1?=
+ =?us-ascii?q?xwENijkB3ZiiahBrZQjKSOXMVy/6nYmX7tO4B2zDDEzPpE7RFuT81ROGmhnq?=
+ =?us-ascii?q?M6+RLUAtuDgwCXkeOxbbw0xyqL8nufiHae+kpfFgxoG/agPzhXdg7NoNL161?=
+ =?us-ascii?q?mXBa/rB7JiKRNZ4dWGbK1Wdpj1nRNNQ7HhIJ6NBgD503f1DhGOyLSWaYPscG?=
+ =?us-ascii?q?hIxyTRBn8fjxoS9mrVfRh7HCqqpHjSSSB/DV+6KV256vFw8TnoKy18hxHPdU?=
+ =?us-ascii?q?Bq0KC5vwIYleDJAe1GxaoK4W8o+TB9HVLlhJTXAMHGoRZ9OblMJ9g6plVfsA?=
+ =?us-ascii?q?CR/wUvO5WhK/g+wF8VaEJxo1+rywUxAYIGk9BipSEvxQt2cf/e0VhaMTWEwd?=
+ =?us-ascii?q?XsKvvcLS/w5HXNI+bfiFTX0dLOpOEO4+9+rUn/+R25UEEltXd/m9AH1nKd4s?=
+ =?us-ascii?q?2VSgsZStT3Tlpy6wg8rLacYDFYhcuc3C9pOKiw6m+E2tkyQu051lO8b5FUN+?=
+ =?us-ascii?q?WGDEfzC5FIXZH2brZxwR7yM1Rdbb03luZ8Ptv6JaHfgOjxZ7wmx2/g1DUZqI?=
+ =?us-ascii?q?FljhDWrnI6ELWSmc1Yha/FlgqfC2Wm1Q/n6Jut39sZI29MVny2zSyuXd8DVu?=
+ =?us-ascii?q?hJZY8OTFyWDYiyz9R6iYTqXicHpkWnQVUaxIq1aVyZaBr/xV8JjBhFkTmcgS?=
+ =?us-ascii?q?K9igdMvXQxtKPGg37Vx6LkaAZCJn4NT24kj0++eIU=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAB/tvRbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDeRAgDCUPSAcSgyGCAatXiH6BLId?=
+ =?us-ascii?q?agWeEWo5aIgKHFgeIbY9tCZEqGJEBLJlBgg2ELII1jjQwAQEBMAGOCQEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:11 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f5GB002630;
+	Wed, 21 Nov 2018 10:41:05 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f4LV004397;
+	Wed, 21 Nov 2018 10:41:04 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01737;
+	 Wed, 21 Nov 2018 10:35:59 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1ZxSe009595; Wed, 21 Nov 2018 10:35:59 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1ZxY0009590; Wed, 21 Nov 2018 10:35:59 +0900
+Message-Id: <201811210135.wAL1ZxY0009590@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWU008346 ; Wed, 21 Nov 2018 10:35:59 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 02/23] spp_vf: move common source and header files
+Date: Wed, 21 Nov 2018 10:35:37 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Move common source and header files to be used from spp_vf and
+spp_mirror.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/{ => common}/command_conn.c     | 0
+ src/vf/{ => common}/command_conn.h     | 0
+ src/vf/{ => common}/command_dec.c      | 0
+ src/vf/{ => common}/command_dec.h      | 0
+ src/vf/{ => common}/command_proc.c     | 0
+ src/vf/{ => common}/command_proc.h     | 0
+ src/vf/{ => common}/ringlatencystats.c | 0
+ src/vf/{ => common}/ringlatencystats.h | 0
+ src/vf/{ => common}/spp_port.c         | 0
+ src/vf/{ => common}/spp_port.h         | 0
+ src/vf/{ => common}/string_buffer.c    | 0
+ src/vf/{ => common}/string_buffer.h    | 0
+ 12 files changed, 0 insertions(+), 0 deletions(-)
+ rename src/vf/{ => common}/command_conn.c (100%)
+ rename src/vf/{ => common}/command_conn.h (100%)
+ rename src/vf/{ => common}/command_dec.c (100%)
+ rename src/vf/{ => common}/command_dec.h (100%)
+ rename src/vf/{ => common}/command_proc.c (100%)
+ rename src/vf/{ => common}/command_proc.h (100%)
+ rename src/vf/{ => common}/ringlatencystats.c (100%)
+ rename src/vf/{ => common}/ringlatencystats.h (100%)
+ rename src/vf/{ => common}/spp_port.c (100%)
+ rename src/vf/{ => common}/spp_port.h (100%)
+ rename src/vf/{ => common}/string_buffer.c (100%)
+ rename src/vf/{ => common}/string_buffer.h (100%)
+
+diff --git a/src/vf/command_conn.c b/src/vf/common/command_conn.c
+similarity index 100%
+rename from src/vf/command_conn.c
+rename to src/vf/common/command_conn.c
+diff --git a/src/vf/command_conn.h b/src/vf/common/command_conn.h
+similarity index 100%
+rename from src/vf/command_conn.h
+rename to src/vf/common/command_conn.h
+diff --git a/src/vf/command_dec.c b/src/vf/common/command_dec.c
+similarity index 100%
+rename from src/vf/command_dec.c
+rename to src/vf/common/command_dec.c
+diff --git a/src/vf/command_dec.h b/src/vf/common/command_dec.h
+similarity index 100%
+rename from src/vf/command_dec.h
+rename to src/vf/common/command_dec.h
+diff --git a/src/vf/command_proc.c b/src/vf/common/command_proc.c
+similarity index 100%
+rename from src/vf/command_proc.c
+rename to src/vf/common/command_proc.c
+diff --git a/src/vf/command_proc.h b/src/vf/common/command_proc.h
+similarity index 100%
+rename from src/vf/command_proc.h
+rename to src/vf/common/command_proc.h
+diff --git a/src/vf/ringlatencystats.c b/src/vf/common/ringlatencystats.c
+similarity index 100%
+rename from src/vf/ringlatencystats.c
+rename to src/vf/common/ringlatencystats.c
+diff --git a/src/vf/ringlatencystats.h b/src/vf/common/ringlatencystats.h
+similarity index 100%
+rename from src/vf/ringlatencystats.h
+rename to src/vf/common/ringlatencystats.h
+diff --git a/src/vf/spp_port.c b/src/vf/common/spp_port.c
+similarity index 100%
+rename from src/vf/spp_port.c
+rename to src/vf/common/spp_port.c
+diff --git a/src/vf/spp_port.h b/src/vf/common/spp_port.h
+similarity index 100%
+rename from src/vf/spp_port.h
+rename to src/vf/common/spp_port.h
+diff --git a/src/vf/string_buffer.c b/src/vf/common/string_buffer.c
+similarity index 100%
+rename from src/vf/string_buffer.c
+rename to src/vf/common/string_buffer.c
+diff --git a/src/vf/string_buffer.h b/src/vf/common/string_buffer.h
+similarity index 100%
+rename from src/vf/string_buffer.h
+rename to src/vf/common/string_buffer.h
+-- 
+2.18.0
+
+

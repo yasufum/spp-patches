@@ -1,0 +1,501 @@
+X-Account-Key: account4
+X-UIDL: 0000887b56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 15976400B53
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 0F65923BAE6; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 0EE3323B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 02483EA77C6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id DE124EA7821
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3A66frExJ/8t9p8jXKztmcpTVXNAE6p7X5OBIU4Z?=
+ =?us-ascii?q?M7irVIN56u5InmIFeGvKo/gFTMVMDA8/cc0azbuKSmX3Acp52G9nIaI9RXTx?=
+ =?us-ascii?q?FQscwNhEQ7BdKdT1XhJav6KiI8Wd9aTHd++ze9LVQQBNa4bFqUoGXhpSUKFE?=
+ =?us-ascii?q?DHPBFubv/wBpaUis220+6o/JiGc0BGgn+meataNxHwqxnN89UGx4BlbKQpk0?=
+ =?us-ascii?q?GbmHZDduVIyG8tHmq9wU6jtP+554Ursyhbvvtk7NZFCf+8cq88C7pEEHItNC?=
+ =?us-ascii?q?Y3/J+juR7GRAqJrnwSNwde2goNDQ6A9wnidoz19C3mqq9hyG+ROov0Vfg4VC?=
+ =?us-ascii?q?+j4KFiVBLzwH1eb3hjqzuR0ZE20vMTqQnExVQ324POZYCJKPdyNrjQe98XXy?=
+ =?us-ascii?q?sJX8pcUTBAHpLpd5EGXKIKOedVqZW4pkNb90LmQ1P3XqW0l3kW1yyTv+Vyye?=
+ =?us-ascii?q?kqHADY0RZ1E9kLuTHPtNCtbuEfWuTzyrXUiz7EKfFOilKfoMDFdA4spfaUUP?=
+ =?us-ascii?q?d+a83UnAM/Ug3Dy06IsaT+O3WTyvhIr3jd5O0mV/rl2AtF40lh5yOiwMshkN?=
+ =?us-ascii?q?yDlscbzBXf7T1R24JzI8GkDVJrJ9WjVplI/XL/VcM+UoYpRGdmvzw/w7sNtM?=
+ =?us-ascii?q?ugfSQE/4873R/Ud6/PY82S7xnkTurUPSZgiScvZueknxjruxvFqKW0Royu3V?=
+ =?us-ascii?q?1NtCYAjtTcqiVHyUnI8sbeAvIv+06g3W7UkQHY8adCPVxxibqdIJlnwKZV9N?=
+ =?us-ascii?q?JbuBbGFy7ywBmwjaSNMEM45q20+6LsZfPkvteVZYp9iwWmb+Ivkdf5B/gkdx?=
+ =?us-ascii?q?QeGWOcv+aksd+rtUSrRbxLiqVo1KjSq9bcOdheur7/CAgT0J5r4kS6BjaiiI?=
+ =?us-ascii?q?tenHIcalRZZFebn87iPBfMOJWaRb+20VGlkTMzl7bHNaanBInRa2TT1rzmO7?=
+ =?us-ascii?q?Rlo09ElFhplIgZvckOTOpcZquiByqT/JTZFkNraVXshby8UpMmi8VHCDzHA7?=
+ =?us-ascii?q?fFYvmL6RnSvbhpeLTKOtJduS6heaJ8v7i01iV/wgJbI/fhy5ITbDrhRKZcLk?=
+ =?us-ascii?q?6UYGThjpI6KUlU51BsdOXxkxXCXTVWbjOpR6dkvHc2A4bgC5vfAIuqxr6Zjm?=
+ =?us-ascii?q?+3GZhfZ2YODV7pcz+gZ8CKXbIXcDq6OcsnlCAYEKSxDYQmkxO2/AP30LtoKO?=
+ =?us-ascii?q?PI9zZQ78u7koIuvauIyFdspHR9FKH/mymVQntxn38USjN+x615rUFnix+C3a?=
+ =?us-ascii?q?V+n/1EBIlW7vJNXB09MM2UxOh7BtbuHwPZK43QEBD8GY/gWmx3EINipr1GK1?=
+ =?us-ascii?q?xwENijkB3ZiiahBrZQjKSOXMZy/6nYmX7tO4B2zDDEzPpE7RFuT81ROGmhnq?=
+ =?us-ascii?q?M6+RLUAtuDgwCXkeOxbbw0xyqL8nufiHae+kpfFgxoG/agPzhXdg7NoNL161?=
+ =?us-ascii?q?mXBa/rB7JiKRNZ4dWGbK1Wdpj1nRNNQ7HhIJ6NBgD503f1DhGOyLSWaYPscG?=
+ =?us-ascii?q?hIxyTRBn8fjxoS9mrVfRh7HCqqpHjSSSB/DV+6KV256vFw8TnoKy18hxHPdU?=
+ =?us-ascii?q?Bq0KC5vwIYleDJAe1GxaoK4W8o+TB9HVLlhJTXAMHGoRZ9OblMJ9g6plVfsA?=
+ =?us-ascii?q?CR/wUvO5WhK/g+wF8VaEJxo1+rywUxAYIGk9BipSEvxQt2cf/e0VhaMTWEwd?=
+ =?us-ascii?q?XsKvvcLS/w5HXNI+bfiFTX0dLOpOEO4+9+rUn/+R25UEEltXd/m9AH1nKd4s?=
+ =?us-ascii?q?2VSgsZStT3Tlpy6wg8rLacYDFYhcuc3C9pOKiw6m+E2tkyQu051lO8b5FUN+?=
+ =?us-ascii?q?WGDEfzC5FIXZH2brZxwR7yM1Rdbb03luZ8Ptv6JaHfgOjxZ7wmx2/g1DUZqI?=
+ =?us-ascii?q?FljhDWrnI6ELWSmc1Yha/FlgqfC2Wm1Q/n6Jut39sZI29MVny2zSyuXd8DVu?=
+ =?us-ascii?q?hJZY8OTFyWDYiyz9R6iYTqXicHpkWnQVUaxIq1aVyZaBr/xV8JjBhFkTmcgS?=
+ =?us-ascii?q?K9igdMvXQxtKPGg37Vx6LkaAZCJn4NT24kj0++eIU=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLXqWPYF6hHkCNYNhAQU?=
+ =?us-ascii?q?vCQ0BAwEBAgEBAQEUAQEBAQEGGAZYhT0DAydSECAMJQ9IBxKDIYIBqyQziH+?=
+ =?us-ascii?q?BLIdaRYEihFqBEYJdiw4ChxYHgXoKhXN2T48eCZEqGIFYjyksiT6QA4INhCy?=
+ =?us-ascii?q?CJw4JjiswAQEBMAGLPiuCIAEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:11 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f65i002662;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f5oT004466;
+	Wed, 21 Nov 2018 10:41:05 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01781;
+	 Wed, 21 Nov 2018 10:36:00 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0OX009623; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0O3009620; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0O3009620@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWZ008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 07/23] spp_vf: move functions for decode to common dir
+Date: Wed, 21 Nov 2018 10:35:42 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Move functions for decode to common directory.
+
+This patch also refactors code on following point.
+  change of a function name.
+   - from spp_get_iface_index() to spp_convert_port_to_iface()
+   - from spp_change_component_type() to spp_convert_component_type()
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c | 113 +++++++++++++++++++++++++++++++++++-
+ src/vf/spp_vf.c             | 108 ----------------------------------
+ src/vf/spp_vf.h             |  74 -----------------------
+ 3 files changed, 110 insertions(+), 185 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 5275f4f..35066c2 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -64,6 +64,112 @@ const char *PORT_ABILITY_STRINGS[] = {
+ 	/* termination */ "",
+ };
+ 
++/* Get component type being updated on target core */
++static enum spp_component_type
++spp_get_component_type_update(unsigned int lcore_id)
++{
++	struct core_mng_info *info = &g_core_info[lcore_id];
++	return info->core[info->upd_index].type;
++}
++
++/* Check mac address used on the port for registering or removing */
++static int
++spp_check_classid_used_port(
++		int vid, uint64_t mac_addr,
++		enum port_type iface_type, int iface_no)
++{
++	struct spp_port_info *port_info = get_iface_info(iface_type, iface_no);
++
++	/**
++	 * return true if given mac_addr/vid matches
++	 *  with that of port_info/vid
++	 */
++	return ((mac_addr == port_info->class_id.mac_addr) &&
++		(vid == port_info->class_id.vlantag.vid));
++}
++
++/* Check if port has been added. */
++static int
++spp_check_added_port(enum port_type iface_type, int iface_no)
++{
++	struct spp_port_info *port = get_iface_info(iface_type, iface_no);
++	return port->iface_type != UNDEF;
++}
++
++/**
++ * Separate port id of combination of iface type and number and
++ * assign to given argument, iface_type and iface_no.
++ *
++ * For instance, 'ring:0' is separated to 'ring' and '0'.
++ */
++static int
++spp_convert_port_to_iface(const char *port,
++		    enum port_type *iface_type,
++		    int *iface_no)
++{
++	enum port_type type = UNDEF;
++	const char *no_str = NULL;
++	char *endptr = NULL;
++
++	/* Find out which type of interface from port */
++	if (strncmp(port, SPP_IFTYPE_NIC_STR ":",
++			strlen(SPP_IFTYPE_NIC_STR)+1) == 0) {
++		/* NIC */
++		type = PHY;
++		no_str = &port[strlen(SPP_IFTYPE_NIC_STR)+1];
++	} else if (strncmp(port, SPP_IFTYPE_VHOST_STR ":",
++			strlen(SPP_IFTYPE_VHOST_STR)+1) == 0) {
++		/* VHOST */
++		type = VHOST;
++		no_str = &port[strlen(SPP_IFTYPE_VHOST_STR)+1];
++	} else if (strncmp(port, SPP_IFTYPE_RING_STR ":",
++			strlen(SPP_IFTYPE_RING_STR)+1) == 0) {
++		/* RING */
++		type = RING;
++		no_str = &port[strlen(SPP_IFTYPE_RING_STR)+1];
++	} else {
++		/* OTHER */
++		RTE_LOG(ERR, APP, "Unknown interface type. (port = %s)\n",
++				port);
++		return -1;
++	}
++
++	/* Change type of number of interface */
++	int ret_no = strtol(no_str, &endptr, 0);
++	if (unlikely(no_str == endptr) || unlikely(*endptr != '\0')) {
++		/* No IF number */
++		RTE_LOG(ERR, APP, "No interface number. (port = %s)\n", port);
++		return -1;
++	}
++
++	*iface_type = type;
++	*iface_no = ret_no;
++
++	RTE_LOG(DEBUG, APP, "Port = %s => Type = %d No = %d\n",
++			port, *iface_type, *iface_no);
++	return 0;
++}
++
++/* Convert component name to component type */
++static enum spp_component_type
++spp_convert_component_type(const char *type_str)
++{
++	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
++			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
++		/* Classifier */
++		return SPP_COMPONENT_CLASSIFIER_MAC;
++	} else if (strncmp(type_str, CORE_TYPE_MERGE_STR,
++			strlen(CORE_TYPE_MERGE_STR)+1) == 0) {
++		/* Merger */
++		return SPP_COMPONENT_MERGE;
++	} else if (strncmp(type_str, CORE_TYPE_FORWARD_STR,
++			strlen(CORE_TYPE_FORWARD_STR)+1) == 0) {
++		/* Forwarder */
++		return SPP_COMPONENT_FORWARD;
++	}
++	return SPP_COMPONENT_UNUSE;
++}
++
+ /* set decode error */
+ inline int
+ set_decode_error(struct spp_command_decode_error *error,
+@@ -179,7 +285,8 @@ decode_port_value(void *output, const char *arg_val)
+ {
+ 	int ret = 0;
+ 	struct spp_port_index *port = output;
+-	ret = spp_get_iface_index(arg_val, &port->iface_type, &port->iface_no);
++	ret = spp_convert_port_to_iface(arg_val, &port->iface_type,
++							&port->iface_no);
+ 	if (unlikely(ret != 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad port. val=%s\n", arg_val);
+ 		return -1;
+@@ -273,7 +380,7 @@ decode_component_type_value(void *output, const char *arg_val)
+ 	if (component->action != SPP_CMD_ACTION_START)
+ 		return 0;
+ 
+-	set_type = spp_get_component_type(arg_val);
++	set_type = spp_convert_component_type(arg_val);
+ 	if (unlikely(set_type <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component type. val=%s\n",
+@@ -392,7 +499,7 @@ decode_port_name_value(void *output, const char *arg_val)
+ 	return decode_str_value(output, arg_val);
+ }
+ 
+-#/* decoding procedure of port ability for port command */
++/* decoding procedure of port ability for port command */
+ static int
+ decode_port_ability_value(void *output, const char *arg_val)
+ {
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 62ceb20..f086eaf 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -183,15 +183,6 @@ parse_app_args(int argc, char *argv[])
+ 	return 0;
+ }
+ 
+-/* Get component type being updated on target core */
+-enum spp_component_type
+-spp_get_component_type_update(unsigned int lcore_id)
+-{
+-	struct core_mng_info *info = &g_core_info[lcore_id];
+-	return info->core[info->upd_index].type;
+-}
+-
+-
+ /* Main process of slave core */
+ static int
+ slave_main(void *arg __attribute__ ((unused)))
+@@ -389,29 +380,6 @@ spp_get_client_id(void)
+ 	return g_startup_param.client_id;
+ }
+ 
+-/**
+- * Check mac address used on the port for registering or removing
+- */
+-int
+-spp_check_classid_used_port(
+-		int vid, uint64_t mac_addr,
+-		enum port_type iface_type, int iface_no)
+-{
+-	struct spp_port_info *port_info = get_iface_info(iface_type, iface_no);
+-	return ((mac_addr == port_info->class_id.mac_addr) &&
+-			(vid == port_info->class_id.vlantag.vid));
+-}
+-
+-/*
+- * Check if port has been added.
+- */
+-int
+-spp_check_added_port(enum port_type iface_type, int iface_no)
+-{
+-	struct spp_port_info *port = get_iface_info(iface_type, iface_no);
+-	return port->iface_type != UNDEF;
+-}
+-
+ /*
+  * Check if port has been flushed.
+  */
+@@ -795,79 +763,3 @@ spp_get_dpdk_port(enum port_type iface_type, int iface_no)
+ 		return -1;
+ 	}
+ }
+-
+-/**
+- * Separate port id of combination of iface type and number and
+- * assign to given argument, iface_type and iface_no.
+- *
+- * For instance, 'ring:0' is separated to 'ring' and '0'.
+- */
+-int
+-spp_get_iface_index(const char *port,
+-		    enum port_type *iface_type,
+-		    int *iface_no)
+-{
+-	enum port_type type = UNDEF;
+-	const char *no_str = NULL;
+-	char *endptr = NULL;
+-
+-	/* Find out which type of interface from port */
+-	if (strncmp(port, SPP_IFTYPE_NIC_STR ":",
+-			strlen(SPP_IFTYPE_NIC_STR)+1) == 0) {
+-		/* NIC */
+-		type = PHY;
+-		no_str = &port[strlen(SPP_IFTYPE_NIC_STR)+1];
+-	} else if (strncmp(port, SPP_IFTYPE_VHOST_STR ":",
+-			strlen(SPP_IFTYPE_VHOST_STR)+1) == 0) {
+-		/* VHOST */
+-		type = VHOST;
+-		no_str = &port[strlen(SPP_IFTYPE_VHOST_STR)+1];
+-	} else if (strncmp(port, SPP_IFTYPE_RING_STR ":",
+-			strlen(SPP_IFTYPE_RING_STR)+1) == 0) {
+-		/* RING */
+-		type = RING;
+-		no_str = &port[strlen(SPP_IFTYPE_RING_STR)+1];
+-	} else {
+-		/* OTHER */
+-		RTE_LOG(ERR, APP, "Unknown interface type. (port = %s)\n",
+-				port);
+-		return -1;
+-	}
+-
+-	/* Change type of number of interface */
+-	int ret_no = strtol(no_str, &endptr, 0);
+-	if (unlikely(no_str == endptr) || unlikely(*endptr != '\0')) {
+-		/* No IF number */
+-		RTE_LOG(ERR, APP, "No interface number. (port = %s)\n", port);
+-		return -1;
+-	}
+-
+-	*iface_type = type;
+-	*iface_no = ret_no;
+-
+-	RTE_LOG(DEBUG, APP, "Port = %s => Type = %d No = %d\n",
+-			port, *iface_type, *iface_no);
+-	return 0;
+-}
+-
+-/**
+- * Return the type of forwarder as a member of enum of spp_component_type
+- */
+-enum spp_component_type
+-spp_change_component_type(const char *type_str)
+-{
+-	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
+-			 strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
+-		/* Classifier */
+-		return SPP_COMPONENT_CLASSIFIER_MAC;
+-	} else if (strncmp(type_str, CORE_TYPE_MERGE_STR,
+-			 strlen(CORE_TYPE_MERGE_STR)+1) == 0) {
+-		/* Merger */
+-		return SPP_COMPONENT_MERGE;
+-	} else if (strncmp(type_str, CORE_TYPE_FORWARD_STR,
+-			 strlen(CORE_TYPE_FORWARD_STR)+1) == 0) {
+-		/* Forwarder */
+-		return SPP_COMPONENT_FORWARD;
+-	}
+-	return SPP_COMPONENT_UNUSE;
+-}
+diff --git a/src/vf/spp_vf.h b/src/vf/spp_vf.h
+index 1d05e66..1a49847 100644
+--- a/src/vf/spp_vf.h
++++ b/src/vf/spp_vf.h
+@@ -131,51 +131,6 @@ int spp_iterate_core_info(struct spp_iterate_core_params *params);
+ int spp_iterate_classifier_table(
+ 		struct spp_iterate_classifier_table_params *params);
+ 
+-/**
+- * Get component type being updated on target core
+- *
+- * @param lcore_id
+- *  Logical core ID.
+- *
+- * @return
+- *  Type of component that will be executed on
+- *  specified logical core after update.
+- */
+-enum spp_component_type spp_get_component_type_update(unsigned int lcore_id);
+-
+-/**
+- * Check mac address used on the port for registering or removing
+- *
+- * @param vid
+- *  VLAN ID to be validated.
+- * @param mac_addr
+- *  Mac address to be validated.
+- * @param iface_type
+- *  Interface to be validated.
+- * @param iface_no
+- *  Interface number to be validated.
+- *
+- * @return
+- *  True if target identifier(VLAN ID, MAC address)
+- *  matches identifier(VLAN ID, MAC address) of port.
+- */
+-int spp_check_classid_used_port(
+-		int vid, uint64_t mac_addr,
+-		enum port_type iface_type, int iface_no);
+-
+-/**
+- * Check if port has been added.
+- *
+- * @param iface_type
+- *  Interface to be validated.
+- * @param iface_no
+- *  Interface number to be validated.
+- *
+- * @return
+- *  True if port has been added.
+- */
+-int spp_check_added_port(enum port_type iface_type, int iface_no);
+-
+ /**
+  * Check if port has been flushed.
+  *
+@@ -202,33 +157,4 @@ int spp_check_flush_port(enum port_type iface_type, int iface_no);
+  */
+ int spp_get_dpdk_port(enum port_type iface_type, int iface_no);
+ 
+-/**
+- * Extract if-type/if-number from port string
+- *
+- * @param port
+- *  Character string expressing the port, e.g. "phy:0","ring:1"
+- * @param iface_type
+- *  Interface type obtained from port.
+- * @param iface_no
+- *  Interface number obtained from port.
+- *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
+- */
+-int spp_get_iface_index(
+-		const char *port,
+-		enum port_type *iface_type,
+-		int *iface_no);
+-
+-/**
+- * Change component type from string to type value.
+- *
+- * @param type_str
+- *  Name string for each component
+- *
+- * @return
+- *  Component type corresponding to type_str.
+- */
+-enum spp_component_type spp_change_component_type(const char *type_str);
+-
+ #endif /* __SPP_VF_H__ */
+-- 
+2.18.0
+
+

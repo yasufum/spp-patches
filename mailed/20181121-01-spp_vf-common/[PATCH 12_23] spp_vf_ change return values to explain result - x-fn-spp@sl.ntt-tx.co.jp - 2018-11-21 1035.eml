@@ -1,0 +1,2497 @@
+X-Account-Key: account4
+X-UIDL: 0000888b56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 3E757400870
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 28E907F09D; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 208787F2B4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id BAA246388AE
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 91A9B638767
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AQEhcaB3l5Mkl913GsmDT+zVfTzU7u7jyIg8e44?=
+ =?us-ascii?q?YmjLQLSKm44pD+JxWGuqdhh1rAGJ7D7qodzefdt+bmRXBG6pHHsmhROIdUWU?=
+ =?us-ascii?q?o9gN4N1xclHNbDEVfyee6vYSp/B9xafERhuXenLQ1JCID1YBvQui769iYcTy?=
+ =?us-ascii?q?32LhE9PeHpAsjXhsWz2fq1/sjDJgtOwSGleZtpKFOwsRmUqtlQiowkKL5okE?=
+ =?us-ascii?q?nzr3BFevpbySZTHXzNx0mu3s6r59Yj/y9Vsrc678sYCOP3dKB+S6BESj8hdW?=
+ =?us-ascii?q?IttoXnshzKTA3H4XV5MC1egl9GBU3e9AnSRZO3tDfm8/ZtniKde8/uBbw5Qj?=
+ =?us-ascii?q?Wt6a53RQSg0n5fcWRiqieM14ou3epSu3fD71RnzpTRYZ2JOfY2Za7bcd4ABC?=
+ =?us-ascii?q?JAUstXSy1dE9akdYJcR+EFPOtes8z8vw5U9EP4X1L2QriyjGEZ1RqUleUg3u?=
+ =?us-ascii?q?8sEB/LxlksFNcH9W/MqY2scqoZVaaz0LWOxjKFbesFvFW1oIXObB0lpumBGL?=
+ =?us-ascii?q?xqds+Eg1lqGQWAlU2IgZfheTWJyqERoy6Q6KxiTaj87gxv4xE0uTWpyso238?=
+ =?us-ascii?q?PZw4wTj0vc7Q1ixMAzOcH9VF49atniEoMa5ET4f8NmB8glRW9voiMzzLYL7I?=
+ =?us-ascii?q?W6cCY904g9xhXDOLSXNpKF6RX5WKONMC910Th7LamniU/4oi3CgqXsE9O521?=
+ =?us-ascii?q?FQom9Zn8nQ4zoTggfL5JHPQ6l490algW3J1gvIrOdYPQUohezQLNgj2ttS3t?=
+ =?us-ascii?q?Ia40HKHyuuxAP3h7TQcFk4v/S4re/gJLf+7pbOMoZ1jlmjdKUlgYq5Hfh9Lh?=
+ =?us-ascii?q?hIVG/d+/zZtvWr9B/8SbRO1qNwk6LC9pbGOYEHtuiyBElXys4quRO2DjP+j5?=
+ =?us-ascii?q?IZlmJBKk5ZPQ6XyYPufVPWRZKwRf7thl2tlG87gfHNJfvnHomIMmiFm7Cnf6?=
+ =?us-ascii?q?416lYAmlBqlZYFvMgSUexHeaOuPy25/N3AUk1jalTymb29To4gkNpPByqOGv?=
+ =?us-ascii?q?PLavqK9wXTvKR0fq/SOccUoGqvcaF9oaS11zlixBlDI+G/1J8TIiniTM5rKE?=
+ =?us-ascii?q?iYf3fgx+w5PzlT5FgGRffxwB2OWjtaIm2qWvploDwwDMSgEZuFTYfrgqTTlC?=
+ =?us-ascii?q?u8G5RXYChBBDXuWT/4MouCHuwUcAqJJolnjiBBSajnQIhn1wnmuALhyrVhJ/?=
+ =?us-ascii?q?bZ4WVC7MqljoMvobaO009jvTVvaqbVm3mAVWR1gn8FS3ct0aZzrFY8glaP3K?=
+ =?us-ascii?q?5kguBJQNla5vdHSAA/ZtbXy+13Dcy3WxqUJI7RDgz9GJP9XHdvH4FUoZdGeU?=
+ =?us-ascii?q?t2FtS8gwqW0yGvCvoOj7nTXdo5+aaa2WTtYc16jXTeh8xDxxErRNVCMWq+i+?=
+ =?us-ascii?q?tx7Q/WUsTZ1kuf0r2ybYwH2GjL6HvG0XrIt0YeUhY6AsCnFTgPI1Dbq9j0/B?=
+ =?us-ascii?q?aIX/qgD/E8KhNp0srELLdWL8H5y15BAvX7coe7ASr5iyK7AhCGwamJZYzhdj?=
+ =?us-ascii?q?AG3SnTP1MYiQEY4SXOJU0kCyymuW6bEC12GAelfRb36ecn4iDeLAd830SQYk?=
+ =?us-ascii?q?Zmzbbw5hMFmanWVaYIxrxd8C5zrjx1GA7mmdPdEJyGuxYkYLUaatR74k8ity?=
+ =?us-ascii?q?qRvl54N52kd/wkh1UFNQJrowbyx1N8DcNCiYAj/nYjzQ4qdOSZ20gHcS+EmI?=
+ =?us-ascii?q?zgfLbQbGvqmXLnI6eE31jf1I7IvKYE87I+t0mmoBHvHU1k8W0v2otQ2nqYvs?=
+ =?us-ascii?q?qMDQEJF5TtTgMr515xoPfYekxfr8vdh3hlMK3s4nnD0MlvAvc5jwqwOdxYdq?=
+ =?us-ascii?q?GcXA7qT59AXpDocrdw3QP0KEtVYYUwvOY1J5/0LaLenvTwZqA7wXT/3DoP4Z?=
+ =?us-ascii?q?ghgBjVr2wmEbSOhMtDnazQ3xPbBW2l1BH76Zqxwt0CO29aCGO7zWK9VdxhI5?=
+ =?us-ascii?q?ZqdINOMl+AZsi+x9FwnZnoAiEK71rlAU8andO5PxGVKV7lj1QJiRYn5Ee/kC?=
+ =?us-ascii?q?799ARa1ikzp/PAjjfKheL+aF8bKihAQy9glQW1LA=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAB/tvRbl0Uj6NJkGQEBAQEBAQE?=
+ =?us-ascii?q?BAQEBAQcBAQEBAQGBUQQBAQEBAQsBggCBOCEDBwgnjBBfjS16lj2BeoR5AjW?=
+ =?us-ascii?q?DYQEFLwkNAQMBAQIBAQEBFAEBAQEBBhgGWIU9AwMaAQxSECAMJQ83EQcSgyG?=
+ =?us-ascii?q?CAaskM4h+gSyHWkWBIoRagRGCXYUNEIVxAocWB4F6CoVzdk+PHgmRKhiBWIU?=
+ =?us-ascii?q?JiiAsiT6LC4R4gg2BQIJsgiQDDgmOKzABAQEwAYs8AQMBIQSCIwEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:12 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f8dZ002715;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f6w4004531;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01835;
+	 Wed, 21 Nov 2018 10:36:01 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0F1009656; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0tI009653; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0tI009653@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWe008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 12/23] spp_vf: change return values to explain result
+Date: Wed, 21 Nov 2018 10:35:47 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Change to use SPP_RET_OK and SPP_RET_NG instead of 0 or -1 as a returned
+value to explain a result of a function.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/classifier_mac.c          |  42 +++----
+ src/vf/classifier_mac.h          |  20 +--
+ src/vf/common/command_conn.c     |  16 +--
+ src/vf/common/command_conn.h     |  14 +--
+ src/vf/common/command_dec.c      | 166 ++++++++++++-------------
+ src/vf/common/command_dec.h      |   2 +-
+ src/vf/common/command_proc.c     | 206 +++++++++++++++----------------
+ src/vf/common/command_proc.h     |   8 +-
+ src/vf/common/ringlatencystats.c |   4 +-
+ src/vf/common/ringlatencystats.h |   4 +-
+ src/vf/common/spp_port.c         |  16 +--
+ src/vf/common/spp_proc.c         |  40 +++---
+ src/vf/common/spp_proc.h         |   6 +-
+ src/vf/spp_forward.c             |  18 +--
+ src/vf/spp_forward.h             |  12 +-
+ src/vf/spp_vf.c                  |  58 ++++-----
+ 16 files changed, 317 insertions(+), 315 deletions(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 4016ab1..42e43dc 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -355,7 +355,7 @@ static int
+ init_component_info(struct component_info *cmp_info,
+ 		const struct spp_component_info *component_info)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 	struct mac_classification *mac_cls;
+ 	struct ether_addr eth_addr;
+@@ -408,7 +408,7 @@ init_component_info(struct component_info *cmp_info,
+ 					create_mac_classification();
+ 			if (unlikely(cmp_info->mac_classifications[vid] ==
+ 					NULL))
+-				return -1;
++				return SPP_RET_NG;
+ 		}
+ 		mac_cls = cmp_info->mac_classifications[vid];
+ 
+@@ -445,7 +445,7 @@ init_component_info(struct component_info *cmp_info,
+ 					"table. ret=%d, vid=%hu, "
+ 					"mac_addr=%s\n",
+ 					ret, vid, mac_addr_str);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+@@ -459,14 +459,14 @@ init_component_info(struct component_info *cmp_info,
+ 				tx_port->dpdk_port);
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* initialize classifier. */
+ static int
+ init_classifier(struct management_info *mng_info)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	struct spp_component_info component_info;
+ 
+ 	memset(mng_info, 0, sizeof(struct management_info));
+@@ -490,18 +490,18 @@ init_classifier(struct management_info *mng_info)
+ 	/* populate the classifier information at reference */
+ 	ret = init_component_info(&mng_info->
+ 			cmp_infos[mng_info->ref_index], &component_info);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+ 				"Cannot initialize classifier mac table. "
+ 				"ret=%d\n", ret);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* updating side can be set by completion of initialization. */
+ 	mng_info->upd_index = mng_info->ref_index + 1;
+ 	mng_info->is_used = 1;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* free mac classification instance. */
+@@ -618,7 +618,7 @@ get_general_default_classified_index(struct component_info *cmp_info)
+ 	if (unlikely(mac_cls == NULL)) {
+ 		LOG_DBG(cmp_info->name, "Untagged's default is not set. "
+ 				"vid=%d\n", (int)VLAN_UNTAGGED_VID);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	return mac_cls->default_classified;
+@@ -800,7 +800,7 @@ spp_classifier_mac_init(void)
+ int
+ spp_classifier_mac_update(struct spp_component_info *component_info)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int id = component_info->component_id;
+ 	struct management_info *mng_info = g_mng_infos + id;
+ 	struct component_info *cmp_info = NULL;
+@@ -817,7 +817,7 @@ spp_classifier_mac_update(struct spp_component_info *component_info)
+ 
+ 	/* initialize update side classifier information */
+ 	ret = init_component_info(cmp_info, component_info);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+ 				"Cannot update classifier mac. ret=%d\n", ret);
+ 		return ret;
+@@ -838,14 +838,14 @@ spp_classifier_mac_update(struct spp_component_info *component_info)
+ 	RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+ 			"Component[%u] Complete update component.\n", id);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* classifier(mac address) thread function. */
+ int
+ spp_classifier_mac_do(int id)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 	int n_rx;
+ 	unsigned int lcore_id = rte_lcore_id();
+@@ -862,7 +862,7 @@ spp_classifier_mac_do(int id)
+ 
+ 	/* initialize */
+ 	ret = init_classifier(mng_info);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		uninit_classifier(mng_info);
+ 		return ret;
+ 	}
+@@ -917,7 +917,7 @@ spp_classifier_mac_do(int id)
+ 	/* uninitialize */
+ 	uninit_classifier(mng_info);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* classifier iterate component information */
+@@ -926,7 +926,7 @@ spp_classifier_get_component_status(
+ 		unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i, num_tx, num_rx = 0;
+ 	struct management_info *mng_info;
+ 	struct component_info *cmp_info;
+@@ -940,7 +940,7 @@ spp_classifier_get_component_status(
+ 				"Component[%d] Not used. "
+ 				"(status)(core = %d, type = %d)\n",
+ 				id, lcore_id, SPP_COMPONENT_CLASSIFIER_MAC);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	cmp_info = mng_info->cmp_infos + mng_info->ref_index;
+@@ -967,10 +967,10 @@ spp_classifier_get_component_status(
+ 		params, lcore_id,
+ 		cmp_info->name, SPP_TYPE_CLASSIFIER_MAC_STR,
+ 		num_rx, rx_ports, num_tx, tx_ports);
+-	if (unlikely(ret != 0))
+-		return -1;
++	if (unlikely(ret != SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ static void
+@@ -1071,5 +1071,5 @@ spp_classifier_mac_iterate_table(
+ 		}
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+diff --git a/src/vf/classifier_mac.h b/src/vf/classifier_mac.h
+index 2a97dc5..ba25e75 100644
+--- a/src/vf/classifier_mac.h
++++ b/src/vf/classifier_mac.h
+@@ -22,8 +22,8 @@ struct spp_iterate_classifier_table_params;
+ /**
+  * classifier(mac address) initialize globals.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_classifier_mac_init(void);
+ 
+@@ -34,8 +34,8 @@ int spp_classifier_mac_init(void);
+  *  The pointer to struct spp_component_info.@n
+  *  The data for updating the internal data of classifier.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_classifier_mac_update(struct spp_component_info *component_info);
+ 
+@@ -45,8 +45,8 @@ int spp_classifier_mac_update(struct spp_component_info *component_info);
+  * @param id
+  *  The unique component ID.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_classifier_mac_do(int id);
+ 
+@@ -62,8 +62,8 @@ int spp_classifier_mac_do(int id);
+  *  The pointer to struct spp_iterate_core_params.@n
+  *  Detailed data of classifier status.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int
+ spp_classifier_get_component_status(unsigned int lcore_id, int id,
+@@ -76,8 +76,8 @@ spp_classifier_get_component_status(unsigned int lcore_id, int id,
+  *  Point to struct spp_iterate_classifier_table_params.@n
+  *  Detailed data of classifier table.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_classifier_mac_iterate_table(
+ 		struct spp_iterate_classifier_table_params *params);
+diff --git a/src/vf/common/command_conn.c b/src/vf/common/command_conn.c
+index 4c3de54..a72180a 100644
+--- a/src/vf/common/command_conn.c
++++ b/src/vf/common/command_conn.c
+@@ -33,7 +33,7 @@ spp_command_conn_init(const char *controller_ip, int controller_port)
+ 	strcpy(g_controller_ip, controller_ip);
+ 	g_controller_port = controller_port;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* connect to controller */
+@@ -41,11 +41,11 @@ int
+ spp_connect_to_controller(int *sock)
+ {
+ 	static struct sockaddr_in controller_addr;
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int sock_flg = 0;
+ 
+ 	if (likely(*sock >= 0))
+-		return 0;
++		return SPP_RET_OK;
+ 
+ 	/* create socket */
+ 	RTE_LOG(INFO, SPP_COMMAND_PROC, "Creating socket...\n");
+@@ -81,14 +81,14 @@ spp_connect_to_controller(int *sock)
+ 	sock_flg = fcntl(*sock, F_GETFL, 0);
+ 	fcntl(*sock, F_SETFL, sock_flg | O_NONBLOCK);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* receive message */
+ int
+ spp_receive_message(int *sock, char **strbuf)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int n_rx = 0;
+ 	char *new_strbuf = NULL;
+ 
+@@ -105,7 +105,7 @@ spp_receive_message(int *sock, char **strbuf)
+ 					"Receive failure. errno=%d\n", errno);
+ 		} else {
+ 			/* no receive message */
+-			return 0;
++			return SPP_RET_OK;
+ 		}
+ 
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC, "Assume Server closed "
+@@ -134,7 +134,7 @@ spp_receive_message(int *sock, char **strbuf)
+ int
+ spp_send_message(int *sock, const char *message, size_t message_len)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 
+ 	ret = send(*sock, message, message_len, 0);
+ 	if (unlikely(ret == -1)) {
+@@ -144,5 +144,5 @@ spp_send_message(int *sock, const char *message, size_t message_len)
+ 		return SPP_CONNERR_TEMPORARY;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+diff --git a/src/vf/common/command_conn.h b/src/vf/common/command_conn.h
+index ce2f56c..3e56570 100644
+--- a/src/vf/common/command_conn.h
++++ b/src/vf/common/command_conn.h
+@@ -25,8 +25,8 @@
+  * @param controller_port
+  *  The controller's port number.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK  succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_command_conn_init(const char *controller_ip, int controller_port);
+ 
+@@ -38,7 +38,7 @@ int spp_command_conn_init(const char *controller_ip, int controller_port);
+  * @param sock
+  *  Socket number for connecting to controller.
+  *
+- * @retval 0                     succeeded.
++ * @retval SPP_RET_OK		 succeeded.
+  * @retval SPP_CONNERR_TEMPORARY temporary error. please retry.
+  */
+ int spp_connect_to_controller(int *sock);
+@@ -53,10 +53,10 @@ int spp_connect_to_controller(int *sock);
+  * @param msgbuf
+  *  The pointer to command message buffer.
+  *
+- * @retval 0 <                   succeeded. number of bytes received.
+- * @retval 0                     no receive message.
++ * @retval 0 <			 succeeded. number of bytes received.
++ * @retval SPP_RET_OK		 no receive message.
+  * @retval SPP_CONNERR_TEMPORARY temporary error. please reconnect.
+- * @retval SPP_CONNERR_FATAL    fatal error occurred. should terminate process.
++ * @retval SPP_CONNERR_FATAL	fatal error occurred. should terminate process.
+  */
+ int spp_receive_message(int *sock, char **msgbuf);
+ 
+@@ -72,7 +72,7 @@ int spp_receive_message(int *sock, char **msgbuf);
+  * @param message_len
+  *  The length of message.
+  *
+- * @retval 0                     succeeded.
++ * @retval SPP_RET_OK		 succeeded.
+  * @retval SPP_CONNERR_TEMPORARY temporary error. please reconnect.
+  */
+ int spp_send_message(int *sock, const char *message, size_t message_len);
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 1b08650..7cebbb5 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -134,7 +134,7 @@ spp_convert_port_to_iface(const char *port,
+ 		/* OTHER */
+ 		RTE_LOG(ERR, APP, "Unknown interface type. (port = %s)\n",
+ 				port);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* Change type of number of interface */
+@@ -142,7 +142,7 @@ spp_convert_port_to_iface(const char *port,
+ 	if (unlikely(no_str == endptr) || unlikely(*endptr != '\0')) {
+ 		/* No IF number */
+ 		RTE_LOG(ERR, APP, "No interface number. (port = %s)\n", port);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*iface_type = type;
+@@ -150,7 +150,7 @@ spp_convert_port_to_iface(const char *port,
+ 
+ 	RTE_LOG(DEBUG, APP, "Port = %s => Type = %d No = %d\n",
+ 			port, *iface_type, *iface_no);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Convert component name to component type */
+@@ -207,14 +207,14 @@ decode_parameter_value(char *string, int max, int *argc, char *argv[])
+ 	argv_tok = strtok_r(string, delim, &saveptr);
+ 	while (argv_tok != NULL) {
+ 		if (cnt >= max)
+-			return -1;
++			return SPP_RET_NG;
+ 		argv[cnt] = argv_tok;
+ 		cnt++;
+ 		argv_tok = strtok_r(NULL, delim, &saveptr);
+ 	}
+ 	*argc = cnt;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Get index of array */
+@@ -226,7 +226,7 @@ get_arrary_index(const char *match, const char *list[])
+ 		if (strcmp(list[i], match) == 0)
+ 			return i;
+ 	}
+-	return -1;
++	return SPP_RET_NG;
+ }
+ 
+ /* Get int type value */
+@@ -241,13 +241,13 @@ get_int_value(
+ 	char *endptr = NULL;
+ 	ret = strtol(arg_val, &endptr, 0);
+ 	if (unlikely(endptr == arg_val) || unlikely(*endptr != '\0'))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	if (unlikely(ret < min) || unlikely(ret > max))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	*output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Get unsigned int type value */
+@@ -258,17 +258,17 @@ get_uint_value(
+ 		unsigned int min,
+ 		unsigned int max)
+ {
+-	unsigned int ret = 0;
++	unsigned int ret = SPP_RET_OK;
+ 	char *endptr = NULL;
+ 	ret = strtoul(arg_val, &endptr, 0);
+ 	if (unlikely(endptr == arg_val) || unlikely(*endptr != '\0'))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	if (unlikely(ret < min) || unlikely(ret > max))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	*output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of string */
+@@ -276,54 +276,54 @@ static int
+ decode_str_value(char *output, const char *arg_val)
+ {
+ 	if (strlen(arg_val) >= SPP_CMD_VALUE_BUFSZ)
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	strcpy(output, arg_val);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of port */
+ static int
+ decode_port_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	struct spp_port_index *port = output;
+ 	ret = spp_convert_port_to_iface(arg_val, &port->iface_type,
+ 							&port->iface_no);
+ 	if (unlikely(ret != 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad port. val=%s\n", arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of core */
+ static int
+ decode_core_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = get_uint_value(output, arg_val, 0, RTE_MAX_LCORE-1);
+ 	if (unlikely(ret < 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad core id. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of action for component command */
+ static int
+ decode_component_action_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (unlikely(ret != SPP_CMD_ACTION_START) &&
+@@ -331,18 +331,18 @@ decode_component_action_value(void *output, const char *arg_val)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*(int *)output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of action for component command */
+ static int
+ decode_component_name_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	struct spp_command_component *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+@@ -352,7 +352,7 @@ decode_component_name_value(void *output, const char *arg_val)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Component name in used. val=%s\n",
+ 					arg_val);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+ 
+@@ -367,7 +367,7 @@ decode_component_core_value(void *output, const char *arg_val)
+ 
+ 	/* "stop" has no core ID parameter. */
+ 	if (component->action != SPP_CMD_ACTION_START)
+-		return 0;
++		return SPP_RET_OK;
+ 
+ 	return decode_core_value(&component->core, arg_val);
+ }
+@@ -381,14 +381,14 @@ decode_component_type_value(void *output, const char *arg_val)
+ 
+ 	/* "stop" has no type parameter. */
+ 	if (component->action != SPP_CMD_ACTION_START)
+-		return 0;
++		return SPP_RET_OK;
+ 
+ 	set_type = spp_convert_component_type(arg_val);
+ 	if (unlikely(set_type <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component type. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	org_type = spp_get_component_type_update(component->core);
+@@ -397,24 +397,24 @@ decode_component_type_value(void *output, const char *arg_val)
+ 				"Component type does not match. "
+ 				"val=%s (org=%d, new=%d)\n",
+ 				arg_val, org_type, set_type);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	component->type = set_type;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of action for port command */
+ static int
+ decode_port_action_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown port action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (unlikely(ret != SPP_CMD_ACTION_ADD) &&
+@@ -422,24 +422,24 @@ decode_port_action_value(void *output, const char *arg_val)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown port action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*(int *)output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of port for port command */
+ static int
+ decode_port_port_value(void *output, const char *arg_val)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	struct spp_port_index tmp_port;
+ 	struct spp_command_port *port = output;
+ 
+ 	ret = decode_port_value(&tmp_port, arg_val);
+-	if (ret < 0)
+-		return -1;
++	if (ret < SPP_RET_OK)
++		return SPP_RET_NG;
+ 
+ 	if ((port->action == SPP_CMD_ACTION_ADD) &&
+ 			(spp_check_used_port(tmp_port.iface_type,
+@@ -451,26 +451,26 @@ decode_port_port_value(void *output, const char *arg_val)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Port in used. (port command) val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	port->port.iface_type = tmp_port.iface_type;
+ 	port->port.iface_no   = tmp_port.iface_no;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of rxtx type for port command */
+ static int
+ decode_port_rxtx_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	struct spp_command_port *port = output;
+ 
+ 	ret = get_arrary_index(arg_val, PORT_RXTX_STRINGS);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port rxtx. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if ((port->action == SPP_CMD_ACTION_ADD) &&
+@@ -479,24 +479,24 @@ decode_port_rxtx_value(void *output, const char *arg_val)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Port in used. (port command) val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	port->rxtx = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of component name for port command */
+ static int
+ decode_port_name_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 
+ 	ret = spp_get_component_id(arg_val);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component name. val=%s\n", arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	return decode_str_value(output, arg_val);
+@@ -506,7 +506,7 @@ decode_port_name_value(void *output, const char *arg_val)
+ static int
+ decode_port_ability_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	struct spp_command_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+@@ -517,7 +517,7 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Unknown port ability. val=%s\n",
+ 					arg_val);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 		ability->ope  = ret;
+ 		ability->rxtx = port->rxtx;
+@@ -530,7 +530,7 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 				RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 						"Bad VLAN ID. val=%s\n",
+ 						arg_val);
+-				return -1;
++				return SPP_RET_NG;
+ 			}
+ 			ability->data.vlantag.pcp = -1;
+ 		} else {
+@@ -540,7 +540,7 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 				RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 						"Bad VLAN PCP. val=%s\n",
+ 						arg_val);
+-				return -1;
++				return SPP_RET_NG;
+ 			}
+ 		}
+ 		break;
+@@ -552,14 +552,14 @@ decode_port_ability_value(void *output, const char *arg_val)
+ 		break;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of mac address string */
+ static int
+ decode_mac_addr_str_value(void *output, const char *arg_val)
+ {
+-	int64_t ret = 0;
++	int64_t ret = SPP_RET_OK;
+ 	const char *str_val = arg_val;
+ 
+ 	/* if default specification, convert to internal dummy address */
+@@ -567,88 +567,88 @@ decode_mac_addr_str_value(void *output, const char *arg_val)
+ 		str_val = SPP_DEFAULT_CLASSIFIED_DMY_ADDR_STR;
+ 
+ 	ret = spp_change_mac_str_to_int64(str_val);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Bad mac address string. val=%s\n", str_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	strcpy((char *)output, str_val);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of action for classifier_table command */
+ static int
+ decode_classifier_action_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (unlikely(ret != SPP_CMD_ACTION_ADD) &&
+ 			unlikely(ret != SPP_CMD_ACTION_DEL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port action. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*(int *)output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of type for classifier_table command */
+ static int
+ decode_classifier_type_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = get_arrary_index(arg_val, CLASSIFILER_TYPE_STRINGS);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown classifier type. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*(int *)output = ret;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of vlan id for classifier_table command */
+ static int
+ decode_classifier_vid_value(void *output, const char *arg_val)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	ret = get_int_value(output, arg_val, 0, ETH_VLAN_ID_MAX);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad VLAN ID. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of port for classifier_table command */
+ static int
+ decode_classifier_port_value(void *output, const char *arg_val)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	struct spp_command_classifier_table *classifier_table = output;
+ 	struct spp_port_index tmp_port;
+ 	int64_t mac_addr = 0;
+ 
+ 	ret = decode_port_value(&tmp_port, arg_val);
+-	if (ret < 0)
+-		return -1;
++	if (ret < SPP_RET_OK)
++		return SPP_RET_NG;
+ 
+ 	if (spp_check_added_port(tmp_port.iface_type,
+ 					tmp_port.iface_no) == 0) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Port not added. val=%s\n",
+ 				arg_val);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (classifier_table->type == SPP_CLASSIFIER_TYPE_MAC)
+@@ -660,12 +660,12 @@ decode_classifier_port_value(void *output, const char *arg_val)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Port in used. "
+ 					"(classifier_table command) val=%s\n",
+ 					arg_val);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	} else if (unlikely(classifier_table->action == SPP_CMD_ACTION_DEL)) {
+ 		mac_addr = spp_change_mac_str_to_int64(classifier_table->mac);
+ 		if (mac_addr < 0)
+-			return -1;
++			return SPP_RET_NG;
+ 
+ 		if (!spp_check_classid_used_port(classifier_table->vid,
+ 				(uint64_t)mac_addr,
+@@ -673,13 +673,13 @@ decode_classifier_port_value(void *output, const char *arg_val)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Port in used. "
+ 					"(classifier_table command) val=%s\n",
+ 					arg_val);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+ 
+ 	classifier_table->port.iface_type = tmp_port.iface_type;
+ 	classifier_table->port.iface_no   = tmp_port.iface_no;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ #define DECODE_PARAMETER_LIST_EMPTY { NULL, 0, NULL }
+@@ -830,7 +830,7 @@ decode_command_parameter_in_list(struct spp_command_request *request,
+ 				int argc, char *argv[],
+ 				struct spp_command_decode_error *error)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	int ci = request->commands[0].type;
+ 	int pi = 0;
+ 	struct decode_parameter_list *list = NULL;
+@@ -848,7 +848,7 @@ decode_command_parameter_in_list(struct spp_command_request *request,
+ 					list->name);
+ 		}
+ 	}
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* command list for decoding */
+@@ -883,7 +883,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 			const char *request_str,
+ 			struct spp_command_decode_error *error)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	int command_name_check = 0;
+ 	struct decode_command_list *list = NULL;
+ 	int i = 0;
+@@ -896,7 +896,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	strcpy(tmp_str, request_str);
+ 	ret = decode_parameter_value(tmp_str, SPP_CMD_MAX_PARAMETERS,
+ 			&argc, argv);
+-	if (ret < 0) {
++	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number over limit."
+ 				"request_str=%s\n", request_str);
+ 		return set_decode_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
+@@ -918,7 +918,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 		if (list->func != NULL)
+ 			return (*list->func)(request, argc, argv, error);
+ 
+-		return 0;
++		return SPP_RET_OK;
+ 	}
+ 
+ 	if (command_name_check != 0) {
+@@ -940,13 +940,13 @@ spp_command_decode_request(
+ 		const char *request_str, size_t request_str_len,
+ 		struct spp_command_decode_error *error)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 
+ 	/* decode request */
+ 	request->num_command = 1;
+ 	ret = decode_command_in_list(request, request_str, error);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Cannot decode command request. "
+ 				"ret=%d, request_str=%.*s\n",
+diff --git a/src/vf/common/command_dec.h b/src/vf/common/command_dec.h
+index 538eb57..84644f2 100644
+--- a/src/vf/common/command_dec.h
++++ b/src/vf/common/command_dec.h
+@@ -189,7 +189,7 @@ struct spp_command_decode_error {
+  *  The pointer to struct spp_command_decode_error.@n
+  *  Detailed error information will be stored.
+  *
+- * @retval 0  succeeded.
++ * @retval SPP_RET_OK succeeded.
+  * @retval !0 failed.
+  */
+ int spp_command_decode_request(struct spp_command_request *request,
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index d30acf3..a726302 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -397,7 +397,7 @@ spp_update_port(enum spp_command_action action,
+ static int
+ spp_flush(void)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	struct cancel_backup_info *backup_info = NULL;
+ 
+ 	spp_get_mng_data_addr(NULL, NULL, NULL,
+@@ -405,7 +405,7 @@ spp_flush(void)
+ 
+ 	/* Initial setting of each interface. */
+ 	ret = flush_port();
+-	if (ret < 0)
++	if (ret < SPP_RET_OK)
+ 		return ret;
+ 
+ 	/* Flush of core index. */
+@@ -503,7 +503,7 @@ spp_get_dpdk_port(enum port_type iface_type, int iface_no)
+ 	case VHOST:
+ 		return iface_info->vhost[iface_no].dpdk_port;
+ 	default:
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ }
+ 
+@@ -515,10 +515,10 @@ append_json_comma(char **output)
+ 	if (unlikely(*output == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's comma failed to add.\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append data of unsigned integral type for JSON format */
+@@ -533,12 +533,12 @@ append_json_uint_value(const char *name, char **output, unsigned int value)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's numeric format failed to add. "
+ 				"(name = %s, uint = %u)\n", name, value);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	sprintf(&(*output)[len], JSON_APPEND_VALUE("%u"),
+ 			JSON_APPEND_COMMA(len), name, value);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append data of integral type for JSON format */
+@@ -553,12 +553,12 @@ append_json_int_value(const char *name, char **output, int value)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's numeric format failed to add. "
+ 				"(name = %s, int = %d)\n", name, value);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	sprintf(&(*output)[len], JSON_APPEND_VALUE("%d"),
+ 			JSON_APPEND_COMMA(len), name, value);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append data of string type for JSON format */
+@@ -573,12 +573,12 @@ append_json_str_value(const char *name, char **output, const char *str)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's string format failed to add. "
+ 				"(name = %s, str = %s)\n", name, str);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	sprintf(&(*output)[len], JSON_APPEND_VALUE("\"%s\""),
+ 			JSON_APPEND_COMMA(len), name, str);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append brackets of the array for JSON format */
+@@ -593,12 +593,12 @@ append_json_array_brackets(const char *name, char **output, const char *str)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's square bracket failed to add. "
+ 				"(name = %s, str = %s)\n", name, str);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	sprintf(&(*output)[len], JSON_APPEND_ARRAY,
+ 			JSON_APPEND_COMMA(len), name, str);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append brackets of the blocks for JSON format */
+@@ -613,7 +613,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"JSON's curly bracket failed to add. "
+ 				"(name = %s, str = %s)\n", name, str);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (name[0] == '\0')
+@@ -622,14 +622,14 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ 	else
+ 		sprintf(&(*output)[len], JSON_APPEND_BLOCK,
+ 				JSON_APPEND_COMMA(len), name, str);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* execute one command */
+ static int
+ execute_command(const struct spp_command *command)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 
+ 	switch (command->type) {
+ 	case SPP_CMDTYPE_CLASSIFIER_TABLE_MAC:
+@@ -789,26 +789,26 @@ append_result_value(const char *name, char **output, void *tmp)
+ static int
+ append_error_details_value(const char *name, char **output, void *tmp)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	const struct command_result *result = tmp;
+ 	char *tmp_buff;
+ 	/* string is empty, except for errors */
+ 	if (result->error_message[0] == '\0')
+-		return 0;
++		return SPP_RET_OK;
+ 
+ 	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_str_value("message", &tmp_buff,
+ 			result->error_message);
+ 	if (unlikely(ret < 0)) {
+ 		spp_strbuf_free(tmp_buff);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_block_brackets(name, output, tmp_buff);
+@@ -842,13 +842,13 @@ append_interface_array(char **output, const enum port_type type)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Interface number failed to add. "
+ 					"(type = %d)\n", type);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		port_cnt++;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append a list of interface numbers for JSON format */
+@@ -856,13 +856,13 @@ static int
+ append_interface_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (strcmp(name, SPP_IFTYPE_NIC_STR) == 0)
+@@ -874,9 +874,9 @@ append_interface_value(const char *name, char **output,
+ 	else if (strcmp(name, SPP_IFTYPE_RING_STR) == 0)
+ 		ret = append_interface_array(&tmp_buff, RING);
+ 
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(tmp_buff);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(name, output, tmp_buff);
+@@ -888,21 +888,21 @@ append_interface_value(const char *name, char **output,
+ static int
+ append_vlan_value(char **output, const int ope, const int vid, const int pcp)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	ret = append_json_str_value("operation", output,
+ 			PORT_ABILITY_STATUS_STRINGS[ope]);
+-	if (unlikely(ret < 0))
+-		return -1;
++	if (unlikely(ret < SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+ 	ret = append_json_int_value("id", output, vid);
+ 	if (unlikely(ret < 0))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	ret = append_json_int_value("pcp", output, pcp);
+ 	if (unlikely(ret < 0))
+-		return -1;
++		return SPP_RET_NG;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* append a block of vlan for JSON format */
+@@ -910,7 +910,7 @@ static int
+ append_vlan_block(const char *name, char **output,
+ 		const int port_id, const enum spp_port_rxtx rxtx)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i = 0;
+ 	struct spp_port_ability *info = NULL;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+@@ -918,7 +918,7 @@ append_vlan_block(const char *name, char **output,
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	spp_port_ability_get_info(port_id, rxtx, &info);
+@@ -929,8 +929,8 @@ append_vlan_block(const char *name, char **output,
+ 			ret = append_vlan_value(&tmp_buff, info[i].ope,
+ 					info[i].data.vlantag.vid,
+ 					info[i].data.vlantag.pcp);
+-			if (unlikely(ret < 0))
+-				return -1;
++			if (unlikely(ret < SPP_RET_OK))
++				return SPP_RET_NG;
+ 
+ 			/*
+ 			 * Change counter to "maximum+1" for exit the loop.
+@@ -947,8 +947,8 @@ append_vlan_block(const char *name, char **output,
+ 	if (i == SPP_PORT_ABILITY_MAX) {
+ 		ret = append_vlan_value(&tmp_buff, SPP_PORT_ABILITY_OPE_NONE,
+ 				0, 0);
+-		if (unlikely(ret < 0))
+-			return -1;
++		if (unlikely(ret < SPP_RET_OK))
++			return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_block_brackets(name, output, tmp_buff);
+@@ -961,25 +961,25 @@ static int
+ append_port_block(char **output, const struct spp_port_index *port,
+ 		const enum spp_port_rxtx rxtx)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char port_str[CMD_TAG_APPEND_SIZE];
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = port_block)\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	spp_format_port_string(port_str, port->iface_type, port->iface_no);
+ 	ret = append_json_str_value("port", &tmp_buff, port_str);
+-	if (unlikely(ret < 0))
+-		return -1;
++	if (unlikely(ret < SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+ 	ret = append_vlan_block("vlan", &tmp_buff,
+ 			spp_get_dpdk_port(port->iface_type, port->iface_no),
+ 			rxtx);
+-	if (unlikely(ret < 0))
+-		return -1;
++	if (unlikely(ret < SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+ 	ret = append_json_block_brackets("", output, tmp_buff);
+ 	spp_strbuf_free(tmp_buff);
+@@ -992,20 +992,20 @@ append_port_array(const char *name, char **output, const int num,
+ 		const struct spp_port_index *ports,
+ 		const enum spp_port_rxtx rxtx)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i = 0;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	for (i = 0; i < num; i++) {
+ 		ret = append_port_block(&tmp_buff, &ports[i], rxtx);
+-		if (unlikely(ret < 0))
+-			return -1;
++		if (unlikely(ret < SPP_RET_OK))
++			return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(name, output, tmp_buff);
+@@ -1022,7 +1022,7 @@ append_core_element_value(
+ 		const int num_rx, const struct spp_port_index *rx_ports,
+ 		const int num_tx, const struct spp_port_index *tx_ports)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int unuse_flg = 0;
+ 	char *buff, *tmp_buff;
+ 	buff = params->output;
+@@ -1038,7 +1038,7 @@ append_core_element_value(
+ 	unuse_flg = strcmp(type, SPP_TYPE_UNUSE_STR);
+ 
+ 	ret = append_json_uint_value("core", &tmp_buff, lcore_id);
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+ 	if (unuse_flg) {
+@@ -1048,7 +1048,7 @@ append_core_element_value(
+ 	}
+ 
+ 	ret = append_json_str_value("type", &tmp_buff, type);
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+ 	if (unuse_flg) {
+@@ -1059,7 +1059,7 @@ append_core_element_value(
+ 
+ 		ret = append_port_array("tx_port", &tmp_buff,
+ 				num_tx, tx_ports, SPP_PORT_RXTX_TX);
+-		if (unlikely(ret < 0))
++		if (unlikely(ret < SPP_RET_OK))
+ 			return ret;
+ 	}
+ 
+@@ -1074,23 +1074,23 @@ static int
+ append_core_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	struct spp_iterate_core_params itr_params;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	itr_params.output = tmp_buff;
+ 	itr_params.element_proc = append_core_element_value;
+ 
+ 	ret = spp_iterate_core_info(&itr_params);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		spp_strbuf_free(itr_params.output);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(name, output, itr_params.output);
+@@ -1106,7 +1106,7 @@ append_classifier_element_value(
+ 		int vid, const char *mac,
+ 		const struct spp_port_index *port)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char *buff, *tmp_buff;
+ 	char port_str[CMD_TAG_APPEND_SIZE];
+ 	char value_str[SPP_MIN_STR_LEN];
+@@ -1122,7 +1122,7 @@ append_classifier_element_value(
+ 
+ 	ret = append_json_str_value("type", &tmp_buff,
+ 			CLASSIFILER_TYPE_STATUS_STRINGS[type]);
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+ 	memset(value_str, 0x00, SPP_MIN_STR_LEN);
+@@ -1143,7 +1143,7 @@ append_classifier_element_value(
+ 		return ret;
+ 
+ 	ret = append_json_str_value("port", &tmp_buff, port_str);
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+ 	ret = append_json_block_brackets("", &buff, tmp_buff);
+@@ -1157,23 +1157,23 @@ static int
+ append_classifier_table_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	struct spp_iterate_classifier_table_params itr_params;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	itr_params.output = tmp_buff;
+ 	itr_params.element_proc = append_classifier_element_value;
+ 
+ 	ret = spp_iterate_classifier_table(&itr_params);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		spp_strbuf_free(itr_params.output);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(name, output, itr_params.output);
+@@ -1187,25 +1187,25 @@ append_response_list_value(char **output,
+ 		struct command_response_list *list,
+ 		void *tmp)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 	char *tmp_buff;
+ 	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = response_list)\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	for (i = 0; list[i].tag_name[0] != '\0'; i++) {
+ 		tmp_buff[0] = '\0';
+ 		ret = list[i].func(list[i].tag_name, &tmp_buff, tmp);
+-		if (unlikely(ret < 0)) {
++		if (unlikely(ret < SPP_RET_OK)) {
+ 			spp_strbuf_free(tmp_buff);
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Failed to get reply string. "
+ 					"(tag = %s)\n", list[i].tag_name);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		if (tmp_buff[0] == '\0')
+@@ -1213,13 +1213,13 @@ append_response_list_value(char **output,
+ 
+ 		if ((*output)[0] != '\0') {
+ 			ret = append_json_comma(output);
+-			if (unlikely(ret < 0)) {
++			if (unlikely(ret < SPP_RET_OK)) {
+ 				spp_strbuf_free(tmp_buff);
+ 				RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 						"Failed to add commas. "
+ 						"(tag = %s)\n",
+ 						list[i].tag_name);
+-				return -1;
++				return SPP_RET_NG;
+ 			}
+ 		}
+ 
+@@ -1231,12 +1231,12 @@ append_response_list_value(char **output,
+ 					"Failed to add reply string. "
+ 					"(tag = %s)\n",
+ 					list[i].tag_name);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+ 
+ 	spp_strbuf_free(tmp_buff);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* termination constant of command response list */
+@@ -1265,7 +1265,7 @@ static int
+ append_command_results_value(const char *name, char **output,
+ 		int num, struct command_result *results)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 	char *tmp_buff1, *tmp_buff2;
+ 	tmp_buff1 = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+@@ -1273,7 +1273,7 @@ append_command_results_value(const char *name, char **output,
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s, buff=1)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	tmp_buff2 = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+@@ -1282,7 +1282,7 @@ append_command_results_value(const char *name, char **output,
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s, buff=2)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	for (i = 0; i < num; i++) {
+@@ -1292,14 +1292,14 @@ append_command_results_value(const char *name, char **output,
+ 		if (unlikely(ret < 0)) {
+ 			spp_strbuf_free(tmp_buff1);
+ 			spp_strbuf_free(tmp_buff2);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		ret = append_json_block_brackets("", &tmp_buff2, tmp_buff1);
+ 		if (unlikely(ret < 0)) {
+ 			spp_strbuf_free(tmp_buff1);
+ 			spp_strbuf_free(tmp_buff2);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 	}
+@@ -1314,20 +1314,20 @@ append_command_results_value(const char *name, char **output,
+ static int
+ append_info_value(const char *name, char **output)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_response_list_value(&tmp_buff,
+ 			response_info_list, NULL);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(tmp_buff);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	ret = append_json_block_brackets(name, output, tmp_buff);
+@@ -1341,7 +1341,7 @@ send_decode_error_response(int *sock,
+ 		const struct spp_command_request *request,
+ 		struct command_result *command_results)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char *msg, *tmp_buff;
+ 	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+@@ -1353,7 +1353,7 @@ send_decode_error_response(int *sock,
+ 	/* create & append result array */
+ 	ret = append_command_results_value("results", &tmp_buff,
+ 			request->num_command, command_results);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(tmp_buff);
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Failed to make command result response.\n");
+@@ -1369,7 +1369,7 @@ send_decode_error_response(int *sock,
+ 	}
+ 	ret = append_json_block_brackets("", &msg, tmp_buff);
+ 	spp_strbuf_free(tmp_buff);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(msg);
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = result_response)\n");
+@@ -1382,7 +1382,7 @@ send_decode_error_response(int *sock,
+ 
+ 	/* send response to requester */
+ 	ret = spp_send_message(sock, msg, strlen(msg));
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Failed to send decode error response.\n");
+ 		/* not return */
+@@ -1397,7 +1397,7 @@ send_command_result_response(int *sock,
+ 		const struct spp_command_request *request,
+ 		struct command_result *command_results)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	char *msg, *tmp_buff;
+ 	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+@@ -1409,7 +1409,7 @@ send_command_result_response(int *sock,
+ 	/* create & append result array */
+ 	ret = append_command_results_value("results", &tmp_buff,
+ 			request->num_command, command_results);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(tmp_buff);
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Failed to make command result response.\n");
+@@ -1419,7 +1419,7 @@ send_command_result_response(int *sock,
+ 	/* append client id information value */
+ 	if (request->is_requested_client_id) {
+ 		ret = append_client_id_value("client_id", &tmp_buff, NULL);
+-		if (unlikely(ret < 0)) {
++		if (unlikely(ret < SPP_RET_OK)) {
+ 			spp_strbuf_free(tmp_buff);
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Failed to make "
+ 					"client id response.\n");
+@@ -1430,7 +1430,7 @@ send_command_result_response(int *sock,
+ 	/* append info value */
+ 	if (request->is_requested_status) {
+ 		ret = append_info_value("info", &tmp_buff);
+-		if (unlikely(ret < 0)) {
++		if (unlikely(ret < SPP_RET_OK)) {
+ 			spp_strbuf_free(tmp_buff);
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Failed to make status response.\n");
+@@ -1447,7 +1447,7 @@ send_command_result_response(int *sock,
+ 	}
+ 	ret = append_json_block_brackets("", &msg, tmp_buff);
+ 	spp_strbuf_free(tmp_buff);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < SPP_RET_OK)) {
+ 		spp_strbuf_free(msg);
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"allocate error. (name = result_response)\n");
+@@ -1460,7 +1460,7 @@ send_command_result_response(int *sock,
+ 
+ 	/* send response to requester */
+ 	ret = spp_send_message(sock, msg, strlen(msg));
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 			"Failed to send command result response.\n");
+ 		/* not return */
+@@ -1473,7 +1473,7 @@ send_command_result_response(int *sock,
+ static int
+ process_request(int *sock, const char *request_str, size_t request_str_len)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int i;
+ 
+ 	struct spp_command_request request;
+@@ -1491,14 +1491,14 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	/* decode request message */
+ 	ret = spp_command_decode_request(
+ 			&request, request_str, request_str_len, &decode_error);
+-	if (unlikely(ret != 0)) {
++	if (unlikely(ret != SPP_RET_OK)) {
+ 		/* send error response */
+ 		set_decode_error_to_results(command_results, &request,
+ 				&decode_error);
+ 		send_decode_error_response(sock, &request, command_results);
+ 		RTE_LOG(DEBUG, SPP_COMMAND_PROC,
+ 				"End command request processing.\n");
+-		return 0;
++		return SPP_RET_OK;
+ 	}
+ 
+ 	RTE_LOG(DEBUG, SPP_COMMAND_PROC, "Command request is valid. "
+@@ -1508,7 +1508,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	/* execute commands */
+ 	for (i = 0; i < request.num_command ; ++i) {
+ 		ret = execute_command(request.commands + i);
+-		if (unlikely(ret != 0)) {
++		if (unlikely(ret != SPP_RET_OK)) {
+ 			set_command_results(&command_results[i], CRES_FAILURE,
+ 					"error occur");
+ 
+@@ -1528,7 +1528,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 		/* Other route is normal end because it responds to command. */
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"No response with process exit command.\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* send response */
+@@ -1536,7 +1536,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	RTE_LOG(DEBUG, SPP_COMMAND_PROC, "End command request processing.\n");
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* initialize command processor. */
+@@ -1550,7 +1550,7 @@ spp_command_proc_init(const char *controller_ip, int controller_port)
+ int
+ spp_command_proc_do(void)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int msg_ret = -1;
+ 
+ 	static int sock = -1;
+@@ -1562,22 +1562,22 @@ spp_command_proc_do(void)
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Cannot allocate memory "
+ 					"for receive data(init).\n");
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+ 
+ 	ret = spp_connect_to_controller(&sock);
+-	if (unlikely(ret != 0))
+-		return 0;
++	if (unlikely(ret != SPP_RET_OK))
++		return SPP_RET_OK;
+ 
+ 	msg_ret = spp_receive_message(&sock, &msgbuf);
+ 	if (unlikely(msg_ret <= 0)) {
+ 		if (likely(msg_ret == 0))
+-			return 0;
++			return SPP_RET_OK;
+ 		else if (unlikely(msg_ret == SPP_CONNERR_TEMPORARY))
+-			return 0;
++			return SPP_RET_OK;
+ 		else
+-			return -1;
++			return SPP_RET_NG;
+ 	}
+ 
+ 	ret = process_request(&sock, msgbuf, msg_ret);
+diff --git a/src/vf/common/command_proc.h b/src/vf/common/command_proc.h
+index 3a8d0cd..9e261f3 100644
+--- a/src/vf/common/command_proc.h
++++ b/src/vf/common/command_proc.h
+@@ -21,8 +21,8 @@
+  * @param controller_port
+  *  The controller's port number.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int
+ spp_command_proc_init(const char *controller_ip, int controller_port);
+@@ -30,8 +30,8 @@ spp_command_proc_init(const char *controller_ip, int controller_port);
+ /**
+  * process command from controller.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 process termination is required.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG process termination is required.
+  *            (occurred connection failure, or received exit command)
+  */
+ int
+diff --git a/src/vf/common/ringlatencystats.c b/src/vf/common/ringlatencystats.c
+index a0cc901..1483a7e 100644
+--- a/src/vf/common/ringlatencystats.c
++++ b/src/vf/common/ringlatencystats.c
+@@ -57,7 +57,7 @@ spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count)
+ 	if (unlikely(g_stats_info == NULL)) {
+ 		RTE_LOG(ERR, SPP_RING_LATENCY_STATS, "Cannot allocate memory "
+ 				"for ring latency stats info\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* store global information for ring latency statistics */
+@@ -70,7 +70,7 @@ spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count)
+ 			g_samp_intvl, g_stats_count,
+ 			cycles_per_ns(), NS_PER_SEC);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ void
+diff --git a/src/vf/common/ringlatencystats.h b/src/vf/common/ringlatencystats.h
+index 0daa7c4..b919c62 100644
+--- a/src/vf/common/ringlatencystats.h
++++ b/src/vf/common/ringlatencystats.h
+@@ -33,8 +33,8 @@ struct spp_ringlatencystats_ring_latency_stats {
+  * @param stats_count
+  *  The number of ring to be measured.
+  *
+- * @retval 0: succeeded.
+- * @retval -1: failed.
++ * @retval SPP_RET_OK: succeeded.
++ * @retval SPP_RET_NG: failed.
+  */
+ int spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count);
+ 
+diff --git a/src/vf/common/spp_port.c b/src/vf/common/spp_port.c
+index 3b1f5c3..d7d374e 100644
+--- a/src/vf/common/spp_port.c
++++ b/src/vf/common/spp_port.c
+@@ -111,7 +111,7 @@ add_vlantag_packet(
+ 		if (unlikely(new_ether == NULL)) {
+ 			RTE_LOG(ERR, PORT, "Failed to "
+ 					"get additional header area.\n");
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		rte_memcpy(new_ether, old_ether, sizeof(struct ether_hdr));
+@@ -122,7 +122,7 @@ add_vlantag_packet(
+ 
+ 	vlan->vlan_tci = vlantag->tci;
+ 	set_fcs_packet(pkt);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Add VLAN tag to all packets. */
+@@ -131,7 +131,7 @@ add_vlantag_all_packets(
+ 		struct rte_mbuf **pkts, int nb_pkts,
+ 		const union spp_ability_data *data)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < nb_pkts; cnt++) {
+ 		ret = add_vlantag_packet(pkts[cnt], data);
+@@ -163,7 +163,7 @@ del_vlantag_packet(
+ 		if (unlikely(new_ether == NULL)) {
+ 			RTE_LOG(ERR, PORT, "Failed to "
+ 					"delete unnecessary header area.\n");
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		old = (uint32_t *)old_ether;
+@@ -174,7 +174,7 @@ del_vlantag_packet(
+ 		old[0] = 0;
+ 		set_fcs_packet(pkt);
+ 	}
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Delete VLAN tag to all packets. */
+@@ -183,7 +183,7 @@ del_vlantag_all_packets(
+ 		struct rte_mbuf **pkts, int nb_pkts,
+ 		const union spp_ability_data *data)
+ {
+-	int ret = 0;
++	int ret = SPP_RET_OK;
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < nb_pkts; cnt++) {
+ 		ret = del_vlantag_packet(pkts[cnt], data);
+@@ -373,7 +373,7 @@ spp_eth_rx_burst(
+ 	uint16_t nb_rx = 0;
+ 	nb_rx = rte_eth_rx_burst(port_id, 0, rx_pkts, nb_pkts);
+ 	if (unlikely(nb_rx == 0))
+-		return 0;
++		return SPP_RET_OK;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+ 	if (g_port_mng_info[port_id].iface_type == RING)
+@@ -396,7 +396,7 @@ spp_eth_tx_burst(
+ 	nb_tx = port_ability_each_operation(port_id, tx_pkts, nb_pkts,
+ 			SPP_PORT_RXTX_TX);
+ 	if (unlikely(nb_tx == 0))
+-		return 0;
++		return SPP_RET_OK;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+ 	if (g_port_mng_info[port_id].iface_type == RING)
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 37179f5..a6ddeb6 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -76,7 +76,7 @@ add_ring_pmd(int ring_id)
+ 	if (unlikely(ring == NULL)) {
+ 		RTE_LOG(ERR, APP,
+ 			"Cannot get RX ring - is server process running?\n");
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* Create ring pmd */
+@@ -107,7 +107,7 @@ add_vhost_pmd(int index, int client)
+ 	if (unlikely(mp == NULL)) {
+ 		RTE_LOG(ERR, APP, "Cannot get mempool for mbufs. "
+ 				"(name = %s)\n", PKTMBUF_POOL_NAME);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* eth_vhost0 index 0 iface /tmp/sock0 on numa 0 */
+@@ -178,7 +178,7 @@ spp_get_core_status(unsigned int lcore_id)
+ /**
+  * Check status of all of cores is same as given
+  *
+- * It returns -1 as status mismatch if status is not same.
++ * It returns SPP_RET_NG as status mismatch if status is not same.
+  * If core is in use, status will be checked.
+  */
+ static int
+@@ -189,10 +189,10 @@ check_core_status(enum spp_core_status status)
+ 		if ((g_mng_data_addr.p_core_info + lcore_id)->status !=
+ 								status) {
+ 			/* Status is mismatched */
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ int
+@@ -203,11 +203,11 @@ check_core_status_wait(enum spp_core_status status)
+ 		sleep(1);
+ 		int ret = check_core_status(status);
+ 		if (ret == 0)
+-			return 0;
++			return SPP_RET_OK;
+ 	}
+ 
+ 	RTE_LOG(ERR, APP, "Status check time out. (status = %d)\n", status);
+-	return -1;
++	return SPP_RET_NG;
+ }
+ 
+ /* Set core status */
+@@ -522,7 +522,7 @@ set_nic_interface(void)
+ 		p_iface_info->nic[nic_cnt].dpdk_port = nic_cnt;
+ 	}
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Setup management info for spp_vf */
+@@ -535,10 +535,10 @@ init_mng_data(void)
+ 	init_component_info();
+ 
+ 	int ret_nic = set_nic_interface();
+-	if (unlikely(ret_nic != 0))
+-		return -1;
++	if (unlikely(ret_nic != SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+@@ -707,7 +707,7 @@ get_free_component(void)
+ 		if ((component_info + cnt)->type == SPP_COMPONENT_UNUSE)
+ 			return cnt;
+ 	}
+-	return -1;
++	return SPP_RET_NG;
+ }
+ 
+ /* Get component id for specified component name */
+@@ -742,7 +742,7 @@ del_component_info(int component_id, int component_num, int *componet_array)
+ 	}
+ 
+ 	if (match < 0)
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	/* Last element is excluded from movement. */
+ 	max--;
+@@ -763,7 +763,7 @@ check_port_element(
+ 		struct spp_port_info *array[])
+ {
+ 	int cnt = 0;
+-	int match = -1;
++	int match = SPP_RET_NG;
+ 	for (cnt = 0; cnt < num; cnt++) {
+ 		if (info == array[cnt])
+ 			match = cnt;
+@@ -779,12 +779,12 @@ get_del_port_element(
+ 		struct spp_port_info *array[])
+ {
+ 	int cnt = 0;
+-	int match = -1;
++	int match = SPP_RET_NG;
+ 	int max = num;
+ 
+ 	match = check_port_element(info, num, array);
+ 	if (match < 0)
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	/* Last element is excluded from movement. */
+ 	max--;
+@@ -794,7 +794,7 @@ get_del_port_element(
+ 
+ 	/* Last element is cleared. */
+ 	array[cnt] = NULL;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Flush initial setting of each interface. */
+@@ -919,12 +919,12 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ 		iface_type_str = SPP_IFTYPE_VHOST_STR;
+ 		break;
+ 	default:
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	sprintf(port, "%s:%d", iface_type_str, iface_no);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Change mac address of 'aa:bb:cc:dd:ee:ff' to int64 and return it */
+@@ -952,7 +952,7 @@ spp_change_mac_str_to_int64(const char *mac)
+ 		if (unlikely(token_cnt >= ETHER_ADDR_LEN)) {
+ 			RTE_LOG(ERR, APP, "MAC address format error. "
+ 					"(mac = %s)\n", mac);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		/* Convert string to hex value */
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index ce205d8..a6de55c 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -649,8 +649,8 @@ int flush_component(void);
+  * @param iface_no
+  *  interface no
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int
+ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+@@ -662,7 +662,7 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+  *  Character string of MAC address to be converted.
+  *
+  * @retval 0< int64 that store mac address
+- * @retval -1
++ * @retval SPP_RET_NG
+  */
+ int64_t spp_change_mac_str_to_int64(const char *mac);
+ 
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index b0846c6..5e6189c 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -66,7 +66,7 @@ spp_forward_update(struct spp_component_info *component)
+ 		RTE_LOG(ERR, FORWARD,
+ 			"Component[%d] Setting error. (type = %d, rx = %d)\n",
+ 			component->component_id, component->type, num_rx);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	/* Component allows only one transmit port. */
+@@ -74,7 +74,7 @@ spp_forward_update(struct spp_component_info *component)
+ 		RTE_LOG(ERR, FORWARD,
+ 			"Component[%d] Setting error. (type = %d, tx = %d)\n",
+ 			component->component_id, component->type, num_tx);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	memset(path, 0x00, sizeof(struct forward_path));
+@@ -110,7 +110,7 @@ spp_forward_update(struct spp_component_info *component)
+ 			component->name,
+ 			component->type);
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Change index of forward info */
+@@ -168,7 +168,7 @@ spp_forward(int id)
+ 				rte_pktmbuf_free(bufs[buf]);
+ 		}
+ 	}
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Merge/Forward get component status */
+@@ -177,7 +177,7 @@ spp_forward_get_component_status(
+ 		unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params)
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ 	int cnt;
+ 	const char *component_type = NULL;
+ 	struct forward_info *info = &g_forward_info[id];
+@@ -190,7 +190,7 @@ spp_forward_get_component_status(
+ 				"Component[%d] Not used. "
+ 				"(status)(core = %d, type = %d)\n",
+ 				id, lcore_id, path->type);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	if (path->type == SPP_COMPONENT_MERGE)
+@@ -215,8 +215,8 @@ spp_forward_get_component_status(
+ 		params, lcore_id,
+ 		path->name, component_type,
+ 		path->num_rx, rx_ports, path->num_tx, tx_ports);
+-	if (unlikely(ret != 0))
+-		return -1;
++	if (unlikely(ret != SPP_RET_OK))
++		return SPP_RET_NG;
+ 
+-	return 0;
++	return SPP_RET_OK;
+ }
+diff --git a/src/vf/spp_forward.h b/src/vf/spp_forward.h
+index 526ffcb..14adb0c 100644
+--- a/src/vf/spp_forward.h
++++ b/src/vf/spp_forward.h
+@@ -31,8 +31,8 @@ void spp_forward_init(void);
+  *  The pointer to struct spp_component_info.@n
+  *  The data for updating the internal data of forwarder and merger.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_forward_update(struct spp_component_info *component);
+ 
+@@ -42,8 +42,8 @@ int spp_forward_update(struct spp_component_info *component);
+  * @param id
+  *  The unique component ID.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_forward(int id);
+ 
+@@ -58,8 +58,8 @@ int spp_forward(int id);
+  *  The pointer to struct spp_iterate_core_params.@n
+  *  Detailed data of forwarder/merger status.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
+  */
+ int spp_forward_get_component_status(
+ 		unsigned int lcore_id, int id,
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 1433731..9537591 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -62,7 +62,7 @@ usage(const char *progname)
+  * Convert string of given client id to integer
+  *
+  * If succeeded, client id of integer is assigned to client_id and
+- * return 0. Or return -1 if failed.
++ * return SPP_RET_OK Or return SPP_RET_NG if failed.
+  */
+ static int
+ parse_app_client_id(const char *client_id_str, int *client_id)
+@@ -72,14 +72,14 @@ parse_app_client_id(const char *client_id_str, int *client_id)
+ 
+ 	id = strtol(client_id_str, &endptr, 0);
+ 	if (unlikely(client_id_str == endptr) || unlikely(*endptr != '\0'))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	if (id >= RTE_MAX_LCORE)
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	*client_id = id;
+ 	RTE_LOG(DEBUG, APP, "Set client id = %d\n", *client_id);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Parse options for server IP and port */
+@@ -93,19 +93,19 @@ parse_app_server(const char *server_str, char *server_ip, int *server_port)
+ 
+ 	pos = strcspn(server_str, delim);
+ 	if (pos >= strlen(server_str))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	port = strtol(&server_str[pos+1], &endptr, 0);
+ 	if (unlikely(&server_str[pos+1] == endptr) ||
+ 				unlikely(*endptr != '\0'))
+-		return -1;
++		return SPP_RET_NG;
+ 
+ 	memcpy(server_ip, server_str, pos);
+ 	server_ip[pos] = '\0';
+ 	*server_port = port;
+ 	RTE_LOG(DEBUG, APP, "Set server IP   = %s\n", server_ip);
+ 	RTE_LOG(DEBUG, APP, "Set server port = %d\n", *server_port);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Parse options for client app */
+@@ -145,9 +145,10 @@ parse_app_args(int argc, char *argv[])
+ 		switch (opt) {
+ 		case SPP_LONGOPT_RETVAL_CLIENT_ID:
+ 			if (parse_app_client_id(optarg,
+-					&g_startup_param.client_id) != 0) {
++					&g_startup_param.client_id) !=
++								SPP_RET_OK) {
+ 				usage(progname);
+-				return -1;
++				return SPP_RET_NG;
+ 			}
+ 			proc_flg = 1;
+ 			break;
+@@ -156,22 +157,23 @@ parse_app_args(int argc, char *argv[])
+ 			break;
+ 		case 's':
+ 			if (parse_app_server(optarg, g_startup_param.server_ip,
+-					&g_startup_param.server_port) != 0) {
++					&g_startup_param.server_port) !=
++								SPP_RET_OK) {
+ 				usage(progname);
+-				return -1;
++				return SPP_RET_NG;
+ 			}
+ 			server_flg = 1;
+ 			break;
+ 		default:
+ 			usage(progname);
+-			return -1;
++			return SPP_RET_NG;
+ 		}
+ 	}
+ 
+ 	/* Check mandatory parameters */
+ 	if ((proc_flg == 0) || (server_flg == 0)) {
+ 		usage(progname);
+-		return -1;
++		return SPP_RET_NG;
+ 	}
+ 	RTE_LOG(INFO, APP,
+ 			"app opts (client_id=%d,server=%s:%d,"
+@@ -180,7 +182,7 @@ parse_app_args(int argc, char *argv[])
+ 			g_startup_param.server_ip,
+ 			g_startup_param.server_port,
+ 			g_startup_param.vhost_client);
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /* Main process of slave core */
+@@ -241,12 +243,12 @@ slave_main(void *arg __attribute__ ((unused)))
+ /**
+  * Main function
+  *
+- * Return -1 explicitly if error is occurred.
++ * Return SPP_RET_NG explicitly if error is occurred.
+  */
+ int
+ main(int argc, char *argv[])
+ {
+-	int ret = -1;
++	int ret = SPP_RET_NG;
+ #ifdef SPP_DEMONIZE
+ 	/* Daemonize process */
+ 	int ret_daemon = daemon(0, 0);
+@@ -271,7 +273,7 @@ main(int argc, char *argv[])
+ 
+ 		/* Parse spp_vf specific parameters */
+ 		int ret_parse = parse_app_args(argc, argv);
+-		if (unlikely(ret_parse != 0))
++		if (unlikely(ret_parse != SPP_RET_OK))
+ 			break;
+ 
+ 		/* Get lcore id of main thread to set its status after */
+@@ -285,17 +287,17 @@ main(int argc, char *argv[])
+ 					  g_change_core,
+ 					  g_change_component,
+ 					  &g_backup_info,
+-					  g_main_lcore_id) < 0) {
++					  g_main_lcore_id) < SPP_RET_OK) {
+ 			RTE_LOG(ERR, APP, "manage address set is failed.\n");
+ 			break;
+ 		}
+ 
+ 		int ret_mng = init_mng_data();
+-		if (unlikely(ret_mng != 0))
++		if (unlikely(ret_mng != SPP_RET_OK))
+ 			break;
+ 
+ 		int ret_classifier_mac_init = spp_classifier_mac_init();
+-		if (unlikely(ret_classifier_mac_init != 0))
++		if (unlikely(ret_classifier_mac_init != SPP_RET_OK))
+ 			break;
+ 
+ 		spp_forward_init();
+@@ -305,14 +307,14 @@ main(int argc, char *argv[])
+ 		int ret_command_init = spp_command_proc_init(
+ 				g_startup_param.server_ip,
+ 				g_startup_param.server_port);
+-		if (unlikely(ret_command_init != 0))
++		if (unlikely(ret_command_init != SPP_RET_OK))
+ 			break;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+ 		int ret_ringlatency = spp_ringlatencystats_init(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+ 				g_iface_info.num_ring);
+-		if (unlikely(ret_ringlatency != 0))
++		if (unlikely(ret_ringlatency != SPP_RET_OK))
+ 			break;
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+@@ -325,7 +327,7 @@ main(int argc, char *argv[])
+ 		/* Set the status of main thread to idle */
+ 		g_core_info[g_main_lcore_id].status = SPP_CORE_IDLE;
+ 		int ret_wait = check_core_status_wait(SPP_CORE_IDLE);
+-		if (unlikely(ret_wait != 0))
++		if (unlikely(ret_wait != SPP_RET_OK))
+ 			break;
+ 
+ 		/* Start forwarding */
+@@ -337,7 +339,7 @@ main(int argc, char *argv[])
+ 		backup_mng_info(&g_backup_info);
+ 
+ 		/* Enter loop for accepting commands */
+-		int ret_do = 0;
++		int ret_do = SPP_RET_OK;
+ #ifndef USE_UT_SPP_VF
+ 		while (likely(g_core_info[g_main_lcore_id].status !=
+ 				SPP_CORE_STOP_REQUEST)) {
+@@ -346,7 +348,7 @@ main(int argc, char *argv[])
+ #endif
+ 			/* Receive command */
+ 			ret_do = spp_command_proc_do();
+-			if (unlikely(ret_do != 0))
++			if (unlikely(ret_do != SPP_RET_OK))
+ 				break;
+ 
+ 			sleep(1);
+@@ -356,12 +358,12 @@ main(int argc, char *argv[])
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 		}
+ 
+-		if (unlikely(ret_do != 0)) {
++		if (unlikely(ret_do != SPP_RET_OK)) {
+ 			set_all_core_status(SPP_CORE_STOP_REQUEST);
+ 			break;
+ 		}
+ 
+-		ret = 0;
++		ret = SPP_RET_OK;
+ 		break;
+ 	}
+ 
+@@ -369,7 +371,7 @@ main(int argc, char *argv[])
+ 	if (g_main_lcore_id == rte_lcore_id()) {
+ 		g_core_info[g_main_lcore_id].status = SPP_CORE_STOP;
+ 		int ret_core_end = check_core_status_wait(SPP_CORE_STOP);
+-		if (unlikely(ret_core_end != 0))
++		if (unlikely(ret_core_end != SPP_RET_OK))
+ 			RTE_LOG(ERR, APP, "Core did not stop.\n");
+ 
+ 		/*
+-- 
+2.18.0
+
+

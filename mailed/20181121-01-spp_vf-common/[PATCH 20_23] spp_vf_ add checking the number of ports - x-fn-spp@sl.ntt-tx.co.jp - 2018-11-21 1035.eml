@@ -1,0 +1,162 @@
+X-Account-Key: account4
+X-UIDL: 0000888956a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 29874400A75
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:16 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id E44FB7F338; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id C269F7F09D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A55E46387EE
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 66A83638791
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3Asa7CpxCzL+whtkz5HvwvUyQJPHJ1kqjoPgMT9p?=
+ =?us-ascii?q?ssgq5PdaLmxZn5IUjD/qw00w3FVoDSrulcjrKP9a3rXSoG/YrHu3dEcoQfHw?=
+ =?us-ascii?q?Qdh5Aulhc7SNWAFVW9NOTjOjx/EsIHT0d912q/d05JBIPidxvZpTuw9W1aAQ?=
+ =?us-ascii?q?3xYDJ8Pf+9AYvOl4Ky3uG29YfUZlBYwTS7JKhqND2tqUPXqtVTnZskIaF3yA?=
+ =?us-ascii?q?OQ+Clydu9bxH1lKReopziivpjixJd46GwQt/kk/otbSaCiJuI1RrgeCig6dW?=
+ =?us-ascii?q?syos/z51HPSg6G531UVWtz8FIAE03L6lThRo/ZqS+8sPZhnTWKe8bxC7IsET?=
+ =?us-ascii?q?iv9KZkThb0hTxPbWdhtjuM0Ior0eQF8VqovHkdi8bMbZuQNeZic6+VZt4cSW?=
+ =?us-ascii?q?dbH45QWyFHHoKgft4XFeNSde1croT7ux4PtU7kXFHqXri1jGQVwCGnjshYm6?=
+ =?us-ascii?q?w7HArL3RItBYcCu3Hd6c7tMf9LF+2+yO/O0SmFZPQQ2y+ujeqAOh0nv/yIWq?=
+ =?us-ascii?q?p9NMTLzkx6XROAgFPVspT9FyiRkOIRry2H/6xrUqStkyR0zmM56ijq3coqho?=
+ =?us-ascii?q?TT08gFj17CsD5h2K4uIZu+VFI+fc7iG5wWtTnQZO4UCosyBmpvvig90LgPv5?=
+ =?us-ascii?q?W2KTMLxJoQ3ALFavebIMCYpwjuX+GLLXJklWpoLfih0g2q/xHqmYieHoGklU?=
+ =?us-ascii?q?xHpS1fnpzQu2ARglbNv9OfRKI19xWk0DeLj1uV6+pfZ0Yoie/HO9gqxfgyjv?=
+ =?us-ascii?q?9x+QzKTCr/mUGu0OmXfV5i/PS0rvj3JL7h4J2Ef4Ymjwj/Nvxz3M20GqI+Lh?=
+ =?us-ascii?q?RLQ3jd8uP61qWGnwWxSedPh/wyyvefsZvBY8IHuuulE0le1cAh8162XTKv0d?=
+ =?us-ascii?q?BAwj8GJ0kDfg6bypT5fVrJZvLgaJX3y13+lT5qw6iWeLzqGdPLMmSGjKendr?=
+ =?us-ascii?q?E76VYUyRJvn4oGv9QOUetHe6+1Ax6s0b6QRh4hb17umr6hUo4nkNhDHzveXO?=
+ =?us-ascii?q?eYKP+A6wbQoLh0ea/XOclL5X78M6R3vae2yyViwxlGIO/3g9MBYXS8VK08cX?=
+ =?us-ascii?q?+UanftnNoNVFwykFRnFr7SgUaZGX5fbHO7Grkk42liTo+tCcHFWpzri7vH3j?=
+ =?us-ascii?q?/pVpFRY2lHDBiLHxKKP82UHvkKLTmKOud6lnoCSaTkV59n3hbotheyx7d8L+?=
+ =?us-ascii?q?XS8zEVrtq5jYAzvbaJ00pvs2IlR82GtgPFB3l5hGYJWyM70OhkrEpxx03Cma?=
+ =?us-ascii?q?l0jvpEFMBCsvZAUwM0L5nZnKRxD9H/XB6Ef8/cEg/+BI/9W3dqE5RvkoxrAQ?=
+ =?us-ascii?q?41AdipgxHd0jD/D7QQnvmQHJlsq+TR1Hy3IdphjX3Bkqs53DxECoNCM3Orgq?=
+ =?us-ascii?q?ln+k3dHYnMxg+J0qisML8ExAbW8CGF0XbLoFEeWwk2U72PDhV9LgPG6M/04E?=
+ =?us-ascii?q?/PVerkGfEpNE5a0daqMa8MbMH1yElWAvzkftbGKTHU+S/4FVODwbWCa5Dvcm?=
+ =?us-ascii?q?MW0XDGCUQKpBsP53eNKVt2FmK7rmnZFjArCUP3bham77xlsH3iBBxRrUnCfw?=
+ =?us-ascii?q?h72rGy4BJQmfGMV6ZZwOcfoCl44zwmGV+824qNTduLvExnYLkZfcN761AB13?=
+ =?us-ascii?q?q81UQ1N86lJqFm3gJYcg9s+UXyy1BrGsNLlo4otDsjng97KKbAjRVAfCje24?=
+ =?us-ascii?q?zsf6HHbGL1uhK3DsyekliM1d+X/v9RrvUzsBPloB3sClpk+HIh0cEd2imZ75?=
+ =?us-ascii?q?TOVFVUUJnqFEAr611mt/fRZW8//+a2nTVlY6y9szuai5QoD/BjzAq8OstPdq?=
+ =?us-ascii?q?iDUg3qW8wCW5r0cbRswQPzKElZerkDqctWd4unb6fUgvfzerw7xnT90CIesd?=
+ =?us-ascii?q?4101rQpXAlEqiShMxDmKzegFbPVi+g3g346oatwtoCPmxUQDT33yHgAMQIN/?=
+ =?us-ascii?q?9COL0TAGLrGPWZg9B3hprjQXldrQHxHFdA3tO1PAaCKVf6mw9Ihx1O/S6X3B?=
+ =?us-ascii?q?CgxjkxqAkH67KF1XWRkf/mMhwbJitXVC9pihHuOdrtgg=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAB/tvRbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDJ1IQIAwlD0gHEoMhggGrJDOIfoE?=
+ =?us-ascii?q?sh1qBZ4RaiGqGEgKHFgeIbY9tCZEqGIFYjyksiT6QA4INhCyCNY40MAEBATA?=
+ =?us-ascii?q?BizyCTQEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:13 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f907002740;
+	Wed, 21 Nov 2018 10:41:09 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f8pJ004616;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01882;
+	 Wed, 21 Nov 2018 10:36:02 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a1dK009706; Wed, 21 Nov 2018 10:36:01 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a1f9009703; Wed, 21 Nov 2018 10:36:01 +0900
+Message-Id: <201811210136.wAL1a1f9009703@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWm008346 ; Wed, 21 Nov 2018 10:36:01 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 20/23] spp_vf: add checking the number of ports
+Date: Wed, 21 Nov 2018 10:35:55 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add checking the number of ports for classifier. It only allows exactly
+one of rx port, tx port and classifier table exist while starting to
+classify.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/classifier_mac.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 0244f7e..cfaf96a 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -879,11 +879,25 @@ spp_classifier_mac_do(int id)
+ 		/* change index of update side */
+ 		change_update_index(mng_info, id);
+ 
+-		/* decide classifier information of the current cycle */
++		/**
++		 * decide classifier information of the current cycle
++		 * If at least, one rx port, one tx port and one
++		 * classifier_table exist, then start classifying.
++		 * If not, stop classifying.
++		 */
+ 		cmp_info = mng_info->cmp_infos + mng_info->ref_index;
+ 		clsd_data_rx = &cmp_info->classified_data_rx;
+ 		clsd_data_tx = cmp_info->classified_data_tx;
+ 
++		/**
++		 * Perform condition check if reception/transmission
++		 * of packet should be done or not
++		 */
++		if (!(clsd_data_rx->iface_type != UNDEF &&
++				cmp_info->n_classified_data_tx >= 1 &&
++				cmp_info->mac_addr_entry == 1))
++			continue;
++
+ 		/* drain tx packets, if buffer is not filled for interval */
+ 		cur_tsc = rte_rdtsc();
+ 		if (unlikely(cur_tsc - prev_tsc > drain_tsc)) {
+-- 
+2.18.0
+
+

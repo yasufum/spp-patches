@@ -1,0 +1,178 @@
+X-Account-Key: account4
+X-UIDL: 0000888356a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 0A192400B55
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:14 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 08F7B23BAE6; Wed, 21 Nov 2018 10:41:14 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 0555323B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:14 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id ED60AEA77FA
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E2387EA7711
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3A8RmdMBPU2JZMwWrjUksl6mtXPHoOpqn0MwgJ65?=
+ =?us-ascii?q?Eul7NJdOGZ8o//OFDEvKwy3lPCWIye8OpB07CQvqvkH2oc/dCKtzYAaM8ETA?=
+ =?us-ascii?q?cL3P0fhBdoG8uZEQvjNve/f2k0GoFZTEdN5HX9N1RJXdruIVbV5H+qvnYJAh?=
+ =?us-ascii?q?uqDQNuPazuH5LKycG+1uS84ZrWNhUNijz4eqtqBA6y6wPNqowKkc1pLeAz0k?=
+ =?us-ascii?q?KT8EFFcOlX225kYGmrsUikuZWI9YV4u2RcsPcostVYVP2gOakzSfpeEChgOG?=
+ =?us-ascii?q?dz5tW5/RXESAKO4DMbXAB02lJYRgbDqQriRr/qtm38qvY4xDncNsqwT6h8VT?=
+ =?us-ascii?q?m57qhtQQPlk29dbmZ/qjqNzJctyvwK6Bu6wn43i5bZeoSUKOZzcuvGcNUWSH?=
+ =?us-ascii?q?AAFsddWipdA5+tOpMVBrlJNuJZoo/h4loW+EHnXU/2X7mpkWIO2C6luM9ym/?=
+ =?us-ascii?q?4sGgzHwgE6St4FtX2Rt83wbP1UXOuxiq/U0XPIaLVUwWSYisCAfxY/rPWLRb?=
+ =?us-ascii?q?81f9DWzBxlB0bLiBCLsZTNJDfT0PgR9nSLqeFnE+C3wT1CyUk5sn20y8Egh5?=
+ =?us-ascii?q?OczJJQxFaB7j1h6J0xY9ukVAtncZivF91Sr2vJUuk+CtNnSGZutiEgz7QAsp?=
+ =?us-ascii?q?PuZykGxqM82wTeYODUO5jN+B/oU/ydZCtpnH8wMqzqnA68qALzr4+0Htnxyl?=
+ =?us-ascii?q?tBqTBJ18XBpmxYnQKG8dCJE7N0rEKo2DLXjEbS4foCJ1wo0LbLbZUmhLwo8/?=
+ =?us-ascii?q?hb+U2RGyb3nB2qyq6dbQMi5vTt9/ShabKgpIfUPt1xgwD6avlom8ekR+IkLk?=
+ =?us-ascii?q?0STy6Q/qK+zNiBtQXwErBDj/luzO/Yu4ucI9gH47KpRQRSlIQ7ox/tCj6n1I?=
+ =?us-ascii?q?xH23gMNxRDZA7Ck5ivMFaIIuidb7/3igapmTZvn6CAP7b6RJPRMj3fgPHqev?=
+ =?us-ascii?q?B/8wZd0FZhl4kHocgPUPdafbSqCxKU1pSQDwdlYVbtm6C9U487jd5YADPRSq?=
+ =?us-ascii?q?6BbPGI6AfOvLl1ZbLRItFI8Dfld6p/vqao1yRj3wRAO/f3lY0ebHTyR640GU?=
+ =?us-ascii?q?iSbHvyj9tEKl8k4FNkHtTjk0bKETJYYn/3RLo5vmt9BYmiS4HfWsamh/qDxH?=
+ =?us-ascii?q?XzEppTb2FAQleCdBWgP5XBVfFJczqKCtRl1DoYSf29W8kq0lesrEf2xqFmIe?=
+ =?us-ascii?q?zd5iAD/ci6jJ4vvLeVzkx0q208Bt/4sSnFV2xum2IUWzI6lLtyp0Bw0BbL0K?=
+ =?us-ascii?q?R1heBZCc0G4vpIVgkgMpuPh+d+Ct30RkfAZoLTEQ7gGI78R2psCIxgkLpsKw?=
+ =?us-ascii?q?5nFt6vjw7OxX+mCLoc0qeTAcRutK/X2z73O9o7wHGA1rFy6jtuCsZJK2Cigb?=
+ =?us-ascii?q?ZysgbJAIuc2VXcmaDvbrwE9DXJsmGf0S+SrAdTV0hySe+WOBJXLluTttn/6k?=
+ =?us-ascii?q?7YGvW+TLohdxBZ0eaZLu1MdsGskUUAT/ClOsyUMAfT0y+gQB2PwL2Ldo/jfW?=
+ =?us-ascii?q?4QiT7cBEYziBwJ/H2aZkAuQz2sqGXEAHlyBEriNgnypPJmpirxHSpWh0maKl?=
+ =?us-ascii?q?ds3L2v9lsJiOyAHrkNi6kctn5pomdxFVe5h4mQCtGb4Qx9YOBAcZU25xFFzQ?=
+ =?us-ascii?q?e7/0R0bJmpLqQ62hgfeB8xuV/ykglnTI5H18oy5Hp4yQNzLfrFllJKbHWewY?=
+ =?us-ascii?q?y1Jq2RIW60/gjKCeae0wPb2deSovlJ6f8j7VP/oES1Bgwp9DNly5FcgX6V55?=
+ =?us-ascii?q?GSU0wTWom3VForsgRq4brdJCslguGcnXQ+NKC1tmeSndMiH60j1grlY8cZO6?=
+ =?us-ascii?q?TCFhe6EtVGVZL3cKpwwALvNU9CZbEPkcx8d8K+K6ncgfbtZr062mn7yz0Wvs?=
+ =?us-ascii?q?h8yh7erXMkDLSThdBenrfGg0OGT2uu1g759Jqsw8YfOHdMQCKpwCzgTtcANJ?=
+ =?us-ascii?q?03Rp4CDCKVG+Pyw9x/g5D3XHsBqwy4AxUAxNPsZQrUZFu73xUCjB1L80zioj?=
+ =?us-ascii?q?OxynlPqx9strCWhXOc2OCkcgYbf3JbAmJly1X0c9G5?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDJ1IQIAwlD0gHEoMhggGrJDOIf4E?=
+ =?us-ascii?q?sh1qBZ4RajnwChxYHiG2PbQmRKhiBWI8pLIk+kAOCDYQsgjWONDABAQEwAY4?=
+ =?us-ascii?q?JAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:13 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f9ll002742;
+	Wed, 21 Nov 2018 10:41:09 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f8Fm004636;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01900;
+	 Wed, 21 Nov 2018 10:36:02 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a2LZ009719; Wed, 21 Nov 2018 10:36:02 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a1mv009710; Wed, 21 Nov 2018 10:36:01 +0900
+Message-Id: <201811210136.wAL1a1mv009710@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWo008346 ; Wed, 21 Nov 2018 10:36:01 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 22/23] spp_vf: simplify changing VLAN tag
+Date: Wed, 21 Nov 2018 10:35:57 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+To change VLAN tag of a port, it should be deleted before and added as
+new one. This update is to allow to change VLAN tag at once.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_proc.c | 25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 1331400..0c62968 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -337,13 +337,32 @@ spp_update_port(enum spp_command_action action,
+ 	switch (action) {
+ 	case SPP_CMD_ACTION_ADD:
+ 		ret_check = check_port_element(port_info, *num, ports);
+-		if (ret_check >= 0)
++		/* registered check */
++		if (ret_check >= SPP_RET_OK) {
++			/* registered */
++			if (ability->ope == SPP_PORT_ABILITY_OPE_ADD_VLANTAG) {
++				while ((cnt < SPP_PORT_ABILITY_MAX) &&
++					    (port_info->ability[cnt].ope !=
++					    SPP_PORT_ABILITY_OPE_ADD_VLANTAG))
++					cnt++;
++				if (cnt >= SPP_PORT_ABILITY_MAX) {
++					RTE_LOG(ERR, APP, "update VLAN tag "
++						"Non-registratio\n");
++					return SPP_RET_NG;
++				}
++				memcpy(&port_info->ability[cnt], ability,
++					sizeof(struct spp_port_ability));
++
++				ret = SPP_RET_OK;
++				break;
++			}
+ 			return SPP_RET_OK;
++		}
+ 
+ 		if (*num >= RTE_MAX_ETHPORTS) {
+ 			RTE_LOG(ERR, APP, "Cannot assign port over the "
+ 				"maximum number.\n");
+-			break;
++			return SPP_RET_NG;
+ 		}
+ 
+ 		if (ability->ope != SPP_PORT_ABILITY_OPE_NONE) {
+@@ -387,7 +406,7 @@ spp_update_port(enum spp_command_action action,
+ 		break;
+ 
+ 	default:
+-		break;
++		return SPP_RET_NG;
+ 	}
+ 
+ 	*(change_component + component_id) = 1;
+-- 
+2.18.0
+
+

@@ -1,0 +1,265 @@
+X-Account-Key: account4
+X-UIDL: 0000888756a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 8367C400870
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 615DC7F2C8; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 5F5FB7F2B4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 42485EA7723
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1E578EA7711
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:15 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AFddJ9xemN+KSxoldV8ioh43zlGMj4e+mFxMJ6p?=
+ =?us-ascii?q?chl7NFe7ii+JKnBkHE+PFxlwaQAtfX4PdNzvHOtvi6H2EL5dCHrGxEe5sKVQ?=
+ =?us-ascii?q?dWwd4OkVkYCdWeQVb+MOasdzYzSdQHWlkg5GmjGVNRXsDiexjOsju56ngQAk?=
+ =?us-ascii?q?a3LhJ7c9z8AZWalMGrz6a38pzXbR9PgW+tJL10aQ6utS3Kso8QnZcnNrZ3wR?=
+ =?us-ascii?q?yPoGMRIbZsyGhlJEyek1PH3unupMExyy1LoLph+8VFWODhZ6FgF/pVBzBgNX?=
+ =?us-ascii?q?wposbs8xvbH0OD4X4VU2NelRQtYUCN/FT0WNLqqjPSre473jWGeNHmC7szHz?=
+ =?us-ascii?q?a6p6tmUx7nji4bOiVxqjiPzJYr1uQA/VT/9lR22Ou2KMmNOeB7f7/BcN9SXm?=
+ =?us-ascii?q?dHUstLFmRADo66c4oTHr8ZJ+8L54L5plYIsV6/HVz2XbupkGQSwCSrm/NrgI?=
+ =?us-ascii?q?FDWUnc0QctHswDqiHYp9D8cbwKVLjviqTDyXPFc+8Q0jC76pCbF3Jp6fyKQ7?=
+ =?us-ascii?q?90dtLcjEc1EAaQxEXVp4qgJCuN/v8J9W6H8698RaSkjCgls0six1rnjtdpkY?=
+ =?us-ascii?q?TPio8PnxrUsCt/hZ0tPfWjTAh9fcLhDIsWvCbcNZM8EaZACyl4/S09zLMBo5?=
+ =?us-ascii?q?uyeiMHnY8myxDocOCdcoOUsVrzEfycKjBiiDd5aaqy0lyspFO4xLS2BazWmB?=
+ =?us-ascii?q?5a6zBImd7WujUR2gzPv4KZH+Bl8B7p0GSK3gHXsroCIEsv06zHN9s90vg7kd?=
+ =?us-ascii?q?wRqSGhVmf/ykD/javOKgMl8fPu7fj7J6n24JSbcY1swgisN60vnpTiR+UzKU?=
+ =?us-ascii?q?4IQ3Te5fT637ql/1WcIv0Ch68zm6jd6M6cJM8A4KilH0pJwsAo7FC9F3+vgt?=
+ =?us-ascii?q?ERnH1fcxREcwnBiZT1fk3eZvv/S/Wn5jbk2D45wvnHOuWxRJTGNT7FjKukYa?=
+ =?us-ascii?q?Y74EkayhJ7zMgDtcgNUvdbe6i1ARK37Y2Fa31xew2sn7S9UY07jNhEHznSRP?=
+ =?us-ascii?q?bIbuvTqQPavLt3ZbPXPslO5XCjdrAk/6K81yZh3wVGJ+/ygN1JNjiuF/BiaR?=
+ =?us-ascii?q?zDM0DhidoAD2oG+zEGYrKz0g+6WCVILza+VKc1oyojDdr8S4rIQsarnKDH1y?=
+ =?us-ascii?q?D9HIUELmxBD1mNFz/veeDmE78cLSyUZ9R5ihQfUf6nV5NkyQHovwi8yaIvIu?=
+ =?us-ascii?q?fP+yIevI7uz5AvvrWVz0pos2cpSZrMm2iWKgM81nsFXTo3wLxyrQRmx1GP3L?=
+ =?us-ascii?q?I5y/1UGNpP5u9YBwIzNJrS1et/WJj5XgPMeMvMSU7zGIz+R2tqFJRqnplQMh?=
+ =?us-ascii?q?UYeZ3qlB3I0iu0DqVAm7eODdkv6qeEhT78LMI7zWrakqImyVs+Ea4tfSWrgL?=
+ =?us-ascii?q?By8w/LCsvHiUKcwuy6MKoamTXV7E+YySyIoF0dTB42WqKDX2hVNS605Zzpo1?=
+ =?us-ascii?q?jPSbOjE+FtIk5Pz4uZMrNicdmvi0laAevzft/ZJWCp0TTVZ17A1vaHa4zkfH?=
+ =?us-ascii?q?8Y1SPWBR0fkgwdym2aLwk1GnTpsyfEATdpD16qf1L0/Lw0tiagVkFthVLvDQ?=
+ =?us-ascii?q?Upx/+v9xUSn/DZV/4DwudOpnI6szstVF/v2tvXD4Lb4QtqZ+Nafc94/EcB3m?=
+ =?us-ascii?q?WftRQYXNToJvJnj18aK1gxvkj1kRNrFsBcgY4hqzUo1EJ7e6eR0VcZKnWZ1o?=
+ =?us-ascii?q?u2PKHLb3XiuhuoLazOvzOWmN/E/64O7Kxm7VTop0evClZn72Uh2N4T0WPU78?=
+ =?us-ascii?q?fPBQsWCc23U00ssR5mu/TGcm824MXWzRgOeeG94DrL2tZxVK0kwQ3mectDdb?=
+ =?us-ascii?q?+UUgT1Vc8CT8m2dL5wwgDvNEleersPsvdlYqbEP7OHwPL5Zr842mj91yIcvc?=
+ =?us-ascii?q?YkgxzE9jIgGLSRh9BfmKvehVbBCWq0jU/94JquwcYePmtURTf5l3asEodVYu?=
+ =?us-ascii?q?crLNQ7TFy2Ksjy/e1QwpvkWnpW7lmmXgxUw8vvfwaOKkDtmwZXk0YP8yX+xX?=
+ =?us-ascii?q?mIigdsmjRslZKxmTTUyr29JgEDfGhXWCx+nRHnJs62l4JDUQ=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDJ1IQIAwlD0gHEoMhggGrJDOIf4E?=
+ =?us-ascii?q?sh1qBZ4RagRGHWYNsgiYChxYHh3d2j20JkSoYkQEsmUGCDYFAgmyCJw4Jjis?=
+ =?us-ascii?q?wAQEBMAGLPIJNAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:14 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1fAx3002771;
+	Wed, 21 Nov 2018 10:41:10 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f858004660;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01906;
+	 Wed, 21 Nov 2018 10:36:02 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a2vW009725; Wed, 21 Nov 2018 10:36:02 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a26B009720; Wed, 21 Nov 2018 10:36:02 +0900
+Message-Id: <201811210136.wAL1a26B009720@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWp008346 ; Wed, 21 Nov 2018 10:36:01 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 23/23] spp_vf: add SPP_VF_MODULE preprocessor directive
+Date: Wed, 21 Nov 2018 10:35:58 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add `SPP_VF_MODULE` preprocessor directive to compile just spp_vf in
+selective.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c  |  2 ++
+ src/vf/common/command_proc.c | 13 ++++++++++++-
+ src/vf/common/spp_proc.c     |  4 ++++
+ 3 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 82cd619..84268de 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -186,6 +186,7 @@ spp_convert_port_to_iface(const char *port,
+ static enum spp_component_type
+ spp_convert_component_type(const char *type_str)
+ {
++#ifdef SPP_VF_MODULE
+ 	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
+ 			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
+ 		/* Classifier */
+@@ -199,6 +200,7 @@ spp_convert_component_type(const char *type_str)
+ 		/* Forwarder */
+ 		return SPP_COMPONENT_FORWARD;
+ 	}
++#endif /* SPP_VF_MODULE */
+ 	return SPP_COMPONENT_UNUSE;
+ }
+ 
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 0c62968..f274707 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -10,8 +10,10 @@
+ 
+ #include "spp_port.h"
+ #include "string_buffer.h"
++#ifdef SPP_VF_MODULE
+ #include "../classifier_mac.h"
+ #include "../spp_forward.h"
++#endif /* SPP_VF_MODULE */
+ #include "command_conn.h"
+ #include "command_dec.h"
+ #include "command_proc.h"
+@@ -467,6 +469,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 		}
+ 
+ 		for (cnt = 0; cnt < core->num; cnt++) {
++#ifdef SPP_VF_MODULE
+ 			if (core->type == SPP_COMPONENT_CLASSIFIER_MAC) {
+ 				ret = spp_classifier_get_component_status(
+ 						lcore_id,
+@@ -478,6 +481,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 						core->id[cnt],
+ 						params);
+ 			}
++#endif /* SPP_VF_MODULE */
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, APP, "Cannot iterate core "
+ 						"information. "
+@@ -492,6 +496,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ }
+ 
+ /* Iterate classifier_table to create response to status command */
++#ifdef SPP_VF_MODULE
+ static int
+ spp_iterate_classifier_table(
+ 		struct spp_iterate_classifier_table_params *params)
+@@ -506,6 +511,7 @@ spp_iterate_classifier_table(
+ 
+ 	return SPP_RET_OK;
+ }
++#endif /* SPP_VF_MODULE */
+ 
+ /* Get port number assigned by DPDK lib */
+ static int
+@@ -1119,6 +1125,7 @@ append_core_value(const char *name, char **output,
+ }
+ 
+ /* append one element of classifier table for JSON format */
++#ifdef SPP_VF_MODULE
+ static int
+ append_classifier_element_value(
+ 		struct spp_iterate_classifier_table_params *params,
+@@ -1171,8 +1178,10 @@ append_classifier_element_value(
+ 	params->output = buff;
+ 	return ret;
+ }
++#endif /* SPP_VF_MODULE */
+ 
+ /* append a list of classifier table for JSON format */
++#ifdef SPP_VF_MODULE
+ static int
+ append_classifier_table_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+@@ -1200,7 +1209,7 @@ append_classifier_table_value(const char *name, char **output,
+ 	spp_strbuf_free(itr_params.output);
+ 	return ret;
+ }
+-
++#endif /* SPP_VF_MODULE */
+ /* append string of command response list for JSON format */
+ static int
+ append_response_list_value(char **output,
+@@ -1276,7 +1285,9 @@ struct command_response_list response_info_list[] = {
+ 	{ "vhost",            append_interface_value },
+ 	{ "ring",             append_interface_value },
+ 	{ "core",             append_core_value },
++#ifdef SPP_VF_MODULE
+ 	{ "classifier_table", append_classifier_table_value },
++#endif /* SPP_VF_MODULE */
+ 	COMMAND_RESP_TAG_LIST_EMPTY
+ };
+ 
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 87fb9d3..5119612 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -14,8 +14,10 @@
+ #include "spp_proc.h"
+ #include "spp_port.h"
+ 
++#ifdef SPP_VF_MODULE
+ #include "../spp_forward.h"
+ #include "../classifier_mac.h"
++#endif /* SPP_VF_MODULE */
+ 
+ /* Manage data to addoress */
+ struct manage_data_addr_info {
+@@ -880,10 +882,12 @@ flush_component(void)
+ 		component_info = (p_component_info + cnt);
+ 		spp_port_ability_update(component_info);
+ 
++#ifdef SPP_VF_MODULE
+ 		if (component_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
+ 			ret = spp_classifier_mac_update(component_info);
+ 		else
+ 			ret = spp_forward_update(component_info);
++#endif /* SPP_VF_MODULE */
+ 		if (unlikely(ret < 0)) {
+ 			RTE_LOG(ERR, APP, "Flush error. "
+ 					"( component = %s, type = %d)\n",
+-- 
+2.18.0
+
+

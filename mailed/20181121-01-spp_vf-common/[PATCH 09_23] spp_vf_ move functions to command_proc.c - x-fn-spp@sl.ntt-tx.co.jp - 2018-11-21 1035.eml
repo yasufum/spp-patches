@@ -1,0 +1,1082 @@
+X-Account-Key: account4
+X-UIDL: 0000888056a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id C15B1400B58
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id BA37523BAE6; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id B90D623B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id ABB72EA78B0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A015BEA7723
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AyowP8R/gyC6guf9uRHGN80YQeigqvan1NQcJ65?=
+ =?us-ascii?q?0hzohDabmn44+7ZRON6f5ohRrSRYCDsbRJgO6Qtbz8H2cHp5SZ4zgZaJIZbx?=
+ =?us-ascii?q?Yeko0NmhA4RtafABjrafDsKjciBOxZUBlj423+LVgTE8G4ZUWB6maq42sqEw?=
+ =?us-ascii?q?7kfRFwOvyzH4fTi8qt0OXn69jdZUBTnCKVerc0Kgmq6BnB8MIRx4l6c/xj8B?=
+ =?us-ascii?q?bCr3pWdugT/ltGewrMzS71/dz4vJJo9i0VoOokr5QGXK7+OaIkUfpTC3IkKz?=
+ =?us-ascii?q?J96MruvBjFBQyBgxlUGnVTnBwNGBDdxAr+GJHtrm7mpqx232+YJYX6QKs1Vj?=
+ =?us-ascii?q?Kr86pwAEWx0GFdbGR/qzyR1J04hbk+wlrpvxFlxo/IfIyZfOFzeK/QZ5JSRG?=
+ =?us-ascii?q?ZMWNpQSz0UGpm1PMMEC+sMO/odrpGo/QJW60HlX0/3WaWxm2wt5De+x6Ax3u?=
+ =?us-ascii?q?U/HBuT0AclFpcVqHGM9pP4P6NUV/ypiqLPizfbPJY0kX/w7pbFdhc5rLSCR7?=
+ =?us-ascii?q?V1JIDBjEcpUhjdln2LrcrjIy/QyvRLuG/d7fIqBofNwyY37hp8pDSi3JJmms?=
+ =?us-ascii?q?zHgMcO0kjs7iE/xpopYMGoDkV8J9y8Wsg11WnSJ859RcUsRHttsSAxx+gduJ?=
+ =?us-ascii?q?K1SzMW0pUs202Xe7mdfoOP+B6mSPeJLGIymid+YLzmzUXXkwDo2qjmW8Kzyl?=
+ =?us-ascii?q?oPsidVjoyGqCUWzxKKosHVT/J8+h/6nzeEzEbV9v0BPVBynq2dKYZEoPZ4n8?=
+ =?us-ascii?q?gWuEXHRnOwmU7tyqmKagA46q6j7KLlev3v9JqVNoss10f/Ob9onNCjRPgodA?=
+ =?us-ascii?q?MJGWqDnIb0nLSx+ET4RO0UyPw9ie/frIyfOdRdran/ARcd29Qm4he7V2jg0d?=
+ =?us-ascii?q?8D238bMBdZaFSMiM7rIzSsaLjxX/K2glD0wHFqzOuAOKH9R4ndaHPE1rX5Nb?=
+ =?us-ascii?q?dltxwGkVJ1l4sFockJTOhQfZeREgfwrICKVEZhdVbvmaC8VZMkh91WWHrTUP?=
+ =?us-ascii?q?XAaOWI6gXOvb9pfbTEZZdJ6mykc75/vKSo1iJ/xwFVa6Ct2dFOMiKCE/9rIl?=
+ =?us-ascii?q?uUbT/XuvlfSD1YhgMlV6SqhFaHWHtIf3PqBeQx7TV9Dp66S4zEAIK10vSN2y?=
+ =?us-ascii?q?KyH5seYW4jaBjEATLmccCfQ+8kcybUJNN91yAUE7OmDY05nR2jrw71zbN7I/?=
+ =?us-ascii?q?GcoHRA88i4jp4uuquNxFk77lkWR4yF3nuITn1ok29AXDIw0K1l4AR8xlqFza?=
+ =?us-ascii?q?lkkqldHN1X6elOV1RyPprdwupmTtHqD1iYJpHTEwzgGYjgX2BiK7B5i8UDaE?=
+ =?us-ascii?q?t8Bdi42xzI2iPvGKcQz+bNCZcwtKTAwz76IIB/0yWjtuFpgl84T89ILWDjiL?=
+ =?us-ascii?q?R48l2ZF8vHlQCCj76CbqBa2jLRsXuTi2GJ+kNAGl0VM+2NTTUEa03aoM6srF?=
+ =?us-ascii?q?OHQbnrEqw/GhBFj8ieNu5WepviihNEXL2wXbaWK3L0kGC2CxGSw7qKZ4e/YG?=
+ =?us-ascii?q?QR0hLGFFIFmBxAtWbDLwU1AT2t5n7PFDE7X0y6eFviqKMtzRHzBl9x1QyBaF?=
+ =?us-ascii?q?dtkqa46gJAz+LJUOsdh/oN6iIoqjEsRxC81MmQDcac4hZxOq5bJ9ElhTUPnW?=
+ =?us-ascii?q?uLsgV8OsT8aaFpnRgYbxgyo1Oo3BIxCJ0ImJovpXIulFc0KKmDllVda3aEzd?=
+ =?us-ascii?q?b7PfvVMgyQtFimOavf21WGjpCX8bxJ7ugk7knz+gquUEg6u3w11tBU1yPDoJ?=
+ =?us-ascii?q?TBF0wUTY60TlZx/B88pam/AGF17tHR3HxoafnyszTZndQ1GK452lCreJFdKO?=
+ =?us-ascii?q?uFDFOgSZRCQZL1cqpxxh7wP09hXqga9bZobZn/L73cg/TtZ7smxWP4xWVfvN?=
+ =?us-ascii?q?InixrKrXEmDLWVmchYi/CAglndDm+61gz79Juq394aLScbGm71kHm2NMtqfq?=
+ =?us-ascii?q?R3OL0zJyKrKsyzyM95gseyCWVcsli/GxYayImiflyQdw6khFEC5QEsuXWi3B?=
+ =?us-ascii?q?CA4XlsiThw8fiE2GrI3/inaApBMWkNRnEw1Fo=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDGg1SECAMJQ9IBxKDIYIBqyQziH+?=
+ =?us-ascii?q?BLIdaRYEihFqBEYdqUoMJgiYChxYHgXoKhXN2T48eCZEqGIFYjyksiT6QA4I?=
+ =?us-ascii?q?NhCyCJw4JjiswAQEBMAGLPQEkB4IgAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:11 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f7Ip002686;
+	Wed, 21 Nov 2018 10:41:07 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f6rA004497;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01803;
+	 Wed, 21 Nov 2018 10:36:00 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0Bf009635; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0RE009630; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0RE009630@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWb008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 09/23] spp_vf: move functions to command_proc.c
+Date: Wed, 21 Nov 2018 10:35:44 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Move util functions used from spp_vf and spp_mirror to common
+directory.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_proc.c | 399 +++++++++++++++++++++++++++++++++++
+ src/vf/spp_vf.c              | 390 ----------------------------------
+ src/vf/spp_vf.h              | 133 ------------
+ 3 files changed, 399 insertions(+), 523 deletions(-)
+
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index b8ad907..02c41b6 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -84,6 +84,405 @@ const char *CLASSIFILER_TYPE_STATUS_STRINGS[] = {
+ 	/* termination */ "",
+ };
+ 
++/* get client id */
++static int
++spp_get_client_id(void)
++{
++	return g_startup_param.client_id;
++}
++
++/* Check if port has been flushed. */
++static int
++spp_check_flush_port(enum port_type iface_type, int iface_no)
++{
++	struct spp_port_info *port = get_iface_info(iface_type, iface_no);
++	return port->dpdk_port >= 0;
++}
++
++/* update classifier table according to the specified action(add or del). */
++static int
++spp_update_classifier_table(
++		enum spp_command_action action,
++		enum spp_classifier_type type __attribute__ ((unused)),
++		int vid,
++		const char *mac_addr_str,
++		const struct spp_port_index *port)
++{
++	struct spp_port_info *port_info = NULL;
++	int64_t ret_mac = 0;
++	uint64_t mac_addr = 0;
++
++	RTE_LOG(DEBUG, APP, "update_classifier_table "
++			"( type = mac, mac addr = %s, port = %d:%d )\n",
++			mac_addr_str, port->iface_type, port->iface_no);
++
++	ret_mac = spp_change_mac_str_to_int64(mac_addr_str);
++	if (unlikely(ret_mac == -1)) {
++		RTE_LOG(ERR, APP, "MAC address format error. ( mac = %s )\n",
++			mac_addr_str);
++		return SPP_RET_NG;
++	}
++	mac_addr = (uint64_t)ret_mac;
++
++	port_info = get_iface_info(port->iface_type, port->iface_no);
++	if (unlikely(port_info == NULL)) {
++		RTE_LOG(ERR, APP, "No port. ( port = %d:%d )\n",
++				port->iface_type, port->iface_no);
++		return SPP_RET_NG;
++	}
++	if (unlikely(port_info->iface_type == UNDEF)) {
++		RTE_LOG(ERR, APP, "Port not added. ( port = %d:%d )\n",
++				port->iface_type, port->iface_no);
++		return SPP_RET_NG;
++	}
++
++	if (action == SPP_CMD_ACTION_DEL) {
++		/* Delete */
++		if ((port_info->class_id.vlantag.vid != 0) &&
++				unlikely(port_info->class_id.vlantag.vid !=
++				vid)) {
++			RTE_LOG(ERR, APP, "VLAN ID is different. "
++					"( vid = %d )\n", vid);
++			return SPP_RET_NG;
++		}
++		if ((port_info->class_id.mac_addr != 0) &&
++			unlikely(port_info->class_id.mac_addr !=
++					mac_addr)) {
++			RTE_LOG(ERR, APP, "MAC address is different. "
++					"( mac = %s )\n", mac_addr_str);
++			return SPP_RET_NG;
++		}
++
++		port_info->class_id.vlantag.vid = ETH_VLAN_ID_MAX;
++		port_info->class_id.mac_addr    = 0;
++		memset(port_info->class_id.mac_addr_str, 0x00,
++							SPP_MIN_STR_LEN);
++
++	} else if (action == SPP_CMD_ACTION_ADD) {
++		/* Setting */
++		if (unlikely(port_info->class_id.vlantag.vid !=
++				ETH_VLAN_ID_MAX)) {
++			RTE_LOG(ERR, APP, "Port in used. "
++					"( port = %d:%d, vlan = %d != %d )\n",
++					port->iface_type, port->iface_no,
++					port_info->class_id.vlantag.vid, vid);
++			return SPP_RET_NG;
++		}
++		if (unlikely(port_info->class_id.mac_addr != 0)) {
++			RTE_LOG(ERR, APP, "Port in used. "
++					"( port = %d:%d, mac = %s != %s )\n",
++					port->iface_type, port->iface_no,
++					port_info->class_id.mac_addr_str,
++					mac_addr_str);
++			return SPP_RET_NG;
++		}
++
++		port_info->class_id.vlantag.vid = vid;
++		port_info->class_id.mac_addr    = mac_addr;
++		strcpy(port_info->class_id.mac_addr_str, mac_addr_str);
++	}
++
++	set_component_change_port(port_info, SPP_PORT_RXTX_TX);
++	return SPP_RET_OK;
++}
++
++/**
++ * Assign or remove component to/from specified lcore depending
++ * on component action
++ */
++static int
++spp_update_component(
++		enum spp_command_action action,
++		const char *name,
++		unsigned int lcore_id,
++		enum spp_component_type type)
++{
++	int ret = SPP_RET_NG;
++	int ret_del = -1;
++	int component_id = 0;
++	unsigned int tmp_lcore_id = 0;
++	struct spp_component_info *component = NULL;
++	struct core_info *core = NULL;
++	struct core_mng_info *info = NULL;
++
++	switch (action) {
++	case SPP_CMD_ACTION_START:
++		info = &g_core_info[lcore_id];
++		if (info->status == SPP_CORE_UNUSE) {
++			RTE_LOG(ERR, APP, "Core %d is not available because "
++				"it is in SPP_CORE_UNUSE state.\n", lcore_id);
++			return SPP_RET_NG;
++		}
++
++		component_id = spp_get_component_id(name);
++		if (component_id >= 0) {
++			RTE_LOG(ERR, APP, "Component name '%s' is already "
++				"used.\n", name);
++			return SPP_RET_NG;
++		}
++
++		component_id = get_free_component();
++		if (component_id < 0) {
++			RTE_LOG(ERR, APP, "Cannot assign component over the "
++				"maximum number.\n");
++			return SPP_RET_NG;
++		}
++
++		core = &info->core[info->upd_index];
++		if ((core->type != SPP_COMPONENT_UNUSE) &&
++				(core->type != type)) {
++			RTE_LOG(ERR, APP, "Component type '%s' is invalid.\n",
++				name);
++			return SPP_RET_NG;
++		}
++
++		component = &g_component_info[component_id];
++		memset(component, 0x00, sizeof(struct spp_component_info));
++		strcpy(component->name, name);
++		component->type		= type;
++		component->lcore_id	= lcore_id;
++		component->component_id	= component_id;
++
++		core->type = type;
++		core->id[core->num] = component_id;
++		core->num++;
++		ret = SPP_RET_OK;
++		tmp_lcore_id = lcore_id;
++		g_change_component[component_id] = 1;
++		break;
++
++	case SPP_CMD_ACTION_STOP:
++		component_id = spp_get_component_id(name);
++		if (component_id < 0)
++			return SPP_RET_OK;
++
++		component = &g_component_info[component_id];
++		tmp_lcore_id = component->lcore_id;
++		memset(component, 0x00, sizeof(struct spp_component_info));
++
++		info = &g_core_info[tmp_lcore_id];
++		core = &info->core[info->upd_index];
++		ret_del = del_component_info(component_id,
++				core->num, core->id);
++		if (ret_del >= 0)
++			/* If deleted, decrement number. */
++			core->num--;
++
++		if (core->num == 0)
++			core->type = SPP_COMPONENT_UNUSE;
++
++		ret = SPP_RET_OK;
++		g_change_component[component_id] = 0;
++		break;
++
++	default:
++		break;
++	}
++
++	g_change_core[tmp_lcore_id] = 1;
++	return ret;
++}
++
++/* Port add or del to execute it */
++static int
++spp_update_port(enum spp_command_action action,
++		const struct spp_port_index *port,
++		enum spp_port_rxtx rxtx,
++		const char *name,
++		const struct spp_port_ability *ability)
++{
++	int ret = SPP_RET_NG;
++	int ret_check = -1;
++	int ret_del = -1;
++	int component_id = 0;
++	int cnt = 0;
++	struct spp_component_info *component = NULL;
++	struct spp_port_info *port_info = NULL;
++	int *num = NULL;
++	struct spp_port_info **ports = NULL;
++
++	component_id = spp_get_component_id(name);
++	if (component_id < 0) {
++		RTE_LOG(ERR, APP, "Unknown component by port command. "
++				"(component = %s)\n", name);
++		return SPP_RET_NG;
++	}
++
++	component = &g_component_info[component_id];
++	port_info = get_iface_info(port->iface_type, port->iface_no);
++	if (rxtx == SPP_PORT_RXTX_RX) {
++		num = &component->num_rx_port;
++		ports = component->rx_ports;
++	} else {
++		num = &component->num_tx_port;
++		ports = component->tx_ports;
++	}
++
++	switch (action) {
++	case SPP_CMD_ACTION_ADD:
++		ret_check = check_port_element(port_info, *num, ports);
++		if (ret_check >= 0)
++			return SPP_RET_OK;
++
++		if (*num >= RTE_MAX_ETHPORTS) {
++			RTE_LOG(ERR, APP, "Cannot assign port over the "
++				"maximum number.\n");
++			break;
++		}
++
++		if (ability->ope != SPP_PORT_ABILITY_OPE_NONE) {
++			while ((cnt < SPP_PORT_ABILITY_MAX) &&
++					(port_info->ability[cnt].ope !=
++					SPP_PORT_ABILITY_OPE_NONE)) {
++				cnt++;
++			}
++			if (cnt >= SPP_PORT_ABILITY_MAX) {
++				RTE_LOG(ERR, APP,
++						"No space of port ability.\n");
++				return SPP_RET_NG;
++			}
++			memcpy(&port_info->ability[cnt], ability,
++					sizeof(struct spp_port_ability));
++		}
++
++		port_info->iface_type = port->iface_type;
++		ports[*num] = port_info;
++		(*num)++;
++
++		ret = SPP_RET_OK;
++		break;
++
++	case SPP_CMD_ACTION_DEL:
++		for (cnt = 0; cnt < SPP_PORT_ABILITY_MAX; cnt++) {
++			if (port_info->ability[cnt].ope ==
++					SPP_PORT_ABILITY_OPE_NONE)
++				continue;
++
++			if (port_info->ability[cnt].rxtx == rxtx)
++				memset(&port_info->ability[cnt], 0x00,
++					sizeof(struct spp_port_ability));
++		}
++
++		ret_del = get_del_port_element(port_info, *num, ports);
++		if (ret_del == 0)
++			(*num)--; /* If deleted, decrement number. */
++
++		ret = SPP_RET_OK;
++		break;
++	default:
++		break;
++	}
++
++	g_change_component[component_id] = 1;
++	return ret;
++}
++
++/* Flush command to execute it */
++static int
++spp_flush(void)
++{
++	int ret = -1;
++
++	/* Initial setting of each interface. */
++	ret = flush_port();
++	if (ret < 0)
++		return ret;
++
++	/* Flush of core index. */
++	flush_core();
++
++	/* Flush of component */
++	ret = flush_component();
++
++	backup_mng_info(&g_backup_info);
++	return ret;
++}
++
++/* Iterate core information to create response to status command */
++static int
++spp_iterate_core_info(struct spp_iterate_core_params *params)
++{
++	int ret;
++	int lcore_id, cnt;
++	struct core_info *core = NULL;
++
++	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
++		if (spp_get_core_status(lcore_id) == SPP_CORE_UNUSE)
++			continue;
++
++		core = get_core_info(lcore_id);
++		if (core->num == 0) {
++			ret = (*params->element_proc)(
++				params, lcore_id,
++				"", SPP_TYPE_UNUSE_STR,
++				0, NULL, 0, NULL);
++			if (unlikely(ret != 0)) {
++				RTE_LOG(ERR, APP, "Cannot iterate core "
++						"information. "
++						"(core = %d, type = %d)\n",
++						lcore_id, SPP_COMPONENT_UNUSE);
++				return SPP_RET_NG;
++			}
++			continue;
++		}
++
++		for (cnt = 0; cnt < core->num; cnt++) {
++			if (core->type == SPP_COMPONENT_CLASSIFIER_MAC) {
++				ret = spp_classifier_get_component_status(
++						lcore_id,
++						core->id[cnt],
++						params);
++			} else {
++				ret = spp_forward_get_component_status(
++						lcore_id,
++						core->id[cnt],
++						params);
++			}
++			if (unlikely(ret != 0)) {
++				RTE_LOG(ERR, APP, "Cannot iterate core "
++						"information. "
++						"(core = %d, type = %d)\n",
++						lcore_id, core->type);
++				return SPP_RET_NG;
++			}
++		}
++	}
++
++	return SPP_RET_OK;
++}
++
++/* Iterate classifier_table to create response to status command */
++static int
++spp_iterate_classifier_table(
++		struct spp_iterate_classifier_table_params *params)
++{
++	int ret;
++
++	ret = spp_classifier_mac_iterate_table(params);
++	if (unlikely(ret != 0)) {
++		RTE_LOG(ERR, APP, "Cannot iterate classifier_mac_table.\n");
++		return SPP_RET_NG;
++	}
++
++	return SPP_RET_OK;
++}
++
++/* Get port number assigned by DPDK lib */
++static int
++spp_get_dpdk_port(enum port_type iface_type, int iface_no)
++{
++	switch (iface_type) {
++	case PHY:
++		return g_iface_info.nic[iface_no].dpdk_port;
++	case RING:
++		return g_iface_info.ring[iface_no].dpdk_port;
++	case VHOST:
++		return g_iface_info.vhost[iface_no].dpdk_port;
++	default:
++		return -1;
++	}
++}
++
+ /* append a comma for JSON format */
+ static int
+ append_json_comma(char **output)
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index f086eaf..9095c73 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -373,393 +373,3 @@ main(int argc, char *argv[])
+ 	RTE_LOG(INFO, APP, "spp_vf exit.\n");
+ 	return ret;
+ }
+-
+-int
+-spp_get_client_id(void)
+-{
+-	return g_startup_param.client_id;
+-}
+-
+-/*
+- * Check if port has been flushed.
+- */
+-int
+-spp_check_flush_port(enum port_type iface_type, int iface_no)
+-{
+-	struct spp_port_info *port = get_iface_info(iface_type, iface_no);
+-	return port->dpdk_port >= 0;
+-}
+-
+-int
+-spp_update_classifier_table(
+-		enum spp_command_action action,
+-		enum spp_classifier_type type __attribute__ ((unused)),
+-		int vid,
+-		const char *mac_addr_str,
+-		const struct spp_port_index *port)
+-{
+-	struct spp_port_info *port_info = NULL;
+-	int64_t ret_mac = 0;
+-	uint64_t mac_addr = 0;
+-
+-	RTE_LOG(DEBUG, APP, "update_classifier_table "
+-			"( type = mac, mac addr = %s, port = %d:%d )\n",
+-			mac_addr_str, port->iface_type, port->iface_no);
+-
+-	ret_mac = spp_change_mac_str_to_int64(mac_addr_str);
+-	if (unlikely(ret_mac == -1)) {
+-		RTE_LOG(ERR, APP, "MAC address format error. ( mac = %s )\n",
+-				mac_addr_str);
+-		return SPP_RET_NG;
+-	}
+-	mac_addr = (uint64_t)ret_mac;
+-
+-	port_info = get_iface_info(port->iface_type, port->iface_no);
+-	if (unlikely(port_info == NULL)) {
+-		RTE_LOG(ERR, APP, "No port. ( port = %d:%d )\n",
+-				port->iface_type, port->iface_no);
+-		return SPP_RET_NG;
+-	}
+-	if (unlikely(port_info->iface_type == UNDEF)) {
+-		RTE_LOG(ERR, APP, "Port not added. ( port = %d:%d )\n",
+-				port->iface_type, port->iface_no);
+-		return SPP_RET_NG;
+-	}
+-
+-	if (action == SPP_CMD_ACTION_DEL) {
+-		/* Delete */
+-		if ((port_info->class_id.vlantag.vid != 0) &&
+-				unlikely(port_info->class_id.vlantag.vid !=
+-				vid)) {
+-			RTE_LOG(ERR, APP, "VLAN ID is different. "
+-					"( vid = %d )\n", vid);
+-			return SPP_RET_NG;
+-		}
+-		if ((port_info->class_id.mac_addr != 0) &&
+-				unlikely(port_info->class_id.mac_addr !=
+-						mac_addr)) {
+-			RTE_LOG(ERR, APP, "MAC address is different. "
+-					"( mac = %s )\n", mac_addr_str);
+-			return SPP_RET_NG;
+-		}
+-
+-		port_info->class_id.vlantag.vid = ETH_VLAN_ID_MAX;
+-		port_info->class_id.mac_addr    = 0;
+-		memset(port_info->class_id.mac_addr_str, 0x00,
+-							SPP_MIN_STR_LEN);
+-	} else if (action == SPP_CMD_ACTION_ADD) {
+-		/* Setting */
+-		if (unlikely(port_info->class_id.vlantag.vid !=
+-				ETH_VLAN_ID_MAX)) {
+-			RTE_LOG(ERR, APP, "Port in used. "
+-					"( port = %d:%d, vlan = %d != %d )\n",
+-					port->iface_type, port->iface_no,
+-					port_info->class_id.vlantag.vid, vid);
+-			return SPP_RET_NG;
+-		}
+-		if (unlikely(port_info->class_id.mac_addr != 0)) {
+-			RTE_LOG(ERR, APP, "Port in used. "
+-					"( port = %d:%d, mac = %s != %s )\n",
+-					port->iface_type, port->iface_no,
+-					port_info->class_id.mac_addr_str,
+-					mac_addr_str);
+-			return SPP_RET_NG;
+-		}
+-
+-		port_info->class_id.vlantag.vid = vid;
+-		port_info->class_id.mac_addr    = mac_addr;
+-		strcpy(port_info->class_id.mac_addr_str, mac_addr_str);
+-	}
+-
+-	set_component_change_port(port_info, SPP_PORT_RXTX_TX);
+-	return SPP_RET_OK;
+-}
+-
+-/* Component command to execute it */
+-int
+-spp_update_component(
+-		enum spp_command_action action,
+-		const char *name,
+-		unsigned int lcore_id,
+-		enum spp_component_type type)
+-{
+-	int ret = SPP_RET_NG;
+-	int ret_del = -1;
+-	int component_id = 0;
+-	unsigned int tmp_lcore_id = 0;
+-	struct spp_component_info *component = NULL;
+-	struct core_info *core = NULL;
+-	struct core_mng_info *info = NULL;
+-
+-	switch (action) {
+-	case SPP_CMD_ACTION_START:
+-		info = &g_core_info[lcore_id];
+-		if (info->status == SPP_CORE_UNUSE) {
+-			RTE_LOG(ERR, APP, "Core unavailable.\n");
+-			return SPP_RET_NG;
+-		}
+-
+-		component_id = spp_get_component_id(name);
+-		if (component_id >= 0) {
+-			RTE_LOG(ERR, APP, "Component name in used.\n");
+-			return SPP_RET_NG;
+-		}
+-
+-		component_id = get_free_component();
+-		if (component_id < 0) {
+-			RTE_LOG(ERR, APP, "Component upper limit is over.\n");
+-			return SPP_RET_NG;
+-		}
+-
+-		core = &info->core[info->upd_index];
+-		if ((core->type != SPP_COMPONENT_UNUSE) &&
+-				(core->type != type)) {
+-			RTE_LOG(ERR, APP, "Component type is error.\n");
+-			return SPP_RET_NG;
+-		}
+-
+-		component = &g_component_info[component_id];
+-		memset(component, 0x00, sizeof(struct spp_component_info));
+-		strcpy(component->name, name);
+-		component->type         = type;
+-		component->lcore_id     = lcore_id;
+-		component->component_id = component_id;
+-
+-		core->type = type;
+-		core->id[core->num] = component_id;
+-		core->num++;
+-		ret = SPP_RET_OK;
+-		tmp_lcore_id = lcore_id;
+-		g_change_component[component_id] = 1;
+-		break;
+-
+-	case SPP_CMD_ACTION_STOP:
+-		component_id = spp_get_component_id(name);
+-		if (component_id < 0)
+-			return SPP_RET_OK;
+-
+-		component = &g_component_info[component_id];
+-		tmp_lcore_id = component->lcore_id;
+-		memset(component, 0x00, sizeof(struct spp_component_info));
+-
+-		info = &g_core_info[tmp_lcore_id];
+-		core = &info->core[info->upd_index];
+-		ret_del = del_component_info(component_id,
+-				core->num, core->id);
+-		if (ret_del >= 0)
+-			/* If deleted, decrement number. */
+-			core->num--;
+-
+-		if (core->num == 0)
+-			core->type = SPP_COMPONENT_UNUSE;
+-
+-		ret = SPP_RET_OK;
+-		g_change_component[component_id] = 0;
+-		break;
+-
+-	default:
+-		break;
+-	}
+-
+-	g_change_core[tmp_lcore_id] = 1;
+-	return ret;
+-}
+-
+-/* Port add or del to execute it */
+-int
+-spp_update_port(enum spp_command_action action,
+-		const struct spp_port_index *port,
+-		enum spp_port_rxtx rxtx,
+-		const char *name,
+-		const struct spp_port_ability *ability)
+-{
+-	int ret = SPP_RET_NG;
+-	int ret_check = -1;
+-	int ret_del = -1;
+-	int component_id = 0;
+-	int cnt = 0;
+-	struct spp_component_info *component = NULL;
+-	struct spp_port_info *port_info = NULL;
+-	int *num = NULL;
+-	struct spp_port_info **ports = NULL;
+-
+-	component_id = spp_get_component_id(name);
+-	if (component_id < 0) {
+-		RTE_LOG(ERR, APP, "Unknown component by port command. "
+-				"(component = %s)\n", name);
+-		return SPP_RET_NG;
+-	}
+-
+-	component = &g_component_info[component_id];
+-	port_info = get_iface_info(port->iface_type, port->iface_no);
+-	if (rxtx == SPP_PORT_RXTX_RX) {
+-		num = &component->num_rx_port;
+-		ports = component->rx_ports;
+-	} else {
+-		num = &component->num_tx_port;
+-		ports = component->tx_ports;
+-	}
+-
+-	switch (action) {
+-	case SPP_CMD_ACTION_ADD:
+-		ret_check = check_port_element(port_info, *num, ports);
+-		if (ret_check >= 0)
+-			return SPP_RET_OK;
+-
+-		if (*num >= RTE_MAX_ETHPORTS) {
+-			RTE_LOG(ERR, APP, "Port upper limit is over.\n");
+-			break;
+-		}
+-
+-		if (ability->ope != SPP_PORT_ABILITY_OPE_NONE) {
+-			while ((cnt < SPP_PORT_ABILITY_MAX) &&
+-					(port_info->ability[cnt].ope !=
+-					SPP_PORT_ABILITY_OPE_NONE)) {
+-				cnt++;
+-			}
+-			if (cnt >= SPP_PORT_ABILITY_MAX) {
+-				RTE_LOG(ERR, APP,
+-						"No space of port ability.\n");
+-				return SPP_RET_NG;
+-			}
+-			memcpy(&port_info->ability[cnt], ability,
+-					sizeof(struct spp_port_ability));
+-		}
+-
+-		port_info->iface_type = port->iface_type;
+-		ports[*num] = port_info;
+-		(*num)++;
+-
+-		ret = SPP_RET_OK;
+-		break;
+-
+-	case SPP_CMD_ACTION_DEL:
+-		for (cnt = 0; cnt < SPP_PORT_ABILITY_MAX; cnt++) {
+-			if (port_info->ability[cnt].ope ==
+-					SPP_PORT_ABILITY_OPE_NONE)
+-				continue;
+-
+-			if (port_info->ability[cnt].rxtx == rxtx)
+-				memset(&port_info->ability[cnt], 0x00,
+-					sizeof(struct spp_port_ability));
+-		}
+-
+-		ret_del = get_del_port_element(port_info, *num, ports);
+-		if (ret_del == 0)
+-			(*num)--; /* If deleted, decrement number. */
+-
+-		ret = SPP_RET_OK;
+-		break;
+-	default:
+-		break;
+-	}
+-
+-	g_change_component[component_id] = 1;
+-	return ret;
+-}
+-
+-/* Flush command to execute it */
+-int
+-spp_flush(void)
+-{
+-	int ret = -1;
+-
+-	/* Initial setting of each interface. */
+-	ret = flush_port();
+-	if (ret < 0)
+-		return ret;
+-
+-	/* Flush of core index. */
+-	flush_core();
+-
+-	/* Flush of component */
+-	ret = flush_component();
+-
+-	backup_mng_info(&g_backup_info);
+-	return ret;
+-}
+-
+-/* Iterate core information */
+-int
+-spp_iterate_core_info(struct spp_iterate_core_params *params)
+-{
+-	int ret;
+-	int lcore_id, cnt;
+-	struct core_info *core = NULL;
+-
+-	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		if (spp_get_core_status(lcore_id) == SPP_CORE_UNUSE)
+-			continue;
+-
+-		core = get_core_info(lcore_id);
+-		if (core->num == 0) {
+-			ret = (*params->element_proc)(
+-				params, lcore_id,
+-				"", SPP_TYPE_UNUSE_STR,
+-				0, NULL, 0, NULL);
+-			if (unlikely(ret != 0)) {
+-				RTE_LOG(ERR, APP, "Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
+-						lcore_id, SPP_COMPONENT_UNUSE);
+-				return SPP_RET_NG;
+-			}
+-			continue;
+-		}
+-
+-		for (cnt = 0; cnt < core->num; cnt++) {
+-			if (core->type == SPP_COMPONENT_CLASSIFIER_MAC) {
+-				ret = spp_classifier_get_component_status(
+-						lcore_id,
+-						core->id[cnt],
+-						params);
+-			} else {
+-				ret = spp_forward_get_component_status(
+-						lcore_id,
+-						core->id[cnt],
+-						params);
+-			}
+-			if (unlikely(ret != 0)) {
+-				RTE_LOG(ERR, APP, "Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
+-						lcore_id, core->type);
+-				return SPP_RET_NG;
+-			}
+-		}
+-	}
+-
+-	return SPP_RET_OK;
+-}
+-
+-/* Iterate Classifier_table */
+-int
+-spp_iterate_classifier_table(
+-		struct spp_iterate_classifier_table_params *params)
+-{
+-	int ret;
+-
+-	ret = spp_classifier_mac_iterate_table(params);
+-	if (unlikely(ret != 0)) {
+-		RTE_LOG(ERR, APP, "Cannot iterate classifier_mac_table.\n");
+-		return SPP_RET_NG;
+-	}
+-
+-	return SPP_RET_OK;
+-}
+-
+-/* Get the port number of DPDK. */
+-int
+-spp_get_dpdk_port(enum port_type iface_type, int iface_no)
+-{
+-	switch (iface_type) {
+-	case PHY:
+-		return g_iface_info.nic[iface_no].dpdk_port;
+-	case RING:
+-		return g_iface_info.ring[iface_no].dpdk_port;
+-	case VHOST:
+-		return g_iface_info.vhost[iface_no].dpdk_port;
+-	default:
+-		return -1;
+-	}
+-}
+diff --git a/src/vf/spp_vf.h b/src/vf/spp_vf.h
+index f540122..f7f08c8 100644
+--- a/src/vf/spp_vf.h
++++ b/src/vf/spp_vf.h
+@@ -15,137 +15,4 @@
+ 
+ #include "common.h"
+ 
+-/** The max number of client ID */
+-#define SPP_CLIENT_MAX    128
+-
+-/**
+- * Get client ID
+- *
+- * @return Client ID(0~127)
+- */
+-int spp_get_client_id(void);
+-
+-/**
+- * Update Classifier_table
+- *
+- * @param action
+- *  Action identifier (add or del)
+- * @param type
+- *  Classify type (currently only for mac)
+- * @param data
+- *  Value to be classified
+- * @param port
+- *  Destination port type and number
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_update_classifier_table(
+-		enum spp_command_action action,
+-		enum spp_classifier_type type,
+-		int vid,
+-		const char *mac,
+-		const struct spp_port_index *port);
+-
+-/**
+- * Update component
+- *
+- * @param action
+- *  Action identifier (start or stop)
+- * @param name
+- *  Component name
+- * @param lcore_id
+- *  Logical core number
+- * @param type
+- *  Component type
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_update_component(
+-		enum spp_command_action action,
+-		const char *name, unsigned int lcore_id,
+-		enum spp_component_type type);
+-
+-/**
+- * Update port
+- *
+- * @param action
+- *  Action identifier (add or del)
+- * @param port
+- *  Port type and number
+- * @param rxtx
+- *  rx/tx identifier
+- * @param name
+- *  Attached component name
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_update_port(
+-		enum spp_command_action action,
+-		const struct spp_port_index *port,
+-		enum spp_port_rxtx rxtx,
+-		const char *name,
+-		const struct spp_port_ability *ability);
+-
+-/**
+- * Flush SPP component
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_flush(void);
+-
+-/**
+- * Iterate core information
+- *
+- * @param params
+- *  The pointer to struct spp_iterate_core_params.@n
+- *  The value for generating core information (status command).
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_iterate_core_info(struct spp_iterate_core_params *params);
+-
+-/**
+- * Iterate Classifier_table
+- *
+- * @param params
+- *  The pointer to struct spp_iterate_classifier_table_params.@n
+- *  The value for generating classifier table.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_iterate_classifier_table(
+-		struct spp_iterate_classifier_table_params *params);
+-
+-/**
+- * Check if port has been flushed.
+- *
+- * @param iface_type
+- *  Interface to be validated.
+- * @param iface_no
+- *  Interface number to be validated.
+- *
+- * @return
+- *  True if port has been flushed.
+- */
+-int spp_check_flush_port(enum port_type iface_type, int iface_no);
+-
+-/**
+- * Get the port number of DPDK.
+- *
+- * @param iface_type
+- *  Interface type obtained from port.
+- * @param iface_no
+- *  Interface number obtained from port.
+- *
+- * @return
+- *  Port id generated by DPDK.
+- */
+-int spp_get_dpdk_port(enum port_type iface_type, int iface_no);
+-
+ #endif /* __SPP_VF_H__ */
+-- 
+2.18.0
+
+

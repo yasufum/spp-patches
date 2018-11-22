@@ -1,0 +1,255 @@
+X-Account-Key: account4
+X-UIDL: 0000887a56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 08099400B53
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 04CD623BAE6; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 0435523B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:12 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E1C39EA7723
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id B68E3EA7873
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:11 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3A+3y5TRFx/MbeRvcMVUtiKZ1GYnJ96ZzpIg4Y7I?=
+ =?us-ascii?q?YmgLtSc6Oluq7vJ1Hb+e401QCbUY7e4rdfk++O6ebtUmhG54qd9nsFNp5UBF?=
+ =?us-ascii?q?cekctDpwU7G4aeDFHjaubwZnkqWcpEEUR951mgNQ5TBNq7e02UqXr07yZBUg?=
+ =?us-ascii?q?7nO19NL//uUpXXk9zx0umz/5PJZAAdlH+zZ/ZpNA2etgGXsNUKxJdybK02jB?=
+ =?us-ascii?q?nR+yEaQeldyGJ2KF7WpC7SuJ/vrqZq6D8Y+/4q8scFSr3/J/5+QLdcSjI6Ly?=
+ =?us-ascii?q?Y+44vprUuLQQyK73oaGmIY93gASxiA4he/RY/pmjD+8OxhxGyGLYv9SvY2QX?=
+ =?us-ascii?q?yu4rxqRxnhlCocf2RgqCeN0ZY21/8d/kPprgcaocaceIyPMftiYq7RNcgXQ2?=
+ =?us-ascii?q?ZMRIcZViBMBJ+9c5paF/AIbq5Tq4jwoUdLrAPrX1D0Qrm0kHkT2zmojP5fsa?=
+ =?us-ascii?q?xpCwzN0Q0+EshbvH/RpZDuLKJKC6a4x62OyynfKfhRnzXlu+2qOlgsp++BWb?=
+ =?us-ascii?q?VofI/f004qQknVy1uW7Jf9JxuO0qILr3Te8/omXuXpiXZt+GQT6nC/g9whjI?=
+ =?us-ascii?q?XEnNdf2hXK82Bi2J4dPtn+TlJnJMK0VpBX8SOCfdgTIItqUyRjvyA0zacDsJ?=
+ =?us-ascii?q?iwcX0RyZgp8AXDcf2Mb9vA8lf5We2WOzs9mGN9def1mUOp6Ub5gL6ZNIH8wB?=
+ =?us-ascii?q?NQoyFCiNWJqn0dy0mZ9J2cUvUktk7z3D+O01iIrOBPOgYyibaeN45nybl2lI?=
+ =?us-ascii?q?J20wyLF33zkUTy1PPQd04/vO6096H7cvPtodmeL8d92AT3M6B2x4q+Cv9+NB?=
+ =?us-ascii?q?QSGnSLv++7kr/7mC+xCLwYi/Q3lvGH9pHRPoIdurL8Hx8T2YFl6Q73BmWj2d?=
+ =?us-ascii?q?UcxSZBLVlePhSbk831KxfFJ7b6FZLdyxylwjJixvSebvvgCY6LKGTf1avxO7?=
+ =?us-ascii?q?16rUxEgAsrkYIFvsoSUOpbZqmuHBag6bm6Rlc4K1Dmmb+/To8mjMVFBCTWU/?=
+ =?us-ascii?q?HRMbuO4wXRvqR1eLPKP9JT5mu1KuB5taS31TljwgVbJvTvg8Vffnm8Gr4/eR?=
+ =?us-ascii?q?ejbHHhg8kMHSIxhiRgFba4sFSZSnYTa323Vucn/jRjUsSrBoOFQJyxxreGmi?=
+ =?us-ascii?q?WjTNVaYWVPC1bEFnmNFc3MS7ICbmeJOtdJiThCU6S9DpMxkxqp8g3ig7ZqNe?=
+ =?us-ascii?q?vb/CQEuImrjoEtobeIz1dpqHoqXoyUyATvBylsk3kNRiMq0aw3ukF7xlqZkO?=
+ =?us-ascii?q?B5j/FeCd1P9qZMWwY+O4Tbyr8yANTzVwTdO9aRHQz/GpP8Wmt3FY93nY5dBi?=
+ =?us-ascii?q?Q1U8+vhR3CwSewVrMekrXOH4Qxqvia0nP1YcBh1zDN0+8jlwpDIIMHOGu4i6?=
+ =?us-ascii?q?p47wWWCZTOlhDTh+Okc+EHxDbl72PFy3aS+V1IFgV3F6fdFyN6BAOevZHi60?=
+ =?us-ascii?q?XOQqX7Q6RiPA0E0taaArBOLNv1kRBaVLHoP5Lceyji/gX4TQbNzbSKYo3wfm?=
+ =?us-ascii?q?wb1yiIE0kInTcI4WyHPhRtTjfkuW/VCyZiUE7+e065u/crs2u1FwVnqmPCJ1?=
+ =?us-ascii?q?0kzbe+/QQZwOCRW+9GlKxRoz8v8n19TlO03taOUJyBrBEnerlAJM8tplxAk2?=
+ =?us-ascii?q?DB0m41dpXyKqljggZCNQV8pAXoywkyFpUGms9srmtixVh3IKOciA4HdjiDm5?=
+ =?us-ascii?q?bsJvjLOi/5+1atc8u0khnXgtOf+6NXtrI5oE6luh21U1YytX5gldtNm3LO45?=
+ =?us-ascii?q?zLCFJNF5P6SQAx6wQ/u6GcaS575ZuxtzUkOPuxuz7Gg4JvBeA+jBC8Y5JDIO?=
+ =?us-ascii?q?WPE0nwC4UbH5T8crVy3QLyNFRfYaYLpfNRXYvuduPaivTyZKA6x2jg1jkBud?=
+ =?us-ascii?q?EjmkOUq3gmE7aOhc1fharFmFXaHzbk0AX765ixw9seI2pPWDThgT7tAIobP/?=
+ =?us-ascii?q?wgTcMwEW6rZvaP6JB7jp/pVWRf8Qf8VUgCnsm1ZV+Ofxr22ktSzRZO+CD1qW?=
+ =?us-ascii?q?6D1zVx1goRgO+HxiWXnLb5cFwBJnIOWHkkhlCqI5Dm1t0=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDeRAgDCUPSAcSgyGCAatXiH+BLId?=
+ =?us-ascii?q?agWeEWoERjWsChxYHggSGaY9tCYolhwUYkQEsmUGCDYFAgmyCNY40MAEBATA?=
+ =?us-ascii?q?BjgkBAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:11 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f7es002688;
+	Wed, 21 Nov 2018 10:41:07 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f6Ro004542;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01841;
+	 Wed, 21 Nov 2018 10:36:01 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a1vP009666; Wed, 21 Nov 2018 10:36:01 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0w1009657; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0w1009657@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWf008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 13/23] spp_vf: define terms of commands as consts
+Date: Wed, 21 Nov 2018 10:35:48 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add defines of terms of commands of spp_vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c | 80 ++++++++++++++++++++++++++-----------
+ 1 file changed, 56 insertions(+), 24 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 7cebbb5..13af984 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -14,14 +14,44 @@
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ 
++/* command string  */
++#define SPP_COMMAND_CLASSFIER_TABLE_STR	"classifier_table"
++#define SPP_COMMAND_GET_CLIENT_ID_STR	"_get_client_id"
++#define SPP_COMMAND_STATUS_STR		"status"
++#define SPP_COMMAND_EXIT_STR		"exit"
++#define SPP_COMMAND_COMPONENT_STR	"component"
++#define SPP_COMMAND_PORT_STR		"port"
++
++/* classifiler_type string */
++#define SPP_CLASSIFLER_NONE_STR		"none"
++#define SPP_CLASSIFLER_MAC_STR		"mac"
++#define SPP_CLASSIFLER_VLAN_STR		"vlan"
++
++/* command action string */
++#define SPP_ACTION_NONE_STR		"none"
++#define SPP_ACTION_START_STR		"start"
++#define SPP_ACTION_STOP_STR		"stop"
++#define SPP_ACTION_ADD_STR		"add"
++#define SPP_ACTION_DEL_STR		"del"
++
++/* port rx/tx string */
++#define SPP_PORT_RXTX_NONE_STR		"none"
++#define SPP_PORT_RXTX_RX_STR		"rx"
++#define SPP_PORT_RXTX_TX_STR		"tx"
++
++/* port ability string */
++#define SPP_ABILITY_NONE_STR		"none"
++#define SPP_ABILITY_ADD_VLANTAG_STR	"add_vlantag"
++#define SPP_ABILITY_DEL_VLANTAG_STR	"del_vlantag"
++
+ /*
+  * classifier type string list
+  * do it same as the order of enum spp_classifier_type (spp_vf.h)
+  */
+ const char *CLASSIFILER_TYPE_STRINGS[] = {
+-	"none",
+-	"mac",
+-	"vlan",
++	SPP_CLASSIFLER_NONE_STR,
++	SPP_CLASSIFLER_MAC_STR,
++	SPP_CLASSIFLER_VLAN_STR,
+ 
+ 	/* termination */ "",
+ };
+@@ -31,11 +61,11 @@ const char *CLASSIFILER_TYPE_STRINGS[] = {
+  * do it same as the order of enum spp_command_action (spp_vf.h)
+  */
+ const char *COMMAND_ACTION_STRINGS[] = {
+-	"none",
+-	"start",
+-	"stop",
+-	"add",
+-	"del",
++	SPP_ACTION_NONE_STR,
++	SPP_ACTION_START_STR,
++	SPP_ACTION_STOP_STR,
++	SPP_ACTION_ADD_STR,
++	SPP_ACTION_DEL_STR,
+ 
+ 	/* termination */ "",
+ };
+@@ -45,9 +75,9 @@ const char *COMMAND_ACTION_STRINGS[] = {
+  * do it same as the order of enum spp_port_rxtx (spp_vf.h)
+  */
+ const char *PORT_RXTX_STRINGS[] = {
+-	"none",
+-	"rx",
+-	"tx",
++	SPP_PORT_RXTX_NONE_STR,
++	SPP_PORT_RXTX_RX_STR,
++	SPP_PORT_RXTX_TX_STR,
+ 
+ 	/* termination */ "",
+ };
+@@ -57,9 +87,9 @@ const char *PORT_RXTX_STRINGS[] = {
+  * do it same as the order of enum spp_port_ability_type (spp_vf.h)
+  */
+ const char *PORT_ABILITY_STRINGS[] = {
+-	"none",
+-	"add_vlantag",
+-	"del_vlantag",
++	SPP_ABILITY_NONE_STR,
++	SPP_ABILITY_ADD_VLANTAG_STR,
++	SPP_ABILITY_DEL_VLANTAG_STR,
+ 
+ 	/* termination */ "",
+ };
+@@ -863,18 +893,20 @@ struct decode_command_list {
+ 
+ /* command list */
+ static struct decode_command_list command_list[] = {
+-	{ "classifier_table", 5, 5, decode_command_parameter_in_list },
++	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 5, 5,
++		decode_command_parameter_in_list },
+ 						/* classifier_table(mac) */
+-	{ "classifier_table", 6, 6, decode_command_parameter_in_list },
++	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 6, 6,
++		decode_command_parameter_in_list },
+ 						/* classifier_table(vlan) */
+-	{ "_get_client_id",   1, 1, NULL },     /* _get_client_id   */
+-	{ "status",           1, 1, NULL },     /* status           */
+-	{ "exit",             1, 1, NULL },     /* exit             */
+-	{ "component",        3, 5, decode_command_parameter_in_list },
+-						/* component        */
+-	{ "port",             5, 8, decode_command_parameter_in_list },
+-						/* port             */
+-	{ "",                 0, 0, NULL }      /* termination      */
++	{ SPP_COMMAND_GET_CLIENT_ID_STR, 1, 1, NULL }, /* _get_client_id  */
++	{ SPP_COMMAND_STATUS_STR,	 1, 1, NULL }, /* status	  */
++	{ SPP_COMMAND_EXIT_STR,		 1, 1, NULL }, /* exit		  */
++	{ SPP_COMMAND_COMPONENT_STR,	 3, 5,
++		decode_command_parameter_in_list },    /* component	  */
++	{ SPP_COMMAND_PORT_STR,		 5, 8,
++		decode_command_parameter_in_list },    /* port		  */
++	{ "",				 0, 0, NULL }  /* termination     */
+ };
+ 
+ /* Decode command line parameters */
+-- 
+2.18.0
+
+

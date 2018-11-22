@@ -1,0 +1,310 @@
+X-Account-Key: account4
+X-UIDL: 0000887f56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id BF7BF400B55
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id BCA7223BAF6; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id BC2DC23B857
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id AFD17EA79B3
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A4768EA77FA
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 21 Nov 2018 10:41:13 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3ALybsJxbdJkHnBq6yVXF5wrn/LSx94efdIxIV55?=
+ =?us-ascii?q?w7irlHbqWk+dHYMVfC4el21QaWD4nQ7vsBkPLT6/qmVGcEp5CdrDYJd9pOT0?=
+ =?us-ascii?q?xNkt0YyjQpG9XNEkjnNLjydSVvDIFMUhp+52mTKkwTHtriIkHC5Ha1qzwKSV?=
+ =?us-ascii?q?3kLQQgHu3uAcbJitivkeW7+pndeQJN0Sr4b7U3Nw2uhR7V8M8Knc5+OuA6zV?=
+ =?us-ascii?q?3LuiISKd5bzm5pO1+f2i3EyJnoo8xb+j9L87It/MtJFL7ievxiC7FTCHIgL3?=
+ =?us-ascii?q?xz78qttwGRBQeI43IdVC0RnH8qS0DVqR/8G4zpqgPhsqx7xDXfId2wRrdyWy?=
+ =?us-ascii?q?zq46pwSRDugTsKLHZjqTmR0JcqyvkG5kzw7xVkpuycKJmYLv9/Yr/QcZsBSG?=
+ =?us-ascii?q?xNU9wQHy1ND4WgbpceWvIbNLUQpI38ql0S6BqmUFP1XKW1kWUO3SKwg/xpto?=
+ =?us-ascii?q?ZpWRvL1wEhAd8U5XjfqdywL78XCbrzwaLMizPfc7Vd3nH/8NutEFhprPeSUL?=
+ =?us-ascii?q?Z3aceUx1MoElaPnhCer8n+Jyu9zeBLtXSHqvZwE+mozWw/4VIUwHDn1oI3h4?=
+ =?us-ascii?q?/Fi5hAgECB+yM8254tDca8DkhnfZu4AN1bsGeYL8ElJ6FqC3EtsyE8xLocvJ?=
+ =?us-ascii?q?e9dyVf05UrySnEd+aGeJTbqgKmTuuaJi10wW50YL/qzQjn6lCuk6evM6v8mE?=
+ =?us-ascii?q?YPtCdOlcPA82wAxwCGoNbSUeNzpw+oizOG1gSLsadFKltyk7bHboIxhLU30J?=
+ =?us-ascii?q?gL1CaLViaknUz3iPfKMEQv4a6u9/iifqWgrZjaNZc8g1P7O6UqwpH5AO8jdA?=
+ =?us-ascii?q?4SQy2H6aK30/vh5SibCP1D3Pg/k62B7tbbLt9doLKlRhNFlI0krRSnRz701d?=
+ =?us-ascii?q?0ZmSFYalNOY1SBk5SsJ0GIK/e+D+/a4RzkmWVuzvHCZu2nA57WaH7fjPL9bf?=
+ =?us-ascii?q?B27Ahe0EIy1YwNvcsMTOtaerSoBwmo5YG9bFdxMhTokby+UJMnjdlYAj/JW/?=
+ =?us-ascii?q?7HeKLK7Q3Sv7ppebLWItRI/migY/k9u6y01Cd/wwRHO/L0m8VJIGaxGvAseh?=
+ =?us-ascii?q?/LW3fnj9YfHGtPhTIQErWw2mWLSiUbJ3q5Wqt5/Sk+UNjgAIzHAIaxnPqK22?=
+ =?us-ascii?q?G5Bs8eamdDA1GKWXDmEufME+dJZiTXOdd5uicAE769V8o9xVels0n40/JrI/?=
+ =?us-ascii?q?HV9SsRqZ/4nIIsv6uJzkt0rmEyUZXV2nroLSk8hm4SQj4qwK1z6VdwzFuOy+?=
+ =?us-ascii?q?kwgvBVE8BS++IcVw47MZDGyOkpQ9v2Ww/HYpKIUAP8G43gW2prCIlshYFfMC?=
+ =?us-ascii?q?MfU524gxvO3jSnGeoZnLmCQYcs9/qGmXX6I4B712qA365njUF1J6kHfWCgmK?=
+ =?us-ascii?q?N78BDeQoDTlEDM3bbve6JZxzbV3HyHi2ySoAREQEh7VuPHRTpMAyme5cS8/U?=
+ =?us-ascii?q?7EQ7K0XP43dwVHjNWaMoNRbpvvkUkDWOelM9OYYXr7yALSTV6Yg7iLaoTtYW?=
+ =?us-ascii?q?AU2i7QXVMFnw4k5mqcNAMiVW+x5njTBzt0GRfzclvhpKNg/WijQBZ+nGToJw?=
+ =?us-ascii?q?VxkqC48RkPibmARuMPi/ga7Tw5pWw8FQS41tPSU4HGpgF6OqNAfZYh8BFM0i?=
+ =?us-ascii?q?Tbr2kfdtSpfaVrh1pGL0J2tFio0QlrT5lQ18Mt6nEyhAMgLKuZ1AscMTKTxt?=
+ =?us-ascii?q?b2JqGSNnm09xfpabazuBmW2YST86YLsKp+ql74+ge1Cg8+4zNs1J9XyzOVtJ?=
+ =?us-ascii?q?DDDQ5KDtTwWV1x8QRm4q3KJCI6oYHMsB8keaDmtzbD34p5Quou0VCmY8saLL?=
+ =?us-ascii?q?PCHwi0EdVSBtDyerZzwx7zNUhCZ70Urf9pWqHuP/qehPzxZb4mxmn8yz8apt?=
+ =?us-ascii?q?ksjAqN73YuELeQmcxembfDg03ZCn/9lAvz6Jmv39ofP3dJQyzhl2DyDYpVLP?=
+ =?us-ascii?q?QjL7ZOMn+nJoiM/vs7gpfsX3BC81v6WAEd3ImvZQbXc0y71goW11xF+CX7yx?=
+ =?us-ascii?q?v99CR9lnQSloTaxDbHmruwbx5BPHJXAXVyy1zrZ4qs3YkX?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAAEt/Rbl0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAIE4IQMHCCeMEF+NLZc3gXqEeQI1g2EBBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYYBliFPQMDeRAgDCUPSAcSgyGCAatXiH+BLId?=
+ =?us-ascii?q?aRYEihFqBEYRmhl+CJgKHFgeBeoZzT48eCZEqGJEBLJlBgg2ELIInDgmOKzA?=
+ =?us-ascii?q?BAQEwAYs8BIJJAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 21 Nov 2018 10:41:12 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAL1f8oY002714;
+	Wed, 21 Nov 2018 10:41:08 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAL1f6tR004509;
+	Wed, 21 Nov 2018 10:41:06 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA01808;
+	 Wed, 21 Nov 2018 10:36:00 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0tq009639; Wed, 21 Nov 2018 10:36:00 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id wAL1a0ZB009636; Wed, 21 Nov 2018 10:36:00 +0900
+Message-Id: <201811210136.wAL1a0ZB009636@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wAL1ZwWc008346 ; Wed, 21 Nov 2018 10:36:00 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 10/23] spp_vf: add management data registration
+Date: Wed, 21 Nov 2018 10:35:45 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181121013558.8869-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch adds the registration and retrieval functions of management
+data to 'common/spp_proc.c'.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/spp_proc.c | 71 ++++++++++++++++++++++++++++++++++++++++
+ src/vf/common/spp_proc.h | 58 ++++++++++++++++++++++++++++++++
+ src/vf/spp_vf.c          | 13 ++++++++
+ 3 files changed, 142 insertions(+)
+
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 7b92e38..5bb8571 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -17,7 +17,21 @@
+ #include "../vf/spp_forward.h"
+ #include "../vf/classifier_mac.h"
+ 
++/* Manage data to addoress */
++struct manage_data_addr_info {
++	struct startup_param	  *p_startup_param;
++	struct iface_info	  *p_iface_info;
++	struct spp_component_info *p_component_info;
++	struct core_mng_info	  *p_core_info;
++	int			  *p_change_core;
++	int			  *p_change_component;
++	struct cancel_backup_info *p_backup_info;
++	unsigned int		  main_lcore_id;
++};
++
+ /* Declare global variables */
++/* Logical core ID for main process */
++static struct manage_data_addr_info g_mng_data_addr;
+ 
+ /**
+  * Make a hexdump of an array data in every 4 byte.
+@@ -930,3 +944,60 @@ spp_change_mac_str_to_int64(const char *mac)
+ 			 mac, ret_mac);
+ 	return ret_mac;
+ }
++
++/* Set mange data address */
++int spp_set_mng_data_addr(struct startup_param *startup_param_addr,
++			  struct iface_info *iface_addr,
++			  struct spp_component_info *component_addr,
++			  struct core_mng_info *core_mng_addr,
++			  int *change_core_addr,
++			  int *change_component_addr,
++			  struct cancel_backup_info *backup_info_addr,
++			  unsigned int main_lcore_id)
++{
++	if (startup_param_addr == NULL || iface_addr == NULL ||
++			component_addr == NULL || core_mng_addr == NULL ||
++			change_core_addr == NULL ||
++			change_component_addr == NULL ||
++			backup_info_addr == NULL ||
++			main_lcore_id == 0xffffffff)
++		return SPP_RET_NG;
++
++	g_mng_data_addr.p_startup_param = startup_param_addr;
++	g_mng_data_addr.p_iface_info = iface_addr;
++	g_mng_data_addr.p_component_info = component_addr;
++	g_mng_data_addr.p_core_info = core_mng_addr;
++	g_mng_data_addr.p_change_core = change_core_addr;
++	g_mng_data_addr.p_change_component = change_component_addr;
++	g_mng_data_addr.p_backup_info = backup_info_addr;
++	g_mng_data_addr.main_lcore_id = main_lcore_id;
++
++	return SPP_RET_OK;
++}
++
++/* Get manage data address */
++void spp_get_mng_data_addr(struct startup_param **startup_param_addr,
++			   struct iface_info **iface_addr,
++			   struct spp_component_info **component_addr,
++			   struct core_mng_info **core_mng_addr,
++			   int **change_core_addr,
++			   int **change_component_addr,
++			   struct cancel_backup_info **backup_info_addr)
++{
++
++	if (startup_param_addr != NULL)
++		*startup_param_addr = g_mng_data_addr.p_startup_param;
++	if (iface_addr != NULL)
++		*iface_addr = g_mng_data_addr.p_iface_info;
++	if (component_addr != NULL)
++		*component_addr = g_mng_data_addr.p_component_info;
++	if (core_mng_addr != NULL)
++		*core_mng_addr = g_mng_data_addr.p_core_info;
++	if (change_core_addr != NULL)
++		*change_core_addr = g_mng_data_addr.p_change_core;
++	if (change_component_addr != NULL)
++		*change_component_addr = g_mng_data_addr.p_change_component;
++	if (backup_info_addr != NULL)
++		*backup_info_addr = g_mng_data_addr.p_backup_info;
++
++}
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index f90b2ac..ce205d8 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -666,4 +666,62 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+  */
+ int64_t spp_change_mac_str_to_int64(const char *mac);
+ 
++/**
++ * Set mange data address
++ *
++ * @param startup_param_addr
++ *  g_startup_param address
++ * @param iface_addr
++ *  g_iface_info address
++ * @param component_addr
++ *  g_component_info address
++ * @param core_mng_addr
++ *  g_core_info address
++ * @param change_core_addr
++ *  g_change_core address
++ * @param change_component_addr
++ *  g_change_component address
++ * @param backup_info_addr
++ *  g_backup_info address
++ * @param main_lcore_id
++ *  main_lcore_id mask
++ *
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
++ */
++int spp_set_mng_data_addr(struct startup_param *startup_param_addr,
++			  struct iface_info *iface_addr,
++			  struct spp_component_info *component_addr,
++			  struct core_mng_info *core_mng_addr,
++			  int *change_core_addr,
++			  int *change_component_addr,
++			  struct cancel_backup_info *backup_info_addr,
++			  unsigned int main_lcore_id);
++
++/**
++ * Get mange data address
++ *
++ * @param iface_addr
++ *  g_startup_param write address
++ * @param iface_addr
++ *  g_iface_info write address
++ * @param component_addr
++ *  g_component_info write address
++ * @param core_mng_addr
++ *  g_core_mng_info write address
++ * @param change_core_addr
++ *  g_change_core write address
++ * @param change_component_addr
++ *  g_change_component write address
++ * @param backup_info_addr
++ *  g_backup_info write address
++ */
++void spp_get_mng_data_addr(struct startup_param **startup_param_addr,
++			   struct iface_info **iface_addr,
++			   struct spp_component_info **component_addr,
++			   struct core_mng_info **core_mng_addr,
++			   int **change_core_addr,
++			   int **change_component_addr,
++			   struct cancel_backup_info **backup_info_addr);
++
+ #endif /* _SPP_PROC_H_ */
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 9095c73..1433731 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -277,6 +277,19 @@ main(int argc, char *argv[])
+ 		/* Get lcore id of main thread to set its status after */
+ 		g_main_lcore_id = rte_lcore_id();
+ 
++		/* set manage address */
++		if (spp_set_mng_data_addr(&g_startup_param,
++					  &g_iface_info,
++					  g_component_info,
++					  g_core_info,
++					  g_change_core,
++					  g_change_component,
++					  &g_backup_info,
++					  g_main_lcore_id) < 0) {
++			RTE_LOG(ERR, APP, "manage address set is failed.\n");
++			break;
++		}
++
+ 		int ret_mng = init_mng_data();
+ 		if (unlikely(ret_mng != 0))
+ 			break;
+-- 
+2.18.0
+
+
