@@ -1,0 +1,101 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:ab3:4915:0:0:0:0:0 with SMTP id t21-v6csp986405lta;
+        Thu, 23 Aug 2018 03:55:24 -0700 (PDT)
+X-Google-Smtp-Source: ANB0VdbbpLNwOnBtF+pFkPwBhRjtwwBFyP20I663qD7GgI7eFJFTbT8A0Vo7gzrZYVE7S1JWdXrM
+X-Received: by 2002:a1c:6386:: with SMTP id x128-v6mr1719379wmb.104.1535021724081;
+        Thu, 23 Aug 2018 03:55:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1535021724; cv=none;
+        d=google.com; s=arc-20160816;
+        b=nCT5POJU25bN5L1a9KJaaenQZqFtfRCfMgNYyw3O0f2wfFFceSuVQUQeiO+9YuWM1+
+         qxz0l6d9Ft6fT1Yx3QkBUUErLwVF+R7DLqXHLysyj5yZK009WaEklrvSkxQGqXyptzFp
+         riATmnrh7N3HwgFhcC+ub7E3nRuzUYxY/cGN8ulAPPuGw1dZplLl1xCYijrooLaen1qr
+         jeHDS6cG2J5UxhoUtQnIQMePRThZH8HN3t9jxF4P4VetfiGMraPyEYv5lezNZCsvdgLD
+         Gy/Ab8aFvMqL9X8xn4TJauRrxb9KV/MnD7tnWCf/9Jz305E+LbVGq7TjBvt3o0jbqacX
+         WdjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:cc:to:from:arc-authentication-results;
+        bh=IBwavQD9untZZgEzZaQ2gn2+L1FHuZVDrvqrvMAaxXo=;
+        b=Onm1UIv9FEkSYoPN6M0+oa5JUF+uZ6aSLaZvxxTek7nrOdVR7TQPPuwHUxsQKhYSqN
+         dkX6nix2HnWFfWbjT7txYSRHLBW6g8jpg8NCeZUt110MBPmz8dc+nu9Y5/Q5k9PYIDYe
+         gZ9BAmMw4amzKdVc/vjKr+AGloL+nLXzy1ihscCzCfbtOQ9YTvNkJh4N/Lb/SAVxc9W3
+         kA1jLyK2eQZdsNuxDx//I4DMpmY+kT89SzVaxoeuMNfe2aa9IGMBhDEQ0ZJyRpzAxYMk
+         4DzG/6Z7ZWZfjo//fOShWDwAswZlNXHOLTiAxbFq/ZYt7OhZs5Ki/Jb6WjEbggCyOJkg
+         hdkw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id u26-v6si3593931wra.247.2018.08.23.03.55.23;
+        Thu, 23 Aug 2018 03:55:24 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id D2A014C8D;
+	Thu, 23 Aug 2018 12:55:23 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id C06CA2C60
+ for <spp@dpdk.org>; Thu, 23 Aug 2018 12:55:21 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id w7NAtKht028454;
+ Thu, 23 Aug 2018 19:55:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A6D78EA8001;
+ Thu, 23 Aug 2018 19:55:20 +0900 (JST)
+Received: from localhost.localdomain (unknown [129.60.13.51])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 8FF86EA7D4A;
+ Thu, 23 Aug 2018 19:55:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com
+Cc: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 23 Aug 2018 19:54:41 +0900
+Message-Id: <20180823105442.74672-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.13.1
+In-Reply-To: <20180823105442.74672-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20180823105442.74672-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] shared: remove nouse txq_flags
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Txq_flags was deprecated since new Tx offload API is introduced on DPDK
+v17.11. It is removed in v18.08 and cause a compile error if it is still
+remained.
+
+This patch is for removing nouse txq_flags from init_port().
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index fa33fcc..ea625f5 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -98,7 +98,6 @@ init_port(uint16_t port_num, struct rte_mempool *pktmbuf_pool)
+ 		local_port_conf.txmode.offloads |=
+ 			DEV_TX_OFFLOAD_MBUF_FAST_FREE;
+ 	txq_conf = dev_info.default_txconf;
+-	txq_conf.txq_flags = ETH_TXQ_FLAGS_IGNORE;
+ 	txq_conf.offloads = local_port_conf.txmode.offloads;
+ 
+ 	/*
+-- 
+2.7.4
+
