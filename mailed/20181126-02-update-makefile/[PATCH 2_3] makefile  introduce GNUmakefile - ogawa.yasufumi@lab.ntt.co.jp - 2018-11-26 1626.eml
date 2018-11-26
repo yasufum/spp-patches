@@ -1,0 +1,139 @@
+X-Account-Key: account1
+X-UIDL: 0000891956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id D3DFD400392
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon, 26 Nov 2018 16:28:18 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id D18DA7F36F; Mon, 26 Nov 2018 16:28:18 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id D090A7F079
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon, 26 Nov 2018 16:28:18 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id C171FEA823E;
+	Mon, 26 Nov 2018 16:28:18 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id B303FEA81B4;
+	Mon, 26 Nov 2018 16:28:18 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/3] makefile: introduce GNUmakefile
+Date: Mon, 26 Nov 2018 16:26:05 +0900
+Message-Id: <1543217166-13731-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1543217166-13731-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1543217166-13731-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+As in DPDK, change Makefile to use gmake and add GNUmakefile.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 38 ++++++++++++++++++++++++++++++++++++++
+ Makefile    | 36 +-----------------------------------
+ 2 files changed, 39 insertions(+), 35 deletions(-)
+ create mode 100644 GNUmakefile
+
+diff --git a/GNUmakefile b/GNUmakefile
+new file mode 100644
+index 0000000..1096c47
+--- /dev/null
++++ b/GNUmakefile
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++VERSION = 18.05.1
++
++ifeq ($(RTE_SDK),)
++$(error "Please define RTE_SDK environment variable")
++endif
++
++# Default target, can be overriden by command line or environment
++RTE_TARGET ?= x86_64-native-linuxapp-gcc
++
++include $(RTE_SDK)/mk/rte.vars.mk
++
++DIRS-y += src
++
++include $(RTE_SDK)/mk/rte.extsubdir.mk
++
++DOC_ROOT = docs/guides
++
++# Compile RST documents
++.PHONY: doc
++doc: doc-pdf doc-html
++
++.PHONY: doc-html
++doc-html:
++	make -C $(DOC_ROOT) html
++
++.PHONY: doc-pdf
++doc-pdf:
++	python $(DOC_ROOT)/gen_pdf_imgs.py
++	make -C $(DOC_ROOT) latexpdf
++	@echo "Succeeded to generate '$(DOC_ROOT)/_build/latex/SoftPatchPanel.pdf'"
++
++.PHONY: doc-clean
++doc-clean:
++	find $(DOC_ROOT)/images/ -type f -name "*.pdf" -delete
++	make -C $(DOC_ROOT) clean
+diff --git a/Makefile b/Makefile
+index d5423ca..964379f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -29,38 +29,4 @@
+ #   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+-VERSION = 18.05.1
+-
+-ifeq ($(RTE_SDK),)
+-$(error "Please define RTE_SDK environment variable")
+-endif
+-
+-# Default target, can be overriden by command line or environment
+-RTE_TARGET ?= x86_64-native-linuxapp-gcc
+-
+-include $(RTE_SDK)/mk/rte.vars.mk
+-
+-DIRS-y += src
+-
+-include $(RTE_SDK)/mk/rte.extsubdir.mk
+-
+-DOC_ROOT = docs/guides
+-
+-# Compile RST documents
+-.PHONY: doc-pdf
+-doc-all: doc-pdf doc-html
+-
+-.PHONY: doc-html
+-doc-html:
+-	make -C $(DOC_ROOT) html
+-
+-.PHONY: doc-pdf
+-doc-pdf:
+-	python $(DOC_ROOT)/gen_pdf_imgs.py
+-	make -C $(DOC_ROOT) latexpdf
+-	@echo "Succeeded to generate '$(DOC_ROOT)/_build/latex/SoftPatchPanel.pdf'"
+-
+-.PHONY: doc-clean
+-doc-clean:
+-	find $(DOC_ROOT)/images/ -type f -name "*.pdf" -delete
+-	make -C $(DOC_ROOT) clean
++.error Error please compile using GNU Make (gmake)
+-- 
+2.7.4
+
+
+
