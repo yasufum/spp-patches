@@ -4,7 +4,7 @@ Date: Mon, 26 Nov 2018 14:48:13 +0900
 Subject: [PATCH 0/2] Update docs compilation
 
 Compile of docs has things to be fixed or revised. This series of
-patches is to changes issues.
+patches is to update for the issues.
 
 * Comple of PDF documentation is sometimes failed to embed images
   because latex is launched before creating images with inkscape.
