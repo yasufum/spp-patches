@@ -1,0 +1,102 @@
+X-Account-Key: account1
+X-UIDL: 0000891456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id C23CF400392
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon, 26 Nov 2018 16:27:32 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id BFBD97F36F; Mon, 26 Nov 2018 16:27:32 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id BE8AC7F079
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon, 26 Nov 2018 16:27:32 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id B097DEA81F4;
+	Mon, 26 Nov 2018 16:27:32 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A3378EA8074;
+	Mon, 26 Nov 2018 16:27:32 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/2] makefile: add DALLOW_EXPERIMENTAL_API option
+Date: Mon, 26 Nov 2018 16:25:15 +0900
+Message-Id: <1543217116-13662-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1543217116-13662-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1543217116-13662-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of latest DPDK APIs introduced to replace deprecated APIs are
+still experimental. This update is to add `-DALLOW_EXPERIMENTAL_API`
+option to CFLAGS to avoid compile errors for the experimental APIs.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile  | 1 +
+ src/nfv/Makefile     | 1 +
+ src/primary/Makefile | 1 +
+ src/vf/Makefile      | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index a759ad2..614a44c 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -19,6 +19,7 @@ SRCS-y += ../vf/common/command_conn.c ../vf/common/command_proc.c
+ SRCS-y += ../vf/common/command_dec.c
+ SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
+ 
++CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3
+ CFLAGS += -I$(SRCDIR)/../shared
+ CFLAGS += -I$(SRCDIR)/../vf/common
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index 4d5eec6..16dfbbb 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -14,6 +14,7 @@ APP = spp_nfv
+ # all source are stored in SRCS-y
+ SRCS-y := nfv.c ../shared/common.c
+ 
++CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3
+ CFLAGS += -I$(SRCDIR)/../shared
+ 
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index e8a5d8d..bedea8e 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -23,6 +23,7 @@ SRCS-y := main.c init.c args.c ../shared/common.c
+ 
+ INC := $(wildcard *.h)
+ 
++CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3
+ CFLAGS += -I$(SRCDIR)/../shared
+ 
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index b0a1fdb..f2a167b 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -18,6 +18,7 @@ SRCS-y += common/command_conn.c common/command_dec.c common/command_proc.c
+ SRCS-y += common/spp_proc.c
+ SRCS-y += ../shared/common.c
+ 
++CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3
+ CFLAGS += -I$(SRCDIR)/../shared
+ CFLAGS += -I$(SRCDIR)/common
+-- 
+2.7.4
+
+
+
