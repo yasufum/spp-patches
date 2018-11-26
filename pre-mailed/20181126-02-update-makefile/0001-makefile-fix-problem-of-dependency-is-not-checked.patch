@@ -1,0 +1,87 @@
+From 62284ce1ff0f55ca3710694a04550210541d8638 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 24 Nov 2018 23:08:51 +0900
+Subject: [PATCH 1/3] makefile: fix problem of dependency is not checked
+
+Add `-MMD` to CFLAGS option in Makefiles in each of directory under
+`src` for checking updated files while compilation. Without this
+change, files changed after previous compilation are ignored and not
+compiled.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile  | 2 +-
+ src/nfv/Makefile     | 2 +-
+ src/primary/Makefile | 2 +-
+ src/vf/Makefile      | 2 +-
+ src/vm/Makefile      | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 614a44c..073afbd 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -20,7 +20,7 @@ SRCS-y += ../vf/common/command_dec.c
+ SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+-CFLAGS += $(WERROR_FLAGS) -O3
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ CFLAGS += -I$(SRCDIR)/../vf/common
+ CFLAGS += -DSPP_MIRROR_MODULE
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index 16dfbbb..2d3ffed 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -15,7 +15,7 @@ APP = spp_nfv
+ SRCS-y := nfv.c ../shared/common.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+-CFLAGS += $(WERROR_FLAGS) -O3
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ 
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index bedea8e..59c9ba7 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -24,7 +24,7 @@ SRCS-y := main.c init.c args.c ../shared/common.c
+ INC := $(wildcard *.h)
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+-CFLAGS += $(WERROR_FLAGS) -O3
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ 
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index f2a167b..42c9037 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -19,7 +19,7 @@ SRCS-y += common/spp_proc.c
+ SRCS-y += ../shared/common.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+-CFLAGS += $(WERROR_FLAGS) -O3
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ CFLAGS += -I$(SRCDIR)/common
+ #CFLAGS += -DSPP_DEMONIZE
+diff --git a/src/vm/Makefile b/src/vm/Makefile
+index 27ba47e..be3fa5e 100644
+--- a/src/vm/Makefile
++++ b/src/vm/Makefile
+@@ -24,7 +24,7 @@ SRCS-y := main.c init.c args.c ../shared/common.c
+ INC := $(wildcard *.h)
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+-CFLAGS += $(WERROR_FLAGS) -O3
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ 
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+-- 
+2.7.4
+
