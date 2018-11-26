@@ -1,0 +1,29 @@
+From 237029c8acbcc9ca4607dc383c23660bfa5c8293 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 24 Nov 2018 21:41:55 +0900
+Subject: [PATCH 2/2] spp_vf: fix bug of not used variable
+
+`type_str` is only used in `ifdef` preprocessor directive and it is
+considered as not used variable and causes a compile error. This update
+is to fix this bug by reffering it outside `ifdef` directive.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 9f56eba..5b6ffcf 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -186,6 +186,7 @@ spp_convert_port_to_iface(const char *port,
+ static enum spp_component_type
+ spp_convert_component_type(const char *type_str)
+ {
++	RTE_LOG(DEBUG, APP, "type_str is %s\n", type_str);
+ #ifdef SPP_VF_MODULE
+ 	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
+ 			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
+-- 
+2.7.4
+

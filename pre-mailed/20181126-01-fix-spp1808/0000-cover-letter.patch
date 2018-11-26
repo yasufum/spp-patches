@@ -1,0 +1,27 @@
+From 237029c8acbcc9ca4607dc383c23660bfa5c8293 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 26 Nov 2018 13:49:51 +0900
+Subject: [PATCH 0/2] Fix compile errors for SPP v18.08
+
+This series of patches is to fix compile errors for previous patches to
+update version to v18.08.
+
+* Add `-DALLOW_EXPERIMENTAL_API` to CFLAGS to avoid warnings for
+  experimental APIs. 
+
+* Fix compile error of not used variable.
+
+Yasufumi Ogawa (2):
+  makefile: add DALLOW_EXPERIMENTAL_API option
+  spp_vf: fix bug of not used variable
+
+ src/mirror/Makefile         | 1 +
+ src/nfv/Makefile            | 1 +
+ src/primary/Makefile        | 1 +
+ src/vf/Makefile             | 1 +
+ src/vf/common/command_dec.c | 1 +
+ 5 files changed, 5 insertions(+)
+
+-- 
+2.7.4
+
