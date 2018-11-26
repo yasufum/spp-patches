@@ -1,0 +1,28 @@
+From 2fc1fa6ae451409faf97b4c7c36ecf8abe1f7ce5 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 26 Nov 2018 14:48:13 +0900
+Subject: [PATCH 0/2] Update docs compilation
+
+Compile of docs has things to be fixed or revised. This series of
+patches is to changes issues.
+
+* Comple of PDF documentation is sometimes failed to embed images
+  because latex is launched before creating images with inkscape.
+
+* Version number is defined in Makefile and `conf.py`, and both of them
+  are changed if SPP is updated.
+
+Yasufumi Ogawa (2):
+  docs: revise doc compilation
+  docs: add link to the latest documentation
+
+ GNUmakefile                 | 31 +++++++++++++++-------
+ docs/guides/conf.py         | 63 ++++++++++++++++++++++++++-------------------
+ docs/guides/gen_pdf_imgs.py | 54 --------------------------------------
+ docs/guides/index.rst       |  7 +++++
+ 4 files changed, 65 insertions(+), 90 deletions(-)
+ delete mode 100644 docs/guides/gen_pdf_imgs.py
+
+-- 
+2.7.4
+
