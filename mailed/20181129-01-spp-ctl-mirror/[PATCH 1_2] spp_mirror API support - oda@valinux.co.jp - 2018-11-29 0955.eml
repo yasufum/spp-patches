@@ -1,0 +1,378 @@
+X-Account-Key: account4
+X-UIDL: 000089eb56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 713C64009BD
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 29 Nov 2018 09:55:14 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6F8C223BAB3; Thu, 29 Nov 2018 09:55:14 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6ED5D23BA70
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 09:55:14 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5F855638725
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 09:55:14 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3B46F6389BD
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 09:55:14 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm02.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3Ad/TIRRWNiVhYo9u1Mdoj+05jaXXV8LGuZFw894?=
+ =?us-ascii?q?YnhrRSc6+q45XlOgnl6O5wiEPSBN2Auf5PjuOTqLjlATZG7J2F9nYebNpHUF?=
+ =?us-ascii?q?kHkZZehBQuVeiCD0CzN/v2d2oiBs0XU1Ns12+yNUlTBda4bFqUoGXhpSUKFE?=
+ =?us-ascii?q?DZMgx4bv/wBpaUis220+6o/JiGZAlBrCS0ZbJ0MQXwpgKXtNFP29lYJ608yw?=
+ =?us-ascii?q?XErj5zQ8oMlDs6A1WVkl686sy19dt46yEI4bQs/MoGV7nmOa8/C75AXnwgNC?=
+ =?us-ascii?q?gu6cvnuAOmL0PH72YAUmgQjhtDAhTUpBD8UJDrtyLmt+17kCCENMzyRLowVH?=
+ =?us-ascii?q?ys9aBuABPvjS4GMXY+/gS1woR3gKtzvhulphpi08jfZ8eXLLs2f6/Qe88bWX?=
+ =?us-ascii?q?sURtxYBGRKBoKxaZdKDvJUZ78A6dCn9x1f9V3nWVrJZqun0DJDi37o0Ldv3+?=
+ =?us-ascii?q?8kGETdxAl4RZQDu3CSqsnpcqwVF+Ktn8yqhX3Oae1b3TDl5c3GaBck9LuLUb?=
+ =?us-ascii?q?tYb8PVyE8yB0XOiROSsca2WlHdnvRIqGWd4+d6AKioh2cPtQh1oz6y1oEnjc?=
+ =?us-ascii?q?/LnshGgkCB/iJ/zoEvINS+Q0Muet+oHqxLqzubPJcvGJEYTmpluTg3xvg9gb?=
+ =?us-ascii?q?DhLXVY7pMhylafZ/eCes2T+he7DqCcKjM+gm55Prm4wRSqowCmzaXnW8+43U?=
+ =?us-ascii?q?wvzGINm8TQtn0Lyx3Y69SWAvp78EC73D+T1gfVouhaKEEwnKDfJtYv2Lk13p?=
+ =?us-ascii?q?YUtE3CGGfxliCUxOeRekwM5OGs6uL6cvPtodmeL848iw3zNLgvht3qBO05Ng?=
+ =?us-ascii?q?YUWG3InIb0nLbn/ED/XPBLlqhsy/Gf6cqKY5VD4PflUEdP340u6giyFWKq29?=
+ =?us-ascii?q?ER2GIfKQofPh+Mi87vJ02IK/e+D+/s5jbk2Dpt2f3COaXsR5vXKX2W2rDtdJ?=
+ =?us-ascii?q?5j4kpdzhcji9tYoZBMQOJkQrq7SgrqudrUAwVseQu4ys75AdF80J4OH2mIRK?=
+ =?us-ascii?q?2BevCaoRqD4eQhJPOJbYketWPmKvQr0OXyl34yhQZML5ns5oMebTWDJtojJk?=
+ =?us-ascii?q?yYZXT2hdJYTDUUtw4/SvH6zlaFFzxLNS7rA/AMowojAYfjNr/tA5i3ieXcjj?=
+ =?us-ascii?q?myGpxQe3AAAVfKE2+6L4g=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A4AAB8OP9b/w5agNJkHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUgYBAQsBggBpcAMECyeMcI02l0KBeigQAYRAAoNMBjEIDQEDAQECAQE?=
+ =?us-ascii?q?BAW0ohT0GgQkgMSwrBxKDIQGCAKgjiQGBLIdrRYEigluBf45/AocbB4IHhXt?=
+ =?us-ascii?q?2kAEJhn2KKSORFSyISpEZATaBVYQsCZBhMzCBAwEBAQGKMSuCIAEB?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 29 Nov 2018 09:55:13 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 8DCD0240A51; Thu, 29 Nov 2018 09:55:12 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/2] spp_mirror API support
+Date: Thu, 29 Nov 2018 09:55:11 +0900
+Message-Id: <20181129005512.18526-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181129005512.18526-1-oda@valinux.co.jp>
+References: <20181129005512.18526-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+This patch adds spp_mirror APIs to spp-ctl.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    |   2 +-
+ src/spp-ctl/spp_proc.py   |  57 +++++++++++++-----
+ src/spp-ctl/spp_webapi.py | 120 ++++++++++++++++++++++++++------------
+ 3 files changed, 127 insertions(+), 52 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index 0576ae1..279c180 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -128,7 +128,7 @@ class Controller(object):
+         # it is a bit ad hoc. send "_get_clinet_id" command and try to
+         # decode reply for each proc type. if success, that is the type.
+         data = self._send_command(conn, "_get_client_id")
+-        for proc in [spp_proc.VfProc, spp_proc.NfvProc]:
++        for proc in [spp_proc.VfProc, spp_proc.NfvProc, spp_proc.MirrorProc]:
+             sec_id = proc._decode_client_id(data)
+             if sec_id is not None:
+                 return proc(sec_id, conn)
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 83c59ea..648e085 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -15,6 +15,7 @@ ID_PRIMARY = 0
+ TYPE_PRIMARY = "primary"
+ TYPE_VF = "vf"
+ TYPE_NFV = "nfv"
++TYPE_MIRROR = "mirror"
+ 
+ 
+ def exec_command(func):
+@@ -53,10 +54,10 @@ class SppProc(object):
+         self.conn = conn
+ 
+ 
+-class VfProc(SppProc):
++class VfCommon(SppProc):
+ 
+-    def __init__(self, id, conn):
+-        super(VfProc, self).__init__(TYPE_VF, id, conn)
++    def __init__(self, proc_type, id, conn):
++        super(VfCommon, self).__init__(proc_type, id, conn)
+ 
+     @staticmethod
+     def _decode_reply(data):
+@@ -67,14 +68,6 @@ class VfProc(SppProc):
+             raise bottle.HTTPError(400, "command error: %s" % msg)
+         return data
+ 
+-    @staticmethod
+-    def _decode_client_id(data):
+-        try:
+-            data = VfProc._decode_reply(data)
+-            return data["client_id"]
+-        except:
+-            return None
+-
+     @exec_command
+     def get_status(self):
+         return "status"
+@@ -88,6 +81,25 @@ class VfProc(SppProc):
+     def stop_component(self, comp_name):
+         return "component stop {comp_name}".format(**locals())
+ 
++    @exec_command
++    def port_del(self, port, direction, comp_name):
++        return "port del {port} {direction} {comp_name}".format(**locals())
++
++
++class VfProc(VfCommon):
++
++    def __init__(self, id, conn):
++        super(VfProc, self).__init__(TYPE_VF, id, conn)
++
++    @staticmethod
++    def _decode_client_id(data):
++        try:
++            data = VfCommon._decode_reply(data)
++            if data["process_type"] == TYPE_VF:
++                return data["client_id"]
++        except:
++            return None
++
+     @exec_command
+     def port_add(self, port, direction, comp_name, op, vlan_id, pcp):
+         command = "port add {port} {direction} {comp_name}".format(**locals())
+@@ -97,10 +109,6 @@ class VfProc(SppProc):
+                 command += " %d %d" % (vlan_id, pcp)
+         return command
+ 
+-    @exec_command
+-    def port_del(self, port, direction, comp_name):
+-        return "port del {port} {direction} {comp_name}".format(**locals())
+-
+     @exec_command
+     def set_classifier_table(self, mac_address, port):
+         return ("classifier_table add mac {mac_address} {port}"
+@@ -124,6 +132,25 @@ class VfProc(SppProc):
+                 .format(**locals()))
+ 
+ 
++class MirrorProc(VfCommon):
++
++    def __init__(self, id, conn):
++        super(MirrorProc, self).__init__(TYPE_MIRROR, id, conn)
++
++    @staticmethod
++    def _decode_client_id(data):
++        try:
++            data = VfCommon._decode_reply(data)
++            if data["process_type"] == TYPE_MIRROR:
++                return data["client_id"]
++        except:
++            return None
++
++    @exec_command
++    def port_add(self, port, direction, comp_name):
++        return "port add {port} {direction} {comp_name}".format(**locals())
++
++
+ class NfvProc(SppProc):
+ 
+     def __init__(self, id, conn):
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 48cc1c4..7547f0e 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -114,6 +114,7 @@ class WebServer(BaseHandler):
+     /          WebServer
+     /v1          V1Handler
+        /vfs        V1VFHandler
++       /mirrors    V1MirrorHandler
+        /nfvs       V1NFVHandler
+        /primary    V1PrimaryHandler
+     """
+@@ -141,6 +142,7 @@ class V1Handler(BaseHandler):
+         self.set_route()
+ 
+         self.mount("/vfs", V1VFHandler(controller))
++        self.mount("/mirrors", V1MirrorHandler(controller))
+         self.mount("/nfvs", V1NFVHandler(controller))
+         self.mount("/primary", V1PrimaryHandler(controller))
+ 
+@@ -154,7 +156,46 @@ class V1Handler(BaseHandler):
+         return self.ctrl.get_processes()
+ 
+ 
+-class V1VFHandler(BaseHandler):
++class V1VFCommon(object):
++    """Define common methods for vf and mirror handler."""
++
++    def convert_info(self, data):
++        info = data["info"]
++        vf = {}
++        vf["client-id"] = info["client-id"]
++        vf["ports"] = []
++        for key in ["phy", "vhost", "ring"]:
++            for idx in info[key]:
++                vf["ports"].append(key + ":" + str(idx))
++        vf["components"] = info["core"]
++        if "classifier_table" in info:
++            vf["classifier_table"] = info["classifier_table"]
++
++        return vf
++
++    def validate_comp_start(self, body, types):
++        for key in ['name', 'core', 'type']:
++            if key not in body:
++                raise KeyRequired(key)
++        if not isinstance(body['name'], str):
++            raise KeyInvalid('name', body['name'])
++        if not isinstance(body['core'], int):
++            raise KeyInvalid('core', body['core'])
++        if body['type'] not in types:
++            raise KeyInvalid('type', body['type'])
++
++    def validate_comp_port(self, body):
++        for key in ['action', 'port', 'dir']:
++            if key not in body:
++                raise KeyRequired(key)
++        if body['action'] not in ["attach", "detach"]:
++            raise KeyInvalid('action', body['action'])
++        if body['dir'] not in ["rx", "tx"]:
++            raise KeyInvalid('dir', body['dir'])
++        self._validate_port(body['port'])
++
++
++class V1VFHandler(BaseHandler, V1VFCommon):
+ 
+     def __init__(self, controller):
+         super(V1VFHandler, self).__init__(controller)
+@@ -177,50 +218,18 @@ class V1VFHandler(BaseHandler):
+         self.route('/<sec_id:int>/classifier_table', 'PUT',
+                    callback=self.vf_classifier)
+ 
+-    def convert_vf_info(self, data):
+-        info = data["info"]
+-        vf = {}
+-        vf["client-id"] = info["client-id"]
+-        vf["ports"] = []
+-        for key in ["phy", "vhost", "ring"]:
+-            for idx in info[key]:
+-                vf["ports"].append(key + ":" + str(idx))
+-        vf["components"] = info["core"]
+-        vf["classifier_table"] = info["classifier_table"]
+-
+-        return vf
+-
+     def vf_get(self, proc):
+-        return self.convert_vf_info(proc.get_status())
+-
+-    def _validate_vf_comp_start(self, body):
+-        for key in ['name', 'core', 'type']:
+-            if key not in body:
+-                raise KeyRequired(key)
+-        if not isinstance(body['name'], str):
+-            raise KeyInvalid('name', body['name'])
+-        if not isinstance(body['core'], int):
+-            raise KeyInvalid('core', body['core'])
+-        if body['type'] not in ["forward", "merge", "classifier_mac"]:
+-            raise KeyInvalid('type', body['type'])
++        return self.convert_info(proc.get_status())
+ 
+     def vf_comp_start(self, proc, body):
+-        self._validate_vf_comp_start(body)
++        self.validate_comp_start(body, ["forward", "merge", "classifier_mac"])
+         proc.start_component(body['name'], body['core'], body['type'])
+ 
+     def vf_comp_stop(self, proc, name):
+         proc.stop_component(name)
+ 
+     def _validate_vf_comp_port(self, body):
+-        for key in ['action', 'port', 'dir']:
+-            if key not in body:
+-                raise KeyRequired(key)
+-        if body['action'] not in ["attach", "detach"]:
+-            raise KeyInvalid('action', body['action'])
+-        if body['dir'] not in ["rx", "tx"]:
+-            raise KeyInvalid('dir', body['dir'])
+-        self._validate_port(body['port'])
+-
++        self.validate_comp_port(body)
+         if body['action'] == "attach":
+             vlan = body.get('vlan')
+             if vlan:
+@@ -296,6 +305,45 @@ class V1VFHandler(BaseHandler):
+                     mac_address, port, body['vlan'])
+ 
+ 
++class V1MirrorHandler(BaseHandler, V1VFCommon):
++
++    def __init__(self, controller):
++        super(V1MirrorHandler, self).__init__(controller)
++        self.type = spp_proc.TYPE_MIRROR
++
++        self.set_route()
++
++        self.install(self.check_sec_id)
++        self.install(self.get_body)
++        self.install(self.make_response)
++
++    def set_route(self):
++        self.route('/<sec_id:int>', 'GET', callback=self.mirror_get)
++        self.route('/<sec_id:int>/components', 'POST',
++                   callback=self.mirror_comp_start)
++        self.route('/<sec_id:int>/components/<name>', 'DELETE',
++                   callback=self.mirror_comp_stop)
++        self.route('/<sec_id:int>/components/<name>/ports', 'PUT',
++                   callback=self.mirror_comp_port)
++
++    def mirror_get(self, proc):
++        return self.convert_info(proc.get_status())
++
++    def mirror_comp_start(self, proc, body):
++        self.validate_comp_start(body, ["mirror"])
++        proc.start_component(body['name'], body['core'], body['type'])
++
++    def mirror_comp_stop(self, proc, name):
++        proc.stop_component(name)
++
++    def mirror_comp_port(self, proc, name, body):
++        self.validate_comp_port(body)
++        if body['action'] == "attach":
++            proc.port_add(body['port'], body['dir'], name)
++        else:
++            proc.port_del(body['port'], body['dir'], name)
++
++
+ class V1NFVHandler(BaseHandler):
+ 
+     def __init__(self, controller):
+-- 
+2.17.1
+
+
