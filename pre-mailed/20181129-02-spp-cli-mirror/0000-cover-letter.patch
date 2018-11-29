@@ -1,9 +1,27 @@
 From 8f6e2429d613ddd16b033c2d449cfb3204aabcb1 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Thu, 29 Nov 2018 18:23:42 +0900
-Subject: [PATCH 0/2] *** SUBJECT HERE ***
+Subject: [PATCH 0/2] Add mirror command
 
-*** BLURB HERE ***
+Hi,
+
+This series of patches is to add `mirror` command to `spp.py`. The
+behaviour of spp_mirror is defined as SppMirror class to send a request
+and get a response.
+
+Here is an example to setup spp_mirror with this command.
+
+  spp > mirror 1; component start mr1 5 mirror
+  spp > mirror 1; port add ring:0 rx mr1
+  spp > mirror 1; port add ring:1 tx mr1
+  ...
+
+To find out more, refer the help.
+
+  spp > help mirror
+
+Thanks,
+Yasufumi
 
 Yasufumi Ogawa (2):
   controller: add SppMirror class
