@@ -1,0 +1,59 @@
+X-Account-Key: account4
+X-UIDL: 000089dc56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 8B8964008CB
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 28 Nov 2018 18:08:27 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 890197F081; Wed, 28 Nov 2018 18:08:27 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 87E917F03A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 28 Nov 2018 18:08:27 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 71729EA8211;
+	Wed, 28 Nov 2018 18:08:27 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 5AC6FEA7B22;
+	Wed, 28 Nov 2018 18:08:27 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] makefile: add DSPP_VF_MODULE to compile as default
+Date: Wed, 28 Nov 2018 18:06:14 +0900
+Message-Id: <1543395974-13569-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to add DSPP_VF_MODULE to activate compilation of spp_vf as
+default.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index 42c9037..ac100bb 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -22,6 +22,7 @@ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../shared
+ CFLAGS += -I$(SRCDIR)/common
++CFLAGS += -DSPP_VF_MODULE
+ #CFLAGS += -DSPP_DEMONIZE
+ #CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
+ 
+-- 
+2.7.4
+
+
