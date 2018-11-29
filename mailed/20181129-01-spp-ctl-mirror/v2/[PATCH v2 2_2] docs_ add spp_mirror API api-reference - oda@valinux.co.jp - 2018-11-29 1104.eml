@@ -1,0 +1,417 @@
+X-Account-Key: account4
+X-UIDL: 000089f856a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <oda@valinux.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E86DB40059D
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 29 Nov 2018 11:04:14 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E6E1823B937; Thu, 29 Nov 2018 11:04:14 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id E63E223B933
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 11:04:14 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D6F99EA7935
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 11:04:14 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id CBD82EA789B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 11:04:14 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=None smtp.pra=oda@valinux.co.jp; spf=None smtp.mailfrom=oda@valinux.co.jp
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=pra; client-ip=210.128.90.14;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+Received-SPF: None (dcma-spm01.ecl.ntt.co.jp: no sender
+  authenticity information available from domain of
+  oda@valinux.co.jp) identity=mailfrom;
+  client-ip=210.128.90.14; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="oda@valinux.co.jp";
+  x-sender="oda@valinux.co.jp"; x-conformance=sidf_strict
+IronPort-PHdr: =?us-ascii?q?9a23=3AjNX7AxT1zgVjxt76j/v9fsTAP9psv++ubCcI9p?=
+ =?us-ascii?q?oqja5Pea2//pPkeXbS/uhpkESQBd6J5/lBgq/Nq6W4ACoN6pLHtmweNpdLER?=
+ =?us-ascii?q?0d2o0NhwJ1JsmDBAXgKeLyKTQgFZFFWFZN4Xi/ME5ICID1YBvQui769iYcTz?=
+ =?us-ascii?q?P4Mwc9PeHpAsjXhsWz2fq1/sjUbwxgmjO5YLVvPFO9qkPTrpBM07FvIasw1B?=
+ =?us-ascii?q?bF50BwVb4HnTFOIlSe11bw7cK5uYV79nwJ/f8q84hGTbm8dKN+T6QKRDIhe3?=
+ =?us-ascii?q?s44sHmr3yhBUOG+2ccX2MKkxFJHxmN7Rf0WY30uzf7sew10TeTPMn/R7Q5ET?=
+ =?us-ascii?q?q46KIjRBjtgSYBfzk3lQOfwst8hYpFqRagoQFvhYXTJoONdbJ/cq7bYdIGVD?=
+ =?us-ascii?q?9ZRM8CHydFA466c84OF79bZL4e9tOt4QpW60LiVmzOTKv1xzRFh2H7x/g22O?=
+ =?us-ascii?q?EoVBre2VR5Wd8FtDLSsMmzP6BUU/jmqcuAhTjFcf5S3i/wrYbSdRV06/aAVJ?=
+ =?us-ascii?q?pueM7Qz1Q/UQjCyFeI49+AXXvdxqEWvm6X4vA1H+WjgkY5ogVwpCW/gMwrzI?=
+ =?us-ascii?q?vRzNFd2hXP8iN3x5wwLNuzRRtgYNKqJ4BMrSCRK9IsEPkvSGxppis2j4Y+l8?=
+ =?us-ascii?q?TqIXosz5Iqj17TYPmONpOQ50q6EuuaJXF+mG4jc7X5hQ7guU6ngvbxUMW5yj?=
+ =?us-ascii?q?Mo5mJMj8XMu3YR1hfS9tnPS/1z+V2k0CqO0Aab4/9NIEQ9n67WY5A7xbt4mp?=
+ =?us-ascii?q?0WuEXFVij4/Se+xKiaf2068+yp7fn3JL7h4J2Edsd1hgz4LqUyi5m6COU8PB?=
+ =?us-ascii?q?IJWjv+m6z037ni8EvlBbRS26dvyu+A6sCcdJxd//LqSxVY2Ysi9RulWjut1d?=
+ =?us-ascii?q?1dhmECdAsDdRmDyY71JxfFJ7b6FaTa4RzknTF1yvTBJrCkDI/KKy2Jl7voVa?=
+ =?us-ascii?q?h0709a1Rp1xtcZ5YoeWdRjaLrjH1T8stDVFEpzNAC96/juDNR7y5NYUmXJAL?=
+ =?us-ascii?q?fTY+vC9FSP4OwoOeyFYoQY7S38J/YS/OL0jHQlwA5PTeySxZISLUuAMLFjKk?=
+ =?us-ascii?q?Sdb2Drh45cQ3kDugs4Ufysg1rEUyYBPy/uDZJ53SkyDcedNamGXpqk2eHTwi?=
+ =?us-ascii?q?6/H5tLdiZNDRaOCSWweg=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0A9AACuSP9b/w5agNJkHQEBBQEHBQG?=
+ =?us-ascii?q?BUQgBCwGCAGlwAwQLJ4wRX401gn6RL4MVgXowCAGDJkVVAoNMBjAJDQEDAQE?=
+ =?us-ascii?q?CAQEBAW0ohT0GTD0eAjElBysHEoMhAYF8BBCnfoN8MQGEUoEsh2uBZ4JbgX+?=
+ =?us-ascii?q?BEIYmghQGhQ0iAocbB4IHhXt2kAEJhn2KKSORFSyISodgiTg4gVWELAmQYTM?=
+ =?us-ascii?q?wAYECAQEBAYx8AQE?=
+X-SPF-Status: none
+Received: from vagw.valinux.co.jp (HELO valinux.co.jp) ([210.128.90.14])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 29 Nov 2018 11:04:14 +0900
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id B289D2409A0; Thu, 29 Nov 2018 11:04:13 +0900 (JST)
+From: oda@valinux.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2 2/2] docs: add spp_mirror API api-reference
+Date: Thu, 29 Nov 2018 11:04:13 +0900
+Message-Id: <20181129020413.20023-3-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20181129020413.20023-1-oda@valinux.co.jp>
+References: <20181129005512.18526-1-oda@valinux.co.jp>
+ <20181129020413.20023-1-oda@valinux.co.jp>
+X-TM-AS-MML: disable
+
+From: Itsuro Oda <oda@valinux.co.jp>
+
+This patch adds spp_mirror API reference for spp-ctl.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 316 ++++++++++++++++++++++++++
+ 1 file changed, 316 insertions(+)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index 70eddd6..b0d367b 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -1168,3 +1168,319 @@ type is ``vlan``
+ .. code-block:: none
+ 
+     classifier_table {action} vlan {vlan} {mac_address} {port}
++
++
++API for spp_mirror
++------------------
++
++GET /v1/mirrors/{client_id}
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Get the information of the ``spp_mirror`` process.
++
++* Normal response codes: 200
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_mirrors_get:
++
++.. table:: Request parameter for getting spp_mirror.
++
++    +-----------+---------+--------------------------+
++    | Name      | Type    | Description              |
++    |           |         |                          |
++    +===========+=========+==========================+
++    | client_id | integer | client id.               |
++    +-----------+---------+--------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/mirrors/1
++
++Response
++^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_res:
++
++.. table:: Response params of getting spp_mirror.
++
++    +------------------+---------+-----------------------------------------------+
++    | Name             | Type    | Description                                   |
++    |                  |         |                                               |
++    +==================+=========+===============================================+
++    | client-id        | integer | client id.                                    |
++    +------------------+---------+-----------------------------------------------+
++    | ports            | array   | an array of port ids used by the process.     |
++    +------------------+---------+-----------------------------------------------+
++    | components       | array   | an array of component objects in the process. |
++    +------------------+---------+-----------------------------------------------+
++
++component object:
++
++.. _table_spp_ctl_spp_mirror_res_comp:
++
++.. table:: Component objects of getting spp_mirror.
++
++    +---------+---------+---------------------------------------------------------------------+
++    | Name    | Type    | Description                                                         |
++    |         |         |                                                                     |
++    +=========+=========+=====================================================================+
++    | core    | integer | core id running on the component                                    |
++    +---------+---------+---------------------------------------------------------------------+
++    | name    | string  | an array of port ids used by the process.                           |
++    +---------+---------+---------------------------------------------------------------------+
++    | type    | string  | an array of component objects in the process.                       |
++    +---------+---------+---------------------------------------------------------------------+
++    | rx_port | array   | an array of port objects connected to the rx side of the component. |
++    +---------+---------+---------------------------------------------------------------------+
++    | tx_port | array   | an array of port objects connected to the tx side of the component. |
++    +---------+---------+---------------------------------------------------------------------+
++
++port object:
++
++.. _table_spp_ctl_spp_mirror_res_port:
++
++.. table:: Port objects of getting spp_vf.
++
++    +---------+---------+---------------------------------------------------------------+
++    | Name    | Type    | Description                                                   |
++    |         |         |                                                               |
++    +=========+=========+===============================================================+
++    | port    | string  | port id. port id is the form {interface_type}:{interface_id}. |
++    +---------+---------+---------------------------------------------------------------+
++
++Response example
++^^^^^^^^^^^^^^^^
++
++.. code-block:: json
++
++    {
++      "client-id": 1,
++      "ports": [
++        "phy:0", "phy:1", "ring:0", "ring:1", "ring:2"
++      ],
++      "components": [
++        {
++          "core": 2,
++          "name": "mirror_0",
++          "type": "mirror",
++          "rx_port": [
++            {
++            "port": "ring:0"
++            }
++          ],
++          "tx_port": [
++            {
++              "port": "ring:1"
++            },
++            {
++              "port": "ring:2"
++            }
++          ]
++        },
++        {
++          "core": 3,
++          "type": "unuse"
++        }
++      ]
++    }
++
++The component which type is ``unused`` is to indicate unused core.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++.. code-block:: none
++
++    sec {client_id};status
++
++
++POST /v1/mirrors/{client_id}/components
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Start the component.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_components:
++
++.. table:: Request params of components of spp_mirror.
++
++    +-----------+---------+-------------+
++    | Name      | Type    | Description |
++    +===========+=========+=============+
++    | client_id | integer | client id.  |
++    +-----------+---------+-------------+
++
++
++Request(body)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_components_res:
++
++.. table:: Response params of components of spp_mirror.
++
++    +-----------+---------+----------------------------------------------------------------------+
++    | Name      | Type    | Description                                                          |
++    |           |         |                                                                      |
++    +===========+=========+======================================================================+
++    | name      | string  | component name. must be unique in the process.                       |
++    +-----------+---------+----------------------------------------------------------------------+
++    | core      | integer | core id.                                                             |
++    +-----------+---------+----------------------------------------------------------------------+
++    | type      | string  | component type. only ``mirror`` is available.                        |
++    +-----------+---------+----------------------------------------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X POST -H 'application/json' \
++    -d '{"name": "mirror_1", "core": 12, "type": "mirror"}' \
++    http://127.0.0.1:7777/v1/mirrors/1/components
++
++Response
++^^^^^^^^
++
++There is no body content for the response of a successful ``POST`` request.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++.. code-block:: none
++
++    sec {client_id};component start {name} {core} {type}
++
++
++DELETE /v1/mirrors/{client_id}/components/{name}
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Stop the component.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_del:
++
++.. table:: Request params of deleting component of spp_mirror.
++
++    +-----------+---------+---------------------------------+
++    | Name      | Type    | Description                     |
++    |           |         |                                 |
++    +===========+=========+=================================+
++    | client_id | integer | client id.                      |
++    +-----------+---------+---------------------------------+
++    | name      | string  | component name.                 |
++    +-----------+---------+---------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X DELETE -H 'application/json' \
++    http://127.0.0.1:7777/v1/mirrors/1/components/mirror_1
++
++Response
++^^^^^^^^
++
++There is no body content for the response of a successful ``POST`` request.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++.. code-block:: none
++
++    sec {client_id};component stop {name}
++
++
++PUT /v1/mirrors/{client_id}/components/{name}/ports
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Add or Delete port to the component.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_comp_port:
++
++.. table:: Request params for ports of component of spp_mirror.
++
++    +-----------+---------+---------------------------+
++    | Name      | Type    | Description               |
++    |           |         |                           |
++    +===========+=========+===========================+
++    | client_id | integer | client id.                |
++    +-----------+---------+---------------------------+
++    | name      | string  | component name.           |
++    +-----------+---------+---------------------------+
++
++Request(body)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_mirror_comp_port_body:
++
++.. table:: Request body params for ports of component of spp_mirror.
++
++    +---------+---------+-----------------------------------------------------------------+
++    | Name    | Type    | Description                                                     |
++    |         |         |                                                                 |
++    +=========+=========+=================================================================+
++    | action  | string  | ``attach`` or ``detach``.                                       |
++    +---------+---------+-----------------------------------------------------------------+
++    | port    | string  | port id. port id is the form {interface_type}:{interface_id}.   |
++    +---------+---------+-----------------------------------------------------------------+
++    | dir     | string  | ``rx`` or ``tx``.                                               |
++    +---------+---------+-----------------------------------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "attach", "port": "ring:1", "dir": "rx"}' \
++    http://127.0.0.1:7777/v1/mirrors/1/components/mirror_1/ports
++
++.. code-block:: console
++
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "detach", "port": "ring:0", "dir": "tx"} \
++    http://127.0.0.1:7777/v1/mirrors/1/components/mirror_1/ports
++
++Response
++^^^^^^^^
++
++There is no body content for the response of a successful ``PUT`` request.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++action is ``attach``
++
++.. code-block:: none
++
++    sec {client_id};port add {port} {dir} {name}
++
++action is ``detach``
++
++.. code-block:: none
++
++    sec {client_id};port del {port} {dir} {name}
+-- 
+2.17.1
+
+
