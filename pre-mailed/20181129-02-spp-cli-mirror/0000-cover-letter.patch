@@ -1,0 +1,19 @@
+From 8f6e2429d613ddd16b033c2d449cfb3204aabcb1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 29 Nov 2018 18:23:42 +0900
+Subject: [PATCH 0/2] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (2):
+  controller: add SppMirror class
+  controller: add mirror command to SPP controller
+
+ src/controller/commands/mirror.py | 327 ++++++++++++++++++++++++++++++++++++++
+ src/controller/shell.py           | 100 +++++++++++-
+ 2 files changed, 420 insertions(+), 7 deletions(-)
+ create mode 100644 src/controller/commands/mirror.py
+
+-- 
+2.7.4
+
