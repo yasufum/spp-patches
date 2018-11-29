@@ -1,0 +1,42 @@
+From 880d3cce476d026bc83ef6e3dcd13c74425cfd5a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 29 Nov 2018 21:18:02 +0900
+Subject: [PATCH 0/3] Update Secondary Commands section
+
+Hi,
+
+This series of patches is to update `Secondary Commands` section in the
+command reference. It is because SPP has several types of secondary
+process and it can be managed from spp-ctl and spp.py, so I think now it
+the time to update this section.
+
+By this update, spp_vf commands are moved to `Secondary Commands`.
+Spp_mirror introduced recently is also added to this section. It also
+includes to correct typos in examples of spp_vf commands.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (3):
+  docs: revise secondary commands section
+  docs: correct typos of spp_vf commands
+  docs: add spp_mirror command reference
+
+ docs/guides/commands/index.rst                |   2 +-
+ docs/guides/commands/secondary.rst            | 146 -----------
+ docs/guides/commands/secondary/index.rst      |  13 +
+ docs/guides/commands/secondary/spp_mirror.rst | 220 ++++++++++++++++
+ docs/guides/commands/secondary/spp_nfv.rst    | 146 +++++++++++
+ docs/guides/commands/secondary/spp_vf.rst     | 348 ++++++++++++++++++++++++++
+ docs/guides/commands/spp_vf.rst               | 348 --------------------------
+ 7 files changed, 728 insertions(+), 495 deletions(-)
+ delete mode 100644 docs/guides/commands/secondary.rst
+ create mode 100644 docs/guides/commands/secondary/index.rst
+ create mode 100644 docs/guides/commands/secondary/spp_mirror.rst
+ create mode 100644 docs/guides/commands/secondary/spp_nfv.rst
+ create mode 100644 docs/guides/commands/secondary/spp_vf.rst
+ delete mode 100644 docs/guides/commands/spp_vf.rst
+
+-- 
+2.7.4
+

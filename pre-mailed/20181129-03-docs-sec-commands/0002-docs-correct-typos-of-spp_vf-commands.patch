@@ -1,0 +1,37 @@
+From 8591e77da14975ad0f18f47cde3033d0da5f9d72 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 29 Nov 2018 21:13:01 +0900
+Subject: [PATCH 2/3] docs: correct typos of spp_vf commands
+
+Modify two typos in command examples in `Deleting port` subsection.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_vf.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index 2ba2790..2ffe237 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -272,7 +272,7 @@ Delete a port which is not used anymore.
+ 
+ .. code-block:: console
+ 
+-    spp > sec SEC_ID; port del RES_UID DIR NAME
++    spp > vf SEC_ID; port del RES_UID DIR NAME
+ 
+ It is same as the adding port, but no need to add additional sub command
+ for VLAN features.
+@@ -282,7 +282,7 @@ Here is an example.
+ .. code-block:: console
+ 
+     # delete rx port 'ring:0' from 'cls1'
+-    spp > vf 2; port del rx cls1
++    spp > vf 2; port del ring:0 rx cls1
+ 
+     # delete tx port 'vhost:1' from 'mgr1'
+     spp > vf 2; port del vhost:1 tx mgr1
+-- 
+2.7.4
+
