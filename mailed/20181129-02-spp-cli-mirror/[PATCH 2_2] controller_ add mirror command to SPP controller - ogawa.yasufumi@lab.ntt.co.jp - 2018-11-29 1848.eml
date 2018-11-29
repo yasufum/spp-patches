@@ -1,0 +1,219 @@
+X-Account-Key: account4
+X-UIDL: 00008a2256a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id EBF664008D5
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 29 Nov 2018 18:50:49 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id E9D627F3A1; Thu, 29 Nov 2018 18:50:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id E7F317F2AD
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 29 Nov 2018 18:50:49 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C9A2D132;
+	Thu, 29 Nov 2018 18:50:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id ACD8672B;
+	Thu, 29 Nov 2018 18:50:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/2] controller: add mirror command to SPP controller
+Date: Thu, 29 Nov 2018 18:48:34 +0900
+Message-Id: <1543484914-25256-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1543484914-25256-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1543484914-25256-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to 'mirror' command to Shell class for managing
+spp_mirror from 'spp.py'. Spp_mirror might have several instances, and
+deciding which of ones is also similar to other secondary processes.
+'mirror' command consists of an indicator and actual command. Here is
+an example.
+
+  spp > mirror 3; component start mr1 5 mirror
+
+In this example, the indicator 'mirror 3;' is before the command
+'component start ...'. The number in indicator is a secondary ID
+actually, so you cannot assign the same ID of others.
+
+You can refer the usage of 'mirror' command with 'help' command.
+
+  spp > help mirror
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 100 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 93 insertions(+), 7 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 529d61e..84d4e2f 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -9,6 +9,7 @@ from .commands import pri
+ from .commands import sec
+ from .commands import topo
+ from .commands import vf
++from .commands import mirror
+ import os
+ import re
+ import readline
+@@ -47,6 +48,11 @@ class Shell(cmd.Cmd, object):
+         for sec_id in self.get_sec_ids('vf'):
+             self.spp_vfs[sec_id] = vf.SppVf(self.spp_ctl_cli, sec_id)
+ 
++        self.spp_mirrors = {}
++        for sec_id in self.get_sec_ids('mirror'):
++            self.spp_mirrors[sec_id] = mirror.SppMirror(
++                    self.spp_ctl_cli, sec_id)
++
+         self.spp_topo = topo.SppTopo(self.spp_ctl_cli, {}, self.topo_size)
+         self.spp_bye = bye.SppBye(self.spp_ctl_cli, self.spp_primary,
+                                   self.spp_secondary)
+@@ -75,7 +81,7 @@ class Shell(cmd.Cmd, object):
+     def get_sec_ids(self, ptype):
+         """Return a list of IDs of running secondary processes.
+ 
+-        'ptype' is 'nfv' or 'vf'.
++        'ptype' is 'nfv', 'vf' or 'mirror'.
+         """
+ 
+         ids = []
+@@ -115,12 +121,14 @@ class Shell(cmd.Cmd, object):
+                 pri_obj = None
+                 sec_obj = {}
+                 sec_obj['nfv'] = []
++                sec_obj['vf'] = []
++                sec_obj['mirror'] = []
+ 
+                 for proc_obj in proc_objs:
+                     if proc_obj['type'] == 'primary':
+                         pri_obj = proc_obj
+-                    elif proc_obj['type'] == 'nfv':
+-                        sec_obj['nfv'].append(proc_obj)
++                    else:
++                        sec_obj[proc_obj['type']].append(proc_obj)
+ 
+                 print('- primary:')
+                 if pri_obj is not None:
+@@ -130,9 +138,11 @@ class Shell(cmd.Cmd, object):
+ 
+                 print('- secondary:')
+                 print('  - processes:')
+-                for obj in sec_obj['nfv']:
+-                    print('    %d: %s:%s' % (
+-                        obj['client-id'], obj['type'], obj['client-id']))
++                cnt = 1
++                for pt in ['nfv', 'vf', 'mirror']:
++                    for obj in sec_obj[pt]:
++                        print('    %d: %s:%s' % (cnt, obj['type'], obj['client-id']))
++                        cnt += 1
+             elif res.status_code in self.spp_ctl_cli.rest_common_error_codes:
+                 pass
+             else:
+@@ -345,7 +355,6 @@ class Shell(cmd.Cmd, object):
+         """
+ 
+         # remove unwanted spaces to avoid invalid command error
+-        # TODO change self.spp_vf to self.spp_vfs
+         tmparg = self.clean_cmd(cmd)
+         cmds = tmparg.split(';')
+         if len(cmds) < 2:
+@@ -388,6 +397,83 @@ class Shell(cmd.Cmd, object):
+                 return self.spp_vfs[idx].complete(self.get_sec_ids('vf'),
+                                                   text, line, begidx, endidx)
+ 
++    def do_mirror(self, cmd):
++        """Send a command to spp_mirror.
++
++        spp_mirror is a secondary process for duplicating incoming
++        packets to be used as similar to TaaS in OpenStack. This
++        command has four sub commands.
++          * status
++          * component
++          * port
++
++        Each of sub commands other than 'status' takes several parameters
++        for detailed operations. Notice that 'start' for launching a worker
++        is replaced with 'stop' for terminating. 'add' is also replaced with
++        'del' for deleting.
++
++        Examples:
++
++        # (1) show status of worker threads and resources
++        spp > mirror 1; status
++
++        # (2) launch or terminate a worker thread with arbitrary name
++        #   NAME: arbitrary name used as identifier
++        #   CORE_ID: one of unused cores referred from status
++        spp > mirror 1; component start NAME CORE_ID mirror
++        spp > mirror 1; component stop NAME CORE_ID mirror
++
++        # (3) add or delete a port to worker of NAME
++        #   RES_UID: resource UID such as 'ring:0' or 'vhost:1'
++        #   DIR: 'rx' or 'tx'
++        spp > mirror 1; port add RES_UID DIR NAME
++        spp > mirror 1; port del RES_UID DIR NAME
++        """
++
++        # remove unwanted spaces to avoid invalid command error
++        tmparg = self.clean_cmd(cmd)
++        cmds = tmparg.split(';')
++        if len(cmds) < 2:
++            print("Required an ID and ';' before the command.")
++        elif str.isdigit(cmds[0]):
++            self.spp_mirrors[int(cmds[0])].run(cmds[1])
++        else:
++            print('Invalid command: %s' % tmparg)
++
++    def complete_mirror(self, text, line, begidx, endidx):
++        """Completion for mirror command"""
++
++        line = self.clean_cmd(line)
++
++        tokens = line.split(';')
++        if len(tokens) == 1:
++            # Add SppMirror of sec_id if it is not exist
++            sec_ids = self.get_sec_ids('mirror')
++            for idx in sec_ids:
++                if self.spp_mirrors[idx] is None:
++                    self.spp_mirrors[idx] = mirror.SppMirror(self.spp_ctl_cli, idx)
++
++            if len(line.split()) == 1:
++                res = [str(i)+';' for i in sec_ids]
++            else:
++                if not (';' in line):
++                    res = [str(i)+';'
++                           for i in sec_ids
++                           if (str(i)+';').startswith(text)]
++            return res
++        elif len(tokens) == 2:
++            # Split tokens like as from 'mirror 1' to ['mirror', '1']
++            first_tokens = tokens[0].split(' ')
++            if len(first_tokens) == 2:
++                idx = int(first_tokens[1])
++
++                # Add SppMirror of sec_id if it is not exist
++                if self.spp_mirrors[idx] is None:
++                    self.spp_mirrors[idx] = mirror.SppMirror(self.spp_ctl_cli, idx)
++
++                return self.spp_mirrors[idx].complete(
++                        self.get_sec_ids('mirror'), text, line, begidx, endidx)
++
+     def do_record(self, fname):
+         """Save commands as a recipe file.
+ 
+-- 
+2.7.4
+
+
