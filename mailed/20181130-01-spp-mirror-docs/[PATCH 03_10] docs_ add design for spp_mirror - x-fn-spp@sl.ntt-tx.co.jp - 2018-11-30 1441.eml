@@ -1,0 +1,815 @@
+X-Account-Key: account4
+X-UIDL: 00008a4156a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 305FF400B05
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 30 Nov 2018 14:43:42 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 1A8F87F369; Fri, 30 Nov 2018 14:43:42 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 18CE97F2A2
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:42 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 070E0638FD6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:42 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id EF5F863907C
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3Au4gtwhJ5dCmyQhoC0tmcpTVXNAE6p7X5OBIU4Z?=
+ =?us-ascii?q?M7irVIN56u5InmIFeGvKo/gFTMVMDA8/cc0qzbuKSmX3Acp52G9nIaI9RXTx?=
+ =?us-ascii?q?FQscwNhEQ7BdKdT1XhJav6KiI8Wd9aTHd++ze9LVQQBNa4bFqUoGXhpSUKFE?=
+ =?us-ascii?q?DHPBFubv/wBpaUis220+6o/JiGc0BGgn+meataNxHwqxnN89UGx4BlbKQpk0?=
+ =?us-ascii?q?GbmHZDduVIyG8tHmq9wU6jtP+554Ursyhbvvtk7NZFCfy8cq88C7pEEHItNC?=
+ =?us-ascii?q?Y3/J+juR7GRAqJrnwSNwde2goNDQ6A9wnidoz19C3mqq9hyG+ROov0Vfg4VC?=
+ =?us-ascii?q?+j4KFiVBLzwH1eb3hjqzuR0ZE20vMTqQnExVQ324POZYCJKPdyNrjQe98XXy?=
+ =?us-ascii?q?sJX8pcUTBAHpLpd5EGXKIKOedVqZW4pkNb90LmQ1P3XqW0l3kW1yyTv+Vyye?=
+ =?us-ascii?q?kqHADY0RZ1E9kLuTHPtNCtbeEfWuTzyrXUiz7EKfFOilKfoMDFdA4spfaUUP?=
+ =?us-ascii?q?d+a83UnAM/Ug3Dy06IsaT+O3WTyvhIr3jd5O0mV/rl2AtF40lh5yOiwMshkN?=
+ =?us-ascii?q?yDlscbzBXf7T1R24JzI8GkDVJrJ9WjVplI/XL/VcM+UoYpRGdmvzw/w7sNtM?=
+ =?us-ascii?q?ugfSQE/4873R/Ud6/PY82S7xnkTurUPSZgiScvZueknxjruxvFqKW0Royu3V?=
+ =?us-ascii?q?1NtCYAjtTcqiVHyUnI8sbeAvIv+06g3W7UkQHY8adCPVxxibqdIJlnwKZV9N?=
+ =?us-ascii?q?JbuBbGFy7ywBmwjaSNMEM45q20+6LsZfPkvteVZYp9iwWmb+Ivkdf5B/gkdx?=
+ =?us-ascii?q?QeGWOcv+aksd+rtUSrRbxLiqVo1KjSq9bcOdheur7/CAgT0J5r4kS6BjaiiI?=
+ =?us-ascii?q?tenHIcalRZZFebn87iPBfMOJWaRb+20VGlkTMzl7bHNaanBInRa2TT1rzmO7?=
+ =?us-ascii?q?Rlo09ElFhplIgZvckOTOpcZquiByqT/JTZFkNraVXshby8UpMmi8VHCDzHA7?=
+ =?us-ascii?q?fFYvmL6RnSvbhpeLTKOtJduS6heaJ8v7i01iV/wgJbI/fhy5ITbDrhRKZcLk?=
+ =?us-ascii?q?6UYGThjpI6KUlU51BsdOXxkxXCXTVWbjOpR6dkv3c2A4bgC5vfAIuqxr6Zjm?=
+ =?us-ascii?q?+3GZhfZ2YODV7pcz+gZ8CKXbIXcDq6OcsnlCAYEKSxDYQmkxO2/AP30LtoKO?=
+ =?us-ascii?q?PI9zZQ78u7koIuvauIyFdspHR9FKH/mymVQntxn38USjN+x615rUFnix+C3a?=
+ =?us-ascii?q?V+n/1EBIlW7vJNXB09MM2UxOh7BtbuHwPZK43QEBD8GY/gWmx3EINipr1GK1?=
+ =?us-ascii?q?xwENijkB3ZiiahBrZQjKSOXMVy/6nYmX7tO4B2zDDEzPpE7RFuT81ROGmhnq?=
+ =?us-ascii?q?M6+RLUAtuDgwCXkeOxbbw0xyqL8nufiHae+kpfFgxoG/agPzhXdg7NoNL161?=
+ =?us-ascii?q?mXBa/rB7JiKRNZ4dWGbK1Wdpj1nRNNQ7HhIJ6NBgD503f1DhGOyLSWaYPscG?=
+ =?us-ascii?q?hIxyTRBn8fjxoS9mrVfRh7HCqqpHjSSSB/DV+6KV256vFw8TnoKy18hxHPdU?=
+ =?us-ascii?q?Bq0KC5vwIYleDJAe1GxaoK4W8o+TB9HVLlhJTXAMHGoRZ9OblMJ9g6plVfsA?=
+ =?us-ascii?q?CR/wUvO5WhK/g+wF8VaEJxo1+rywUxAYIGk9BipSEvxQt2cf/e0VhaMTWEwd?=
+ =?us-ascii?q?XsKvvcLS/w5HXNI+bfiFTX0dLOpOEO4+9+rUn/+R25UEEltXd/m9AH1nKd4s?=
+ =?us-ascii?q?2VSgsZStT3Tlpy6wg8rLacYDFYhcuc3C9pOKiw6m+E2tkyQu051lO8b5FUN+?=
+ =?us-ascii?q?WGDEfzC5FIXZH2brZxwR7yM1Rdbb03luZ8Ptv6JaHfgOjxZ7wmx2/g1DUZqI?=
+ =?us-ascii?q?FljhDWrnI6ELWSmc1Yha/FlgqfC2Wm1Q/n6Jut39sZI29MVny2zSyuXd8DVu?=
+ =?us-ascii?q?hJZY8OTFyWDYiyz9R6iYTqXicHpkWnQVUaxIq1aVyZaBr/xV8JjBhFkTmcgS?=
+ =?us-ascii?q?K9igdMvXQxtKPGg37Vx6LkaAZCJn4NT24kj0++eIU=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AAAAC1zQBcl0Uj6NJjGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGBDXNpTyEDBwgnjBFfjTaHZoZXiQmBejCESQI?=
+ =?us-ascii?q?1gx4BBS8JDQEDAQECAQEBARQBAQEBAQYYBkwMhT0GGg1SECAMJQ9IBwkJCYM?=
+ =?us-ascii?q?YAYIAEKhGM4QtAYRWgSyHbIFngh6CPIERhU9IDgsChxoiAocdB4IHhnKEB4E?=
+ =?us-ascii?q?uilQJhn+KNxiBWk2HZ4cOLIhNhGOCUlqEHoR3gg2BH4JZATMJgh4OCYgjO4V?=
+ =?us-ascii?q?OMAEBATABjwcBAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 30 Nov 2018 14:43:41 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAU5hWXj001654;
+	Fri, 30 Nov 2018 14:43:32 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAU5hWYb028367;
+	Fri, 30 Nov 2018 14:43:32 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA27156;
+	 Fri, 30 Nov 2018 14:41:19 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJvw001781; Fri, 30 Nov 2018 14:41:19 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJlX001778; Fri, 30 Nov 2018 14:41:19 +0900
+Message-Id: <201811300541.wAU5fJlX001778@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id wAU5fJ5O014150 ; Fri, 30 Nov 2018 14:41:19 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 03/10] docs: add design for spp_mirror
+Date: Fri, 30 Nov 2018 14:41:11 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Design section is for describing components and its mechanizm of
+`spp_vf` and `spp_mirror`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+---
+ docs/guides/images/spp_vf/spp_mirror_design.svg | 564 ++++++++++++++++++++++++
+ docs/guides/spp_vf/design.rst                   |  75 +++-
+ 2 files changed, 623 insertions(+), 16 deletions(-)
+ create mode 100644 docs/guides/images/spp_vf/spp_mirror_design.svg
+
+diff --git a/docs/guides/images/spp_vf/spp_mirror_design.svg b/docs/guides/images/spp_vf/spp_mirror_design.svg
+new file mode 100644
+index 0000000..bd1da65
+--- /dev/null
++++ b/docs/guides/images/spp_vf/spp_mirror_design.svg
+@@ -0,0 +1,564 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<!-- Created with Inkscape (http://www.inkscape.org/) -->
++
++<svg
++   xmlns:dc="http://purl.org/dc/elements/1.1/"
++   xmlns:cc="http://creativecommons.org/ns#"
++   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
++   xmlns:svg="http://www.w3.org/2000/svg"
++   xmlns="http://www.w3.org/2000/svg"
++   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
++   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
++   width="154mm"
++   height="86mm"
++   viewBox="0 0 545.66913 304.72423"
++   id="svg2"
++   version="1.1"
++   inkscape:version="0.91 r13725"
++   sodipodi:docname="spp_mirror_design.svg">
++  <defs
++     id="defs4">
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker19529"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#0000c8;fill-opacity:1;fill-rule:evenodd;stroke:#0000c8;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path19531" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker6787"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path6789"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker6319"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path6321"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker6041"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path6043" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5787"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5789"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5445"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5447"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5351"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5353"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5263"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5265"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5181"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5183"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5105"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5107"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5035"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5037"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker4971"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path4973"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker4849"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path4851" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker4803"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path4805" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker4763"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path4765" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lstart"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="Arrow2Lstart"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path4250"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(1.1,0,0,1.1,1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5787-7"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5789-5"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker4849-0"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path4851-9" />
++    </marker>
++    <marker
++       inkscape:isstock="true"
++       style="overflow:visible"
++       id="marker4849-0-6"
++       refX="0"
++       refY="0"
++       orient="auto"
++       inkscape:stockid="Arrow2Lend">
++      <path
++         inkscape:connector-curvature="0"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         style="fill:#0000c8;fill-opacity:1;fill-rule:evenodd;stroke:#0000c8;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         id="path4851-9-0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker5787-0"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path5789-2"
++         style="fill:#0000c8;fill-opacity:1;fill-rule:evenodd;stroke:#0000c8;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker6787-3"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path6789-6"
++         style="fill:#0000c8;fill-opacity:1;fill-rule:evenodd;stroke:#0000c8;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++    <marker
++       inkscape:stockid="Arrow2Lend"
++       orient="auto"
++       refY="0"
++       refX="0"
++       id="marker6787-3-5"
++       style="overflow:visible"
++       inkscape:isstock="true">
++      <path
++         id="path6789-6-3"
++         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
++         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
++         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
++         inkscape:connector-curvature="0" />
++    </marker>
++  </defs>
++  <sodipodi:namedview
++     id="base"
++     pagecolor="#ffffff"
++     bordercolor="#666666"
++     borderopacity="1.0"
++     inkscape:pageopacity="0.0"
++     inkscape:pageshadow="2"
++     inkscape:zoom="0.7"
++     inkscape:cx="12.270417"
++     inkscape:cy="384.32605"
++     inkscape:document-units="px"
++     inkscape:current-layer="layer11"
++     showgrid="false"
++     inkscape:window-width="1685"
++     inkscape:window-height="882"
++     inkscape:window-x="77"
++     inkscape:window-y="110"
++     inkscape:window-maximized="0" />
++  <metadata
++     id="metadata7">
++    <rdf:RDF>
++      <cc:Work
++         rdf:about="">
++        <dc:format>image/svg+xml</dc:format>
++        <dc:type
++           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
++        <dc:title />
++      </cc:Work>
++    </rdf:RDF>
++  </metadata>
++  <g
++     inkscape:label="Host"
++     inkscape:groupmode="layer"
++     id="layer1"
++     transform="translate(0,-747.63807)"
++     style="display:inline">
++    <rect
++       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.06318593;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
++       id="rect4136"
++       width="503.00601"
++       height="261.00519"
++       x="20.438236"
++       y="773.21747" />
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer3"
++     inkscape:label="Processes"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <rect
++       style="opacity:1;fill:#ffefde;fill-opacity:1;stroke:#000000;stroke-width:1.28094244;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
++       id="rect4174-2"
++       width="312.17203"
++       height="177.92828"
++       x="116.6697"
++       y="399.54535"
++       ry="16.659077" />
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer4"
++     inkscape:label="Threads"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <rect
++       style="opacity:1;fill:#fffdc4;fill-opacity:1;stroke:#000000;stroke-width:1.08361697;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
++       id="rect4534-6"
++       width="128.91644"
++       height="48.916393"
++       x="146.68469"
++       y="469.62271"
++       ry="24.458197" />
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer7"
++     inkscape:label="DPDK-Resources"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <ellipse
++       style="opacity:1;fill:#ecffe7;fill-opacity:1;stroke:#000000;stroke-width:0.91584492;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
++       id="path4558-3"
++       cx="356.85724"
++       cy="459.50949"
++       rx="40.042091"
++       ry="19.54208" />
++    <ellipse
++       style="opacity:1;fill:#ecffe7;fill-opacity:1;stroke:#000000;stroke-width:0.91584492;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
++       id="path4558-3-6"
++       cx="356.00006"
++       cy="534.36664"
++       rx="40.042099"
++       ry="19.542084" />
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer11"
++     inkscape:label="Path"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <path
++       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4849-0)"
++       d="m 272.92402,504.18185 43.13199,29.58958"
++       id="path4713-3"
++       inkscape:connector-curvature="0"
++       sodipodi:nodetypes="cc" />
++    <path
++       style="fill:none;fill-rule:evenodd;stroke:#0000c8;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4, 4;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker4849-0-6)"
++       d="m 274.34489,484.7562 41.13199,-24.41043"
++       id="path4713-3-6"
++       inkscape:connector-curvature="0"
++       sodipodi:nodetypes="cc" />
++    <path
++       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6787)"
++       d="m 74.000005,492.93803 69.999995,0"
++       id="path3535"
++       inkscape:connector-curvature="0" />
++    <path
++       style="display:inline;fill:none;fill-rule:evenodd;stroke:#0000c8;stroke-width:0.99999964;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:3.99999857,3.99999857;stroke-opacity:1;marker-end:url(#marker6787-3);stroke-dashoffset:0"
++       d="m 396.44989,459.5271 70.00001,0"
++       id="path3535-7"
++       inkscape:connector-curvature="0" />
++    <path
++       style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6787-3-5)"
++       d="m 396.44991,535.24139 70.00002,0"
++       id="path3535-7-5"
++       inkscape:connector-curvature="0" />
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer2"
++     inkscape:label="Label-Host"
++     transform="translate(0,-747.63807)"
++     style="display:inline">
++    <text
++       xml:space="preserve"
++       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++       x="46.455471"
++       y="806.00836"
++       id="text4160"
++       sodipodi:linespacing="125%"><tspan
++         sodipodi:role="line"
++         id="tspan4162"
++         x="46.455471"
++         y="806.00836">host</tspan></text>
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer5"
++     inkscape:label="Label-Processes"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <text
++       xml:space="preserve"
++       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++       x="134.66794"
++       y="428.17276"
++       id="text4208-0"
++       sodipodi:linespacing="125%"><tspan
++         sodipodi:role="line"
++         id="tspan4210-2"
++         x="134.66794"
++         y="428.17276">spp_mirror</tspan></text>
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer6"
++     inkscape:label="Label-Threads"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <text
++       xml:space="preserve"
++       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++       x="178.85202"
++       y="500.82611"
++       id="text4204-2"
++       sodipodi:linespacing="125%"><tspan
++         sodipodi:role="line"
++         id="tspan4206-9"
++         x="178.85202"
++         y="500.82611">mirror</tspan></text>
++  </g>
++  <g
++     inkscape:groupmode="layer"
++     id="layer9"
++     inkscape:label="Label-Resources"
++     transform="translate(0,-333.07105)"
++     style="display:inline">
++    <text
++       xml:space="preserve"
++       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.50000381px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++       x="325.0242"
++       y="541.89813"
++       id="text4573-7"
++       sodipodi:linespacing="125%"><tspan
++         sodipodi:role="line"
++         id="tspan4575-5"
++         x="325.0242"
++         y="541.89813">ring:1</tspan></text>
++    <text
++       xml:space="preserve"
++       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.50000381px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++       x="326.73846"
++       y="466.4696"
++       id="text4573-7-3"
++       sodipodi:linespacing="125%"><tspan
++         sodipodi:role="line"
++         id="tspan4575-5-5"
++         x="326.73846"
++         y="466.4696">ring:0</tspan></text>
++  </g>
++</svg>
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index fc9b014..8b9e7f3 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -6,8 +6,22 @@
+ Design
+ ======
+ 
+-Components
+-----------
++.. _spp_vf_design_port:
++
++Ports
++-----
++
++Both of ``spp_vf`` and ``spp_mirror`` support three types of port,
++``phy``, ``ring`` and ``vhost``.
++``phy`` port is used to retrieve packets from specific physical NIC or sent to.
++``ring`` is basically used to connect a process or a thread to make a network
++path between them.
++``vhost`` is used to forward packets from a VM or sent to.
++
++.. _spp_vf_design_spp_vf:
++
++spp_vf
++------
+ 
+ ``spp_vf`` is a kind of secondary process and consists of several
+ threads called component.
+@@ -15,23 +29,23 @@ There are three types of components, ``forwarder``,
+ ``merger`` and ``classifier``.
+ 
+ .. figure:: ../images/spp_vf/spp_vf_overview.*
+-    :width: 70%
++    :width: 75%
+ 
+     SPP VF components
+ 
+ Forwarder
+-~~~~~~~~~
++^^^^^^^^^
+ 
+ Simply forwards packets from rx to tx port.
+ 
+ Merger
+-~~~~~~
++^^^^^^
+ 
+ Receives packets from multiple rx ports to aggregate
+ packets and sends to a desctination port.
+ 
+ Classifier
+-~~~~~~~~~~
++^^^^^^^^^^
+ 
+ Sends packets to multiple tx ports based on entries of
+ MAC address and destination port in a classifier table.
+@@ -43,15 +57,44 @@ which of table is referred
+ if TPID (Tag Protocol Indetifier) is included in a packet and
+ equals to 0x8100 as defined in IEEE 802.1Q standard.
+ 
++.. _spp_vf_design_spp_mirror:
+ 
+-Ports
+------
++spp_mirror
++----------
++
++``spp_mirror`` is another kind of secondary process. The keyword ``mirror``
++means that it duplicates incoming packets and forwards to additional
++destination.
++It supports only one type of component called ``mirror`` for duplicating.
++In :numref:`figure_spp_mirror_design`, incoming packets are duplicated with
++``mirror`` component and sent to original and additional destinations.
++
++.. _figure_spp_mirror_design:
++
++.. figure:: ../images/spp_vf/spp_mirror_design.*
++    :width: 45%
++
++    Spp_mirror component
++
++Mirror
++^^^^^^
++
++``mirror`` component has one ``rx`` port and two ``tx`` ports. Incoming packets
++from ``rx`` port are duplicated and sent to each of ``tx`` ports.
++
++In general, copying packet is time-consuming because it requires to make a new
++region on memory space. Considering to minimize impact for performance,
++``spp_mirror`` provides a choice of copying methods, ``shallowocopy`` or
++``deepcopy``.
++The difference between those methods is ``shallowocopy`` does not copy whole of
++packet data but share without header actually.
++``shallowcopy`` is to share mbuf between packets to get better performance
++than ``deepcopy``, but it should be used for read only for the packet.
++
++.. note::
++
++    ``shallowcopy`` calls ``rte_pktmbuf_clone()`` internally and
++    ``deepcopy`` create a new mbuf region.
+ 
+-``spp_vf`` supports three types of PMDs, ``phy`` (Physical NIC),
+-``ring`` (Ring PMD) and ``vhost`` (vhsot PMD).
+-Using ``phy`` port, component can get incoming packets from outside host
+-and transfer the packet to specific physical NIC.
+-Using ``ring`` port, variety of combination of components can be
+-configured.
+-And through ``vhost`` port component can transfer packets from/to VMs.
+-``port`` can also control vlan tagging and untagging.
++You should choose ``deepcopy`` if you use VLAN feature to make no change for
++original packet while copied packet is modified.
+-- 
+2.7.4
+
+

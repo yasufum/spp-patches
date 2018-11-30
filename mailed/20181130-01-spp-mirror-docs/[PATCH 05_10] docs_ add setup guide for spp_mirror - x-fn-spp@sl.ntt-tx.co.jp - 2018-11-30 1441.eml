@@ -1,0 +1,260 @@
+X-Account-Key: account4
+X-UIDL: 00008a3f56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 0D043400B05
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 30 Nov 2018 14:43:42 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id F2C137F359; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id F19FB7F2A2
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id E0C80639042
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id BC420638FD6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3A0tRObBDhunjqH78IPKWfUyQJPHJ1kqjoPgMT9p?=
+ =?us-ascii?q?ssgq5PdaLmxZn5IUjD/qw00w3FVoDSrulcjrKP9a3rXSoG/YrHu3dEcoQfHw?=
+ =?us-ascii?q?Qdh5Aulhc7SNWAFVW9NOTjOjx/EsIHT0d912q/d05JBIPidxvZpTuw9W1aAQ?=
+ =?us-ascii?q?3xYDJ8Pf+9AYvOl4Ky3uG29YfUZlBYwTS7JKhqND2tqUPXqtVTnZskIaF3yA?=
+ =?us-ascii?q?OQ+Clydu9bxH1lKReopziivpjixJd46GwQt/kk/otbSaCiJuI1RrgeCig6dW?=
+ =?us-ascii?q?syos/z51HPSg6G531UVWtz8FIAE03L6lThRo/ZqS+8sPZhnTWKe8bxC7IsET?=
+ =?us-ascii?q?iv9KZkThb0hTxPbWdhtjuM0Ior0eQF8VqovHkdi8bMbZuQNeZic6+VZt4cSW?=
+ =?us-ascii?q?dbH45QWyFHHoKgft4XFeNSde1croT7ux4PtU7kXFHqXri1jGQVwCGnjshYm6?=
+ =?us-ascii?q?w7HArL3RItBYcCu3Hd6c7tMf9LF+2+yO/O0SmFZPQQ2y+ujeqAOh0nv/yIWq?=
+ =?us-ascii?q?p9NMTLzkx6XROAgFPVspT9FyiRkOIRry2H/6xrUqStkyR0zmM56ijq3coqho?=
+ =?us-ascii?q?TT08gFj17CsD5h2K4uIZu+VFI+fc7iG5wWtTnQZO4UCosyBmpvvig90LgPv5?=
+ =?us-ascii?q?W2KTMLxJoQ3ALFavebIMCYpwjuX+GLLXJklWpoLfih0g2q/xHqmYieHoGklU?=
+ =?us-ascii?q?xHpS1fnpzQu2ARglbNv9OfRKI19xWk0DeLj1uV6+pfZ0Yoie/HO9gqxfgyjv?=
+ =?us-ascii?q?9x+QzKTCr/mUGu0OmXfV5i/PS0rvj3JL7h4J2Ef4Ymjwj/Nvxz3M20GqI+Lh?=
+ =?us-ascii?q?RLQ3jd8uP61qWGnwWxSedPh/wyyvefsZvBY8IHuuulE0le1cAh8162XTKv0d?=
+ =?us-ascii?q?BAwj8GJ0kDfg6bypT5fVrJZvLgaJX3y13+lT5qw6iWeLzqGdPLMmSGjKendr?=
+ =?us-ascii?q?E76VYUyRJvn4oGv9QOUetHe6+1Ax6s0b6QRh4hb17umr6hUo4nkNhDHzveXO?=
+ =?us-ascii?q?eYKP+A6wbQoLh0ea/XOclL5X78M6R3vae2yyViwxlGIO/3g9MBYXS8VK08cX?=
+ =?us-ascii?q?+UanftnNoNVFwykFRnFr7SgUaZGX5fbHO7Grkk42liTo+tCcHFWpzri7vH3j?=
+ =?us-ascii?q?/pVpFRY2lHDBiLHxKKP82UHvkKLTmKOud6lnoCSaTkV59n3hbotheyx7d8L+?=
+ =?us-ascii?q?XS8zEVrtq5jYAzvbaJ00pvs2IlR82GtgPFB3l5hGYJWyM70OhkrEpxx03Cma?=
+ =?us-ascii?q?l0jvpEFMBCsvZAUwM0L5nZnKRxD9H/XB6Ef8/cEg/+BI/9W3dqE5RvkoxrAQ?=
+ =?us-ascii?q?41AdipgxHd0jD/D7QQnvmQHJlsq+TR1Hy3IdphjX3Bkqs53DxECoNCM3Orgq?=
+ =?us-ascii?q?ln+k3dHYnMxg+J0qisML8ExAbW8CGF0XbLoFEeWwk2U72PDhV9LgPG6M/04E?=
+ =?us-ascii?q?/PVerkGfEpNE5a0daqMa8MbMH1yElWAvzkftbGKTHU+S/4FVODwbWCa5Dvcm?=
+ =?us-ascii?q?MW0XDGCUQKpBsP53eNKVt2FmK7rmnZFjArCUP3bham77xlsH3iBBxRrUnCfw?=
+ =?us-ascii?q?h72rGy4BJQmfGMV6ZZwOcfoCl44zwmGV+824qNTduLvExnYLkZfcN761AB13?=
+ =?us-ascii?q?q81UQ1N86lJqFm3gJYcg9s+UXyy1BrGsNLlo4otDsjng97KKbAjRVAfCje24?=
+ =?us-ascii?q?zsf6HHbGL1uhK3DsyekliM1d+X/v9RrvUzsBPloB3sClpk+HIh0cEd2imZ75?=
+ =?us-ascii?q?TOVFVUUJnqFEAr611mt/fRZW8//+a2nTVlY6y9szuai5QoD/BjzAq8OstPdq?=
+ =?us-ascii?q?iDUg3qW8wCW5r0cbRswQPzKElZerkDqctWd4unb6fUgvfzerw7xnT90CIesd?=
+ =?us-ascii?q?4101rQpXAlEqiShMxDmKzegFbPVi+g3g346oatwtoCPmxUQDT33yHgAMQIN/?=
+ =?us-ascii?q?9COL0TAGLrGPWZg9B3hprjQXldrQHxHFdA3tO1PAaCKVf6mw9Ihx1O/S6X3B?=
+ =?us-ascii?q?CgxjkxqAkH67KF1XWRkf/mMhwbJitXVC9pihHuOdrtgg=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AAAAC1zQBcl0Uj6NJJGhoBAQEBAQI?=
+ =?us-ascii?q?BAQEBBwIBAQEBgVEFAQEBAQsBggBpTyEDBwgnjBFfjTaXRoF6MIFUgnUCNYM?=
+ =?us-ascii?q?eAQUvCQ0BAwEBAgEBAQEUAQEBAQEGGAZMDIU9BnkQIAwlD0gHEoMhAYIAEDS?=
+ =?us-ascii?q?oRYkEgSyHbIFnhFqBEYtIggQiAocdB4IHhnKQCQmGf4o3GIFahRCIfIE2LIh?=
+ =?us-ascii?q?NhGOMQYINhCwJgiyIZ1GEfTABAQEwAY8HAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 30 Nov 2018 14:43:41 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAU5hXuA001681;
+	Fri, 30 Nov 2018 14:43:33 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAU5hWag028427;
+	Fri, 30 Nov 2018 14:43:32 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA27174;
+	 Fri, 30 Nov 2018 14:41:19 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJt1001798; Fri, 30 Nov 2018 14:41:19 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJ5F001789; Fri, 30 Nov 2018 14:41:19 +0900
+Message-Id: <201811300541.wAU5fJ5F001789@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id wAU5fJ5Q014150 ; Fri, 30 Nov 2018 14:41:19 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 05/10] docs: add setup guide for spp_mirror
+Date: Fri, 30 Nov 2018 14:41:13 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add setup guide for spp_mirror in `Getting Started` section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+---
+ docs/guides/spp_vf/gsg/build.rst | 68 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 59 insertions(+), 9 deletions(-)
+
+diff --git a/docs/guides/spp_vf/gsg/build.rst b/docs/guides/spp_vf/gsg/build.rst
+index 7247699..656a388 100644
+--- a/docs/guides/spp_vf/gsg/build.rst
++++ b/docs/guides/spp_vf/gsg/build.rst
+@@ -6,12 +6,22 @@
+ Setup
+ =====
+ 
++This section describes how to setup ``spp_vf`` and ``spp_mirror``.
++
++
+ Environment
+ -----------
+ 
++Here is a recommended versions of each of software.
++
+ * Ubuntu 16.04
+-* qemu-kvm 2.7 or later(if you use vhost reconnect feature described in 3.2.3)
+-* DPDK v17.11 or later
++* qemu-kvm 2.7 or later
++
++.. note::
++
++    If you do not use ``--vhost-client`` described in
++    :ref:`How to Use<spp_vf_gsg_howto_use_spp_mirror>`
++    , you can use previous versions of qemu-kvm.
+ 
+ 
+ Edit Config
+@@ -26,7 +36,8 @@ Uncomment user and group in ``/etc/libvirt/qemu.conf``.
+     user = "root"
+     group = "root"
+ 
+-Change ``KVM_HUGEPAGES`` from 0 to 1 in ``/etc/default/qemu-kvm``.
++To use hugepages with libvirt, change ``KVM_HUGEPAGES`` from 0 to 1
++in ``/etc/default/qemu-kvm``.
+ 
+ .. code-block:: console
+ 
+@@ -34,13 +45,24 @@ Change ``KVM_HUGEPAGES`` from 0 to 1 in ``/etc/default/qemu-kvm``.
+ 
+     KVM_HUGEPAGES=1
+ 
+-Change grub config for hugepages and isolcpus.
++Change grub configuration for hugepages and isolcpus features. It is defined
++as ``GRUB_CMDLINE_LINUX_DEFAULT`` and takes parameters.
++
++* isolcpus: Core IDs separated with commna, such as ``2,3,4,8``
++* hugepagesz: The size of hugepage, such as ``2M`` or ``1G``
++* hugepages: The number of hugepages, such as ``8``
++* default_hugepagesz: Default hugepage size, required only for ``1G``
++
++In this setup guide, configure ``hugepagez`` and its default is ``1G`` and
++the number of hugepages is ``36``.
++Core IDs of for ``isolcpus`` depends on your environment and usecase,
++but should be configured to have enough number of cores.
+ 
+ .. code-block:: c
+ 
+     # /etc/default/grub
+ 
+-    GRUB_CMDLINE_LINUX_DEFAULT="isolcpus=2,...,46 hugepagesz=1G hugepages=36 default_hugepagesz=1G"
++    GRUB_CMDLINE_LINUX_DEFAULT="isolcpus=2,...,46 hugepagesz=1G hugepages=..."
+ 
+ For hugepages, isolcpus, refer to the dpdk documentation below.
+ 
+@@ -129,17 +151,20 @@ Load igb_uio module.
+     igb_uio                16384  0  # igb_uio is loaded
+     uio                    20480  1 igb_uio
+ 
+-Then, bind it with PCI_Number.
++Then, bind your devices with PCI number by using ``dpdk-devbind.py``.
++PCI number is inspected
+ 
+ .. code-block:: console
+ 
+-    $ $RTE_SDK/usertools/dpdk-devbind.py --status
+     # check your device for PCI_Number
++    $ $RTE_SDK/usertools/dpdk-devbind.py --status
++
++    $ sudo $RTE_SDK/usertools/dpdk-devbind.py --bind=igb_uio PCI_NUM
+ 
+-    $ sudo $RTE_SDK/usertools/dpdk-devbind.py --bind=igb_uio [PCI_Number]
+ 
+ virsh setup
+ -----------
++
+ First of all, please check version of qemu-kvm.
+ 
+ .. code-block:: console
+@@ -151,7 +176,8 @@ then please install qemu following
+ the instruction of https://wiki.qemu.org/index.php/Hosts/Linux
+ to install qemu 2.7.
+ You may need to install libvirt-bin,
+-virtinst, bridge-utils packages via ``apt-get`` install to run ``virt-install``.
++virtinst, bridge-utils packages via ``apt-get`` install to run
++``virt-install``.
+ 
+ 
+ ``virsh`` is a command line interface that can be used to create, destroy,
+@@ -297,6 +323,30 @@ using Secondary command.
+     </domain>
+ 
+ 
++Setup spp_mirror
++----------------
++
++Setup of ``spp_mirror`` is almost the same as :ref:`SPP VF<spp_vf_gsg_build>`.
++Configuration of use of ``shallowcopy`` or ``deepcopy`` is different from
++``spp_vf``.
++It is defined in ``src/mirror/Makefile`` and which of copying is used is
++configured by editing ``CFLAG`` option. It is defined to use ``shallowcopy``
++by default.
++
++If you use ``deepcopy``, comment out the line of ``-Dspp_mirror_SHALLOWCOPY``
++to be disabled.
++
++.. code-block:: c
++
++   #CFLAGS += -Dspp_mirror_SHALLOWCOPY
++
++Then, run make command to compile ``spp_mirror``.
++
++.. code-block:: console
++
++   $ make
++
++
+ Trouble Shooting Guide
+ ----------------------
+ 
+-- 
+2.7.4
+
+

@@ -1,0 +1,246 @@
+X-Account-Key: account4
+X-UIDL: 00008a3a56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A587F400B05
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id A3F6823BA79; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id A330723B88B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 941A763907C
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 8885F638FD6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3Av4blzB06jnsYxKa6smDT+zVfTzU7u7jyIg8e44?=
+ =?us-ascii?q?YmjLQLSKm44pD+JxWGuqdhh1rAGJ7D7qodzefdt+bmRXBG6pHHsmhROIdUWU?=
+ =?us-ascii?q?o9gN4N1xclHNbDEVfyee6vYSp/B9xafERhuXenLQ1JCID1YBvQui769iYcTy?=
+ =?us-ascii?q?32LhE9PeHpAsjXhsWz2fq1/sjDJgtOwSGleZtpKFOwsRmUqtlQiowkKL5okE?=
+ =?us-ascii?q?nzr3BFevpbySZTHXzNx0mu3s6r59Yj/y9Vsrc678sYCOP3dKB+S6BESj8hdW?=
+ =?us-ascii?q?IttoXnshzKTA3H4XV5MC1egl9GBU3e9AnSRZO3tDfm8/ZtniKde8/uBbw5Qj?=
+ =?us-ascii?q?Wt6a53RQSg0n5fcWRiqieM14ou3epSu3fD71RnzpTRYZ2JOfY2Za7bcd4ABC?=
+ =?us-ascii?q?JAUstXSy1dE9akdYJcR+EFPOtes8z8vw5U9EP4X1L2QriyjGEZ1RqUleUg3u?=
+ =?us-ascii?q?8sEB/LxlksFNcH9W/MqY2scqoZVaaz0LWOxjKFbesFvFW1oIXObB0lpumBGL?=
+ =?us-ascii?q?xqds+Eg1lqGQWAlU2IgZfheTWJyqERoy6Q6KxiTaj87gxv4xE0uTWpyso238?=
+ =?us-ascii?q?PZw4wTj0vc7Q1ixMAzOcH9VF49atniEoMa5ET4f8NmB8glRW9voiMzzLYL7I?=
+ =?us-ascii?q?W6cCY904g9xhXDOLSXNpKF6RX5WKONMC910Th7LamniU/4oi3CgqXsE9O521?=
+ =?us-ascii?q?FQom9Zn8nQ4zoTggfL5JHPQ6l490algW3J1gvIrOdYPQUohezQLNgj2ttS3t?=
+ =?us-ascii?q?Ia40HKHyuuxAP3h7TQcFk4v/S4re/gJLf+7pbOMoZ1jlmjdKUlgYq5Hfh9Lh?=
+ =?us-ascii?q?hIVG/d+/zZtvWr9B/8SbRO1qNwk6LC9pbGOYEHtuiyBElXys4quRO2DjP+j5?=
+ =?us-ascii?q?IZlmJBKk5ZPQ6XyYPufVPWRZKwRf7thl2tlG87gfHNJfvnHomIMmiFm7Cnf6?=
+ =?us-ascii?q?416lYAmlBqlZYFvMgSUexHeaOuPy25/N3AUk1jalTymb29To4gkNpPByqOGv?=
+ =?us-ascii?q?PLavqK9wXTvKR0fq/SOccUoGqvcaF9oaS11zlixBlDI+G/1J8TIiniTM5rKE?=
+ =?us-ascii?q?iYf3fgx+w5PzlT5FgGRffxwB2OWjtaIm2qWvploDwwDMSgEZuFTYfrgqTTlC?=
+ =?us-ascii?q?u8G5RXYChBBDXuWT/4MouCHuwUcAqJJolnjiBBSajnQIhn1wnmuALhyrVhJ/?=
+ =?us-ascii?q?bZ4WVC7MqljoMvobaO009jvTVvaqbVm3mAVWR1gn8FS3ct0aZzrFY8glaP3K?=
+ =?us-ascii?q?5kguBJQNla5vdHSAA/ZtbXy+13Dcy3WxqUJI7RDgz9GJP9XHdvH4FUoZdGeU?=
+ =?us-ascii?q?t2FtS8gwqW0yGvCvoOj7nTXdo5+aaa2WTtYc16jXTeh8xDxxErRNVCMWq+i+?=
+ =?us-ascii?q?tx7Q/WUsTZ1kuf0r2ybYwH2GjL6HvG0XrIt0YeUhY6AsCnFTgPI1Dbq9j0/B?=
+ =?us-ascii?q?aIX/qgD/E8KhNp0srELLdWL8H5y15BAvX7coe7ASr5iyK7AhCGwamJZYzhdj?=
+ =?us-ascii?q?AG3SnTP1MYiQEY4SXOJU0kCyymuW6bEC12GAelfRb36ecn4iDeLAd830SQYk?=
+ =?us-ascii?q?Zmzbbw5hMFmanWVaYIxrxd8C5zrjx1GA7mmdPdEJyGuxYkYLUaatR74k8ity?=
+ =?us-ascii?q?qRvl54N52kd/wkh1UFNQJrowbyx1N8DcNCiYAj/nYjzQ4qdOSZ20gHcS+EmI?=
+ =?us-ascii?q?zgfLbQbGvqmXLnI6eE31jf1I7IvKYE87I+t0mmoBHvHU1k8W0v2otQ2nqYvs?=
+ =?us-ascii?q?qMDQEJF5TtTgMr515xoPfYekxfr8vdh3hlMK3s4nnD0MlvAvc5jwqwOdxYdq?=
+ =?us-ascii?q?GcXA7qT59AXpDocrdw3QP0KEtVYYUwvOY1J5/0LaLenvTwZqA7wXT/3DoP4Z?=
+ =?us-ascii?q?ghgBjVr2wmEbSOhMtDnazQ3xPbBW2l1BH76Zqxwt0CO29aCGO7zWK9VdxhI5?=
+ =?us-ascii?q?ZqdINOMl+AZsi+x9FwnZnoAiEK71rlAU8andO5PxGVKV7lj1QJiRYn5Ee/kC?=
+ =?us-ascii?q?799ARa1ikzp/PAjjfKheL+aF8bKihAQy9glQW1LA=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAAC1zQBcl0Uj6NJjGwEBAQEDAQE?=
+ =?us-ascii?q?BBwMBAQGBUQYBAQELAYIAaU8hAwcIJ4wRX402e41CiQmBejKDRoEBAjWDHgE?=
+ =?us-ascii?q?FLwkNAQMBAQIBAQEBFAEBAQEBBhgGTAyFPQZ5ECAMJQ9IBxKDIQGCABCoeYR?=
+ =?us-ascii?q?BQIQDgSyHbIFnhFqBEYYPCA4LAwECgUeFTyIChx0HggeGcpAJCYZ/ijcYgie?=
+ =?us-ascii?q?OdSyITYRjjEGCDYQsCYIsiGdRhH0wAQEBMAGPBwEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 30 Nov 2018 14:43:41 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAU5hXpC001679;
+	Fri, 30 Nov 2018 14:43:33 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAU5hW2o028415;
+	Fri, 30 Nov 2018 14:43:32 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA27180;
+	 Fri, 30 Nov 2018 14:41:19 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJLS001807; Fri, 30 Nov 2018 14:41:19 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fJxN001795; Fri, 30 Nov 2018 14:41:19 +0900
+Message-Id: <201811300541.wAU5fJxN001795@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id wAU5fJ5R014150 ; Fri, 30 Nov 2018 14:41:19 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 06/10] docs: add how to use guide for spp_mirror
+Date: Fri, 30 Nov 2018 14:41:14 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add how to use guide for spp_mirror in `Getting Started`.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/gsg/howto_use.rst | 59 ++++++++++++++++++++++--------------
+ 1 file changed, 36 insertions(+), 23 deletions(-)
+
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index 715fd8b..52a9c54 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -23,7 +23,7 @@ SPP primary allocates and manages resources for secondary processes.
+ You need to run SPP primary before secondary processes.
+ 
+ SPP primary has two kinds of options for DPDK and spp.
+-Before ``--`` are for DPDK is, and after ``--`` are for spp.
++Before ``--`` are for DPDK is, and after it are for spp.
+ 
+ See `Running a Sample Application
+ <http://dpdk.org/doc/guides/linux_gsg/build_sample_apps.html#running-a-sample-application>`_
+@@ -40,23 +40,23 @@ Then, spp primary can be launched like this.
+ .. code-block:: console
+ 
+     $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
+-      -c 0x02 -n 4 --socket-mem 512,512 \
++      -l 1 -n 4 --socket-mem 512,512 \
+       --huge-dir=/run/hugepages/kvm \
+       --proc-type=primary \
+-      -- -p 0x03 -n 9 -s 127.0.0.1:5555
++      -- \
++      -p 0x03 -n 9 -s 127.0.0.1:5555
+ 
+-SPP Secondary
+--------------
++spp_vf
++------
+ 
+-spp secondary processes(``spp_vf``) can be launched with two kinds of
+-options, like primary process.
++``spp_vf`` can be launched with two kinds of options, like primary process.
+ 
+ Like primary process, ``spp_vf`` has two kinds of options. One is for
+ DPDK, the other is ``spp_vf``.
+ 
+ ``spp_vf`` specific options are:
+ 
+-  * --client-id: client id
++  * --client-id: client id which can be seen as secondary ID from spp.py
+   * -s: IPv4 address and port for spp secondary
+   * --vhost-client: vhost-user client enable setting
+ 
+@@ -65,8 +65,9 @@ DPDK, the other is ``spp_vf``.
+ .. code-block:: console
+ 
+     $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
+-    -c 0x3ffd -n 4 --proc-type=secondary \
+-    -- --client-id 1 -s 127.0.0.1:6666 --vhost-client
++    -l 0,2-13 -n 4 --proc-type=secondary \
++    -- \
++    --client-id 1 -s 127.0.0.1:6666 --vhost-client
+ 
+ If ``--vhost-client`` option is specified, then ``vhost-user`` act as
+ the client, otherwise the server.
+@@ -75,35 +76,47 @@ used. This reconnect features requires QEMU 2.7 (or later).
+ See also `Vhost Sample Application
+ <http://dpdk.org/doc/guides/sample_app_ug/vhost.html>`_.
+ 
++
++.. _spp_vf_gsg_howto_use_spp_mirror:
++
++spp_mirror
++----------
++
++``spp_mirror`` takes the same options as ``spp_vf``. Here is an example.
++
++.. code-block:: console
++
++    $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/spp_mirror \
++    -l 2 -n 4 --proc-type=secondary \
++    -- \
++    --client-id 1 -s 127.0.0.1:6666 --vhost-client
++
+ VM
+ --
+ 
+-Launch VMs with ``virsh`` command.
++VM is launched with ``virsh`` command.
+ 
+ .. code-block:: console
+ 
+     $ virsh start [VM]
+ 
++It is required to add network configuration for processes running on the VMs.
++If this configuration is skipped, processes cannot communicate with others
++via SPP.
+ 
+-Additional Network Configurations
+-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-
+-To enable processes running on the VM to communicate through spp,
+-it is required additional network configurations on host and guest VMs.
+-
+-(1) Guest VMs
++On the VMs, add an interface and disable offload.
+ 
+ .. code-block:: console
+ 
+-    # Interface for vhost
++    # Add interface
+     $ sudo ifconfig [IF_NAME] inet [IP_ADDR] netmask [NETMASK] up
+ 
+-    # Disable offload for vhost interface
++    # Disable offload
+     $ sudo ethtool -K [IF_NAME] tx off
+ 
+-(2) Host2
++On host machine, it is also required to disable offload.
+ 
+ .. code-block:: console
+ 
+-    # Disable offload for VM interface
+-    $ ethtool -K [IF_NAME] tx off
++    # Disable offload for VM
++    $ sudo ethtool -K [IF_NAME] tx off
+-- 
+2.7.4
+
+

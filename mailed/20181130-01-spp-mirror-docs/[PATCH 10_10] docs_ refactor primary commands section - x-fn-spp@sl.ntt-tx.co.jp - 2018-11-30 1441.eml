@@ -1,0 +1,142 @@
+X-Account-Key: account4
+X-UIDL: 00008a3b56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id BA374400B05
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id B57DD23BA79; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id B4C6B23B88B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A679D638FD6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 826A9638C7E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 30 Nov 2018 14:43:41 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AHAguqRViK9GTxXpskExF5ztuqDbV8LGuZFw894?=
+ =?us-ascii?q?YnhrRSc6+q45XlOgnl6O5wiEPSBNyEuf5PjuOTqLjlATZG7J2F9nYebNpHUF?=
+ =?us-ascii?q?kHkZZehBQuVfaMElazN/v2d2oiBs0XRBpr+TSgKVB9A8K4YUHO52GiqzUVXB?=
+ =?us-ascii?q?fnZkJuPuqgIofJlIys0vyqvZjaYgFGnj24NKM3IhPzth3JntISx41+NuMt2l?=
+ =?us-ascii?q?3CpT1KY70Ml1llLl+SgRvwo/yI0sA7rHZosuk6v45MWqDzOr8gSOQCSjktNy?=
+ =?us-ascii?q?Yz+NGtvh6FTxPdrncbV2wXlFJPDW2npFnqG5n39zDirsJm3G+cIdGzUaByUj?=
+ =?us-ascii?q?Pk7b8jRBLziSgBPiI06ymN05Q21vkB5kn84UIui4fPBePdfOJzZKbcYc8XSS?=
+ =?us-ascii?q?JaU8BdWjYASoKwYo0TDvYQaP5Cptq1rF8PoB2iQAi0Ubm2knkS3SWwhvB8jb?=
+ =?us-ascii?q?VydGOOlBYtFN8PrnnO+dn+Ma5XSviwlPOOwD7HKfVKxXH2787KakNEw7nEUL?=
+ =?us-ascii?q?RufM7W0URqGRnCiwDaucnrOXaOzvwlqGzd6fZ8EP6/zWUg7QNp6GvKpI9kms?=
+ =?us-ascii?q?zSi4QZx0qRvzU8zoBwPsWgYFV/J9i4DN5Mp2eRMM10WolxJgMg8DZ/wboAt5?=
+ =?us-ascii?q?mheSEMw5ly3B/TZcucb5KJ6Q6wHPbUOzpzg2hpPa6unxvnu1b10fXyD4PntT?=
+ =?us-ascii?q?QC5joAiNTHsWoBkgDe+tTSAOUo5V+vgH6GhQXa6+UcegY1nrGdLYI9h6Ig0J?=
+ =?us-ascii?q?EU90bbe02+0EykiaaXch14vOmj8KLhfqmjuo/aPIgyiBm2O/Yrk827Wbl+Mw?=
+ =?us-ascii?q?MVGW6H5aGgxPvo+gv7WNAoxrU/wKzQsZSCe4IarbX/BRNJl5ozrR24STW+mN?=
+ =?us-ascii?q?1KmHAGKAoaPhOMlM7vJ02LPOC+BvD5gUzJ8n8jzqLDN7zlWsWLL3PY1rH9Yf?=
+ =?us-ascii?q?Nh+whXz0wx1Zhe/84GUOhZZqioAAmq6ZqBX0JcUUT8wv67Wo8kjsVEAjjJWf?=
+ =?us-ascii?q?LfafKM+V6QurB1erHKPtRP/m2gbaZ4r//20S1jwAdbJ/Lzm8BKLi7mVuJvJ0?=
+ =?us-ascii?q?HTOCC+uNoKHGYUswZ7d9TE1gTYAwZafG36H6434zh+E5qjVd2FS4upxrqdwG?=
+ =?us-ascii?q?GwGdtUfjIOBleJGHbuP4KKPpVEIDLXLMkkiSQcfaOlDYk9yVSypEnxzPxlNq?=
+ =?us-ascii?q?LY9zYZupTqyNVur7eKzVdormYyVJnbjTDFRnoR/CtAXzIs2aFjvUFxgkyO16?=
+ =?us-ascii?q?R1mb0QFNBe4e9IThZvMJfdy+JgDNWhEgnFf9qPVBOnWoD8WGl3FIlrhYRTJR?=
+ =?us-ascii?q?gsSLDAxljZ0iGnAqEYjemHD5k9t7nE2iCrYct2zzDAyLVnhF5gQNMcUA/uzq?=
+ =?us-ascii?q?N56QXXAJbE1kuDkKP/P7RZ0iiI73+b5XGK+kdETEtsQePOWjYdfgGFyLaxrl?=
+ =?us-ascii?q?OHVLKoBbk9Z0FRjMCEb7BScvXyiRNAWOumJMSYaGX3mX/6VnPqjvucKYHtfW?=
+ =?us-ascii?q?saxiDUDkMJxhsS8XixLhQkByy98CrOSSZjHlX1bwbw4PFz/TmlG1QswVjAPC?=
+ =?us-ascii?q?gDn/KlvwQYjvuGR7YP06IY7W0//i5sEg/11oDTAtuE/1Enfa5HJ9Uh/BJbxS?=
+ =?us-ascii?q?TSsEp/JvnCZ+hr1FsXcgAv4wXv3A4xDJlc1NQ66ngtighqYavK1VpAc2vFm5?=
+ =?us-ascii?q?H7IfvRNnW34ADpYKmQ2Em7sp7e8/UK4fU88wulvQqyUEw+7zB7w59e1D2e/t?=
+ =?us-ascii?q?3DXg8bUJapDQA2/AM8oa3GJzUtoYjTk390VMv8+jaQ3tsoALN1jBerZJFZLL?=
+ =?us-ascii?q?/BCB+0GMpcBdDmKfR2yQLwNlReZ7oUr/NyZpL7EpnOkK+zYLQ6xWrg1z8dpt?=
+ =?us-ascii?q?sglBvdqWJ9UrKahc9dhavDhE3cCnGi0R+gqpylw9kcI2tJRCzklG66WsZHb6?=
+ =?us-ascii?q?l2N99aW1frGNW+w5BFv7CoXndZ8FC5AFZfh52yfVyUc0C4wR0W3kNRo2T1wH?=
+ =?us-ascii?q?LknQwxqCkgq++k5AKL2/7rLUVVIWoNQnV+yEv8Z4OzydICDhGl?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAADIzABcl0Uj6NJjGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUgQBAQEBCwGCAIE4IQMHCCeMcI02l0YUgWaEeQI1gx4BBTA?=
+ =?us-ascii?q?IDQEDAQECAQEBARQBAQEBAQYYBliFPQZ5ECAMJQ9IBxKDIYIBqQmJBIEsh2y?=
+ =?us-ascii?q?BZ4RaiGkEhXAiAocdB4gTZpAJCZE2GIFaj0KIeYEDkCIBgguELII1jjUwAQE?=
+ =?us-ascii?q?BMAGMOoJNAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 30 Nov 2018 14:43:41 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wAU5hYA7001710;
+	Fri, 30 Nov 2018 14:43:34 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wAU5hXNf028469;
+	Fri, 30 Nov 2018 14:43:33 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id QAA27248;
+	 Fri, 30 Nov 2018 14:41:21 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fKES001862; Fri, 30 Nov 2018 14:41:20 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wAU5fK7a001840; Fri, 30 Nov 2018 14:41:20 +0900
+Message-Id: <201811300541.wAU5fK7a001840@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id wAU5fJ5V014150 ; Fri, 30 Nov 2018 14:41:19 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 10/10] docs: refactor primary commands section
+Date: Fri, 30 Nov 2018 14:41:18 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181130054118.24543-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Misc update to adjust the length of underline of section header.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index e49f990..a156966 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -2,7 +2,7 @@
+     Copyright(c) 2010-2014 Intel Corporation
+ 
+ Primary Commands
+-====================
++================
+ 
+ Primary process is managed with ``pri`` command.
+ 
+-- 
+2.7.4
+
+
