@@ -1,0 +1,30 @@
+From 5ea4e45070e7a474bdadafa52955a7d4d1b03ba3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 6 Dec 2018 18:05:19 +0900
+Subject: [PATCH 5/6] docs: remove html static path
+
+To fix warning of no static files, remove nouse entry `_static` from
+`html_static_path`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/conf.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/conf.py b/docs/guides/conf.py
+index 7341663..c8d00b4 100644
+--- a/docs/guides/conf.py
++++ b/docs/guides/conf.py
+@@ -80,7 +80,8 @@ html_theme = 'sphinx_rtd_theme'
+ # Add any paths that contain custom static files (such as style sheets) here,
+ # relative to this directory. They are copied after the builtin static files,
+ # so a file named "default.css" will overwrite the builtin "default.css".
+-html_static_path = ['_static']
++#html_static_path = ['_static']
++html_static_path = []
+ 
+ # html_logo = 'images/logo/spp_logo2.svg'
+ 
+-- 
+2.7.4
+

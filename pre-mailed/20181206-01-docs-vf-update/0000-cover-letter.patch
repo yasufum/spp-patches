@@ -1,0 +1,39 @@
+From f00ecc9ba51b1f1b69fd26df8c12709921682a50 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 6 Dec 2018 21:48:32 +0900
+Subject: [PATCH 0/6] Update docs of spp_vf and spp_mirror
+
+Spp_vf and spp_mirror are updated to be configured from `spp-ctl` and
+`spp.py`. Some of command syntax is also changed. This series of update
+is to update docs for the changes. It is also including fixes errors and
+warnings of compilation of docs.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (6):
+  docs: fix warning for commands section
+  docs: revise spp_vf setup section
+  docs: revise usecase section of spp_vf
+  docs: add tags for sections of spp_vf
+  docs: remove html static path
+  docs: revise explanation of usecases of spp_vf
+
+ docs/guides/commands/index.rst            |   1 -
+ docs/guides/commands/secondary/index.rst  |   1 -
+ docs/guides/conf.py                       |   3 +-
+ docs/guides/overview.rst                  |   2 +
+ docs/guides/spp_vf/gsg/build.rst          | 387 -----------------------------
+ docs/guides/spp_vf/gsg/howto_use.rst      |   3 +
+ docs/guides/spp_vf/gsg/index.rst          |   2 +-
+ docs/guides/spp_vf/gsg/setup.rst          | 389 ++++++++++++++++++++++++++++++
+ docs/guides/spp_vf/overview.rst           |   2 +-
+ docs/guides/spp_vf/use_cases/usecase1.rst | 247 ++++++++++---------
+ docs/guides/spp_vf/use_cases/usecase2.rst | 142 +++++------
+ 11 files changed, 605 insertions(+), 574 deletions(-)
+ delete mode 100644 docs/guides/spp_vf/gsg/build.rst
+ create mode 100644 docs/guides/spp_vf/gsg/setup.rst
+
+-- 
+2.7.4
+

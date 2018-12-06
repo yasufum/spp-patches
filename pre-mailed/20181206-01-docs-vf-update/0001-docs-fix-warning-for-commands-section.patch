@@ -1,0 +1,40 @@
+From bab5ada16c033ca977ab230b4271a4ba0823db13 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 4 Dec 2018 10:24:48 +0900
+Subject: [PATCH 1/6] docs: fix warning for commands section
+
+Spp_vf commands are moved to under `Secondary Commands` section, but
+index is not updated for the change. This patch is to update the index.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/index.rst           | 1 -
+ docs/guides/commands/secondary/index.rst | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/docs/guides/commands/index.rst b/docs/guides/commands/index.rst
+index 04442a3..ce67f4b 100644
+--- a/docs/guides/commands/index.rst
++++ b/docs/guides/commands/index.rst
+@@ -13,6 +13,5 @@ controller.
+ 
+    primary
+    secondary/index
+-   spp_vf
+    common
+    experimental
+diff --git a/docs/guides/commands/secondary/index.rst b/docs/guides/commands/secondary/index.rst
+index 5c09d57..5544aea 100644
+--- a/docs/guides/commands/secondary/index.rst
++++ b/docs/guides/commands/secondary/index.rst
+@@ -6,7 +6,6 @@ Secondary Commands
+ 
+ .. toctree::
+    :maxdepth: 2
+-   :numbered:
+ 
+    spp_nfv
+    spp_vf
+-- 
+2.7.4
+

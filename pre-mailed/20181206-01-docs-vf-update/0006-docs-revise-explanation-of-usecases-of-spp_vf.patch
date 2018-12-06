@@ -1,0 +1,143 @@
+From f00ecc9ba51b1f1b69fd26df8c12709921682a50 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 6 Dec 2018 21:44:03 +0900
+Subject: [PATCH 6/6] docs: revise explanation of usecases of spp_vf
+
+Revise explanation of usecases of spp_vf to be more understandable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/gsg/setup.rst          |  2 ++
+ docs/guides/spp_vf/use_cases/usecase1.rst |  4 ++-
+ docs/guides/spp_vf/use_cases/usecase2.rst | 52 ++++++++++++++-----------------
+ 3 files changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+index 41c103a..9053519 100644
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ b/docs/guides/spp_vf/gsg/setup.rst
+@@ -162,6 +162,8 @@ PCI number is inspected
+     $ sudo $RTE_SDK/usertools/dpdk-devbind.py --bind=igb_uio PCI_NUM
+ 
+ 
++.. _spp_vf_gsg_virsh_setup:
++
+ virsh setup
+ -----------
+ 
+diff --git a/docs/guides/spp_vf/use_cases/usecase1.rst b/docs/guides/spp_vf/use_cases/usecase1.rst
+index c6cd9e1..0c1976d 100644
+--- a/docs/guides/spp_vf/use_cases/usecase1.rst
++++ b/docs/guides/spp_vf/use_cases/usecase1.rst
+@@ -224,11 +224,13 @@ of targetting VM..
+     spp > vf 1; classifier_table add mac 52:54:00:12:34:59 ring:5
+ 
+ 
++.. _spp_vf_use_cases_usecase1_setup_vm:
++
+ Setup for VMs
+ -------------
+ 
+ Launch VM1 and VM2 with virsh command.
+-Setup for virsh is described in :ref:`spp_vf_gsg_setup`.
++Setup for virsh is described in :ref:`spp_vf_gsg_virsh_setup`.
+ 
+ .. code-block:: console
+ 
+diff --git a/docs/guides/spp_vf/use_cases/usecase2.rst b/docs/guides/spp_vf/use_cases/usecase2.rst
+index 71a8fcb..c7f62e4 100644
+--- a/docs/guides/spp_vf/use_cases/usecase2.rst
++++ b/docs/guides/spp_vf/use_cases/usecase2.rst
+@@ -13,7 +13,7 @@ spp_mirror.  Traffic from host2 is forwarded to each VM inside host1 thorough
+ ``spp_vf``. ``spp_vf`` is required in usecase to forward traffic
+ from host NIC to each VM.
+ 
+-.. _figure_simple_mirroring:
++.. _figure_mirroring_from_vm:
+ 
+ .. figure:: ../../images/spp_vf/spp_mirror_usecase_overview.*
+    :width: 60%
+@@ -21,14 +21,25 @@ from host NIC to each VM.
+    Mirroring from a VM
+ 
+ 
+-Launch SPP Processes
+---------------------
++Network Configuration
++---------------------
+ 
+-Move to spp directory.
++Detailed configuration of :numref:`figure_mirroring_from_vm` is described in
++:numref:`figure_spp_mirror_usecase_nwconfig`.
++In this senario, incoming packets though ``ring1`` are mirrored.
++In ``spp_mirror`` process, worker thread ``mirror1`` copies incoming packets and
++sends to orignal destination ``VM1`` and new one ``VM3``.
+ 
+-.. code-block:: console
++.. _figure_spp_mirror_usecase_nwconfig:
+ 
+-   $cd /path/to/spp
++.. figure:: ../../images/spp_vf/spp_mirror_usecase_nwconfig.*
++     :width: 80%
++
++     Network configuration of mirroring
++
++
++Setup SPP and VMs
++-----------------
+ 
+ Launch ``spp-ctl`` before launching SPP primary and secondary processes.
+ You also need to launch ``spp.py``  if you use ``spp_vf`` from CLI.
+@@ -38,6 +49,8 @@ doing explicitly in this example to be more understandable.
+ 
+ .. code-block:: console
+ 
++    $cd /path/to/spp
++
+     # Launch spp-ctl and spp.py
+     $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
+     $ python ./src/spp.py -b 127.0.0.1
+@@ -57,8 +70,11 @@ with ``-n 16`` for giving enough number of rings.
+        -p 0x03 -n 16 -s 127.0.0.1:5555
+ 
+ 
+-Then, create VM1 ``spp_vf`` and launch ``spp_vf`` with core list
+-``-l 0,2-14`` in this usecase.
++Launch spp_vf
++~~~~~~~~~~~~~
++
++Launch ``VM1`` as described in :ref:`spp_vf_use_cases_usecase1_setup_vm`,
++and launch ``spp_vf`` with core list ``-l 0,2-14`` in this usecase.
+ 
+ .. code-block:: console
+ 
+@@ -126,26 +142,6 @@ You send packets from the remote host1 and confirm packets are received.
+     $ ping 192.168.140.21
+ 
+ 
+-Mirroring with spp_mirror
+--------------------------
+-
+-The second step is starting with creating VM running with spp_mirror.
+-
+-Network Configuration
+-~~~~~~~~~~~~~~~~~~~~~
+-
+-Incoming packets from NIC are forwarded to VM1 through spp_vf.
+-
+-Detailed configuration of :numref:`figure_simple_mirroring` is
+-described below. There are two NICs on the host to send and receive packets.
+-During that path, mirror component mirror1 replicates packet to merger3.
+-
+-.. _figure_spp_mirror_usecase_nwconfig:
+-
+-  .. figure:: ../../images/spp_vf/spp_mirror_usecase_nwconfig.*
+-     :width: 80%
+-
+-     Network configuration of mirroring
+ 
+ Launch spp_mirror
+ ~~~~~~~~~~~~~~~~~
+-- 
+2.7.4
+

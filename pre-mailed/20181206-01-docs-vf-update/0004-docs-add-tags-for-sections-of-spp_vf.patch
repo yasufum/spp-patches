@@ -1,0 +1,57 @@
+From 67be47a6407f96cdfc0e0d38fbe4f72fb2ee247f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 6 Dec 2018 18:03:22 +0900
+Subject: [PATCH 4/6] docs: add tags for sections of spp_vf
+
+Add tags for sections of spp_vf can bre referred.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview.rst             | 2 ++
+ docs/guides/spp_vf/gsg/howto_use.rst | 3 +++
+ docs/guides/spp_vf/overview.rst      | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index 386ac49..1140cd6 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -1,6 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
+ 
++.. _spp_overview:
++
+ Soft Patch Panel
+ ==================
+ 
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index 52a9c54..44bc77a 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -46,6 +46,9 @@ Then, spp primary can be launched like this.
+       -- \
+       -p 0x03 -n 9 -s 127.0.0.1:5555
+ 
++
++.. _spp_vf_gsg_howto_use_spp_vf:
++
+ spp_vf
+ ------
+ 
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index dd957d4..446beb0 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -54,7 +54,7 @@ by looking up destination MAC address in the packet.
+     Overview of spp_vf
+ 
+ 
+-SPP Mirror
++spp_mirror
+ ----------
+ 
+ ``spp_mirror`` is an implementation of
+-- 
+2.7.4
+
