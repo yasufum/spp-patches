@@ -1,0 +1,114 @@
+X-Account-Key: account3
+X-UIDL: 12922.zb5wc4NejOjKjUp9GVnytPs8C,4=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 6 Dec 2018 21:59:25 +0900 (JST)
+Received: from md-mta-nw010.ocn.ad.jp ([153.138.217.137])
+	by md-lpx-cb003 with LMTP id gJ0iEC0dCVw1SgAAjPdmzw
+	; Thu, 06 Dec 2018 21:59:25 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw010.ocn.ad.jp (Postfix) with ESMTP id 35E423C00BC34
+	for <geminoa@juno.ocn.ne.jp>; Thu,  6 Dec 2018 21:59:25 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 9ADC5D40297
+	for <geminoa@juno.ocn.ne.jp>; Thu,  6 Dec 2018 21:59:24 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id C44061B101;
+	Thu,  6 Dec 2018 13:59:21 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 0987B7CEB
+ for <spp@dpdk.org>; Thu,  6 Dec 2018 13:59:19 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wB6CxIol005589;
+ Thu, 6 Dec 2018 21:59:18 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id F1015720;
+ Thu,  6 Dec 2018 21:59:17 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id DC073271;
+ Thu,  6 Dec 2018 21:59:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu,  6 Dec 2018 21:56:58 +0900
+Message-Id: <1544101020-10039-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544101020-10039-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544101020-10039-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 4/6] docs: add tags for sections of spp_vf
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add tags for sections of spp_vf can bre referred.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview.rst             | 2 ++
+ docs/guides/spp_vf/gsg/howto_use.rst | 3 +++
+ docs/guides/spp_vf/overview.rst      | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+index 386ac49..1140cd6 100644
+--- a/docs/guides/overview.rst
++++ b/docs/guides/overview.rst
+@@ -1,6 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
+ 
++.. _spp_overview:
++
+ Soft Patch Panel
+ ==================
+ 
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index 52a9c54..44bc77a 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -46,6 +46,9 @@ Then, spp primary can be launched like this.
+       -- \
+       -p 0x03 -n 9 -s 127.0.0.1:5555
+ 
++
++.. _spp_vf_gsg_howto_use_spp_vf:
++
+ spp_vf
+ ------
+ 
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index dd957d4..446beb0 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -54,7 +54,7 @@ by looking up destination MAC address in the packet.
+     Overview of spp_vf
+ 
+ 
+-SPP Mirror
++spp_mirror
+ ----------
+ 
+ ``spp_mirror`` is an implementation of
+-- 
+2.7.4
+
+

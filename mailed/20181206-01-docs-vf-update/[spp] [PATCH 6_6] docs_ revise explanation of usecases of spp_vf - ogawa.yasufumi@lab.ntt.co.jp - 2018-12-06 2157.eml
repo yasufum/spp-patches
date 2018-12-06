@@ -1,0 +1,200 @@
+X-Account-Key: account3
+X-UIDL: 12923.iNtDdP+0hp7cUhcTH5qZXeci,qU=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb007.ocn.ad.jp (LHLO md-lpx-cb007) (153.138.210.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 6 Dec 2018 21:59:25 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb007 with LMTP id yGUcLi0dCVyFLwAAz4+SuQ
+	; Thu, 06 Dec 2018 21:59:25 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id B01213C00B819
+	for <geminoa@juno.ocn.ne.jp>; Thu,  6 Dec 2018 21:59:25 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 0F85DD40287
+	for <geminoa@juno.ocn.ne.jp>; Thu,  6 Dec 2018 21:59:25 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id CF4BE1B107;
+	Thu,  6 Dec 2018 13:59:21 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 10AA51B0F8
+ for <spp@dpdk.org>; Thu,  6 Dec 2018 13:59:19 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id wB6CxIWu005597;
+ Thu, 6 Dec 2018 21:59:18 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 10501165;
+ Thu,  6 Dec 2018 21:59:18 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id EEEFE16A;
+ Thu,  6 Dec 2018 21:59:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu,  6 Dec 2018 21:57:00 +0900
+Message-Id: <1544101020-10039-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544101020-10039-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544101020-10039-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 6/6] docs: revise explanation of usecases of spp_vf
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Revise explanation of usecases of spp_vf to be more understandable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/gsg/setup.rst          |  2 ++
+ docs/guides/spp_vf/use_cases/usecase1.rst |  4 ++-
+ docs/guides/spp_vf/use_cases/usecase2.rst | 52 ++++++++++++++-----------------
+ 3 files changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+index 41c103a..9053519 100644
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ b/docs/guides/spp_vf/gsg/setup.rst
+@@ -162,6 +162,8 @@ PCI number is inspected
+     $ sudo $RTE_SDK/usertools/dpdk-devbind.py --bind=igb_uio PCI_NUM
+ 
+ 
++.. _spp_vf_gsg_virsh_setup:
++
+ virsh setup
+ -----------
+ 
+diff --git a/docs/guides/spp_vf/use_cases/usecase1.rst b/docs/guides/spp_vf/use_cases/usecase1.rst
+index c6cd9e1..0c1976d 100644
+--- a/docs/guides/spp_vf/use_cases/usecase1.rst
++++ b/docs/guides/spp_vf/use_cases/usecase1.rst
+@@ -224,11 +224,13 @@ of targetting VM..
+     spp > vf 1; classifier_table add mac 52:54:00:12:34:59 ring:5
+ 
+ 
++.. _spp_vf_use_cases_usecase1_setup_vm:
++
+ Setup for VMs
+ -------------
+ 
+ Launch VM1 and VM2 with virsh command.
+-Setup for virsh is described in :ref:`spp_vf_gsg_setup`.
++Setup for virsh is described in :ref:`spp_vf_gsg_virsh_setup`.
+ 
+ .. code-block:: console
+ 
+diff --git a/docs/guides/spp_vf/use_cases/usecase2.rst b/docs/guides/spp_vf/use_cases/usecase2.rst
+index 71a8fcb..c7f62e4 100644
+--- a/docs/guides/spp_vf/use_cases/usecase2.rst
++++ b/docs/guides/spp_vf/use_cases/usecase2.rst
+@@ -13,7 +13,7 @@ spp_mirror.  Traffic from host2 is forwarded to each VM inside host1 thorough
+ ``spp_vf``. ``spp_vf`` is required in usecase to forward traffic
+ from host NIC to each VM.
+ 
+-.. _figure_simple_mirroring:
++.. _figure_mirroring_from_vm:
+ 
+ .. figure:: ../../images/spp_vf/spp_mirror_usecase_overview.*
+    :width: 60%
+@@ -21,14 +21,25 @@ from host NIC to each VM.
+    Mirroring from a VM
+ 
+ 
+-Launch SPP Processes
+---------------------
++Network Configuration
++---------------------
+ 
+-Move to spp directory.
++Detailed configuration of :numref:`figure_mirroring_from_vm` is described in
++:numref:`figure_spp_mirror_usecase_nwconfig`.
++In this senario, incoming packets though ``ring1`` are mirrored.
++In ``spp_mirror`` process, worker thread ``mirror1`` copies incoming packets and
++sends to orignal destination ``VM1`` and new one ``VM3``.
+ 
+-.. code-block:: console
++.. _figure_spp_mirror_usecase_nwconfig:
+ 
+-   $cd /path/to/spp
++.. figure:: ../../images/spp_vf/spp_mirror_usecase_nwconfig.*
++     :width: 80%
++
++     Network configuration of mirroring
++
++
++Setup SPP and VMs
++-----------------
+ 
+ Launch ``spp-ctl`` before launching SPP primary and secondary processes.
+ You also need to launch ``spp.py``  if you use ``spp_vf`` from CLI.
+@@ -38,6 +49,8 @@ doing explicitly in this example to be more understandable.
+ 
+ .. code-block:: console
+ 
++    $cd /path/to/spp
++
+     # Launch spp-ctl and spp.py
+     $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
+     $ python ./src/spp.py -b 127.0.0.1
+@@ -57,8 +70,11 @@ with ``-n 16`` for giving enough number of rings.
+        -p 0x03 -n 16 -s 127.0.0.1:5555
+ 
+ 
+-Then, create VM1 ``spp_vf`` and launch ``spp_vf`` with core list
+-``-l 0,2-14`` in this usecase.
++Launch spp_vf
++~~~~~~~~~~~~~
++
++Launch ``VM1`` as described in :ref:`spp_vf_use_cases_usecase1_setup_vm`,
++and launch ``spp_vf`` with core list ``-l 0,2-14`` in this usecase.
+ 
+ .. code-block:: console
+ 
+@@ -126,26 +142,6 @@ You send packets from the remote host1 and confirm packets are received.
+     $ ping 192.168.140.21
+ 
+ 
+-Mirroring with spp_mirror
+--------------------------
+-
+-The second step is starting with creating VM running with spp_mirror.
+-
+-Network Configuration
+-~~~~~~~~~~~~~~~~~~~~~
+-
+-Incoming packets from NIC are forwarded to VM1 through spp_vf.
+-
+-Detailed configuration of :numref:`figure_simple_mirroring` is
+-described below. There are two NICs on the host to send and receive packets.
+-During that path, mirror component mirror1 replicates packet to merger3.
+-
+-.. _figure_spp_mirror_usecase_nwconfig:
+-
+-  .. figure:: ../../images/spp_vf/spp_mirror_usecase_nwconfig.*
+-     :width: 80%
+-
+-     Network configuration of mirroring
+ 
+ Launch spp_mirror
+ ~~~~~~~~~~~~~~~~~
+-- 
+2.7.4
+
+
