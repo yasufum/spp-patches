@@ -1,0 +1,52 @@
+From b2d290370a7a90fe25a8867b06fd89819aa22a55 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 12 Dec 2018 04:15:41 +0900
+Subject: [PATCH 0/5] update SPP CLI
+
+Hi,
+
+This series of patches is for three updates for SPP CLI. It also include
+other misc upates for refactoring.
+
+1. Change sec command to nfv
+
+As suggested in [1], there are several commands in SPP CLI for managing
+secondary processes, `sec`, `vf` and `mirror`, and `sec` should be
+changed to `nfv`.
+
+[1] https://mails.dpdk.org/archives/spp/2018-November/000990.html
+
+2. Add checking for add and del commands
+
+To avoid invalid operations for ports, add checking for the operations.
+If you add a port which is already registered actually, it might cause
+a problem.
+
+3. Update bye command to support spp_vf and spp_mirror
+
+Bye command is available ony for spp_nfv because spp_vf and spp_mirror
+does not provide `exit` command for graceful termination. This update is
+to add exiting spp_vf and spp_mirror with `bye` command for graceful
+shutdown.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (5):
+  controller: change sec command to nfv
+  controller: change to exclude used port from del
+  controller: add checking for add and del cmds
+  controller: refactor SppNfv class
+  controller: update SppBye class
+
+ src/controller/commands/bye.py |  27 +--
+ src/controller/commands/nfv.py | 435 +++++++++++++++++++++++++++++++++++++++++
+ src/controller/commands/sec.py | 202 -------------------
+ src/controller/shell.py        | 153 ++++++++++-----
+ 4 files changed, 551 insertions(+), 266 deletions(-)
+ create mode 100644 src/controller/commands/nfv.py
+ delete mode 100644 src/controller/commands/sec.py
+
+-- 
+2.7.4
+

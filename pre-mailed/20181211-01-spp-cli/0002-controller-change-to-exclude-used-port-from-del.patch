@@ -1,0 +1,59 @@
+From 45604674b733467195250ceab17335ce9fb28f9d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 9 Dec 2018 04:57:05 +0900
+Subject: [PATCH 2/5] controller: change to exclude used port from del
+
+In completion of `del`, exclude ports already used.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/nfv.py | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index 9af4449..7a8d073 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -248,19 +248,33 @@ class SppNfv(object):
+             return res
+ 
+     def _compl_del(self, sub_tokens):
++        # Del command consists of two tokens max, for instance,
++        # `nfv 1; del ring:1`.
+         if len(sub_tokens) < 3:
+             res = []
+ 
+             if self.use_cache is False:
+                 self.ports = self.get_registered_ports()
++                self.patches = self.get_registered_patches()
+ 
+-            for kw in self.ports:
+-                if kw.startswith(sub_tokens[1]):
+-                    if ':' in sub_tokens[1]:  # exp, 'ring:' or 'ring:0'
+-                        res.append(kw.split(':')[1])
+-                    else:
+-                        res.append(kw)
++            # Used ports should not be included in the candidate of del.
++            used_ports = []
++            for pt in self.ports:
++                for ppt in self.patches:
++                    if ((pt in ppt['src']) or (pt in ppt['dst'])):
++                            used_ports.append(pt)
++            used_ports = list(set(used_ports))
+ 
++            # Remove ports already used from candidate.
++            for kw in self.ports:
++                if not (kw in used_ports):
++                    if kw.startswith(sub_tokens[1]):
++                        if ':' in sub_tokens[1]:  # exp, 'ring:' or 'ring:0'
++                            res.append(kw.split(':')[1])
++                        else:
++                            res.append(kw)
++
++            # Physical port cannot be removed.
+             for p in res:
+                 if p.startswith('phy:'):
+                     res.remove(p)
+-- 
+2.7.4
+
