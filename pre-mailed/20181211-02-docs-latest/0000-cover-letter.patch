@@ -1,0 +1,52 @@
+From c4f9abc7d0fc2e474564dc06ca5852b478af1193 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 12 Dec 2018 04:15:51 +0900
+Subject: [PATCH 0/7] Revise documentation for the latest release
+
+Hi,
+
+There are several updates from previous v18.05, for instance,
+introducing spp-ctl and spp_mirror, re-designing SPP CLI and moving
+spp_vf.py or so. However, some of descriptions and examples in
+documation are still remained old. This series of patches is to update
+documentation and recipe files of examples to the latest release.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (7):
+  docs: update Getting Started section
+  docs: update How to Use section
+  docs: update Use Cases section
+  docs: update spp_nfv commands
+  docs: update Getting Started section of sppc
+  docs: update Use Cases section of sppc
+  recipes: update recipe files
+
+ docs/guides/commands/secondary/spp_nfv.rst |  36 ++--
+ docs/guides/setup/getting_started.rst      |  10 +-
+ docs/guides/setup/howto_use.rst            |  12 +-
+ docs/guides/setup/use_cases.rst            | 166 ++++++++--------
+ docs/guides/tools/sppc/getting_started.rst |  51 ++---
+ docs/guides/tools/sppc/usecases.rst        | 294 ++++++++++++++++-------------
+ recipes/sppc/samples/l2fwd.rcp             |  22 +++
+ recipes/sppc/samples/l2fwd.rcps            |  22 ---
+ recipes/sppc/samples/lb_pg.rcp             |  31 +++
+ recipes/sppc/samples/load_balancer.rcp     |  30 +++
+ recipes/sppc/samples/load_balancer.rcps    |  30 ---
+ recipes/sppc/samples/pg_l2fwd.rcp          |  17 ++
+ recipes/sppc/samples/pg_l2fwd_less.rcp     |  17 ++
+ recipes/sppc/samples/test_ring.rcp         |  16 ++
+ 14 files changed, 437 insertions(+), 317 deletions(-)
+ create mode 100644 recipes/sppc/samples/l2fwd.rcp
+ delete mode 100644 recipes/sppc/samples/l2fwd.rcps
+ create mode 100644 recipes/sppc/samples/lb_pg.rcp
+ create mode 100644 recipes/sppc/samples/load_balancer.rcp
+ delete mode 100644 recipes/sppc/samples/load_balancer.rcps
+ create mode 100644 recipes/sppc/samples/pg_l2fwd.rcp
+ create mode 100644 recipes/sppc/samples/pg_l2fwd_less.rcp
+ create mode 100644 recipes/sppc/samples/test_ring.rcp
+
+-- 
+2.7.4
+

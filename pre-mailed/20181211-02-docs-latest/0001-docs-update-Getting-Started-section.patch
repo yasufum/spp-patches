@@ -1,0 +1,48 @@
+From 6a4c5b067903278902f290e248b7e3481268e612 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 11 Dec 2018 13:42:50 +0900
+Subject: [PATCH 1/7] docs: update Getting Started section
+
+Update the description of supported versions of Python to explain that
+Python2 is going to be not supported in future release.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index ca639db..896090d 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -206,10 +206,13 @@ Python 2 or 3 ?
+ ~~~~~~~~~~~~~~~
+ 
+ You need to install Python for using usertools of DPDK or SPP controller.
+-DPDK and SPP support both of Python2 and 3.
++DPDK supports both of Python2 and 3.
+ Howevrer, Python2 will not be maintained after 2020 and SPP is going to update
+ only supporting Python3.
+ 
++In SPP, it supports both of Python2 and 3 without spp-ctl currently, but is
++going to support only Python3 before the end of 2019.
++
+ 
+ Binding Network Ports to DPDK
+ -----------------------------
+@@ -380,8 +383,11 @@ Compiled PDF file is created as ``docs/guides/_build/html/SoftPatchPanel.pdf``.
+ 
+     $ make doc-pdf
+ 
+-You can also compile both of HTML and PDF documentations with ``doc-all``.
++You can also compile both of HTML and PDF documentations with ``doc`` or
++``doc-all``.
+ 
+ .. code-block:: console
+ 
++    $ make doc
++    # or
+     $ make doc-all
+-- 
+2.7.4
+
