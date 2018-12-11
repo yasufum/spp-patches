@@ -1,0 +1,147 @@
+X-Account-Key: account3
+X-UIDL: 12981.JS17gfzgMD0YAzwbQAFC7OAL2XA=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw006.ocn.ad.jp (LHLO md-lpx-nw006) (153.138.217.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 11 Dec 2018 15:44:26 +0900 (JST)
+Received: from md-mta-nw010.ocn.ad.jp ([153.138.217.137])
+	by md-lpx-nw006 with LMTP id wIoGHcpcD1yrdQAA0AKT/w
+	; Tue, 11 Dec 2018 15:44:26 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-nw010.ocn.ad.jp (Postfix) with ESMTP id 6E3823C003803
+	for <geminoa@juno.ocn.ne.jp>; Tue, 11 Dec 2018 15:44:26 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id A097C9C02BA
+	for <geminoa@juno.ocn.ne.jp>; Tue, 11 Dec 2018 15:44:25 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7AF652C52;
+	Tue, 11 Dec 2018 07:44:23 +0100 (CET)
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
+ [66.111.4.25]) by dpdk.org (Postfix) with ESMTP id DAC4D2C2B
+ for <spp@dpdk.org>; Tue, 11 Dec 2018 07:44:21 +0100 (CET)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 740A4217DD;
+ Tue, 11 Dec 2018 01:44:21 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Tue, 11 Dec 2018 01:44:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=monjalon.net; h=
+ from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=mesmtp; bh=ack3qN3Nh3rmqpwRo4BVbtk
+ IzdRYHSbvzYFEIic9BEM=; b=BWbU6QqwEZ07bL4xBMvt9HyESBKF6zeyEb6M8wN
+ KcgLFt135Ib+uZfrBKj3y20JNc6KyLpKHdErxy2Vpy96UhyfcIjP0lCMwEIv1LRi
+ kGV92QIWvHQ/LvmOuJLe4iZq+6jIs6jh+rgzxzXcFHHC0Y9/dmkksyLleylL83pd
+ /180=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=ack3qN3Nh3rmqpwRo
+ 4BVbtkIzdRYHSbvzYFEIic9BEM=; b=SoHe4YABbAw2pwtDlgxrq+12pGLnoBK+/
+ 7YBQ5oyLdGwUe8JHfau3XeQm8uBR9PZ0ETkggBXsXIGnNfaUKHePG8LUHvq329Ix
+ hLCx9lfQFvkdDrUiGvJpb+RhQ6iyllrfGekw5P4vcqHdsGB8VyO/M39bKZnK6lE6
+ D6/Re4lA4dhj5ZhWC0pPPFvf8Mc1c/E82O3H3GMD7sf2O62m9ttSCEq6kyJqdEXq
+ X+B56GcZq+PgaFVXVtBgCUwq4yYRCYXrauT6tsFbYJD/r6iPwUytJcDzM3/h/Cay
+ sU5ktALciZ+wzxCQNXCfqvNVz5RbZaPjE1ieEHSlzYZ1RZR6mztVA==
+X-ME-Sender: <xms:xVwPXE4aoIa29tJCRfGOTehUnW56sWGxhBLkWUS8_SkJnCCMMFHrsQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedtkedrudegiedgleelucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfquhhtnecuuegrihhlohhuthemucef
+ tddtnecunecujfgurhephffvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefvhh
+ homhgrshcuofhonhhjrghlohhnuceothhhohhmrghssehmohhnjhgrlhhonhdrnhgvtheq
+ necukfhppeejjedrudefgedrvddtfedrudekgeenucfrrghrrghmpehmrghilhhfrhhomh
+ epthhhohhmrghssehmohhnjhgrlhhonhdrnhgvthenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:xVwPXHPNWHsxjIu2lNkYTsHaqhAERSQq6YSYfa2pjQlb4YzFzIEorQ>
+ <xmx:xVwPXDfoLy9gIqI2tj0OXL3O5_TnEsKJVg_LNvzFbRZQAWQ0bCerFQ>
+ <xmx:xVwPXO7X05s53i47mqqSSeXWfDX7ta_uaRRFbxN3wEiK46Ar3n0leQ>
+ <xmx:xVwPXNvW82UpWDnobo1S2pcTOycbxEXWYpFC-Y8Rx6ClrFIzWahdJQ>
+ <xmx:xVwPXCx3P7_9Vodu1eMN6wWLvB3ceZRwexDIcMdn9LlogHPTFbBUBg>
+ <xmx:xVwPXMWo_fw9qbycr2rHlzUMziS_FFpFk0nc0DPZtZFfiTEzclooDA>
+Received: from xps.monjalon.net (184.203.134.77.rev.sfr.net [77.134.203.184])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 489ACE446A
+ for <spp@dpdk.org>; Tue, 11 Dec 2018 01:44:20 -0500 (EST)
+From: Thomas Monjalon <thomas@monjalon.net>
+To: spp@dpdk.org
+Date: Tue, 11 Dec 2018 07:44:02 +0100
+Message-Id: <20181211064402.15983-1-thomas@monjalon.net>
+X-Mailer: git-send-email 2.19.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [spp] [PATCH] docs: fix version in guides
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+When building HTML guides, the type of the version string was wrong:
+
+WARNING: The config value `version' has type `bytes', defaults to `str'.
+WARNING: The config value `release' has type `bytes', defaults to `str'.
+[...]
+Exception occurred:
+  File "/usr/lib/python3.7/site-packages/sphinx/builders/html.py", line 479, in prepare_writing
+    release = return_codes_re.sub('', self.config.release),
+TypeError: cannot use a string pattern on a bytes-like object
+
+The version number is also updated to match the latest tag.
+
+The option --no-print-directory is added to make showversion command,
+so only the version number is printed in the doc.
+
+Signed-off-by: Thomas Monjalon <thomas@monjalon.net>
+---
+ GNUmakefile         | 5 ++---
+ docs/guides/conf.py | 3 ++-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 206a4c6..8984335 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.05.1
++VERSION := 18.08
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+@@ -16,8 +16,7 @@ endif
+ 
+ .PHONY: showversion
+ showversion:
+-	@set -- ;\
+-		printf $(VERSION);\
++	@echo $(VERSION)
+ 
+ # Compile RST documents
+ DOC_ROOT = docs/guides
+diff --git a/docs/guides/conf.py b/docs/guides/conf.py
+index c8d00b4..f7f0655 100644
+--- a/docs/guides/conf.py
++++ b/docs/guides/conf.py
+@@ -40,7 +40,8 @@ author = ''
+ # |version| and |release|, also used in various other places throughout the
+ # built documents.
+ 
+-version = subprocess.check_output(['make', '-sRrC', '../../', 'showversion'])
++version = subprocess.check_output(['make', '-C', '../../',
++    '--no-print-directory', 'showversion']).decode('utf-8').rstrip()
+ 
+ # The full version, including alpha/beta/rc tags.
+ release = version
+-- 
+2.19.0
+
+
