@@ -1,0 +1,81 @@
+From - Fri Dec 14 08:04:15 2018
+X-Account-Key: account1
+X-UIDL: 00008c4a56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 321E24003A5
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 14 Dec 2018 08:06:19 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 306A423BAC4; Fri, 14 Dec 2018 08:06:19 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 2FDD923BABB
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 14 Dec 2018 08:06:19 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 1673063842C;
+	Fri, 14 Dec 2018 08:06:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 08AC1638287;
+	Fri, 14 Dec 2018 08:06:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2 8/8] docs: revise how to use section of spp_vf
+Date: Fri, 14 Dec 2018 08:04:03 +0900
+Message-Id: <1544742243-32554-9-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544742243-32554-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544580212-9309-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1544742243-32554-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update launching SPP Controller still remained old.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/gsg/howto_use.rst | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index 44bc77a..750de13 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -9,11 +9,23 @@ How to Use
+ SPP Controller
+ --------------
+ 
+-First, run SPP Controller with port numbers for spp primary and secondary.
++Go to the SPP's directory first.
+ 
+ .. code-block:: console
+ 
+-    $ python ./src/spp_vf.py -p 5555 -s 6666
++    $ cd /path/to/spp
++
++Launch ``spp-ctl`` before launching SPP primary and secondary processes.
++You also need to launch ``spp.py``  if you use ``spp_vf`` from CLI.
++``-b`` option is for binding IP address to communicate other SPP processes,
++but no need to give it explicitly if ``127.0.0.1`` or ``localhost`` although
++doing explicitly in this example to be more understandable.
++
++.. code-block:: console
++
++    # Launch spp-ctl and spp.py
++    $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
++    $ python ./src/spp.py -b 127.0.0.1
+ 
+ 
+ SPP Primary
+-- 
+2.7.4
+
+
+

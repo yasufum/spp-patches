@@ -1,0 +1,90 @@
+From - Wed Dec 12 11:03:39 2018
+X-Account-Key: account1
+X-UIDL: 00008bb956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 573DD400A9A
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 12 Dec 2018 11:05:46 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 556AC7F2AD; Wed, 12 Dec 2018 11:05:46 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 53EAF7F099
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 12 Dec 2018 11:05:46 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 3E2DE173;
+	Wed, 12 Dec 2018 11:05:46 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 2EDD610E;
+	Wed, 12 Dec 2018 11:05:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/7] docs: update How to Use section
+Date: Wed, 12 Dec 2018 11:03:27 +0900
+Message-Id: <1544580212-9309-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544580212-9309-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544580212-9309-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update descriptions and examples to the latest release.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/howto_use.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/docs/guides/setup/howto_use.rst b/docs/guides/setup/howto_use.rst
+index 5e96919..1f511dd 100644
+--- a/docs/guides/setup/howto_use.rst
++++ b/docs/guides/setup/howto_use.rst
+@@ -41,11 +41,11 @@ events such as receiving a request or terminating a process.
+     $ cd /path/to/spp
+     $ python3 src/spp-ctl/spp-ctl
+ 
+-Notice that It is implemented in ``python3`` and cannot launch
++Notice that ``spp-ctl`` is implemented in ``python3`` and cannot launch
+ with ``python`` or ``python2``.
+ 
+-It has a option ``-b`` for binding address to be accessed from other than
+-``127.0.0.1`` or ``localhost``.
++It has a option ``-b`` for binding address explicitly to be accessed
++from other than default, ``127.0.0.1`` or ``localhost``.
+ 
+ .. code-block:: console
+ 
+@@ -164,7 +164,7 @@ physical ports.
+         --socket-mem 512,512 \
+         --huge-dir=/dev/hugepages \
+         --vdev eth_vhost1,iface=/tmp/sock1  # used as 1st phy port
+-        --vdev eth_vhost2,iface=/tmp/sock2  # used as 2nd
++        --vdev eth_vhost2,iface=/tmp/sock2  # used as 2nd phy port
+         --proc-type=primary \
+         -- \
+         -p 0x03 \
+@@ -243,9 +243,9 @@ Run ``add`` command with resource UID ``vhost:0`` to create socket file.
+ 
+ .. code-block:: console
+ 
+-    spp > sec 1;add vhost:0
++    spp > nfv 1; add vhost:0
+ 
+-In this example, create socket file with index 0 from secondary of ID 1.
++In this example, create socket file with index 0 from ``spp_nfv`` of ID 1.
+ Socket file is created as ``/tmp/sock0``.
+ It is used as a qemu option to add vhost interface.
+ 
+-- 
+2.7.4
+
+
+

@@ -1,0 +1,84 @@
+From - Fri Dec 14 08:04:13 2018
+X-Account-Key: account1
+X-UIDL: 00008c4356a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id DD10F4003A5
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 14 Dec 2018 08:06:18 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id DB02A7F2CF; Fri, 14 Dec 2018 08:06:18 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id D9D867F044
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 14 Dec 2018 08:06:18 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id C9CDC638654;
+	Fri, 14 Dec 2018 08:06:18 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id BBEA263842C;
+	Fri, 14 Dec 2018 08:06:18 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2 1/8] docs: update Getting Started section
+Date: Fri, 14 Dec 2018 08:03:56 +0900
+Message-Id: <1544742243-32554-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544742243-32554-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544580212-9309-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1544742243-32554-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update the description of supported versions of Python to explain that
+Python2 is going to be not supported in future release.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index ca639db..896090d 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -206,10 +206,13 @@ Python 2 or 3 ?
+ ~~~~~~~~~~~~~~~
+ 
+ You need to install Python for using usertools of DPDK or SPP controller.
+-DPDK and SPP support both of Python2 and 3.
++DPDK supports both of Python2 and 3.
+ Howevrer, Python2 will not be maintained after 2020 and SPP is going to update
+ only supporting Python3.
+ 
++In SPP, it supports both of Python2 and 3 without spp-ctl currently, but is
++going to support only Python3 before the end of 2019.
++
+ 
+ Binding Network Ports to DPDK
+ -----------------------------
+@@ -380,8 +383,11 @@ Compiled PDF file is created as ``docs/guides/_build/html/SoftPatchPanel.pdf``.
+ 
+     $ make doc-pdf
+ 
+-You can also compile both of HTML and PDF documentations with ``doc-all``.
++You can also compile both of HTML and PDF documentations with ``doc`` or
++``doc-all``.
+ 
+ .. code-block:: console
+ 
++    $ make doc
++    # or
+     $ make doc-all
+-- 
+2.7.4
+
+
+

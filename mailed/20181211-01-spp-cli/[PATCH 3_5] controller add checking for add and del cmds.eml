@@ -1,0 +1,166 @@
+From - Wed Dec 12 11:03:37 2018
+X-Account-Key: account1
+X-UIDL: 00008bb556a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id D36F7400A8A
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 12 Dec 2018 11:05:29 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id C3E3A23BAFD; Wed, 12 Dec 2018 11:05:29 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id BAC4123BAD6
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 12 Dec 2018 11:05:29 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 95E4E10B;
+	Wed, 12 Dec 2018 11:05:29 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 77AB7E3;
+	Wed, 12 Dec 2018 11:05:29 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/5] controller: add checking for add and del cmds
+Date: Wed, 12 Dec 2018 11:03:13 +0900
+Message-Id: <1544580195-9242-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1544580195-9242-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1544580195-9242-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To check invalid port, add checking for `add` and `del` commands.
+`add` should not accept if assigned port is already added, and `patch`
+should not accept if assigned is patched.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/nfv.py | 88 +++++++++++++++++++++++++-----------------
+ 1 file changed, 53 insertions(+), 35 deletions(-)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index 7a8d073..646cdc0 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -44,38 +44,57 @@ class SppNfv(object):
+                     print('Error: unknown response.')
+ 
+         elif cmd == 'add':
+-            if self.use_cache is True:
+-                self.ports.append(params[0])
++            if self.use_cache is False:
++                self.ports = self.get_registered_ports()
+ 
+-            req_params = {'action': 'add', 'port': params[0]}
++            if params[0] in self.ports:
++                print("'%s' is already added." % params[0])
++            else:
++                if self.use_cache is True:
++                    self.ports.append(params[0])
+ 
+-            res = self.spp_ctl_cli.put('nfvs/%d/ports' %
+-                                       self.sec_id, req_params)
+-            if res is not None:
+-                error_codes = self.spp_ctl_cli.rest_common_error_codes
+-                if res.status_code == 204:
+-                    print('Add %s.' % params[0])
+-                elif res.status_code in error_codes:
+-                    pass
+-                else:
+-                    print('Error: unknown response.')
++                req_params = {'action': 'add', 'port': params[0]}
++
++                res = self.spp_ctl_cli.put('nfvs/%d/ports' %
++                                           self.sec_id, req_params)
++                if res is not None:
++                    error_codes = self.spp_ctl_cli.rest_common_error_codes
++                    if res.status_code == 204:
++                        print('Add %s.' % params[0])
++                    elif res.status_code in error_codes:
++                        pass
++                    else:
++                        print('Error: unknown response.')
+ 
+         elif cmd == 'del':
+-            if self.use_cache is True:
+-                if params[0] in self.ports:
+-                    self.ports.remove(params[0])
++            if self.use_cache is False:
++                self.patches = self.get_registered_patches()
+ 
+-            req_params = {'action': 'del', 'port': params[0]}
+-            res = self.spp_ctl_cli.put('nfvs/%d/ports' %
+-                                       self.sec_id, req_params)
+-            if res is not None:
+-                error_codes = self.spp_ctl_cli.rest_common_error_codes
+-                if res.status_code == 204:
+-                    print('Delete %s.' % params[0])
+-                elif res.status_code in error_codes:
+-                    pass
+-                else:
+-                    print('Error: unknown response.')
++            # Patched ports should not be deleted.
++            patched_ports = []
++            for pport in self.patches:
++                patched_ports.append(pport['src'])
++                patched_ports.append(pport['dst'])
++            patched_ports = list(set(patched_ports))
++
++            if params[0] in patched_ports:
++                print("Cannot delete patched port '%s'." % params[0])
++            else:
++                if self.use_cache is True:
++                    if params[0] in self.ports:
++                        self.ports.remove(params[0])
++
++                req_params = {'action': 'del', 'port': params[0]}
++                res = self.spp_ctl_cli.put('nfvs/%d/ports' %
++                                           self.sec_id, req_params)
++                if res is not None:
++                    error_codes = self.spp_ctl_cli.rest_common_error_codes
++                    if res.status_code == 204:
++                        print('Delete %s.' % params[0])
++                    elif res.status_code in error_codes:
++                        pass
++                    else:
++                        print('Error: unknown response.')
+ 
+         elif cmd == 'forward' or cmd == 'stop':
+             if cmd == 'forward':
+@@ -257,17 +276,16 @@ class SppNfv(object):
+                 self.ports = self.get_registered_ports()
+                 self.patches = self.get_registered_patches()
+ 
+-            # Used ports should not be included in the candidate of del.
+-            used_ports = []
+-            for pt in self.ports:
+-                for ppt in self.patches:
+-                    if ((pt in ppt['src']) or (pt in ppt['dst'])):
+-                            used_ports.append(pt)
+-            used_ports = list(set(used_ports))
++            # Patched ports should not be included in the candidate of del.
++            patched_ports = []
++            for pport in self.patches:
++                patched_ports.append(pport['src'])
++                patched_ports.append(pport['dst'])
++            patched_ports = list(set(patched_ports))
+ 
+             # Remove ports already used from candidate.
+             for kw in self.ports:
+-                if not (kw in used_ports):
++                if not (kw in patched_ports):
+                     if kw.startswith(sub_tokens[1]):
+                         if ':' in sub_tokens[1]:  # exp, 'ring:' or 'ring:0'
+                             res.append(kw.split(':')[1])
+-- 
+2.7.4
+
+
+
