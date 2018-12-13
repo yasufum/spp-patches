@@ -1,0 +1,263 @@
+From c4f9abc7d0fc2e474564dc06ca5852b478af1193 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 11 Dec 2018 20:41:31 +0900
+Subject: [PATCH v2 7/8] recipes: update recipe files
+
+Update recipe files to the latest release.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ recipes/sppc/samples/l2fwd.rcp          | 22 ++++++++++++++++++++++
+ recipes/sppc/samples/l2fwd.rcps         | 22 ----------------------
+ recipes/sppc/samples/lb_pg.rcp          | 31 +++++++++++++++++++++++++++++++
+ recipes/sppc/samples/load_balancer.rcp  | 30 ++++++++++++++++++++++++++++++
+ recipes/sppc/samples/load_balancer.rcps | 30 ------------------------------
+ recipes/sppc/samples/pg_l2fwd.rcp       | 17 +++++++++++++++++
+ recipes/sppc/samples/pg_l2fwd_less.rcp  | 17 +++++++++++++++++
+ recipes/sppc/samples/test_ring.rcp      | 16 ++++++++++++++++
+ 8 files changed, 133 insertions(+), 52 deletions(-)
+ create mode 100644 recipes/sppc/samples/l2fwd.rcp
+ delete mode 100644 recipes/sppc/samples/l2fwd.rcps
+ create mode 100644 recipes/sppc/samples/lb_pg.rcp
+ create mode 100644 recipes/sppc/samples/load_balancer.rcp
+ delete mode 100644 recipes/sppc/samples/load_balancer.rcps
+ create mode 100644 recipes/sppc/samples/pg_l2fwd.rcp
+ create mode 100644 recipes/sppc/samples/pg_l2fwd_less.rcp
+ create mode 100644 recipes/sppc/samples/test_ring.rcp
+
+diff --git a/recipes/sppc/samples/l2fwd.rcp b/recipes/sppc/samples/l2fwd.rcp
+new file mode 100644
+index 0000000..63dccd7
+--- /dev/null
++++ b/recipes/sppc/samples/l2fwd.rcp
+@@ -0,0 +1,22 @@
++nfv 1; add vhost:1
++nfv 2; add vhost:2
++nfv 3; add vhost:3
++nfv 4; add vhost:4
++
++nfv 1; add ring:1
++nfv 2; add ring:0
++nfv 3; add ring:0
++nfv 4; add ring:1
++
++topo_subgraph add c1 vhost:1;vhost:2
++topo_subgraph add c2 vhost:3;vhost:4
++
++nfv 1; patch ring:1 vhost:1
++nfv 2; patch vhost:2 ring:0
++nfv 3; patch ring:0 vhost:3
++nfv 4; patch vhost:4 ring:1
++
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
+diff --git a/recipes/sppc/samples/l2fwd.rcps b/recipes/sppc/samples/l2fwd.rcps
+deleted file mode 100644
+index bb434ff..0000000
+--- a/recipes/sppc/samples/l2fwd.rcps
++++ /dev/null
+@@ -1,22 +0,0 @@
+-sec 1;add vhost 1
+-sec 2;add vhost 2
+-sec 3;add vhost 3
+-sec 4;add vhost 4
+-
+-sec 1;add ring 1
+-sec 2;add ring 0
+-sec 3;add ring 0
+-sec 4;add ring 1
+-
+-topo_subgraph add c1 vhost:1;vhost:2
+-topo_subgraph add c2 vhost:3;vhost:4
+-
+-sec 1;patch ring:1 vhost:1
+-sec 2;patch vhost:2 ring:0
+-sec 3;patch ring:0 vhost:3
+-sec 4;patch vhost:4 ring:1
+-
+-sec 1;forward
+-sec 2;forward
+-sec 3;forward
+-sec 4;forward
+diff --git a/recipes/sppc/samples/lb_pg.rcp b/recipes/sppc/samples/lb_pg.rcp
+new file mode 100644
+index 0000000..1ef80a5
+--- /dev/null
++++ b/recipes/sppc/samples/lb_pg.rcp
+@@ -0,0 +1,31 @@
++nfv 1; add vhost:1
++nfv 2; add vhost:2
++nfv 3; add vhost:3
++nfv 4; add vhost:4
++nfv 5; add vhost:5
++nfv 6; add vhost:6
++nfv 1; add ring:0
++nfv 2; add ring:1
++nfv 3; add ring:2
++nfv 4; add ring:0
++nfv 5; add ring:1
++nfv 6; add ring:2
++
++nfv 1; patch vhost:1 ring:0
++nfv 2; patch ring:1 vhost:2
++nfv 3; patch ring:2 vhost:3
++nfv 4; patch ring:0 vhost:4
++nfv 5; patch vhost:5 ring:1
++nfv 6; patch vhost:6 ring:2
++
++# define c1 and c2 to help your understanding
++topo_subgraph add c1 vhost:1,vhost:2,vhost:3
++topo_subgraph add c2 vhost:4,vhost:5,vhost:6
++topo term
++
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
++nfv 5; forward
++nfv 6; forward
+diff --git a/recipes/sppc/samples/load_balancer.rcp b/recipes/sppc/samples/load_balancer.rcp
+new file mode 100644
+index 0000000..4104759
+--- /dev/null
++++ b/recipes/sppc/samples/load_balancer.rcp
+@@ -0,0 +1,30 @@
++nfv 1; add vhost:1
++nfv 2; add vhost:2
++nfv 3; add vhost:3
++nfv 4; add vhost:4
++nfv 5; add vhost:5
++nfv 6; add vhost:6
++
++nfv 1; add ring:0
++nfv 2; add ring:1
++nfv 3; add ring:2
++nfv 4; add ring:0
++nfv 5; add ring:1
++nfv 6; add ring:2
++
++topo_subgraph add c1 vhost:1,vhost:2,vhost:3
++topo_subgraph add c2 vhost:4,vhost:5,vhost:6
++
++nfv 1; patch vhost:1 ring:0
++nfv 2; patch ring:1 vhost:2
++nfv 3; patch ring:2 vhost:3
++nfv 4; patch ring:0 vhost:4
++nfv 5; patch vhost:5 ring:1
++nfv 6; patch vhost:6 ring:2
++
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
++nfv 5; forward
++nfv 6; forward
+diff --git a/recipes/sppc/samples/load_balancer.rcps b/recipes/sppc/samples/load_balancer.rcps
+deleted file mode 100644
+index 3e4b24f..0000000
+--- a/recipes/sppc/samples/load_balancer.rcps
++++ /dev/null
+@@ -1,30 +0,0 @@
+-sec 1;add vhost 1
+-sec 2;add vhost 2
+-sec 3;add vhost 3
+-sec 4;add vhost 4
+-sec 5;add vhost 5
+-sec 6;add vhost 6
+-
+-sec 1;add ring 0
+-sec 2;add ring 1
+-sec 3;add ring 2
+-sec 4;add ring 0
+-sec 5;add ring 1
+-sec 6;add ring 2
+-
+-topo_subgraph add c1 vhost:1,vhost:2,vhost:3
+-topo_subgraph add c2 vhost:4,vhost:5,vhost:6
+-
+-sec 1;patch vhost:1 ring:0
+-sec 2;patch ring:1 vhost:2
+-sec 3;patch ring:2 vhost:3
+-sec 4;patch ring:0 vhost:4
+-sec 5;patch vhost:5 ring:1
+-sec 6;patch vhost:6 ring:2
+-
+-sec 1;forward
+-sec 2;forward
+-sec 3;forward
+-sec 4;forward
+-sec 5;forward
+-sec 6;forward
+diff --git a/recipes/sppc/samples/pg_l2fwd.rcp b/recipes/sppc/samples/pg_l2fwd.rcp
+new file mode 100644
+index 0000000..9c7d636
+--- /dev/null
++++ b/recipes/sppc/samples/pg_l2fwd.rcp
+@@ -0,0 +1,17 @@
++nfv 1; add vhost:1
++nfv 2; add vhost:2
++nfv 3; add vhost:3
++nfv 4; add vhost:4
++nfv 1; add ring:0
++nfv 4; add ring:0
++nfv 2; add ring:1
++nfv 3; add ring:1
++
++nfv 1; patch ring:0 vhost:1
++nfv 2; patch vhost:2 ring:1
++nfv 3; patch ring:1 vhost:3
++nfv 4; patch vhost:4 ring:0
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
+diff --git a/recipes/sppc/samples/pg_l2fwd_less.rcp b/recipes/sppc/samples/pg_l2fwd_less.rcp
+new file mode 100644
+index 0000000..85fb635
+--- /dev/null
++++ b/recipes/sppc/samples/pg_l2fwd_less.rcp
+@@ -0,0 +1,17 @@
++nfv 1; add vhost:1
++nfv 1; add vhost:2
++nfv 2; add vhost:3
++nfv 2; add vhost:4
++nfv 1; add ring:0
++nfv 1; add ring:1
++nfv 2; add ring:0
++nfv 2; add ring:1
++
++nfv 1; patch ring:0 vhost:1
++nfv 1; patch vhost:2 ring:1
++nfv 3; patch ring:1 vhost:3
++nfv 4; patch vhost:4 ring:0
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
+diff --git a/recipes/sppc/samples/test_ring.rcp b/recipes/sppc/samples/test_ring.rcp
+new file mode 100644
+index 0000000..2295c3b
+--- /dev/null
++++ b/recipes/sppc/samples/test_ring.rcp
+@@ -0,0 +1,16 @@
++nfv 1; add ring:0
++nfv 2; add ring:1
++nfv 2; add ring:2
++nfv 3; add ring:2
++nfv 3; add ring:3
++nfv 4; add ring:3
++
++nfv 1; patch phy:0 ring:0
++nfv 2; patch ring:0 ring:1
++nfv 3; patch ring:1 ring:2
++nfv 3; patch ring:2 ring:3
++nfv 4; patch ring:3 phy:1
++nfv 1; forward
++nfv 2; forward
++nfv 3; forward
++nfv 4; forward
+-- 
+2.7.4
+

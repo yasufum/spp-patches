@@ -1,0 +1,48 @@
+From 9de19a5451672d3f1539fed56761c0b3dfd6ae53 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 14 Dec 2018 07:51:57 +0900
+Subject: [PATCH v2 0/8] Revise documentation for the latest release
+
+This v2 set of patches is including revising how to use section of
+spp_vf. Update old step of launching `spp_vf.py` to `spp-ctl` and
+`spp.py` instead.
+
+
+Yasufumi Ogawa (8):
+  docs: update Getting Started section
+  docs: update How to Use section
+  docs: update Use Cases section
+  docs: update spp_nfv commands
+  docs: update Getting Started section of sppc
+  docs: update Use Cases section of sppc
+  recipes: update recipe files
+  docs: revise how to use section of spp_vf
+
+ docs/guides/commands/secondary/spp_nfv.rst |  36 ++--
+ docs/guides/setup/getting_started.rst      |  10 +-
+ docs/guides/setup/howto_use.rst            |  12 +-
+ docs/guides/setup/use_cases.rst            | 166 ++++++++--------
+ docs/guides/spp_vf/gsg/howto_use.rst       |  16 +-
+ docs/guides/tools/sppc/getting_started.rst |  51 ++---
+ docs/guides/tools/sppc/usecases.rst        | 294 ++++++++++++++++-------------
+ recipes/sppc/samples/l2fwd.rcp             |  22 +++
+ recipes/sppc/samples/l2fwd.rcps            |  22 ---
+ recipes/sppc/samples/lb_pg.rcp             |  31 +++
+ recipes/sppc/samples/load_balancer.rcp     |  30 +++
+ recipes/sppc/samples/load_balancer.rcps    |  30 ---
+ recipes/sppc/samples/pg_l2fwd.rcp          |  17 ++
+ recipes/sppc/samples/pg_l2fwd_less.rcp     |  17 ++
+ recipes/sppc/samples/test_ring.rcp         |  16 ++
+ 15 files changed, 451 insertions(+), 319 deletions(-)
+ create mode 100644 recipes/sppc/samples/l2fwd.rcp
+ delete mode 100644 recipes/sppc/samples/l2fwd.rcps
+ create mode 100644 recipes/sppc/samples/lb_pg.rcp
+ create mode 100644 recipes/sppc/samples/load_balancer.rcp
+ delete mode 100644 recipes/sppc/samples/load_balancer.rcps
+ create mode 100644 recipes/sppc/samples/pg_l2fwd.rcp
+ create mode 100644 recipes/sppc/samples/pg_l2fwd_less.rcp
+ create mode 100644 recipes/sppc/samples/test_ring.rcp
+
+-- 
+2.7.4
+
