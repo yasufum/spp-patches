@@ -1,0 +1,20 @@
+From e8a644e4dbc05d5e5e2c411554497c8015304611 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 17 Dec 2018 18:58:05 +0900
+Subject: [PATCH 0/2] Add usecase for multi-node support
+
+Add a usecase for expalaining configuration of multiple nodes from SPP
+CLI.
+
+Yasufumi Ogawa (2):
+  docs: add image of multi-node usecase
+  docs: add multi-node usecase
+
+ .../setup/use_cases/spp_multi_nodes_vhost.svg      | 1953 ++++++++++++++++++++
+ docs/guides/setup/use_cases.rst                    |  172 ++
+ 2 files changed, 2125 insertions(+)
+ create mode 100644 docs/guides/images/setup/use_cases/spp_multi_nodes_vhost.svg
+
+-- 
+2.7.4
+
