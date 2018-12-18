@@ -1,0 +1,20 @@
+From b102131f74c671b73323a9fe228101d2f8ee6e56 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 18 Dec 2018 21:13:35 +0900
+Subject: [PATCH 0/2] Update How to Use section
+
+This series of patches is to update for descriptions of previous
+releases which is already old.
+
+Yasufumi Ogawa (2):
+  docs: add image of muiti-node in howto section
+  docs: revise howto use section
+
+ .../images/setup/howto_use/spp_howto_multi_spp.svg | 891 +++++++++++++++++++++
+ docs/guides/setup/howto_use.rst                    | 128 ++-
+ 2 files changed, 984 insertions(+), 35 deletions(-)
+ create mode 100644 docs/guides/images/setup/howto_use/spp_howto_multi_spp.svg
+
+-- 
+2.7.4
+
