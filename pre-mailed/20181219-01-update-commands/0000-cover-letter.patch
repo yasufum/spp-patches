@@ -1,0 +1,23 @@
+From 96f7af808195caf97de0c92fd684cec2dc2dc123 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 19 Dec 2018 05:11:34 +0900
+Subject: [PATCH 0/4] Update SPP command examples
+
+This series of patches is to update SPP command examples to the latest
+release.
+
+Yasufumi Ogawa (4):
+  docs: update spp_nfv command output
+  docs: update figure of topo term example
+  docs: update figure of before using topo_subgraph
+  docs: update figure of after using topo_subgraph
+
+ docs/guides/commands/secondary/spp_nfv.rst         |   8 +-
+ .../images/commands/expr/topo_subg_after.svg       |   8 +-
+ .../images/commands/expr/topo_subg_before.svg      | 183 ++++++++-------
+ docs/guides/images/commands/expr/topo_term_exp.svg | 245 +++++++++++----------
+ 4 files changed, 246 insertions(+), 198 deletions(-)
+
+-- 
+2.7.4
+

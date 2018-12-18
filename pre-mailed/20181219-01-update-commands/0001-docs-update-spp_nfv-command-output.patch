@@ -1,0 +1,76 @@
+From b821b97b1db5e96abb662fb1f464d5daf55f3aff Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 19 Dec 2018 03:39:06 +0900
+Subject: [PATCH 1/4] docs: update spp_nfv command output
+
+Some of old command examples have remained. This patch is to update them
+to the latest.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_nfv.rst | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/secondary/spp_nfv.rst b/docs/guides/commands/secondary/spp_nfv.rst
+index 4bc71a8..5cb2d36 100644
+--- a/docs/guides/commands/secondary/spp_nfv.rst
++++ b/docs/guides/commands/secondary/spp_nfv.rst
+@@ -21,7 +21,7 @@ All of Sub commands are referred with ``help`` command.
+ 
+ .. code-block:: console
+ 
+-    spp > help sec
++    spp > help nfv
+ 
+     Send a command to secondary process specified with ID.
+ 
+@@ -64,12 +64,14 @@ For example, adding ``ring:0`` by
+ .. code-block:: console
+ 
+     spp> nfv 1; add ring:0
++    Add ring:0.
+ 
+ Or adding ``vhost:0`` by
+ 
+ .. code-block:: console
+ 
+     spp> nfv 1; add vhost:0
++    Add vhost:0.
+ 
+ 
+ patch
+@@ -81,6 +83,7 @@ This command just creates a path and does not start forwarding.
+ .. code-block:: console
+ 
+     spp > nfv 1; patch phy:0 ring:0
++    Patch ports (phy:0 -> ring:0).
+ 
+ 
+ forward
+@@ -91,6 +94,7 @@ Start forwarding.
+ .. code-block:: console
+ 
+     spp > nfv 1; forward
++    Start forwarding.
+ 
+ Running status is changed from ``idling`` to ``running`` by
+ executing it.
+@@ -112,6 +116,7 @@ Stop forwarding.
+ .. code-block:: console
+ 
+     spp > nfv 1; stop
++    Stop forwarding.
+ 
+ Running status is changed from ``running`` to ``idling`` by
+ executing it.
+@@ -133,6 +138,7 @@ Delete a port from the secondary.
+ .. code-block:: console
+ 
+     spp> nfv 1; del ring:0
++    Delete ring:0.
+ 
+ 
+ exit
+-- 
+2.7.4
+
