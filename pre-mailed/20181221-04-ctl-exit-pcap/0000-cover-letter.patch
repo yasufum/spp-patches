@@ -1,0 +1,31 @@
+From edac93f3f674566630f44e0c7dd9f519ae7b894f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 21 Dec 2018 18:14:48 +0900
+Subject: [PATCH 0/2] Update SPP controller
+
+Hi,
+
+For awaited `exit` command is supported in spp_vf and spp_mirror, it is
+time for updating spp-ctl and CLI. This series of patches also includes
+adding spp_pcap support which is yet another packet capture feature of
+SPP. The series of patches of spp_pcap itself is sent after this
+updates.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (2):
+  controller: add exit command to vf and mirror
+  spp-ctl: add spp_pcap APIs
+
+ src/controller/commands/bye.py    |  6 ++--
+ src/controller/commands/mirror.py | 16 ++++++++++
+ src/controller/commands/vf.py     | 16 ++++++++++
+ src/spp-ctl/spp_ctl.py            |  3 +-
+ src/spp-ctl/spp_proc.py           | 66 ++++++++++++++++++++++++++++-----------
+ src/spp-ctl/spp_webapi.py         | 46 +++++++++++++++++++++++++++
+ 6 files changed, 130 insertions(+), 23 deletions(-)
+
+-- 
+2.7.4
+

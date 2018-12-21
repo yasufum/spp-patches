@@ -1,0 +1,237 @@
+From edac93f3f674566630f44e0c7dd9f519ae7b894f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 21 Dec 2018 18:04:19 +0900
+Subject: [PATCH 2/2] spp-ctl: add spp_pcap APIs
+
+This update is to add REST APIs for spp_pcap and `exit` for spp_vf,
+spp_mirror and also spp_pcap.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    |  3 ++-
+ src/spp-ctl/spp_proc.py   | 66 ++++++++++++++++++++++++++++++++++-------------
+ src/spp-ctl/spp_webapi.py | 46 +++++++++++++++++++++++++++++++++
+ 3 files changed, 96 insertions(+), 19 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index 279c180..f6c00fb 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -128,7 +128,8 @@ class Controller(object):
+         # it is a bit ad hoc. send "_get_clinet_id" command and try to
+         # decode reply for each proc type. if success, that is the type.
+         data = self._send_command(conn, "_get_client_id")
+-        for proc in [spp_proc.VfProc, spp_proc.NfvProc, spp_proc.MirrorProc]:
++        for proc in [spp_proc.VfProc, spp_proc.NfvProc, spp_proc.MirrorProc,
++                     spp_proc.PcapProc]:
+             sec_id = proc._decode_client_id(data)
+             if sec_id is not None:
+                 return proc(sec_id, conn)
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 648e085..282fea8 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -16,6 +16,7 @@ TYPE_PRIMARY = "primary"
+ TYPE_VF = "vf"
+ TYPE_NFV = "nfv"
+ TYPE_MIRROR = "mirror"
++TYPE_PCAP = "pcap"
+ 
+ 
+ def exec_command(func):
+@@ -53,12 +54,6 @@ class SppProc(object):
+         self.sem = eventlet.semaphore.Semaphore(value=1)
+         self.conn = conn
+ 
+-
+-class VfCommon(SppProc):
+-
+-    def __init__(self, proc_type, id, conn):
+-        super(VfCommon, self).__init__(proc_type, id, conn)
+-
+     @staticmethod
+     def _decode_reply(data):
+         data = json.loads(data)
+@@ -68,6 +63,21 @@ class VfCommon(SppProc):
+             raise bottle.HTTPError(400, "command error: %s" % msg)
+         return data
+ 
++    @staticmethod
++    def _decode_client_id_common(data, proc_type):
++        try:
++            data = SppProc._decode_reply(data)
++            if data["process_type"] == proc_type:
++                return data["client_id"]
++        except:
++            return None
++
++
++class VfCommon(SppProc):
++
++    def __init__(self, proc_type, id, conn):
++        super(VfCommon, self).__init__(proc_type, id, conn)
++
+     @exec_command
+     def get_status(self):
+         return "status"
+@@ -85,6 +95,10 @@ class VfCommon(SppProc):
+     def port_del(self, port, direction, comp_name):
+         return "port del {port} {direction} {comp_name}".format(**locals())
+ 
++    @exec_command
++    def do_exit(self):
++        return "exit"
++
+ 
+ class VfProc(VfCommon):
+ 
+@@ -93,12 +107,7 @@ class VfProc(VfCommon):
+ 
+     @staticmethod
+     def _decode_client_id(data):
+-        try:
+-            data = VfCommon._decode_reply(data)
+-            if data["process_type"] == TYPE_VF:
+-                return data["client_id"]
+-        except:
+-            return None
++        return SppProc._decode_client_id_common(data, TYPE_VF)
+ 
+     @exec_command
+     def port_add(self, port, direction, comp_name, op, vlan_id, pcp):
+@@ -139,12 +148,7 @@ class MirrorProc(VfCommon):
+ 
+     @staticmethod
+     def _decode_client_id(data):
+-        try:
+-            data = VfCommon._decode_reply(data)
+-            if data["process_type"] == TYPE_MIRROR:
+-                return data["client_id"]
+-        except:
+-            return None
++        return SppProc._decode_client_id_common(data, TYPE_MIRROR)
+ 
+     @exec_command
+     def port_add(self, port, direction, comp_name):
+@@ -220,3 +224,29 @@ class PrimaryProc(SppProc):
+     @exec_command
+     def do_exit(self):
+         return "exit"
++
++
++class PcapProc(SppProc):
++
++    def __init__(self, id, conn):
++        super(PcapProc, self).__init__(TYPE_PCAP, id, conn)
++
++    @staticmethod
++    def _decode_client_id(data):
++        return SppProc._decode_client_id_common(data, TYPE_PCAP)
++
++    @exec_command
++    def get_status(self):
++        return "status"
++
++    @exec_command
++    def start(self):
++        return "start"
++
++    @exec_command
++    def stop(self):
++        return "stop"
++
++    @exec_command
++    def do_exit(self):
++        return "exit"
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 7547f0e..efbaee1 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -117,6 +117,7 @@ class WebServer(BaseHandler):
+        /mirrors    V1MirrorHandler
+        /nfvs       V1NFVHandler
+        /primary    V1PrimaryHandler
++       /pcaps      V1PcapHandler
+     """
+ 
+     def __init__(self, controller, host, api_port):
+@@ -145,6 +146,7 @@ class V1Handler(BaseHandler):
+         self.mount("/mirrors", V1MirrorHandler(controller))
+         self.mount("/nfvs", V1NFVHandler(controller))
+         self.mount("/primary", V1PrimaryHandler(controller))
++        self.mount("/pcaps", V1PcapHandler(controller))
+ 
+         self.install(self.make_response)
+ 
+@@ -194,6 +196,10 @@ class V1VFCommon(object):
+             raise KeyInvalid('dir', body['dir'])
+         self._validate_port(body['port'])
+ 
++    def vf_exit(self, proc):
++        self.ctrl.do_exit(proc.type, proc.id)
++        proc.do_exit()
++
+ 
+ class V1VFHandler(BaseHandler, V1VFCommon):
+ 
+@@ -209,6 +215,7 @@ class V1VFHandler(BaseHandler, V1VFCommon):
+ 
+     def set_route(self):
+         self.route('/<sec_id:int>', 'GET', callback=self.vf_get)
++        self.route('/<sec_id:int>', 'DELETE', callback=self.vf_exit)
+         self.route('/<sec_id:int>/components', 'POST',
+                    callback=self.vf_comp_start)
+         self.route('/<sec_id:int>/components/<name>', 'DELETE',
+@@ -319,6 +326,7 @@ class V1MirrorHandler(BaseHandler, V1VFCommon):
+ 
+     def set_route(self):
+         self.route('/<sec_id:int>', 'GET', callback=self.mirror_get)
++        self.route('/<sec_id:int>', 'DELETE', callback=self.vf_exit)
+         self.route('/<sec_id:int>/components', 'POST',
+                    callback=self.mirror_comp_start)
+         self.route('/<sec_id:int>/components/<name>', 'DELETE',
+@@ -471,3 +479,41 @@ class V1PrimaryHandler(BaseHandler):
+         proc = self._get_proc()
+         self.ctrl.do_exit(proc.type, proc.id)
+         proc.do_exit()
++
++
++class V1PcapHandler(BaseHandler):
++
++    def __init__(self, controller):
++        super(V1PcapHandler, self).__init__(controller)
++        self.type = spp_proc.TYPE_PCAP
++
++        self.set_route()
++
++        self.install(self.check_sec_id)
++        self.install(self.get_body)
++        self.install(self.make_response)
++
++    def set_route(self):
++        self.route('/<sec_id:int>', 'GET', callback=self.pcap_get)
++        self.route('/<sec_id:int>', 'DELETE', callback=self.pcap_exit)
++        self.route('/<sec_id:int>/capture', 'PUT', callback=self.pcap_action)
++
++    def pcap_get(self, proc):
++        return proc.get_status()["info"]
++
++    def _validate_pcap_action(self, body):
++        if 'action' not in body:
++            raise KeyRequired('action')
++        if body['action'] not in ["start", "stop"]:
++            raise KeyInvalid('action', body['action'])
++
++    def pcap_action(self, proc, body):
++        self._validate_pcap_action(body)
++        if body['action'] == "start":
++            proc.start()
++        else:
++            proc.stop()
++
++    def pcap_exit(self, proc):
++        self.ctrl.do_exit(proc.type, proc.id)
++        proc.do_exit()
+-- 
+2.7.4
+
