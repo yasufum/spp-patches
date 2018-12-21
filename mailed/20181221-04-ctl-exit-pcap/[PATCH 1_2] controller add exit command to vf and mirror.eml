@@ -1,0 +1,136 @@
+From - Fri Dec 21 18:26:24 2018
+X-Account-Key: account1
+X-UIDL: 00008e2d56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 20B9B400793
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 21 Dec 2018 18:28:37 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 1E9E823BAB4; Fri, 21 Dec 2018 18:28:37 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 143A223BA83
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 21 Dec 2018 18:28:37 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 05C28EA83F2;
+	Fri, 21 Dec 2018 18:28:37 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E47C8EA8300;
+	Fri, 21 Dec 2018 18:28:36 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/2] controller: add exit command to vf and mirror
+Date: Fri, 21 Dec 2018 18:26:18 +0900
+Message-Id: <1545384379-12389-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1545384379-12389-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1545384379-12389-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Since `exit` is added to spp_vf and spp_mirror, add `exit` command to
+CLI. `bye` command is also updated to terminate all of secondaries
+including spp_vf and spp_mirror at once.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/bye.py    |  6 ++----
+ src/controller/commands/mirror.py | 16 ++++++++++++++++
+ src/controller/commands/vf.py     | 16 ++++++++++++++++
+ 3 files changed, 34 insertions(+), 4 deletions(-)
+
+diff --git a/src/controller/commands/bye.py b/src/controller/commands/bye.py
+index af77b08..cd14961 100644
+--- a/src/controller/commands/bye.py
++++ b/src/controller/commands/bye.py
+@@ -45,7 +45,5 @@ class SppBye(object):
+         """Terminate all secondary processes."""
+ 
+         for sec_type, spp_procs in spp_secondaries.items():
+-            # TODO(yasufum) Remove if they support exit command.
+-            if not (sec_type in ['vf', 'mirror']):
+-                for sec in spp_procs.values():
+-                    sec.run('exit')
++            for sec in spp_procs.values():
++                sec.run('exit')
+diff --git a/src/controller/commands/mirror.py b/src/controller/commands/mirror.py
+index fcc630a..a01e1eb 100644
+--- a/src/controller/commands/mirror.py
++++ b/src/controller/commands/mirror.py
+@@ -69,6 +69,9 @@ class SppMirror(object):
+         elif cmd == 'port':
+             self._run_port(params)
+ 
++        elif cmd == 'exit':
++            self._run_exit()
++
+         else:
+             print('Invalid command "%s".' % cmd)
+ 
+@@ -272,6 +275,19 @@ class SppMirror(object):
+             else:
+                 print('Error: unknown response.')
+ 
++    def _run_exit(self):
++        """Run `exit` command."""
++
++        res = self.spp_ctl_cli.delete('mirrors/%d' % self.sec_id)
++        if res is not None:
++            error_codes = self.spp_ctl_cli.rest_common_error_codes
++            if res.status_code == 204:
++                print('Exit mirror %d.' % self.sec_id)
++            elif res.status_code in error_codes:
++                pass
++            else:
++                print('Error: unknown response.')
++
+     def _compl_component(self, sub_tokens):
+         if len(sub_tokens) < 6:
+             subsub_cmds = ['start', 'stop']
+diff --git a/src/controller/commands/vf.py b/src/controller/commands/vf.py
+index 8828110..01795a5 100644
+--- a/src/controller/commands/vf.py
++++ b/src/controller/commands/vf.py
+@@ -73,6 +73,9 @@ class SppVf(object):
+         elif cmd == 'classifier_table':
+             self._run_cls_table(params)
+ 
++        elif cmd == 'exit':
++            self._run_exit()
++
+         else:
+             print('Invalid command "%s".' % cmd)
+ 
+@@ -347,6 +350,19 @@ class SppVf(object):
+                 else:
+                     print('Error: unknown response.')
+ 
++    def _run_exit(self):
++        """Run `exit` command."""
++
++        res = self.spp_ctl_cli.delete('vfs/%d' % self.sec_id)
++        if res is not None:
++            error_codes = self.spp_ctl_cli.rest_common_error_codes
++            if res.status_code == 204:
++                print('Exit vf %d.' % self.sec_id)
++            elif res.status_code in error_codes:
++                pass
++            else:
++                print('Error: unknown response.')
++
+     def _compl_component(self, sub_tokens):
+         if len(sub_tokens) < 6:
+             subsub_cmds = ['start', 'stop']
+-- 
+2.7.4
+
+
+
