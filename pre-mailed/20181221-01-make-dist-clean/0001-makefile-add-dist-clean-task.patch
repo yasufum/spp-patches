@@ -1,0 +1,32 @@
+From 0184cc0bf8973edfc7dae034066ca94168e653cc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 21 Dec 2018 11:23:40 +0900
+Subject: [PATCH] makefile: add dist-clean task
+
+`make clean` task does not remove all of files generated with make
+command. This update is to add `make dist-clean` to do the task.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index fcf6a33..7c2b55a 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -21,6 +21,11 @@ showversion:
+ # Compile RST documents
+ DOC_ROOT = docs/guides
+ 
++.PHONY: dist-clean
++dist-clean:
++	make clean
++	rm -rf $(wildcard src/*/$(RTE_TARGET))
++
+ .PHONY: doc
+ doc: doc-all
+ doc-all: doc-pdf doc-html
+-- 
+2.7.4
+
