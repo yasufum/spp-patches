@@ -1,0 +1,126 @@
+From - Fri Dec 21 13:10:46 2018
+X-Account-Key: account1
+X-UIDL: 00008df356a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id ABEF3400C7F
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id A54A37F33F; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id A415F7F2A1
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 9273F6385FB;
+	Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 84425638533;
+	Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/3] shared: add util functions to set log level
+Date: Fri, 21 Dec 2018 13:10:39 +0900
+Message-Id: <1545365441-9864-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1545365441-9864-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1545365441-9864-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add utility functions to change the log level of
+`user*` in more simple way. If you change the level of RTE_LOGTYPE_USER1
+to RTE_LOG_DEBUG, simply call `set_user_log_debug(1)`. You can also
+change to any of log level like as `set_user_log_level(1, RTE_LOG_INFO)`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 37 ++++++++++++++++++++++++++++++++++++-
+ src/shared/common.h |  6 ++++++
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 0e32fa6..8837ff9 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -66,6 +66,41 @@ check_all_ports_link_status(struct port_info *ports, uint16_t port_num,
+ }
+ 
+ /**
++ * Set log level of type RTE_LOGTYPE_USER* to given level, for instance,
++ * RTE_LOG_INFO or RTE_LOG_DEBUG.
++ *
++ * This function is typically used to output debug log as following.
++ *
++ *   #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
++ *   ...
++ *   set_user_log_level(1, RTE_LOG_DEBUG);
++ *   ...
++ *   RTE_LOG(APP, DEBUG, "Your debug log...");
++ */
++int
++set_user_log_level(int num_user_log, uint32_t log_level)
++{
++	char userlog[8];
++
++	if (num_user_log < 1 || num_user_log > 8)
++		return -1;
++
++	memset(userlog, '\0', sizeof(userlog));
++	sprintf(userlog, "user%d", num_user_log);
++
++	rte_log_set_level(rte_log_register(userlog), log_level);
++	return 0;
++}
++
++/* Set log level of type RTE_LOGTYPE_USER* to RTE_LOG_DEBUG. */
++int
++set_user_log_debug(int num_user_log)
++{
++	set_user_log_level(num_user_log, RTE_LOG_DEBUG);
++	return 0;
++}
++
++/**
+  * Initialise an individual port:
+  * - configure number of rx and tx rings
+  * - set up each rx ring, to pull from the main mbuf pool
+@@ -538,7 +573,7 @@ dev_detach_by_port_id(uint16_t port_id)
+ 
+ 	if (rte_eth_devices[port_id].data == NULL) {
+ 		RTE_LOG(INFO, APP,
+-			"rte_eth_devices[%d].data is  NULL\n", port_id);
++			"rte_eth_devices[%"PRIu16"].data is  NULL\n", port_id);
+ 		return 0;
+ 	}
+ 	dev_flags = rte_eth_devices[port_id].data->dev_flags;
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 09dbf8a..326343e 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -188,6 +188,12 @@ get_null_pmd_name(int id)
+ 	return buffer;
+ }
+ 
++/* Set log level of type RTE_LOGTYPE_USER* to given level. */
++int set_user_log_level(int num_user_log, uint32_t log_level);
++
++/* Set log level of type RTE_LOGTYPE_USER* to RTE_LOG_DEBUG. */
++int set_user_log_debug(int num_user_log);
++
+ void check_all_ports_link_status(struct port_info *ports, uint16_t port_num,
+ 		uint32_t port_mask);
+ 
+-- 
+2.7.4
+
+
+

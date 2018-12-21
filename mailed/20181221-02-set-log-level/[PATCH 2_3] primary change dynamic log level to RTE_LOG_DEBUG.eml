@@ -1,0 +1,64 @@
+From - Fri Dec 21 13:10:46 2018
+X-Account-Key: account1
+X-UIDL: 00008df456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id C2AB8400C7F
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id BAEFD23BAD1; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id BA4E223BA9F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A18E863851E;
+	Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 8A329638581;
+	Fri, 21 Dec 2018 13:12:58 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/3] primary: change dynamic log level to RTE_LOG_DEBUG
+Date: Fri, 21 Dec 2018 13:10:40 +0900
+Message-Id: <1545365441-9864-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1545365441-9864-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1545365441-9864-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Change dynamic log level to RTE_LOG_DEBUG to be enable to output debug
+log if it is launched with `--log-level 8`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index d991bca..825a8bf 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -393,6 +393,8 @@ main(int argc, char *argv[])
+ 	if (init(argc, argv) < 0)
+ 		return -1;
+ 
++	set_user_log_debug(1);
++
+ 	RTE_LOG(INFO, APP, "Finished Process Init.\n");
+ 
+ 	/* clear statistics */
+-- 
+2.7.4
+
+
+
