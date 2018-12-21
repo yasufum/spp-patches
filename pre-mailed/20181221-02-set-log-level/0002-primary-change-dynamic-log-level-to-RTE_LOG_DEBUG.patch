@@ -1,0 +1,29 @@
+From a275c9aaa2e49a9d2287b04e449f2d8e7b2e7b89 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 21 Dec 2018 12:21:14 +0900
+Subject: [PATCH 2/3] primary: change dynamic log level to RTE_LOG_DEBUG
+
+Change dynamic log level to RTE_LOG_DEBUG to be enable to output debug
+log if it is launched with `--log-level 8`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index d991bca..825a8bf 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -393,6 +393,8 @@ main(int argc, char *argv[])
+ 	if (init(argc, argv) < 0)
+ 		return -1;
+ 
++	set_user_log_debug(1);
++
+ 	RTE_LOG(INFO, APP, "Finished Process Init.\n");
+ 
+ 	/* clear statistics */
+-- 
+2.7.4
+

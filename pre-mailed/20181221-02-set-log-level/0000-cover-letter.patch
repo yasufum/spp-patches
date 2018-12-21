@@ -1,0 +1,38 @@
+From a1d354b73853f013c3d84d1584119cd4d5db0c3d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 21 Dec 2018 13:07:24 +0900
+Subject: [PATCH 0/3] Add utility functions for debug log
+
+Hi,
+
+Dynamic logging of DPDK is useful to configure log level only for
+required modules. However, it is a little complex to use, for example,
+for changing log level of type of `user*` simply to RTE_LOG_DEBUG.
+
+This update is to add utility functions to change the log level of
+`user*` in more simple way. If you change the level of RTE_LOGTYPE_USER1
+to RTE_LOG_DEBUG, simply call `set_user_log_debug(1)`. You are also able
+to change to any of log level like as
+`set_user_log_level(1, RTE_LOG_INFO)`.
+
+Default global log level is RTE_LOG_INFO, so you should change global
+level with `--log-level` option of EAL from command line or call
+`rte_log_set_global_level()` from inside of your program. 
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (3):
+  shared: add util functions to set log level
+  primary: change dynamic log level to RTE_LOG_DEBUG
+  spp_nfv: change dynamic log level to RTE_LOG_DEBUG
+
+ src/nfv/nfv.c       |  2 ++
+ src/primary/main.c  |  2 ++
+ src/shared/common.c | 37 ++++++++++++++++++++++++++++++++++++-
+ src/shared/common.h |  6 ++++++
+ 4 files changed, 46 insertions(+), 1 deletion(-)
+
+-- 
+2.7.4
+
