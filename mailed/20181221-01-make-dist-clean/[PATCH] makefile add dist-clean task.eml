@@ -1,0 +1,65 @@
+From - Fri Dec 21 13:10:45 2018
+X-Account-Key: account1
+X-UIDL: 00008df156a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6A8554008B9
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 21 Dec 2018 13:12:43 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6739423BAD1; Fri, 21 Dec 2018 13:12:43 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6681D23BA9F
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 21 Dec 2018 13:12:43 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4D653638533;
+	Fri, 21 Dec 2018 13:12:43 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 35D3563851E;
+	Fri, 21 Dec 2018 13:12:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] makefile: add dist-clean task
+Date: Fri, 21 Dec 2018 13:10:26 +0900
+Message-Id: <1545365426-9795-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+`make clean` task does not remove all of files generated with make
+command. This update is to add `make dist-clean` to do the task.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index fcf6a33..7c2b55a 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -21,6 +21,11 @@ showversion:
+ # Compile RST documents
+ DOC_ROOT = docs/guides
+ 
++.PHONY: dist-clean
++dist-clean:
++	make clean
++	rm -rf $(wildcard src/*/$(RTE_TARGET))
++
+ .PHONY: doc
+ doc: doc-all
+ doc-all: doc-pdf doc-html
+-- 
+2.7.4
+
+
+
