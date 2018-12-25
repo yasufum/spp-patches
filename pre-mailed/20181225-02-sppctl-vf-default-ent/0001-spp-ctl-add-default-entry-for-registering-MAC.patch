@@ -1,0 +1,38 @@
+From 296ea6b9858a552fee4fe011d66d09596a35b460 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 25 Dec 2018 18:59:58 +0900
+Subject: [PATCH 1/2] spp-ctl: add default entry for registering MAC
+
+Spp-ctl does not accept for a request to register default entry for
+registering MAC address.
+
+  spp > vf 1; component start cls1 4 classifier_mac
+  spp > vf 1; port add ring:1 tx cls1
+  spp > vf 1; classifier_table add mac default ring:1
+  System error occured in spp-ctl.  # failed to register default
+
+This update is to accept the default entry.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index efbaee1..d88d7a9 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -284,7 +284,9 @@ class V1VFHandler(BaseHandler, V1VFCommon):
+         if body['type'] not in ["mac", "vlan"]:
+             raise KeyInvalid('type', body['type'])
+         self._validate_port(body['port'])
+-        self._validate_mac(body['mac_address'])
++
++        if not body['mac_address'] == 'default':
++            self._validate_mac(body['mac_address'])
+ 
+         if body['type'] == "vlan":
+             try:
+-- 
+2.7.4
+

@@ -1,0 +1,32 @@
+From 507190e4b245c55a0a4439819a597df3fff5c2f2 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 25 Dec 2018 19:13:55 +0900
+Subject: [PATCH 0/2] Add default entry for registering MAC
+
+Hi,
+
+Spp-ctl does not accept for a request to register default entry for
+registering MAC address.
+
+  spp > vf 1; component start cls1 4 classifier_mac
+  spp > vf 1; port add ring:1 tx cls1
+  spp > vf 1; classifier_table add mac default ring:1
+  System error occured in spp-ctl.  # failed to register default
+
+This update is to accept the default entry. It is also including a fix
+of wrong formatted error messages in SPP CLI.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (2):
+  spp-ctl: add default entry for registering MAC
+  controller: revise error message
+
+ src/controller/spp_ctl_client.py | 4 ++--
+ src/spp-ctl/spp_webapi.py        | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+-- 
+2.7.4
+
