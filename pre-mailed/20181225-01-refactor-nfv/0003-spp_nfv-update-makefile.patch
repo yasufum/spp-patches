@@ -1,0 +1,28 @@
+From 329f672267f8d65842b82fcd86702e5221ddd423 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 25 Dec 2018 03:41:43 +0900
+Subject: [PATCH 3/4] spp_nfv: update makefile
+
+Update Makefile for the change of file structure of previous change.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index 2d3ffed..d6884c5 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -12,7 +12,7 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ APP = spp_nfv
+ 
+ # all source are stored in SRCS-y
+-SRCS-y := nfv.c ../shared/common.c
++SRCS-y := main.c ../shared/common.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-- 
+2.7.4
+

@@ -1,0 +1,45 @@
+From 20c67b4bc20b909fde40aa86adc3ab1dda37847c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 25 Dec 2018 16:27:16 +0900
+Subject: [PATCH 0/4] move params and funcs to header files
+
+Spp_nfv is one of the simplest secondaries in SPP, but still hard to
+understand the structure because all of codes are aggregated into one
+file. This update is to move variables and functions to header files.
+from spp_nfv.
+
+* src/nfv/params.h  # define params and structs
+* src/nfv/command_utils.h  # util functions for cmds
+* src/nfv/commands.h  # spp_nfv cmds, add, del, or etc.
+* src/nfv/nfv.h  # you include this file for all of others
+
+You should keep in mind of the order of headers other than `nfv.h`, or
+just include `nfv.h`. You should include `common.h` before all of these
+header files.
+
+Yasufumi Ogawa (4):
+  spp_nfv: move params and funcs to header files
+  spp_nfv: add header files of params and funcs
+  spp_nfv: update makefile
+  spp_nfv: move defines and util functions
+
+ src/nfv/Makefile        |    2 +-
+ src/nfv/command_utils.h |  437 ++++++++++++++++++++
+ src/nfv/commands.h      |  326 +++++++++++++++
+ src/nfv/main.c          |  247 ++++++++++++
+ src/nfv/nfv.c           | 1016 -----------------------------------------------
+ src/nfv/nfv.h           |   13 +
+ src/nfv/params.h        |   41 ++
+ src/primary/main.c      |    4 +
+ src/shared/common.h     |   25 +-
+ 9 files changed, 1085 insertions(+), 1026 deletions(-)
+ create mode 100644 src/nfv/command_utils.h
+ create mode 100644 src/nfv/commands.h
+ create mode 100644 src/nfv/main.c
+ delete mode 100644 src/nfv/nfv.c
+ create mode 100644 src/nfv/nfv.h
+ create mode 100644 src/nfv/params.h
+
+-- 
+2.7.4
+
