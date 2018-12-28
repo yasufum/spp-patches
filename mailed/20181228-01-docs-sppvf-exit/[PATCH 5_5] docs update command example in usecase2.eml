@@ -1,0 +1,158 @@
+From - Fri Dec 28 12:36:42 2018
+X-Account-Key: account1
+X-UIDL: 0000902856a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id BFBCF40059C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 28 Dec 2018 12:30:45 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id BE82523BD0A; Fri, 28 Dec 2018 12:30:45 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id BDED523BCFF
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 28 Dec 2018 12:30:45 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id B07036388AF
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 28 Dec 2018 12:30:45 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A4F246388D4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 28 Dec 2018 12:30:45 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AuOQPwh8/dLld8P9uRHGN80YQeigqvan1NQcJ65?=
+ =?us-ascii?q?0hzohDabmn44+7ZRON6f5ohRrSRYCDsbRJgO6Qtbz8H2cHp5SZ4zgZaJIZbx?=
+ =?us-ascii?q?Yeko0NmhA4RtafABjrafDsKjciBOxZUBlj423+LVgTE8G4ZUWB6maq42sqEw?=
+ =?us-ascii?q?7kfRFwOvyzH4fTi8qt0OXn69jdZUBTnCKVerc0Kgmq6BnB8MIRx4l6c/xj8B?=
+ =?us-ascii?q?bCr3pWdugT/ltGewrMzS71/dz4vJJo9i0VoOokr5QGXK7+OaIkUfpTC3IkKz?=
+ =?us-ascii?q?J96MruvBjFBQyBgxlUGnVTnBwNGBDdxAr+GJHtrm7mpqx232+YJYX6QKs1Vj?=
+ =?us-ascii?q?Kr86pwAEWx0GFdbGR/qzyR1J04hbk+wlrpvxFlxo/IfIyZfOFzeK/QZ5JSRG?=
+ =?us-ascii?q?ZMWNpQSz0UGpm1PMMEC+sMO/odrpGo/QJW60HlX0/3WaWxm2wt5De+x6Ax3u?=
+ =?us-ascii?q?U/HBuT0AclFpcVqHGM9pP4P6NUV/ypiqLPizfbPJY0kX/w7pbFdhc5rLSCR7?=
+ =?us-ascii?q?V1JIDBjEcpUhjdln2LrcrjIy/QyvRLuG/d7fIqBofNwyY37hp8pDSi3JJmms?=
+ =?us-ascii?q?zHgMcO0kjs7iE/xpopYMGoDkV8J9y8Wsg11WnSJ859RcUsRHttsSAxx+gduJ?=
+ =?us-ascii?q?K1SzMW0pUs202Xe7mdfoOP+B6mSPeJLGIymid+YLzmzUXXkwDo2qjmW8Kzyl?=
+ =?us-ascii?q?oPsidVjoyGqCUWzxKKosHVT/J8+h/6nzeEzEbV9v0BPVBynq2dKYZEoPZ4n8?=
+ =?us-ascii?q?gWuEXHRnOwmU7tyqmKagA46q6j7KLlev3v9JqVNoss10f/Ob9onNCjRPgodA?=
+ =?us-ascii?q?MJGWqDnIb0nLSx+ET4RO0UyPw9ie/frIyfOdRdran/ARcd29Qm4he7V2jg0d?=
+ =?us-ascii?q?8D238bMBdZaFSMiM7rIzSsaLjxX/K2glD0wHFqzOuAOKH9R4ndaHPE1rX5Nb?=
+ =?us-ascii?q?dltxwGkVJ1l4sFockJTOhQfZeREgfwrICKVEZhdVbvmaC8VZMkh91WWHrTUP?=
+ =?us-ascii?q?XAaOWI6gXOvb9pfbTEZZdJ6mykc75/vKSo1iJ/xwFVa6Ct2dFOMiKCE/9rIl?=
+ =?us-ascii?q?uUbT/XuvlfSD1YhgMlV6SqhFaHWHtIf3PqBeQx7TV9Dp66S4zEAIK10vSN2y?=
+ =?us-ascii?q?KyH5seYW4jaBjEATLmccCfQ+8kcybUJNN91yAUE7OmDY05nR2jrw71zbN7I/?=
+ =?us-ascii?q?GcoHRA88i4jp4uuquNxFk77lkWR4yF3nuITn1ok29AXDIw0K1l4AR8xlqFza?=
+ =?us-ascii?q?lkkqldHN1X6elOV1RyPprdwupmTtHqD1iYJpHTEwzgGYjgX2BiK7B5i8UDaE?=
+ =?us-ascii?q?t8Bdi42xzI2iPvGKcQz+bNCZcwtKTAwz76IIB/0yWjtuFpgl84T89ILWDjiL?=
+ =?us-ascii?q?R48l2ZF8vHlQCCj76CbqBa2jLRsXuTi2GJ+kNAGl0VM+2NTTUEa03aoM6srF?=
+ =?us-ascii?q?OHQbnrEqw/GhBFj8ieNu5WepviihNEXL2wXbaWK3L0kGC2CxGSw7qKZ4e/YG?=
+ =?us-ascii?q?QR0hLGFFIFmBxAtWbDLwU1AT2t5n7PFDE7X0y6eFviqKMtzRHzBl9x1QyBaF?=
+ =?us-ascii?q?dtkqa46gJAz+LJUOsdh/oN6iIoqjEsRxC81MmQDcac4hZxOq5bJ9ElhTUPnW?=
+ =?us-ascii?q?uLsgV8OsT8aaFpnRgYbxgyo1Oo3BIxCJ0ImJovpXIulFc0KKmDllVda3aEzd?=
+ =?us-ascii?q?b7PfvVMgyQtFimOavf21WGjpCX8bxJ7ugk7knz+gquUEg6u3w11tBU1yPDoJ?=
+ =?us-ascii?q?TBF0wUTY60TlZx/B88pam/AGF17tHR3HxoafnyszTZndQ1GK452lCreJFdKO?=
+ =?us-ascii?q?uFDFOgSZRCQZL1cqpxxh7wP09hXqga9bZobZn/L73cg/TtZ7smxWP4xWVfvN?=
+ =?us-ascii?q?InixrKrXEmDLWVmchYi/CAglndDm+61gz79Juq394aLScbGm71kHm2NMtqfq?=
+ =?us-ascii?q?R3OL0zJyKrKsyzyM95gseyCWVcsli/GxYayImiflyQdw6khFEC5QEsuXWi3B?=
+ =?us-ascii?q?CA4XlsiThw8fiE2GrI3/inaApBMWkNRnEw1Fo=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AAAAARmCVcmEUj6NJiGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAGlwAwcIJ4wXX40gl2KBeyiEUQI1gi0BBS8?=
+ =?us-ascii?q?JDQEDAQECAQEBARQBAQEBAQYNCwYpIwyFSwZ5ECAMJQ9IBxKDIgGCAKhpiHO?=
+ =?us-ascii?q?BLId+gX2EWocogUWFdCIChzUHiSaQaQmHEopXGIFgkAaJWYEGkRCCDoFAgmw?=
+ =?us-ascii?q?JgiyJOIR9MAEBATABik6CTQEB?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 28 Dec 2018 12:30:45 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id wBS3UepT024158;
+	Fri, 28 Dec 2018 12:30:40 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id wBS3UdDK011651;
+	Fri, 28 Dec 2018 12:30:39 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id NAA11416;
+	 Fri, 28 Dec 2018 12:29:28 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wBS3TSTw007785; Fri, 28 Dec 2018 12:29:28 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id wBS3TSv6007780; Fri, 28 Dec 2018 12:29:28 +0900
+Message-Id: <201812280329.wBS3TSv6007780@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id wBS3TR0q001335 ; Fri, 28 Dec 2018 12:29:28 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 5/5] docs: update command example in usecase2
+Date: Fri, 28 Dec 2018 12:29:27 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20181228032927.12034-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20181228032927.12034-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Update command example because `sec` command is changed to `mirror` for
+spp_mirror.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/use_cases/usecase2.rst | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/spp_vf/use_cases/usecase2.rst b/docs/guides/spp_vf/use_cases/usecase2.rst
+index 2447cfa..39b8ca6 100644
+--- a/docs/guides/spp_vf/use_cases/usecase2.rst
++++ b/docs/guides/spp_vf/use_cases/usecase2.rst
+@@ -85,6 +85,12 @@ and launch ``spp_vf`` with core list ``-l 0,2-14`` in this usecase.
+        -s 127.0.0.1:6666 \
+        --vhost-client
+ 
++Start CLI.
++
++.. code-block:: console
++
++   $ python src/spp.py
++
+ Start components in ``spp_vf``.
+ 
+ .. code-block:: console
+@@ -174,7 +180,7 @@ Start mirror component with core ID 15.
+ .. code-block:: console
+ 
+     # Start component of spp_mirror on coreID 15
+-    spp > sec 2; component start mirror1 15 mirror
++    spp > mirror 2; component start mirror1 15 mirror
+ 
+ Add ``ring:0`` as rx ports and add ``ring:8`` and ``ring:9`` as tx port
+ to mirror.
+-- 
+2.17.1
+
+
+
