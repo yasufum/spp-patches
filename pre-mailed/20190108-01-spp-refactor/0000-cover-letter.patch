@@ -1,0 +1,40 @@
+From 3a282f3e9b098fee8ee80c54f70e30cbc06fada4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 8 Jan 2019 12:15:34 +0900
+Subject: [PATCH 0/2] Remove spp_vm
+
+Hi,
+
+As announced in previous[1], remove spp_vm in this update. Spp_vm is
+still able to be used to connect between apps in the VM, but it is
+almost the same as launching spp_primary and spp_nfv on the VM. In
+addition, IVSHMEM is not supported in DPDK anymore.
+
+[1] https://mails.dpdk.org/archives/spp/2018-December/001078.html
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (2):
+  spp_vm: remove spp_vm
+  Makefile: update dist-clean
+
+ GNUmakefile     |   1 +
+ src/Makefile    |   1 -
+ src/vm/Makefile |  38 ----
+ src/vm/args.c   |  79 -------
+ src/vm/args.h   |  16 --
+ src/vm/init.c   | 113 ----------
+ src/vm/init.h   |  15 --
+ src/vm/main.c   | 669 --------------------------------------------------------
+ 8 files changed, 1 insertion(+), 931 deletions(-)
+ delete mode 100644 src/vm/Makefile
+ delete mode 100644 src/vm/args.c
+ delete mode 100644 src/vm/args.h
+ delete mode 100644 src/vm/init.c
+ delete mode 100644 src/vm/init.h
+ delete mode 100644 src/vm/main.c
+
+-- 
+2.7.4
+
