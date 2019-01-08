@@ -1,0 +1,63 @@
+From - Tue Jan  8 12:29:32 2019
+X-Account-Key: account1
+X-UIDL: 0000925e56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 674A8400B3A
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue,  8 Jan 2019 12:31:38 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 65A737F36B; Tue,  8 Jan 2019 12:31:38 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 64B6F7F0B4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue,  8 Jan 2019 12:31:38 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4BA11639AAF;
+	Tue,  8 Jan 2019 12:31:38 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 30BA5639AB2;
+	Tue,  8 Jan 2019 12:31:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/2] Makefile: update dist-clean
+Date: Tue,  8 Jan 2019 12:29:27 +0900
+Message-Id: <1546918167-5926-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1546918167-5926-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1546918167-5926-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update `make dist-clean` to remove `shared` directory in each of SPP
+processes under `src`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 7c2b55a..4f04bba 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -25,6 +25,7 @@ DOC_ROOT = docs/guides
+ dist-clean:
+ 	make clean
+ 	rm -rf $(wildcard src/*/$(RTE_TARGET))
++	rm -rf $(wildcard src/*/shared)
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.7.4
+
+
+
