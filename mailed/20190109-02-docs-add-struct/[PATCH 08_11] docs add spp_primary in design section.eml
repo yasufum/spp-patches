@@ -1,0 +1,84 @@
+From - Wed Jan  9 10:49:43 2019
+X-Account-Key: account1
+X-UIDL: 000092b956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2D194400D15
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 293AD7F368; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 2837F7F15E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1A29CEA73A3;
+	Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 0C9BCEA89EE;
+	Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 08/11] docs: add spp_primary in design section
+Date: Wed,  9 Jan 2019 10:49:29 +0900
+Message-Id: <1546998573-26108-9-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add descriptions for design of spp_primary.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview/design.rst | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/docs/guides/overview/design.rst b/docs/guides/overview/design.rst
+index 8a7f6b7..7706488 100644
+--- a/docs/guides/overview/design.rst
++++ b/docs/guides/overview/design.rst
+@@ -92,6 +92,29 @@ SPP CLI is able to communicate several ``spp-ctl`` to support multiple nodes
+ configuration.
+ 
+ 
++.. _spp_overview_design_spp_primary:
++
++SPP Primary
++-----------
++
++SPP is originally derived from
++`Client-Server Multi-process Example
++<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html#client-server-multi-process-example>`_
++of
++`Multi-process Sample Application
++<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html>`_
++in DPDK's sample applications.
++``spp_primary`` is a server process for other secondary processes and
++basically working as described in
++"How the Application Works" section of the sample application.
++
++However, there are also differences between ``spp_primary`` and
++the server process of the sample application.
++``spp_primary`` has no limitation of the number of secondary processes.
++It does not work for packet forwaring, but just provide rings and memory pools
++for secondary processes.
++
++
+ Reference
+ ---------
+ 
+-- 
+2.7.4
+
+
+

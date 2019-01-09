@@ -1,0 +1,64 @@
+From - Wed Jan  9 10:49:42 2019
+X-Account-Key: account1
+X-UIDL: 000092b656a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 00FCE400C28
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id F3E7423BB0A; Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id F348823B851
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id DD3C2EA72CD;
+	Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id C63DEEA6F01;
+	Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 04/11] docs: update overview section
+Date: Wed,  9 Jan 2019 10:49:25 +0900
+Message-Id: <1546998573-26108-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Change image size in overview section because the image is updated and
+needed to be adjusted.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview/overview.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/overview/overview.rst b/docs/guides/overview/overview.rst
+index e66c861..e012c38 100644
+--- a/docs/guides/overview/overview.rst
++++ b/docs/guides/overview/overview.rst
+@@ -13,7 +13,7 @@ functionality for Service Function Chaining in
+ NFV (Network Function Virtualization).
+ 
+ .. figure:: ../images/overview/spp_overview.*
+-    :width: 50%
++    :width: 95%
+ 
+     SPP overview
+ 
+-- 
+2.7.4
+
+
+

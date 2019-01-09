@@ -1,0 +1,122 @@
+From - Wed Jan  9 10:49:41 2019
+X-Account-Key: account1
+X-UIDL: 000092b456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id B53F9400C28
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id A7D157F368; Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id A6CEE7F15E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 99A5CEA728E;
+	Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 785CAEA6F01;
+	Wed,  9 Jan 2019 10:51:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 02/11] docs: move overview of spp-ctl to SPP overview
+Date: Wed,  9 Jan 2019 10:49:23 +0900
+Message-Id: <1546998573-26108-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Move overview of spp-ctl to SPP's overvew section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview/design.rst  | 17 +++++++++++++++++
+ docs/guides/spp-ctl/overview.rst | 32 --------------------------------
+ 2 files changed, 17 insertions(+), 32 deletions(-)
+
+diff --git a/docs/guides/overview/design.rst b/docs/guides/overview/design.rst
+index 486550d..9663a09 100644
+--- a/docs/guides/overview/design.rst
++++ b/docs/guides/overview/design.rst
+@@ -30,6 +30,23 @@ By using networking-spp and doing some of extra tunings for optimization, you
+ can deploy high-performance NFV services on OpenStack [2].
+ 
+ 
++SPP Controller
++--------------
++
++spp-ctl
++~~~~~~~
++
++``spp-ctl`` is designed for managing SPP from several controllers
++via REST-like APIs for users or other applications.
++
++There are several usecases where SPP is managed from other process without
++user inputs. For example, you need a intermediate process if you think of
++using SPP from a framework, such as OpenStack.
++`networking-spp
++<https://github.com/openstack/networking-spp>`_
++is a Neutron ML2 plugin for SPP and `spp-agent` works as a SPP controller.
++
++
+ Reference
+ ---------
+ 
+diff --git a/docs/guides/spp-ctl/overview.rst b/docs/guides/spp-ctl/overview.rst
+index 4c7181c..6b88f3b 100644
+--- a/docs/guides/spp-ctl/overview.rst
++++ b/docs/guides/spp-ctl/overview.rst
+@@ -6,38 +6,6 @@
+ spp-ctl
+ =======
+ 
+-Overview
+---------
+-
+-``spp-ctl`` is an alternative SPP controller which provides a REST-like
+-APIs.
+-
+-It maintains connections between SPP processes for managing them
+-via the REST-like APIs for users or other processes.
+-
+-Background and Motivation
+--------------------------
+-
+-``spp-ctl`` is designed for supporting to manage SPP from several
+-controllers.
+-
+-There are some usecases where SPP is managed from other
+-process without user inputs.
+-For example, you need a intermediate process if you think of using SPP
+-from a framework, such as OpenStack.
+-`networking-spp
+-<https://github.com/openstack/networking-spp>`_
+-is a Neutron ML2 plugin for SPP and `spp-agent` works as a
+-SPP controller.
+-
+-It is a problem to prepare several controllers for each of usages for
+-CLI, OpenStack or others because it would be hard to maintain for
+-updates.
+-
+-Spp-ctl is designed to solve the problem of several controllers with
+-application-independent REST APIs.
+-You can manage SPP by requesting via this APIs.
+-
+ Architecture
+ ------------
+ 
+-- 
+2.7.4
+
+
+

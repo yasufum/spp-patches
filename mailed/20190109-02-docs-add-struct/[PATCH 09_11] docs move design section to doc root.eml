@@ -1,0 +1,500 @@
+From - Wed Jan  9 10:49:44 2019
+X-Account-Key: account1
+X-UIDL: 000092bb56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 46F56400D15
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 3CCE67F368; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 3BAA47F15E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 238D5EA6F01;
+	Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 125B4EA8A28;
+	Wed,  9 Jan 2019 10:51:44 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 09/11] docs: move design section to doc root
+Date: Wed,  9 Jan 2019 10:49:30 +0900
+Message-Id: <1546998573-26108-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1546998573-26108-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Design section is a subsection of overview section. However, it should
+be moved to doc root if the number of SPP processes is increased.
+In general, it is not good to have much subsections for getting
+information.
+
+This update is to move design section from overview to the doc root.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/design/index.rst          |  15 ++++
+ docs/guides/design/spp.rst            |  37 ++++++++++
+ docs/guides/design/spp_controller.rst |  73 ++++++++++++++++++++
+ docs/guides/design/spp_primary.rst    |  26 +++++++
+ docs/guides/design/spp_secondary.rst  |  18 +++++
+ docs/guides/index.rst                 |   5 +-
+ docs/guides/overview.rst              |  26 +++++++
+ docs/guides/overview/design.rst       | 124 ----------------------------------
+ docs/guides/overview/index.rst        |  12 ----
+ docs/guides/overview/overview.rst     |  25 -------
+ 10 files changed, 198 insertions(+), 163 deletions(-)
+ create mode 100644 docs/guides/design/index.rst
+ create mode 100644 docs/guides/design/spp.rst
+ create mode 100644 docs/guides/design/spp_controller.rst
+ create mode 100644 docs/guides/design/spp_primary.rst
+ create mode 100644 docs/guides/design/spp_secondary.rst
+ create mode 100644 docs/guides/overview.rst
+ delete mode 100644 docs/guides/overview/design.rst
+ delete mode 100644 docs/guides/overview/index.rst
+ delete mode 100644 docs/guides/overview/overview.rst
+
+diff --git a/docs/guides/design/index.rst b/docs/guides/design/index.rst
+new file mode 100644
+index 0000000..68ebaa8
+--- /dev/null
++++ b/docs/guides/design/index.rst
+@@ -0,0 +1,15 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
++
++Design
++======
++
++.. toctree::
++   :maxdepth: 2
++   :numbered:
++
++   spp
++   spp_controller
++   spp_primary
++   spp_secondary
+diff --git a/docs/guides/design/spp.rst b/docs/guides/design/spp.rst
+new file mode 100644
+index 0000000..2c3ee46
+--- /dev/null
++++ b/docs/guides/design/spp.rst
+@@ -0,0 +1,37 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_overview_design:
++
++Soft Patch Panel
++================
++
++SPP is composed of several DPDK processes and controller processes for
++connecting each of client processes with high-throughput path of DPDK.
++:numref:`figure_spp_overview_design_all` shows SPP processes and client apps
++for describing overview of design of SPP. In this diagram, solid line arrows
++describe a data path for packet forwarding and it can be configured from
++controller via command messaging of blue dashed line arrows.
++
++.. _figure_spp_overview_design_all:
++
++.. figure:: ../images/overview/design/spp_overview_design_all.*
++   :width: 85%
++
++   Overview of design of SPP
++
++In terms of DPDK processes, SPP is derived from DPDK's multi-process sample
++application and it consists of a primary process and multiple secondary
++processes.
++SPP primary process is responsible for resource management, for example,
++initializing ports, mbufs or shared memory. On the other hand,
++secondary processes of ``spp_nfv`` are working for forwarding
++`[1]
++<https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_.
++
++
++Reference
++---------
++
++* [1] `Implementation and Testing of Soft Patch Panel
++  <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
+diff --git a/docs/guides/design/spp_controller.rst b/docs/guides/design/spp_controller.rst
+new file mode 100644
+index 0000000..95a8c5b
+--- /dev/null
++++ b/docs/guides/design/spp_controller.rst
+@@ -0,0 +1,73 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_overview_spp_controller:
++
++SPP Controller
++==============
++
++SPP is controlled from python based management framework. It consists of
++front-end CLI and back-end server process.
++SPP's front-end CLI provides a patch panel like interface for users.
++This CLI process parses user input and sends request to the back-end via REST
++APIs. It means that the back-end server process accepts requests from other
++than CLI. It enables developers to implement control interface such as GUI, or
++plugin for other framework.
++`networking-spp
++<https://github.com/openstack/networking-spp>`_
++is a Neutron ML2 plugin for using SPP with OpenStack.
++By using networking-spp and doing some of extra tunings for optimization, you
++can deploy high-performance NFV services on OpenStack
++`[1]
++<https://www.openstack.org/summit/vancouver-2018/summit-schedule/events/20826>`_.
++
++spp-ctl
++-------
++
++``spp-ctl`` is designed for managing SPP from several controllers
++via REST-like APIs for users or other applications.
++
++There are several usecases where SPP is managed from other process without
++user inputs. For example, you need a intermediate process if you think of
++using SPP from a framework, such as OpenStack.
++`networking-spp
++<https://github.com/openstack/networking-spp>`_
++is a Neutron ML2 plugin for SPP and `spp-agent` works as a SPP controller.
++
++As shown in :numref:`figure_spp_overview_design_spp_ctl`,
++``spp-ctl`` behaves as a TCP server for SPP primary and secondary processes,
++and REST API server for client applications.
++It should be launched in advance to setup connections with other processes.
++``spp-ctl``  uses three TCP ports for primary, secondaries and clients.
++The default port numbers are ``5555``, ``6666`` and ``7777``.
++
++.. _figure_spp_overview_design_spp_ctl:
++
++.. figure:: ../images/overview/design/spp_overview_design_spp-ctl.*
++   :width: 48%
++
++   Spp-ctl as a REST API server
++
++SPP CLI
++-------
++
++SPP CLI is a user interface for managing SPP and implemented as a client of
++``spp-ctl``. It provides several kinds of command for inspecting SPP
++processes, changing path configuration or showing statistics of packets.
++However, you do not need to use SPP CLI if you use ``netowrking-spp`` or
++other client applications of ``spp-ctl``. SPP CLI is one of them.
++
++From SPP CLI, user is able to configure paths as similar as
++patch panel like manner by sending commands to each of SPP secondary processes.
++``patch phy:0 ring:0`` is to connect two ports, ``phy:0`` and ``ring:0``.
++
++As described in :ref:`Getting Started<spp_setup_howto_use_spp_cli>` guide,
++SPP CLI is able to communicate several ``spp-ctl`` to support multiple nodes
++configuration.
++
++
++Reference
++---------
++
++* [1] `Integrating OpenStack with DPDK for High Performance Applications
++  <https://www.openstack.org/summit/vancouver-2018/summit-schedule/events/20826>`_
+diff --git a/docs/guides/design/spp_primary.rst b/docs/guides/design/spp_primary.rst
+new file mode 100644
+index 0000000..79220e7
+--- /dev/null
++++ b/docs/guides/design/spp_primary.rst
+@@ -0,0 +1,26 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _spp_overview_design_spp_primary:
++
++SPP Primary
++===========
++
++SPP is originally derived from
++`Client-Server Multi-process Example
++<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html#client-server-multi-process-example>`_
++of
++`Multi-process Sample Application
++<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html>`_
++in DPDK's sample applications.
++``spp_primary`` is a server process for other secondary processes and
++basically working as described in
++"How the Application Works" section of the sample application.
++
++However, there are also differences between ``spp_primary`` and
++the server process of the sample application.
++``spp_primary`` has no limitation of the number of secondary processes.
++It does not work for packet forwaring, but just provide rings and memory pools
++for secondary processes.
+diff --git a/docs/guides/design/spp_secondary.rst b/docs/guides/design/spp_secondary.rst
+new file mode 100644
+index 0000000..d83ac6a
+--- /dev/null
++++ b/docs/guides/design/spp_secondary.rst
+@@ -0,0 +1,18 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _spp_overview_design_spp_secondary:
++
++SPP Secondary
++=============
++
++SPP secondary process is ...
++
++
++.. _spp_overview_design_spp_secondary_nfv:
++
++spp_nfv
++-------
++
++``spp_nfv`` is ...
+diff --git a/docs/guides/index.rst b/docs/guides/index.rst
+index 99897aa..c2be94c 100644
+--- a/docs/guides/index.rst
++++ b/docs/guides/index.rst
+@@ -5,9 +5,10 @@ SPP documentation
+ =================
+ 
+ .. toctree::
+-   :maxdepth: 1
++   :maxdepth: 2
+ 
+-   overview/index
++   overview
++   design/index
+    setup/index
+    commands/index
+    tools/index
+diff --git a/docs/guides/overview.rst b/docs/guides/overview.rst
+new file mode 100644
+index 0000000..d354706
+--- /dev/null
++++ b/docs/guides/overview.rst
+@@ -0,0 +1,26 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_overview_overview:
++
++Overview
++========
++
++`Soft Patch Panel
++<http://dpdk.org/browse/apps/spp/>`_
++(SPP) is a DPDK application for providing switching
++functionality for Service Function Chaining in
++NFV (Network Function Virtualization).
++
++.. figure:: ./images/overview/spp_overview.*
++    :width: 95%
++
++    SPP overview
++
++With SPP, user is able to configure network easily and dynamically
++via simple patch panel like interface.
++
++The goal of SPP is to easily interconnect NFV applications via high
++thoughput network interfaces provided by DPDK and change configurations
++of resources dynamically to applications to build pipelines.
+diff --git a/docs/guides/overview/design.rst b/docs/guides/overview/design.rst
+deleted file mode 100644
+index 7706488..0000000
+--- a/docs/guides/overview/design.rst
++++ /dev/null
+@@ -1,124 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
+-    Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+-
+-.. _spp_overview_design:
+-
+-Design
+-======
+-
+-SPP is composed of several DPDK processes and controller processes for
+-connecting each of client processes with high-throughput path of DPDK.
+-:numref:`figure_spp_overview_design_all` shows SPP processes and client apps
+-for describing overview of design of SPP. In this diagram, solid line arrows
+-describe a data path for packet forwarding and it can be configured from
+-controller via command messaging of blue dashed line arrows.
+-
+-.. _figure_spp_overview_design_all:
+-
+-.. figure:: ../images/overview/design/spp_overview_design_all.*
+-   :width: 85%
+-
+-   Overview of design of SPP
+-
+-In terms of DPDK processes, SPP is derived from DPDK's multi-process sample
+-application and it consists of a primary process and multiple secondary
+-processes.
+-SPP primary process is responsible for resource management, for example,
+-initializing ports, mbufs or shared memory. On the other hand,
+-secondary processes of ``spp_nfv`` are working for forwarding [1].
+-
+-
+-.. _spp_overview_spp_controller:
+-
+-SPP Controller
+---------------
+-
+-SPP is controlled from python based management framework. It consists of
+-front-end CLI and back-end server process.
+-SPP's front-end CLI provides a patch panel like interface for users.
+-This CLI process parses user input and sends request to the back-end via REST
+-APIs. It means that the back-end server process accepts requests from other
+-than CLI. It enables developers to implement control interface such as GUI, or
+-plugin for other framework.
+-`networking-spp
+-<https://github.com/openstack/networking-spp>`_
+-is a Neutron ML2 plugin for using SPP with OpenStack.
+-By using networking-spp and doing some of extra tunings for optimization, you
+-can deploy high-performance NFV services on OpenStack [2].
+-
+-spp-ctl
+-~~~~~~~
+-
+-``spp-ctl`` is designed for managing SPP from several controllers
+-via REST-like APIs for users or other applications.
+-
+-There are several usecases where SPP is managed from other process without
+-user inputs. For example, you need a intermediate process if you think of
+-using SPP from a framework, such as OpenStack.
+-`networking-spp
+-<https://github.com/openstack/networking-spp>`_
+-is a Neutron ML2 plugin for SPP and `spp-agent` works as a SPP controller.
+-
+-As shown in :numref:`figure_spp_overview_design_spp_ctl`,
+-``spp-ctl`` behaves as a TCP server for SPP primary and secondary processes,
+-and REST API server for client applications.
+-It should be launched in advance to setup connections with other processes.
+-``spp-ctl``  uses three TCP ports for primary, secondaries and clients.
+-The default port numbers are ``5555``, ``6666`` and ``7777``.
+-
+-.. _figure_spp_overview_design_spp_ctl:
+-
+-.. figure:: ../images/overview/design/spp_overview_design_spp-ctl.*
+-   :width: 48%
+-
+-   Spp-ctl as a REST API server
+-
+-SPP CLI
+-~~~~~~~
+-
+-SPP CLI is a user interface for managing SPP and implemented as a client of
+-``spp-ctl``. It provides several kinds of command for inspecting SPP
+-processes, changing path configuration or showing statistics of packets.
+-However, you do not need to use SPP CLI if you use ``netowrking-spp`` or
+-other client applications of ``spp-ctl``. SPP CLI is one of them.
+-
+-From SPP CLI, user is able to configure paths as similar as
+-patch panel like manner by sending commands to each of SPP secondary processes.
+-``patch phy:0 ring:0`` is to connect two ports, ``phy:0`` and ``ring:0``.
+-
+-As described in :ref:`Getting Started<spp_setup_howto_use_spp_cli>` guide,
+-SPP CLI is able to communicate several ``spp-ctl`` to support multiple nodes
+-configuration.
+-
+-
+-.. _spp_overview_design_spp_primary:
+-
+-SPP Primary
+------------
+-
+-SPP is originally derived from
+-`Client-Server Multi-process Example
+-<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html#client-server-multi-process-example>`_
+-of
+-`Multi-process Sample Application
+-<https://doc.dpdk.org/guides/sample_app_ug/multi_process.html>`_
+-in DPDK's sample applications.
+-``spp_primary`` is a server process for other secondary processes and
+-basically working as described in
+-"How the Application Works" section of the sample application.
+-
+-However, there are also differences between ``spp_primary`` and
+-the server process of the sample application.
+-``spp_primary`` has no limitation of the number of secondary processes.
+-It does not work for packet forwaring, but just provide rings and memory pools
+-for secondary processes.
+-
+-
+-Reference
+----------
+-
+-* [1] `Implementation and Testing of Soft Patch Panel
+-  <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
+-* [2] `Integrating OpenStack with DPDK for High Performance Applications
+-  <https://www.openstack.org/summit/vancouver-2018/summit-schedule/events/20826>`_
+diff --git a/docs/guides/overview/index.rst b/docs/guides/overview/index.rst
+deleted file mode 100644
+index a4c6f70..0000000
+--- a/docs/guides/overview/index.rst
++++ /dev/null
+@@ -1,12 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+-
+-Soft Patch Panel
+-================
+-
+-.. toctree::
+-   :maxdepth: 2
+-   :numbered:
+-
+-   overview
+-   design
+diff --git a/docs/guides/overview/overview.rst b/docs/guides/overview/overview.rst
+deleted file mode 100644
+index e012c38..0000000
+--- a/docs/guides/overview/overview.rst
++++ /dev/null
+@@ -1,25 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
+-
+-.. _spp_overview_overview:
+-
+-Overview
+-========
+-
+-`Soft Patch Panel
+-<http://dpdk.org/browse/apps/spp/>`_
+-(SPP) is a DPDK application for providing switching
+-functionality for Service Function Chaining in
+-NFV (Network Function Virtualization).
+-
+-.. figure:: ../images/overview/spp_overview.*
+-    :width: 95%
+-
+-    SPP overview
+-
+-With SPP, user is able to configure network easily and dynamically
+-via simple patch panel like interface.
+-
+-The goal of SPP is to easily interconnect NFV applications via high
+-thoughput network interfaces provided by DPDK and change configurations
+-of resources dynamically to applications to build pipelines.
+-- 
+2.7.4
+
+
+
