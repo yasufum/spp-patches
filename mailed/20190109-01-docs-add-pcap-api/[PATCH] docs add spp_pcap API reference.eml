@@ -1,0 +1,286 @@
+From - Wed Jan  9 10:49:40 2019
+X-Account-Key: account1
+X-UIDL: 000092b156a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 59C54400186
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed,  9 Jan 2019 10:51:24 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 582C97F368; Wed,  9 Jan 2019 10:51:24 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 56D4D7F15E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed,  9 Jan 2019 10:51:24 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 481F0EA728E;
+	Wed,  9 Jan 2019 10:51:24 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 2E6E2EA6F01;
+	Wed,  9 Jan 2019 10:51:24 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: Itsuro Oda <oda@valinux.co.jp>
+Subject: [PATCH] docs: add spp_pcap API reference
+Date: Wed,  9 Jan 2019 10:49:13 +0900
+Message-Id: <1546998553-26054-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Update REST API reference for spp_pcap.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp-ctl/api-reference.rst | 228 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 228 insertions(+)
+
+diff --git a/docs/guides/spp-ctl/api-reference.rst b/docs/guides/spp-ctl/api-reference.rst
+index b0d367b..cb51100 100644
+--- a/docs/guides/spp-ctl/api-reference.rst
++++ b/docs/guides/spp-ctl/api-reference.rst
+@@ -1484,3 +1484,231 @@ action is ``detach``
+ .. code-block:: none
+ 
+     sec {client_id};port del {port} {dir} {name}
++
++
++API for spp_pcap
++----------------
++
++GET /v1/pcaps/{client_id}
++~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Get the information of the ``spp_pcap`` process.
++
++* Normal response codes: 200
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_pcap_get:
++
++.. table:: Request parameter for getting spp_pcap info.
++
++    +-----------+---------+-------------------------------------+
++    | Name      | Type    | Description                         |
++    |           |         |                                     |
++    +===========+=========+=====================================+
++    | client_id | integer | client id.                          |
++    +-----------+---------+-------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X GET -H 'application/json' \
++    http://127.0.0.1:7777/v1/pcaps/1
++
++Response
++^^^^^^^^
++
++.. _table_spp_ctl_spp_pcap_res:
++
++.. table:: Response params of getting spp_pcap.
++
++    +------------------+---------+-----------------------------------------------+
++    | Name             | Type    | Description                                   |
++    |                  |         |                                               |
++    +==================+=========+===============================================+
++    | client-id        | integer | client id.                                    |
++    +------------------+---------+-----------------------------------------------+
++    | status           | string  | status of the process. "running" or "idle".   |
++    +------------------+---------+-----------------------------------------------+
++    | core             | array   | an array of core objects in the process.      |
++    +------------------+---------+-----------------------------------------------+
++
++core object:
++
++.. _table_spp_ctl_spp_pcap_res_core:
++
++.. table:: Core objects of getting spp_pcap.
++
++    +----------+---------+----------------------------------------------------------------------+
++    | Name     | Type    | Description                                                          |
++    |          |         |                                                                      |
++    +==========+=========+======================================================================+
++    | core     | integer | core id                                                              |
++    +----------+---------+----------------------------------------------------------------------+
++    | role     | string  | role of the task running on the core. "receive" or "write".          |
++    +----------+---------+----------------------------------------------------------------------+
++    | rx_port  | array   | an array of port object for caputure. This member exists if role is  |
++    |          |         | "recieve". Note that there is only a port object in the array.       |
++    +----------+---------+----------------------------------------------------------------------+
++    | filename | string  | a path name of output file. This member exists if role is "write".   |
++    +----------+---------+----------------------------------------------------------------------+
++
++Note that there is only a port object in the array
++
++port object:
++
++.. _table_spp_ctl_spp_pcap_res_port:
++
++.. table:: Port objects of getting spp_pcap.
++
++    +---------+---------+---------------------------------------------------------------+
++    | Name    | Type    | Description                                                   |
++    |         |         |                                                               |
++    +=========+=========+===============================================================+
++    | port    | string  | port id. port id is the form {interface_type}:{interface_id}. |
++    +---------+---------+---------------------------------------------------------------+
++
++Response example
++^^^^^^^^^^^^^^^^
++
++.. code-block:: json
++
++    {
++      "client-id": 1,
++      "status": "running",
++      "core": [
++        {
++          "core": 2,
++          "role": "receive",
++          "rx_port": [
++            {
++            "port": "phy:0"
++            }
++          ]
++        },
++        {
++          "core": 3,
++          "role": "write",
++          "filename": "/tmp/spp_pcap.20181108110600.ring0.1.2.pcap"
++        }
++      ]
++    }
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++.. code-block:: none
++
++    pcap {client_id}; status
++
++PUT /v1/pcaps/{client_id}/capture
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Start or Stop capturing.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_pcap_capture:
++
++.. table:: Request params of capture of spp_pcap.
++
++    +-----------+---------+---------------------------------+
++    | Name      | Type    | Description                     |
++    |           |         |                                 |
++    +===========+=========+=================================+
++    | client_id | integer | client id.                      |
++    +-----------+---------+---------------------------------+
++
++Request(body)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_spp_pcap_capture_body:
++
++.. table:: Request body params of capture of spp_pcap.
++
++    +--------+--------+-------------------------------------+
++    | Name   | Type   | Description                         |
++    |        |        |                                     |
++    +========+========+=====================================+
++    | action | string | ``start`` or ``stop``.              |
++    +--------+--------+-------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X PUT -H 'application/json' \
++    -d '{"action": "start"}' \
++    http://127.0.0.1:7777/v1/pcaps/1/capture
++
++Response
++^^^^^^^^
++
++There is no body content for the response of a successful ``PUT`` request.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++action is ``start``
++
++.. code-block:: none
++
++    pcap {client_id}; start
++
++action is ``stop``
++
++.. code-block:: none
++
++    pcap {client_id}; stop
++
++
++DELETE /v1/pcaps/{client_id}
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Terminate ``spp_pcap`` process.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++Request(path)
++^^^^^^^^^^^^^
++
++.. _table_spp_ctl_pcap_delete:
++
++.. table:: Request parameter for terminating spp_pcap.
++
++    +-----------+---------+-------------------------------------+
++    | Name      | Type    | Description                         |
++    |           |         |                                     |
++    +===========+=========+=====================================+
++    | client_id | integer | client id.                          |
++    +-----------+---------+-------------------------------------+
++
++Request example
++^^^^^^^^^^^^^^^
++
++.. code-block:: console
++
++    curl -X DELETE -H 'application/json' \
++    http://127.0.0.1:7777/v1/pcaps/1
++
++Response example
++^^^^^^^^^^^^^^^^
++
++There is no body content for the response of a successful ``DELETE`` request.
++
++Equivalent CLI command
++^^^^^^^^^^^^^^^^^^^^^^
++
++.. code-block:: none
++
++    pcap {client_id}; exit
+-- 
+2.7.4
+
+
+
