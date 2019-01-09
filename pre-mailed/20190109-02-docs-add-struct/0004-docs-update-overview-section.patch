@@ -1,0 +1,29 @@
+From ef21edf12df2ae3a39724a3033164c449cfd7da6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 8 Jan 2019 10:04:06 +0900
+Subject: [PATCH 04/11] docs: update overview section
+
+Change image size in overview section because the image is updated and
+needed to be adjusted.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/overview/overview.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/overview/overview.rst b/docs/guides/overview/overview.rst
+index e66c861..e012c38 100644
+--- a/docs/guides/overview/overview.rst
++++ b/docs/guides/overview/overview.rst
+@@ -13,7 +13,7 @@ functionality for Service Function Chaining in
+ NFV (Network Function Virtualization).
+ 
+ .. figure:: ../images/overview/spp_overview.*
+-    :width: 50%
++    :width: 95%
+ 
+     SPP overview
+ 
+-- 
+2.7.4
+

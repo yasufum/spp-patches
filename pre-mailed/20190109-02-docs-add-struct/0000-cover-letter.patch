@@ -1,0 +1,110 @@
+From 620b0f7d8f82e587b675e7e2e0f42791704eb29d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 9 Jan 2019 09:03:18 +0900
+Subject: Update docs structure
+
+Hi,
+
+This series of patches is to update structure of documentation as I
+announced in [1].
+
+Here is the contents of updated documentation. Previous `Soft Patch
+Panel` section is divided into `Overview` and `Design` because `Design`
+has become to have much descriptions for increasing SPP processes. `Use
+case` section is also moved from `Setup Guide` to doc root for the same
+reason. 
+
+- Overview
+- Design
+  1. Soft Patch Panel
+  2. SPP Controller
+  3. SPP Primary
+  4. SPP Secondary
+- Setup Guide
+  1. Getting Started
+  2. How to Use
+  3. Performance Optimization
+- Use Cases
+  1. spp_nfv
+- SPP Commands
+  1. Primary Commands
+  2. Secondary Commands
+  3. Common Commands
+  4. Experimental Commands
+- Tools
+  1. SPP Container
+- SPP VF
+  1. Overview
+  2. Design
+  3. Getting Started
+  4. Use Cases
+  5. Explanation
+- API Reference
+  1. spp-ctl REST API
+
+Descriptions for spp-ctl are moved to each of sections, and API
+reference is only remained as `API Reference` section because it could
+contain APIs of other processes might be released in a future. However,
+`SPP VF` section is remained because it is updated to add descriptions
+of new feature `spp_pcap` soon. It is moved to each of sections after
+this update.
+
+[1] https://mails.dpdk.org/archives/spp/2018-December/001036.html
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (11):
+  docs: change structure of overview section
+  docs: move overview of spp-ctl to SPP overview
+  docs: update image of SPP overview
+  docs: update overview section
+  docs: add overview image for design section
+  docs: add image of design of spp-ctl
+  docs: add SPP controller in design section
+  docs: add spp_primary in design section
+  docs: move design section to doc root
+  docs: move usecases to doc root
+  docs: remove spp-ctl section
+
+ docs/guides/api_ref/index.rst                      |   11 +
+ docs/guides/api_ref/spp-ctl.rst                    | 1723 ++++++++++
+ docs/guides/design/index.rst                       |   15 +
+ docs/guides/design/spp.rst                         |   37 +
+ docs/guides/design/spp_controller.rst              |   87 +
+ docs/guides/design/spp_primary.rst                 |   26 +
+ docs/guides/design/spp_secondary.rst               |   18 +
+ .../overview/design/spp_overview_design_all.svg    |  861 +++++
+ .../design/spp_overview_design_spp-ctl.svg         |  678 ++++
+ docs/guides/images/overview/spp_overview.svg       | 3465 ++++++++++++++++++--
+ docs/guides/index.rst                              |    7 +-
+ docs/guides/overview.rst                           |   47 +-
+ docs/guides/setup/getting_started.rst              |   21 +-
+ docs/guides/setup/howto_use.rst                    |   19 +-
+ docs/guides/setup/index.rst                        |    1 -
+ docs/guides/setup/use_cases.rst                    |  670 ----
+ docs/guides/spp-ctl/api-reference.rst              | 1714 ----------
+ docs/guides/spp-ctl/index.rst                      |   14 -
+ docs/guides/spp-ctl/overview.rst                   |  119 -
+ docs/guides/use_cases/index.rst                    |   11 +
+ docs/guides/use_cases/spp_nfv.rst                  |  671 ++++
+ 21 files changed, 7394 insertions(+), 2821 deletions(-)
+ create mode 100644 docs/guides/api_ref/index.rst
+ create mode 100644 docs/guides/api_ref/spp-ctl.rst
+ create mode 100644 docs/guides/design/index.rst
+ create mode 100644 docs/guides/design/spp.rst
+ create mode 100644 docs/guides/design/spp_controller.rst
+ create mode 100644 docs/guides/design/spp_primary.rst
+ create mode 100644 docs/guides/design/spp_secondary.rst
+ create mode 100644 docs/guides/images/overview/design/spp_overview_design_all.svg
+ create mode 100644 docs/guides/images/overview/design/spp_overview_design_spp-ctl.svg
+ delete mode 100644 docs/guides/setup/use_cases.rst
+ delete mode 100644 docs/guides/spp-ctl/api-reference.rst
+ delete mode 100644 docs/guides/spp-ctl/index.rst
+ delete mode 100644 docs/guides/spp-ctl/overview.rst
+ create mode 100644 docs/guides/use_cases/index.rst
+ create mode 100644 docs/guides/use_cases/spp_nfv.rst
+
+-- 
+2.7.4
+
