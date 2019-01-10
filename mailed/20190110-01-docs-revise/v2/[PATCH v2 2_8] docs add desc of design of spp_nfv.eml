@@ -1,0 +1,122 @@
+From - Thu Jan 10 19:25:53 2019
+X-Account-Key: account1
+X-UIDL: 000093fb56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A6801400D13
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id A4D8623BB19; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id A442B23BAFA
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 9293A63892D;
+	Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 83D05638919;
+	Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2 2/8] docs: add desc of design of spp_nfv
+Date: Thu, 10 Jan 2019 19:25:41 +0900
+Message-Id: <1547115947-27671-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547115947-27671-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547086216-27422-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1547115947-27671-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add descriptions of overview of design of spp_nfv in design section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/design/spp_secondary.rst | 52 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/design/spp_secondary.rst b/docs/guides/design/spp_secondary.rst
+index b3bb270..9d11f74 100644
+--- a/docs/guides/design/spp_secondary.rst
++++ b/docs/guides/design/spp_secondary.rst
+@@ -2,7 +2,7 @@
+     Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ 
+-.. _spp_design_spp_secondary:
++.. _spp_design_spp_sec:
+ 
+ SPP Secondary
+ =============
+@@ -32,9 +32,55 @@ a simple pseudo SR-IOV feature for classifying or merging packets.
+ ``spp_mirror`` is to duplicate incoming packets to several destination ports.
+ 
+ 
+-.. _spp_design_spp_secondary_nfv:
++.. _spp_design_spp_sec_nfv:
+ 
+ spp_nfv
+ -------
+ 
+-``spp_nfv`` is ...
++``spp_nfv`` is the simplest SPP secondary to connect two of processes or other
++feature ports. Each of ``spp_nfv`` processes has a list of entries including
++source and destination ports, and forwards packets by referring the list.
++It means that one ``spp_nfv`` might have several forwarding paths, but
++throughput is gradually decreased if it has too much paths.
++This list is implemented as an array of ``port`` structure and named
++``ports_fwd_array``. The index of ``ports_fwd_array`` is the same as unique
++port ID.
++
++.. code-block:: c
++
++    struct port {
++      int in_port_id;
++      int out_port_id;
++      ...
++    };
++    ...
++
++    /* ports_fwd_array is an array of port */
++    static struct port ports_fwd_array[RTE_MAX_ETHPORTS];
++
++:numref:`figure_design_spp_sec_nfv_port_fwd_array` describes an example of
++forwarding between ports. In this case, ``spp_nfv`` is responsible for
++forwarding from ``port#0`` to ``port#2``. You notice that each of ``out_port``
++entry has the destination port ID.
++
++.. _figure_design_spp_sec_nfv_port_fwd_array:
++
++.. figure:: ../images/design/spp_design_spp_sec_nfv.*
++   :width: 75%
++
++   Forwarding by referring ports_fwd_array
++
++``spp_nfv`` consists of main thread and worker thread to update the entry
++while running the process. Main thread is for waiting user command for
++updating the entry. Worker thread is for dedicating packet forwarding.
++:numref:`figure_design_spp_sec_nfv_threads` describes tasks in each of
++threads. Worker thread is launched from main thread after initialization.
++In worker thread, it starts forwarding if user send forward command and
++main thread accepts it.
++
++.. _figure_design_spp_sec_nfv_threads:
++
++.. figure:: ../images/design/spp_design_spp_sec_nfv_threads.*
++   :width: 70%
++
++   Main thread and worker thread in spp_nfv
+-- 
+2.7.4
+
+
+

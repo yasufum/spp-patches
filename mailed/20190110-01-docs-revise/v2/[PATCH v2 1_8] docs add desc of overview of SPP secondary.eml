@@ -1,0 +1,97 @@
+From - Thu Jan 10 19:25:52 2019
+X-Account-Key: account1
+X-UIDL: 000093fa56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A1702400D13
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 9E7BB23BB19; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 9DD5323BAFA
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 8C19863892A;
+	Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 7DEEF638909;
+	Thu, 10 Jan 2019 19:27:58 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH v2 1/8] docs: add desc of overview of SPP secondary
+Date: Thu, 10 Jan 2019 19:25:40 +0900
+Message-Id: <1547115947-27671-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547115947-27671-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547086216-27422-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+ <1547115947-27671-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add descriptions of overview of SPP secondary processes in design
+section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/design/spp_secondary.rst | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/design/spp_secondary.rst b/docs/guides/design/spp_secondary.rst
+index d83ac6a..b3bb270 100644
+--- a/docs/guides/design/spp_secondary.rst
++++ b/docs/guides/design/spp_secondary.rst
+@@ -2,15 +2,37 @@
+     Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ 
+-.. _spp_overview_design_spp_secondary:
++.. _spp_design_spp_secondary:
+ 
+ SPP Secondary
+ =============
+ 
+-SPP secondary process is ...
++SPP secondary process is a worker process in client-server multp-process
++application model. Basically, the role of secondary process is to connenct
++each of application running on host, containers or VMs for packet forwarding.
++Spp secondary process forwards packets from source port to destination port
++with DPDK's high-performance forwarding mechanizm. In other word, it behaves
++as a cable to connect two patches ports.
+ 
++All of secondary processes are able to attach ring PMD and vhost PMD ports
++for sending or receiving packets with other processes. Ring port is used to
++communicate with a process running on host or container if it is implemented
++as secondary process to access shared ring memory.
++Vhost port is used for a process on container or VM and implemented as primary
++process, and no need to access shared memory of SPP primary.
+ 
+-.. _spp_overview_design_spp_secondary_nfv:
++In addition to the basic forwarding, SPP secondary process provides several
++networking features. One of the typical example is packet cauture.
++``spp_nfv`` is the simplest SPP secondary and used to connect two of processes
++or other feature ports including PCAP PMD port. PCAP PMD is to dump packets to
++a file or retrieve from.
++
++There are more specific or funcional features than ``spp_nfv``. ``spp_vf`` is
++a simple pseudo SR-IOV feature for classifying or merging packets.
++``spp_mirror`` is to duplicate incoming packets to several destination ports.
++
++
++.. _spp_design_spp_secondary_nfv:
+ 
+ spp_nfv
+ -------
+-- 
+2.7.4
+
+
+
