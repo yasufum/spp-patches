@@ -1,0 +1,179 @@
+From 893352b812b06c5ff0ad888509f669e54ccb9e16 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 10 Jan 2019 11:10:13 +0900
+Subject: [PATCH v2 5/8] docs: adjust size of images
+
+Font size in some of images is too small because of inappropriate
+ratio. This update is to adjust the size of image ratio.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/design/spp_secondary.rst       |  2 +-
+ docs/guides/setup/howto_use.rst            |  2 +-
+ docs/guides/tools/sppc/getting_started.rst |  2 +-
+ docs/guides/tools/sppc/overview.rst        |  2 +-
+ docs/guides/tools/sppc/usecases.rst        |  6 +++---
+ docs/guides/use_cases/spp_nfv.rst          | 16 ++++++++--------
+ 6 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/docs/guides/design/spp_secondary.rst b/docs/guides/design/spp_secondary.rst
+index 9d11f74..a784e10 100644
+--- a/docs/guides/design/spp_secondary.rst
++++ b/docs/guides/design/spp_secondary.rst
+@@ -66,7 +66,7 @@ entry has the destination port ID.
+ .. _figure_design_spp_sec_nfv_port_fwd_array:
+ 
+ .. figure:: ../images/design/spp_design_spp_sec_nfv.*
+-   :width: 75%
++   :width: 80%
+ 
+    Forwarding by referring ports_fwd_array
+ 
+diff --git a/docs/guides/setup/howto_use.rst b/docs/guides/setup/howto_use.rst
+index cbc20af..51ad8da 100644
+--- a/docs/guides/setup/howto_use.rst
++++ b/docs/guides/setup/howto_use.rst
+@@ -129,7 +129,7 @@ soure or destination of phy ports.
+ .. _figure_spp_howto_multi_spp:
+ 
+ .. figure:: ../images/setup/howto_use/spp_howto_multi_spp.*
+-   :width: 70%
++   :width: 80%
+ 
+    Multiple SPP nodes
+ 
+diff --git a/docs/guides/tools/sppc/getting_started.rst b/docs/guides/tools/sppc/getting_started.rst
+index 0ae0978..c0970a3 100644
+--- a/docs/guides/tools/sppc/getting_started.rst
++++ b/docs/guides/tools/sppc/getting_started.rst
+@@ -277,7 +277,7 @@ and start forwarding from testpmd.
+ .. _figure_sppc_gsg_testpmd:
+ 
+ .. figure:: ../../images/tools/sppc/sppc_gsg_testpmd.*
+-   :width: 50%
++   :width: 58%
+ 
+    SPP and testpmd on containers
+ 
+diff --git a/docs/guides/tools/sppc/overview.rst b/docs/guides/tools/sppc/overview.rst
+index e4b3b62..043bc8d 100644
+--- a/docs/guides/tools/sppc/overview.rst
++++ b/docs/guides/tools/sppc/overview.rst
+@@ -22,6 +22,6 @@ an app container.
+ .. _figure_sppc_overview:
+ 
+ .. figure:: ../../images/tools/sppc/sppc_overview.*
+-   :width: 85%
++   :width: 95%
+ 
+    SPP container overview
+diff --git a/docs/guides/tools/sppc/usecases.rst b/docs/guides/tools/sppc/usecases.rst
+index 7fadf22..216c2bc 100644
+--- a/docs/guides/tools/sppc/usecases.rst
++++ b/docs/guides/tools/sppc/usecases.rst
+@@ -44,7 +44,7 @@ all of app container processes run on a single node.
+ .. _figure_sppc_usecase_vhost:
+ 
+ .. figure:: ../../images/tools/sppc/sppc_usecase_vhost.*
+-    :width: 50%
++    :width: 58%
+ 
+     Test of vhost PMD in a single node
+ 
+@@ -285,7 +285,7 @@ as described in next sections.
+ .. _figure_sppc_usecase_l2fwdpktgen:
+ 
+ .. figure:: ../../images/tools/sppc/sppc_usecase_l2fwdpktgen.*
+-    :width: 85%
++    :width: 95%
+ 
+     Chainning pktgen and l2fwd
+ 
+@@ -406,7 +406,7 @@ It is totally 7 lcores while the maximum number is 14.
+ .. _figure_sppc_usecase_l2fwdpktgen_less:
+ 
+ .. figure:: ../../images/tools/sppc/sppc_usecase_l2fwdpktgen_less.*
+-    :width: 85%
++    :width: 95%
+ 
+     Pktgen and l2fwd using less lcores
+ 
+diff --git a/docs/guides/use_cases/spp_nfv.rst b/docs/guides/use_cases/spp_nfv.rst
+index d9d922c..3e31508 100644
+--- a/docs/guides/use_cases/spp_nfv.rst
++++ b/docs/guides/use_cases/spp_nfv.rst
+@@ -64,7 +64,7 @@ patches as you defined.
+ .. _figure_spp_nfv_as_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_nfv_l2fwd.*
+-   :width: 52%
++   :width: 60%
+ 
+    spp_nfv as l2fwd
+ 
+@@ -134,7 +134,7 @@ from ``phy:1`` to ``phy:0`` for ``nfv 2``.
+ .. _figure_spp_two_nfv_as_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_two_nfv_l2fwd.*
+-   :width: 52%
++   :width: 60%
+ 
+    Two spp_nfv as l2fwd
+ 
+@@ -159,7 +159,7 @@ Patch ``phy:0`` to ``phy:0`` for ``nfv 1`` and
+ .. _figure_spp_two_nfv_loopback:
+ 
+ .. figure:: ../images/setup/use_cases/spp_two_nfv_loopback.*
+-   :width: 52%
++   :width: 62%
+ 
+    Two spp_nfv for loopback
+ 
+@@ -233,7 +233,7 @@ Then, connect it with ``patch`` subcommand.
+ .. _figure_spp_uni_directional_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_unidir_l2fwd.*
+-   :width: 52%
++   :width: 72%
+ 
+    Uni-Directional l2fwd
+ 
+@@ -296,7 +296,7 @@ Then, add ``ring:0`` and ``ring:1`` to ``nfv 2``.
+ .. _figure_spp_bi_directional_l2fwd:
+ 
+ .. figure:: ../images/setup/use_cases/spp_bidir_l2fwd.*
+-   :width: 52%
++   :width: 72%
+ 
+    Bi-Directional l2fwd
+ 
+@@ -370,7 +370,7 @@ with ``nfv 2``.
+ .. _figure_spp_uni_directional_l2fwd_vhost:
+ 
+ .. figure:: ../images/setup/use_cases/spp_unidir_l2fwd_vhost.*
+-   :width: 52%
++   :width: 72%
+ 
+    Uni-Directional l2fwd with vhost
+ 
+@@ -430,7 +430,7 @@ As the first usecase, add a pcap PMD and capture incoming packets from
+ .. _figure_spp_pcap_incoming:
+ 
+ .. figure:: ../images/setup/use_cases/spp_pcap_incoming.*
+-   :width: 50%
++   :width: 60%
+ 
+    Rapture incoming packets
+ 
+@@ -473,7 +473,7 @@ Then, add pcap PMD ``pcap:2`` to another ``spp_nfv``.
+ .. _figure_spp_pcap_restoring:
+ 
+ .. figure:: ../images/setup/use_cases/spp_pcap_restoring.*
+-   :width: 52%
++   :width: 60%
+ 
+    Restore dumped packets
+ 
+-- 
+2.7.4
+

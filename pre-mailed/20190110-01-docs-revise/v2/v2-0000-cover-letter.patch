@@ -1,0 +1,44 @@
+From 29d1ad8b7f871409770ad626bad310e6334e73dc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 10 Jan 2019 19:07:59 +0900
+Subject: [PATCH v2 0/8] Revise documentation
+
+Hi,
+
+This is v2 for correcting the size of text boxes in diagrams. On
+windows or mac, font size is different from linux environment in
+firefox and chrome. Right hand side of text is over the boundary
+of text box. This update is to change the size and to be displayed
+correctly.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (8):
+  docs: add desc of overview of SPP secondary
+  docs: add desc of design of spp_nfv
+  docs: add image of ports_fwd_array
+  docs: add image of spp_nfv threads
+  docs: adjust size of images
+  docs: resize font size in multi nodes example
+  docs: resize font size in performance test
+  docs: resize image of lb in sppc
+
+ docs/guides/design/spp_secondary.rst               |  76 ++-
+ .../images/design/spp_design_spp_sec_nfv.svg       | 340 ++++++++++
+ .../design/spp_design_spp_sec_nfv_threads.svg      | 368 +++++++++++
+ .../setup/use_cases/spp_multi_nodes_vhost.svg      | 388 +++++------
+ .../images/tools/sppc/sppc_usecase_lb_pktgen.svg   | 709 +++++++++++----------
+ .../guides/images/tools/sppc/sppc_usecase_ring.svg | 379 +++++------
+ docs/guides/setup/howto_use.rst                    |   2 +-
+ docs/guides/tools/sppc/getting_started.rst         |   2 +-
+ docs/guides/tools/sppc/overview.rst                |   2 +-
+ docs/guides/tools/sppc/usecases.rst                |   6 +-
+ docs/guides/use_cases/spp_nfv.rst                  |  16 +-
+ 11 files changed, 1558 insertions(+), 730 deletions(-)
+ create mode 100644 docs/guides/images/design/spp_design_spp_sec_nfv.svg
+ create mode 100644 docs/guides/images/design/spp_design_spp_sec_nfv_threads.svg
+
+-- 
+2.7.4
+
