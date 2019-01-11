@@ -1,0 +1,156 @@
+From - Fri Jan 11 13:30:42 2019
+X-Account-Key: account1
+X-UIDL: 000094e956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 29D14400341
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 11 Jan 2019 13:30:53 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 27E8623BAD1; Fri, 11 Jan 2019 13:30:53 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 272BB23BA7A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 11 Jan 2019 13:30:53 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 1925E638A38
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 11 Jan 2019 13:30:53 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id C025B638A47
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 11 Jan 2019 13:30:52 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AUJagOhT7+LTItbtdxM34KAa0m9psv++ubCcI9p?=
+ =?us-ascii?q?oqja5Pea2//pPkeXbS/uhpkESQBNqJ5/lBgq/Nq6W4AyoN6pLHtmweNpdLER?=
+ =?us-ascii?q?0d2o0NhwJ1OMeeEgXgKeLyKTQgFZFSEVFjumqjKWBOHID4e0GXvm305jlUGA?=
+ =?us-ascii?q?2sfRFtKLHNE5XJx9+yy/j0/pTSZwtSgz/ocfZ8KlCttR35rc1Qh5d+b7ohjB?=
+ =?us-ascii?q?DO5HlQIr4E/25jKFONkhq53f+eosY8oRxZoOlpt8JLVKy/ZLw9FeYeAT8idW?=
+ =?us-ascii?q?Yp+Ivgsl/BVVnH6nwZW2QQ2h1GZmqNpAG/UJG0qTPinvF5ni+GIYjqXfY/Xn?=
+ =?us-ascii?q?Kg9+9nRQTphyEOKzMiuDuO0ooq1/gd+0/n+U03ypWxAsndLPdke6LBYd4WDX?=
+ =?us-ascii?q?FMWMpcTW0JA4+xaZcOE/tUJfxR/MH2o1oDqwf7BBH5Xrq3jGUT3DmtgOtkgr?=
+ =?us-ascii?q?dEc0mOxgErEtMQvW6BoN7wPeIJSeXtlu/FxjGFae9Knzz6rorQIXVD6bmBW6?=
+ =?us-ascii?q?x9dc3JxAwhDQTA2x+A7ILjeiiNzswWty6d8/YlSfLpgGlhqRk78V3Njo88z5?=
+ =?us-ascii?q?LEgI4Y0AWO5WB3xsMuPcWQU0o9Z8K4VYdA8SqdcYluCJBHISkgqGMxzbsIvo?=
+ =?us-ascii?q?S+dS4BxcE8xhLRXOebaYmD/kGrRKOLLDx/nn4gZKOnikP47x270uOlHJrRsh?=
+ =?us-ascii?q?4Cvm9fn9LLrHxIyxHD9p3NVK5m5kn4kT/d0gnS7rkfZ0E/juzdN4Jk3q52nZ?=
+ =?us-ascii?q?1Vs1ymfGe+kRfzha6SLhli++OzreL7fvD6ttmXMMl2kkn3YKEnm8jnXKI5OR?=
+ =?us-ascii?q?NIWXSHvPiskrbku0/hJdcCxvRkl6DYtMiEY8UQvei/HxMQzpZl4BH5DS/u2Y?=
+ =?us-ascii?q?YdlHgDdA0DeRmcyY71JxTSMLbzCrG9mzHO2H9ilfXPP7m5UtPMJWOFlqv9OK?=
+ =?us-ascii?q?ptrUVbjggrhdFHu8AOU+lHeqmpHBSs8oWJU3pbe0S127q1UowlkNlFAyTUX+?=
+ =?us-ascii?q?nAYf2asEfUtLh2e6/WP9VT42u7daVt5uay3yVgwRlHJvPvhsZRNi7wCP1iJw?=
+ =?us-ascii?q?/AOyjWj9wMEHkHsk8FdMK00QfQaTdIfD7yU6k573QgEIf+V8HOTYTrhqCdmi?=
+ =?us-ascii?q?y8WJ9ONChKDVWFEHGgcIvhOb9EeGecJIp6iiQsTrznTZM9kA2+8gT9jbh/Zu?=
+ =?us-ascii?q?bZ4SwXs5v/2cM9vbSL00tpr3ovUoLDgimEVAQW1isQSiUz3bxjrEA10VqF3a?=
+ =?us-ascii?q?ViwrRZGdFV+/JVQ1I/PJ/YwfZ9DoO6UQbAc9GVDVe+F4//WXdrFYh3mIJIPR?=
+ =?us-ascii?q?cufrfqxgrO1CerHbIPwrCAAZVx6brZhyK3Ks15jXDayO8qiB8kWpgqVyXui6?=
+ =?us-ascii?q?hh+gzUH4OMnV+ekvPgZeES2mvW7H+r1m7Iul1EFRJgF67CG3IHLBizz5yx9g?=
+ =?us-ascii?q?bZQrmiBK5yeBsEx8jHMbNSQsbty1NaWLL/KJLVZCSzgy3jYHTAjqPJZ43sdW?=
+ =?us-ascii?q?IH2SzbA0VRiAEf80GdKRI/DTvy63KbFjFlEkjjJl/96eQr4m3uVVc6lkvZCi?=
+ =?us-ascii?q?8pn6rw4BMeguaQDu8ezq5R8jl0sC16RR60jdffCt7Y/Exgd74aZ88hpUtXk2?=
+ =?us-ascii?q?ne8Q5lW/7oZ6kwg1cfd1wr+ULlzFNxFpkFjdhsp3RszhI6IPCd2VJFL27e3J?=
+ =?us-ascii?q?vrfLvLNizu7FakbOjUwjS8mJ6fqKIG6fBg9RPitxrvEFY+tml3ldJSlXmErp?=
+ =?us-ascii?q?yYCQMTVcquFEc87F58u62ffjl77ISS12UJU+H8u23H0tMtXLtjyx27OdFDLO?=
+ =?us-ascii?q?aYBEn5FIsYH4CvMLB4wQHxKEhfZqYJqehtbp7DFbPO2bb3brw5xHT81j4Bu9?=
+ =?us-ascii?q?07ixPSvytkFryShs5DmarCmFDaEWmhxFa57pKtwNgCP2pIWDHij3a6TJhYYq?=
+ =?us-ascii?q?k4JNdZOSKVO8Syg+5GqdvoUn9c+kSkAgpZitStPxyOcxnhzUtb0gIVuS7+wH?=
+ =?us-ascii?q?fq/3lPizgs65Gn8mnW2e27K0gcPihNWHUnkUeqKo/yjchIBUU=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0AFAABJGzhcmEUj6NJkGwEBAQEDAQE?=
+ =?us-ascii?q?BBwMBAQGBUQYBAQELAYIAgTghAwcIJ4wbX40dl3eBe4R5AjWCEQEFLwkNAQM?=
+ =?us-ascii?q?BAQIBAQEBFAEBAQEBBg0LBikvhUsDA3kQIAwlD0gHEoMiggGvC4kEgSyHfoF?=
+ =?us-ascii?q?9hFqPBAKHQAeJL5EBCZF/GIFkkBgtiUGBCJExgg6ELIInDgmOLTABAQEwAYp?=
+ =?us-ascii?q?RAQE?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 11 Jan 2019 13:30:52 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0B4U9IK027574;
+	Fri, 11 Jan 2019 13:30:10 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x0B4U8FP000497;
+	Fri, 11 Jan 2019 13:30:08 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id PAA31918;
+	 Fri, 11 Jan 2019 13:27:43 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0B4Rhh5023487; Fri, 11 Jan 2019 13:27:43 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0B4RhHp023481; Fri, 11 Jan 2019 13:27:43 +0900
+Message-Id: <201901110427.x0B4RhHp023481@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id x0B4RhRU008276 ; Fri, 11 Jan 2019 13:27:43 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 1/3] spp_vf: add sleep after disconnect detection
+Date: Fri, 11 Jan 2019 13:27:41 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190111042743.22673-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190111042743.22673-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This update is for adding sleep() to add interval to reconnect.
+
+Interval of accepting command is reduced to fix slow response
+in previous patches, but still need to add another interval to
+reconnect to spp-ctl.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_proc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index a612061..00ecdc1 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -1648,11 +1648,13 @@ spp_command_proc_do(void)
+ 
+ 	msg_ret = spp_receive_message(&sock, &msgbuf);
+ 	if (unlikely(msg_ret <= 0)) {
+-		if (likely(msg_ret == 0))
++		if (likely(msg_ret == 0)) {
++			sleep(1);
+ 			return SPP_RET_OK;
+-		else if (unlikely(msg_ret == SPP_CONNERR_TEMPORARY))
++		} else if (unlikely(msg_ret == SPP_CONNERR_TEMPORARY)) {
++			sleep(1);
+ 			return SPP_RET_OK;
+-		else
++		} else
+ 			return SPP_RET_NG;
+ 	}
+ 
+-- 
+2.17.1
+
+
+
