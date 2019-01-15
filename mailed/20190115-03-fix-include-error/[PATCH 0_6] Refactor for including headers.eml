@@ -1,0 +1,81 @@
+From - Tue Jan 15 12:28:46 2019
+X-Account-Key: account1
+X-UIDL: 000096d356a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id DAB2C40067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id D87FF23BAD1; Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id D7F0523B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id CB324EA7CCB;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id BD73AEA7A9C;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 0/6] Refactor for including headers
+Date: Tue, 15 Jan 2019 12:28:32 +0900
+Message-Id: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This series of update is to refactor for including functions and
+definitions appropriately.
+
+* Change libs for adding ports in `shared/secondary` from inline to
+  ordinary to avoid `not used` error during compilation. This libs are
+  not used for packet forwarding and no need to be inline function.
+
+* Remove definition of RTE_LOGTYPE_APP from `common.h` because tag of
+  log message should not be `APP` but the name of process, for instance,
+  `SPP_PRI`, `SPP_NFV` or so.
+
+* Add definition of `RTE_LOGTYPE_*` for each of secondary processes.
+
+* Update makefiles in each of secondaries to change include path from 
+  `-I$(SRCDIR)/../shared` to `-I$(SRCDIR)/../`. It is because for
+  including explicitly from `shared` directory in each of codes.
+
+Yasufumi Ogawa (6):
+  shared: fix include error of add_port libs
+  spp_nfv: update to use common app_port libs
+  spp_vf/common: add RTE_LOGTYPE in each of files
+  spp_vf/common: change name of func of adding port
+  spp_vf: update makefile
+  spp_mirror: update makefile
+
+ src/mirror/Makefile             |   3 +-
+ src/mirror/spp_mirror.c         |   4 +-
+ src/nfv/Makefile                |   3 +-
+ src/nfv/commands.h              |   1 +
+ src/shared/secondary/add_port.c | 336 +++++++++++++++++++++++++++
+ src/shared/secondary/add_port.h | 386 ++++++--------------------------
+ src/vf/Makefile                 |   3 +-
+ src/vf/common/command_dec.c     |   1 +
+ src/vf/common/command_proc.c    |   1 +
+ src/vf/common/spp_proc.c        |  11 +-
+ src/vf/common/spp_proc.h        |   6 +-
+ src/vf/spp_vf.h                 |   4 +-
+ 12 files changed, 426 insertions(+), 333 deletions(-)
+ create mode 100644 src/shared/secondary/add_port.c
+
+-- 
+2.17.1
+
+
+

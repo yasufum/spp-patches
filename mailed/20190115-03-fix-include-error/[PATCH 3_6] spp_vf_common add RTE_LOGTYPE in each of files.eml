@@ -1,0 +1,77 @@
+From - Tue Jan 15 12:28:47 2019
+X-Account-Key: account1
+X-UIDL: 000096d656a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 139EE40067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 0DC0B23BAD1; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 0D2E323B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 00CB4EA7CDF;
+	Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id DE3CFEA7A9C;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/6] spp_vf/common: add RTE_LOGTYPE in each of files
+Date: Tue, 15 Jan 2019 12:28:35 +0900
+Message-Id: <1547522918-10223-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Define RTE_LOGTYPE_APP was removed from `common.h` to diversify
+notation of log messages. This update is to define RTE_LOGTYPE_APP
+in each of source files.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c  | 1 +
+ src/vf/common/command_proc.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index b328ca8..61dd4f4 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -12,6 +12,7 @@
+ #include "command_dec.h"
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
++#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+ 
+ /* command string  */
+ #define SPP_COMMAND_CLASSFIER_TABLE_STR "classifier_table"
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 00ecdc1..0e5c5f1 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -22,6 +22,7 @@
+ #include "command_proc.h"
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
++#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+ 
+ /* request message initial size */
+ #define CMD_RES_ERR_MSG_SIZE  128
+-- 
+2.17.1
+
+
+

@@ -1,0 +1,77 @@
+From - Tue Jan 15 12:28:47 2019
+X-Account-Key: account1
+X-UIDL: 000096d556a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 016F740067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id F3AF67F2B2; Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id F2A7C7F046
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E60E7EA7C9C;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id CF481EA7CD3;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/6] spp_nfv: update to use common app_port libs
+Date: Tue, 15 Jan 2019 12:28:34 +0900
+Message-Id: <1547522918-10223-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add common app_port libraries to list of source codes.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/Makefile   | 3 ++-
+ src/nfv/commands.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index e921010..88533af 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -13,7 +13,8 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ APP = spp_nfv
+ 
+ # all source are stored in SRCS-y
+-SRCS-y := main.c nfv_status.c ../shared/common.c ../shared/secondary/utils.c
++SRCS-y := main.c nfv_status.c ../shared/common.c
++SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 3280d69..54e0f21 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -7,6 +7,7 @@
+ #define _NFV_COMMANDS_H_
+ 
+ #include "shared/secondary/add_port.h"
++#include "shared/secondary/utils.h"
+ 
+ #define RTE_LOGTYPE_SPP_NFV RTE_LOGTYPE_USER1
+ 
+-- 
+2.17.1
+
+
+

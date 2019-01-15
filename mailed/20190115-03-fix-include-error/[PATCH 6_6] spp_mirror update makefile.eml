@@ -1,0 +1,88 @@
+From - Tue Jan 15 12:28:48 2019
+X-Account-Key: account1
+X-UIDL: 000096d956a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2B47440067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 2968E7F2B2; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 2844B7F046
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 11DC7EA7CDF;
+	Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 0E54FEA7A9C;
+	Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 6/6] spp_mirror: update makefile
+Date: Tue, 15 Jan 2019 12:28:38 +0900
+Message-Id: <1547522918-10223-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add refactored common source and header files to makefile and root
+header file.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile     | 3 ++-
+ src/mirror/spp_mirror.c | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 073afbd..f1995fc 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -14,6 +14,7 @@ APP = spp_mirror
+ # all source are stored in SRCS-y
+ SRCS-y := spp_mirror.c
+ SRCS-y += ../shared/common.c
++SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ SRCS-y += ../vf/common/spp_proc.c ../vf/common/spp_port.c
+ SRCS-y += ../vf/common/command_conn.c ../vf/common/command_proc.c
+ SRCS-y += ../vf/common/command_dec.c
+@@ -21,7 +22,7 @@ SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-CFLAGS += -I$(SRCDIR)/../shared
++CFLAGS += -I$(SRCDIR)/../
+ CFLAGS += -I$(SRCDIR)/../vf/common
+ CFLAGS += -DSPP_MIRROR_MODULE
+ CFLAGS += -DSPP_MIRROR_SHALLOWCOPY
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index fb9bcb1..4835d55 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -9,7 +9,9 @@
+ #include <rte_common.h>
+ #include <rte_cycles.h>
+ 
+-#include "common.h"
++#include "shared/common.h"
++#include "shared/secondary/utils.h"
++
+ #include "spp_proc.h"
+ #include "spp_mirror.h"
+ #include "command_proc.h"
+-- 
+2.17.1
+
+
+

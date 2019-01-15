@@ -1,0 +1,136 @@
+From - Tue Jan 15 12:28:47 2019
+X-Account-Key: account1
+X-UIDL: 000096d756a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 188FC40067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 14F867F2B2; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 13C827F046
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 06A7DEA7C9C;
+	Tue, 15 Jan 2019 12:30:51 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id ED4A9EA7CCB;
+	Tue, 15 Jan 2019 12:30:50 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/6] spp_vf/common: change name of func of adding port
+Date: Tue, 15 Jan 2019 12:28:36 +0900
+Message-Id: <1547522918-10223-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522918-10223-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To avoid to be same as the name of common library, change add_ring_pmd()
+and add_vhost_pmd() to have prefix.
+
+* spp_vf_add_ring_pmd()
+* spp_vf_add_vhost_pmd()
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/common/spp_proc.c | 11 ++++++++---
+ src/vf/common/spp_proc.h |  6 +++---
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index abbd5d5..9a118bd 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -14,6 +14,9 @@
+ #include "spp_proc.h"
+ #include "spp_port.h"
+ 
++#include "shared/secondary/add_port.h"
++#include "shared/secondary/utils.h"
++
+ #ifdef SPP_VF_MODULE
+ #include "../spp_forward.h"
+ #include "../classifier_mac.h"
+@@ -22,6 +25,8 @@
+ #include "../../mirror/spp_mirror.h"
+ #endif /* SPP_MIRROR_MODULE */
+ 
++#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
++
+ /* Manage data to addoress */
+ struct manage_data_addr_info {
+ 	struct startup_param	  *p_startup_param;
+@@ -71,7 +76,7 @@ dump_buff(const char *name, const void *addr, const size_t size)
+ 
+ /* generation of the ring port */
+ int
+-add_ring_pmd(int ring_id)
++spp_vf_add_ring_pmd(int ring_id)
+ {
+ 	struct rte_ring *ring;
+ 	int ring_port_id;
+@@ -93,7 +98,7 @@ add_ring_pmd(int ring_id)
+ 
+ /* generation of the vhost port */
+ int
+-add_vhost_pmd(int index, int client)
++spp_vf_add_vhost_pmd(int index, int client)
+ {
+ 	struct rte_eth_conf port_conf = {
+ 		.rxmode = { .max_rx_pkt_len = ETHER_MAX_LEN }
+@@ -815,7 +820,7 @@ flush_port(void)
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+ 		port = &p_iface_info->vhost[cnt];
+ 		if ((port->iface_type != UNDEF) && (port->dpdk_port < 0)) {
+-			ret = add_vhost_pmd(port->iface_no,
++			ret = spp_vf_add_vhost_pmd(port->iface_no,
+ 				g_mng_data_addr.p_startup_param->vhost_client);
+ 			if (ret < 0)
+ 				return SPP_RET_NG;
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index 4001c21..2fc8cc2 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -13,7 +13,7 @@
+  */
+ 
+ #include <netinet/in.h>
+-#include "common.h"
++#include "shared/common.h"
+ 
+ /**
+  * TODO(Yamashita) change type names.
+@@ -355,7 +355,7 @@ void dump_buff(const char *name, const void *addr, const size_t size);
+  * @retval 0~   ring_port_id.
+  * @retval -1   failed.
+  */
+-int add_ring_pmd(int ring_id);
++int spp_vf_add_ring_pmd(int ring_id);
+ 
+ /**
+  * added vhost_pmd
+@@ -368,7 +368,7 @@ int add_ring_pmd(int ring_id);
+  * @retval 0~   vhost_port_id.
+  * @retval -1   failed.
+  */
+-int add_vhost_pmd(int index, int client);
++int spp_vf_add_vhost_pmd(int index, int client);
+ 
+ /**
+  * Get core status
+-- 
+2.17.1
+
+
+
