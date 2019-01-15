@@ -1,0 +1,527 @@
+From - Tue Jan 15 12:28:11 2019
+X-Account-Key: account1
+X-UIDL: 000096cd56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id ACD6E400AA4
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:14 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id AA9CE23BAD1; Tue, 15 Jan 2019 12:30:14 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id A887823B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:14 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 8EDA617A;
+	Tue, 15 Jan 2019 12:30:14 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 6F0CA186;
+	Tue, 15 Jan 2019 12:30:14 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/6] shared: refactor common for SPP secondaries
+Date: Tue, 15 Jan 2019 12:27:57 +0900
+Message-Id: <1547522881-10105-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522881-10105-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522881-10105-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Move specific variables and functions for SPP secondary processes from
+`shared/common.*` to `shared/secondary.*`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary.c | 359 +++++++++++++++++++++++++++++++++++++++++
+ src/shared/secondary.h | 102 ++++++++++++
+ 2 files changed, 461 insertions(+)
+ create mode 100644 src/shared/secondary.c
+ create mode 100644 src/shared/secondary.h
+
+diff --git a/src/shared/secondary.c b/src/shared/secondary.c
+new file mode 100644
+index 0000000..2e986d9
+--- /dev/null
++++ b/src/shared/secondary.c
+@@ -0,0 +1,359 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <stdint.h>
++#include "common.h"
++#include "secondary.h"
++
++#define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
++
++/*
++ * Get status of spp_nfv or spp_vm as JSON format. It consists of running
++ * status and patch info of ports.
++ *
++ * Here is an example of well-formatted JSON status to better understand.
++ * Actual status has no spaces and new lines inserted as
++ * '{"status":"running","ports":[{"src":"phy:0","dst":"ring:0"},...]}'
++ *
++ *   {
++ *     "status": "running",
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"],
++ *     "patches": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "vhost:0"}
++ *     ]
++ *   }
++ */
++void
++get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	sprintf(str, "{\"client-id\":%d,", client_id);
++
++	sprintf(str + strlen(str), "\"status\":");
++	sprintf(str + strlen(str), "\"%s\",", running_stat);
++
++	append_port_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), ",");
++
++	append_patch_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), "}");
++
++	// make sure to be terminated with null character
++	sprintf(str + strlen(str), "%c", '\0');
++}
++
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"]
++ */
++int
++append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_port = 0;  // for checking having port at last
++
++	sprintf(str + strlen(str), "\"ports\":[");
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		has_port = 1;
++		switch (port_map[i].port_type) {
++		case PHY:
++			sprintf(str + strlen(str), "\"phy:%u\",",
++					port_map[i].id);
++			break;
++		case RING:
++			sprintf(str + strlen(str), "\"ring:%u\",",
++				port_map[i].id);
++			break;
++		case VHOST:
++			sprintf(str + strlen(str), "\"vhost:%u\",",
++				port_map[i].id);
++			break;
++		case PCAP:
++			sprintf(str + strlen(str), "\"pcap:%u\",",
++					port_map[i].id);
++			break;
++		case NULLPMD:
++			sprintf(str + strlen(str), "\"nullpmd:%u\",",
++					port_map[i].id);
++			break;
++		case UNDEF:
++			/* TODO(yasufum) Need to remove print for undefined ? */
++			sprintf(str + strlen(str), "\"udf\",");
++			break;
++		}
++	}
++
++	// Check if it has at least one port to remove ",".
++	if (has_port == 0) {
++		sprintf(str + strlen(str), "]");
++	} else {  // Remove last ','
++		sprintf(str + strlen(str) - 1, "]");
++	}
++
++	return 0;
++}
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "patches": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "vhost:0"}
++ *      ]
++ */
++int
++append_patch_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_patch = 0;  // for checking having patch at last
++
++	char patch_str[128];
++	sprintf(str + strlen(str), "\"patches\":[");
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		RTE_LOG(INFO, SHARED, "Port ID %d\n", i);
++		RTE_LOG(INFO, SHARED, "Status %d\n",
++			ports_fwd_array[i].in_port_id);
++
++		memset(patch_str, '\0', sizeof(patch_str));
++
++		sprintf(patch_str, "{\"src\":");
++
++		switch (port_map[i].port_type) {
++		case PHY:
++			RTE_LOG(INFO, SHARED, "Type: PHY\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"phy:%u\",",
++					port_map[i].id);
++			break;
++		case RING:
++			RTE_LOG(INFO, SHARED, "Type: RING\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"ring:%u\",",
++					port_map[i].id);
++			break;
++		case VHOST:
++			RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"vhost:%u\",",
++					port_map[i].id);
++			break;
++		case PCAP:
++			RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"pcap:%u\",",
++					port_map[i].id);
++			break;
++		case NULLPMD:
++			RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"nullpmd:%u\",",
++					port_map[i].id);
++			break;
++		case UNDEF:
++			RTE_LOG(INFO, SHARED, "Type: UDF\n");
++			/* TODO(yasufum) Need to remove print for undefined ? */
++			sprintf(patch_str + strlen(patch_str),
++					"\"udf\",");
++			break;
++		}
++
++		sprintf(patch_str + strlen(patch_str), "\"dst\":");
++
++		RTE_LOG(INFO, SHARED, "Out Port ID %d\n",
++				ports_fwd_array[i].out_port_id);
++
++		if (ports_fwd_array[i].out_port_id == PORT_RESET) {
++			//sprintf(patch_str + strlen(patch_str), "%s", "\"\"");
++			continue;
++		} else {
++			has_patch = 1;
++			unsigned int j = ports_fwd_array[i].out_port_id;
++			switch (port_map[j].port_type) {
++			case PHY:
++				RTE_LOG(INFO, SHARED, "Type: PHY\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"phy:%u\"",
++						port_map[j].id);
++				break;
++			case RING:
++				RTE_LOG(INFO, SHARED, "Type: RING\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"ring:%u\"",
++						port_map[j].id);
++				break;
++			case VHOST:
++				RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"vhost:%u\"",
++						port_map[j].id);
++				break;
++			case PCAP:
++				RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"pcap:%u\"",
++						port_map[j].id);
++				break;
++			case NULLPMD:
++				RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"nullpmd:%u\"",
++						port_map[j].id);
++				break;
++			case UNDEF:
++				RTE_LOG(INFO, SHARED, "Type: UDF\n");
++				/*
++				 * TODO(yasufum) Need to remove print for
++				 * undefined ?
++				 */
++				sprintf(patch_str + strlen(patch_str),
++						"\"udf\"");
++				break;
++			}
++		}
++
++		sprintf(patch_str + strlen(patch_str), "},");
++
++		if (has_patch != 0)
++			sprintf(str + strlen(str), "%s", patch_str);
++	}
++
++
++	// Check if it has at least one patch to remove ",".
++	if (has_patch == 0) {
++		sprintf(str + strlen(str), "]");
++	} else {  // Remove last ','
++		sprintf(str + strlen(str) - 1, "]");
++	}
++
++	return 0;
++}
++
++/**
++ * Retieve port type and ID from resource UID. For example, resource UID
++ * 'ring:0' is  parsed to retrieve port tyep 'ring' and ID '0'.
++ */
++int
++parse_resource_uid(char *str, char **port_type, int *port_id)
++{
++	char *token;
++	char delim[] = ":";
++	char *endp;
++
++	RTE_LOG(DEBUG, SHARED, "Parsing resource UID: '%s\n'", str);
++	if (strstr(str, delim) == NULL) {
++		RTE_LOG(ERR, SHARED, "Invalid resource UID: '%s'\n", str);
++		return -1;
++	}
++	RTE_LOG(DEBUG, SHARED, "Delimiter %s is included\n", delim);
++
++	*port_type = strtok(str, delim);
++
++	token = strtok(NULL, delim);
++	*port_id = strtol(token, &endp, 10);
++
++	if (*endp) {
++		RTE_LOG(ERR, SHARED, "Bad integer value: %s\n", str);
++		return -1;
++	}
++
++	return 0;
++}
++
++int
++spp_atoi(const char *str, int *val)
++{
++	char *end;
++
++	*val = strtol(str, &end, 10);
++
++	if (*end) {
++		RTE_LOG(ERR, SHARED, "Bad integer value: %s\n", str);
++		return -1;
++	}
++
++	return 0;
++}
++
++/* attach the new device, then store port_id of the device */
++int
++dev_attach_by_devargs(const char *devargs, uint16_t *port_id)
++{
++	int ret = -1;
++	struct rte_devargs da;
++
++	memset(&da, 0, sizeof(da));
++
++	/* parse devargs */
++	if (rte_devargs_parse(&da, devargs))
++		return -1;
++
++	ret = rte_eal_hotplug_add(da.bus->name, da.name, da.args);
++	if (ret < 0) {
++		free(da.args);
++		return ret;
++	}
++
++	ret = rte_eth_dev_get_port_by_name(da.name, port_id);
++
++	free(da.args);
++
++	return ret;
++}
++
++/* detach the device, then store the name of the device */
++int
++dev_detach_by_port_id(uint16_t port_id)
++{
++	struct rte_device *dev;
++	struct rte_bus *bus;
++	uint32_t dev_flags;
++	int ret = -1;
++
++	if (rte_eth_devices[port_id].data == NULL) {
++		RTE_LOG(INFO, SHARED,
++			"rte_eth_devices[%"PRIu16"].data is  NULL\n", port_id);
++		return 0;
++	}
++	dev_flags = rte_eth_devices[port_id].data->dev_flags;
++	if (dev_flags & RTE_ETH_DEV_BONDED_SLAVE) {
++		RTE_LOG(ERR, SHARED,
++			"Port %"PRIu16" is bonded, cannot detach\n", port_id);
++		return -ENOTSUP;
++	}
++
++	dev = rte_eth_devices[port_id].device;
++	if (dev == NULL)
++		return -EINVAL;
++
++	bus = rte_bus_find_by_device(dev);
++	if (bus == NULL)
++		return -ENOENT;
++
++	ret = rte_eal_hotplug_remove(bus->name, dev->name);
++	if (ret < 0)
++		return ret;
++
++	rte_eth_dev_release_port(&rte_eth_devices[port_id]);
++
++	return 0;
++}
+diff --git a/src/shared/secondary.h b/src/shared/secondary.h
+new file mode 100644
+index 0000000..c6a1fde
+--- /dev/null
++++ b/src/shared/secondary.h
+@@ -0,0 +1,102 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef SHARED_SECONDARY_H
++#define SHARED_SECONDARY_H
++
++#define VHOST_IFACE_NAME "/tmp/sock%u"
++#define VHOST_BACKEND_NAME "eth_vhost%u"
++
++#define PCAP_PMD_DEV_NAME "eth_pcap%u"
++#define NULL_PMD_DEV_NAME "eth_null%u"
++
++static inline const char *
++get_vhost_backend_name(unsigned int id)
++{
++	/*
++	 * buffer for return value. Size calculated by %u being replaced
++	 * by maximum 3 digits (plus an extra byte for safety)
++	 */
++	static char buffer[sizeof(VHOST_BACKEND_NAME) + 2];
++
++	snprintf(buffer, sizeof(buffer) - 1, VHOST_BACKEND_NAME, id);
++	return buffer;
++}
++
++static inline char *
++get_vhost_iface_name(unsigned int id)
++{
++	/*
++	 * buffer for return value. Size calculated by %u being replaced
++	 * by maximum 3 digits (plus an extra byte for safety)
++	 */
++	static char buffer[sizeof(VHOST_IFACE_NAME) + 2];
++
++	snprintf(buffer, sizeof(buffer) - 1, VHOST_IFACE_NAME, id);
++	return buffer;
++}
++
++static inline const char *
++get_pcap_pmd_name(int id)
++{
++	static char buffer[sizeof(PCAP_PMD_DEV_NAME) + 2];
++	snprintf(buffer, sizeof(buffer) - 1, PCAP_PMD_DEV_NAME, id);
++	return buffer;
++}
++
++static inline const char *
++get_null_pmd_name(int id)
++{
++	static char buffer[sizeof(NULL_PMD_DEV_NAME) + 2];
++	snprintf(buffer, sizeof(buffer) - 1, NULL_PMD_DEV_NAME, id);
++	return buffer;
++}
++
++/* Get status of spp_nfv or spp_vm as JSON format. */
++void get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append port info to sec status, called from get_sec_stats_json(). */
++int append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append patch info to sec status, called from get_sec_stats_json(). */
++int append_patch_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++int parse_resource_uid(char *str, char **port_type, int *port_id);
++int spp_atoi(const char *str, int *val);
++
++/**
++ * Attach a new Ethernet device specified by arguments.
++ *
++ * @param devargs
++ *  A pointer to a strings array describing the new device
++ *  to be attached. The strings should be a pci address like
++ *  '0000:01:00.0' or virtual device name like 'net_pcap0'.
++ * @param port_id
++ *  A pointer to a port identifier actually attached.
++ * @return
++ *  0 on success and port_id is filled, negative on error
++ */
++int
++dev_attach_by_devargs(const char *devargs, uint16_t *port_id);
++
++/**
++ * Detach a Ethernet device specified by port identifier.
++ * This function must be called when the device is in the
++ * closed state.
++ *
++ * @param port_id
++ *   The port identifier of the device to detach.
++ * @return
++ *  0 on success and devname is filled, negative on error
++ */
++int dev_detach_by_port_id(uint16_t port_id);
++
++#endif
+-- 
+2.17.1
+
+
+
