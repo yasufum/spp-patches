@@ -1,0 +1,60 @@
+From 15cc2af3997a931674b2f729e088b660e9e32355 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 15 Jan 2019 11:14:51 +0900
+Subject: [PATCH 0/6] Refactor common libs
+
+SPP's common libraries under `src/shared` are not organized well. For
+example, functions used only by spp_primary is included in
+`shared/common.c`, but it should be moved under `primary/`.
+
+This series of patches is to refactor file structure of SPP.
+
+* Move functions for spp_primary to `src/primary`.
+
+* Move functions for spp_nfv to `src/nfv`.
+
+* Add common libs for secondary processes in `src/shared/secondary/`.
+
+Yasufumi Ogawa (6):
+  spp_primary: refactor common for primary
+  shared: refactor common for SPP secondaries
+  spp_nfv: refactor common for spp_nfv
+  shared: refactor common functions
+  shared: refactor libs of SPP secondary
+  spp_nfv: refactor file structure
+
+ src/Makefile                                  |   2 +-
+ src/nfv/Makefile                              |   5 +-
+ src/nfv/commands.h                            |  72 +--
+ src/nfv/init.h                                |  44 ++
+ src/nfv/main.c                                |  31 +-
+ src/nfv/nfv.h                                 |  13 -
+ src/nfv/nfv_status.c                          | 249 +++++++++
+ src/nfv/nfv_status.h                          |  24 +
+ src/nfv/nfv_utils.h                           | 118 ++++
+ src/nfv/params.h                              |   9 +-
+ src/primary/args.c                            |  48 +-
+ src/primary/args.h                            |  10 +-
+ src/primary/init.c                            | 137 ++++-
+ src/primary/init.h                            |  16 +-
+ src/primary/main.c                            |  52 +-
+ src/primary/primary.h                         |  10 +
+ src/shared/common.c                           | 526 +-----------------
+ src/shared/common.h                           | 141 +----
+ .../secondary/add_port.h}                     | 194 ++-----
+ src/shared/secondary/utils.c                  | 119 ++++
+ src/shared/secondary/utils.h                  |  39 ++
+ 21 files changed, 961 insertions(+), 898 deletions(-)
+ create mode 100644 src/nfv/init.h
+ delete mode 100644 src/nfv/nfv.h
+ create mode 100644 src/nfv/nfv_status.c
+ create mode 100644 src/nfv/nfv_status.h
+ create mode 100644 src/nfv/nfv_utils.h
+ create mode 100644 src/primary/primary.h
+ rename src/{nfv/command_utils.h => shared/secondary/add_port.h} (61%)
+ create mode 100644 src/shared/secondary/utils.c
+ create mode 100644 src/shared/secondary/utils.h
+
+-- 
+2.17.1
+

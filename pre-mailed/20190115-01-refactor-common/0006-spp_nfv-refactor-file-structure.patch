@@ -1,0 +1,432 @@
+From 15cc2af3997a931674b2f729e088b660e9e32355 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 13 Jan 2019 05:40:40 +0900
+Subject: [PATCH 6/6] spp_nfv: refactor file structure
+
+* Move init functions to `init.h`.
+
+* Move functions for getting status to `nfv_status.c` and
+  `nfv_status.h`.
+
+* Change include path to explicitly include shared functions, for
+  instance, from `common.h` to `shared/common.h`.<Paste>
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/Makefile         |   2 +-
+ src/nfv/Makefile     |   4 +-
+ src/nfv/commands.h   |   4 +-
+ src/nfv/init.h       |  44 ++++++++
+ src/nfv/main.c       |   9 +-
+ src/nfv/nfv_status.c | 249 +++++++++++++++++++++++++++++++++++++++++++
+ src/nfv/nfv_status.h |  24 +++++
+ 7 files changed, 329 insertions(+), 7 deletions(-)
+ create mode 100644 src/nfv/init.h
+ create mode 100644 src/nfv/nfv_status.c
+ create mode 100644 src/nfv/nfv_status.h
+
+diff --git a/src/Makefile b/src/Makefile
+index 8e2bffa..4cf7ef4 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -38,8 +38,8 @@ RTE_TARGET ?= x86_64-native-linuxapp-gcc
+ 
+ include $(RTE_SDK)/mk/rte.vars.mk
+ 
+-DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += primary
++DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += vf
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += mirror
+ 
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index cee1236..e921010 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -13,11 +13,11 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ APP = spp_nfv
+ 
+ # all source are stored in SRCS-y
+-SRCS-y := main.c ../shared/common.c ../shared/secondary.c
++SRCS-y := main.c nfv_status.c ../shared/common.c ../shared/secondary/utils.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-CFLAGS += -I$(SRCDIR)/../shared
++CFLAGS += -I$(SRCDIR)/../
+ 
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+ LDLIBS += -lrte_pmd_ring
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 35340f9..3280d69 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -6,9 +6,7 @@
+ #ifndef _NFV_COMMANDS_H_
+ #define _NFV_COMMANDS_H_
+ 
+-#include "common.h"
+-#include "nfv.h"
+-#include "command_utils.h"
++#include "shared/secondary/add_port.h"
+ 
+ #define RTE_LOGTYPE_SPP_NFV RTE_LOGTYPE_USER1
+ 
+diff --git a/src/nfv/init.h b/src/nfv/init.h
+new file mode 100644
+index 0000000..0702082
+--- /dev/null
++++ b/src/nfv/init.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2015-2016 Intel Corporation
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _NFV_INIT_H_
++#define _NFV_INIT_H_
++
++static void
++forward_array_init_one(unsigned int i)
++{
++	ports_fwd_array[i].in_port_id = PORT_RESET;
++	ports_fwd_array[i].out_port_id = PORT_RESET;
++}
++
++/* initialize forward array with default value*/
++static void
++forward_array_init(void)
++{
++	unsigned int i;
++
++	/* initialize port forward array*/
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++)
++		forward_array_init_one(i);
++}
++
++static void
++port_map_init_one(unsigned int i)
++{
++	port_map[i].id = PORT_RESET;
++	port_map[i].port_type = UNDEF;
++	port_map[i].stats = &port_map[i].default_stats;
++}
++
++static void
++port_map_init(void)
++{
++	unsigned int i;
++
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++)
++		port_map_init_one(i);
++}
++
++#endif
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 6e9e844..ce7e07d 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -11,7 +11,14 @@
+ #include <rte_memzone.h>
+ #include <rte_log.h>
+ 
+-#include "nfv.h"
++#include "shared/common.h"
++#include "shared/secondary/add_port.h"
++
++#include "params.h"
++#include "init.h"
++#include "nfv_status.h"
++#include "nfv_utils.h"
++#include "commands.h"
+ 
+ #define RTE_LOGTYPE_SPP_NFV RTE_LOGTYPE_USER1
+ 
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+new file mode 100644
+index 0000000..8f66d1f
+--- /dev/null
++++ b/src/nfv/nfv_status.c
+@@ -0,0 +1,249 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
++
++#include <arpa/inet.h>
++#include "shared/common.h"
++#include "nfv_status.h"
++
++/*
++ * Get status of spp_nfv or spp_vm as JSON format. It consists of running
++ * status and patch info of ports.
++ *
++ * Here is an example of well-formatted JSON status to better understand.
++ * Actual status has no spaces and new lines inserted as
++ * '{"status":"running","ports":[{"src":"phy:0","dst":"ring:0"},...]}'
++ *
++ *   {
++ *     "status": "running",
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"],
++ *     "patches": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "vhost:0"}
++ *     ]
++ *   }
++ */
++void
++get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	sprintf(str, "{\"client-id\":%d,", client_id);
++
++	sprintf(str + strlen(str), "\"status\":");
++	sprintf(str + strlen(str), "\"%s\",", running_stat);
++
++	append_port_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), ",");
++
++	append_patch_info_json(str, ports_fwd_array, port_map);
++	sprintf(str + strlen(str), "}");
++
++	// make sure to be terminated with null character
++	sprintf(str + strlen(str), "%c", '\0');
++}
++
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"]
++ */
++int
++append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_port = 0;  // for checking having port at last
++
++	sprintf(str + strlen(str), "\"ports\":[");
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		has_port = 1;
++		switch (port_map[i].port_type) {
++		case PHY:
++			sprintf(str + strlen(str), "\"phy:%u\",",
++					port_map[i].id);
++			break;
++		case RING:
++			sprintf(str + strlen(str), "\"ring:%u\",",
++				port_map[i].id);
++			break;
++		case VHOST:
++			sprintf(str + strlen(str), "\"vhost:%u\",",
++				port_map[i].id);
++			break;
++		case PCAP:
++			sprintf(str + strlen(str), "\"pcap:%u\",",
++					port_map[i].id);
++			break;
++		case NULLPMD:
++			sprintf(str + strlen(str), "\"nullpmd:%u\",",
++					port_map[i].id);
++			break;
++		case UNDEF:
++			/* TODO(yasufum) Need to remove print for undefined ? */
++			sprintf(str + strlen(str), "\"udf\",");
++			break;
++		}
++	}
++
++	// Check if it has at least one port to remove ",".
++	if (has_port == 0) {
++		sprintf(str + strlen(str), "]");
++	} else {  // Remove last ','
++		sprintf(str + strlen(str) - 1, "]");
++	}
++
++	return 0;
++}
++
++/*
++ * Append patch info to sec status. It is called from get_sec_stats_json()
++ * to add a JSON formatted patch info to given 'str'. Here is an example.
++ *
++ *     "patches": [
++ *       {"src":"phy:0","dst": "ring:0"},
++ *       {"src":"ring:0","dst": "vhost:0"}
++ *      ]
++ */
++int
++append_patch_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map)
++{
++	unsigned int i;
++	unsigned int has_patch = 0;  // for checking having patch at last
++
++	char patch_str[128];
++	sprintf(str + strlen(str), "\"patches\":[");
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		RTE_LOG(INFO, SHARED, "Port ID %d\n", i);
++		RTE_LOG(INFO, SHARED, "Status %d\n",
++			ports_fwd_array[i].in_port_id);
++
++		memset(patch_str, '\0', sizeof(patch_str));
++
++		sprintf(patch_str, "{\"src\":");
++
++		switch (port_map[i].port_type) {
++		case PHY:
++			RTE_LOG(INFO, SHARED, "Type: PHY\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"phy:%u\",",
++					port_map[i].id);
++			break;
++		case RING:
++			RTE_LOG(INFO, SHARED, "Type: RING\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"ring:%u\",",
++					port_map[i].id);
++			break;
++		case VHOST:
++			RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"vhost:%u\",",
++					port_map[i].id);
++			break;
++		case PCAP:
++			RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"pcap:%u\",",
++					port_map[i].id);
++			break;
++		case NULLPMD:
++			RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"nullpmd:%u\",",
++					port_map[i].id);
++			break;
++		case UNDEF:
++			RTE_LOG(INFO, SHARED, "Type: UDF\n");
++			/* TODO(yasufum) Need to remove print for undefined ? */
++			sprintf(patch_str + strlen(patch_str),
++					"\"udf\",");
++			break;
++		}
++
++		sprintf(patch_str + strlen(patch_str), "\"dst\":");
++
++		RTE_LOG(INFO, SHARED, "Out Port ID %d\n",
++				ports_fwd_array[i].out_port_id);
++
++		if (ports_fwd_array[i].out_port_id == PORT_RESET) {
++			//sprintf(patch_str + strlen(patch_str), "%s", "\"\"");
++			continue;
++		} else {
++			has_patch = 1;
++			unsigned int j = ports_fwd_array[i].out_port_id;
++			switch (port_map[j].port_type) {
++			case PHY:
++				RTE_LOG(INFO, SHARED, "Type: PHY\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"phy:%u\"",
++						port_map[j].id);
++				break;
++			case RING:
++				RTE_LOG(INFO, SHARED, "Type: RING\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"ring:%u\"",
++						port_map[j].id);
++				break;
++			case VHOST:
++				RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"vhost:%u\"",
++						port_map[j].id);
++				break;
++			case PCAP:
++				RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"pcap:%u\"",
++						port_map[j].id);
++				break;
++			case NULLPMD:
++				RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"nullpmd:%u\"",
++						port_map[j].id);
++				break;
++			case UNDEF:
++				RTE_LOG(INFO, SHARED, "Type: UDF\n");
++				/*
++				 * TODO(yasufum) Need to remove print for
++				 * undefined ?
++				 */
++				sprintf(patch_str + strlen(patch_str),
++						"\"udf\"");
++				break;
++			}
++		}
++
++		sprintf(patch_str + strlen(patch_str), "},");
++
++		if (has_patch != 0)
++			sprintf(str + strlen(str), "%s", patch_str);
++	}
++
++
++	// Check if it has at least one patch to remove ",".
++	if (has_patch == 0) {
++		sprintf(str + strlen(str), "]");
++	} else {  // Remove last ','
++		sprintf(str + strlen(str) - 1, "]");
++	}
++
++	return 0;
++}
+diff --git a/src/nfv/nfv_status.h b/src/nfv/nfv_status.h
+new file mode 100644
+index 0000000..c7aee4f
+--- /dev/null
++++ b/src/nfv/nfv_status.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _NFV_STATUS_H_
++#define _NFV_STATUS_H_
++
++/* Get status of spp_nfv or spp_vm as JSON format. */
++void get_sec_stats_json(char *str, uint16_t client_id,
++		const char *running_stat,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append port info to sec status, called from get_sec_stats_json(). */
++int append_port_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++/* Append patch info to sec status, called from get_sec_stats_json(). */
++int append_patch_info_json(char *str,
++		struct port *ports_fwd_array,
++		struct port_map *port_map);
++
++#endif
+-- 
+2.17.1
+
