@@ -1,0 +1,98 @@
+From - Tue Jan 15 21:28:21 2019
+X-Account-Key: account1
+X-UIDL: 0000972856a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A0E3F40067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 21:30:13 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 9758E7F329; Tue, 15 Jan 2019 21:30:13 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 95F957F04B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 21:30:13 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 848C26391B7;
+	Tue, 15 Jan 2019 21:30:13 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 768FE6391AE;
+	Tue, 15 Jan 2019 21:30:13 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/2] spp-ctl: change NfvProc to parse JSON msg
+Date: Tue, 15 Jan 2019 21:28:00 +0900
+Message-Id: <1547555280-11736-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547555280-11736-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547555280-11736-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to change parsing client ID of spp_nfv from plain text to
+JSON as same as other secondary processes.
+
+Parsing JSON message from secondary process is failed if it includes
+null characters '\0\0\0...'. This update also includes removing them
+from the message to avoid error in `json.load()` method.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_proc.py | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 282fea8..b9105d0 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -56,7 +56,9 @@ class SppProc(object):
+ 
+     @staticmethod
+     def _decode_reply(data):
+-        data = json.loads(data)
++        # Remove '\0' in msg from secondary process to avoid error.
++        data = json.loads(data.replace('\0', ''))
++
+         result = data["results"][0]
+         if result["result"] == "error":
+             msg = result["error_details"]["message"]
+@@ -69,7 +71,8 @@ class SppProc(object):
+             data = SppProc._decode_reply(data)
+             if data["process_type"] == proc_type:
+                 return data["client_id"]
+-        except:
++        except Exception as e:
++            LOG.error(e)
+             return None
+ 
+ 
+@@ -160,16 +163,9 @@ class NfvProc(SppProc):
+     def __init__(self, id, conn):
+         super(NfvProc, self).__init__(TYPE_NFV, id, conn)
+ 
+-    @staticmethod
+-    def _decode_reply(data):
+-        return data.strip('\0')
+-
+     @staticmethod
+     def _decode_client_id(data):
+-        try:
+-            return int(NfvProc._decode_reply(data))
+-        except:
+-            return None
++        return SppProc._decode_client_id_common(data, TYPE_NFV)
+ 
+     @exec_command
+     def get_status(self):
+-- 
+2.17.1
+
+
+
