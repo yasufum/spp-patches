@@ -1,0 +1,74 @@
+From - Tue Jan 15 12:29:30 2019
+X-Account-Key: account1
+X-UIDL: 000096df56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E8CE040067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:31:33 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E6DA223BAD1; Tue, 15 Jan 2019 12:31:33 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id E5C2B23B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:31:33 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id D232613F;
+	Tue, 15 Jan 2019 12:31:33 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id BC563D6;
+	Tue, 15 Jan 2019 12:31:33 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] controller: add complete for exit in vf and mirror
+Date: Tue, 15 Jan 2019 12:29:21 +0900
+Message-Id: <1547522961-10346-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Exit command is support in spp_vf and spp_mirror, but not for completion
+in vf and mirror commands. This update is to add completion for them.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/mirror.py | 1 +
+ src/controller/commands/vf.py     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/controller/commands/mirror.py b/src/controller/commands/mirror.py
+index a01e1eb..b5b7a1b 100644
+--- a/src/controller/commands/mirror.py
++++ b/src/controller/commands/mirror.py
+@@ -15,6 +15,7 @@ class SppMirror(object):
+     # All of commands and sub-commands used for validation and completion.
+     MIRROR_CMDS = {
+             'status': None,
++            'exit': None,
+             'component': ['start', 'stop'],
+             'port': ['add', 'del']}
+ 
+diff --git a/src/controller/commands/vf.py b/src/controller/commands/vf.py
+index 01795a5..e715a17 100644
+--- a/src/controller/commands/vf.py
++++ b/src/controller/commands/vf.py
+@@ -15,6 +15,7 @@ class SppVf(object):
+     # All of commands and sub-commands used for validation and completion.
+     VF_CMDS = {
+             'status': None,
++            'exit': None,
+             'component': ['start', 'stop'],
+             'port': ['add', 'del'],
+             'classifier_table': ['add', 'del']}
+-- 
+2.17.1
+
+
+
