@@ -1,0 +1,27 @@
+From ff55bdc8d787a507fee8329c8dc72d27ddac3db0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 13 Jan 2019 13:33:15 +0900
+Subject: [PATCH] makefile: update dist-clean for vf/common
+
+Add `vf/common` to the target directories of dist-clean.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 4f04bba..8a9fc0c 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -26,6 +26,7 @@ dist-clean:
+ 	make clean
+ 	rm -rf $(wildcard src/*/$(RTE_TARGET))
+ 	rm -rf $(wildcard src/*/shared)
++	rm -rf $(wildcard src/mirror/vf)
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.17.1
+
