@@ -1,0 +1,29 @@
+From f88c72d38794b5166681236222d8b578fda5ec8d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 14 Jan 2019 21:09:32 +0900
+Subject: [PATCH 3/4] spp_nfv: change interval to retry connection
+
+This update is to change interval time of connection retry from fixed
+`sleep(1)` to `usleep(CONN_RETRY_USEC)` to be configurable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index ce7e07d..701a700 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -229,7 +229,7 @@ main(int argc, char *argv[])
+ 	while (on) {
+ 		ret = do_connection(&connected, &sock);
+ 		if (ret < 0) {
+-			sleep(1);
++			usleep(CONN_RETRY_USEC);
+ 			continue;
+ 		}
+ 
+-- 
+2.17.1
+

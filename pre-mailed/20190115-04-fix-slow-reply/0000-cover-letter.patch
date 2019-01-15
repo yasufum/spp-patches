@@ -1,0 +1,38 @@
+From 432ee8f1f8a87874d270f2ab151b4ef0caf93002 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 15 Jan 2019 11:17:22 +0900
+Subject: [PATCH 0/4] Fix bug of fixing slow command reply
+
+This update is to fix incorrect fixing of slow command reply for spp_vf
+and spp_mirror. It was applied as following updates, but not fixed the
+problem.
+
+* ab5183201c02 ("spp_vf: add sleep after disconnection detection")
+* 5eea2dfa5420 ("fix slow response of command")
+
+To reduce time for making command reply, replace sleep(1) to usleep(100)
+for, and add another sleep(1) to avoid sending too much requests if sock
+is closed and retry in previous patches. However, response is still slow
+because the place of added sleep(1) is incorrect.
+
+This series of update is to fix the problem. It also includes a
+definition of interval time `CONN_RETRY_USEC` to be configured in micro
+sec.
+
+Yasufumi Ogawa (4):
+  shared: define interval time to retry connection
+  primary: change interval to retry connection
+  spp_nfv: change interval to retry connection
+  spp_vf: fix bug of fixing slow command reply
+
+ src/nfv/main.c               | 2 +-
+ src/primary/main.c           | 2 +-
+ src/shared/common.h          | 3 +++
+ src/vf/common/command_conn.c | 4 ++++
+ src/vf/common/command_proc.c | 9 ++++-----
+ src/vf/spp_vf.c              | 4 +---
+ 6 files changed, 14 insertions(+), 10 deletions(-)
+
+-- 
+2.17.1
+

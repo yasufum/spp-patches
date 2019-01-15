@@ -1,0 +1,29 @@
+From c2954660c6eb471eb697242edb4c9297cc0a3507 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 14 Jan 2019 21:05:01 +0900
+Subject: [PATCH 2/4] primary: change interval to retry connection
+
+This update is to change interval time of connection retry from fixed
+`sleep(1)` to `usleep(CONN_RETRY_USEC)` to be configurable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 12b86e5..81d1aec 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -414,7 +414,7 @@ main(int argc, char *argv[])
+ 	while (on) {
+ 		ret = do_connection(&connected, &sock);
+ 		if (ret < 0) {
+-			sleep(1);
++			usleep(CONN_RETRY_USEC);
+ 			continue;
+ 		}
+ 
+-- 
+2.17.1
+
