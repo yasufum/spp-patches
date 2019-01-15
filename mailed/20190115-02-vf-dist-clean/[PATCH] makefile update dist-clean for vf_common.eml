@@ -1,0 +1,60 @@
+From - Tue Jan 15 12:28:46 2019
+X-Account-Key: account1
+X-UIDL: 000096d256a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id E37E540067B
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:30:36 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E1FA223BAD1; Tue, 15 Jan 2019 12:30:36 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id E0ED823B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:30:36 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C4FBF13F;
+	Tue, 15 Jan 2019 12:30:36 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id AF5C4D6;
+	Tue, 15 Jan 2019 12:30:36 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] makefile: update dist-clean for vf/common
+Date: Tue, 15 Jan 2019 12:28:23 +0900
+Message-Id: <1547522903-10167-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Add `vf/common` to the target directories of dist-clean.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 4f04bba..8a9fc0c 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -26,6 +26,7 @@ dist-clean:
+ 	make clean
+ 	rm -rf $(wildcard src/*/$(RTE_TARGET))
+ 	rm -rf $(wildcard src/*/shared)
++	rm -rf $(wildcard src/mirror/vf)
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.17.1
+
+
+
