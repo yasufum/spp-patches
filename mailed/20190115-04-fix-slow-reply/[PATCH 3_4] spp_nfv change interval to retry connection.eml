@@ -1,0 +1,64 @@
+From - Tue Jan 15 12:29:29 2019
+X-Account-Key: account1
+X-UIDL: 000096dd56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6A9FD400AA4
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 693EE23BAD1; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 689D123B849
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5011D63867B;
+	Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 386BC638A7F;
+	Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/4] spp_nfv: change interval to retry connection
+Date: Tue, 15 Jan 2019 12:29:07 +0900
+Message-Id: <1547522948-10285-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522948-10285-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522948-10285-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to change interval time of connection retry from fixed
+`sleep(1)` to `usleep(CONN_RETRY_USEC)` to be configurable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index ce7e07d..701a700 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -229,7 +229,7 @@ main(int argc, char *argv[])
+ 	while (on) {
+ 		ret = do_connection(&connected, &sock);
+ 		if (ret < 0) {
+-			sleep(1);
++			usleep(CONN_RETRY_USEC);
+ 			continue;
+ 		}
+ 
+-- 
+2.17.1
+
+
+

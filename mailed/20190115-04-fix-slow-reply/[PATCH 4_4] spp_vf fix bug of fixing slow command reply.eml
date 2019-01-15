@@ -1,0 +1,125 @@
+From - Tue Jan 15 12:29:29 2019
+X-Account-Key: account1
+X-UIDL: 000096de56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 6DA0A400AA4
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 6BD9D7F2B2; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 6ADEE7F046
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 59AE0638AA3;
+	Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4A3B4638A60;
+	Tue, 15 Jan 2019 12:31:21 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/4] spp_vf: fix bug of fixing slow command reply
+Date: Tue, 15 Jan 2019 12:29:08 +0900
+Message-Id: <1547522948-10285-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547522948-10285-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547522948-10285-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to fix incorrect fixing of slow command reply.
+
+To reduce time for making command reply, replace sleep(1) to usleep(100)
+for, and add another sleep(1) to avoid sending too much requests if sock
+is closed and retry in previous patches. However, response is still slow
+because the place of added sleep(1) is incorrect.
+
+Fixes: ab5183201c02 ("spp_vf: add sleep after disconnection detection")
+Fixes: 5eea2dfa5420 ("fix slow response of command")
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/common/command_conn.c | 4 ++++
+ src/vf/common/command_proc.c | 9 ++++-----
+ src/vf/spp_vf.c              | 4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/src/vf/common/command_conn.c b/src/vf/common/command_conn.c
+index a72180a..915ad20 100644
+--- a/src/vf/common/command_conn.c
++++ b/src/vf/common/command_conn.c
+@@ -12,6 +12,7 @@
+ #include <rte_log.h>
+ #include <rte_branch_prediction.h>
+ 
++#include "shared/common.h"
+ #include "string_buffer.h"
+ #include "command_conn.h"
+ 
+@@ -70,6 +71,9 @@ spp_connect_to_controller(int *sock)
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Cannot connect to controller. errno=%d\n",
+ 				errno);
++		/* Wait to retry */
++		usleep(CONN_RETRY_USEC);
++
+ 		close(*sock);
+ 		*sock = -1;
+ 		return SPP_CONNERR_TEMPORARY;
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 0e5c5f1..3011873 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -1644,18 +1644,17 @@ spp_command_proc_do(void)
+ 	}
+ 
+ 	ret = spp_connect_to_controller(&sock);
++
+ 	if (unlikely(ret != SPP_RET_OK))
+ 		return SPP_RET_OK;
+ 
+ 	msg_ret = spp_receive_message(&sock, &msgbuf);
+ 	if (unlikely(msg_ret <= 0)) {
+-		if (likely(msg_ret == 0)) {
+-			sleep(1);
++		if (likely(msg_ret == 0))
+ 			return SPP_RET_OK;
+-		} else if (unlikely(msg_ret == SPP_CONNERR_TEMPORARY)) {
+-			sleep(1);
++		else if (unlikely(msg_ret == SPP_CONNERR_TEMPORARY))
+ 			return SPP_RET_OK;
+-		} else
++		else
+ 			return SPP_RET_NG;
+ 	}
+ 
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index b81ad11..b98444d 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -350,10 +350,8 @@ main(int argc, char *argv[])
+ 				break;
+ 
+ 		       /*
+-			* To avoid making CPU busy, this thread waits
+-			* here for 100 ms.
++			* Wait to avoid CPU overloaded.
+ 			*/
+-
+ 			usleep(100);
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+-- 
+2.17.1
+
+
+
