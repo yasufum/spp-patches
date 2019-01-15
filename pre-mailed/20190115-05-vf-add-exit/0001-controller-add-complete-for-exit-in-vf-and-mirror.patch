@@ -1,0 +1,41 @@
+From 2af50641641cd651adef57acf881bab9b93ba5a5 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 14 Jan 2019 21:50:51 +0900
+Subject: [PATCH] controller: add complete for exit in vf and mirror
+
+Exit command is support in spp_vf and spp_mirror, but not for completion
+in vf and mirror commands. This update is to add completion for them.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/mirror.py | 1 +
+ src/controller/commands/vf.py     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/controller/commands/mirror.py b/src/controller/commands/mirror.py
+index a01e1eb..b5b7a1b 100644
+--- a/src/controller/commands/mirror.py
++++ b/src/controller/commands/mirror.py
+@@ -15,6 +15,7 @@ class SppMirror(object):
+     # All of commands and sub-commands used for validation and completion.
+     MIRROR_CMDS = {
+             'status': None,
++            'exit': None,
+             'component': ['start', 'stop'],
+             'port': ['add', 'del']}
+ 
+diff --git a/src/controller/commands/vf.py b/src/controller/commands/vf.py
+index 01795a5..e715a17 100644
+--- a/src/controller/commands/vf.py
++++ b/src/controller/commands/vf.py
+@@ -15,6 +15,7 @@ class SppVf(object):
+     # All of commands and sub-commands used for validation and completion.
+     VF_CMDS = {
+             'status': None,
++            'exit': None,
+             'component': ['start', 'stop'],
+             'port': ['add', 'del'],
+             'classifier_table': ['add', 'del']}
+-- 
+2.17.1
+
