@@ -1,0 +1,53 @@
+From 0e3062a688270cdbcb75a75c1a890a18434323d6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 13 Jan 2019 17:51:31 +0900
+Subject: [PATCH 6/6] spp_mirror: update makefile
+
+Add refactored common source and header files to makefile and root
+header file.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile     | 3 ++-
+ src/mirror/spp_mirror.c | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 073afbd..f1995fc 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -14,6 +14,7 @@ APP = spp_mirror
+ # all source are stored in SRCS-y
+ SRCS-y := spp_mirror.c
+ SRCS-y += ../shared/common.c
++SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ SRCS-y += ../vf/common/spp_proc.c ../vf/common/spp_port.c
+ SRCS-y += ../vf/common/command_conn.c ../vf/common/command_proc.c
+ SRCS-y += ../vf/common/command_dec.c
+@@ -21,7 +22,7 @@ SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-CFLAGS += -I$(SRCDIR)/../shared
++CFLAGS += -I$(SRCDIR)/../
+ CFLAGS += -I$(SRCDIR)/../vf/common
+ CFLAGS += -DSPP_MIRROR_MODULE
+ CFLAGS += -DSPP_MIRROR_SHALLOWCOPY
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index fb9bcb1..4835d55 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -9,7 +9,9 @@
+ #include <rte_common.h>
+ #include <rte_cycles.h>
+ 
+-#include "common.h"
++#include "shared/common.h"
++#include "shared/secondary/utils.h"
++
+ #include "spp_proc.h"
+ #include "spp_mirror.h"
+ #include "command_proc.h"
+-- 
+2.17.1
+

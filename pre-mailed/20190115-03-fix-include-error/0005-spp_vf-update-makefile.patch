@@ -1,0 +1,47 @@
+From ef7d0cda4a6c0d9239f718e81cbe859890c5f232 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 13 Jan 2019 17:12:12 +0900
+Subject: [PATCH 5/6] spp_vf: update makefile
+
+Change makefile and root header file of spp_vf to include updated files.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/Makefile | 3 ++-
+ src/vf/spp_vf.h | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index ac100bb..03c668f 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -17,10 +17,11 @@ SRCS-y += common/string_buffer.c common/ringlatencystats.c common/spp_port.c
+ SRCS-y += common/command_conn.c common/command_dec.c common/command_proc.c
+ SRCS-y += common/spp_proc.c
+ SRCS-y += ../shared/common.c
++SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-CFLAGS += -I$(SRCDIR)/../shared
++CFLAGS += -I$(SRCDIR)/../
+ CFLAGS += -I$(SRCDIR)/common
+ CFLAGS += -DSPP_VF_MODULE
+ #CFLAGS += -DSPP_DEMONIZE
+diff --git a/src/vf/spp_vf.h b/src/vf/spp_vf.h
+index f7f08c8..8465f1b 100644
+--- a/src/vf/spp_vf.h
++++ b/src/vf/spp_vf.h
+@@ -13,6 +13,8 @@
+  * This provides the function for initializing and starting the threads.
+  */
+ 
+-#include "common.h"
++#include "shared/common.h"
++
++#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+ #endif /* __SPP_VF_H__ */
+-- 
+2.17.1
+

@@ -1,0 +1,42 @@
+From 92a5daac6b7f2663c79652e5527eaf56c68a10ab Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 13 Jan 2019 15:57:12 +0900
+Subject: [PATCH 2/6] spp_nfv: update to use common app_port libs
+
+Add common app_port libraries to list of source codes.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/Makefile   | 3 ++-
+ src/nfv/commands.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index e921010..88533af 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -13,7 +13,8 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ APP = spp_nfv
+ 
+ # all source are stored in SRCS-y
+-SRCS-y := main.c nfv_status.c ../shared/common.c ../shared/secondary/utils.c
++SRCS-y := main.c nfv_status.c ../shared/common.c
++SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 3280d69..54e0f21 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -7,6 +7,7 @@
+ #define _NFV_COMMANDS_H_
+ 
+ #include "shared/secondary/add_port.h"
++#include "shared/secondary/utils.h"
+ 
+ #define RTE_LOGTYPE_SPP_NFV RTE_LOGTYPE_USER1
+ 
+-- 
+2.17.1
+
