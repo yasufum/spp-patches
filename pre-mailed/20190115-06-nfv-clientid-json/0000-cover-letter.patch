@@ -1,0 +1,21 @@
+From 99aa02b9eebca16ca7347e940b8d41228e9a9530 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 15 Jan 2019 21:23:52 +0900
+Subject: [PATCH 0/2] Change response of _get_client_id in spp_nfv
+
+Spp_nfv returns its client ID as plain text. However, it should be
+JSON as same as other secondary processes. This series of update is
+to change the format in both of sender of spp_nfv and receiver of
+spp-ctl.
+
+Yasufumi Ogawa (2):
+  spp_nfv: change _get_client_id to return JSON msg
+  spp-ctl: change NfvProc to parse JSON msg
+
+ src/nfv/commands.h      |  6 +++++-
+ src/spp-ctl/spp_proc.py | 16 ++++++----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+-- 
+2.17.1
+

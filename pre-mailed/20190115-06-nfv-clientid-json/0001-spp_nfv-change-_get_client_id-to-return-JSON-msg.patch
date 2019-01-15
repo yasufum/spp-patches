@@ -1,0 +1,40 @@
+From f96a4e254db3808ec5b84bce7e91c5f18ec34aba Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 15 Jan 2019 21:20:54 +0900
+Subject: [PATCH 1/2] spp_nfv: change _get_client_id to return JSON msg
+
+Spp_nfv returns its client ID as plain text. This update is to change
+the format to JSON as same as other secondary processes.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/commands.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 54e0f21..7dbe25b 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -6,6 +6,7 @@
+ #ifndef _NFV_COMMANDS_H_
+ #define _NFV_COMMANDS_H_
+ 
++#include "shared/common.h"
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+@@ -180,7 +181,10 @@ parse_command(char *str)
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+ 		memset(str, '\0', MSG_SIZE);
+-		sprintf(str, "%d", client_id);
++		sprintf(str, "{%s:%s,%s:%d,%s:%s}",
++				"\"results\"", "[{\"result\":\"success\"}]",
++				"\"client_id\"", client_id,
++				"\"process_type\"", "\"nfv\"");
+ 
+ 	} else if (!strcmp(token_list[0], "_set_client_id")) {
+ 		int id;
+-- 
+2.17.1
+
