@@ -1,0 +1,91 @@
+From 0f551e3dc4127d5fdfee86daae0eb952b5e28e2e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 16 Jan 2019 14:17:03 +0900
+Subject: [PATCH] spp-ctl: fix error in parsing replied message
+
+Spp-ctl expects a response of command from secondary process is JSON
+format for checking the result, but it is not a constraint. However,
+parsing is failed and terminated if it is not JSON because of
+inappropriate error handling. This update is to add a exception handler
+of JSONDecodeError and not terminated.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    |  1 -
+ src/spp-ctl/spp_proc.py   | 19 ++++++++++++++-----
+ src/spp-ctl/spp_webapi.py | 15 +--------------
+ 3 files changed, 15 insertions(+), 20 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index f6c00fb..c4dd4b2 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -6,7 +6,6 @@ eventlet.monkey_patch()
+ 
+ import argparse
+ import errno
+-import json
+ import logging
+ import socket
+ import subprocess
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index b9105d0..19a5e53 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -57,12 +57,21 @@ class SppProc(object):
+     @staticmethod
+     def _decode_reply(data):
+         # Remove '\0' in msg from secondary process to avoid error.
+-        data = json.loads(data.replace('\0', ''))
++        try:
++            data = json.loads(data.replace('\0', ''))
++
++            if "results" in data.keys():  # msg ffrom spp_vf
++                result = data["results"][0]
++                if result["result"] == "error":
++                    msg = result["error_details"]["message"]
++                    raise bottle.HTTPError(400, "command error: %s" % msg)
++
++            return data
++
++        except json.JSONDecodeError as e:
++            LOG.error("'{}' in JSON decoding.".format(e))
+ 
+-        result = data["results"][0]
+-        if result["result"] == "error":
+-            msg = result["error_details"]["message"]
+-            raise bottle.HTTPError(400, "command error: %s" % msg)
++        LOG.debug("Reply msg is not JSON format '{data}'.".format(**locals()))
+         return data
+ 
+     @staticmethod
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index d88d7a9..0fd2f2a 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -378,21 +378,8 @@ class V1NFVHandler(BaseHandler):
+         self.route('/<sec_id:int>/patches', 'DELETE',
+                    callback=self.nfv_patch_del)
+ 
+-    def convert_nfv_info(self, sec_id, data):
+-        nfv = {}
+-
+-        # spp_nfv returns status info in JSON format. 'null' means
+-        # that it has no dst port.
+-        #   {"status":"idling","ports":[{"src":"phy:0","dst":"null"},...
+-
+-        try:
+-            nfv = json.loads(data)
+-        except json.JSONDecodeError as e:
+-            print("%s" % e)
+-        return nfv
+-
+     def nfv_get(self, proc):
+-        return self.convert_nfv_info(proc.id, proc.get_status())
++        return proc.get_status()
+ 
+     def _validate_nfv_forward(self, body):
+         if 'action' not in body:
+-- 
+2.17.1
+
