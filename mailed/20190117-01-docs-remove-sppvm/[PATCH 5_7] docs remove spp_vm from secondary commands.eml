@@ -1,0 +1,63 @@
+From - Thu Jan 17 11:47:16 2019
+X-Account-Key: account1
+X-UIDL: 0000983f56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 38CCB400D1B
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu, 17 Jan 2019 11:48:59 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 37CC523BB53; Thu, 17 Jan 2019 11:48:59 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 3727123BB30
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu, 17 Jan 2019 11:48:59 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 2A91CEA7939;
+	Thu, 17 Jan 2019 11:48:59 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 13E3EEA77BE;
+	Thu, 17 Jan 2019 11:48:59 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 5/7] docs: remove spp_vm from secondary commands
+Date: Thu, 17 Jan 2019 11:46:43 +0900
+Message-Id: <1547693205-17710-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1547693205-17710-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1547693205-17710-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Remove spp_vm from Secondary Commands reference.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_vf.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index cbb4859..3cf1cca 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -15,7 +15,7 @@ configuration, assigning or releasing resources.
+ 
+ Secondary ID is referred as ``--client-id`` which is given as an argument
+ while launching ``spp_vf``. It should be unique among all of secondary
+-processes including ``spp_nfv``, ``spp_vm`` and others.
++processes including ``spp_nfv`` and others.
+ 
+ ``vf`` command takes an secondary ID and one of sub commands. Secondary ID
+ and sub command should be separated with delimiter ``;``, or failed to a
+-- 
+2.7.4
+
+
+
