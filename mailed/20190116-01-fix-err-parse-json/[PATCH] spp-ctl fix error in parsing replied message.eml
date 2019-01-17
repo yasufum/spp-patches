@@ -1,0 +1,189 @@
+From - Wed Jan 16 16:02:06 2019
+X-Account-Key: account1
+X-UIDL: A19T2JzbzFzIFJ9js6j2eSVAjW5vHgOHVgWDghIOkLA_CIPHERCRAFT20190116151821
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 99DC14003EB
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 16 Jan 2019 15:12:44 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 973637F0A5; Wed, 16 Jan 2019 15:12:44 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 9621F7F09E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 16 Jan 2019 15:12:44 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 89421EA7D25
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 16 Jan 2019 15:12:44 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 7E691EA7B80
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 16 Jan 2019 15:12:44 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=SoftFail smtp.pra=ogawa.yasufumi@lab.ntt.co.jp; spf=SoftFail smtp.mailfrom=ogawa.yasufumi@lab.ntt.co.jp
+Received-SPF: SoftFail (dcma-spm01.ecl.ntt.co.jp: domain of
+  ogawa.yasufumi@lab.ntt.co.jp is inclined to not designate
+  153.149.235.5 as permitted sender) identity=pra;
+  client-ip=153.149.235.5; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="ogawa.yasufumi@lab.ntt.co.jp";
+  x-sender="ogawa.yasufumi@lab.ntt.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 include:spf.ecl.ntt.co.jp ~all"
+Received-SPF: SoftFail (dcma-spm01.ecl.ntt.co.jp: domain of
+  ogawa.yasufumi@lab.ntt.co.jp is inclined to not designate
+  153.149.235.5 as permitted sender) identity=mailfrom;
+  client-ip=153.149.235.5; receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="ogawa.yasufumi@lab.ntt.co.jp";
+  x-sender="ogawa.yasufumi@lab.ntt.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 include:spf.ecl.ntt.co.jp ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AI3PNhxEMHhAanAQAtMOWN51GYnJ96ZzpIg4Y7I?=
+ =?us-ascii?q?YmgLtSc6Oluq7vJ1Hb+e401wSbUY7e4rdfk++O6ubtUmhG54qd9nsFNp5UBF?=
+ =?us-ascii?q?cekctDpAsuHOCMCEmzN/v2d2oiBs0XU1Bs4Hj9IEFOBcjjYlz6pnS4qzgOBl?=
+ =?us-ascii?q?P0Mkx3Pre9AZbc2v+w2fyc8pzXKx5NmCL7ZLpzKBusqgCEscYfnoIkO68q1x?=
+ =?us-ascii?q?XUp3pgf+1cg2V0ORSYmFD+/p7qrqRu+ClRpf8tsvV4f/mgIvYDSrJEIj0nNy?=
+ =?us-ascii?q?h16MbuvFzYVQ7Xvz0RWWFQlAZURQPCqhPiDN/9tS7zt+w13yf/X4W+Sr89Rj?=
+ =?us-ascii?q?3k/q5wVRH1jSYvMzcztmfLlop7i+RZuFqgvFR+xYXQYYeYOLJieevbes9SSW?=
+ =?us-ascii?q?daX8lXXjBMZ+H0J9JSVKxYYbce9dKg4QZGpAD2HQS2AeLz1jJEzmT726E3ya?=
+ =?us-ascii?q?VpEA3L2hAhA8NbqG7d/7CXfO8ZVeG4yrWNzC2WNq4Nn26huc6SKU1n/KLER7?=
+ =?us-ascii?q?97fMvPxFN6GwjAhxCLsYm9ZnWY3eBLtXSHqeFnE+C32AtF40l8pCaiwsA0h8?=
+ =?us-ascii?q?zHnIUQnxrD+ixmycAkLMalRlN+YPagGZEWsT2GcYBxBME6CTIN2m5y2vgdtJ?=
+ =?us-ascii?q?i3cTJfgpMozgHWLe2OaJWG/xfifOKYK3F+mG4jc7X5hQ74oi3CgqXsE8Kz1l?=
+ =?us-ascii?q?hNtC9MlNLB42sM2xLk8dSdS/BhrQ+xnCyC3AfJ5qRYMFg5wODFfoU5zOd6xf?=
+ =?us-ascii?q?9x+QzTWzX7k0LsgOqKe1U4r6K2vv//bOyup5mXM5J4h1PlKqpol8e7R+IkLk?=
+ =?us-ascii?q?4FWC6Z4ayq3bnntxSjEo9HhfA3jKTV9aviC5hA/vyCBAFJ/I8i717/Azyj2Z?=
+ =?us-ascii?q?EDhXxfdRRIcxbBiZT1fVrJZvLgX7+zhFGlkTEjwP6jXPWpBZrEMXGFgb76YL?=
+ =?us-ascii?q?hg7k90zAM5i9ZD+9RfDfcDOLryQQfwstfcDxk0P0SoxK7hD8k12o4FWG2JC7?=
+ =?us-ascii?q?OUVcGa+QbVvaR2f7jKPtRI/mu1IuNt//P0iH4lhVIRNbKk25cacjHwH/hrJV?=
+ =?us-ascii?q?mYfWu5h94AFWkQuQ9tKY6iwFaGUDNVezOzR/dlu2p9Ud73S92YG8bw0/Sb0S?=
+ =?us-ascii?q?y2H4NbfDVKAVWFVGzwct3dHfoHbGSUPtMnmTtCV6DyLu1pnRyoqgL+zKJqa+?=
+ =?us-ascii?q?TO/ShN/5Xs3cd8ofzajgw86Dl1J8CU2SeLU30ylWRORSd8j8Ud6QRtj0yO16?=
+ =?us-ascii?q?R1makSEtNa+PoPQw4hKJDByu1SD9n4HATdYpGCTxCkWp/1ZFN5BsJ0yNgIbU?=
+ =?us-ascii?q?FnHtykhR2WxCumDYgOi6aKD4BnurKZxXX6INxxjmrXzKR0xUdzWdNBbCf148?=
+ =?us-ascii?q?w3vxiWHYPClF+V0rqnZbhJljCY73+NlCKPukpcTQJ9A77dUzYSbU+Qq8jloE?=
+ =?us-ascii?q?jFCb22QaIuNg8LkJ/QGu5xctTsyG5+arLmMdXabXi2nj7tVxKBzPWKcJascG?=
+ =?us-ascii?q?Jb3j2PUxFYwTBWxm6PME0FPgnku3jXVWE8EVvlJUXw7a91rzW5Vh1vwg=3D?=
+ =?us-ascii?q?=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0CNAADIyj5cZAXrlZljHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUwUBAQsBggADZnMJBhUSjHqLFJoJgXsoEYcJKQItBw0BAwEBAgEBAQE?=
+ =?us-ascii?q?FWwE0hnqBDxKDIgGCAAGta4N+hQiBLId+VYEogkSCFoNugXYBiR8Ch0QHgW8?=
+ =?us-ascii?q?aCocgVZA1BwKGYEGKYiSBZYgkh3oBiXuBCJFIDiKBV4QsCYIqjjhjAYEDJBq?=
+ =?us-ascii?q?JZwEB?=
+X-SPF-Status: warn
+Received: from mogw1204.ocn.ad.jp ([153.149.235.5])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 16 Jan 2019 15:12:44 +0900
+Received: from mf-smf-unw005c2 (mf-smf-unw005c2.ocn.ad.jp [153.138.219.79])
+	by mogw1204.ocn.ad.jp (Postfix) with ESMTP id E2783E8023E;
+	Wed, 16 Jan 2019 15:12:43 +0900 (JST)
+Received: from ocn-vc-mts-104c1.ocn.ad.jp ([153.138.237.81])
+	by mf-smf-unw005c2 with ESMTP
+	id jeLggqCOk017KjeRPgPJTD; Wed, 16 Jan 2019 15:12:43 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+	by ocn-vc-mts-104c1.ocn.ad.jp with ESMTP
+	id jeRPgQgCsq2v1jeRPg7D6J; Wed, 16 Jan 2019 15:12:43 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+	by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+	Wed, 16 Jan 2019 15:12:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp,
+	spp@dpdk.org
+Subject: [PATCH] spp-ctl: fix error in parsing replied message
+Date: Wed, 16 Jan 2019 15:12:42 +0900
+Message-Id: <20190116061242.7325-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp-ctl expects a response of command from secondary process is JSON
+format for checking the result, but it is not a constraint. However,
+parsing is failed and terminated if it is not JSON because of
+inappropriate error handling. This update is to add a exception handler
+of JSONDecodeError and not terminated.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    |  1 -
+ src/spp-ctl/spp_proc.py   | 19 ++++++++++++++-----
+ src/spp-ctl/spp_webapi.py | 15 +--------------
+ 3 files changed, 15 insertions(+), 20 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index f6c00fb..c4dd4b2 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -6,7 +6,6 @@ eventlet.monkey_patch()
+ 
+ import argparse
+ import errno
+-import json
+ import logging
+ import socket
+ import subprocess
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index b9105d0..19a5e53 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -57,12 +57,21 @@ class SppProc(object):
+     @staticmethod
+     def _decode_reply(data):
+         # Remove '\0' in msg from secondary process to avoid error.
+-        data = json.loads(data.replace('\0', ''))
++        try:
++            data = json.loads(data.replace('\0', ''))
++
++            if "results" in data.keys():  # msg ffrom spp_vf
++                result = data["results"][0]
++                if result["result"] == "error":
++                    msg = result["error_details"]["message"]
++                    raise bottle.HTTPError(400, "command error: %s" % msg)
++
++            return data
++
++        except json.JSONDecodeError as e:
++            LOG.error("'{}' in JSON decoding.".format(e))
+ 
+-        result = data["results"][0]
+-        if result["result"] == "error":
+-            msg = result["error_details"]["message"]
+-            raise bottle.HTTPError(400, "command error: %s" % msg)
++        LOG.debug("Reply msg is not JSON format '{data}'.".format(**locals()))
+         return data
+ 
+     @staticmethod
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index d88d7a9..0fd2f2a 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -378,21 +378,8 @@ class V1NFVHandler(BaseHandler):
+         self.route('/<sec_id:int>/patches', 'DELETE',
+                    callback=self.nfv_patch_del)
+ 
+-    def convert_nfv_info(self, sec_id, data):
+-        nfv = {}
+-
+-        # spp_nfv returns status info in JSON format. 'null' means
+-        # that it has no dst port.
+-        #   {"status":"idling","ports":[{"src":"phy:0","dst":"null"},...
+-
+-        try:
+-            nfv = json.loads(data)
+-        except json.JSONDecodeError as e:
+-            print("%s" % e)
+-        return nfv
+-
+     def nfv_get(self, proc):
+-        return self.convert_nfv_info(proc.id, proc.get_status())
++        return proc.get_status()
+ 
+     def _validate_nfv_forward(self, body):
+         if 'action' not in body:
+-- 
+2.17.1
+
+
+
