@@ -1,0 +1,37 @@
+From 97d7192482e898ebcd052ef6736fff66c3d8db44 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 17 Jan 2019 11:40:18 +0900
+Subject: [PATCH 0/7] Remove spp_vm from documentation
+
+Source codes of spp_vm is removed in previous update [1], but
+documentation is still remained. This series of patches is to remove
+spp_vm from docs.
+
+[1] http://git.dpdk.org/apps/spp/commit/?id=249fb151bd889dd09d482761f9a645955d6380ba
+
+Yasufumi Ogawa (7):
+  docs: remove spp_vm from howto use section
+  docs: remove spp_vm from spp-ctl API
+  docs: remove spp_vm from SPP container
+  docs: remove spp_vm from usecases
+  docs: remove spp_vm from secondary commands
+  docs: remove spp_vf from image of usecase
+  docs: update hugepages setup
+
+ docs/guides/api_ref/spp-ctl.rst                    |  30 +-
+ docs/guides/commands/secondary/spp_vf.rst          |   2 +-
+ .../images/setup/use_cases/spp_nfv_l2fwd_vhost.svg | 779 +++++++++++++++++++++
+ .../setup/use_cases/spp_unidir_l2fwd_vhost.svg     | 759 --------------------
+ docs/guides/setup/getting_started.rst              |  11 +-
+ docs/guides/setup/howto_use.rst                    |  67 +-
+ docs/guides/tools/sppc/app_launcher.rst            |  32 +-
+ docs/guides/tools/sppc/getting_started.rst         |   8 +-
+ docs/guides/tools/sppc/usecases.rst                |   3 +-
+ docs/guides/use_cases/spp_nfv.rst                  |  42 +-
+ 10 files changed, 838 insertions(+), 895 deletions(-)
+ create mode 100644 docs/guides/images/setup/use_cases/spp_nfv_l2fwd_vhost.svg
+ delete mode 100644 docs/guides/images/setup/use_cases/spp_unidir_l2fwd_vhost.svg
+
+-- 
+2.7.4
+

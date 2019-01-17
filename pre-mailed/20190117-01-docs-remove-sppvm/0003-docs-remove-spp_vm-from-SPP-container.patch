@@ -1,0 +1,108 @@
+From 062293695d81a41535f026f3f038bb664df2bac6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 17 Jan 2019 05:59:58 +0900
+Subject: [PATCH 3/7] docs: remove spp_vm from SPP container
+
+Remove descriptions for spp_vm from SPP Container chapter.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/tools/sppc/app_launcher.rst    | 32 ++----------------------------
+ docs/guides/tools/sppc/getting_started.rst |  8 ++------
+ docs/guides/tools/sppc/usecases.rst        |  3 +--
+ 3 files changed, 5 insertions(+), 38 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index bf126bc..2525740 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -24,7 +24,6 @@ inside a container.
+     |--- pktgen.py
+     |--- spp-nfv.py
+     |--- spp-primary.py
+-    |--- spp-vm.py
+     ---- testpmd.py
+ 
+ 
+@@ -190,19 +189,8 @@ SPP Secondary Container
+ -----------------------
+ 
+ In SPP, there are three types of secondary process, ``spp_nfv``,
+-``spp_vm`` and  ``spp_vf``.
+-However, SPP container does not support ``spp_vf`` currently.
+-
+-``spp_nfv`` is usually used for forwarding packets on host and
+-``spp_vm`` is used for insidea a virtual machine.
+-However, in a context of container, the usage is just a bit different.
+-Both of secondary processes are launched as app containers,
+-but ``spp_vm`` container has virtio interfaces while ``spp_nfv``
+-container does not have it.
+-It means that ``spp_nfv`` behaves as a path between NICs or containers,
+-but ``spp_vm`` is a client of ``spp_nfv`` and simply forwarding from rx
+-to tx ports. You do not need to use ``spp_vm`` without some cases for
+-using virtual machines.
++``spp_vf`` or so.
++However, SPP container does only support ``spp_nfv`` currently.
+ 
+ ``spp-nfv.py`` launches ``spp_nfv`` as an app container and requires
+ options for secondary ID and core list (or core mask).
+@@ -238,22 +226,6 @@ It shows only application specific options for simplicity.
+       ...
+ 
+ 
+-For launching ``spp_vm`` for vhost interface, it is required to assign
+-a vhost device ID from ``app/spp-nfv.py`` and launch ``app/spp-vm.py``
+-with same ID..
+-
+-.. code-block:: console
+-
+-    # Add vhost 1 from spp-nfv.py of sec 1
+-    spp > sec 1;add vhost 1
+-
+-Launch a secondary container with device ID 1.
+-
+-.. code-block:: console
+-
+-    $ python app/spp-vm.py -i 2 -l 4-5 -d 1
+-
+-
+ .. _sppc_appl_l2fwd:
+ 
+ L2fwd Container
+diff --git a/docs/guides/tools/sppc/getting_started.rst b/docs/guides/tools/sppc/getting_started.rst
+index c0970a3..6a40b12 100644
+--- a/docs/guides/tools/sppc/getting_started.rst
++++ b/docs/guides/tools/sppc/getting_started.rst
+@@ -196,13 +196,9 @@ and two ports.
+ SPP Secondary Container
+ ~~~~~~~~~~~~~~~~~~~~~~~
+ 
+-For secondary process, there are two launcher scripts,
+-``spp-nfv.py`` and ``spp-vm.py``.
+-There behave as similar to ``spp_nfv`` running on host and
+-``spp_vm`` on guest VM.
+-The difference is that both of them are running on containers.
++For secondary process, ``spp_nfv`` is only supported for running on container
++currently.
+ 
+-You use only ``spp_nfv.py`` in this guide.
+ Launch ``spp_nfv`` in terminal 3
+ with options for secondary ID is ``1`` and
+ core list is ``1-2`` for using 2nd and 3rd cores.
+diff --git a/docs/guides/tools/sppc/usecases.rst b/docs/guides/tools/sppc/usecases.rst
+index 216c2bc..80f0fac 100644
+--- a/docs/guides/tools/sppc/usecases.rst
++++ b/docs/guides/tools/sppc/usecases.rst
+@@ -130,8 +130,7 @@ Performance Test of Ring
+ Ring PMD is a very fast path to communicate between DPDK processes.
+ It is a kind of zero-copy data passing via shared memory and better
+ performance than vhost PMD.
+-Currently, only ``spp_nfv`` and ``spp_vm`` provide ring PMD in SPP
+-container.
++Currently, only ``spp_nfv`` provides ring PMD in SPP container.
+ It is also possible other DPDK applications to have ring PMD interface
+ for SPP technically,
+ but not implemented yet.
+-- 
+2.7.4
+

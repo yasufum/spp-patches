@@ -1,0 +1,42 @@
+From 97d7192482e898ebcd052ef6736fff66c3d8db44 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 17 Jan 2019 11:26:18 +0900
+Subject: [PATCH 7/7] docs: update hugepages setup
+
+This patch is to update for `Reserving Hugepages` section in Setup
+Guide.
+
+* Add description for `update-grub` to activate hugepages config.
+
+* Fix typo of how to confirm 1GB hugepages is supported.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 5aaf0ed..9847903 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -45,7 +45,16 @@ is for the number of pages.
+ 
+     .. code-block:: console
+ 
+-        $ cat /proc/cpuinfo | pdpe1gb
++        $ cat /proc/cpuinfo | grep pdpe1gb
++        flags           : fpu vme ... pdpe1gb ...
++
++You should run ``update-grub`` after editing to update grub's config file,
++or this configuration is not activated.
++
++.. code-block:: console
++
++   $ sudo update-grub
++   Generating grub configuration file ...
+ 
+ For 2MB page, you can activate hugepages while booting or at anytime
+ after system is booted.
+-- 
+2.7.4
+
