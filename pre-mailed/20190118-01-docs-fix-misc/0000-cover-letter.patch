@@ -1,0 +1,19 @@
+From 6cdd507d5cd9aff729dd385de7ed71d561dd17da Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 18 Jan 2019 12:55:31 +0900
+Subject: [PATCH 0/2] Update for command reference
+
+Some of descriptions of command reference are old or incorrect. This
+series of patches is to upadte to the latest behavior of commands.
+
+Yasufumi Ogawa (2):
+  docs: update common commands
+  docs: revise desc of spp_mirror commands
+
+ docs/guides/commands/common.rst               | 55 ++++++++++++-------
+ docs/guides/commands/secondary/spp_mirror.rst | 16 +++---
+ 2 files changed, 42 insertions(+), 29 deletions(-)
+
+-- 
+2.17.1
+
