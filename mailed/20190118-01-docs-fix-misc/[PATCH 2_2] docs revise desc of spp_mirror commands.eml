@@ -1,0 +1,188 @@
+From - Fri Jan 18 13:00:34 2019
+X-Account-Key: account1
+X-UIDL: lIi5c06an1N57GN3-6dz_i2etAIf8PIRTB107181XMY_CIPHERCRAFT20190118125950
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id BBD27400D1C
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id B996C7F32A; Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id B891E7F2B5
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A956A6388ED
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 9D1856388CF
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=SoftFail smtp.pra=ogawa.yasufumi@lab.ntt.co.jp; spf=SoftFail smtp.mailfrom=ogawa.yasufumi@lab.ntt.co.jp
+Received-SPF: SoftFail (dcma-spm02.ecl.ntt.co.jp: domain of
+  ogawa.yasufumi@lab.ntt.co.jp is inclined to not designate
+  202.234.252.10 as permitted sender) identity=pra;
+  client-ip=202.234.252.10; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="ogawa.yasufumi@lab.ntt.co.jp";
+  x-sender="ogawa.yasufumi@lab.ntt.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 include:spf.ecl.ntt.co.jp ~all"
+Received-SPF: SoftFail (dcma-spm02.ecl.ntt.co.jp: domain of
+  ogawa.yasufumi@lab.ntt.co.jp is inclined to not designate
+  202.234.252.10 as permitted sender) identity=mailfrom;
+  client-ip=202.234.252.10; receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="ogawa.yasufumi@lab.ntt.co.jp";
+  x-sender="ogawa.yasufumi@lab.ntt.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 include:spf.ecl.ntt.co.jp ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3ARIEc1BVwD1QtQUUsBiSho9RL36fV8LGuZFw894?=
+ =?us-ascii?q?YnhrRSc6+q45XlOgnl6O5wiEPSBN6Auf5PjuOTqLjlATZG7J2F9nYebNpHUF?=
+ =?us-ascii?q?kHkZZehBQuVfWCB1HVJf/uJzc/ANwETEVsqna0OFdcXtf3fEDcv3izxTobEF?=
+ =?us-ascii?q?P5KRYzLeOzGJaBx9+v2bWJ/JPPTQxJgHKmZK9qahC/rAHfrM4T1IxtI7k4jA?=
+ =?us-ascii?q?rAuWZGZuFX7WdhLxSVgwq67cD2/oY6qXZqtvks9tBNXeDBR4pkF+MKNzMoL0?=
+ =?us-ascii?q?485cmj9RXISALK/WMZCj9QnxFMRQ7Z8FfxWdHzqnmyuu140Sicdcr4KNJ8ET?=
+ =?us-ascii?q?Ot5rhiDg7hkzoJKjs42GXegIp2kL4dqxXnpQQ3wpWcYYeeMPt4c6+VYdRSQ2?=
+ =?us-ascii?q?1dFspcTC1OBIqgYu5tR6JbZbwe9dKh4QFT913nXUGlH6v3xyVNh2Pq0KFyyO?=
+ =?us-ascii?q?knHQzcnUQhE98IrHXIvYDtLq5BNIL9hKLMzDjFc7ZXwWKnsNKOKEt956vRB/?=
+ =?us-ascii?q?QpKZmZ00QkGgLbg0/FpYfgNnaOzuFV6S6W5O4mU/6zzWUg7QNp8V3Njo8hjJ?=
+ =?us-ascii?q?fEgoUNxxXK7yJ8lcwyKtSnQQhqaMW5HoZVtgmePoEwRN8+BWpv/iQigO5j29?=
+ =?us-ascii?q?bzbG0RxZIrygSKIfuIepeBpAPqT/ufPDJ5rHZscvS5mwr0+k/myPW2BazWmB?=
+ =?us-ascii?q?5a6yFClNfLrHUE0Rfev9OGRvVK5Vu72D2ThEjDr/tJKkcume/HOoYsl/Quw4?=
+ =?us-ascii?q?ELvx2JTUqU0A3mybWbfUI+9q205vT7N//484SEOdY8iwf1Nrkil56kGep+Pw?=
+ =?us-ascii?q?MKGW6H5aK30/vh5QXvSbFOxKRswJPUu53bO8kX45WBLVMOiNQY7BijIT6n1J?=
+ =?us-ascii?q?xYkXICJRdeYBff1c7kMFWIJuzkS/y4xVa0wn9nwPXPP7upBZuoTDCLl7joYr?=
+ =?us-ascii?q?87+kdH1QQuyNF345teTLcdPLT4XQnzrJTZFVc4NQewwuDqBJ1h0csYXn7HDq?=
+ =?us-ascii?q?KCMazUuEOFg4Bna7PUPslP42q7caV/oae2xXYi0UcQZ6yowYcaZDijE/JqLl?=
+ =?us-ascii?q?/YKXvgj9EdEHsb6w83TejkklqHAlsxLz65W6Mx4C1+CZrzV9+ZANr23PrbgX?=
+ =?us-ascii?q?39R8UFLnpLAV2ND3ryIomPXv5JczqXepUnnzcAE769V8kq0lesrFyfqfIvI+?=
+ =?us-ascii?q?zK9ykfrZ+m2sJy4riZkh476jUyHs2Gzm+QSmBcmmoCATkqwOZ0pgp/0h3QtM?=
+ =?us-ascii?q?owy+wdDtFV6/5TB009OpfDxqprAsvvVB/Ef/+NQVzgRMm6Rzo2CNApiYxrAQ?=
+ =?us-ascii?q?41C5CpiRbN2DCvCrkemumQBZA6xbnAxXn6O5U12zPc2aImlVVjXtpXODjsmP?=
+ =?us-ascii?q?tk7waKTd2s8Q3Rh+OweK8bxiKI6GqT0T/EohRDSAApGaTDVnQCakaEtsz3oE?=
+ =?us-ascii?q?7JS/moFahhOQwHy9bKPKJObpew3Ad2Acz7MdGbWFqf3mK5BBKG3LSJNde4f2?=
+ =?us-ascii?q?wXmiPBFA4PlEYR5STdbFRsNmKau2vbSQdWOxf3eUq1rLt6oXn9SFMoiQqNKU?=
+ =?us-ascii?q?95heG4?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0BAAABVT0FcSQr86spkHAEBAQQBAQc?=
+ =?us-ascii?q?EAQGBUQcBAQsBggADI4E2CQYVEowbX40WmAKBezmEQAKCWCkCKwkNAQMBAQI?=
+ =?us-ascii?q?BAQEBBwEBFhcGJAE0hUsGgQkgMUMUBxKDIoIBAaxVg36FD4Esh36BfYJEgha?=
+ =?us-ascii?q?BEY1RIgKHRweIOIEBkREHAoZhiykkihCHfy2JU5JWgg6ELIInF44tYwGBAyQ?=
+ =?us-ascii?q?aiEsBAQ?=
+X-SPF-Status: warn
+Received: from mogw2108.ocn.ad.jp ([202.234.252.10])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 18 Jan 2019 13:01:50 +0900
+Received: from mf-smf-ucb023c2 (mf-smf-ucb023c2.ocn.ad.jp [153.153.66.143])
+	by mogw2108.ocn.ad.jp (Postfix) with ESMTP id 29B9D420169;
+	Fri, 18 Jan 2019 13:01:50 +0900 (JST)
+Received: from ocn-vc-mts-102c1.ocn.ad.jp ([153.153.66.81])
+	by mf-smf-ucb023c2 with ESMTP
+	id kLFlgZFtmHcBqkLLqgm2Ay; Fri, 18 Jan 2019 13:01:50 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+	by ocn-vc-mts-102c1.ocn.ad.jp with ESMTP
+	id kLLpgG4jG8o4xkLLpgKuH4; Fri, 18 Jan 2019 13:01:49 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+	by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+	Fri, 18 Jan 2019 13:01:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp,
+	spp@dpdk.org
+Subject: [PATCH 2/2] docs: revise desc of spp_mirror commands
+Date: Fri, 18 Jan 2019 13:01:48 +0900
+Message-Id: <20190118040148.26846-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190118040148.26846-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190118040148.26846-1-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Fix incorrect examples, not `vf` but `mirror`.
+
+* Correct usage of singular and plural in some descriptions.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_mirror.rst | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/docs/guides/commands/secondary/spp_mirror.rst b/docs/guides/commands/secondary/spp_mirror.rst
+index de20c1a..f81d3a9 100644
+--- a/docs/guides/commands/secondary/spp_mirror.rst
++++ b/docs/guides/commands/secondary/spp_mirror.rst
+@@ -106,7 +106,7 @@ consists of three parts.
+ 
+ .. code-block:: console
+ 
+-    spp > vf 1; status
++    spp > mirror 1; status
+     Basic Information:
+       - client-id: 3
+       - ports: [phy:0, phy:1, ring:0, ring:1, ring:2, ring:3, ring:4]
+@@ -146,19 +146,19 @@ cores which are reserved with ``-c`` or ``-l`` option while launching
+     # release worker 'NAME' from the role
+     spp > mirror SEC_ID; component stop NAME
+ 
+-Here is some examples of assigning roles with ``component`` command.
++Here is an example of assigning role with ``component`` command.
+ 
+ .. code-block:: console
+ 
+     # assign 'mirror' role with name 'mr1' on core 2
+     spp > mirror 2; component start mr1 2 mirror
+ 
+-Or examples of releasing roles.
++And an examples of releasing role.
+ 
+ .. code-block:: console
+ 
+     # release mirror role
+-    spp > vf 2; component stop mr1
++    spp > mirror 2; component stop mr1
+ 
+ 
+ .. _commands_spp_mirror_port:
+@@ -173,7 +173,7 @@ Adding port
+ 
+ .. code-block:: console
+ 
+-    spp > vf SEC_ID; port add RES_UID DIR NAME
++    spp > mirror SEC_ID; port add RES_UID DIR NAME
+ 
+ ``RES_UID`` is with replaced with resource UID such as ``ring:0`` or
+ ``vhost:1``. ``spp_mirror`` supports three types of port.
+@@ -202,14 +202,14 @@ by duplicating the packets.
+ Deleting port
+ ~~~~~~~~~~~~~
+ 
+-Delete a port which is not used anymore. It is almost same as adding port.
++Delete a port which is not be used anymore. It is almost same as adding port.
+ 
+ .. code-block:: console
+ 
+     spp > mirror SEC_ID; port del RES_UID DIR NAME
+ 
+ 
+-Here is an example.
++Here is some examples.
+ 
+ .. code-block:: console
+ 
+@@ -222,7 +222,7 @@ Here is an example.
+ exit
+ ----
+ 
+-Terminate the spp_mirror.
++Terminate ``spp_mirror`` process.
+ 
+ .. code-block:: console
+ 
+-- 
+2.17.1
+
+
+
