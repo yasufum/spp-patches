@@ -1,0 +1,113 @@
+X-Account-Key: account3
+X-UIDL: 13713.f8ym9i+Zq25zcwa11eUJFRQsQE4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb002.ocn.ad.jp (LHLO md-lpx-cb002) (153.138.210.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:30 +0900 (JST)
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-cb002 with LMTP id APDuJR4CR1zDFgAAtwVFfA
+	; Tue, 22 Jan 2019 20:44:30 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id 8D4AF3C0086C6
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:30 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 2E689500281
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:30 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id AED803572;
+	Tue, 22 Jan 2019 12:44:27 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id B17222C52
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:25 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiO9I015438;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiOYi008231;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07674;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgeZ7022818;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBgeea022815; Tue, 22 Jan 2019 20:42:40 +0900
+Message-Id: <201901221142.x0MBgeea022815@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOG010933 ; Tue, 22 Jan 2019 20:42:40 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:39 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 6/6] docs: add spp_pcap into document of setup
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add spp_pcap into setup document.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/gsg/setup.rst | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+index 9053519..af45d28 100644
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ b/docs/guides/spp_vf/gsg/setup.rst
+@@ -1,5 +1,5 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ .. _spp_vf_gsg_setup:
+ 
+@@ -348,6 +348,20 @@ Then, run make command to compile ``spp_mirror``.
+ 
+    $ make
+ 
++Setup spp_pcap
++--------------
++
++Setup of ``spp_pcap`` is almost the same as :ref:`SPP VF<spp_vf_gsg_setup>`.
++``libpcap-dev`` is  are used by ``spp_pcap`` when capturing and packet,
++so you need to install ``libpcap-dev`` .
++``liblz4-dev`` and ``liblz4-tool`` are used for compression and decompression
++respectively, so you need to install ``liblz4-dev`` and ``liblz4-tool`` .
++
++.. code-block:: console
++
++   $ sudo apt install libpcap-dev
++   $ sudo apt install liblz4-dev
++   $ sudo apt install liblz4-tool
+ 
+ Trouble Shooting Guide
+ ----------------------
+-- 
+2.17.1
+
+

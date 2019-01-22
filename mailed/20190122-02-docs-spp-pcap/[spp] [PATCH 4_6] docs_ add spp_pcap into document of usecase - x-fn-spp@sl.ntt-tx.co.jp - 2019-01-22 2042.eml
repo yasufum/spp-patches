@@ -1,0 +1,269 @@
+X-Account-Key: account3
+X-UIDL: 13712.AyoHVJFYJ52J4tvbJEj3nF+kGoc=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw002.ocn.ad.jp (LHLO md-lpx-nw002) (153.138.217.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:30 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-nw002 with LMTP id CFr8Nx0CR1zRVAAATJVVBg
+	; Tue, 22 Jan 2019 20:44:29 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id DE8483C00F2B1
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 4CF5950029C
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id A6B2F32A5;
+	Tue, 22 Jan 2019 12:44:27 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 53F3325D9
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:25 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiOnG015422;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiORx008203;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07656;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgeat022807;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBgdnu022803; Tue, 22 Jan 2019 20:42:39 +0900
+Message-Id: <201901221142.x0MBgdnu022803@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOE010933 ; Tue, 22 Jan 2019 20:42:39 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:37 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 4/6] docs: add spp_pcap into document of usecase
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add spp_pcap into document of usecase.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/use_cases/index.rst    |   3 +-
+ docs/guides/spp_vf/use_cases/usecase3.rst | 164 ++++++++++++++++++++++
+ 2 files changed, 166 insertions(+), 1 deletion(-)
+ create mode 100644 docs/guides/spp_vf/use_cases/usecase3.rst
+
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+index 67e8616..0a5aba3 100644
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ b/docs/guides/spp_vf/use_cases/index.rst
+@@ -1,5 +1,5 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ Use Cases
+ =========
+@@ -9,3 +9,4 @@ Use Cases
+ 
+    usecase1
+    usecase2
++   usecase3
+diff --git a/docs/guides/spp_vf/use_cases/usecase3.rst b/docs/guides/spp_vf/use_cases/usecase3.rst
+new file mode 100644
+index 0000000..146ef06
+--- /dev/null
++++ b/docs/guides/spp_vf/use_cases/usecase3.rst
+@@ -0,0 +1,164 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_pcap_use_case:
++
++Packet Capture
++==============
++
++
++This section describes a usecase for Packet Capture through ``spp_pcap``.
++
++Incoming packets received by ``phy:0`` is captured by ``spp_pcap``.
++
++.. _figure_simple_capture:
++
++.. figure:: ../../images/spp_pcap/spp_pcap_overview.*
++    :width: 40%
++
++    Simple Packet Capture
++
++Launch spp_pcap
++~~~~~~~~~~~~~~~
++
++Change directory to spp and confirm that it is already compiled.
++
++.. code-block:: console
++
++    $ cd /path/to/spp
++
++As spp, launch spp-ctl and spp.py first.
++
++.. code-block:: console
++
++    # Launch spp-ctl and spp.py
++    $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
++    $ python ./src/spp.py -b 127.0.0.1
++
++
++Then, run ``spp_primary``.
++
++.. code-block:: console
++
++    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++        -c 0x02 -n 4 \
++        --socket-mem 512,512 \
++        --huge-dir=/run/hugepages/kvm \
++        --proc-type=primary \
++        -- \
++        -p 0x03 -n 8 -s 127.0.0.1:5555
++
++After ``spp_primary`` is launched, run secondary process ``spp_pcap``.
++If not ``--output`` directory is not created, please create it first.
++
++.. code-block:: console
++
++    $ sudo mkdir /mnt/pcap
++    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
++       -l 0-4 -n 4 --proc-type=secondary \
++       -- \
++       --client-id 1 -s 127.0.0.1:6666 \
++       -i phy:0 --output /mnt/pcap --limit_file_size 1073741824
++
++Start capturing
++~~~~~~~~~~~~~~~
++When you want to start capture, then type the following command.
++
++.. code-block:: console
++
++    spp > pcap SEC_ID; start
++
++In this usecase, spp_pcap is launched with ID=1. Let's start capturing.
++
++.. code-block:: console
++
++    # Start packet capture
++    spp > pcap 1;start
++
++Stop capturing
++~~~~~~~~~~~~~~
++
++When you want to stop capture, then type the following command.
++
++.. code-block:: console
++
++    spp > pcap SEC_ID; stop
++
++In this usecase, spp_pcap is launched with ID=1. Let's stop capturing.
++
++.. code-block:: console
++
++    # Stop packet capture
++    spp > pcap 1;stop
++
++
++Now, you can see capture file written in specified directory.
++
++.. code-block:: console
++
++    # show the content of directry
++    $ cd /mnt/pcap
++    $ ls
++      spp_pcap.20181108110600.phy0.1.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.2.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.3.1.pcap.lz4
++
++Each files are compressed using LZ4, so that to uncompress it,
++use lz4 utils.
++
++.. code-block:: console
++
++    # uncompress lz4 files
++    $ sudo lz4 -d -m spp_pcap.20181108110600.phy0.*
++    $ ls
++      spp_pcap.20181108110600.phy0.1.1.pcap
++      spp_pcap.20181108110600.phy0.2.1.pcap
++      spp_pcap.20181108110600.phy0.3.1.pcap
++      spp_pcap.20181108110600.phy0.1.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.2.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.3.1.pcap.lz4
++
++To combine those divided pcap files using mergecap utility.
++
++.. code-block:: console
++
++    # merge pcap files
++    $ sudo mergecap spp_pcap.20181108110600.phy0.1.1.pcap \
++      spp_pcap.20181108110600.phy0.2.1.pcap \
++      spp_pcap.20181108110600.phy0.3.1.pcap \
++      -w test.pcap
++    $ ls
++      spp_pcap.20181108110600.phy0.1.1.pcap
++      spp_pcap.20181108110600.phy0.2.1.pcap
++      spp_pcap.20181108110600.phy0.3.1.pcap
++      spp_pcap.20181108110600.phy0.1.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.2.1.pcap.lz4
++      spp_pcap.20181108110600.phy0.3.1.pcap.lz4
++      test.pcap
++
++.. _spp_pcap_use_case_shutdown:
++
++Shutdown spp_pcap
++~~~~~~~~~~~~~~~~~
++
++Basically, you can shutdown all of SPP processes with ``bye all``
++command.
++
++This section describes graceful shutting down for ``spp_pcap``.
++
++First, stop capturing using the following command if it is not
++already stopped.
++
++.. code-block:: console
++
++    # Stop packet capture
++    spp > pcap 1;stop
++
++If you want to start capture again then use ``start`` command again.
++Else if you want to quit ``spp_pcap`` itself, type the following command
++and quit application.
++
++.. code-block:: console
++
++    # Exit packet capture
++    spp > pcap 1;exit
+-- 
+2.17.1
+
+

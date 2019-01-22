@@ -1,0 +1,256 @@
+X-Account-Key: account3
+X-UIDL: 13710.HBZ2JtCrcwu55kvHhqTfIGPsJvA=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw006.ocn.ad.jp (LHLO md-lpx-nw006) (153.138.217.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-nw006 with LMTP id uDwpHh0CR1wTSgAA0AKT/w
+	; Tue, 22 Jan 2019 20:44:29 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id 74A153C00F2A4
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id CED83A80273
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:28 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7E5582E81;
+	Tue, 22 Jan 2019 12:44:26 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id E5EDE2C52
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:24 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiNWt015398;
+ Tue, 22 Jan 2019 20:44:23 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiNt8008102;
+ Tue, 22 Jan 2019 20:44:23 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07643;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgdXc022794;
+ Tue, 22 Jan 2019 20:42:39 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBgdwR022791; Tue, 22 Jan 2019 20:42:39 +0900
+Message-Id: <201901221142.x0MBgdwR022791@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOB010933 ; Tue, 22 Jan 2019 20:42:39 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:34 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 1/6] docs: add command reference of spp_pcap
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add command reference of spp_pcap.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/index.rst    |   1 +
+ docs/guides/commands/secondary/spp_pcap.rst | 158 ++++++++++++++++++++
+ 2 files changed, 159 insertions(+)
+ create mode 100644 docs/guides/commands/secondary/spp_pcap.rst
+
+diff --git a/docs/guides/commands/secondary/index.rst b/docs/guides/commands/secondary/index.rst
+index 5544aea..006e58d 100644
+--- a/docs/guides/commands/secondary/index.rst
++++ b/docs/guides/commands/secondary/index.rst
+@@ -10,3 +10,4 @@ Secondary Commands
+    spp_nfv
+    spp_vf
+    spp_mirror
++   spp_pcap
+diff --git a/docs/guides/commands/secondary/spp_pcap.rst b/docs/guides/commands/secondary/spp_pcap.rst
+new file mode 100644
+index 0000000..33882f0
+--- /dev/null
++++ b/docs/guides/commands/secondary/spp_pcap.rst
+@@ -0,0 +1,158 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2010-2014 Intel Corporation
++
++.. _commands_spp_pcap:
++
++spp_pcap
++========
++
++``spp_pcap`` is a kind of SPP secondary process. It it introduced for
++providing packet capture features.
++
++Each of ``spp_pcap`` processes is managed with ``pcap`` command. It is for
++sending sub commands with specific ID called secondary ID for starting or
++stopping packet capture.
++
++Secondary ID is referred as ``--client-id`` which is given as an argument
++while launching ``spp_pcap``. It should be unique among all of secondary
++processes including ``spp_nfv``, ``spp_vm`` and others.
++
++``pcap`` command takes an secondary ID and one of sub commands. Secondary ID
++and sub command should be separated with delimiter ``;``, or failed to a
++command error.
++
++.. code-block:: console
++
++    spp > pcap SEC_ID; SUB_CMD
++
++In this example, ``SEC_ID`` is a secondary ID and ``SUB_CMD`` is one of the
++following sub commands. Details of each of sub commands are described in the
++next sections.
++
++* exit
++* start
++* status
++* stop
++
++``spp_pcap`` supports TAB completion. You can complete all of the name
++of commands and its arguments. For instance, you find all of sub commands
++by pressing TAB after ``pcap SEC_ID;``.
++
++.. code-block:: console
++
++    spp > pcap 1;  # press TAB key
++    exit  start      status        stop
++
++It tries to complete all of possible arguments.
++
++.. code-block:: console
++
++    spp > pcap 1; component st  # press TAB key to show args starting 'st'
++    start  status  stop
++
++If you are reached to the end of arguments, no candidate keyword is displayed.
++It is a completed statement of ``start`` command, and TAB
++completion does not work after ``start`` because it is ready to run.
++
++.. code-block:: console
++
++    spp > pcap 1; start
++    Succeeded to start capture
++
++It is also completed secondary IDs of ``spp_pcap`` and it is helpful if you run several ``spp_pcap`` processes.
++
++.. code-block:: console
++
++    spp > pcap  # press TAB after space following 'pcap'
++    1;  3;    # you find two spp_pcap processes of sec ID 1, 3
++
++By the way, it is also a case of no candidate keyword is displayed if your
++command statement is wrong. You might be encountered an error if you run the
++wrong command. Please take care.
++
++.. code-block:: console
++
++    spp > pcap 1; ste  # no candidate shown for wrong command
++    Invalid command "ste".
++
++
++.. _commands_spp_pcap_status:
++
++status
++------
++
++Show the information of worker threads and its resources. Status information
++consists of three parts.
++
++.. code-block:: console
++
++    spp > pcap 1; status
++    Basic Information:
++      - client-id: 3
++      - status: running
++      - core:2 'receive'
++        - rx: phy:0
++      - core:3 'write'
++        - file:/tmp/spp_pcap.20181108110600.phy0.1.1.pcap
++      - core:4 'write'
++        - file:/tmp/spp_pcap.20181108110600.phy0.2.1.pcap
++      - core:5 'write'
++        - file:/tmp/spp_pcap.20181108110600.phy0.3.1.pcap
++
++``Basic Information`` is for describing attributes of ``spp_pcap`` itself.
++``client-id`` is a secondary ID of the process and ``status`` shows the
++status of the process.
++
++Then lists of core IDs and its role is shown. There are two types of the role
++``receive`` and ``write``. If the role is ``receive``, port which ``spp_pcap``
++is attached to is shown. Else if the role iw ``write``, file name in absolute
++path is shown.
++
++.. _commands_spp_pcap_start:
++
++start
++-----
++
++Start packet capture. No additional arguments are taken.
++
++.. code-block:: console
++
++    # start capture
++    spp > pcap SEC_ID; start
++
++Here is a example of starting capture with ``start`` command.
++
++.. code-block:: console
++
++    # start capture
++    spp > pcap 2; start
++
++.. _commands_spp_pcap_stop:
++
++stop
++----
++
++Stop packet capture. No additional arguments are taken.
++
++.. code-block:: console
++
++   # start capture
++   spp > pcap SEC_ID; stop
++
++Here is a example of stopping capture with ``stop`` command.
++
++.. code-block:: console
++
++    # stop capture
++    spp > pcap 2; stop
++
++.. _commands_spp_pcap_exit:
++
++exit
++----
++
++Terminate the ``spp_pcap``.
++
++.. code-block:: console
++
++    spp > pcap 1; exit
+-- 
+2.17.1
+
+

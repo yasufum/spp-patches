@@ -1,0 +1,242 @@
+X-Account-Key: account3
+X-UIDL: 13714.SqcCyNrjCNMYziDZsSF,BjercEA=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:32 +0900 (JST)
+Received: from md-mta-nw003.ocn.ad.jp ([153.138.216.231])
+	by md-lpx-cb003 with LMTP id EE9SDSACR1xLfAAAjPdmzw
+	; Tue, 22 Jan 2019 20:44:32 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw003.ocn.ad.jp (Postfix) with ESMTP id 292E33C007C62
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:32 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 80DE4A8029B
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:31 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id B820D37B7;
+	Tue, 22 Jan 2019 12:44:27 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 7C77F2E81
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:25 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiOYC015430;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiOhY008217;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07658;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgeAT022812;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBge5p022806; Tue, 22 Jan 2019 20:42:40 +0900
+Message-Id: <201901221142.x0MBge5p022806@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOF010933 ; Tue, 22 Jan 2019 20:42:39 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:38 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 5/6] docs: add spp_pcap into document of explanation
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add spp_pcap into document of explanation.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/explain/functions_pcap.rst | 144 ++++++++++++++++++
+ docs/guides/spp_vf/explain/index.rst          |   1 +
+ 2 files changed, 145 insertions(+)
+ create mode 100644 docs/guides/spp_vf/explain/functions_pcap.rst
+
+diff --git a/docs/guides/spp_vf/explain/functions_pcap.rst b/docs/guides/spp_vf/explain/functions_pcap.rst
+new file mode 100644
+index 0000000..8c3f624
+--- /dev/null
++++ b/docs/guides/spp_vf/explain/functions_pcap.rst
+@@ -0,0 +1,144 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_pcap_explain:
++
++spp_pcap
++========
++
++The following sections provide some explanation of the code.
++
++Initializing
++------------
++
++A manager thread of ``spp_pcap`` initialize eal by ``rte_eal_init()``.
++Then each of component threads are launched by
++``rte_eal_remote_launch()``.
++
++
++.. code-block:: c
++
++    /* spp_pcap.c */
++    int ret_dpdk = rte_eal_init(argc, argv);
++
++    /* Start worker threads of classifier and forwarder */
++    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
++        g_core_info[lcore_id].core[0].num = 1;
++        g_pcap_info[lcore_id].thread_no = thread_no++;
++        rte_eal_remote_launch(slave_main, NULL, lcore_id);
++    }
++
++
++Main function of slave thread
++-----------------------------
++
++``slave_main()`` is called from ``rte_eal_remote_launch()``.
++It call ``pcap_proc_receive()`` or ``pcap_proc_write()``
++depending on the core assignment.
++``pcap_proc_write();`` provides function for ``receive``,
++and ``pcap_proc_write();`` provides function for ``write``.
++
++.. code-block:: c
++
++    /* spp_pcap.c */
++        int ret = SPP_RET_OK;
++        unsigned int lcore_id = rte_lcore_id();
++        enum spp_core_status status = SPP_CORE_STOP;
++        struct pcap_mng_info *pcap_info = &g_pcap_info[lcore_id];
++
++        if (pcap_info->thread_no == 0) {
++                RTE_LOG(INFO, PCAP, "Core[%d] Start recive.\n", lcore_id);
++                pcap_info->type = TYPE_RECIVE;
++        } else {
++                RTE_LOG(INFO, PCAP, "Core[%d] Start write(%d).\n",
++                                        lcore_id, pcap_info->thread_no);
++                pcap_info->type = TYPE_WRITE;
++        }
++        RTE_LOG(INFO, PCAP, "Core[%d] Start.\n", lcore_id);
++        set_core_status(lcore_id, SPP_CORE_IDLE);
++
++        while ((status = spp_get_core_status(lcore_id)) !=
++                        SPP_CORE_STOP_REQUEST) {
++
++                if (pcap_info->type == TYPE_RECIVE)
++                        ret = pcap_proc_receive(lcore_id);
++                else
++                        ret = pcap_proc_write(lcore_id);
++                if (unlikely(ret != SPP_RET_OK)) {
++                        RTE_LOG(ERR, PCAP, "Core[%d] Thread Error.\n",
++                                                                lcore_id);
++                        break;
++                }
++        }
++
++Receive Pakcet
++--------------
++
++``pcap_proc_receive()`` is the function to realize
++receiving incoming packets. This function is called in the while loop and
++receive packets. Everytime it receves packet via ``spp_eth_rx_burst()``, then
++it enqueue those packet into the ring using ``rte_ring_enqueue_bulk()``.
++Those packets are trnsfered to ``write`` cores via the ring.
++
++
++.. code-block:: c
++
++        /* spp_pcap.c */
++        /* Receive packets */
++        rx = &g_pcap_option.port_cap;
++
++        nb_rx = spp_eth_rx_burst(rx->dpdk_port, 0, bufs, MAX_PKT_BURST);
++        if (unlikely(nb_rx == 0))
++                return SPP_RET_OK;
++
++        /* Write ring packets */
++
++        nb_tx = rte_ring_enqueue_bulk(write_ring, (void *)bufs, nb_rx, NULL);
++
++        /* Discard remained packets to release mbuf */
++
++        if (unlikely(nb_tx < nb_rx)) {
++                for (buf = nb_tx; buf < nb_rx; buf++)
++                        rte_pktmbuf_free(bufs[buf]);
++        }
++
++        return SPP_RET_OK;
++
++
++Write Packet
++------------
++
++In ``pcap_proc_write()``, it dequeue packets from ring.Then it writes to
++storage after data compression using LZ4 libraries. ``compress_file_packet``
++is the function to write packet with LZ4. LZ4 is lossless compression
++algorithm, providing compression speed > 500 MB/s per core, scalable with
++multi-cores CPU. It features an extremely fast decoder, with speed in multiple
++GB/s per core, typically reaching RAM speed limits on multi-core systems.
++Please see details in
++`LZ4
++<https://github.com/lz4/lz4>`_
++
++.. code-block:: c
++
++        /* Read packets */
++        nb_rx =  rte_ring_dequeue_bulk(read_ring, (void *)bufs, MAX_PKT_BURST,
++                                                                        NULL);
++        if (unlikely(nb_rx == 0))
++                return SPP_RET_OK;
++
++        for (buf = 0; buf < nb_rx; buf++) {
++                mbuf = bufs[buf];
++                rte_prefetch0(rte_pktmbuf_mtod(mbuf, void *));
++                if (compress_file_packet(&g_pcap_info[lcore_id], mbuf)
++                                                        != SPP_RET_OK) {
++                        RTE_LOG(ERR, PCAP, "capture file write error: "
++                                "%d (%s)\n", errno, strerror(errno));
++                        ret = SPP_RET_NG;
++                        info->status = SPP_CAPTURE_IDLE;
++                        compress_file_operation(info, CLOSE_MODE);
++                        break;
++                }
++        }
++        for (buf = nb_rx; buf < nb_rx; buf++)
++                rte_pktmbuf_free(bufs[buf]);
++        return ret;
+diff --git a/docs/guides/spp_vf/explain/index.rst b/docs/guides/spp_vf/explain/index.rst
+index 3f56936..d5d108f 100644
+--- a/docs/guides/spp_vf/explain/index.rst
++++ b/docs/guides/spp_vf/explain/index.rst
+@@ -9,3 +9,4 @@ Explanation
+ 
+    functions_vf
+    functions_mirror
++   functions_pcap
+-- 
+2.17.1
+
+

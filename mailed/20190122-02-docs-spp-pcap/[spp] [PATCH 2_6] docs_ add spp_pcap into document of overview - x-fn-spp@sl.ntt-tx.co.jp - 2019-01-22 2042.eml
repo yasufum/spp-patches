@@ -1,0 +1,141 @@
+X-Account-Key: account3
+X-UIDL: 13711.Z7jAHAmBcZ8rgg93ZtkEY3vdVZI=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw005.ocn.ad.jp (LHLO md-lpx-nw005) (153.138.217.18)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-nw005 with LMTP id 8FZmKh0CR1yFMgAA2u8eSg
+	; Tue, 22 Jan 2019 20:44:29 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id A6B453C00031E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 155CD50028A
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 9C4D83257;
+	Tue, 22 Jan 2019 12:44:27 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 286542D13
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:24 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiNoH015414;
+ Tue, 22 Jan 2019 20:44:24 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiNDf008189;
+ Tue, 22 Jan 2019 20:44:23 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07654;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgdD4022802;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBgdCB022795; Tue, 22 Jan 2019 20:42:39 +0900
+Message-Id: <201901221142.x0MBgdCB022795@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOC010933 ; Tue, 22 Jan 2019 20:42:39 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:35 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 2/6] docs: add spp_pcap into document of overview
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add spp_pcap into document of overview.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/overview.rst | 34 ++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index 446beb0..09c21af 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -1,13 +1,12 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ .. _spp_vf_overview:
+ 
+ Overview
+ ========
+ 
+-This section describes an overview of SPP's extensions, ``spp_vf`` and
+-``spp_mirror``.
++This section describes an overview of SPP's extensions, ``spp_vf`` , ``spp_mirror`` and ``spp_pcap``.
+ SPP provides a connectivity between DPDK processes as a virtual patch panel.
+ However, It is not sufficient considering more practical usecases.
+ For instance, you might need a classification for incoming packets if you have
+@@ -24,6 +23,8 @@ packets. This feature is intended to use as a
+ <https://docs.openstack.org/dragonflow/latest/specs/tap_as_a_service.html>`_
+ feature for port mirroring introduced in OpenStack.
+ 
++``spp_pcap`` is an another kind of secondary process to capture incoming packets. This feature is intended to capture up to 10Gbps packets.
++
+ 
+ spp_vf
+ ------
+@@ -77,3 +78,30 @@ destination and a monitor application running on VM3.
+    :width: 70%
+ 
+    Overview of spp_mirror
++
++
++spp_pcap
++--------
++
++This section describes an overview of SPP's extensions, ``spp_pcap``.
++SPP provides a connectivity between VM and NIC as a virtual patch panel.
++However, for more practical use, operator and/or developer needs to capture
++packets. For such use, spp_pcap provides packet capturing feature from
++specific port. It is aimed to capture up to 10Gbps packets.
++
++``spp_pcap`` is a SPP secondary process for capturing packets from specific
++``port``. :numref:`figure_spp_pcap_overview` shows an overview of use of
++``spp_pcap`` in which ``spp_pcap`` process receives packets from ``phy:0``
++for capturing.
++
++``spp_pcap`` provides packet capturing capability as a SPP secondary process.
++``spp_pcap`` has one manager thread like spp_vf, and has two types of worker
++threads unlike spp_vf.
++
++
++.. _figure_spp_pcap_overview:
++
++.. figure:: ../images/spp_pcap/spp_pcap_overview.*
++   :width: 55%
++
++   Overview of spp_pcap
+-- 
+2.17.1
+
+

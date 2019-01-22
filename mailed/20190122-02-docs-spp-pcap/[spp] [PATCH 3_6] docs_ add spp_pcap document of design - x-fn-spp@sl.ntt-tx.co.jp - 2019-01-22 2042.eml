@@ -1,0 +1,255 @@
+X-Account-Key: account3
+X-UIDL: 13709.wxnBUA+ZuiTyyYFIc+b3ehk1aPo=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received: from md-mta-nw010.ocn.ad.jp ([153.138.217.137])
+	by md-lpx-nw008 with LMTP id wCHTHR0CR1ztWwAAqFjg7g
+	; Tue, 22 Jan 2019 20:44:29 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw010.ocn.ad.jp (Postfix) with ESMTP id 719943C00F2B8
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:29 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id C48B9A8027E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 22 Jan 2019 20:44:28 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 8B9573237;
+	Tue, 22 Jan 2019 12:44:26 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id EF00C2C55
+ for <spp@dpdk.org>; Tue, 22 Jan 2019 12:44:24 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0MBiNAb015406;
+ Tue, 22 Jan 2019 20:44:23 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x0MBiN25008175;
+ Tue, 22 Jan 2019 20:44:23 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA07655;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x0MBgdbU022801;
+ Tue, 22 Jan 2019 20:42:40 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x0MBgdb9022796; Tue, 22 Jan 2019 20:42:39 +0900
+Message-Id: <201901221142.x0MBgdb9022796@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x0MBgdOD010933 ; Tue, 22 Jan 2019 20:42:39 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 22 Jan 2019 20:42:36 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122114239.3353-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 3/6] docs: add spp_pcap document of design
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add spp_pcap document of design.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/design.rst        | 98 +++++++++++++++++++++++++++-
+ docs/guides/spp_vf/gsg/howto_use.rst | 39 +++++++++--
+ 2 files changed, 129 insertions(+), 8 deletions(-)
+
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 8b9e7f3..0f3e5c8 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -1,5 +1,5 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ .. _spp_vf_design:
+ 
+@@ -98,3 +98,99 @@ than ``deepcopy``, but it should be used for read only for the packet.
+ 
+ You should choose ``deepcopy`` if you use VLAN feature to make no change for
+ original packet while copied packet is modified.
++
++.. _spp_vf_design_spp_pcap:
++
++spp_pcap
++--------
++``spp_pcap`` cosisits of main thread, ``receiver`` thread runs on a core of
++the second smallest ID and ``wirter`` threads on the rest of cores. You should
++have enough cores if you need to capture large amount of packets.
++
++``spp_pcap`` has 4 types of command. ``start``,``stop``,``exit`` and ``status``
++to control behavior of ``spp_pcap``.
++
++With ``start`` command, you can start capturing.
++Incoming packets are received by ``receiver`` thread and it is transferred to
++``writer`` thread(s) via multi-producer/multi-consumer ring.
++Multi-producer/multi-consumer ring is the ring which multiple producers
++can enqueue and multiple consumers can dequeue. When those packets are
++received by ``writer`` thread(s), it will be compressed using LZ4 library and
++then be written to storage. In case more than 1 cores are assigned,
++incoming packets are written into storage per core basis so packet capture file
++will be divided per core.
++When ``spp_pcap`` has already been started, ``start`` command cannot
++be accepted.
++
++With ``stop`` command, capture will be stopped. When spp_pcap has already
++been stopped, ``stop`` command cannot be accepted.
++
++With ``exit`` command, ``spp_pcap`` exits the program. ``exit`` command
++during started state, stops capturing and then exits the program.
++
++With ``status`` command, status related to ``spp_pcap`` is shown.
++
++In :numref:`figure_spp_pcap_design`,
++the internal structure of ``spp_pcap`` is shown.
++
++.. _figure_spp_pcap_design:
++
++.. figure:: ../images/spp_pcap/spp_pcap_design.*
++    :width: 55%
++
++    spp_pcap internal structure
++
++.. _spp_pcap_design_output_file_format:
++
++:numref:`figure_spp_pcap_design` shows the case when ``spp_pcap`` is connected
++with ``phy:0``.
++There is only one ``receiver`` thread and multiple ``writer`` threads.
++Each ``writer`` writes packets into file.
++Once exceeds maximum file size ,
++it creates new file so that multiple output files are created.
++
++
++Apptication option
++^^^^^^^^^^^^^^^^^^
++
++``spp_pcap`` specific options are:
++
++ * -client-id: client id which can be seen as secondary ID from spp.py.
++ * -s: IPv4 address and port for spp-ctl.
++ * -i: port to which spp_pcap attached with.
++ * --output: Output file path
++   where capture files are written.\
++   When this parameter is omitted,
++   ``/tmp`` is used.
++ * --port_name: port_name which can be specified as
++   either of phy:N or \
++   ring:N.
++   When used as part of file name ``:`` is removed to avoid misconversion.
++ * --limit_file_option: Maximum size of a capture file.
++   Default value is ``1GiB``.Captured files are not deleted automatically
++   because file rotation is not supported.
++
++The output file format is as following:
++
++.. code-block:: none
++
++    spp_pcap.YYYYMMDDhhmmss.[port_name].[wcore_num]
++    wcore_num is write core number which starts with 1
++
++Each ``writer`` thread has
++unique integer number which is used to determine the name of capture file.
++YYYYMMDDhhmmss is the time when ``spp_pcap`` receives ``start`` command.
++
++.. code-block:: none
++
++    /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
++This example shows that ``receiver`` thread receives ``start`` command at
++20181108110600.  Port is ring:0, wcore_num is 1 and sequential number is 2.
++
++
++Until writing is finished, packets are stored into temporary file.
++The example is as following:
++
++.. code-block:: none
++
++    /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index 750de13..dc1a7bb 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -1,5 +1,5 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+ .. _spp_vf_gsg_howto_use:
+ 
+@@ -80,9 +80,12 @@ DPDK, the other is ``spp_vf``.
+ .. code-block:: console
+ 
+     $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
+-    -l 0,2-13 -n 4 --proc-type=secondary \
+-    -- \
+-    --client-id 1 -s 127.0.0.1:6666 --vhost-client
++      -l 0,2-13 -n 4 \
++      --proc-type=secondary \
++      -- \
++      --client-id 1 \
++      -s 127.0.0.1:6666 \
++      --vhost-client
+ 
+ If ``--vhost-client`` option is specified, then ``vhost-user`` act as
+ the client, otherwise the server.
+@@ -102,9 +105,31 @@ spp_mirror
+ .. code-block:: console
+ 
+     $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/spp_mirror \
+-    -l 2 -n 4 --proc-type=secondary \
+-    -- \
+-    --client-id 1 -s 127.0.0.1:6666 --vhost-client
++      -l 2 -n 4 \
++      --proc-type=secondary \
++      -- \
++      --client-id 1 \
++      -s 127.0.0.1:6666 \
++      -vhost-client
++
++.. _spp_vf_gsg_howto_use_spp_pcap:
++
++spp_pcap
++--------
++
++After run ``spp_primary`` is launched, run secondary process ``spp_pcap``.
++
++.. code-block:: console
++
++    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
++      -l 0-3 -n 4 \
++      --proc-type=secondary \
++      -- \
++      --client-id 1 \
++      -s 127.0.0.1:6666 \
++      -i phy:0 \
++      --output /mnt/pcap \
++      --limit_file_size 107374182
+ 
+ VM
+ --
+-- 
+2.17.1
+
+
