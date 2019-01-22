@@ -1,0 +1,370 @@
+From - Tue Jan 22 17:36:46 2019
+X-Account-Key: account1
+X-UIDL: 00009a2756a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id A33D6400BC2
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id A0A917F0B8; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 9F7807F08E
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 8F931638DB7
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Received: from dcma-spm01.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 68A77638F9D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Authentication-Results: dcma-spm01.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm01.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm01.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AKawPnRz0TyAcJHHXCy+N+z0kezQntrPoPwUc9p?=
+ =?us-ascii?q?sgjfd0f7+++4j5ZRWAt/lmiVaMRp3es6sChuHS9ab8RSoL5tCDqCNKa4RCAi?=
+ =?us-ascii?q?cMkt5ehAk8GIidE0SuPLvkaWkhBNxqT1sj+W2ndFRFXs35IV/K8TWp9TBHIh?=
+ =?us-ascii?q?zkLkJuI/jtXIvbjsC5zee3ro2WbQMNnyKlSah2ahOqsUDNpo8dhs1gMv9rmC?=
+ =?us-ascii?q?HEqXZJZelagFhQCwzLwETE79yrtN5v+CFZ/uk58pYZF6jxe+I+UaAeBzNgMX?=
+ =?us-ascii?q?hnrMHssBDCS0OI6B5+Gi0G1xRORhPd9DnhWtH3rje/qvo70y7cP9W+Qb0vWD?=
+ =?us-ascii?q?uk5rtmU1ey0X9BbWVjtjqKzJIhxKtAxXDp7wRy2YvVfJ2YOLJlc6XRcMlbDW?=
+ =?us-ascii?q?tNU8BNVjBQV5umZthHBO4AMOBE6ojl8gFX9V3kXlPqX76plG4b4x2+lbc32O?=
+ =?us-ascii?q?kgDwzciQArGttLq2zR9IyzOawWF+ap0O/DynPBd6Azu3+15Y7WfxQmufzJU6?=
+ =?us-ascii?q?h3dJ+b2QwhEUbelk24soijOS+Jk/gd9WOcqeh4H7HK6SZvu0Rqrz6jy915wJ?=
+ =?us-ascii?q?mMiIRQ0Ujc3T59hoApOZikWAhwZpimCNED0kPSf5szScQkTWZyvS88wbBTop?=
+ =?us-ascii?q?+3ch8R1I4mzAKMI+zCaYWD5QjvEfqAOTotzmwwY6qx3lzhlCrogv25TMS/10?=
+ =?us-ascii?q?xG6zZIgsWZ/G5YzATds4COGP50/0P5gnCO3BuV7P1YZFwk06HcbZw5p9x43p?=
+ =?us-ascii?q?NBtE3CGneq3kT9l+mQallh5vju4OOhYK2ur82ZPo5w0ly4M6813MqjHaEkIk?=
+ =?us-ascii?q?4FWC6Z4YHenPXqr0jwQbES0Ls3mbKftozGYNgL4KW+RQ1Nmo9x7h++C2/5lt?=
+ =?us-ascii?q?UThj8BME4AZALBhI+vOUmrQriwBKW6ilWoyGctxvvdeLv9HtDRPj7Il/HjZf?=
+ =?us-ascii?q?588xIOklNri4oEvdQPV/dYca+WOAe5tcSEXEVga0rumLyhU4g7j9JAEWOXXv?=
+ =?us-ascii?q?3DafuU6wTSoLlyZbfRLI4N5GSncqBjvaW0yyRk3wFDNb+g2Z9dMSrqJPltLk?=
+ =?us-ascii?q?SHbHapue8vTz5Q7DI3V/eiyFGJVDcWfG63B/t66zo/ToS6EcHIQcavmO7J0C?=
+ =?us-ascii?q?C+F5xQLmdIbzLEWWeteYPBQO8UQDmWZMl9jnkYRf6qTMkjzVmiuRT7xLxuMu?=
+ =?us-ascii?q?fPsndB7dS5j4IzvLCVy0B6/CcRbYzVy2yXSmBogm4EDyQ72qxyuw01y1uO17?=
+ =?us-ascii?q?R5n+0NENVS4/1TVQJpfZXYzuF8F5XzQlebJ4/PEg38BI77R29gHbdTi5cUbk?=
+ =?us-ascii?q?1wGsuvlEXP1C+jRqQNkuTSQpE/9uTaw2S3LME7yW6Vsctpx1QgXMZLMnWrw6?=
+ =?us-ascii?q?Bl8A2GTZ6MnUPcjL6yXb8YmijR6CKf3SyFuwdaSEQjNMeNFWBafUbQodnjsw?=
+ =?us-ascii?q?nSCrGoTK8/KiNazYiENrcPds2vhlIARu+pa7G8Kyqh3my3AxiP3LaFaoHnLn?=
+ =?us-ascii?q?4c0CvqE1QekgsPrj6WcBIzDSC7ryfCHSRjQBjxNlj0/7A0+xbZBgckihuHZE?=
+ =?us-ascii?q?p72/+p9w4J0LaCHugL0OtMsXUkojRwRA373tnNTdycu099bONXZpU/+DIlnS?=
+ =?us-ascii?q?rQ5Ql0P5j4c+ZjjUVYdRhr+l/+kR5wTIdY2cF4qXoryFIvb6OTyxVHay/dwY?=
+ =?us-ascii?q?C2MbqRKHGXnljnYvzT01DaiIjQ+6wUrvIktxD/rEeiEQwg6z1ugdxc0n/Eud?=
+ =?us-ascii?q?PLBxFUV47tF1onsRN94bPCB0t1r4qG0HRtNfHk9D7JwJQvGPdg1gbmdNAZMr?=
+ =?us-ascii?q?vMFReuQZdDX470c7ZswAXvN0NZWYIavK8sY5H8LqPAgvXxer092mv30yxG+N?=
+ =?us-ascii?q?wviBvUsXAnEKiTgtBbnrmZxlfVDW6kyg366IasxMYaO3kEF267g3G1Vr4UXb?=
+ =?us-ascii?q?V7eMMwMUnrJsS2wttkgJu0BCxD8BilG09DxN/vch3UbUSvhFQMh3RSmmSunG?=
+ =?us-ascii?q?6D9xIxiysg9/XNxyiIxfj+MQYXfGVMAmt63w7h?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAABq1EZch0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAGlwAwcIJ4wbX40VfJcFFIFnKIRRAjWCUgE?=
+ =?us-ascii?q?FLwkNAQMBAQIBAQEBFAEBAQgNCQgpIwyFSwMDeRAgDCUPSAcSgyIBggCtXoh?=
+ =?us-ascii?q?6gSyIAIF9hFqBEYJdhHuGGwKHSgeIORNukRUJhySKdxiBZk6PYIoEgQiRV4I?=
+ =?us-ascii?q?OhCwJgiyJOYR9MAEBATABiFErgiABAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm01.ecl.ntt.co.jp with ESMTP; 22 Jan 2019 17:31:10 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0M8V07k013782;
+	Tue, 22 Jan 2019 17:31:00 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x0M8Ux6N014715;
+	Tue, 22 Jan 2019 17:30:59 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id SAA07470;
+	 Tue, 22 Jan 2019 16:19:21 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x0M7JLet015701; Tue, 22 Jan 2019 16:19:21 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x0M7JLvJ015695; Tue, 22 Jan 2019 16:19:21 +0900
+Message-Id: <201901220719.x0M7JLvJ015695@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id x0M7JKpP009185 ; Tue, 22 Jan 2019 16:19:21 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 6/7] controller: add SppPcap class
+Date: Tue, 22 Jan 2019 16:19:19 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122071920.2464-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122071920.2464-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This update is to add SppPcap class behaviour as a client for spp-ctl.
+An instance of the class is intended to be used from do_pcap() and
+complete_pcap() methods of Shell class in 'spp.py'.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/controller/commands/pcap.py | 230 ++++++++++++++++++++++++++++++++
+ 1 file changed, 230 insertions(+)
+ create mode 100644 src/controller/commands/pcap.py
+
+diff --git a/src/controller/commands/pcap.py b/src/controller/commands/pcap.py
+new file mode 100644
+index 0000000..89a1a5f
+--- /dev/null
++++ b/src/controller/commands/pcap.py
+@@ -0,0 +1,230 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++
++class SppPcap(object):
++    """Exec spp_pcap command.
++
++    SppPcap class is intended to be used in Shell class as a delegator
++    for running 'pcap' command.
++
++    'self.command()' is called from do_pcap() and 'self.complete()' is called
++    from complete_() of both of which is defined in Shell.
++    """
++
++    # All of commands and sub-commands used for validation and completion.
++    PCAP_CMDS = {
++            'status': None,
++            'start': None,
++            'stop': None,
++            'exit': None}
++
++    WORKER_TYPES = ['receive', 'write']
++
++    def __init__(self, spp_ctl_cli, sec_id, use_cache=False):
++        self.spp_ctl_cli = spp_ctl_cli
++        self.sec_id = sec_id
++
++        # Update 'self.worker_names' and 'self.unused_core_ids' each time
++        # 'self.run()' is called if it is 'False'.
++        # True to 'True' if you do not wait for spp_pcap's response.
++        self.use_cache = use_cache
++
++        # Names and core IDs of worker threads
++        pcap_status = self._get_status(self.sec_id)
++
++        core_ids = pcap_status['core_ids']
++        for wk in pcap_status['workers']:
++            if wk['core_id'] in core_ids:
++                core_ids.remove(wk['core_id'])
++        self.unused_core_ids = core_ids  # used while completion to exclude
++
++        self.workers = pcap_status['workers']
++        self.worker_names = [attr['role'] for attr in pcap_status['workers']]
++
++    def run(self, cmdline):
++        """Called from do_sec() to Send command to secondary process."""
++
++        # update status each time if configured not to use cache
++        if self.use_cache is False:
++            pcap_status = self._get_status(self.sec_id)
++
++            core_ids = pcap_status['core_ids']
++            for wk in pcap_status['workers']:
++                if wk['core_id'] in core_ids:
++                    core_ids.remove(wk['core_id'])
++            self.unused_core_ids = core_ids  # used while completion to exclude
++
++            self.workers = pcap_status['workers']
++            self.worker_names = [attr['role']
++                                 for attr in pcap_status['workers']]
++
++        cmd = cmdline.split(' ')[0]
++        params = cmdline.split(' ')[1:]
++
++        if cmd == 'status':
++            res = self.spp_ctl_cli.get('pcaps/%d' % self.sec_id)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 200:
++                    self.print_status(res.json())
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'start':
++            req_params = {'action': 'start'}
++            res = self.spp_ctl_cli.put('pcaps/%d/capture'
++                                       % (self.sec_id), req_params)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Start packet capture.")
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'stop':
++            req_params = {'action': 'stop'}
++            res = self.spp_ctl_cli.put('pcaps/%d/capture'
++                                       % (self.sec_id), req_params)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Stop packet capture.")
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'exit':
++            res = self.spp_ctl_cli.delete('pcaps/%d' % (self.sec_id))
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Exit pcap %d." % (self.sec_id))
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        else:
++            print('Invalid command "%s".' % cmd)
++
++    def print_status(self, json_obj):
++        """Parse and print message from SPP PCAP.
++
++        Print status received from spp_pcap.
++
++          spp > pcap 1; status
++            - client-id: 3
++            - satus: running
++            - core:2, receive
++              - rx: phy:0
++            - core:3, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.1.1.pcap
++            - core:4, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.2.1.pcap
++            - core:5, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.3.1.pcap
++            ...
++
++        """
++
++        # client id and status
++        print('  - client-id: %d' % json_obj['client-id'])
++        print('  - status: %s' % json_obj['status'])
++
++        # Core
++        for worker in json_obj['core']:
++            if 'role' in worker.keys():
++                print("  - core:%d %s" % (
++                        worker['core'], worker['role']))
++
++                if worker['role'] == 'receive':
++                    pt = worker['rx_port'][0]['port']
++                    msg = '    - %s:%s'
++                    print(msg % ('rx', pt))
++                else:
++                    print('    - filename: %s' % worker['filename'])
++
++    def complete(self, sec_ids, text, line, begidx, endidx):
++        """Completion for spp_pcap commands.
++
++        Called from complete_pcap() to complete.
++        """
++
++        try:
++            completions = []
++            tokens = line.split(';')
++
++            if len(tokens) == 2:
++                sub_tokens = tokens[1].split(' ')
++
++                if len(sub_tokens) == 1:
++                    if not (sub_tokens[0] in self.PCAP_CMDS.keys()):
++                        completions = self._compl_first_tokens(sub_tokens[0])
++                else:
++                    if sub_tokens[0] == 'status':
++                        if len(sub_tokens) < 2:
++                            if 'status'.startswith(sub_tokens[1]):
++                                completions = ['status']
++
++                    elif sub_tokens[0] == 'start':
++                        if len(sub_tokens) < 2:
++                            if 'start'.startswith(sub_tokens[1]):
++                                completions = ['start']
++
++                    elif sub_tokens[0] == 'stop':
++                        if len(sub_tokens) < 2:
++                            if 'stop'.startswith(sub_tokens[1]):
++                                completions = ['stop']
++            return completions
++        except Exception as e:
++            print(e)
++
++    def _compl_first_tokens(self, token):
++        res = []
++        for kw in self.PCAP_CMDS.keys():
++            if kw.startswith(token):
++                res.append(kw)
++        return res
++
++    def _get_status(self, sec_id):
++        """Get status of spp_pcap.
++
++        To update status of the instance of SppPcap, get the status from
++        spp-ctl. This method returns the result as a dict. For considering
++        behaviour of spp_pcap, it is enough to return worker's name and core
++        IDs as the status, but might need to be update for future updates.
++
++        # return worker's role and used core IDs, and all of core IDs.
++        {
++          'workers': [
++            {'role': 'receive', 'core_id': 5},
++            {'role': 'write', 'core_id': 6},
++            ...
++          ],
++          'core_ids': [5, 6, 7, ...]
++        }
++
++        """
++
++        status = {'workers': [], 'core_ids': []}
++        res = self.spp_ctl_cli.get('pcaps/%d' % self.sec_id)
++        if res is not None:
++            if res.status_code == 200:
++                json_obj = res.json()
++
++                if 'core' in json_obj.keys():
++                    for wk in json_obj['core']:
++                        if 'core' in wk.keys():
++                            if 'role' in wk.keys():
++                                status['workers'].append(
++                                        {'role': wk['role'],
++                                         'core_id': wk['core']})
++                            status['core_ids'].append(wk['core'])
++
++        return status
+-- 
+2.17.1
+
+
+

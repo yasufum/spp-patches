@@ -1,0 +1,186 @@
+From - Tue Jan 22 17:36:43 2019
+X-Account-Key: account1
+X-UIDL: 00009a2256a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 173A5400BC2
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 05AA523BB50; Tue, 22 Jan 2019 17:31:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id EE3A123BAF7
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:10 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id D014812B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:10 +0900 (JST)
+Received: from dcma-spm02.ecl.ntt.co.jp (unknown [129.60.87.149])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id AA394F4
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 22 Jan 2019 17:31:10 +0900 (JST)
+Authentication-Results: dcma-spm02.ecl.ntt.co.jp; spf=Pass smtp.pra=x-fn-spp@sl.ntt-tx.co.jp; spf=Pass smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=pra; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+Received-SPF: Pass (dcma-spm02.ecl.ntt.co.jp: domain of
+  x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as
+  permitted sender) identity=mailfrom; client-ip=210.232.35.69;
+  receiver=dcma-spm02.ecl.ntt.co.jp;
+  envelope-from="x-fn-spp@sl.ntt-tx.co.jp";
+  x-sender="x-fn-spp@sl.ntt-tx.co.jp";
+  x-conformance=sidf_strict; x-record-type="v=spf1";
+  x-record-text="v=spf1 a:mail03.ics.ntt-tx.co.jp
+  a:mail04.ics.ntt-tx.co.jp a:mail05.ics.ntt-tx.co.jp
+  a:mail06.ics.ntt-tx.co.jp a:mail07.ics.ntt-tx.co.jp
+  a:mail08.ics.ntt-tx.co.jp ip4:210.232.35.195
+  ip4:210.232.35.196 ip4:210.232.35.65 ip4:210.232.35.66 ~all"
+IronPort-PHdr: =?us-ascii?q?9a23=3AC8jShR+baOhOQv9uRHGN80YQeigqvan1NQcJ65?=
+ =?us-ascii?q?0hzohDabmn44+7ZRON6f5ohRrSRYCDsbRJgO6Qtbz8H2cHp5SZ4zgZaJIZbx?=
+ =?us-ascii?q?Yeko0NmhA4RtafABjrafDsKjciBOxZUBlj423+LVgTE8G4ZUWB6maq42sqEw?=
+ =?us-ascii?q?7kfRFwOvyzH4fTi8qt0OXn69jdZUBTnCKVerc0Kgmq6BnB8MIRx4l6c/xj8B?=
+ =?us-ascii?q?bCr3pWdugT/ltGewrMzS71/dz4vJJo9i0VoOokr5QGXK7+OaIkUfpTC3IkKz?=
+ =?us-ascii?q?J96MruvBjFBQyBgxlUGnVTnBwNGBDdxAr+GJHtrm7mpqx232+YJYX6QKs1Vj?=
+ =?us-ascii?q?Kr86pwAEWx0GFdbGR/qzyR1J04hbk+wlrpvxFlxo/IfIyZfOFzeK/QZ5JSRG?=
+ =?us-ascii?q?ZMWNpQSz0UGpm1PMMEC+sMO/odrpGo/QJW60HlX0/3WaWxm2wt5De+x6Ax3u?=
+ =?us-ascii?q?U/HBuT0AclFpcVqHGM9pP4P6NUV/ypiqLPizfbPJY0kX/w7pbFdhc5rLSCR7?=
+ =?us-ascii?q?V1JIDBjEcpUhjdln2LrcrjIy/QyvRLuG/d7fIqBofNwyY37hp8pDSi3JJmms?=
+ =?us-ascii?q?zHgMcO0kjs7iE/xpopYMGoDkV8J9y8Wsg11WnSJ859RcUsRHttsSAxx+gduJ?=
+ =?us-ascii?q?K1SzMW0pUs202Xe7mdfoOP+B6mSPeJLGIymid+YLzmzUXXkwDo2qjmW8Kzyl?=
+ =?us-ascii?q?oPsidVjoyGqCUWzxKKosHVT/J8+h/6nzeEzEbV9v0BPVBynq2dKYZEoPZ4n8?=
+ =?us-ascii?q?gWuEXHRnOwmU7tyqmKagA46q6j7KLlev3v9JqVNoss10f/Ob9onNCjRPgodA?=
+ =?us-ascii?q?MJGWqDnIb0nLSx+ET4RO0UyPw9ie/frIyfOdRdran/ARcd29Qm4he7V2jg0d?=
+ =?us-ascii?q?8D238bMBdZaFSMiM7rIzSsaLjxX/K2glD0wHFqzOuAOKH9R4ndaHPE1rX5Nb?=
+ =?us-ascii?q?dltxwGkVJ1l4sFockJTOhQfZeREgfwrICKVEZhdVbvmaC8VZMkh91WWHrTUP?=
+ =?us-ascii?q?XAaOWI6gXOvb9pfbTEZZdJ6mykc75/vKSo1iJ/xwFVa6Ct2dFOMiKCE/9rIl?=
+ =?us-ascii?q?uUbT/XuvlfSD1YhgMlV6SqhFaHWHtIf3PqBeQx7TV9Dp66S4zEAIK10vSN2y?=
+ =?us-ascii?q?KyH5seYW4jaBjEATLmccCfQ+8kcybUJNN91yAUE7OmDY05nR2jrw71zbN7I/?=
+ =?us-ascii?q?GcoHRA88i4jp4uuquNxFk77lkWR4yF3nuITn1ok29AXDIw0K1l4AR8xlqFza?=
+ =?us-ascii?q?lkkqldHN1X6elOV1RyPprdwupmTtHqD1iYJpHTEwzgGYjgX2BiK7B5i8UDaE?=
+ =?us-ascii?q?t8Bdi42xzI2iPvGKcQz+bNCZcwtKTAwz76IIB/0yWjtuFpgl84T89ILWDjiL?=
+ =?us-ascii?q?R48l2ZF8vHlQCCj76CbqBa2jLRsXuTi2GJ+kNAGl0VM+2NTTUEa03aoM6srF?=
+ =?us-ascii?q?OHQbnrEqw/GhBFj8ieNu5WepviihNEXL2wXbaWK3L0kGC2CxGSw7qKZ4e/YG?=
+ =?us-ascii?q?QR0hLGFFIFmBxAtWbDLwU1AT2t5n7PFDE7X0y6eFviqKMtzRHzBl9x1QyBaF?=
+ =?us-ascii?q?dtkqa46gJAz+LJUOsdh/oN6iIoqjEsRxC81MmQDcac4hZxOq5bJ9ElhTUPnW?=
+ =?us-ascii?q?uLsgV8OsT8aaFpnRgYbxgyo1Oo3BIxCJ0ImJovpXIulFc0KKmDllVda3aEzd?=
+ =?us-ascii?q?b7PfvVMgyQtFimOavf21WGjpCX8bxJ7ugk7knz+gquUEg6u3w11tBU1yPDoJ?=
+ =?us-ascii?q?TBF0wUTY60TlZx/B88pam/AGF17tHR3HxoafnyszTZndQ1GK452lCreJFdKO?=
+ =?us-ascii?q?uFDFOgSZRCQZL1cqpxxh7wP09hXqga9bZobZn/L73cg/TtZ7smxWP4xWVfvN?=
+ =?us-ascii?q?InixrKrXEmDLWVmchYi/CAglndDm+61gz79Juq394aLScbGm71kHm2NMtqfq?=
+ =?us-ascii?q?R3OL0zJyKrKsyzyM95gseyCWVcsli/GxYayImiflyQdw6khFEC5QEsuXWi3B?=
+ =?us-ascii?q?CA4XlsiThw8fiE2GrI3/inaApBMWkNRnEw1Fo=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0ABAABr00Zch0Uj6NJkGgEBAQEBAgE?=
+ =?us-ascii?q?BAQEHAgEBAQGBUQUBAQEBCwGCAGlwAwcIJ4wbX40VfJcFFIFnLIRNAjWCUgE?=
+ =?us-ascii?q?FLwkNAQMBAQIBAQEBFAEBAQgNCQgpIwyFSwMDeRAgDCUPSAcSgyIBggCtYoh?=
+ =?us-ascii?q?6gSyIAIF9hFqBEYJdhHuFeSICh0oHiDkTboVWiz8JhySKdxiBZoUuiwAtiVe?=
+ =?us-ascii?q?SX4IOhCwJgiyHc4ZDMAEBATABixwBAQ?=
+X-SPF-Status: pass
+Received: from mail05.ics.ntt-tx.co.jp (HELO mail04.ics.ntt-tx.co.jp) ([210.232.35.69])
+  by dcma-spm02.ecl.ntt.co.jp with ESMTP; 22 Jan 2019 17:31:10 +0900
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x0M8V0lw013780;
+	Tue, 22 Jan 2019 17:31:00 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x0M8Ux1L014697;
+	Tue, 22 Jan 2019 17:30:59 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id SAA07465;
+	 Tue, 22 Jan 2019 16:19:21 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x0M7JLUB015694; Tue, 22 Jan 2019 16:19:21 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x0M7JLZ0015688; Tue, 22 Jan 2019 16:19:21 +0900
+Message-Id: <201901220719.x0M7JLZ0015688@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id x0M7JKpO009185 ; Tue, 22 Jan 2019 16:19:21 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Subject: [PATCH 5/7] spp_pcap: add Makefile for spp_pcap
+Date: Tue, 22 Jan 2019 16:19:18 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190122071920.2464-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190122071920.2464-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add Makefile for spp_pcap.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/Makefile      |  1 +
+ src/pcap/Makefile | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+ create mode 100644 src/pcap/Makefile
+
+diff --git a/src/Makefile b/src/Makefile
+index 4cf7ef4..cab80db 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -42,5 +42,6 @@ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += primary
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += vf
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += mirror
++DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += pcap
+ 
+ include $(RTE_SDK)/mk/rte.extsubdir.mk
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+new file mode 100644
+index 0000000..298e2b7
+--- /dev/null
++++ b/src/pcap/Makefile
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++ifeq ($(RTE_SDK),)
++$(error "Please define RTE_SDK environment variable")
++endif
++
++# Default target, can be overridden by command line or environment
++include $(RTE_SDK)/mk/rte.vars.mk
++
++# binary name
++APP = spp_pcap
++
++# all source are stored in SRCS-y
++SRCS-y := spp_pcap.c
++SRCS-y += spp_proc.c
++SRCS-y += command_proc.c command_dec.c
++SRCS-y += ../shared/common.c
++SRCS-y += ../vf/common/command_conn.c ../vf/common/spp_port.c
++SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
++SRCS-y += /usr/lib/x86_64-linux-gnu/liblz4.a
++
++CFLAGS += -DALLOW_EXPERIMENTAL_API
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
++CFLAGS += -I$(SRCDIR)/../
++CFLAGS += -I$(SRCDIR)/../vf/common
++CFLAGS += -I$(SRCDIR)/../shared
++#CFLAGS += -DSPP_DEMONIZE
++#CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
++
++ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
++LDLIBS += -lrte_pmd_ring
++LDLIBS += -lrte_pmd_vhost
++endif
++
++include $(RTE_SDK)/mk/rte.extapp.mk
+-- 
+2.17.1
+
+
+
