@@ -1,0 +1,114 @@
+From - Wed Jan 23 17:14:53 2019
+X-Account-Key: account1
+X-UIDL: 00009ac456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 47C8B400C78
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 4663D23BB7E; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 45D7D23BB39
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3526B6395E2;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 246DB6395DC;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/3] spp_nfv: add vhost-client option
+Date: Wed, 23 Jan 2019 17:14:36 +0900
+Message-Id: <1548231277-24464-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To activate vhost-user client mode, add `--vhost-client` option.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/main.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 701a700..54f908d 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -24,6 +24,22 @@
+ 
+ static sig_atomic_t on = 1;
+ 
++enum {
++	/*
++	 * Long options mapped to a short option.
++	 *
++	 * First long only option value must be >= 256, so that we won't
++	 * conflict with short options.
++	 */
++	CMD_LINE_OPT_MIN_NUM = 256,
++	CMD_OPT_ENABLE_VHOST_CLI,
++};
++
++static struct option lgopts[] = {
++	{"vhost-client", no_argument, NULL, CMD_OPT_ENABLE_VHOST_CLI},
++	{0}
++};
++
+ /*
+  * print a usage message
+  */
+@@ -31,7 +47,9 @@ static void
+ usage(const char *progname)
+ {
+ 	RTE_LOG(INFO, SPP_NFV,
+-		"Usage: %s [EAL args] -- -n <client_id>\n\n", progname);
++		"Usage: %s [EAL args] -- %s %s %s\n\n",
++		progname, "-n <client_id>", "-s <ipaddr:port>",
++		"--vhost-client");
+ }
+ 
+ /*
+@@ -43,12 +61,14 @@ parse_app_args(int argc, char *argv[])
+ 	int option_index, opt;
+ 	char **argvopt = argv;
+ 	const char *progname = argv[0];
+-	static struct option lgopts[] = { {0} };
+ 	int ret;
+ 
+ 	while ((opt = getopt_long(argc, argvopt, "n:s:", lgopts,
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
++		case CMD_OPT_ENABLE_VHOST_CLI:
++			g_enable_vhost_cli = 1;
++			break;
+ 		case 'n':
+ 			if (parse_num_clients(&client_id, optarg) != 0) {
+ 				usage(progname);
+@@ -173,6 +193,9 @@ main(int argc, char *argv[])
+ 	if (parse_app_args(argc, argv) < 0)
+ 		rte_exit(EXIT_FAILURE, "Invalid command-line arguments\n");
+ 
++	if (g_enable_vhost_cli == 1)
++		RTE_LOG(INFO, SPP_NFV, "vhost client mode is enabled.\n");
++
+ 	/* initialize port forward array*/
+ 	forward_array_init();
+ 	port_map_init();
+-- 
+2.17.1
+
+
+

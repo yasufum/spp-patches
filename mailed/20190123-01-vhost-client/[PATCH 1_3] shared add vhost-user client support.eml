@@ -1,0 +1,90 @@
+From - Wed Jan 23 17:14:53 2019
+X-Account-Key: account1
+X-UIDL: 00009ac256a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 3FE29400BFB
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 3E62123BB7E; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 3DC3B23BB39
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 2C9BA6395E1;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 1EAEB6395D8;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/3] shared: add vhost-user client support
+Date: Wed, 23 Jan 2019 17:14:35 +0900
+Message-Id: <1548231277-24464-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add client mode for vhost-user. If it is enabled,
+`client` in `devargs` variable is set to `1` to activate this mode in
+`add_vhost_pmd()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/add_port.c | 6 +++++-
+ src/shared/secondary/add_port.h | 2 ++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index ca55a04..2841f94 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -12,6 +12,8 @@
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
++int g_enable_vhost_cli;
++
+ char *
+ get_vhost_backend_name(unsigned int id)
+ {
+@@ -150,7 +152,9 @@ add_vhost_pmd(int index)
+ 	name = get_vhost_backend_name(index);
+ 	iface = get_vhost_iface_name(index);
+ 
+-	sprintf(devargs, "%s,iface=%s,queues=%d", name, iface, nr_queues);
++	sprintf(devargs, "%s,iface=%s,queues=%d,client=%d",
++			name, iface, nr_queues, g_enable_vhost_cli);
++	RTE_LOG(DEBUG, SHARED, "devargs for vhost: '%s'\n", devargs);
+ 	ret = dev_attach_by_devargs(devargs, &vhost_port_id);
+ 	if (ret < 0)
+ 		return ret;
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index cfae1af..7012940 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -20,6 +20,8 @@
+ 
+ #define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
+ 
++extern int g_enable_vhost_cli;
++
+ /**
+  * Get unique name used to reserve vhost interface.
+  *
+-- 
+2.17.1
+
+
+

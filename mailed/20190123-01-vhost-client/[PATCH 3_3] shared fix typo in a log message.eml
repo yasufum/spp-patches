@@ -1,0 +1,63 @@
+From - Wed Jan 23 17:14:54 2019
+X-Account-Key: account1
+X-UIDL: 00009ac556a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 64389400BFB
+	for <yo128@mail2.ecl.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 624267F316; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 612CB7F079
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 47C9C639559;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 2A87A6395DF;
+	Wed, 23 Jan 2019 17:16:54 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com,
+	spp@dpdk.org,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/3] shared: fix typo in a log message
+Date: Wed, 23 Jan 2019 17:14:37 +0900
+Message-Id: <1548231277-24464-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548231277-24464-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Fix typo of mal formatted log message.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/secondary/utils.c b/src/shared/secondary/utils.c
+index 8f2e830..7c676a0 100644
+--- a/src/shared/secondary/utils.c
++++ b/src/shared/secondary/utils.c
+@@ -19,7 +19,7 @@ parse_resource_uid(char *str, char **port_type, int *port_id)
+ 	char delim[] = ":";
+ 	char *endp;
+ 
+-	RTE_LOG(DEBUG, SHARED, "Parsing resource UID: '%s\n'", str);
++	RTE_LOG(DEBUG, SHARED, "Parsing resource UID: '%s'\n", str);
+ 	if (strstr(str, delim) == NULL) {
+ 		RTE_LOG(ERR, SHARED, "Invalid resource UID: '%s'\n", str);
+ 		return -1;
+-- 
+2.17.1
+
+
+
