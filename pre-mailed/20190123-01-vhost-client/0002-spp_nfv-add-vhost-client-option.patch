@@ -1,0 +1,79 @@
+From 4c0626504979eb94b5ca7acaba624a3427b38e20 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 23 Jan 2019 16:37:42 +0900
+Subject: [PATCH 2/3] spp_nfv: add vhost-client option
+
+To activate vhost-user client mode, add `--vhost-client` option.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/main.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 701a700..54f908d 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -24,6 +24,22 @@
+ 
+ static sig_atomic_t on = 1;
+ 
++enum {
++	/*
++	 * Long options mapped to a short option.
++	 *
++	 * First long only option value must be >= 256, so that we won't
++	 * conflict with short options.
++	 */
++	CMD_LINE_OPT_MIN_NUM = 256,
++	CMD_OPT_ENABLE_VHOST_CLI,
++};
++
++static struct option lgopts[] = {
++	{"vhost-client", no_argument, NULL, CMD_OPT_ENABLE_VHOST_CLI},
++	{0}
++};
++
+ /*
+  * print a usage message
+  */
+@@ -31,7 +47,9 @@ static void
+ usage(const char *progname)
+ {
+ 	RTE_LOG(INFO, SPP_NFV,
+-		"Usage: %s [EAL args] -- -n <client_id>\n\n", progname);
++		"Usage: %s [EAL args] -- %s %s %s\n\n",
++		progname, "-n <client_id>", "-s <ipaddr:port>",
++		"--vhost-client");
+ }
+ 
+ /*
+@@ -43,12 +61,14 @@ parse_app_args(int argc, char *argv[])
+ 	int option_index, opt;
+ 	char **argvopt = argv;
+ 	const char *progname = argv[0];
+-	static struct option lgopts[] = { {0} };
+ 	int ret;
+ 
+ 	while ((opt = getopt_long(argc, argvopt, "n:s:", lgopts,
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
++		case CMD_OPT_ENABLE_VHOST_CLI:
++			g_enable_vhost_cli = 1;
++			break;
+ 		case 'n':
+ 			if (parse_num_clients(&client_id, optarg) != 0) {
+ 				usage(progname);
+@@ -173,6 +193,9 @@ main(int argc, char *argv[])
+ 	if (parse_app_args(argc, argv) < 0)
+ 		rte_exit(EXIT_FAILURE, "Invalid command-line arguments\n");
+ 
++	if (g_enable_vhost_cli == 1)
++		RTE_LOG(INFO, SPP_NFV, "vhost client mode is enabled.\n");
++
+ 	/* initialize port forward array*/
+ 	forward_array_init();
+ 	port_map_init();
+-- 
+2.17.1
+

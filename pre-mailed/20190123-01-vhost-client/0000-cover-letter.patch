@@ -1,0 +1,34 @@
+From c2a2cf68b1b241e2e016bea36b3c61feea8fe0a3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 23 Jan 2019 17:05:10 +0900
+Subject: [PATCH 0/3] Add vhost-user client mode
+
+Hi,
+
+Vhost-user in DPDK supports the client mode as described in [1].
+Although it is already implemented in spp_vf and its siblings, not yet
+in `add_vhost_pmd()` in shared library.
+
+This series of patches is to add the client mode to `add_vhost_pmd()`
+and enable to use from the rest of secondary processes supporting vhost
+PMD.
+
+[1] http://doc.dpdk.org/guides/sample_app_ug/vhost.html
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (3):
+  shared: add vhost-user client support
+  spp_nfv: add vhost-client option
+  shared: fix typo in a log message
+
+ src/nfv/main.c                  | 27 +++++++++++++++++++++++++--
+ src/shared/secondary/add_port.c |  6 +++++-
+ src/shared/secondary/add_port.h |  2 ++
+ src/shared/secondary/utils.c    |  2 +-
+ 4 files changed, 33 insertions(+), 4 deletions(-)
+
+-- 
+2.17.1
+
