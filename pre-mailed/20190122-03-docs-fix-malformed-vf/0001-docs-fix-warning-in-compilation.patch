@@ -1,0 +1,38 @@
+From 0be241cef59c079d2e379942095281eb1f5225e7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 25 Jan 2019 13:07:18 +0900
+Subject: [PATCH] docs: fix warning in compilation
+
+Design section of spp_vf includes malformed code block as described
+bellow.
+
+    .. code-block:: none
+
+        /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
+    This example shows that ``receiver`` thread receives ``start`` ...
+
+There is no blank line the end of the code block. It is warned while
+compilation.
+
+This update is to fix it by inserting blank line.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/design.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 0f3e5c8..23246ba 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -184,6 +184,7 @@ YYYYMMDDhhmmss is the time when ``spp_pcap`` receives ``start`` command.
+ .. code-block:: none
+ 
+     /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
++
+ This example shows that ``receiver`` thread receives ``start`` command at
+ 20181108110600.  Port is ring:0, wcore_num is 1 and sequential number is 2.
+ 
+-- 
+2.7.4
+
