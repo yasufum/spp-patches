@@ -1,4 +1,4 @@
-From f4acaa0385709d58d43eb46c2564676cb6ee36a3 Mon Sep 17 00:00:00 2001
+From f885123a15093480febd431f0eacade33c9012dc Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 25 Jan 2019 07:55:14 +0900
 Subject: [PATCH] docs: update server command for registering
@@ -8,11 +8,11 @@ of REST API server in `server` command.
 
 Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 ---
- docs/guides/commands/common.rst | 41 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 5 deletions(-)
+ docs/guides/commands/common.rst | 40 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 35 insertions(+), 5 deletions(-)
 
 diff --git a/docs/guides/commands/common.rst b/docs/guides/commands/common.rst
-index ec3e3f8..fcd1739 100644
+index ec3e3f8..ef862c5 100644
 --- a/docs/guides/commands/common.rst
 +++ b/docs/guides/commands/common.rst
 @@ -87,11 +87,14 @@ Execute command of index of history.
@@ -34,13 +34,13 @@ index ec3e3f8..fcd1739 100644
  
  .. code-block:: console
  
-@@ -103,13 +106,41 @@ Show all of registered REST API servers. Run ``server list`` or simply
+@@ -103,13 +106,40 @@ Show all of registered REST API servers. Run ``server list`` or simply
        1: 192.168.1.101:7777 *
        2: 192.168.1.102:7777
  
 -Switch to other server with index number displayed in ``server list``.
 +Switch to other server by running ``server`` with index or address displayed
-+in the list. Port number can be omitted if it is default '7777'.
++in the list. Port number can be omitted if it is default ``7777``.
  
  .. code-block:: console
  
@@ -52,7 +52,7 @@ index ec3e3f8..fcd1739 100644
 +    spp > server 192.168.1.101  # no need for port num
 +    Switch spp-ctl to "1: 192.168.1.101:7777".
 +
-+Register new one by using 'add' command, or unregister by 'del' command
++Register new one by using ``add`` command, or unregister by ``del`` command
 +with address. For unregistering, node is also specified with index.
 +
 +.. code-block:: console
@@ -65,8 +65,7 @@ index ec3e3f8..fcd1739 100644
 +    spp > server del 2  # or 192.168.1.102
 +    Unregistered spp-ctl "192.168.1.102:7777".
 +
-+You cannot unregister the node under the control, or switch to other one
-+before.
++You cannot unregister node under the control, or switch to other one before.
 +
 +.. code-block:: console
 +
