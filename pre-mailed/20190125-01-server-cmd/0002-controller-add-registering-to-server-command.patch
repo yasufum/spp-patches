@@ -1,4 +1,4 @@
-From a3d63d2ed9db34f060cbbead7d1213fe7aaf3348 Mon Sep 17 00:00:00 2001
+From e974606b36e74a00368deb477fc0df5488ff8213 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 25 Jan 2019 07:36:25 +0900
 Subject: [PATCH 2/2] controller: add registering to server command
@@ -19,12 +19,12 @@ inconvenience. Register with `add` or unregister with `del` command.
 
 Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 ---
- src/controller/commands/server.py | 215 ++++++++++++++++++++++++++++++++++----
+ src/controller/commands/server.py | 219 ++++++++++++++++++++++++++++++++++----
  src/controller/shell.py           |  30 +++++-
- 2 files changed, 219 insertions(+), 26 deletions(-)
+ 2 files changed, 223 insertions(+), 26 deletions(-)
 
 diff --git a/src/controller/commands/server.py b/src/controller/commands/server.py
-index ca362ab..f9f6fe0 100644
+index ca362ab..eece1f6 100644
 --- a/src/controller/commands/server.py
 +++ b/src/controller/commands/server.py
 @@ -2,7 +2,9 @@
@@ -152,7 +152,7 @@ index ca362ab..f9f6fe0 100644
          cnt = 1
          for cli_obj in self.spp_cli_objs:
              # Put a mark to current server.
-@@ -69,11 +118,135 @@ class SppCtlServer(object):
+@@ -69,11 +118,139 @@ class SppCtlServer(object):
              cnt += 1
  
      def _switch_to(self, idx):
@@ -165,7 +165,9 @@ index ca362ab..f9f6fe0 100644
 -                    (idx+1, cli_obj.ip_addr, cli_obj.port))
 +            print('Switch spp-ctl to "{}: {}:{}".'.format(
 +                 idx+1, cli_obj.ip_addr, cli_obj.port))
-+        else:
+         else:
+-            print('Index should be less than %d!' %
+-                    (len(self.spp_cli_objs) + 1))
 +            print('Cannot switch to no existing server "{}".'.format(
 +                idx + 1))
 +
@@ -263,9 +265,7 @@ index ca362ab..f9f6fe0 100644
 +                removed = self.spp_cli_objs.pop(idx)
 +
 +        # Specified with address of the server.
-         else:
--            print('Index should be less than %d!' %
--                    (len(self.spp_cli_objs) + 1))
++        else:
 +            ipaddr, port = self._parse_addr(arg)
 +            if (ipaddr is None) or (port is None):
 +                return None
@@ -288,6 +288,10 @@ index ca362ab..f9f6fe0 100644
 +                cnt += 1
 +
 +        if removed is not None:
++            # Update current_idx if removed is before current in the order.
++            if self.current_idx >= len(self.spp_cli_objs):
++                self.current_idx = self.current_idx - 1
++
 +            print('Unregistered spp-ctl "{}:{}".'.format(
 +                removed.ip_addr, removed.port))
 +

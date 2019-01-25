@@ -1,6 +1,6 @@
-From a3d63d2ed9db34f060cbbead7d1213fe7aaf3348 Mon Sep 17 00:00:00 2001
+From e974606b36e74a00368deb477fc0df5488ff8213 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
-Date: Fri, 25 Jan 2019 08:19:47 +0900
+Date: Fri, 25 Jan 2019 12:33:36 +0900
 Subject: [PATCH 0/2] Add registering to server command
 
 All of REST API nodes should be specified while launching SPP CLI. To
@@ -21,11 +21,11 @@ Yasufumi Ogawa (2):
   controller: fix checking invalid server address
   controller: add registering to server command
 
- src/controller/commands/server.py  | 215 +++++++++++++++++++++++++++++++++----
- src/controller/shell.py            |  30 +++++-
+ src/controller/commands/server.py  | 219 +++++++++++++++++++++++++++++++++----
+ src/controller/shell.py            |  30 ++++-
  src/controller/shell_lib/common.py |  22 ++++
  src/controller/spp.py              |   8 +-
- 4 files changed, 247 insertions(+), 28 deletions(-)
+ 4 files changed, 251 insertions(+), 28 deletions(-)
 
 -- 
 2.7.4
