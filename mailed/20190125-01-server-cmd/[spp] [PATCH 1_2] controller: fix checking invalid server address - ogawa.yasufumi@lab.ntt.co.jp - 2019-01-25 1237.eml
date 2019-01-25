@@ -1,0 +1,134 @@
+X-Account-Key: account1
+X-UIDL: 13743.zRbWahb1czVaKZdAV7,qVs8yfCM=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 25 Jan 2019 12:39:54 +0900 (JST)
+Received: from md-mta-cb009.ocn.ad.jp ([153.138.211.104])
+	by md-lpx-cb004 with LMTP id yAvGKQqFSlx0RAAAuuTZ3g
+	; Fri, 25 Jan 2019 12:39:54 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb009.ocn.ad.jp (Postfix) with ESMTP id 9B2F244001009
+	for <geminoa@juno.ocn.ne.jp>; Fri, 25 Jan 2019 12:39:54 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 152929C0271
+	for <geminoa@juno.ocn.ne.jp>; Fri, 25 Jan 2019 12:39:54 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 87C142B9E;
+	Fri, 25 Jan 2019 04:39:51 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 73B9F293B
+ for <spp@dpdk.org>; Fri, 25 Jan 2019 04:39:50 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0P3dmKR011882;
+ Fri, 25 Jan 2019 12:39:48 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A4C136389F2;
+ Fri, 25 Jan 2019 12:39:48 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 96724638989;
+ Fri, 25 Jan 2019 12:39:48 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 25 Jan 2019 12:37:30 +0900
+Message-Id: <1548387451-29818-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548387451-29818-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548387451-29818-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] controller: fix checking invalid server address
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For value of `--bind-addr` or `-b` option, SPP CLI checks if it matches
+to `*.*.*.*` for IPv4 address, but it is inadeaute because no checkings
+for the range of values. This update is to add methods for the
+validation.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell_lib/common.py | 22 ++++++++++++++++++++++
+ src/controller/spp.py              |  8 ++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/src/controller/shell_lib/common.py b/src/controller/shell_lib/common.py
+index 360d601..3c59cca 100644
+--- a/src/controller/shell_lib/common.py
++++ b/src/controller/shell_lib/common.py
+@@ -100,3 +100,25 @@ def is_comment_line(line):
+             return True
+         else:
+             return False
++
++
++def is_valid_ipv4_addr(ipaddr):
++    ip_nums = ipaddr.split('.')
++
++    if len(ip_nums) != 4:
++        return False
++
++    for num in ip_nums:
++        num = int(num)
++        if (num < 0) or (num > 255):
++            return False
++
++    return True
++
++
++def is_valid_port(port_num):
++    num = int(port_num)
++    if (num < 1023) or (num > 65535):
++        return False
++
++    return True
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 7b7316c..a74209b 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -7,6 +7,7 @@ from __future__ import absolute_import
+ import argparse
+ import re
+ from .shell import Shell
++from .shell_lib import common
+ from . import spp_ctl_client
+ import sys
+ 
+@@ -30,11 +31,14 @@ def main(argv):
+     for addr in args.bind_addr:
+         if ':' in addr:
+             api_ipaddr, api_port = addr.split(':')
++            if common.is_valid_port(api_port) is False:
++                print('Error: Invalid port in "{}"'.format(addr))
++                exit()
+         else:
+             api_ipaddr = addr
+ 
+-        if not re.match(r'\d*\.\d*\.\d*\.\d*', addr):
+-            print('Invalid address "%s"' % args.bind_addr)
++        if common.is_valid_ipv4_addr(api_ipaddr) is False:
++            print('Error: Invalid address "{}"'.format(addr))
+             exit()
+ 
+         spp_ctl_cli = spp_ctl_client.SppCtlClient(api_ipaddr, int(api_port))
+-- 
+2.7.4
+
+
