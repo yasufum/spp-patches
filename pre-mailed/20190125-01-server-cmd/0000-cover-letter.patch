@@ -1,0 +1,32 @@
+From a3d63d2ed9db34f060cbbead7d1213fe7aaf3348 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 25 Jan 2019 08:19:47 +0900
+Subject: [PATCH 0/2] Add registering to server command
+
+All of REST API nodes should be specified while launching SPP CLI. To
+add another one, SPP CLI should be terminated and restarted at once.
+
+This update is to add registering and unregistering node to avoid this
+inconvenience. Register with `add` or unregister with `del` command.
+
+  # Register
+  spp > server add 192.168.122.177
+  Registered spp-ctl "192.168.122.177:7777".
+
+  # Unregister
+  spp > server del 2  # or 192.168.1.102
+  Unregistered spp-ctl "192.168.1.102:7777".
+
+Yasufumi Ogawa (2):
+  controller: fix checking invalid server address
+  controller: add registering to server command
+
+ src/controller/commands/server.py  | 215 +++++++++++++++++++++++++++++++++----
+ src/controller/shell.py            |  30 +++++-
+ src/controller/shell_lib/common.py |  22 ++++
+ src/controller/spp.py              |   8 +-
+ 4 files changed, 247 insertions(+), 28 deletions(-)
+
+-- 
+2.7.4
+

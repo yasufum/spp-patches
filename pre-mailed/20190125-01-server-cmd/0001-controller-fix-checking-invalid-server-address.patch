@@ -1,0 +1,78 @@
+From d378c5a397c240329b611548e28caefd5e049ba1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 24 Jan 2019 15:48:03 +0900
+Subject: [PATCH 1/2] controller: fix checking invalid server address
+
+For value of `--bind-addr` or `-b` option, SPP CLI checks if it matches
+to `*.*.*.*` for IPv4 address, but it is inadeaute because no checkings
+for the range of values. This update is to add methods for the
+validation.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell_lib/common.py | 22 ++++++++++++++++++++++
+ src/controller/spp.py              |  8 ++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/src/controller/shell_lib/common.py b/src/controller/shell_lib/common.py
+index 360d601..3c59cca 100644
+--- a/src/controller/shell_lib/common.py
++++ b/src/controller/shell_lib/common.py
+@@ -100,3 +100,25 @@ def is_comment_line(line):
+             return True
+         else:
+             return False
++
++
++def is_valid_ipv4_addr(ipaddr):
++    ip_nums = ipaddr.split('.')
++
++    if len(ip_nums) != 4:
++        return False
++
++    for num in ip_nums:
++        num = int(num)
++        if (num < 0) or (num > 255):
++            return False
++
++    return True
++
++
++def is_valid_port(port_num):
++    num = int(port_num)
++    if (num < 1023) or (num > 65535):
++        return False
++
++    return True
+diff --git a/src/controller/spp.py b/src/controller/spp.py
+index 7b7316c..a74209b 100644
+--- a/src/controller/spp.py
++++ b/src/controller/spp.py
+@@ -7,6 +7,7 @@ from __future__ import absolute_import
+ import argparse
+ import re
+ from .shell import Shell
++from .shell_lib import common
+ from . import spp_ctl_client
+ import sys
+ 
+@@ -30,11 +31,14 @@ def main(argv):
+     for addr in args.bind_addr:
+         if ':' in addr:
+             api_ipaddr, api_port = addr.split(':')
++            if common.is_valid_port(api_port) is False:
++                print('Error: Invalid port in "{}"'.format(addr))
++                exit()
+         else:
+             api_ipaddr = addr
+ 
+-        if not re.match(r'\d*\.\d*\.\d*\.\d*', addr):
+-            print('Invalid address "%s"' % args.bind_addr)
++        if common.is_valid_ipv4_addr(api_ipaddr) is False:
++            print('Error: Invalid address "{}"'.format(addr))
+             exit()
+ 
+         spp_ctl_cli = spp_ctl_client.SppCtlClient(api_ipaddr, int(api_port))
+-- 
+2.7.4
+
