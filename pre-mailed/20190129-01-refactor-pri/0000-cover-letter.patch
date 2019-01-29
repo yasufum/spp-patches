@@ -1,0 +1,30 @@
+From d5dbb7199e7cfe7964e3c4cf3606aa0652ab782f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 29 Jan 2019 20:44:41 +0900
+Subject: [PATCH 0/3] Refactor spp_priamry
+
+Implementation of spp_primary is derived from DPDK's multi process
+sample app, and some of variable names are remained old after the usage
+is changed. For example, `client` or `num_client` was used for rings for
+communicating with clients, but it is used for ring port used to
+forward. This series of patches is to refactor spp_primary and its
+Makefile.
+
+Yasufumi Ogawa (3):
+  spp_primary: refactor var names for ring ports
+  spp_primary: change include path in Makefile
+  spp_primary: add lcore_id_used variable
+
+ src/primary/Makefile |  2 +-
+ src/primary/args.c   | 12 +++++------
+ src/primary/args.h   |  4 ++--
+ src/primary/init.c   | 57 ++++++++++++++++++++++++++++++----------------------
+ src/primary/init.h   | 21 ++++++++++++-------
+ src/primary/main.c   | 11 +++++-----
+ src/shared/common.c  |  8 ++++++--
+ src/shared/common.h  |  2 ++
+ 8 files changed, 70 insertions(+), 47 deletions(-)
+
+-- 
+2.7.4
+

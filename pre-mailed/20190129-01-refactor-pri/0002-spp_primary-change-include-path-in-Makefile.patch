@@ -1,0 +1,57 @@
+From 5d8b5675472f8cb70a2c4146dccc6055bc6d7564 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 27 Jan 2019 20:58:42 +0900
+Subject: [PATCH 2/3] spp_primary: change include path in Makefile
+
+As a part of refactoring, change include path to include headers in
+shared directory explicitly.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/Makefile | 2 +-
+ src/primary/args.c   | 2 +-
+ src/primary/args.h   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index 59c9ba7..f348146 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -25,7 +25,7 @@ INC := $(wildcard *.h)
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-CFLAGS += -I$(SRCDIR)/../shared
++CFLAGS += -I$(SRCDIR)/../
+ 
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+ LDLIBS += -lrte_pmd_ring
+diff --git a/src/primary/args.c b/src/primary/args.c
+index d0a28e8..020e731 100644
+--- a/src/primary/args.c
++++ b/src/primary/args.c
+@@ -7,7 +7,7 @@
+ 
+ #include <rte_memory.h>
+ 
+-#include "common.h"
++#include "shared/common.h"
+ #include "args.h"
+ #include "init.h"
+ #include "primary.h"
+diff --git a/src/primary/args.h b/src/primary/args.h
+index 8561bd3..29bca0d 100644
+--- a/src/primary/args.h
++++ b/src/primary/args.h
+@@ -7,7 +7,7 @@
+ #define _PRIMARY_ARGS_H_
+ 
+ #include <stdint.h>
+-#include "common.h"
++#include "shared/common.h"
+ 
+ extern uint16_t num_rings;
+ extern char *server_ip;
+-- 
+2.7.4
+
