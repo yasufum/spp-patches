@@ -1,0 +1,136 @@
+X-Account-Key: account1
+X-UIDL: 13782.NYPsS47z2ECQi3L33+K3K874f0Y=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb005.ocn.ad.jp (LHLO md-lpx-cb005) (153.138.210.18)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 29 Jan 2019 21:22:55 +0900 (JST)
+Received: from md-mta-cb010.ocn.ad.jp ([153.138.211.105])
+	by md-lpx-cb005 with LMTP id gGEDAp9FUFxkHAAAkBL1ug
+	; Tue, 29 Jan 2019 21:22:55 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb010.ocn.ad.jp (Postfix) with ESMTP id 013DA14000C14
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:22:54 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id A36189C0274
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:22:54 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id ECACE1B138;
+	Tue, 29 Jan 2019 13:22:51 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id E43E21B12A
+ for <spp@dpdk.org>; Tue, 29 Jan 2019 13:22:49 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0TCMmbE025080;
+ Tue, 29 Jan 2019 21:22:48 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 36C15EA85DD;
+ Tue, 29 Jan 2019 21:22:48 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 29116EA85C9;
+ Tue, 29 Jan 2019 21:22:48 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 29 Jan 2019 21:20:28 +0900
+Message-Id: <1548764428-2758-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548764428-2758-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548764428-2758-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 3/3] spp_primary: add lcore_id_used variable
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To enable to retrieve lcore IDs used by spp_primary, add
+`lcore_id_used` variable. It is intended to be refered for inspecting
+the rest of cores can be used.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/init.c  | 16 +++++++++++++++-
+ src/shared/common.h |  2 ++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/src/primary/init.c b/src/primary/init.c
+index 8b1f396..85b54a3 100644
+--- a/src/primary/init.c
++++ b/src/primary/init.c
+@@ -9,8 +9,8 @@
+ #include <rte_malloc.h>
+ #include <rte_memzone.h>
+ 
++#include "shared/common.h"
+ #include "args.h"
+-#include "common.h"
+ #include "init.h"
+ #include "primary.h"
+ 
+@@ -23,6 +23,8 @@ static struct rte_mempool *pktmbuf_pool;
+ /* the port details */
+ struct port_info *ports;
+ 
++uint8_t lcore_id_used[RTE_MAX_LCORE] = {};
++
+ /**
+  * Initialise the mbuf pool for packet reception for the NIC, and any other
+  * buffer pools needed by the app - currently none.
+@@ -104,8 +106,10 @@ int
+ init(int argc, char *argv[])
+ {
+ 	int retval;
++	int lcore_id;
+ 	const struct rte_memzone *mz;
+ 	uint16_t count, total_ports;
++	char log_msg[1024] = { '\0' };
+ 
+ 	/* init EAL, parsing EAL args */
+ 	retval = rte_eal_init(argc, argv);
+@@ -159,6 +163,16 @@ init(int argc, char *argv[])
+ 	/* Initialise the ring_port. */
+ 	init_shm_rings();
+ 
++	RTE_LCORE_FOREACH(lcore_id) {
++		lcore_id_used[lcore_id] = 1;
++	}
++	sprintf(log_msg, "Used lcores: ");
++	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(log_msg + strlen(log_msg), "%d ", i);
++	}
++	RTE_LOG(DEBUG, PRIMARY, "%s\n", log_msg);
++
+ 	return 0;
+ }
+ 
+diff --git a/src/shared/common.h b/src/shared/common.h
+index e244db9..d5c62bd 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -127,4 +127,6 @@ int set_user_log_debug(int num_user_log);
+ int parse_num_clients(uint16_t *num_clients, const char *clients);
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
++extern uint8_t lcore_id_used[RTE_MAX_LCORE];
++
+ #endif
+-- 
+2.7.4
+
+
