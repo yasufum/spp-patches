@@ -1,0 +1,66 @@
+From c0baac38f93cb630f841e8a1aa1da9eeb9444c43 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 27 Jan 2019 21:56:40 +0900
+Subject: [PATCH 1/8] shared: add func for getting dirname of secondary
+
+To inspect the name of directory of secondary from process name, add
+function `get_sec_dir()`. It is used to find the path of exec file of
+secondary process.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 26 ++++++++++++++++++++++++++
+ src/shared/common.h |  3 +++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 0943dd3..9c244e5 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -89,3 +89,29 @@ parse_server(char **server_ip, int *server_port, char *server_addr)
+ 	*server_port = atoi(token);
+ 	return 0;
+ }
++
++/* Get directory name of given proc_name */
++int get_sec_dir(char *proc_name, char *dir_name)
++{
++	if (!strcmp(proc_name, "spp_nfv")) {
++		sprintf(dir_name, "%s", "nfv");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'nfv' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_vf")) {
++		sprintf(dir_name, "%s", "vf");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'vf' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_mirror")) {
++		sprintf(dir_name, "%s", "mirror");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'mirror' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_pcap")) {
++		sprintf(dir_name, "%s", "pcap");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'pcap' for '%s'.\n",
++				proc_name);
++	} else {
++		RTE_LOG(DEBUG, SHARED, "No dir found for '%s'.\n",
++				proc_name);
++	}
++	return 0;
++}
+diff --git a/src/shared/common.h b/src/shared/common.h
+index d5c62bd..75e9576 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -127,6 +127,9 @@ int set_user_log_debug(int num_user_log);
+ int parse_num_clients(uint16_t *num_clients, const char *clients);
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
++/* Get directory name of given proc_name */
++int get_sec_dir(char *proc_name, char *dir_name);
++
+ extern uint8_t lcore_id_used[RTE_MAX_LCORE];
+ 
+ #endif
+-- 
+2.7.4
+

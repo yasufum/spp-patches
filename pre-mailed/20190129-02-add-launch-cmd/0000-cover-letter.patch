@@ -1,0 +1,76 @@
+From 591bf6f09fc0247ec6f3286f5e45d70b50ae658c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 29 Jan 2019 20:44:58 +0900
+Subject: [PATCH 0/8] Add launch command to spp_primary
+
+This series of patches is to add `launch` command which is used to
+launch secondary process from spp_primary. For this update, spp-ctl and
+SPP CLI are also update to support the command.
+
+Spp_primary receives the command via tcp port 5555 and launches
+requested secondary process by running `sec_launcher.py` script. The
+reason of calling from the script is to avoid secondary be child
+process.
+
+Spp-ctl has REST API of PUT method for launch commnad. Request body
+consists of client ID, process name and options of the secondary.
+Here is an example.
+
+  # request body params for launching spp_nfv with sec ID 1
+  {
+    "client_id": 1,
+    "proc_name": "spp_nfv",
+    "eal": {
+      "-l": "1-2", "-m": 512, ...
+    },
+    "app": {
+      "-n": 1, "-s": "127.0.0.1:6666"
+    }
+  }
+
+You can try to launch it from spp-ctl with curl command.
+
+  $ curl -X PUT -d '{"client_id":1,"proc_name":"spp_nfv",...}' \
+    http://127.0.0.1:7777/v1/primary/launch
+
+SPP CLI supports launch command more easy way to use. You notice that
+some of mandatory options such as `--proc-type` are missing. These
+options are completed in SPP CLI before sending the request. This
+comamnd also supporting TAB completion as same as other commands.
+
+  spp > pri; launch nfv 1 -l 1-2 -m 512 -- -n 1 -s ...
+
+
+Yasufumi Ogawa (8):
+  shared: add func for getting dirname of secondary
+  spp_priamry: add launch command
+  spp-ctl: add launch command support for REST API
+  controller: add launch sub command in pri
+  spp_primary: change launching sec to use python
+  tools/helpers: add sec launcher script
+  controller: revise completion of launch command
+  tools/helpers: move cpu_layout script to helpers
+
+ log/README.txt                     |   8 ++
+ src/controller/commands/pri.py     | 211 +++++++++++++++++++++++++++++++++++--
+ src/controller/commands/server.py  |   4 +
+ src/controller/shell.py            |   3 +
+ src/controller/shell_lib/common.py |   8 +-
+ src/controller/spp_common.py       |   4 +
+ src/primary/main.c                 | 174 ++++++++++++++++++++++++++++--
+ src/shared/common.c                |  26 +++++
+ src/shared/common.h                |   5 +-
+ src/spp-ctl/spp_proc.py            | 113 ++++++++++++++++++++
+ src/spp-ctl/spp_webapi.py          |  11 ++
+ tools/cpu_layout.py                | 144 -------------------------
+ tools/helpers/cpu_layout.py        | 144 +++++++++++++++++++++++++
+ tools/helpers/sec_launcher.py      |  10 ++
+ 14 files changed, 704 insertions(+), 161 deletions(-)
+ create mode 100644 log/README.txt
+ delete mode 100755 tools/cpu_layout.py
+ create mode 100755 tools/helpers/cpu_layout.py
+ create mode 100755 tools/helpers/sec_launcher.py
+
+-- 
+2.7.4
+

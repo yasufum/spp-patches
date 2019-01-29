@@ -1,0 +1,35 @@
+From 9c0961222f7fea6894ada5936a06aaac0513533c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 29 Jan 2019 19:46:54 +0900
+Subject: [PATCH 6/8] tools/helpers: add sec launcher script
+
+Add very simple script `sec_launcher.py` for launching secondary
+process. This script is not specilized to launching and just checks
+the number of args and run given command. Spp_primary responds to give
+correct command line for launching.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/helpers/sec_launcher.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+ create mode 100755 tools/helpers/sec_launcher.py
+
+diff --git a/tools/helpers/sec_launcher.py b/tools/helpers/sec_launcher.py
+new file mode 100755
+index 0000000..22399db
+--- /dev/null
++++ b/tools/helpers/sec_launcher.py
+@@ -0,0 +1,10 @@
++#!/usr/bin/env python
++# coding: utf-8
++"""SPP secondary launcher."""
++
++import sys
++import subprocess
++
++if len(sys.argv) > 1:
++    cmd = sys.argv[1:]
++    subprocess.call(cmd)
+-- 
+2.7.4
+
