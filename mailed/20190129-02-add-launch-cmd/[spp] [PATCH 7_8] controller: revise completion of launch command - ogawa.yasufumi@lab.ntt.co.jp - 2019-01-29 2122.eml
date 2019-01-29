@@ -1,0 +1,136 @@
+X-Account-Key: account1
+X-UIDL: 13791.VLBkP3SZo7ppnmlS68NRZ9LWoog=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw010.ocn.ad.jp (LHLO md-lpx-nw010) (153.138.217.83)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 29 Jan 2019 21:24:27 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw010 with LMTP id ENNmBvtFUFyBRAAAb/ylEw
+	; Tue, 29 Jan 2019 21:24:27 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 0E44934001408
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:27 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 6B2AFD4026F
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:26 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id B7B8D1B184;
+	Tue, 29 Jan 2019 13:24:23 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 9B2591B13B
+ for <spp@dpdk.org>; Tue, 29 Jan 2019 13:24:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0TCOK4L017121;
+ Tue, 29 Jan 2019 21:24:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4A000EA85EA;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 3B508EA85C9;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 29 Jan 2019 21:22:00 +0900
+Message-Id: <1548764521-2827-8-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 7/8] controller: revise completion of launch command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To help users by reducing input of launch command, change to generate
+options automatically from given secondary ID.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 577952c..7712ba2 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -136,7 +136,8 @@ class SppPrimary(object):
+         candidates = []
+         tokens = line.split(' ')
+ 
+-        mytemplate = "-l 1,2 -m 512 -- -n {} -s {}"
++        base_core = 1  # shared among secondaries
++        mytemplate = "-l {},{} -m 512 -- {} {} -s {}"
+ 
+         # Show sub commands
+         if len(tokens) == 2:
+@@ -156,8 +157,30 @@ class SppPrimary(object):
+         elif len(tokens) == 5 and tokens[1] == 'launch':
+             if (tokens[2] in spp_common.SEC_TYPES) and \
+                     (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
++                ptype = tokens[2]
+                 sid = tokens[3]
+-                candidates = [mytemplate.format(sid, common.current_server_addr())]
++
++                if ptype == 'nfv':
++                    opt_sid = '-n'
++                else:
++                    opt_sid = '--client-id'
++
++                server_addr = common.current_server_addr()
++                server_addr = server_addr.replace('7777', '6666')
++
++                # Define rest of cores dynamically.
++                # TODO(yasufum) decide rest of cores considering used cores
++                if ptype == 'nfv':  # one core is enough
++                    rest_core = sid
++                elif ptype == 'vf':  # at least three cores
++                    rest_core = '{}-{}'.format(int(sid), int(sid)+2)
++                elif ptype == 'mirror':  # two cores
++                    rest_core = sid
++                elif ptype == 'pcap':  # at least two cores
++                    rest_core = '{}-{}'.format(int(sid), int(sid)+1)
++
++                candidates = [mytemplate.format(
++                    base_core, rest_core, opt_sid, sid, server_addr)]
+ 
+         if not text:
+             completions = candidates
+@@ -166,8 +189,6 @@ class SppPrimary(object):
+                            if p.startswith(text)
+                            ]
+ 
+-        #completions.append("nof_tokens:{}".format(len(tokens)))
+-
+         return completions
+ 
+     def _get_sec_ids(self):
+@@ -299,7 +320,7 @@ class SppPrimary(object):
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 204:
+-                print('Succeeded to launch {}:{}.'.format(
++                print('Send request to launch {}:{}.'.format(
+                     proc_type, sec_id))
+             elif res.status_code in error_codes:
+                 pass
+-- 
+2.7.4
+
+

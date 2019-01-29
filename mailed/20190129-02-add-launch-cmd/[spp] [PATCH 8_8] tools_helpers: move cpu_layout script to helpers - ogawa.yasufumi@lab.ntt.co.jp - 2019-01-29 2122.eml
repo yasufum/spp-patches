@@ -1,0 +1,374 @@
+X-Account-Key: account1
+X-UIDL: 13792.oTDzTsbqGK,KRHbMMoUkvvvbKbQ=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw002.ocn.ad.jp (LHLO md-lpx-nw002) (153.138.217.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 29 Jan 2019 21:24:27 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw002 with LMTP id +HEgEftFUFw0eAAATJVVBg
+	; Tue, 29 Jan 2019 21:24:27 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 122D33400141E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:27 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 6F9CCD4027A
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:26 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id BF4841B19A;
+	Tue, 29 Jan 2019 13:24:23 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 97AC81B13A
+ for <spp@dpdk.org>; Tue, 29 Jan 2019 13:24:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0TCOKxI025110;
+ Tue, 29 Jan 2019 21:24:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4C08BEA85EE;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 432BDEA85DE;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 29 Jan 2019 21:22:01 +0900
+Message-Id: <1548764521-2827-9-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 8/8] tools/helpers: move cpu_layout script to helpers
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Move `cpu_layout.py` to helpers for making clear the usage.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/cpu_layout.py         | 144 --------------------------------------------
+ tools/helpers/cpu_layout.py | 144 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 144 insertions(+), 144 deletions(-)
+ delete mode 100755 tools/cpu_layout.py
+ create mode 100755 tools/helpers/cpu_layout.py
+
+diff --git a/tools/cpu_layout.py b/tools/cpu_layout.py
+deleted file mode 100755
+index 58a2bd6..0000000
+--- a/tools/cpu_layout.py
++++ /dev/null
+@@ -1,144 +0,0 @@
+-#!/usr/bin/env python
+-# SPDX-License-Identifier: BSD-3-Clause
+-# Copyright(c) 2010-2014 Intel Corporation
+-# Copyright(c) 2017 Cavium, Inc. All rights reserved.
+-# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+-
+-from __future__ import print_function
+-import argparse
+-import json
+-import sys
+-try:
+-    xrange  # Python 2
+-except NameError:
+-    xrange = range  # Python 3
+-
+-base_path = "/sys/devices/system/cpu"
+-
+-
+-def parse_args():
+-    parser = argparse.ArgumentParser(
+-        description="Show CPU layout")
+-
+-    parser.add_argument(
+-            "--json", action="store_true",
+-            help="Output in JSON format")
+-    return parser.parse_args()
+-
+-
+-def get_max_cpus():
+-    fd = open("{}/kernel_max".format(base_path))
+-    max_cpus = int(fd.read())
+-    fd.close()
+-    return max_cpus
+-
+-
+-def get_resource_info(max_cpus):
+-    """Return a set of sockets, cores and core_map as a tuple."""
+-    sockets = []
+-    cores = []
+-    core_map = {}
+-
+-    for cpu in xrange(max_cpus + 1):
+-        try:
+-            topo_path = "{}/cpu{}/topology".format(base_path, cpu)
+-
+-            # Get physical core ID.
+-            fd = open("{}/core_id".format(topo_path))
+-            core = int(fd.read())
+-            fd.close()
+-            if core not in cores:
+-                cores.append(core)
+-
+-            fd = open("{}/physical_package_id".format(topo_path))
+-            socket = int(fd.read())
+-            fd.close()
+-            if socket not in sockets:
+-                sockets.append(socket)
+-
+-            key = (socket, core)
+-            if key not in core_map:
+-                core_map[key] = []
+-            core_map[key].append(cpu)
+-
+-        except IOError:
+-            continue
+-
+-        except Exception as e:
+-            print(e)
+-            break
+-
+-    return sockets, cores, core_map
+-
+-
+-def print_header(cores, sockets):
+-    print(format("=" * (47 + len(base_path))))
+-    print("Core and Socket Information (as reported by '{}')".format(
+-        base_path))
+-    print("{}\n".format("=" * (47 + len(base_path))))
+-    print("cores = ", cores)
+-    print("sockets = ", sockets)
+-    print("")
+-
+-
+-def print_body(cores, sockets, core_map):
+-    max_processor_len = len(str(len(cores) * len(sockets) * 2 - 1))
+-    max_thread_count = len(list(core_map.values())[0])
+-    max_core_map_len = (max_processor_len * max_thread_count) \
+-        + len(", ") * (max_thread_count - 1) \
+-        + len('[]') + len('Socket ')
+-    max_core_id_len = len(str(max(cores)))
+-
+-    output = " ".ljust(max_core_id_len + len('Core '))
+-    for s in sockets:
+-        output += " Socket %s" % str(s).ljust(
+-                max_core_map_len - len('Socket '))
+-    print(output)
+-
+-    output = " ".ljust(max_core_id_len + len('Core '))
+-    for s in sockets:
+-        output += " --------".ljust(max_core_map_len)
+-        output += " "
+-    print(output)
+-
+-    for c in cores:
+-        output = "Core %s" % str(c).ljust(max_core_id_len)
+-        for s in sockets:
+-            if (s, c) in core_map:
+-                output += " " + str(core_map[(s, c)]).ljust(max_core_map_len)
+-            else:
+-                output += " " * (max_core_map_len + 1)
+-        print(output)
+-
+-
+-def core_map_to_json(core_map):
+-    cpu_layout = []
+-    cpu_sockets = {}
+-    for (s, c), cpus in core_map.items():
+-        if not (s in cpu_sockets):
+-            cpu_sockets[s] = {}
+-            cpu_sockets[s]["cores"] = []
+-        cpu_sockets[s]["cores"].append({"core_id": c, "cpus": cpus})
+-
+-    for sid, val in cpu_sockets.items():
+-        cpu_layout.append({"socket_id": sid, "cores": val["cores"]})
+-
+-    return json.dumps(cpu_layout)
+-
+-
+-def main():
+-    args = parse_args()
+-
+-    max_cpus = get_max_cpus()
+-    sockets, cores, core_map = get_resource_info(max_cpus)
+-
+-    if args.json is True:
+-        print(core_map_to_json(core_map))
+-
+-    else:
+-        print_header(cores, sockets)
+-        print_body(cores, sockets, core_map)
+-
+-
+-if __name__ == '__main__':
+-    main()
+diff --git a/tools/helpers/cpu_layout.py b/tools/helpers/cpu_layout.py
+new file mode 100755
+index 0000000..58a2bd6
+--- /dev/null
++++ b/tools/helpers/cpu_layout.py
+@@ -0,0 +1,144 @@
++#!/usr/bin/env python
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2010-2014 Intel Corporation
++# Copyright(c) 2017 Cavium, Inc. All rights reserved.
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++from __future__ import print_function
++import argparse
++import json
++import sys
++try:
++    xrange  # Python 2
++except NameError:
++    xrange = range  # Python 3
++
++base_path = "/sys/devices/system/cpu"
++
++
++def parse_args():
++    parser = argparse.ArgumentParser(
++        description="Show CPU layout")
++
++    parser.add_argument(
++            "--json", action="store_true",
++            help="Output in JSON format")
++    return parser.parse_args()
++
++
++def get_max_cpus():
++    fd = open("{}/kernel_max".format(base_path))
++    max_cpus = int(fd.read())
++    fd.close()
++    return max_cpus
++
++
++def get_resource_info(max_cpus):
++    """Return a set of sockets, cores and core_map as a tuple."""
++    sockets = []
++    cores = []
++    core_map = {}
++
++    for cpu in xrange(max_cpus + 1):
++        try:
++            topo_path = "{}/cpu{}/topology".format(base_path, cpu)
++
++            # Get physical core ID.
++            fd = open("{}/core_id".format(topo_path))
++            core = int(fd.read())
++            fd.close()
++            if core not in cores:
++                cores.append(core)
++
++            fd = open("{}/physical_package_id".format(topo_path))
++            socket = int(fd.read())
++            fd.close()
++            if socket not in sockets:
++                sockets.append(socket)
++
++            key = (socket, core)
++            if key not in core_map:
++                core_map[key] = []
++            core_map[key].append(cpu)
++
++        except IOError:
++            continue
++
++        except Exception as e:
++            print(e)
++            break
++
++    return sockets, cores, core_map
++
++
++def print_header(cores, sockets):
++    print(format("=" * (47 + len(base_path))))
++    print("Core and Socket Information (as reported by '{}')".format(
++        base_path))
++    print("{}\n".format("=" * (47 + len(base_path))))
++    print("cores = ", cores)
++    print("sockets = ", sockets)
++    print("")
++
++
++def print_body(cores, sockets, core_map):
++    max_processor_len = len(str(len(cores) * len(sockets) * 2 - 1))
++    max_thread_count = len(list(core_map.values())[0])
++    max_core_map_len = (max_processor_len * max_thread_count) \
++        + len(", ") * (max_thread_count - 1) \
++        + len('[]') + len('Socket ')
++    max_core_id_len = len(str(max(cores)))
++
++    output = " ".ljust(max_core_id_len + len('Core '))
++    for s in sockets:
++        output += " Socket %s" % str(s).ljust(
++                max_core_map_len - len('Socket '))
++    print(output)
++
++    output = " ".ljust(max_core_id_len + len('Core '))
++    for s in sockets:
++        output += " --------".ljust(max_core_map_len)
++        output += " "
++    print(output)
++
++    for c in cores:
++        output = "Core %s" % str(c).ljust(max_core_id_len)
++        for s in sockets:
++            if (s, c) in core_map:
++                output += " " + str(core_map[(s, c)]).ljust(max_core_map_len)
++            else:
++                output += " " * (max_core_map_len + 1)
++        print(output)
++
++
++def core_map_to_json(core_map):
++    cpu_layout = []
++    cpu_sockets = {}
++    for (s, c), cpus in core_map.items():
++        if not (s in cpu_sockets):
++            cpu_sockets[s] = {}
++            cpu_sockets[s]["cores"] = []
++        cpu_sockets[s]["cores"].append({"core_id": c, "cpus": cpus})
++
++    for sid, val in cpu_sockets.items():
++        cpu_layout.append({"socket_id": sid, "cores": val["cores"]})
++
++    return json.dumps(cpu_layout)
++
++
++def main():
++    args = parse_args()
++
++    max_cpus = get_max_cpus()
++    sockets, cores, core_map = get_resource_info(max_cpus)
++
++    if args.json is True:
++        print(core_map_to_json(core_map))
++
++    else:
++        print_header(cores, sockets)
++        print_body(cores, sockets, core_map)
++
++
++if __name__ == '__main__':
++    main()
+-- 
+2.7.4
+
+

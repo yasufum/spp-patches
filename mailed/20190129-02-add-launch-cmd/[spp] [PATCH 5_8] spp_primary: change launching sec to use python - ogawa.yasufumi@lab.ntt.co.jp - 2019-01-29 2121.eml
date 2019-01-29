@@ -1,0 +1,200 @@
+X-Account-Key: account1
+X-UIDL: 13785.xsNy69UJ2fyfxXDUtAXJ4O,K+Ho=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 29 Jan 2019 21:24:25 +0900 (JST)
+Received: from md-mta-cb010.ocn.ad.jp ([153.138.211.105])
+	by md-lpx-cb003 with LMTP id WIMvGPlFUFzLSAAAjPdmzw
+	; Tue, 29 Jan 2019 21:24:25 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb010.ocn.ad.jp (Postfix) with ESMTP id 5A30C14000C1B
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:25 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id C7DC09C0275
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:24 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6AA1D1B13C;
+	Tue, 29 Jan 2019 13:24:23 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 4C8B51B136
+ for <spp@dpdk.org>; Tue, 29 Jan 2019 13:24:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0TCOKEW025112;
+ Tue, 29 Jan 2019 21:24:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 2A91DEA8589;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1B053EA85EA;
+ Tue, 29 Jan 2019 21:24:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 29 Jan 2019 21:21:58 +0900
+Message-Id: <1548764521-2827-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 5/8] spp_primary: change launching sec to use python
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Spp_primary launches secondary directly from execv() and makes it a
+child process. However, it cannot launch other than spp_nfv in healthly.
+
+This patch is to change launching secondary via python script
+`sec_launcher.py` placed in `tools/helpers/` to avoid this issue.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 56 insertions(+), 7 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index c4ad33a..bb25c1b 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -25,6 +25,16 @@
+ #define PRI_BUF_SIZE_RING 1512
+ 
+ #define SPP_PATH_LEN 1024  /* seems enough for path of spp procs */
++#define NOF_TOKENS 48  /* seems enough to contain tokens */
++/* should be contain extra two tokens for `python` and path of launcher */
++#define NOF_CMD_LIST (NOF_TOKENS + 2)
++
++#define LAUNCH_CMD "python"
++#define LCMD_LEN 8
++
++#define LAUNCHER_NAME "sec_launcher.py"
++#define LAUNCHER_LEN 16
++
+ #define POLL_TIMEOUT_MS 100
+ 
+ static sig_atomic_t on = 1;
+@@ -182,7 +192,17 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+ 	char path_spp_pri[SPP_PATH_LEN];
+ 	char path_spp_sec[SPP_PATH_LEN];
+ 	char path_spp_log[SPP_PATH_LEN];
+-	char *token_list[48] = {NULL};  /* contains elems of path_spp_pri */
++
++	char cmd[LCMD_LEN];  /* Command for launcher */
++	char launcher[LAUNCHER_LEN];  /* Name of launcher script */
++	char path_launcher[SPP_PATH_LEN];
++
++	/* Contains elems of path_spp_pri */
++	char *token_list[NOF_TOKENS] = {NULL};
++
++	/* Contains cmd and args for execvp() */
++	char *cmd_list[NOF_CMD_LIST] = {NULL};
++
+ 	int num_token = 0;
+ 	int i = 0;
+ 	char sec_dirname[16];
+@@ -204,7 +224,7 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+ 			token_list[i] = strtok(NULL, "/");
+ 		}
+ 
+-		/* Get src dir */
++		/* Get path of `src` dir used as a basename */
+ 		for (i = 0; i < num_token - 3; i++) {
+ 			if (i == 0)
+ 				sprintf(path_spp_sec, "/%s/", token_list[i]);
+@@ -213,17 +233,45 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+ 						"%s/", token_list[i]);
+ 		}
+ 
+-		/* logfile is located in the parent dir of src */
++		/* Dir of logfile is located in the parent dir of src */
+ 		sprintf(path_spp_log, "%s../log/%s-%d.log",
+ 				path_spp_sec, sec_name, sec_id);
+ 
++		/* Setup cmd list */
++		memset(cmd, '\0', sizeof(cmd));
++		sprintf(cmd, "%s", LAUNCH_CMD);
++		cmd_list[0] = cmd;
++
++		/* Path of launcher is `spp/tools/helpers/sec_launcher.py` */
++		memset(launcher, '\0', sizeof(launcher));
++		sprintf(launcher, "%s", LAUNCHER_NAME);
++		memset(path_launcher, '\0', sizeof(path_launcher));
++		sprintf(path_launcher, "%s../tools/helpers/%s",
++				path_spp_sec, launcher);
++		cmd_list[1] = path_launcher;
++
+ 		/* path of sec proc */
+ 		get_sec_dir(sec_name, sec_dirname);
+ 		sprintf(path_spp_sec + strlen(path_spp_sec), "%s/%s/%s",
+ 				sec_dirname, token_list[num_token-2],
+ 				sec_name);
++		cmd_list[2] = path_spp_sec;
++
++		i = 0;
++		while (sec_args[i] != NULL) {
++			cmd_list[i+3] = sec_args[i];
++			i++;
++		}
++
++		/* Output debug log for checking tokens of cmd_list */
++		i = 0;
++		while (cmd_list[i] != NULL) {
++			RTE_LOG(DEBUG, PRIMARY, "launch, token[%2d] = %s\n",
++					i, cmd_list[i]);
++			i++;
++		}
+ 
+-		RTE_LOG(DEBUG, PRIMARY, "sec_cmd: '%s'.\n", path_spp_sec);
++		RTE_LOG(DEBUG, PRIMARY, "sec_path: '%s'.\n", path_spp_sec);
+ 		RTE_LOG(DEBUG, PRIMARY, "sec_log: '%s'.\n", path_spp_log);
+ 
+ 		pid_t pid;
+@@ -240,7 +288,8 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+ 			dup2(fd, 2);
+ 			close(fd);
+ 
+-			if (execv(path_spp_sec, sec_args) != 0)
++			printf("%s\n", sec_args[0]);
++			if (execvp(cmd_list[0], cmd_list) != 0)
+ 				RTE_LOG(ERR, PRIMARY,
+ 					"Failed to open child proc!\n");
+ 		} else
+@@ -371,7 +420,7 @@ parse_command(char *str)
+ {
+ 	char *token_list[MAX_PARAMETER] = {NULL};
+ 	char sec_name[16];
+-	char *sec_args[48] = {NULL};
++	char *sec_args[NOF_TOKENS] = {NULL};
+ 	int num_args = 0;
+ 	int ret = 0;
+ 	int i = 0;
+@@ -382,7 +431,7 @@ parse_command(char *str)
+ 	token_list[i] = strtok(str, " ");
+ 	while (token_list[i] != NULL) {
+ 		RTE_LOG(DEBUG, PRIMARY,
+-				"parse_command: received token %d = %s\n",
++				"parse command, token[%2d] = %s\n",
+ 				i, token_list[i]);
+ 		if (i == 2)
+ 			sprintf(sec_name, "%s", token_list[i]);
+-- 
+2.7.4
+
+

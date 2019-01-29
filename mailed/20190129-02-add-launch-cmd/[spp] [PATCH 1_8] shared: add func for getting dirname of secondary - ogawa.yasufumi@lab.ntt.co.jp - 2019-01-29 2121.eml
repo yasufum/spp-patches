@@ -1,0 +1,122 @@
+X-Account-Key: account1
+X-UIDL: 13789.r29twyhvkkOg29jJQfLr95Pp4fQ=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 29 Jan 2019 21:24:26 +0900 (JST)
+Received: from md-mta-cb004.ocn.ad.jp ([153.138.211.72])
+	by md-lpx-cb003 with LMTP id iNQ0LfpFUFzLSAAAjPdmzw
+	; Tue, 29 Jan 2019 21:24:26 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-cb004.ocn.ad.jp (Postfix) with ESMTP id B3CEEC000A0E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:26 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 6CEF29C026F
+	for <geminoa@juno.ocn.ne.jp>; Tue, 29 Jan 2019 21:24:26 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id AF6ED1B160;
+	Tue, 29 Jan 2019 13:24:23 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 9DEB21B13C
+ for <spp@dpdk.org>; Tue, 29 Jan 2019 13:24:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0TCOKgl017118;
+ Tue, 29 Jan 2019 21:24:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E8ED0EA85DD;
+ Tue, 29 Jan 2019 21:24:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id DBDE6EA85C9;
+ Tue, 29 Jan 2019 21:24:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Tue, 29 Jan 2019 21:21:54 +0900
+Message-Id: <1548764521-2827-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548764521-2827-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/8] shared: add func for getting dirname of secondary
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To inspect the name of directory of secondary from process name, add
+function `get_sec_dir()`. It is used to find the path of exec file of
+secondary process.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/common.c | 26 ++++++++++++++++++++++++++
+ src/shared/common.h |  3 +++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 0943dd3..9c244e5 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -89,3 +89,29 @@ parse_server(char **server_ip, int *server_port, char *server_addr)
+ 	*server_port = atoi(token);
+ 	return 0;
+ }
++
++/* Get directory name of given proc_name */
++int get_sec_dir(char *proc_name, char *dir_name)
++{
++	if (!strcmp(proc_name, "spp_nfv")) {
++		sprintf(dir_name, "%s", "nfv");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'nfv' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_vf")) {
++		sprintf(dir_name, "%s", "vf");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'vf' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_mirror")) {
++		sprintf(dir_name, "%s", "mirror");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'mirror' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_pcap")) {
++		sprintf(dir_name, "%s", "pcap");
++		RTE_LOG(DEBUG, SHARED, "Found dir 'pcap' for '%s'.\n",
++				proc_name);
++	} else {
++		RTE_LOG(DEBUG, SHARED, "No dir found for '%s'.\n",
++				proc_name);
++	}
++	return 0;
++}
+diff --git a/src/shared/common.h b/src/shared/common.h
+index d5c62bd..75e9576 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -127,6 +127,9 @@ int set_user_log_debug(int num_user_log);
+ int parse_num_clients(uint16_t *num_clients, const char *clients);
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
++/* Get directory name of given proc_name */
++int get_sec_dir(char *proc_name, char *dir_name);
++
+ extern uint8_t lcore_id_used[RTE_MAX_LCORE];
+ 
+ #endif
+-- 
+2.7.4
+
+
