@@ -1,0 +1,60 @@
+From 10b309847873676d00147c1dc45957aff521601b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 30 Jan 2019 20:06:13 +0900
+Subject: [PATCH 0/3] Add getting lcores feature
+
+How to assign cores depends on a decision of user, but made a mistake
+sometimes because it could be complex if there are many cores and
+several DPDK processes running on. User should be able to know while
+making a decision of core assiginment.
+
+This series of patches is to add a feature to inspect core usage of
+spp_priamry. You can get the core usage from spp-ctl or SPP CLI as a
+part of status info.
+
+  spp > pri; status
+  - lcores:
+    - [0, 1]
+  - physical ports:
+      ID          rx          tx     tx_drop  mac_addr
+       0           0           0           0  56:48:4f:53:54:00
+
+It is also available to get CPU layout from spp-ctl, logical cores and
+physical cores on each of sockets. It cannot be referred from SPP CLI
+currently. Here is an example of getting CPU layout of single socket.
+`jq' is a command to show JSON data in well formatted.
+
+  $ curl http://192.168.1.100:7777/v1/cpus | jq
+  [
+    {
+      "cores": [
+        {
+          "cpus": [
+            1
+          ],
+          "core_id": 1
+        },
+        ...
+      ],
+      "socket_id": 0
+    }
+  ]
+
+The rest of SPP processes are supported in a future update.
+
+
+Yasufumi Ogawa (3):
+  spp_primary: add lcores in status info
+  controller: add lcores in status command of pri
+  spp-ctl: add API for getting CPU layout
+
+ src/controller/commands/pri.py | 33 ++++++++++++++++++++-------------
+ src/primary/init.h             |  2 ++
+ src/primary/main.c             | 34 +++++++++++++++++++++++++++-------
+ src/spp-ctl/spp_ctl.py         | 25 +++++++++++++++++++++++++
+ src/spp-ctl/spp_webapi.py      |  4 ++++
+ 5 files changed, 78 insertions(+), 20 deletions(-)
+
+-- 
+2.7.4
+

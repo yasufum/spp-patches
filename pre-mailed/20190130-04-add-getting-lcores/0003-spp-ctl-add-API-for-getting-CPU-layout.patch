@@ -1,0 +1,106 @@
+From 10b309847873676d00147c1dc45957aff521601b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 30 Jan 2019 19:36:06 +0900
+Subject: [PATCH 3/3] spp-ctl: add API for getting CPU layout
+
+To get CPU layout for considering assignment, add a REST API for
+getting the layout. It calls a helper tool `cpu_layout.py` and returns
+the result in JSON. Here is an example.
+
+  [
+    {
+      "socket_id": 0,
+      "cores": [
+        {"core_id": 1, "cpus": [1, 5]},
+        {"core_id": 2, "cpus": [2, 6]},
+        ...
+      ]
+    },
+    {
+      "socket_id: 1,
+      "cores: [
+        ...
+      ]
+    },
+  ]
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_ctl.py    | 25 +++++++++++++++++++++++++
+ src/spp-ctl/spp_webapi.py |  4 ++++
+ 2 files changed, 29 insertions(+)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index c4dd4b2..f276442 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -6,7 +6,9 @@ eventlet.monkey_patch()
+ 
+ import argparse
+ import errno
++import json
+ import logging
++import os
+ import socket
+ import subprocess
+ 
+@@ -19,6 +21,8 @@ LOG = logging.getLogger(__name__)
+ 
+ MSG_SIZE = 4096
+ 
++# relative path of `cpu_layout.py`
++CPU_LAYOUT_TOOL = 'tools/helpers/cpu_layout.py'
+ 
+ class Controller(object):
+ 
+@@ -142,6 +146,27 @@ class Controller(object):
+             procs.append(p)
+         return procs
+ 
++    def get_cpu_layout(self):
++        """Get cpu layout with helper tool 'cpu_layout.py'."""
++
++        # This script is 'src/spp-ctl/spp_ctl.py' and it expect to find
++        # the tool in tools/helpers/cpu_layout.py'.
++        cmd_path = "{}/../../{}".format(
++                os.path.dirname(__file__), CPU_LAYOUT_TOOL)
++
++        if os.path.exists(cmd_path):
++            # Get cpu layout as bytes of JSON foramtted string
++            cmd_res = subprocess.check_output(
++                    [cmd_path, '--json'],  # required '--json' option
++                    stderr=subprocess.STDOUT)
++
++            # Decode bytes to str
++            return json.loads(cmd_res.decode('utf-8'))
++
++        else:
++            LOG.error("'{}' cannot be found.".format(CPU_LAYOUT_TOOL))
++            return None
++
+     def do_exit(self, proc_type, proc_id):
+         removed_id = None  # remove proc info of ID from self.procs
+         for proc in self.procs.values():
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 10b4098..39530dd 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -152,11 +152,15 @@ class V1Handler(BaseHandler):
+ 
+     def set_route(self):
+         self.route('/processes', 'GET', callback=self.get_processes)
++        self.route('/cpus', 'GET', callback=self.get_cpu_layout)
+ 
+     def get_processes(self):
+         LOG.info("get processes called.")
+         return self.ctrl.get_processes()
+ 
++    def get_cpu_layout(self):
++        LOG.info("get cpu layout called.")
++        return self.ctrl.get_cpu_layout()
+ 
+ class V1VFCommon(object):
+     """Define common methods for vf and mirror handler."""
+-- 
+2.7.4
+
