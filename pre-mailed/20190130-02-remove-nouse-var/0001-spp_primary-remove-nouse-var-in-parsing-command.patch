@@ -1,0 +1,36 @@
+From 188de60d4d2542700a0cf1a84b62f1432047407b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 30 Jan 2019 15:45:08 +0900
+Subject: [PATCH] spp_primary: remove nouse var in parsing command
+
+This patch is to remove variable `num_args` used for debugging, but not
+anymore.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index bb25c1b..9185e3d 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -421,7 +421,6 @@ parse_command(char *str)
+ 	char *token_list[MAX_PARAMETER] = {NULL};
+ 	char sec_name[16];
+ 	char *sec_args[NOF_TOKENS] = {NULL};
+-	int num_args = 0;
+ 	int ret = 0;
+ 	int i = 0;
+ 
+@@ -437,7 +436,6 @@ parse_command(char *str)
+ 			sprintf(sec_name, "%s", token_list[i]);
+ 		else if (i > 2)
+ 			sec_args[i-3] = token_list[i];
+-			num_args++;
+ 		i++;
+ 		token_list[i] = strtok(NULL, " ");
+ 	}
+-- 
+2.7.4
+
