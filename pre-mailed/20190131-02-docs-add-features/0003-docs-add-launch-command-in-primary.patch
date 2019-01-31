@@ -1,0 +1,60 @@
+From 7293c0f3b26e41f39d1f72afd2583d17c1f2113c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 14:34:47 +0900
+Subject: [PATCH 3/5] docs: add launch command in primary
+
+This update is to add launch sub command of primary to `Commands`
+section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 11e378c..5032b37 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -35,3 +35,39 @@ Clear statistics.
+ .. code-block:: console
+ 
+     spp > pri; clear
++
++
++launch
++------
++
++Launch secondary process.
++
++Spp_primary is able to launch a secondary process with given type, secondary
++ID and options of EAL and application itself. This is a list of supported type
++of secondary processes.
++
++  * nfv
++  * vf
++  * mirror
++  * pcap
++
++.. code-block:: console
++
++    # spp_nfv with sec ID 1
++    spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n -s 192.168.1.100:6666
++
++    # spp_vf with sec ID 2
++    spp > pri; launch vf 2 -l 1,3-5 -m 512 -- --client-id -s 192.168.1.100:6666
++
++You notice that ``--proc-type secondary`` is not given for launching secondary
++processes. ``launch`` command adds this option before requesting to launch
++the process so that you do not need to input this option by yourself.
++
++``launch`` command supports TAB completion for type, secondary ID and the rest
++of options. Some of EAL and application options are just a template, so you
++should update them before launching.
++
++In terms of log, each of secondary processes are output its log messages to
++files under ``log`` directory of project root. The name of log file is defined
++with type of process and secondary ID. For instance, ``nfv 2``, the path of log
++file is ``log/spp_nfv-2.log``.
+-- 
+2.7.4
+

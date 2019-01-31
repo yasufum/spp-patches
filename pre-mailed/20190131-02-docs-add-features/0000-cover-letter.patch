@@ -1,0 +1,37 @@
+From 8b9ae270e5ca804394b48493fcb6a748657f1dcf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 19:43:00 +0900
+Subject: [PATCH 0/5] Update documents for new features
+
+* Add sub commands of `server`, `add` and `del` for managing the list of
+  servers.
+
+* Update pri command for referring lcores and `launch` sub command.
+
+* Update nfv command for referring lcores.
+
+* Add descriptions of helper tools.
+
+Yasufumi Ogawa (5):
+  docs: add multiple nodes section in usecases
+  docs: update status command of primary
+  docs: add launch command in primary
+  docs: update status command of nfv
+  docs: add helper tools
+
+ docs/guides/commands/primary.rst           |  57 ++++++++--
+ docs/guides/commands/secondary/spp_nfv.rst |   1 +
+ docs/guides/tools/helpers/index.rst        |  15 +++
+ docs/guides/tools/helpers/tools.rst        | 115 +++++++++++++++++++
+ docs/guides/tools/index.rst                |   1 +
+ docs/guides/use_cases/index.rst            |   1 +
+ docs/guides/use_cases/multi_nodes.rst      | 174 +++++++++++++++++++++++++++++
+ docs/guides/use_cases/spp_nfv.rst          | 170 ----------------------------
+ 8 files changed, 355 insertions(+), 179 deletions(-)
+ create mode 100644 docs/guides/tools/helpers/index.rst
+ create mode 100644 docs/guides/tools/helpers/tools.rst
+ create mode 100644 docs/guides/use_cases/multi_nodes.rst
+
+-- 
+2.7.4
+
