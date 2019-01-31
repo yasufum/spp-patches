@@ -1,0 +1,188 @@
+X-Account-Key: account1
+X-UIDL: 13823.m+FQ7w,V7xhkw8t0yseRcesrzeE=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb007.ocn.ad.jp (LHLO md-lpx-cb007) (153.138.210.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 12:07:19 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-cb007 with LMTP id YCV7LGdmUlzceQAAz4+SuQ
+	; Thu, 31 Jan 2019 12:07:19 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id A7D153C007E2F
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:07:19 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 0E058D4029C
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:07:19 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 1B3D21B3EC;
+	Thu, 31 Jan 2019 04:07:17 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 93DA71B3BC
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 04:07:15 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0V37EUb027715;
+ Thu, 31 Jan 2019 12:07:14 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id E4316638AB6;
+ Thu, 31 Jan 2019 12:07:13 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D462C638A2E;
+ Thu, 31 Jan 2019 12:07:13 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 12:05:04 +0900
+Message-Id: <1548903906-17403-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548903906-17403-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548903906-17403-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/3] spp_primary: add lcores in status info
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to add lcore used by spp_primary in the result of status
+command. It is contained as a list and referred with key `lcores`.
+
+   {
+       "lcores": [0, 1],
+       "ring_ports": [
+       {
+           "id": 0,
+               "rx": 0,
+               "rx_drop": 0,
+               "tx": 0,
+               "tx_drop": 0
+       },
+       ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/init.h |  2 ++
+ src/primary/main.c | 34 +++++++++++++++++++++++++++-------
+ 2 files changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/src/primary/init.h b/src/primary/init.h
+index 3ea69f0..6344377 100644
+--- a/src/primary/init.h
++++ b/src/primary/init.h
+@@ -38,6 +38,8 @@ struct ring_port {
+ 	} stats;
+ };
+ 
++extern uint8_t lcore_id_used[RTE_MAX_LCORE];
++
+ extern struct ring_port *ring_ports;
+ 
+ /* the shared port information: port numbers, rx and tx stats etc. */
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 9185e3d..c86e9ef 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -21,8 +21,9 @@
+  * Buffer sizes of status message of primary. Total number of size
+  * must be equal to MSG_SIZE 2048 defined in `shared/common.h`.
+  */
++#define PRI_BUF_SIZE_LCORE 128
+ #define PRI_BUF_SIZE_PHY 512
+-#define PRI_BUF_SIZE_RING 1512
++#define PRI_BUF_SIZE_RING (MSG_SIZE - PRI_BUF_SIZE_LCORE - PRI_BUF_SIZE_PHY)
+ 
+ #define SPP_PATH_LEN 1024  /* seems enough for path of spp procs */
+ #define NOF_TOKENS 48  /* seems enough to contain tokens */
+@@ -43,6 +44,9 @@ static enum cmd_type cmd = STOP;
+ 
+ static struct pollfd pfd;
+ 
++/* global var for number of rings - extern in header */
++uint8_t lcore_id_used[RTE_MAX_LCORE];
++
+ static void
+ turn_off(int sig)
+ {
+@@ -306,6 +310,7 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+  * Here is an exmaple.
+  *
+  * {
++ *     "lcores": [0],
+  *     "ring_ports": [
+  *     {
+  *         "id": 0,
+@@ -332,15 +337,30 @@ static int
+ get_status_json(char *str)
+ {
+ 	int i;
++	int lcore_buf_size = PRI_BUF_SIZE_LCORE;
+ 	int phyp_buf_size = PRI_BUF_SIZE_PHY;
+ 	int ringp_buf_size = PRI_BUF_SIZE_RING;
++	char lcore_ids[PRI_BUF_SIZE_LCORE];
+ 	char phy_ports[phyp_buf_size];
+ 	char ring_ports[ringp_buf_size];
++	memset(lcore_ids, '\0', lcore_buf_size);
+ 	memset(phy_ports, '\0', phyp_buf_size);
+ 	memset(ring_ports, '\0', ringp_buf_size);
+ 
+-	int buf_size = 256;
++	int buf_size = 256;  /* size of temp buffer */
++	char lcore_id[108];  /* seems enough */
+ 	char phy_port[buf_size];
++	char ring_port[buf_size];
++
++	memset(lcore_id, '\0', sizeof(lcore_id));
++	for (i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(lcore_id + strlen(lcore_id), "%d,", i);
++	}
++	sprintf(lcore_id + strlen(lcore_id) - 1, "%s", "");
++
++	sprintf(lcore_ids, "\"lcores\":[%s]", lcore_id);
++
+ 	for (i = 0; i < ports->num_ports; i++) {
+ 
+ 		RTE_LOG(DEBUG, PRIMARY, "Size of phy_ports str: %d\n",
+@@ -373,7 +393,6 @@ get_status_json(char *str)
+ 			sprintf(phy_ports, "%s,", phy_ports);
+ 	}
+ 
+-	char ring_port[buf_size];
+ 	for (i = 0; i < num_rings; i++) {
+ 
+ 		RTE_LOG(DEBUG, PRIMARY, "Size of ring_ports str: %d\n",
+@@ -406,11 +425,12 @@ get_status_json(char *str)
+ 			sprintf(ring_ports, "%s,", ring_ports);
+ 	}
+ 
+-	RTE_LOG(DEBUG, PRIMARY, "{\"phy_ports\": [%s], \"ring_ports\": [%s]}",
+-			phy_ports, ring_ports);
++	RTE_LOG(DEBUG, PRIMARY,
++			"{%s, \"phy_ports\": [%s], \"ring_ports\": [%s]}\n",
++			lcore_ids, phy_ports, ring_ports);
+ 
+-	sprintf(str, "{\"phy_ports\": [%s], \"ring_ports\": [%s]}",
+-			phy_ports, ring_ports);
++	sprintf(str, "{%s, \"phy_ports\": [%s], \"ring_ports\": [%s]}",
++			lcore_ids, phy_ports, ring_ports);
+ 
+ 	return 0;
+ }
+-- 
+2.7.4
+
+

@@ -1,0 +1,143 @@
+X-Account-Key: account1
+X-UIDL: 13822.CnNU,3QmlToGIR04rX1kKRQBEd8=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw003.ocn.ad.jp (LHLO md-lpx-nw003) (153.138.217.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 12:07:19 +0900 (JST)
+Received: from md-mta-cb001.ocn.ad.jp ([153.138.211.69])
+	by md-lpx-nw003 with LMTP id ePoHIWdmUlwSaAAABYl6EA
+	; Thu, 31 Jan 2019 12:07:19 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb001.ocn.ad.jp (Postfix) with ESMTP id 7A1704400E415
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:07:19 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id E38F9500291
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:07:18 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id E8ABB1B3BB;
+	Thu, 31 Jan 2019 04:07:16 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 8C5E41B3B9
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 04:07:15 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0V37EcU027716;
+ Thu, 31 Jan 2019 12:07:14 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id EA48A638B12;
+ Thu, 31 Jan 2019 12:07:13 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id DC30D638A58;
+ Thu, 31 Jan 2019 12:07:13 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 12:05:05 +0900
+Message-Id: <1548903906-17403-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548903906-17403-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548903906-17403-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/3] controller: add lcores in status command of pri
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to show lcores in the result of status command of pri in
+SPP CLI. It is also changed the format of message to be similar as
+other processes. Here is an example of using lcore 0 and 3.
+
+    - lcores:
+        [0, 3]
+    - physical ports:
+        ID          rx          tx     tx_drop  mac_addr
+         0    78932932    78932931           1  56:48:4f:53:54:00
+    - ring ports:
+        ID          rx          tx     rx_drop     rx_drop
+         0       89283       89283           0           0
+         ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 33 ++++++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 13 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 662e41a..1f60ece 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -83,6 +83,7 @@ class SppPrimary(object):
+         long.
+ 
+             {
++                "lcores": [0, 3],
+                 "phy_ports": [
+                     {
+                         "eth": "56:48:4f:12:34:00",
+@@ -107,28 +108,34 @@ class SppPrimary(object):
+ 
+         It is formatted to be simple and more understandable.
+ 
+-            Physical Ports:
+-              ID          rx          tx     tx_drop  mac_addr
+-               0    78932932    78932931           1  56:48:4f:53:54:00
+-            Ring Ports:
+-              ID          rx          tx     rx_drop     rx_drop
+-               0       89283       89283           0           0
+-               ...
++            - lcores:
++                [0, 3]
++            - physical ports:
++                ID          rx          tx     tx_drop  mac_addr
++                 0    78932932    78932931           1  56:48:4f:53:54:00
++            - ring ports:
++                ID          rx          tx     rx_drop     rx_drop
++                 0       89283       89283           0           0
++                 ...
+         """
+ 
++        if 'lcores' in json_obj:
++            print('- lcores:')
++            print('  - {}'.format(json_obj['lcores']))
++
+         if 'phy_ports' in json_obj:
+-            print('Physical Ports:')
+-            print('  ID          rx          tx     tx_drop  mac_addr')
++            print('- physical ports:')
++            print('    ID          rx          tx     tx_drop  mac_addr')
+             for pports in json_obj['phy_ports']:
+-                print('  %2d  %10d  %10d  %10d  %s' % (
++                print('    %2d  %10d  %10d  %10d  %s' % (
+                     pports['id'], pports['rx'],  pports['tx'],
+                     pports['tx_drop'], pports['eth']))
+ 
+         if 'ring_ports' in json_obj:
+-            print('Ring Ports:')
+-            print('  ID          rx          tx     rx_drop     rx_drop')
++            print('- ring Ports:')
++            print('    ID          rx          tx     rx_drop     rx_drop')
+             for rports in json_obj['ring_ports']:
+-                print('  %2d  %10d  %10d  %10d  %10d' % (
++                print('    %2d  %10d  %10d  %10d  %10d' % (
+                     rports['id'], rports['rx'],  rports['tx'],
+                     rports['rx_drop'], rports['tx_drop']))
+ 
+-- 
+2.7.4
+
+
