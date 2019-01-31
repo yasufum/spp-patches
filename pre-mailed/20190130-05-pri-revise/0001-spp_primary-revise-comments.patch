@@ -1,0 +1,58 @@
+From 6db28f9373f2d1e98bcc4400d6f8e7bacbd10ad1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 03:06:22 +0900
+Subject: [PATCH] spp_primary: revise comments
+
+This update is to revise comments for global variables.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/init.c | 4 +++-
+ src/primary/main.c | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/primary/init.c b/src/primary/init.c
+index 85b54a3..28ad0a7 100644
+--- a/src/primary/init.c
++++ b/src/primary/init.c
+@@ -23,6 +23,7 @@ static struct rte_mempool *pktmbuf_pool;
+ /* the port details */
+ struct port_info *ports;
+ 
++/* global var - extern in header */
+ uint8_t lcore_id_used[RTE_MAX_LCORE] = {};
+ 
+ /**
+@@ -109,7 +110,7 @@ init(int argc, char *argv[])
+ 	int lcore_id;
+ 	const struct rte_memzone *mz;
+ 	uint16_t count, total_ports;
+-	char log_msg[1024] = { '\0' };
++	char log_msg[1024] = { '\0' };  /* temporary log message */
+ 
+ 	/* init EAL, parsing EAL args */
+ 	retval = rte_eal_init(argc, argv);
+@@ -163,6 +164,7 @@ init(int argc, char *argv[])
+ 	/* Initialise the ring_port. */
+ 	init_shm_rings();
+ 
++	/* Inspect lcores in use */
+ 	RTE_LCORE_FOREACH(lcore_id) {
+ 		lcore_id_used[lcore_id] = 1;
+ 	}
+diff --git a/src/primary/main.c b/src/primary/main.c
+index c86e9ef..8d12bf6 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -44,7 +44,7 @@ static enum cmd_type cmd = STOP;
+ 
+ static struct pollfd pfd;
+ 
+-/* global var for number of rings - extern in header */
++/* global var - extern in header */
+ uint8_t lcore_id_used[RTE_MAX_LCORE];
+ 
+ static void
+-- 
+2.7.4
+
