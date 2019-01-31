@@ -1,0 +1,42 @@
+From 608091b821d2816ad6b79c51b526e92e7fbe884d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 19:25:10 +0900
+Subject: [PATCH] controller: update help msg of pri command
+
+This patch is to add descriptions for `launch` command in primary.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 1fb9867..40bafc2 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -311,10 +311,19 @@ class Shell(cmd.Cmd, object):
+     def do_pri(self, command):
+         """Send a command to primary process.
+ 
+-        Spp primary takes sub commands.
++        Show resources and statistics, or clear it.
+ 
+-        spp > pri;status
+-        spp > pri;clear
++            spp > pri; status  # show status
++
++            spp > pri; clear   # clear statistics
++
++        Launch secondary process..
++
++            # Launch nfv:1
++            spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n 1 -s 192.168....
++
++            # Launch vf:2
++            spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
+         """
+ 
+         # Remove unwanted spaces and first char ';'
+-- 
+2.7.4
+
