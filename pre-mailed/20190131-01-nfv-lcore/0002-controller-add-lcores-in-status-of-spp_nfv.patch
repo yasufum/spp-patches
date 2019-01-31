@@ -1,0 +1,43 @@
+From b6e030d2955fc093af071c503805500c8ee5bc1f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 10:16:57 +0900
+Subject: [PATCH 2/2] controller: add lcores in status of spp_nfv
+
+This update is to show lcores in status of nfv command. Here is an
+example.
+
+  spp > nfv 1; status
+  - status: idling
+  - lcores: [1, 2]
+  - ports:
+    - phy:0
+    ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/nfv.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index e6f95d0..2613bc2 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -67,6 +67,7 @@ class SppNfv(object):
+ 
+           spp > nfv 1;status
+           - status: idling
++          - lcores: [1, 2]
+           - ports:
+             - phy:0 -> ring:0
+             - phy:1
+@@ -74,6 +75,7 @@ class SppNfv(object):
+ 
+         nfv_attr = json_obj
+         print('- status: %s' % nfv_attr['status'])
++        print('- lcores: %s' % nfv_attr['lcores'])
+         print('- ports:')
+         for port in nfv_attr['ports']:
+             dst = None
+-- 
+2.7.4
+

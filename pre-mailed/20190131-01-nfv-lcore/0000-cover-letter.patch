@@ -1,0 +1,34 @@
+From b6e030d2955fc093af071c503805500c8ee5bc1f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 10:20:39 +0900
+Subject: [PATCH 0/2] Add lcores in status in spp_nfv
+
+This series of patches is to add lcores in status info. Spp_nfv includes
+lcores as a list in JSON formatted message.
+
+  {"client-id":2,"status":"idling","lcores":[1,2], ...}
+
+SPP CLI shows lcores in the result of status of nfv command.
+
+  spp > nfv 2; status
+  - status: idling
+  - lcores: [1, 2]
+  - ports:
+    - phy:0
+    ...
+
+
+Yasufumi Ogawa (2):
+  spp_nfv: add lcores in status info
+  controller: add lcores in status of spp_nfv
+
+ src/controller/commands/nfv.py |  2 ++
+ src/nfv/commands.h             |  2 ++
+ src/nfv/main.c                 | 18 ++++++++++++++++--
+ src/nfv/nfv_status.c           | 36 ++++++++++++++++++++++++++++--------
+ src/nfv/nfv_status.h           |  4 ++++
+ 5 files changed, 52 insertions(+), 10 deletions(-)
+
+-- 
+2.7.4
+

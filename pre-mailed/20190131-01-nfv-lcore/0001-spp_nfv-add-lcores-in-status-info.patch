@@ -1,0 +1,207 @@
+From 816134b7ab8703d61df84b67a7d331353277291f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 10:12:29 +0900
+Subject: [PATCH 1/2] spp_nfv: add lcores in status info
+
+This update is to add lcores in status info.
+
+  {
+    "client-id": 2,
+    "status": "idling",
+    "lcores": [1, 2],
+    "ports":[
+      "phy:0", ...
+      ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/commands.h   |  2 ++
+ src/nfv/main.c       | 18 ++++++++++++++++--
+ src/nfv/nfv_status.c | 36 ++++++++++++++++++++++++++++--------
+ src/nfv/nfv_status.h |  4 ++++
+ 4 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 7dbe25b..36ad86d 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -174,9 +174,11 @@ parse_command(char *str)
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+ 			get_sec_stats_json(str, client_id, "running",
++					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 		else
+ 			get_sec_stats_json(str, client_id, "idling",
++					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 54f908d..4ecc553 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -24,6 +24,8 @@
+ 
+ static sig_atomic_t on = 1;
+ 
++uint8_t lcore_id_used[RTE_MAX_LCORE] = {};
++
+ enum {
+ 	/*
+ 	 * Long options mapped to a short option.
+@@ -182,6 +184,7 @@ main(int argc, char *argv[])
+ 	unsigned int i;
+ 	int flg_exit;  // used as res of parse_command() to exit if -1
+ 	int ret;
++	char log_msg[1024] = {'\0'};  /* temporary log message */
+ 
+ 	ret = rte_eal_init(argc, argv);
+ 	if (ret < 0)
+@@ -228,18 +231,29 @@ main(int argc, char *argv[])
+ 
+ 	cmd = STOP;
+ 
+-	/* update port_forward_array with active port */
++	/* update port_forward_array with active port. */
+ 	for (i = 0; i < nb_ports; i++) {
+ 		if (!rte_eth_dev_is_valid_port(i))
+ 			continue;
+ 
+-		/* Update ports_fwd_array with phy port*/
++		/* Update ports_fwd_array with phy port. */
+ 		ports_fwd_array[i].in_port_id = i;
+ 		port_map[i].port_type = PHY;
+ 		port_map[i].id = i;
+ 		port_map[i].stats = &ports->port_stats[i];
+ 	}
+ 
++	/* Inspect lcores in use. */
++	RTE_LCORE_FOREACH(lcore_id) {
++		lcore_id_used[lcore_id] = 1;
++	}
++	sprintf(log_msg, "Used lcores: ");
++	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(log_msg + strlen(log_msg), "%d ", i);
++	}
++	RTE_LOG(DEBUG, SPP_NFV, "%s\n", log_msg);
++
+ 	lcore_id = 0;
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+ 		rte_eal_remote_launch(main_loop, NULL, lcore_id);
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index 8f66d1f..a3ad597 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -9,15 +9,15 @@
+ #include "nfv_status.h"
+ 
+ /*
+- * Get status of spp_nfv or spp_vm as JSON format. It consists of running
++ * Get status of spp_nfv as JSON format. It consists of running
+  * status and patch info of ports.
+  *
+  * Here is an example of well-formatted JSON status to better understand.
+- * Actual status has no spaces and new lines inserted as
+- * '{"status":"running","ports":[{"src":"phy:0","dst":"ring:0"},...]}'
++ * Actual status has no spaces and new lines inserted.
+  *
+  *   {
+  *     "status": "running",
++ *     "lcores": [1, 2],
+  *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"],
+  *     "patches": [
+  *       {"src":"phy:0","dst": "ring:0"},
+@@ -28,6 +28,7 @@
+ void
+ get_sec_stats_json(char *str, uint16_t client_id,
+ 		const char *running_stat,
++		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map)
+ {
+@@ -36,16 +37,35 @@ get_sec_stats_json(char *str, uint16_t client_id,
+ 	sprintf(str + strlen(str), "\"status\":");
+ 	sprintf(str + strlen(str), "\"%s\",", running_stat);
+ 
++	append_lcore_info_json(str, lcore_id_used);
++	sprintf(str + strlen(str), ",");
++
+ 	append_port_info_json(str, ports_fwd_array, port_map);
+ 	sprintf(str + strlen(str), ",");
+ 
+ 	append_patch_info_json(str, ports_fwd_array, port_map);
+ 	sprintf(str + strlen(str), "}");
+ 
+-	// make sure to be terminated with null character
++	/* Make sure to be terminated with null character. */
+ 	sprintf(str + strlen(str), "%c", '\0');
+ }
+ 
++int
++append_lcore_info_json(char *str,
++		uint8_t lcore_id_used[RTE_MAX_LCORE])
++{
++
++	sprintf(str + strlen(str), "\"lcores\":[");
++	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(str + strlen(str), "%d,", i);
++	}
++
++	/* Remove last ','. */
++	sprintf(str + strlen(str) - 1, "%s", "]");
++	return 0;
++}
++
+ 
+ /*
+  * Append patch info to sec status. It is called from get_sec_stats_json()
+@@ -96,10 +116,10 @@ append_port_info_json(char *str,
+ 		}
+ 	}
+ 
+-	// Check if it has at least one port to remove ",".
++	/* Check if it has at least one port to remove ",". */
+ 	if (has_port == 0) {
+ 		sprintf(str + strlen(str), "]");
+-	} else {  // Remove last ','
++	} else {  /* Remove last ',' .*/
+ 		sprintf(str + strlen(str) - 1, "]");
+ 	}
+ 
+@@ -238,10 +258,10 @@ append_patch_info_json(char *str,
+ 	}
+ 
+ 
+-	// Check if it has at least one patch to remove ",".
++	/* Check if it has at least one patch to remove ",". */
+ 	if (has_patch == 0) {
+ 		sprintf(str + strlen(str), "]");
+-	} else {  // Remove last ','
++	} else {  /* Remove last ','. */
+ 		sprintf(str + strlen(str) - 1, "]");
+ 	}
+ 
+diff --git a/src/nfv/nfv_status.h b/src/nfv/nfv_status.h
+index c7aee4f..ef9cd00 100644
+--- a/src/nfv/nfv_status.h
++++ b/src/nfv/nfv_status.h
+@@ -8,9 +8,13 @@
+ /* Get status of spp_nfv or spp_vm as JSON format. */
+ void get_sec_stats_json(char *str, uint16_t client_id,
+ 		const char *running_stat,
++		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
++int append_lcore_info_json(char *str,
++		uint8_t lcore_id_used[RTE_MAX_LCORE]);
++
+ /* Append port info to sec status, called from get_sec_stats_json(). */
+ int append_port_info_json(char *str,
+ 		struct port *ports_fwd_array,
+-- 
+2.7.4
+
