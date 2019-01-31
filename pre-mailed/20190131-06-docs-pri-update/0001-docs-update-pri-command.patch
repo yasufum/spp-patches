@@ -1,0 +1,71 @@
+From 7025f50149632cdfbf268d1c758c9ff113a4085f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 19:35:00 +0900
+Subject: [PATCH] docs: update pri command
+
+This patch is to add command examples for `launch` command added in
+previous. It also adds an example of help message.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 5032b37..687484d 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -6,6 +6,34 @@ Primary Commands
+ 
+ Primary process is managed with ``pri`` command.
+ 
++``pri`` command takes a sub command. They must be separated with delimiter
++``;``. Some of sub commands take additional arguments.
++
++.. code-block:: console
++
++    spp > pri; SUB_CMD
++
++All of Sub commands are referred with ``help`` command.
++
++.. code-block:: console
++
++    spp > help pri
++    Send a command to primary process.
++
++        Show resources and statistics, or clear it.
++
++            spp > pri; status  # show status
++
++            spp > pri; clear   # clear statistics
++
++        Launch secondary process..
++
++            # Launch nfv:1
++            spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n 1 -s 192.168....
++
++            # Launch vf:2
++            spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
++
+ 
+ status
+ ------
+@@ -25,6 +53,7 @@ Show status fo spp_primary and forwarding statistics of each of ports.
+         ID          rx          tx     rx_drop     rx_drop
+          0           0           0           0           0
+          1           0           0           0           0
++         ...
+ 
+ 
+ clear
+@@ -35,6 +64,7 @@ Clear statistics.
+ .. code-block:: console
+ 
+     spp > pri; clear
++    Clear port statistics.
+ 
+ 
+ launch
+-- 
+2.7.4
+
