@@ -1,0 +1,76 @@
+From 1885b79133212c459d51da9ef8b5e6183a31e86b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 17:48:04 +0900
+Subject: [PATCH 1/4] docs: add lcores in pri status in REST API
+
+This update is to add `lcores` attribute in `status` of spp_primary.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/api_ref/spp_primary.rst | 36 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index fb89766..e46de21 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -31,14 +31,16 @@ Response
+ 
+ .. table:: Response params of primary status.
+ 
+-    +------------+-------+-------------------------------------------+
+-    | Name       | Type  | Description                               |
+-    |            |       |                                           |
+-    +============+=======+===========================================+
+-    | phy_ports  | array | An array of statistics of physical ports. |
+-    +------------+-------+-------------------------------------------+
+-    | ring_ports | array | An array of statistics of ring ports.     |
+-    +------------+-------+-------------------------------------------+
++    +------------+-------+----------------------------------------+
++    | Name       | Type  | Description                            |
++    |            |       |                                        |
++    +============+=======+========================================+
++    | lcores     | array | Array of lcores spp_primary is using.  |
++    +------------+-------+----------------------------------------+
++    | phy_ports  | array | Array of statistics of physical ports. |
++    +------------+-------+----------------------------------------+
++    | ring_ports | array | Array of statistics of ring ports.     |
++    +------------+-------+----------------------------------------+
+ 
+ Physical port object.
+ 
+@@ -89,6 +91,9 @@ Response example
+ .. code-block:: json
+ 
+     {
++      "lcores": [
++        0
++      ],
+       "phy_ports": [
+         {
+           "id": 0,
+@@ -120,20 +125,7 @@ Response example
+           "tx": 0,
+           "tx_drop": 0
+         },
+-        {
+-          "id": 2,
+-          "rx": 0,
+-          "rx_drop": 0,
+-          "tx": 0,
+-          "tx_drop": 0
+-        },
+-        {
+-          "id": 3,
+-          "rx": 0,
+-          "rx_drop": 0,
+-          "tx": 0,
+-          "tx_drop": 0
+-        }
++        ...
+       ]
+     }
+ 
+-- 
+2.7.4
+

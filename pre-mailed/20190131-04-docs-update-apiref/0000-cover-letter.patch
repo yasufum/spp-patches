@@ -1,0 +1,27 @@
+From e324855fdcff45ddaea246d4d1d2f0e14b98df26 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 31 Jan 2019 19:45:37 +0900
+Subject: [PATCH 0/4] Update REST API reference and usecases
+
+This series of patches is to update REST API reference and usecases.
+
+* For features added to primary, add descriptions in the section of
+  REST API reference. It is also updates descriptions in spp_nfv
+  remained old.
+
+* Add usage of `server add` command in usecase.
+
+Yasufumi Ogawa (4):
+  docs: add lcores in pri status in REST API
+  docs: add launch of primary to REST API reference
+  docs: refactor spp_nfv REST API reference
+  docs: add usage of server add command in usecase
+
+ docs/guides/api_ref/spp_primary.rst   | 130 +++++++++++++++++++----
+ docs/guides/api_ref/spp_vf.rst        | 187 +++++++++++++++++-----------------
+ docs/guides/use_cases/multi_nodes.rst |  20 +++-
+ 3 files changed, 222 insertions(+), 115 deletions(-)
+
+-- 
+2.7.4
+
