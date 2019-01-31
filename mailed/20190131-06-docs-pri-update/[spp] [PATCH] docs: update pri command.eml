@@ -1,0 +1,125 @@
+X-Account-Key: account1
+X-UIDL: 13853.06C01WITI5tpHl7okrx7urgbKo4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw006.ocn.ad.jp (LHLO md-lpx-nw006) (153.138.217.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 20:05:38 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw006 with LMTP id wETEIoLWUlyARQAA0AKT/w
+	; Thu, 31 Jan 2019 20:05:38 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 8332434003005
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:38 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 21CE4D40280
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:38 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id F2A3A1B440;
+	Thu, 31 Jan 2019 12:05:36 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 7F0401B43A
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 12:05:35 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0VB5YDL030169;
+ Thu, 31 Jan 2019 20:05:34 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 6D33FEA8475;
+ Thu, 31 Jan 2019 20:05:34 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 5FD70EA8457;
+ Thu, 31 Jan 2019 20:05:34 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 20:03:26 +0900
+Message-Id: <1548932606-21213-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] docs: update pri command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to add command examples for `launch` command added in
+previous. It also adds an example of help message.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 5032b37..687484d 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -6,6 +6,34 @@ Primary Commands
+ 
+ Primary process is managed with ``pri`` command.
+ 
++``pri`` command takes a sub command. They must be separated with delimiter
++``;``. Some of sub commands take additional arguments.
++
++.. code-block:: console
++
++    spp > pri; SUB_CMD
++
++All of Sub commands are referred with ``help`` command.
++
++.. code-block:: console
++
++    spp > help pri
++    Send a command to primary process.
++
++        Show resources and statistics, or clear it.
++
++            spp > pri; status  # show status
++
++            spp > pri; clear   # clear statistics
++
++        Launch secondary process..
++
++            # Launch nfv:1
++            spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n 1 -s 192.168....
++
++            # Launch vf:2
++            spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
++
+ 
+ status
+ ------
+@@ -25,6 +53,7 @@ Show status fo spp_primary and forwarding statistics of each of ports.
+         ID          rx          tx     rx_drop     rx_drop
+          0           0           0           0           0
+          1           0           0           0           0
++         ...
+ 
+ 
+ clear
+@@ -35,6 +64,7 @@ Clear statistics.
+ .. code-block:: console
+ 
+     spp > pri; clear
++    Clear port statistics.
+ 
+ 
+ launch
+-- 
+2.7.4
+
+
