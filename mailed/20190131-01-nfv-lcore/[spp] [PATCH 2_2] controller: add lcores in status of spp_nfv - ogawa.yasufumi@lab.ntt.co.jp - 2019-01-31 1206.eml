@@ -1,0 +1,99 @@
+X-Account-Key: account1
+X-UIDL: 13827.tB9KhjzYedAuE5yx8poQaDQHdsU=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw002.ocn.ad.jp (LHLO md-lpx-nw002) (153.138.217.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-nw002 with LMTP id 6MDzMKhmUlwsRwAATJVVBg
+	; Thu, 31 Jan 2019 12:08:24 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id C18073C007E20
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 6498CD402B2
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 660AA1B3E0;
+	Thu, 31 Jan 2019 04:08:23 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id E39811B3B9
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 04:08:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0V38KgN019831;
+ Thu, 31 Jan 2019 12:08:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 74CA9EA796B;
+ Thu, 31 Jan 2019 12:08:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 5DC2AEA7AB4;
+ Thu, 31 Jan 2019 12:08:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 12:06:12 +0900
+Message-Id: <1548903972-17562-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548903972-17562-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548903972-17562-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] controller: add lcores in status of spp_nfv
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to show lcores in status of nfv command. Here is an
+example.
+
+  spp > nfv 1; status
+  - status: idling
+  - lcores: [1, 2]
+  - ports:
+    - phy:0
+    ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/nfv.py | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index e6f95d0..2613bc2 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -67,6 +67,7 @@ class SppNfv(object):
+ 
+           spp > nfv 1;status
+           - status: idling
++          - lcores: [1, 2]
+           - ports:
+             - phy:0 -> ring:0
+             - phy:1
+@@ -74,6 +75,7 @@ class SppNfv(object):
+ 
+         nfv_attr = json_obj
+         print('- status: %s' % nfv_attr['status'])
++        print('- lcores: %s' % nfv_attr['lcores'])
+         print('- ports:')
+         for port in nfv_attr['ports']:
+             dst = None
+-- 
+2.7.4
+
+

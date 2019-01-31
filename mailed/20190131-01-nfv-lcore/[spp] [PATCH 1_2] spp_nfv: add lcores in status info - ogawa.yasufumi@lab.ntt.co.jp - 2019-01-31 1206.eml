@@ -1,0 +1,263 @@
+X-Account-Key: account1
+X-UIDL: 13828.SkAl9MYXawRqQVYtZQ3oQ0cKLMU=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw004.ocn.ad.jp (LHLO md-lpx-nw004) (153.138.217.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-nw004 with LMTP id aJ/rNKhmUlzpHgAAxo9yvA
+	; Thu, 31 Jan 2019 12:08:24 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id D271D3C002038
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 461689C027A
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 12:08:24 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5CBC41B3D8;
+	Thu, 31 Jan 2019 04:08:23 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id E3C921B3BB
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 04:08:21 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0V38KM4019828;
+ Thu, 31 Jan 2019 12:08:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 65616EA79F9;
+ Thu, 31 Jan 2019 12:08:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 56D5BEA7A94;
+ Thu, 31 Jan 2019 12:08:20 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 12:06:11 +0900
+Message-Id: <1548903972-17562-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548903972-17562-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548903972-17562-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] spp_nfv: add lcores in status info
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add lcores in status info.
+
+  {
+    "client-id": 2,
+    "status": "idling",
+    "lcores": [1, 2],
+    "ports":[
+      "phy:0", ...
+      ...
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/commands.h   |  2 ++
+ src/nfv/main.c       | 18 ++++++++++++++++--
+ src/nfv/nfv_status.c | 36 ++++++++++++++++++++++++++++--------
+ src/nfv/nfv_status.h |  4 ++++
+ 4 files changed, 50 insertions(+), 10 deletions(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 7dbe25b..36ad86d 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -174,9 +174,11 @@ parse_command(char *str)
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+ 			get_sec_stats_json(str, client_id, "running",
++					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 		else
+ 			get_sec_stats_json(str, client_id, "idling",
++					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 
+ 	} else if (!strcmp(token_list[0], "_get_client_id")) {
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 54f908d..4ecc553 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -24,6 +24,8 @@
+ 
+ static sig_atomic_t on = 1;
+ 
++uint8_t lcore_id_used[RTE_MAX_LCORE] = {};
++
+ enum {
+ 	/*
+ 	 * Long options mapped to a short option.
+@@ -182,6 +184,7 @@ main(int argc, char *argv[])
+ 	unsigned int i;
+ 	int flg_exit;  // used as res of parse_command() to exit if -1
+ 	int ret;
++	char log_msg[1024] = {'\0'};  /* temporary log message */
+ 
+ 	ret = rte_eal_init(argc, argv);
+ 	if (ret < 0)
+@@ -228,18 +231,29 @@ main(int argc, char *argv[])
+ 
+ 	cmd = STOP;
+ 
+-	/* update port_forward_array with active port */
++	/* update port_forward_array with active port. */
+ 	for (i = 0; i < nb_ports; i++) {
+ 		if (!rte_eth_dev_is_valid_port(i))
+ 			continue;
+ 
+-		/* Update ports_fwd_array with phy port*/
++		/* Update ports_fwd_array with phy port. */
+ 		ports_fwd_array[i].in_port_id = i;
+ 		port_map[i].port_type = PHY;
+ 		port_map[i].id = i;
+ 		port_map[i].stats = &ports->port_stats[i];
+ 	}
+ 
++	/* Inspect lcores in use. */
++	RTE_LCORE_FOREACH(lcore_id) {
++		lcore_id_used[lcore_id] = 1;
++	}
++	sprintf(log_msg, "Used lcores: ");
++	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(log_msg + strlen(log_msg), "%d ", i);
++	}
++	RTE_LOG(DEBUG, SPP_NFV, "%s\n", log_msg);
++
+ 	lcore_id = 0;
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+ 		rte_eal_remote_launch(main_loop, NULL, lcore_id);
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index 8f66d1f..a3ad597 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -9,15 +9,15 @@
+ #include "nfv_status.h"
+ 
+ /*
+- * Get status of spp_nfv or spp_vm as JSON format. It consists of running
++ * Get status of spp_nfv as JSON format. It consists of running
+  * status and patch info of ports.
+  *
+  * Here is an example of well-formatted JSON status to better understand.
+- * Actual status has no spaces and new lines inserted as
+- * '{"status":"running","ports":[{"src":"phy:0","dst":"ring:0"},...]}'
++ * Actual status has no spaces and new lines inserted.
+  *
+  *   {
+  *     "status": "running",
++ *     "lcores": [1, 2],
+  *     "ports": ["phy:0", "phy:1", "ring:0", "vhost:0"],
+  *     "patches": [
+  *       {"src":"phy:0","dst": "ring:0"},
+@@ -28,6 +28,7 @@
+ void
+ get_sec_stats_json(char *str, uint16_t client_id,
+ 		const char *running_stat,
++		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map)
+ {
+@@ -36,16 +37,35 @@ get_sec_stats_json(char *str, uint16_t client_id,
+ 	sprintf(str + strlen(str), "\"status\":");
+ 	sprintf(str + strlen(str), "\"%s\",", running_stat);
+ 
++	append_lcore_info_json(str, lcore_id_used);
++	sprintf(str + strlen(str), ",");
++
+ 	append_port_info_json(str, ports_fwd_array, port_map);
+ 	sprintf(str + strlen(str), ",");
+ 
+ 	append_patch_info_json(str, ports_fwd_array, port_map);
+ 	sprintf(str + strlen(str), "}");
+ 
+-	// make sure to be terminated with null character
++	/* Make sure to be terminated with null character. */
+ 	sprintf(str + strlen(str), "%c", '\0');
+ }
+ 
++int
++append_lcore_info_json(char *str,
++		uint8_t lcore_id_used[RTE_MAX_LCORE])
++{
++
++	sprintf(str + strlen(str), "\"lcores\":[");
++	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++		if (lcore_id_used[i] == 1)
++			sprintf(str + strlen(str), "%d,", i);
++	}
++
++	/* Remove last ','. */
++	sprintf(str + strlen(str) - 1, "%s", "]");
++	return 0;
++}
++
+ 
+ /*
+  * Append patch info to sec status. It is called from get_sec_stats_json()
+@@ -96,10 +116,10 @@ append_port_info_json(char *str,
+ 		}
+ 	}
+ 
+-	// Check if it has at least one port to remove ",".
++	/* Check if it has at least one port to remove ",". */
+ 	if (has_port == 0) {
+ 		sprintf(str + strlen(str), "]");
+-	} else {  // Remove last ','
++	} else {  /* Remove last ',' .*/
+ 		sprintf(str + strlen(str) - 1, "]");
+ 	}
+ 
+@@ -238,10 +258,10 @@ append_patch_info_json(char *str,
+ 	}
+ 
+ 
+-	// Check if it has at least one patch to remove ",".
++	/* Check if it has at least one patch to remove ",". */
+ 	if (has_patch == 0) {
+ 		sprintf(str + strlen(str), "]");
+-	} else {  // Remove last ','
++	} else {  /* Remove last ','. */
+ 		sprintf(str + strlen(str) - 1, "]");
+ 	}
+ 
+diff --git a/src/nfv/nfv_status.h b/src/nfv/nfv_status.h
+index c7aee4f..ef9cd00 100644
+--- a/src/nfv/nfv_status.h
++++ b/src/nfv/nfv_status.h
+@@ -8,9 +8,13 @@
+ /* Get status of spp_nfv or spp_vm as JSON format. */
+ void get_sec_stats_json(char *str, uint16_t client_id,
+ 		const char *running_stat,
++		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map);
+ 
++int append_lcore_info_json(char *str,
++		uint8_t lcore_id_used[RTE_MAX_LCORE]);
++
+ /* Append port info to sec status, called from get_sec_stats_json(). */
+ int append_port_info_json(char *str,
+ 		struct port *ports_fwd_array,
+-- 
+2.7.4
+
+
