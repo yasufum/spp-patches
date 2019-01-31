@@ -1,0 +1,334 @@
+X-Account-Key: account1
+X-UIDL: 13851.IGLUlZoLxCmEYs6c6qb6xxp33iM=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 20:05:23 +0900 (JST)
+Received: from md-mta-cb008.ocn.ad.jp ([153.138.211.103])
+	by md-lpx-nw008 with LMTP id YPefNXLWUlx5IQAAqFjg7g
+	; Thu, 31 Jan 2019 20:05:22 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb008.ocn.ad.jp (Postfix) with ESMTP id CF77C14009860
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:22 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 0DCFC50026E
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:22 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id C37AC1B451;
+	Thu, 31 Jan 2019 12:05:20 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 6804D1B442
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 12:05:18 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0VB5Hmm030166;
+ Thu, 31 Jan 2019 20:05:17 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 53CE763961C;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 40EB563967A;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 20:03:08 +0900
+Message-Id: <1548932589-21099-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 3/4] docs: refactor spp_nfv REST API reference
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+There are several invalid lines over the maximum 80 chars. This update
+is to reduce the length of lines.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/api_ref/spp_vf.rst | 187 +++++++++++++++++++++--------------------
+ 1 file changed, 96 insertions(+), 91 deletions(-)
+
+diff --git a/docs/guides/api_ref/spp_vf.rst b/docs/guides/api_ref/spp_vf.rst
+index a600773..c406938 100644
+--- a/docs/guides/api_ref/spp_vf.rst
++++ b/docs/guides/api_ref/spp_vf.rst
+@@ -47,18 +47,18 @@ Response
+ 
+ .. table:: Response params of getting spp_vf.
+ 
+-    +------------------+---------+-----------------------------------------------+
+-    | Name             | Type    | Description                                   |
+-    |                  |         |                                               |
+-    +==================+=========+===============================================+
+-    | client-id        | integer | client id.                                    |
+-    +------------------+---------+-----------------------------------------------+
+-    | ports            | array   | an array of port ids used by the process.     |
+-    +------------------+---------+-----------------------------------------------+
+-    | components       | array   | an array of component objects in the process. |
+-    +------------------+---------+-----------------------------------------------+
+-    | classifier_table | array   | an array of classifier tables in the process. |
+-    +------------------+---------+-----------------------------------------------+
++    +------------------+---------+--------------------------------------------+
++    | Name             | Type    | Description                                |
++    |                  |         |                                            |
++    +==================+=========+============================================+
++    | client-id        | integer | Client id.                                 |
++    +------------------+---------+--------------------------------------------+
++    | ports            | array   | Array of port ids used by the process.     |
++    +------------------+---------+--------------------------------------------+
++    | components       | array   | Array of component objects in the process. |
++    +------------------+---------+--------------------------------------------+
++    | classifier_table | array   | Array of classifier tables in the process. |
++    +------------------+---------+--------------------------------------------+
+ 
+ Component objects:
+ 
+@@ -66,20 +66,20 @@ Component objects:
+ 
+ .. table:: Component objects of getting spp_vf.
+ 
+-    +---------+---------+---------------------------------------------------------------------+
+-    | Name    | Type    | Description                                                         |
+-    |         |         |                                                                     |
+-    +=========+=========+=====================================================================+
+-    | core    | integer | core id running on the component                                    |
+-    +---------+---------+---------------------------------------------------------------------+
+-    | name    | string  | an array of port ids used by the process.                           |
+-    +---------+---------+---------------------------------------------------------------------+
+-    | type    | string  | an array of component objects in the process.                       |
+-    +---------+---------+---------------------------------------------------------------------+
+-    | rx_port | array   | an array of port objects connected to the rx side of the component. |
+-    +---------+---------+---------------------------------------------------------------------+
+-    | tx_port | array   | an array of port objects connected to the tx side of the component. |
+-    +---------+---------+---------------------------------------------------------------------+
++    +---------+---------+--------------------------------------------------+
++    | Name    | Type    | Description                                      |
++    |         |         |                                                  |
++    +=========+=========+==================================================+
++    | core    | integer | Core id running on the component                 |
++    +---------+---------+--------------------------------------------------+
++    | name    | string  | Array of port ids used by the process.           |
++    +---------+---------+--------------------------------------------------+
++    | type    | string  | Array of component objects in the process.       |
++    +---------+---------+--------------------------------------------------+
++    | rx_port | array   | Array of port objs connected to rx of component. |
++    +---------+---------+--------------------------------------------------+
++    | tx_port | array   | Array of port objs connected to tx of component. |
++    +---------+---------+--------------------------------------------------+
+ 
+ Port objects:
+ 
+@@ -87,14 +87,14 @@ Port objects:
+ 
+ .. table:: Port objects of getting spp_vf.
+ 
+-    +---------+---------+---------------------------------------------------------------+
+-    | Name    | Type    | Description                                                   |
+-    |         |         |                                                               |
+-    +=========+=========+===============================================================+
+-    | port    | string  | port id. port id is the form {interface_type}:{interface_id}. |
+-    +---------+---------+---------------------------------------------------------------+
+-    | vlan    | object  | vlan operation which is applied to the port.                  |
+-    +---------+---------+---------------------------------------------------------------+
++    +---------+---------+----------------------------------------------+
++    | Name    | Type    | Description                                  |
++    |         |         |                                              |
++    +=========+=========+==============================================+
++    | port    | string  | port id of {interface_type}:{interface_id}.  |
++    +---------+---------+----------------------------------------------+
++    | vlan    | object  | vlan operation which is applied to the port. |
++    +---------+---------+----------------------------------------------+
+ 
+ Vlan objects:
+ 
+@@ -119,16 +119,16 @@ Classifier table:
+ 
+ .. table:: Vlan objects of getting spp_vf.
+ 
+-    +-----------+--------+------------------------------------------------------------+
+-    | Name      | Type   | Description                                                |
+-    |           |        |                                                            |
+-    +===========+========+============================================================+
+-    | type      | string | ``mac`` or ``vlan``.                                       |
+-    +-----------+--------+------------------------------------------------------------+
+-    | value     | string | mac_address for ``mac``, vlan_id/mac_address for ``vlan``. |
+-    +-----------+--------+------------------------------------------------------------+
+-    | port      | string | port id applied to classify.                               |
+-    +-----------+--------+------------------------------------------------------------+
++    +-----------+--------+-------------------------------------+
++    | Name      | Type   | Description                         |
++    |           |        |                                     |
++    +===========+========+=====================================+
++    | type      | string | ``mac`` or ``vlan``.                |
++    +-----------+--------+-------------------------------------+
++    | value     | string | mac_address or vlan_id/mac_address. |
++    +-----------+--------+-------------------------------------+
++    | port      | string | port id applied to classify.        |
++    +-----------+--------+-------------------------------------+
+ 
+ 
+ Response example
+@@ -273,20 +273,22 @@ Request (path)
+ Request (body)
+ ~~~~~~~~~~~~~~
+ 
++``type`` param is oen of ``forward``, ``merge`` or ``classifier_mac``.
++
+ .. _table_spp_ctl_spp_vf_components_res:
+ 
+ .. table:: Response params of components of spp_vf.
+ 
+-    +-----------+---------+----------------------------------------------------------------------+
+-    | Name      | Type    | Description                                                          |
+-    |           |         |                                                                      |
+-    +===========+=========+======================================================================+
+-    | name      | string  | component name. must be unique in the process.                       |
+-    +-----------+---------+----------------------------------------------------------------------+
+-    | core      | integer | core id.                                                             |
+-    +-----------+---------+----------------------------------------------------------------------+
+-    | type      | string  | component type. one of ``forward``, ``merge`` or ``classifier_mac``. |
+-    +-----------+---------+----------------------------------------------------------------------+
++    +-----------+---------+--------------------------------------------------+
++    | Name      | Type    | Description                                      |
++    |           |         |                                                  |
++    +===========+=========+==================================================+
++    | name      | string  | component name should be unique among processes. |
++    +-----------+---------+--------------------------------------------------+
++    | core      | integer | core id.                                         |
++    +-----------+---------+--------------------------------------------------+
++    | type      | string  | component type.                                  |
++    +-----------+---------+--------------------------------------------------+
+ 
+ Request example
+ ~~~~~~~~~~~~~~~
+@@ -394,18 +396,18 @@ Request (body)
+ 
+ .. table:: Request body params for ports of component of spp_vf.
+ 
+-    +---------+---------+-----------------------------------------------------------------+
+-    | Name    | Type    | Description                                                     |
+-    |         |         |                                                                 |
+-    +=========+=========+=================================================================+
+-    | action  | string  | ``attach`` or ``detach``.                                       |
+-    +---------+---------+-----------------------------------------------------------------+
+-    | port    | string  | port id. port id is the form {interface_type}:{interface_id}.   |
+-    +---------+---------+-----------------------------------------------------------------+
+-    | dir     | string  | ``rx`` or ``tx``.                                               |
+-    +---------+---------+-----------------------------------------------------------------+
+-    | vlan    | object  | vlan operation which is applied to the port. it can be omitted. |
+-    +---------+---------+-----------------------------------------------------------------+
++    +---------+---------+----------------------------------------------------+
++    | Name    | Type    | Description                                        |
++    |         |         |                                                    |
++    +=========+=========+====================================================+
++    | action  | string  | ``attach`` or ``detach``.                          |
++    +---------+---------+----------------------------------------------------+
++    | port    | string  | port id of {interface_type}:{interface_id}.        |
++    +---------+---------+----------------------------------------------------+
++    | dir     | string  | ``rx`` or ``tx``.                                  |
++    +---------+---------+----------------------------------------------------+
++    | vlan    | object  | vlan operation applied to port. it can be omitted. |
++    +---------+---------+----------------------------------------------------+
+ 
+ Vlan object:
+ 
+@@ -413,16 +415,16 @@ Vlan object:
+ 
+ .. table:: Request body params for vlan ports of component of spp_vf.
+ 
+-    +-----------+---------+----------------------------------------------------------+
+-    | Name      | Type    | Description                                              |
+-    |           |         |                                                          |
+-    +===========+=========+==========================================================+
+-    | operation | string  | ``add``, ``del`` or ``none``.                            |
+-    +-----------+---------+----------------------------------------------------------+
+-    | id        | integer | vlan id. ignored when operation is ``del`` or ``none``.  |
+-    +-----------+---------+----------------------------------------------------------+
+-    | pcp       | integer | vlan pcp. ignored when operation is ``del`` or ``none``. |
+-    +-----------+---------+----------------------------------------------------------+
++    +-----------+---------+---------------------------------------------------+
++    | Name      | Type    | Description                                       |
++    |           |         |                                                   |
++    +===========+=========+===================================================+
++    | operation | string  | ``add``, ``del`` or ``none``.                     |
++    +-----------+---------+---------------------------------------------------+
++    | id        | integer | vid. ignored if operation is ``del`` or ``none``. |
++    +-----------+---------+---------------------------------------------------+
++    | pcp       | integer | pcp. ignored if operation is ``del`` or ``none``. |
++    +-----------+---------+---------------------------------------------------+
+ 
+ 
+ Request example
+@@ -500,24 +502,26 @@ Request (path)
+ Request (body)
+ ~~~~~~~~~~~~~~
+ 
++For ``vlan`` param, it can be omitted if it is for ``mac``.
++
+ .. _table_spp_ctl_spp_vf_cls_table_body:
+ 
+ .. table:: Request body params for classifier_table of spp_vf.
+ 
+-    +-------------+-----------------+----------------------------------------------------+
+-    | Name        | Type            | Description                                        |
+-    |             |                 |                                                    |
+-    +=============+=================+====================================================+
+-    | action      | string          | ``add`` or ``del``.                                |
+-    +-------------+-----------------+----------------------------------------------------+
+-    | type        | string          | ``mac`` or ``vlan``.                               |
+-    +-------------+-----------------+----------------------------------------------------+
+-    | vlan        | integer or null | vlan id for ``vlan``. null or omitted for ``mac``. |
+-    +-------------+-----------------+----------------------------------------------------+
+-    | mac_address | string          | mac address.                                       |
+-    +-------------+-----------------+----------------------------------------------------+
+-    | port        | string          | port id.                                           |
+-    +-------------+-----------------+----------------------------------------------------+
++    +-------------+-----------------+-----------------------------------------+
++    | Name        | Type            | Description                             |
++    |             |                 |                                         |
++    +=============+=================+=========================================+
++    | action      | string          | ``add`` or ``del``.                     |
++    +-------------+-----------------+-----------------------------------------+
++    | type        | string          | ``mac`` or ``vlan``.                    |
++    +-------------+-----------------+-----------------------------------------+
++    | vlan        | integer or null | vlan id for ``vlan``. null for ``mac``. |
++    +-------------+-----------------+-----------------------------------------+
++    | mac_address | string          | mac address.                            |
++    +-------------+-----------------+-----------------------------------------+
++    | port        | string          | port id.                                |
++    +-------------+-----------------+-----------------------------------------+
+ 
+ 
+ Request example
+@@ -529,7 +533,8 @@ the table.
+ .. code-block:: console
+ 
+     $ curl -X PUT -H 'application/json' \
+-      -d '{"action": "add", "type": "mac", "mac_address": "FA:16:3E:7D:CC:35", \
++      -d '{"action": "add", "type": "mac", \
++         "mac_address": "FA:16:3E:7D:CC:35", \
+          "port": "ring:0"}' \
+       http://127.0.0.1:7777/v1/vfs/1/classifier_table
+ 
+-- 
+2.7.4
+
+

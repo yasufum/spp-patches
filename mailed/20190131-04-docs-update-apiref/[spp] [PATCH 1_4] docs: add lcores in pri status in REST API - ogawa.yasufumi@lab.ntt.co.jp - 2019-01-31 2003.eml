@@ -1,0 +1,132 @@
+X-Account-Key: account1
+X-UIDL: 13850.fzwaqsLDAdgLyzvPsl8s8K36h4E=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw002.ocn.ad.jp (LHLO md-lpx-nw002) (153.138.217.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 20:05:22 +0900 (JST)
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw002 with LMTP id AMqnJHLWUlw3WgAATJVVBg
+	; Thu, 31 Jan 2019 20:05:22 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 8ABA434003020
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:22 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 909B0D4028B
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:21 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 902251B43F;
+	Thu, 31 Jan 2019 12:05:20 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 53F351B43A
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 12:05:18 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0VB5HLx030163;
+ Thu, 31 Jan 2019 20:05:17 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 42CF563968A;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 34FCD63961C;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 20:03:06 +0900
+Message-Id: <1548932589-21099-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/4] docs: add lcores in pri status in REST API
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add `lcores` attribute in `status` of spp_primary.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/api_ref/spp_primary.rst | 36 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index fb89766..e46de21 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -31,14 +31,16 @@ Response
+ 
+ .. table:: Response params of primary status.
+ 
+-    +------------+-------+-------------------------------------------+
+-    | Name       | Type  | Description                               |
+-    |            |       |                                           |
+-    +============+=======+===========================================+
+-    | phy_ports  | array | An array of statistics of physical ports. |
+-    +------------+-------+-------------------------------------------+
+-    | ring_ports | array | An array of statistics of ring ports.     |
+-    +------------+-------+-------------------------------------------+
++    +------------+-------+----------------------------------------+
++    | Name       | Type  | Description                            |
++    |            |       |                                        |
++    +============+=======+========================================+
++    | lcores     | array | Array of lcores spp_primary is using.  |
++    +------------+-------+----------------------------------------+
++    | phy_ports  | array | Array of statistics of physical ports. |
++    +------------+-------+----------------------------------------+
++    | ring_ports | array | Array of statistics of ring ports.     |
++    +------------+-------+----------------------------------------+
+ 
+ Physical port object.
+ 
+@@ -89,6 +91,9 @@ Response example
+ .. code-block:: json
+ 
+     {
++      "lcores": [
++        0
++      ],
+       "phy_ports": [
+         {
+           "id": 0,
+@@ -120,20 +125,7 @@ Response example
+           "tx": 0,
+           "tx_drop": 0
+         },
+-        {
+-          "id": 2,
+-          "rx": 0,
+-          "rx_drop": 0,
+-          "tx": 0,
+-          "tx_drop": 0
+-        },
+-        {
+-          "id": 3,
+-          "rx": 0,
+-          "rx_drop": 0,
+-          "tx": 0,
+-          "tx_drop": 0
+-        }
++        ...
+       ]
+     }
+ 
+-- 
+2.7.4
+
+

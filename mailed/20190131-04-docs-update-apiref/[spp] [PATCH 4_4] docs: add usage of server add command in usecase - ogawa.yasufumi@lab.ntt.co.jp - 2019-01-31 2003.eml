@@ -1,0 +1,103 @@
+X-Account-Key: account1
+X-UIDL: 13847.Lm908qjdlYPk3XUT0smc3W+xaoQ=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb006.ocn.ad.jp (LHLO md-lpx-cb006) (153.138.210.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 20:05:22 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb006 with LMTP id aKilNXHWUly8WQAAO5fBhA
+	; Thu, 31 Jan 2019 20:05:21 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id D214F3C000606
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:21 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 85DBE500276
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:05:21 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 9DBF41B443;
+	Thu, 31 Jan 2019 12:05:20 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 6489C1B440
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 12:05:18 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0VB5HnM005285;
+ Thu, 31 Jan 2019 20:05:17 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 58E6E6393D0;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 48B1C6396ED;
+ Thu, 31 Jan 2019 20:05:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 20:03:09 +0900
+Message-Id: <1548932589-21099-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548932589-21099-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 4/4] docs: add usage of server add command in usecase
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+In `Multiple Nodes` section in usecase, add an example of adding nodes
+by using `server add` command as usage.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/use_cases/multi_nodes.rst | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/use_cases/multi_nodes.rst b/docs/guides/use_cases/multi_nodes.rst
+index 6be567e..b44d0bd 100644
+--- a/docs/guides/use_cases/multi_nodes.rst
++++ b/docs/guides/use_cases/multi_nodes.rst
+@@ -49,8 +49,24 @@ for each of hosts. SPP CLI is able to be launched on any of nodes.
+         -b 192.168.11.103 \
+         -b 192.168.11.104 \
+ 
+-If you succeeded to launch all of processes before, you can find them
+-by running ``sever list`` command.
++Or you can add nodes after launching SPP CLI. Here is an example of
++launching it with first node, and adding the rest of nodes after.
++
++.. code-block:: console
++
++    # Launch SPP CLI
++    $ python src/spp.py -b 192.168.11.101
++    Welcome to the spp.  Type help or ? to list commands.
++
++    spp > server add 192.168.11.102
++    Registered spp-ctl "192.168.11.102:7777".
++    spp > server add 192.168.11.103
++    Registered spp-ctl "192.168.11.103:7777".
++    spp > server add 192.168.11.104
++    Registered spp-ctl "192.168.11.104:7777".
++
++If you have succeeded to launch all of ``spp-ctl`` processes before,
++you can find them by running ``sever list`` command.
+ 
+ .. code-block:: console
+ 
+-- 
+2.7.4
+
+
