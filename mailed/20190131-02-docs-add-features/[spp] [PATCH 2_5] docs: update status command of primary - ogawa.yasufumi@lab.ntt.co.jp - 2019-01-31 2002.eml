@@ -1,0 +1,107 @@
+X-Account-Key: account1
+X-UIDL: 13842.ZSJGF+bRcM9E4u7ZASjAF,GYvhU=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Thu, 31 Jan 2019 20:04:28 +0900 (JST)
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-cb004 with LMTP id kKK1MDzWUlywdwAAuuTZ3g
+	; Thu, 31 Jan 2019 20:04:28 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id BD4353C00023B
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:04:28 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 61EFAD4028E
+	for <geminoa@juno.ocn.ne.jp>; Thu, 31 Jan 2019 20:04:28 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id BEB0B1B43D;
+	Thu, 31 Jan 2019 12:04:25 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id BC1F91B43A
+ for <spp@dpdk.org>; Thu, 31 Jan 2019 12:04:23 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x0VB4MpG030113;
+ Thu, 31 Jan 2019 20:04:22 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 95461EA84A0;
+ Thu, 31 Jan 2019 20:04:22 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 845B6EA84DA;
+ Thu, 31 Jan 2019 20:04:22 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: ferruh.yigit@intel.com, spp@dpdk.org, ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 31 Jan 2019 20:02:11 +0900
+Message-Id: <1548932534-20983-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1548932534-20983-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1548932534-20983-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/5] docs: update status command of primary
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to update status sub command of pri to include lcores.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 6742d28..11e378c 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -10,19 +10,22 @@ Primary process is managed with ``pri`` command.
+ status
+ ------
+ 
+-Show forwarding statistics of each of ports.
++Show status fo spp_primary and forwarding statistics of each of ports.
+ 
+ .. code-block:: console
+ 
+     spp > pri; status
+-    Physical Ports:
+-      ID          rx          tx     tx_drop  mac_addr
+-       0    78932932    78932931           1  56:48:4f:53:54:00
+-    Ring Ports:
+-      ID          rx          tx     rx_drop     tx_drop
+-       0       89283       89283           0           0
+-       1        9208        9203           0           5
+-       ...
++    - lcores:
++      - [0]
++    - physical ports:
++        ID          rx          tx     tx_drop  mac_addr
++         0           0           0           0  56:48:4f:53:54:00
++         1           0           0           0  56:48:4f:53:54:01
++    - ring Ports:
++        ID          rx          tx     rx_drop     rx_drop
++         0           0           0           0           0
++         1           0           0           0           0
++
+ 
+ clear
+ -----
+-- 
+2.7.4
+
+
