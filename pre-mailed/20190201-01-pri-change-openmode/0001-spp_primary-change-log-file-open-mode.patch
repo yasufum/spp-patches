@@ -1,0 +1,33 @@
+From ec7086ba0cb2668ed6bec63bd8b48de64c877cad Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 1 Feb 2019 03:46:00 +0900
+Subject: [PATCH] spp_primary: change log file open mode
+
+This update is to change to open file in create and append mode to
+accept next logs after the process is terminated at once.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/primary/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 8d12bf6..fc9ca9b 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -284,8 +284,10 @@ launch_sec_proc(char *sec_name, int sec_id, char **sec_args)
+ 			RTE_LOG(ERR, PRIMARY,
+ 					"Failed to open secondary proc.\n");
+ 		else if (pid == 0) {
+-			/* Open log file with permission `0664` */
+-			fd = open(path_spp_log, O_RDWR | O_CREAT, 0664);
++			/* Open log file with mode equals to 'a+' */
++			fd = open(path_spp_log,
++					O_RDWR | O_CREAT | O_APPEND,
++					0666);
+ 
+ 			/* change to output of stdout and stderr to logfile */
+ 			dup2(fd, 1);
+-- 
+2.7.4
+
