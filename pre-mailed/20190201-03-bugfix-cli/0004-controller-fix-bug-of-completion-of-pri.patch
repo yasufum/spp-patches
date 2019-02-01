@@ -1,0 +1,139 @@
+From 5dbc5d849928a1b2694fcb9aaad215ca2381a620 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 2 Feb 2019 05:29:02 +0900
+Subject: [PATCH 4/5] controller: fix bug of completion of pri
+
+`pri` command is completed without `;` after `pri`. This update is to
+fix it and to not show candidates if `;` does not exist.
+
+  spp > pri; laun  # show candidates
+
+  spp > pri lau  # do not show without `pri;`
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 88 ++++++++++++++++++++++--------------------
+ src/controller/shell.py        |  1 +
+ 2 files changed, 47 insertions(+), 42 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 1f60ece..bb89a5f 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -5,6 +5,8 @@ from __future__ import absolute_import
+ 
+ from .. import spp_common
+ from ..shell_lib import common
++from ..spp_common import logger
++#from .. import spp_common
+ 
+ 
+ class SppPrimary(object):
+@@ -151,48 +153,50 @@ class SppPrimary(object):
+         base_core = 1  # shared among secondaries
+         mytemplate = "-l {},{} -m 512 -- {} {} -s {}"
+ 
+-        # Show sub commands
+-        if len(tokens) == 2:
+-            # Add sub commands
+-            candidates = candidates + self.PRI_CMDS[:]
+-
+-        # Show args of `launch` sub command.
+-        elif len(tokens) == 3 and tokens[1] == 'launch':
+-            for pt in spp_common.SEC_TYPES:
+-                candidates.append('{}'.format(pt))
+-
+-        elif len(tokens) == 4 and tokens[1] == 'launch':
+-            if tokens[2] in spp_common.SEC_TYPES:
+-                candidates = [
+-                        str(i+1) for i in range(spp_common.MAX_SECONDARY)]
+-
+-        elif len(tokens) == 5 and tokens[1] == 'launch':
+-            if (tokens[2] in spp_common.SEC_TYPES) and \
+-                    (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
+-                ptype = tokens[2]
+-                sid = tokens[3]
+-
+-                if ptype == 'nfv':
+-                    opt_sid = '-n'
+-                else:
+-                    opt_sid = '--client-id'
+-
+-                server_addr = common.current_server_addr()
+-                server_addr = server_addr.replace('7777', '6666')
+-
+-                # Define rest of cores dynamically.
+-                # TODO(yasufum) decide rest of cores considering used cores
+-                if ptype == 'nfv':  # one core is enough
+-                    rest_core = sid
+-                elif ptype == 'vf':  # at least three cores
+-                    rest_core = '{}-{}'.format(int(sid), int(sid)+2)
+-                elif ptype == 'mirror':  # two cores
+-                    rest_core = sid
+-                elif ptype == 'pcap':  # at least two cores
+-                    rest_core = '{}-{}'.format(int(sid), int(sid)+1)
+-
+-                candidates = [mytemplate.format(
+-                    base_core, rest_core, opt_sid, sid, server_addr)]
++        if tokens[0].endswith(';'):
++
++            # Show sub commands
++            if len(tokens) == 2:
++                # Add sub commands
++                candidates = candidates + self.PRI_CMDS[:]
++
++            # Show args of `launch` sub command.
++            elif len(tokens) == 3 and tokens[1] == 'launch':
++                for pt in spp_common.SEC_TYPES:
++                    candidates.append('{}'.format(pt))
++
++            elif len(tokens) == 4 and tokens[1] == 'launch':
++                if tokens[2] in spp_common.SEC_TYPES:
++                    candidates = [
++                            str(i+1) for i in range(spp_common.MAX_SECONDARY)]
++
++            elif len(tokens) == 5 and tokens[1] == 'launch':
++                if (tokens[2] in spp_common.SEC_TYPES) and \
++                        (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
++                    ptype = tokens[2]
++                    sid = tokens[3]
++
++                    if ptype == 'nfv':
++                        opt_sid = '-n'
++                    else:
++                        opt_sid = '--client-id'
++
++                    server_addr = common.current_server_addr()
++                    server_addr = server_addr.replace('7777', '6666')
++
++                    # Define rest of cores dynamically.
++                    # TODO(yasufum) decide rest of cores considering used cores
++                    if ptype == 'nfv':  # one core is enough
++                        rest_core = sid
++                    elif ptype == 'vf':  # at least three cores
++                        rest_core = '{}-{}'.format(int(sid), int(sid)+2)
++                    elif ptype == 'mirror':  # two cores
++                        rest_core = sid
++                    elif ptype == 'pcap':  # at least two cores
++                        rest_core = '{}-{}'.format(int(sid), int(sid)+1)
++
++                    candidates = [mytemplate.format(
++                        base_core, rest_core, opt_sid, sid, server_addr)]
+ 
+         if not text:
+             completions = candidates
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index c2a31c6..e68ac63 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -330,6 +330,7 @@ class Shell(cmd.Cmd, object):
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+ 
++        line = re.sub(r'\s+', " ", line)
+         return self.primary.complete(text, line, begidx, endidx)
+ 
+     def do_nfv(self, cmd):
+-- 
+2.7.4
+

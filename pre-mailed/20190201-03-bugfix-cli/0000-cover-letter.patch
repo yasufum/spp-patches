@@ -1,0 +1,28 @@
+From 467e07ffddb08c8ac3d525144190ab4ae2d3cbe3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 2 Feb 2019 05:46:21 +0900
+Subject: [PATCH 0/5] Fix bugs of SPP CLI
+
+* Add checking for `vf` command to avoid errors of invalid resource
+  configuration and invlalid command syntax.
+
+* Correct logging history.
+
+* Correct parsing command line of `pri` for completion.
+
+Yasufumi Ogawa (5):
+  controller: fix bug to add vf comps on same core
+  controller: add checking syntax for vf port cmd
+  controller: fix bug of history command
+  controller: fix bug of completion of pri
+  controller: refactor configuration of logfile
+
+ src/controller/commands/pri.py | 90 ++++++++++++++++++++++--------------------
+ src/controller/commands/vf.py  | 29 ++++++++------
+ src/controller/shell.py        | 40 +++++++------------
+ src/controller/spp_common.py   |  4 +-
+ 4 files changed, 82 insertions(+), 81 deletions(-)
+
+-- 
+2.7.4
+

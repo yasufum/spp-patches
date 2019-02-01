@@ -1,0 +1,51 @@
+From 467e07ffddb08c8ac3d525144190ab4ae2d3cbe3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 2 Feb 2019 05:38:55 +0900
+Subject: [PATCH 5/5] controller: refactor configuration of logfile
+
+Make the name of logfile explicitly in `spp_common.py`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 2 ++
+ src/controller/spp_common.py   | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index bb89a5f..b9f1234 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -331,6 +331,8 @@ class SppPrimary(object):
+             else:
+                 opts['app']['--client-id'] = sec_id
+ 
++        logger.debug('launch, {}'.format(opts))
++
+         # Send request for launch secondary.
+         res = self.spp_ctl_cli.put('primary/launch', opts)
+         if res is not None:
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index c94d175..6d0546e 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -9,6 +9,8 @@ PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+ SEC_TYPES = ['nfv', 'vf', 'mirror', 'pcap']
+ 
++LOGFILE = 'spp_cli.log'  # name of logfile under `/src/controller/log/`
++
+ cur_server_addr = None
+ 
+ # Maximum num of sock queues for secondaries
+@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
+ # handler = logging.StreamHandler()
+ os.system("mkdir -p %s/log" % (os.path.dirname(__file__)))
+ 
+-logfile = '%s/log/%s' % (os.path.dirname(__file__), 'spp.log')
++logfile = '%s/log/%s' % (os.path.dirname(__file__), LOGFILE)
+ handler = logging.FileHandler(logfile)
+ handler.setLevel(logging.DEBUG)
+ formatter = logging.Formatter(
+-- 
+2.7.4
+
