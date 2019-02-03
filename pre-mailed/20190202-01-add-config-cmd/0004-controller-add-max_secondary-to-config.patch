@@ -1,0 +1,91 @@
+From b301870a68977d07aed1af119d24e8a30dcd8db9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 2 Feb 2019 17:39:34 +0900
+Subject: [PATCH 4/5] controller: add max_secondary to config
+
+The number of secondary processes is limited with MAX_SECONDARY defined
+in `spp_common.py`, and it is used to show candidates of secondary ID
+while launching secondary process. This patch is to add `max_secondary`
+to make MAX_SECONDARY configurable after launching SPP CLI.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 14 ++++++++++++--
+ src/controller/shell.py        | 26 ++++++++++++++++++--------
+ 2 files changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index aa78cef..b455b2d 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -179,13 +179,23 @@ class SppPrimary(object):
+                     candidates.append('{}'.format(pt))
+ 
+             elif len(tokens) == 4 and tokens[1] == 'launch':
++                if 'max_secondary' in cli_config.keys():
++                    max_secondary = int(cli_config['max_secondary']['val'])
++                else:
++                    max_secondary = spp_common.MAX_SECONDARY
++
+                 if tokens[2] in spp_common.SEC_TYPES:
+                     candidates = [
+-                            str(i+1) for i in range(spp_common.MAX_SECONDARY)]
++                            str(i+1) for i in range(max_secondary)]
+ 
+             elif len(tokens) == 5 and tokens[1] == 'launch':
++                if 'max_secondary' in cli_config.keys():
++                    max_secondary = int(cli_config['max_secondary']['val'])
++                else:
++                    max_secondary = spp_common.MAX_SECONDARY
++
+                 if (tokens[2] in spp_common.SEC_TYPES) and \
+-                        (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
++                        (int(tokens[3])-1 in range(max_secondary)):
+                     ptype = tokens[2]
+                     sid = tokens[3]
+ 
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index e8b0a0e..7a192fb 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -24,19 +24,29 @@ class Shell(cmd.Cmd, object):
+     """SPP command prompt."""
+ 
+     # Default config, but changed via `config` command
++    # TODO(yasufum) move defaults to config file and include from.
+     cli_config = {
+-            'prompt': {
+-                'val': 'spp > ', 'desc': 'Command prompt'},
+-            'topo_size': {
+-                'val': '60%', 'desc': 'Percentage or ratio of topo'},
++            'max_secondary': {
++                'val': spp_common.MAX_SECONDARY,
++                'desc': 'The maximum number of secondary processes'},
+             'sec_mem': {
+-                'val': '-m 512', 'desc': 'Mem size'},
++                'val': '-m 512',
++                'desc': 'Mem size'},
+             'sec_base_lcore': {
+-                'val': '1', 'desc': 'Shared lcore among secondaryes'},
++                'val': '1',
++                'desc': 'Shared lcore among secondaryes'},
+             'sec_vf_nof_lcores': {
+-                'val': '3', 'desc': 'Number of lcores for vf workers'},
++                'val': '3',
++                'desc': 'Number of lcores for vf workers'},
+             'sec_vhost_cli': {
+-                'val': '', 'desc': 'Vhost client mode'},
++                'val': '',
++                'desc': 'Vhost client mode'},
++            'prompt': {
++                'val': 'spp > ',
++                'desc': 'Command prompt'},
++            'topo_size': {
++                'val': '60%',
++                'desc': 'Percentage or ratio of topo'},
+             }
+ 
+     hist_file = os.path.expanduser('~/.spp_history')
+-- 
+2.7.4
+

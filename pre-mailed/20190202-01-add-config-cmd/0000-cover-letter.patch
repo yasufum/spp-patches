@@ -1,0 +1,60 @@
+From de65a54ec8de831e7aa2399a29c0909a8d86e440 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 10:56:37 +0900
+Subject: [PATCH 0/5] Add config command
+
+`config` command is for managing default configurations of SPP CLI.
+For example, you can change default command prompt `spp > ` to another
+one.
+
+List of all of configurations is referred with `config`, or list of
+started with `p` is referred with `config p`.
+
+  # show all configs
+  spp > config
+  - max_secondary: "16"	# The maximum number of secondary processes
+  - sec_nfv_nof_lcores: "1"	# Default num of lcores for workers ...
+  - topo_size: "60%"	# Percentage or ratio of topo
+  - sec_base_lcore: "1"	# Shared lcore among secondaryes
+  - prompt: "spp > "	# Command prompt
+  - sec_pcap_nof_lcores: "2"	# Default num of lcores for ...
+  - sec_mirror_nof_lcores: "2"	# Default num of lcores for ...
+  ...
+
+  # only started with `p`
+  spp > config p
+  - prompt: "spp > "        # Command prompt
+
+To change configuration, specify key and its value.
+
+  # set prompt
+  Set prompt: "$ spp "
+  $ spp
+
+Config params starting with `sec_` is used for options of `pri; launch`
+command.
+
+  - sec_vf_nof_lcores
+  - sec_mirror_nof_lcores
+  - sec_pcap_nof_lcores
+  ...
+
+For instance, if secondary ID is `3` and `sec_vf_nof_lcores` is 3,
+woker lcores is suggested as `3-5`, started from `3` and use three
+cores.
+
+
+Yasufumi Ogawa (5):
+  controller: add config command
+  controller: refactor pri launch command
+  controller: remove nouse check_sec_cmds
+  controller: add max_secondary to config
+  controller: change nof worker lcores configurable
+
+ src/controller/commands/pri.py | 121 ++++++++++++++++++++++++++------
+ src/controller/shell.py        | 152 +++++++++++++++++++++++++++++------------
+ 2 files changed, 210 insertions(+), 63 deletions(-)
+
+-- 
+2.7.4
+
