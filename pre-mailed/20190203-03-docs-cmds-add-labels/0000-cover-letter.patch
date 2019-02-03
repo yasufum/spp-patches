@@ -1,0 +1,23 @@
+From ba6a82dceb3f67ec131a19d5d68debce6aa56ad8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 18:37:59 +0900
+Subject: [PATCH 0/4] Add labels to commands in documentation
+
+This series of patches is to add labels for each of commands
+to be referred.
+
+Yasufumi Ogawa (4):
+  docs: add labels for common commands
+  docs: add labels for primary commands
+  docs: add labels for nfv commands
+  docs: add labels for experimental commands
+
+ docs/guides/commands/common.rst            | 35 ++++++++++++++++++++++++++++++
+ docs/guides/commands/experimental.rst      | 20 ++++++++++++++++-
+ docs/guides/commands/primary.rst           | 14 +++++++++++-
+ docs/guides/commands/secondary/spp_nfv.rst | 18 +++++++++++++++
+ 4 files changed, 85 insertions(+), 2 deletions(-)
+
+-- 
+2.7.4
+

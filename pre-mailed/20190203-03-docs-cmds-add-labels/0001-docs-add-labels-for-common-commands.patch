@@ -1,0 +1,169 @@
+From 898ebf8eb2007e2bf3b7ad38f26199798392f066 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 18:26:55 +0900
+Subject: [PATCH 1/4] docs: add labels for common commands
+
+To be linked, add labels for each of common commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/common.rst | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/docs/guides/commands/common.rst b/docs/guides/commands/common.rst
+index 6c72878..eb71859 100644
+--- a/docs/guides/commands/common.rst
++++ b/docs/guides/commands/common.rst
+@@ -2,9 +2,14 @@
+     Copyright(c) 2010-2014 Intel Corporation
+     Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+ 
++
++.. _commands_common:
++
+ Common Commands
+ ===============
+ 
++.. _commands_common_status:
++
+ status
+ ------
+ 
+@@ -23,6 +28,8 @@ Show the status of SPP processes.
+         2: vf:3
+ 
+ 
++.. _commands_common_config:
++
+ config
+ ------
+ 
+@@ -96,6 +103,8 @@ After updating the param, expanded options is also updated.
+     spp > pri; launch nfv 2 -l 1,2 --socket-mem 512,0 -- -n 2 -s ...
+ 
+ 
++.. _commands_common_playback:
++
+ playback
+ --------
+ 
+@@ -113,6 +122,8 @@ a recipe, although you can use any of extensions such as ``.txt`` or
+     spp > playback /path/to/my.rcp
+ 
+ 
++.. _commands_common_record:
++
+ record
+ ------
+ 
+@@ -133,6 +144,8 @@ command.
+     next relase.
+ 
+ 
++.. _commands_common_history:
++
+ history
+ -------
+ 
+@@ -147,6 +160,8 @@ meaning for history, ``bye``, ``exit``, ``history`` and ``redo``.
+       2  cat file.txt
+ 
+ 
++.. _commands_common_redo:
++
+ redo
+ ----
+ 
+@@ -157,6 +172,8 @@ Execute command of index of history.
+     spp > redo 5  # exec 5th command in the history
+ 
+ 
++.. _commands_common_server:
++
+ server
+ ------
+ 
+@@ -213,6 +230,8 @@ You cannot unregister node under the control, or switch to other one before.
+     Cannot del server "1" in use!
+ 
+ 
++.. _commands_common_pwd:
++
+ pwd
+ ---
+ 
+@@ -224,6 +243,8 @@ Show current path.
+     /path/to/curdir
+ 
+ 
++.. _commands_common_cd:
++
+ cd
+ --
+ 
+@@ -234,6 +255,8 @@ Change current directory.
+     spp> cd /path/to/dir
+ 
+ 
++.. _commands_common_ls:
++
+ ls
+ --
+ 
+@@ -244,6 +267,8 @@ Show a list of directory contents.
+     spp> ls /path/to/dir
+ 
+ 
++.. _commands_common_mkdir:
++
+ mkdir
+ -----
+ 
+@@ -254,6 +279,8 @@ Make a directory.
+     spp> mkdir /path/to/dir
+ 
+ 
++.. _commands_common_cat:
++
+ cat
+ ---
+ 
+@@ -264,6 +291,8 @@ Show contents of a file.
+     spp> cat /path/to/file
+ 
+ 
++.. _commands_common_less:
++
+ less
+ ----
+ 
+@@ -274,6 +303,8 @@ Show contents of a file.
+     spp> less /path/to/file
+ 
+ 
++.. _commands_common_bye:
++
+ bye
+ ---
+ 
+@@ -305,6 +336,8 @@ Second one is for all SPP processes other than controller.
+     Exit primary
+ 
+ 
++.. _commands_common_exit:
++
+ exit
+ ----
+ 
+@@ -317,6 +350,8 @@ not for other processes.
+     Thank you for using Soft Patch Panel
+ 
+ 
++.. _commands_common_help:
++
+ help
+ ----
+ 
+-- 
+2.7.4
+

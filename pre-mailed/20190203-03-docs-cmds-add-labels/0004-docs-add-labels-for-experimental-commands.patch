@@ -1,0 +1,75 @@
+From ba6a82dceb3f67ec131a19d5d68debce6aa56ad8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 18:29:22 +0900
+Subject: [PATCH 4/4] docs: add labels for experimental commands
+
+To be linked, add labels for each of experimental commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/experimental.rst | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index 6a98ef2..e649a05 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -1,5 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2017 Nippon Telegraph and Telephone Corporation
++    Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _commands_experimental:
+ 
+ Experimental Commands
+ =====================
+@@ -8,6 +11,9 @@ There are experimental commands in SPP controller.
+ It might not work for some cases properly because it is not well tested
+ currently.
+ 
++
++.. _commands_experimental_topo:
++
+ topo
+ ----
+ 
+@@ -143,6 +149,8 @@ To generate a jpg image, run ``topo`` with the name ``network.jpg``.
+     ...  network.jpg  ...
+ 
+ 
++.. _commands_experimental_topo_subgraph:
++
+ topo_subgraph
+ -------------
+ 
+@@ -214,9 +222,17 @@ delete subgraph ``guest_vm``.
+     spp > topo_subgraph del guest_vm
+ 
+ 
++.. _commands_experimental_topo_resize:
++
+ topo_resize
+ -----------
+ 
++.. note::
++
++    This command will be removed because the size of image is configurable
++    with :ref:`config<commands_common_config>` command. You can resize images by changing the value of
++    ``topo_size``.
++
+ ``topo_resize`` is a supplemental command for changing the size of
+ images displayed on the terminal with ``topo``.
+ 
+@@ -250,6 +266,8 @@ or ratio.
+     80%
+ 
+ 
++.. _commands_experimental_load_cmd:
++
+ load_cmd
+ --------
+ 
+-- 
+2.7.4
+

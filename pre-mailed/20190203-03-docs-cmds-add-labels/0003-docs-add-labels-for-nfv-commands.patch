@@ -1,0 +1,93 @@
+From d6b89964f6ccd892b2183368d60cc834e6dd2fad Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 18:28:40 +0900
+Subject: [PATCH 3/4] docs: add labels for nfv commands
+
+To be linked, add labels for each of nfv commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_nfv.rst | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/docs/guides/commands/secondary/spp_nfv.rst b/docs/guides/commands/secondary/spp_nfv.rst
+index 4057c25..d6db76e 100644
+--- a/docs/guides/commands/secondary/spp_nfv.rst
++++ b/docs/guides/commands/secondary/spp_nfv.rst
+@@ -1,6 +1,9 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
+ 
++
++.. _commands_spp_nfv:
++
+ spp_nfv
+ =======
+ 
+@@ -38,6 +41,9 @@ All of Sub commands are referred with ``help`` command.
+         spp > nfv 1;  # press TAB
+         add     del     exit    forward patch   status  stop
+ 
++
++.. _commands_spp_nfv_status:
++
+ status
+ ------
+ 
+@@ -55,6 +61,8 @@ source if it is not patched.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_add:
++
+ add
+ ---
+ 
+@@ -75,6 +83,8 @@ Or adding ``vhost:0`` by
+     Add vhost:0.
+ 
+ 
++.. _commands_spp_nfv_patch:
++
+ patch
+ ------
+ 
+@@ -87,6 +97,8 @@ This command just creates a path and does not start forwarding.
+     Patch ports (phy:0 -> ring:0).
+ 
+ 
++.. _commands_spp_nfv_forward:
++
+ forward
+ -------
+ 
+@@ -109,6 +121,8 @@ executing it.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_stop:
++
+ stop
+ ----
+ 
+@@ -131,6 +145,8 @@ executing it.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_del:
++
+ del
+ ---
+ 
+@@ -142,6 +158,8 @@ Delete a port from the secondary.
+     Delete ring:0.
+ 
+ 
++.. _commands_spp_nfv_exit:
++
+ exit
+ ----
+ 
+-- 
+2.7.4
+
