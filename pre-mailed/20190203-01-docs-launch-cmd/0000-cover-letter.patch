@@ -1,0 +1,25 @@
+From bbf9f4f57b0148deb230fdc9185583564ea10fbd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 3 Feb 2019 16:52:15 +0900
+Subject: [PATCH 0/3] Update documentation for pri launch command
+
+This series of updates is to add descriptions for `pri; launch` commmand
+and its usages.
+
+* Add launch command in `SPP Commands` chapter.
+
+* Update `How to Use` section for launch command.
+
+
+Yasufumi Ogawa (3):
+  docs: add config command
+  docs: add usage of pri launch command
+  docs: update how to use guide
+
+ docs/guides/commands/common.rst |  73 ++++++++++++++++++++
+ docs/guides/setup/howto_use.rst | 148 ++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 215 insertions(+), 6 deletions(-)
+
+-- 
+2.7.4
+
