@@ -1,0 +1,97 @@
+X-Account-Key: account1
+X-UIDL: 13955.XVWmMPhuxe9lF8KdFW,r,BHSV+w=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb008.ocn.ad.jp (LHLO md-lpx-cb008) (153.138.210.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:34 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb008 with LMTP id cHTxM1auV1wjTgAArMKwLw
+	; Mon, 04 Feb 2019 12:15:34 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id CB2203C000328
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:34 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 79957500285
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:34 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 8F33C1B101;
+	Mon,  4 Feb 2019 04:15:33 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 027525589
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:31 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143FUvW006231;
+ Mon, 4 Feb 2019 12:15:30 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id BEE96161;
+ Mon,  4 Feb 2019 12:15:30 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id B2DFA9F;
+ Mon,  4 Feb 2019 12:15:30 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:13:21 +0900
+Message-Id: <1549250001-31941-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] docs: correct typo of command examples
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Correct typo of primary and common command examples.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/common.rst  | 2 +-
+ docs/guides/commands/primary.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/commands/common.rst b/docs/guides/commands/common.rst
+index eb71859..441c100 100644
+--- a/docs/guides/commands/common.rst
++++ b/docs/guides/commands/common.rst
+@@ -59,7 +59,7 @@ To show the list of config all of params, simply run ``config``.
+     - max_secondary: "16"       # The maximum number of secondary processes
+     - sec_nfv_nof_lcores: "1"   # Default num of lcores for workers of spp_nfv
+     - topo_size: "60%"  # Percentage or ratio of topo
+-    - sec_base_lcore: "1"       # Shared lcore among secondaryes
++    - sec_base_lcore: "1"       # Shared lcore among secondaries
+     ....
+ 
+ Or show params only started from ``sec_``, add the keyword to the commnad.
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 58e22d4..da60947 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -56,7 +56,7 @@ Show status fo spp_primary and forwarding statistics of each of ports.
+          0           0           0           0  56:48:4f:53:54:00
+          1           0           0           0  56:48:4f:53:54:01
+     - ring Ports:
+-        ID          rx          tx     rx_drop     rx_drop
++        ID          rx          tx     rx_drop     tx_drop
+          0           0           0           0           0
+          1           0           0           0           0
+          ...
+-- 
+2.7.4
+
+
