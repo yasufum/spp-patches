@@ -1,0 +1,149 @@
+X-Account-Key: account1
+X-UIDL: 13946.uU8gcXzVEgLfskEHwDYtv3E7jlg=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:23 +0900 (JST)
+Received: from md-mta-nw006.ocn.ad.jp ([153.138.217.133])
+	by md-lpx-cb003 with LMTP id sILlMkuuV1zMWQAAjPdmzw
+	; Mon, 04 Feb 2019 12:15:23 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw006.ocn.ad.jp (Postfix) with ESMTP id C40383C00037C
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 5A03FD40288
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 4C75B1B192;
+	Mon,  4 Feb 2019 04:15:22 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 92D681B12D
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:20 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143FJTV030627;
+ Mon, 4 Feb 2019 12:15:19 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 83B40EA7B84;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 76680EA7B32;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:13:09 +0900
+Message-Id: <1549249990-31841-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 3/4] docs: add labels for nfv commands
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To be linked, add labels for each of nfv commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_nfv.rst | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/docs/guides/commands/secondary/spp_nfv.rst b/docs/guides/commands/secondary/spp_nfv.rst
+index 4057c25..d6db76e 100644
+--- a/docs/guides/commands/secondary/spp_nfv.rst
++++ b/docs/guides/commands/secondary/spp_nfv.rst
+@@ -1,6 +1,9 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
+ 
++
++.. _commands_spp_nfv:
++
+ spp_nfv
+ =======
+ 
+@@ -38,6 +41,9 @@ All of Sub commands are referred with ``help`` command.
+         spp > nfv 1;  # press TAB
+         add     del     exit    forward patch   status  stop
+ 
++
++.. _commands_spp_nfv_status:
++
+ status
+ ------
+ 
+@@ -55,6 +61,8 @@ source if it is not patched.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_add:
++
+ add
+ ---
+ 
+@@ -75,6 +83,8 @@ Or adding ``vhost:0`` by
+     Add vhost:0.
+ 
+ 
++.. _commands_spp_nfv_patch:
++
+ patch
+ ------
+ 
+@@ -87,6 +97,8 @@ This command just creates a path and does not start forwarding.
+     Patch ports (phy:0 -> ring:0).
+ 
+ 
++.. _commands_spp_nfv_forward:
++
+ forward
+ -------
+ 
+@@ -109,6 +121,8 @@ executing it.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_stop:
++
+ stop
+ ----
+ 
+@@ -131,6 +145,8 @@ executing it.
+       - phy:1
+ 
+ 
++.. _commands_spp_nfv_del:
++
+ del
+ ---
+ 
+@@ -142,6 +158,8 @@ Delete a port from the secondary.
+     Delete ring:0.
+ 
+ 
++.. _commands_spp_nfv_exit:
++
+ exit
+ ----
+ 
+-- 
+2.7.4
+
+

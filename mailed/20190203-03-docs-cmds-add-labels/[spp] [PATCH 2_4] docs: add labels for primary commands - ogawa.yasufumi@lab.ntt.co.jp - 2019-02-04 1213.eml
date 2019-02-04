@@ -1,0 +1,123 @@
+X-Account-Key: account1
+X-UIDL: 13948.EHrcca,IomsCItuIb4zbAaCdrNE=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb002.ocn.ad.jp (LHLO md-lpx-cb002) (153.138.210.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:23 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb002 with LMTP id QLYLNUuuV1xvaAAAtwVFfA
+	; Mon, 04 Feb 2019 12:15:23 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id CBF5F3C00063B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 6DD98A8028F
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 62D9F1B1F2;
+	Mon,  4 Feb 2019 04:15:22 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 90A155681
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:20 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143FJZk030625;
+ Mon, 4 Feb 2019 12:15:19 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 80911EA7903;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 7161DEA7B1A;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:13:08 +0900
+Message-Id: <1549249990-31841-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/4] docs: add labels for primary commands
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To be linked, add labels for each of primary commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/primary.rst | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 687484d..58e22d4 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -1,5 +1,9 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
++    Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _commands_primary:
+ 
+ Primary Commands
+ ================
+@@ -35,6 +39,8 @@ All of Sub commands are referred with ``help`` command.
+             spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
+ 
+ 
++.. _commands_primary_status:
++
+ status
+ ------
+ 
+@@ -56,6 +62,8 @@ Show status fo spp_primary and forwarding statistics of each of ports.
+          ...
+ 
+ 
++.. _commands_primary_clear:
++
+ clear
+ -----
+ 
+@@ -67,6 +75,8 @@ Clear statistics.
+     Clear port statistics.
+ 
+ 
++.. _commands_primary_launch:
++
+ launch
+ ------
+ 
+@@ -95,7 +105,9 @@ the process so that you do not need to input this option by yourself.
+ 
+ ``launch`` command supports TAB completion for type, secondary ID and the rest
+ of options. Some of EAL and application options are just a template, so you
+-should update them before launching.
++should edit them before launching. Some of default params of options,
++for instance, the number of lcores or the amount of memory, are changed from
++``config`` command of :ref:`Common Commands<commands_common_config>`.
+ 
+ In terms of log, each of secondary processes are output its log messages to
+ files under ``log`` directory of project root. The name of log file is defined
+-- 
+2.7.4
+
+

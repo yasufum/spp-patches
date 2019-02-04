@@ -1,0 +1,225 @@
+X-Account-Key: account1
+X-UIDL: 13952.km8nsY+iTgyZ3z+QmtVx6R2Bn0M=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw003.ocn.ad.jp (LHLO md-lpx-nw003) (153.138.217.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:24 +0900 (JST)
+Received: from md-mta-cb004.ocn.ad.jp ([153.138.211.72])
+	by md-lpx-nw003 with LMTP id 2PEQB0yuV1xqDQAABYl6EA
+	; Mon, 04 Feb 2019 12:15:24 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb004.ocn.ad.jp (Postfix) with ESMTP id 0F79FC002406
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:24 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 66742A802A3
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 59AF91B1DD;
+	Mon,  4 Feb 2019 04:15:22 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 873C9559A
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:20 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143FJqo030622;
+ Mon, 4 Feb 2019 12:15:19 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 796C9EA7A66;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 61CECEA7A68;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:13:07 +0900
+Message-Id: <1549249990-31841-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/4] docs: add labels for common commands
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To be linked, add labels for each of common commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/common.rst | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/docs/guides/commands/common.rst b/docs/guides/commands/common.rst
+index 6c72878..eb71859 100644
+--- a/docs/guides/commands/common.rst
++++ b/docs/guides/commands/common.rst
+@@ -2,9 +2,14 @@
+     Copyright(c) 2010-2014 Intel Corporation
+     Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+ 
++
++.. _commands_common:
++
+ Common Commands
+ ===============
+ 
++.. _commands_common_status:
++
+ status
+ ------
+ 
+@@ -23,6 +28,8 @@ Show the status of SPP processes.
+         2: vf:3
+ 
+ 
++.. _commands_common_config:
++
+ config
+ ------
+ 
+@@ -96,6 +103,8 @@ After updating the param, expanded options is also updated.
+     spp > pri; launch nfv 2 -l 1,2 --socket-mem 512,0 -- -n 2 -s ...
+ 
+ 
++.. _commands_common_playback:
++
+ playback
+ --------
+ 
+@@ -113,6 +122,8 @@ a recipe, although you can use any of extensions such as ``.txt`` or
+     spp > playback /path/to/my.rcp
+ 
+ 
++.. _commands_common_record:
++
+ record
+ ------
+ 
+@@ -133,6 +144,8 @@ command.
+     next relase.
+ 
+ 
++.. _commands_common_history:
++
+ history
+ -------
+ 
+@@ -147,6 +160,8 @@ meaning for history, ``bye``, ``exit``, ``history`` and ``redo``.
+       2  cat file.txt
+ 
+ 
++.. _commands_common_redo:
++
+ redo
+ ----
+ 
+@@ -157,6 +172,8 @@ Execute command of index of history.
+     spp > redo 5  # exec 5th command in the history
+ 
+ 
++.. _commands_common_server:
++
+ server
+ ------
+ 
+@@ -213,6 +230,8 @@ You cannot unregister node under the control, or switch to other one before.
+     Cannot del server "1" in use!
+ 
+ 
++.. _commands_common_pwd:
++
+ pwd
+ ---
+ 
+@@ -224,6 +243,8 @@ Show current path.
+     /path/to/curdir
+ 
+ 
++.. _commands_common_cd:
++
+ cd
+ --
+ 
+@@ -234,6 +255,8 @@ Change current directory.
+     spp> cd /path/to/dir
+ 
+ 
++.. _commands_common_ls:
++
+ ls
+ --
+ 
+@@ -244,6 +267,8 @@ Show a list of directory contents.
+     spp> ls /path/to/dir
+ 
+ 
++.. _commands_common_mkdir:
++
+ mkdir
+ -----
+ 
+@@ -254,6 +279,8 @@ Make a directory.
+     spp> mkdir /path/to/dir
+ 
+ 
++.. _commands_common_cat:
++
+ cat
+ ---
+ 
+@@ -264,6 +291,8 @@ Show contents of a file.
+     spp> cat /path/to/file
+ 
+ 
++.. _commands_common_less:
++
+ less
+ ----
+ 
+@@ -274,6 +303,8 @@ Show contents of a file.
+     spp> less /path/to/file
+ 
+ 
++.. _commands_common_bye:
++
+ bye
+ ---
+ 
+@@ -305,6 +336,8 @@ Second one is for all SPP processes other than controller.
+     Exit primary
+ 
+ 
++.. _commands_common_exit:
++
+ exit
+ ----
+ 
+@@ -317,6 +350,8 @@ not for other processes.
+     Thank you for using Soft Patch Panel
+ 
+ 
++.. _commands_common_help:
++
+ help
+ ----
+ 
+-- 
+2.7.4
+
+

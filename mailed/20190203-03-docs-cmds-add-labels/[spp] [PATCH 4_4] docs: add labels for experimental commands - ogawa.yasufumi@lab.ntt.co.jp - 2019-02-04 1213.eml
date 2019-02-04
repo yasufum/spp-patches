@@ -1,0 +1,131 @@
+X-Account-Key: account1
+X-UIDL: 13950.CWtT2x38NfVhGZv+HxG7cudTxqA=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb008.ocn.ad.jp (LHLO md-lpx-cb008) (153.138.210.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:24 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb008 with LMTP id CBA4N0uuV1wbTwAArMKwLw
+	; Mon, 04 Feb 2019 12:15:23 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id D576A3C00060B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 734B9D40280
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:23 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6AE791B1FF;
+	Mon,  4 Feb 2019 04:15:22 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 984101B192
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:20 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143FJVM023166;
+ Mon, 4 Feb 2019 12:15:19 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 88BE5EA7A68;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 7B637EA7B14;
+ Mon,  4 Feb 2019 12:15:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:13:10 +0900
+Message-Id: <1549249990-31841-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249990-31841-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 4/4] docs: add labels for experimental commands
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To be linked, add labels for each of experimental commands.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/experimental.rst | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index 6a98ef2..e649a05 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -1,5 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2017 Nippon Telegraph and Telephone Corporation
++    Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _commands_experimental:
+ 
+ Experimental Commands
+ =====================
+@@ -8,6 +11,9 @@ There are experimental commands in SPP controller.
+ It might not work for some cases properly because it is not well tested
+ currently.
+ 
++
++.. _commands_experimental_topo:
++
+ topo
+ ----
+ 
+@@ -143,6 +149,8 @@ To generate a jpg image, run ``topo`` with the name ``network.jpg``.
+     ...  network.jpg  ...
+ 
+ 
++.. _commands_experimental_topo_subgraph:
++
+ topo_subgraph
+ -------------
+ 
+@@ -214,9 +222,17 @@ delete subgraph ``guest_vm``.
+     spp > topo_subgraph del guest_vm
+ 
+ 
++.. _commands_experimental_topo_resize:
++
+ topo_resize
+ -----------
+ 
++.. note::
++
++    This command will be removed because the size of image is configurable
++    with :ref:`config<commands_common_config>` command. You can resize images by changing the value of
++    ``topo_size``.
++
+ ``topo_resize`` is a supplemental command for changing the size of
+ images displayed on the terminal with ``topo``.
+ 
+@@ -250,6 +266,8 @@ or ratio.
+     80%
+ 
+ 
++.. _commands_experimental_load_cmd:
++
+ load_cmd
+ --------
+ 
+-- 
+2.7.4
+
+
