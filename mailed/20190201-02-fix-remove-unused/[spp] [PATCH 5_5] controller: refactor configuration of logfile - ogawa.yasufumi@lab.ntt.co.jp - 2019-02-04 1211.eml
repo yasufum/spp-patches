@@ -1,0 +1,107 @@
+X-Account-Key: account1
+X-UIDL: 13926.+Xo0k5rnkvgPd6l,TMESFcUYaWc=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb001.ocn.ad.jp (LHLO md-lpx-cb001) (153.138.210.14)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:13:35 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-cb001 with LMTP id iCVECd+tV1zAWAAA9RM4zw
+	; Mon, 04 Feb 2019 12:13:35 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id 2103DC00133B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:35 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id B9B2AD4027C
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:34 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5162C1B20A;
+	Mon,  4 Feb 2019 04:13:32 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 663691B192
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:13:30 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143DTLJ030584;
+ Mon, 4 Feb 2019 12:13:29 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id EF612638AAE;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id DFF82638A8D;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:11:19 +0900
+Message-Id: <1549249879-31580-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 5/5] controller: refactor configuration of logfile
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Make the name of logfile explicitly in `spp_common.py`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 2 ++
+ src/controller/spp_common.py   | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index bb89a5f..b9f1234 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -331,6 +331,8 @@ class SppPrimary(object):
+             else:
+                 opts['app']['--client-id'] = sec_id
+ 
++        logger.debug('launch, {}'.format(opts))
++
+         # Send request for launch secondary.
+         res = self.spp_ctl_cli.put('primary/launch', opts)
+         if res is not None:
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index c94d175..6d0546e 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -9,6 +9,8 @@ PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ 
+ SEC_TYPES = ['nfv', 'vf', 'mirror', 'pcap']
+ 
++LOGFILE = 'spp_cli.log'  # name of logfile under `/src/controller/log/`
++
+ cur_server_addr = None
+ 
+ # Maximum num of sock queues for secondaries
+@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
+ # handler = logging.StreamHandler()
+ os.system("mkdir -p %s/log" % (os.path.dirname(__file__)))
+ 
+-logfile = '%s/log/%s' % (os.path.dirname(__file__), 'spp.log')
++logfile = '%s/log/%s' % (os.path.dirname(__file__), LOGFILE)
+ handler = logging.FileHandler(logfile)
+ handler.setLevel(logging.DEBUG)
+ formatter = logging.Formatter(
+-- 
+2.7.4
+
+

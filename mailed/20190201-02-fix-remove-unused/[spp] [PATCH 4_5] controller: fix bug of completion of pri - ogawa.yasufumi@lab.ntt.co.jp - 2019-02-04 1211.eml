@@ -1,0 +1,195 @@
+X-Account-Key: account1
+X-UIDL: 13927.qxcZrQkn2kJncSYOd0kBVcm8XSM=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb007.ocn.ad.jp (LHLO md-lpx-cb007) (153.138.210.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:13:39 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-cb007 with LMTP id +GMWGuOtV1wXNAAAz4+SuQ
+	; Mon, 04 Feb 2019 12:13:39 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id 625E5C001313
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:39 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id C2E0AD4028B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:38 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3F0DB1B1F2;
+	Mon,  4 Feb 2019 04:13:32 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 61F481B101
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:13:30 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143DTY8030583;
+ Mon, 4 Feb 2019 12:13:29 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id E894D638A97;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D0BAF638B44;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:11:18 +0900
+Message-Id: <1549249879-31580-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 4/5] controller: fix bug of completion of pri
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+`pri` command is completed without `;` after `pri`. This update is to
+fix it and to not show candidates if `;` does not exist.
+
+  spp > pri; laun  # show candidates
+
+  spp > pri lau  # do not show without `pri;`
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 88 ++++++++++++++++++++++--------------------
+ src/controller/shell.py        |  1 +
+ 2 files changed, 47 insertions(+), 42 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 1f60ece..bb89a5f 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -5,6 +5,8 @@ from __future__ import absolute_import
+ 
+ from .. import spp_common
+ from ..shell_lib import common
++from ..spp_common import logger
++#from .. import spp_common
+ 
+ 
+ class SppPrimary(object):
+@@ -151,48 +153,50 @@ class SppPrimary(object):
+         base_core = 1  # shared among secondaries
+         mytemplate = "-l {},{} -m 512 -- {} {} -s {}"
+ 
+-        # Show sub commands
+-        if len(tokens) == 2:
+-            # Add sub commands
+-            candidates = candidates + self.PRI_CMDS[:]
+-
+-        # Show args of `launch` sub command.
+-        elif len(tokens) == 3 and tokens[1] == 'launch':
+-            for pt in spp_common.SEC_TYPES:
+-                candidates.append('{}'.format(pt))
+-
+-        elif len(tokens) == 4 and tokens[1] == 'launch':
+-            if tokens[2] in spp_common.SEC_TYPES:
+-                candidates = [
+-                        str(i+1) for i in range(spp_common.MAX_SECONDARY)]
+-
+-        elif len(tokens) == 5 and tokens[1] == 'launch':
+-            if (tokens[2] in spp_common.SEC_TYPES) and \
+-                    (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
+-                ptype = tokens[2]
+-                sid = tokens[3]
+-
+-                if ptype == 'nfv':
+-                    opt_sid = '-n'
+-                else:
+-                    opt_sid = '--client-id'
+-
+-                server_addr = common.current_server_addr()
+-                server_addr = server_addr.replace('7777', '6666')
+-
+-                # Define rest of cores dynamically.
+-                # TODO(yasufum) decide rest of cores considering used cores
+-                if ptype == 'nfv':  # one core is enough
+-                    rest_core = sid
+-                elif ptype == 'vf':  # at least three cores
+-                    rest_core = '{}-{}'.format(int(sid), int(sid)+2)
+-                elif ptype == 'mirror':  # two cores
+-                    rest_core = sid
+-                elif ptype == 'pcap':  # at least two cores
+-                    rest_core = '{}-{}'.format(int(sid), int(sid)+1)
+-
+-                candidates = [mytemplate.format(
+-                    base_core, rest_core, opt_sid, sid, server_addr)]
++        if tokens[0].endswith(';'):
++
++            # Show sub commands
++            if len(tokens) == 2:
++                # Add sub commands
++                candidates = candidates + self.PRI_CMDS[:]
++
++            # Show args of `launch` sub command.
++            elif len(tokens) == 3 and tokens[1] == 'launch':
++                for pt in spp_common.SEC_TYPES:
++                    candidates.append('{}'.format(pt))
++
++            elif len(tokens) == 4 and tokens[1] == 'launch':
++                if tokens[2] in spp_common.SEC_TYPES:
++                    candidates = [
++                            str(i+1) for i in range(spp_common.MAX_SECONDARY)]
++
++            elif len(tokens) == 5 and tokens[1] == 'launch':
++                if (tokens[2] in spp_common.SEC_TYPES) and \
++                        (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
++                    ptype = tokens[2]
++                    sid = tokens[3]
++
++                    if ptype == 'nfv':
++                        opt_sid = '-n'
++                    else:
++                        opt_sid = '--client-id'
++
++                    server_addr = common.current_server_addr()
++                    server_addr = server_addr.replace('7777', '6666')
++
++                    # Define rest of cores dynamically.
++                    # TODO(yasufum) decide rest of cores considering used cores
++                    if ptype == 'nfv':  # one core is enough
++                        rest_core = sid
++                    elif ptype == 'vf':  # at least three cores
++                        rest_core = '{}-{}'.format(int(sid), int(sid)+2)
++                    elif ptype == 'mirror':  # two cores
++                        rest_core = sid
++                    elif ptype == 'pcap':  # at least two cores
++                        rest_core = '{}-{}'.format(int(sid), int(sid)+1)
++
++                    candidates = [mytemplate.format(
++                        base_core, rest_core, opt_sid, sid, server_addr)]
+ 
+         if not text:
+             completions = candidates
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index c2a31c6..e68ac63 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -330,6 +330,7 @@ class Shell(cmd.Cmd, object):
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+ 
++        line = re.sub(r'\s+', " ", line)
+         return self.primary.complete(text, line, begidx, endidx)
+ 
+     def do_nfv(self, cmd):
+-- 
+2.7.4
+
+

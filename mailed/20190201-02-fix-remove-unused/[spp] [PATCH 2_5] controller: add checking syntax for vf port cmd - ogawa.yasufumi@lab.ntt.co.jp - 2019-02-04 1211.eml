@@ -1,0 +1,124 @@
+X-Account-Key: account1
+X-UIDL: 13923.f08,LvqT6Lnuy6C,kcnKMVGbtp4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw001.ocn.ad.jp (LHLO md-lpx-nw001) (153.138.217.14)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:13:34 +0900 (JST)
+Received: from md-mta-cb001.ocn.ad.jp ([153.138.211.69])
+	by md-lpx-nw001 with LMTP id 6OfUAN6tV1wFXQAA7ajWmg
+	; Mon, 04 Feb 2019 12:13:34 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-cb001.ocn.ad.jp (Postfix) with ESMTP id E0E2F4400FC12
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:33 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 589FD9C026C
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:13:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 1D9265681;
+	Mon,  4 Feb 2019 04:13:31 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id EDCC35589
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:13:29 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x143DSTZ023145;
+ Mon, 4 Feb 2019 12:13:28 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D3C4C638BAC;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id C5D16638B0E;
+ Mon,  4 Feb 2019 12:13:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:11:16 +0900
+Message-Id: <1549249879-31580-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249879-31580-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/5] controller: add checking syntax for vf port cmd
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is add checking the number of params for `port` sub command
+of vf to avoid SPP CLI is terminated if its syntax is invalid.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/vf.py | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/src/controller/commands/vf.py b/src/controller/commands/vf.py
+index 7518c04..ff08231 100644
+--- a/src/controller/commands/vf.py
++++ b/src/controller/commands/vf.py
+@@ -279,6 +279,7 @@ class SppVf(object):
+                     print('Error: unknown response.')
+ 
+     def _run_port(self, params):
++        req_params = None
+         if len(params) == 4:
+             if params[0] == 'add':
+                 action = 'attach'
+@@ -314,17 +315,20 @@ class SppVf(object):
+                           'dir': params[2],
+                           'vlan': {'operation': op, 'id': int(params[5]),
+                                    'pcp': int(params[6])}}
++        else:
++            print('Error: Invalid syntax.')
+ 
+-        res = self.spp_ctl_cli.put('vfs/%d/components/%s/ports'
+-                                   % (self.sec_id, params[3]), req_params)
+-        if res is not None:
+-            error_codes = self.spp_ctl_cli.rest_common_error_codes
+-            if res.status_code == 204:
+-                print("Succeeded to %s port" % params[0])
+-            elif res.status_code in error_codes:
+-                pass
+-            else:
+-                print('Error: unknown response.')
++        if req_params is not None:
++            res = self.spp_ctl_cli.put('vfs/%d/components/%s/ports'
++                                       % (self.sec_id, params[3]), req_params)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Succeeded to %s port" % params[0])
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
+ 
+     def _run_cls_table(self, params):
+         req_params = None
+@@ -337,7 +341,7 @@ class SppVf(object):
+                           'vlan': params[2], 'mac_address': params[3],
+                           'port': params[4]}
+         else:
+-            print('Error: Invalid params')
++            print('Error: Invalid syntax.')
+ 
+         if req_params is not None:
+             req = 'vfs/%d/classifier_table' % self.sec_id
+-- 
+2.7.4
+
+
