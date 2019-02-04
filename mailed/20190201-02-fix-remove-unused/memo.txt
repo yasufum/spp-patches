@@ -1,0 +1,5 @@
+It was mistake to send the same patch 2nd times. First one should be omitted.
+
+* [spp] [PATCH] controller: fix bug to add vf comps on same core
+
+* [spp] [PATCH 1/5] controller: fix bug to add vf comps on same core
