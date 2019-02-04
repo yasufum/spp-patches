@@ -1,0 +1,118 @@
+X-Account-Key: account1
+X-UIDL: 13943.Tp9kPgPFy6djMfM4RFtxuNo0DSA=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw009.ocn.ad.jp (LHLO md-lpx-nw009) (153.138.217.82)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:15:14 +0900 (JST)
+Received: from md-mta-cb001.ocn.ad.jp ([153.138.211.69])
+	by md-lpx-nw009 with LMTP id uBrPJkKuV1xRcAAAkTVMFA
+	; Mon, 04 Feb 2019 12:15:14 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb001.ocn.ad.jp (Postfix) with ESMTP id 92B624400FC23
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:14 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 2F561D4028B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:15:14 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 323801B101;
+	Mon,  4 Feb 2019 04:15:13 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id C81A75589
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:15:10 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143F99i006228;
+ Mon, 4 Feb 2019 12:15:09 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 8E53E161;
+ Mon,  4 Feb 2019 12:15:09 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 784B59F;
+ Mon,  4 Feb 2019 12:15:09 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:12:59 +0900
+Message-Id: <1549249979-31792-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] docs: revise how to use section
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to revise `How to Use` section.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/howto_use.rst | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/docs/guides/setup/howto_use.rst b/docs/guides/setup/howto_use.rst
+index 225f096..11aa386 100644
+--- a/docs/guides/setup/howto_use.rst
++++ b/docs/guides/setup/howto_use.rst
+@@ -48,20 +48,20 @@ a process.
+     $ python3 src/spp-ctl/spp-ctl
+ 
+ Notice that ``spp-ctl`` is implemented in ``python3`` and cannot be
+-launched with ``python`` or ``python2``.
++launched with ``python2``.
+ 
+ It has a option ``-b`` for binding address explicitly to be accessed
+ from other than default, ``127.0.0.1`` or ``localhost``.
+ If you deploy SPP on multiple nodes, you might need to use ``-b`` option
+-to be accessed from other processes running on other than local node.
++it to be accessed from other processes running on other than local node.
+ 
+ .. code-block:: console
+ 
+     # launch with URL http://192.168.1.100:7777
+     $ python3 src/spp-ctl/spp-ctl -b 192.168.1.100
+ 
+-``spp-ctl`` is also launched as a daemon process, or managed
+-by ``systemd``.
++``spp-ctl`` is the most important process in SPP. For some usecases,
++you might better to manage this process with ``systemd``.
+ Here is a simple example of service file for systemd.
+ 
+ .. code-block:: none
+@@ -484,7 +484,7 @@ launching DPDK processes.
+         -s 192.168.122.100:5555
+ 
+ You can configure SPP running on the VM from SPP CLI.
+-Use ``server`` command is to switch node under the management.
++Use ``server`` command to switch node under the management.
+ 
+ .. code-block:: none
+ 
+@@ -506,3 +506,9 @@ Use ``server`` command is to switch node under the management.
+     # configure SPP on VM
+     spp > status
+     ...
++
++Now, you are ready to setup your network environment for DPDK and non-DPDK
++applications with SPP.
++SPP enables users to configure service function chaining between applications
++running on host and VMs.
++Usecases of network configuration are explained in the next chapter.
+-- 
+2.7.4
+
+
