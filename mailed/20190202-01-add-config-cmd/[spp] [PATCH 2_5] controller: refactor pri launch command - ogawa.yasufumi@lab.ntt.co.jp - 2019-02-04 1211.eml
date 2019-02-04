@@ -1,0 +1,228 @@
+X-Account-Key: account1
+X-UIDL: 13931.251Gwe0F4Qt0h4IGYqYAJK,iJIg=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw009.ocn.ad.jp (LHLO md-lpx-nw009) (153.138.217.82)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:14:17 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-nw009 with LMTP id 2IdVNgiuV1zTcAAAkTVMFA
+	; Mon, 04 Feb 2019 12:14:16 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id CF913C00160C
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:16 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 3809AD4025B
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:16 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 718745681;
+	Mon,  4 Feb 2019 04:14:14 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id BB5505589
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:14:12 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143EAQ4006208;
+ Mon, 4 Feb 2019 12:14:10 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C41471A5;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id A89A41AB;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:11:58 +0900
+Message-Id: <1549249921-31638-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/5] controller: refactor pri launch command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to move variables related to launch command from Shell
+class to SppPrimary because these vars are used only in SppPrimary
+actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 58 ++++++++++++++++++++++++++++++++++--------
+ src/controller/shell.py        | 17 ++++---------
+ 2 files changed, 53 insertions(+), 22 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index b03524b..aa78cef 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -6,7 +6,6 @@ from __future__ import absolute_import
+ from .. import spp_common
+ from ..shell_lib import common
+ from ..spp_common import logger
+-#from .. import spp_common
+ 
+ 
+ class SppPrimary(object):
+@@ -25,6 +24,22 @@ class SppPrimary(object):
+     def __init__(self, spp_ctl_cli):
+         self.spp_ctl_cli = spp_ctl_cli
+ 
++        # Default args for `pri; launch`, used if given cli_config is invalid
++        self.launch_default = {
++                'mem': '-m 512',
++                'base_lcore': '1',
++                'vhost_cli': ''
++                }
++
++        # Setup template of args for `pri; launch`
++        temp = "-l __BASE_LCORE__,{} "
++        temp = temp + "__MEM__ "
++        temp = temp + "-- "
++        temp = temp + "{} {} "  # '-n 1' or '--client-id 1'
++        temp = temp + "-s {} "  # '-s 192.168.1.100:6666'
++        temp = temp + "__VHOST_CLI__"
++        self.launch_template = temp
++
+     def run(self, cmd):
+         """Called from do_pri() to Send command to primary process."""
+ 
+@@ -141,7 +156,7 @@ class SppPrimary(object):
+                     rports['id'], rports['rx'],  rports['tx'],
+                     rports['rx_drop'], rports['tx_drop']))
+ 
+-    def complete(self, text, line, begidx, endidx, cli_config, template):
++    def complete(self, text, line, begidx, endidx, cli_config):
+         """Completion for primary process commands.
+ 
+         Called from complete_pri() to complete primary command.
+@@ -150,13 +165,7 @@ class SppPrimary(object):
+         candidates = []
+         tokens = line.split(' ')
+ 
+-        template = template.replace('__MEM__', cli_config['sec_mem']['val'])
+-        template = template.replace('__BASE_LCORE__', cli_config['sec_base_lcore']['val'])
+-        if cli_config['sec_vhost_cli']['val']:
+-            template = template.replace('__VHOST_CLI__', '--vhost-client')
+-        else:
+-            template = template.replace('__VHOST_CLI__', '')
+-
++        # Parse command line
+         if tokens[0].endswith(';'):
+ 
+             # Show sub commands
+@@ -199,7 +208,10 @@ class SppPrimary(object):
+                     elif ptype == 'pcap':  # at least two cores
+                         rest_core = '{}-{}'.format(int(sid), int(sid)+1)
+ 
+-                    candidates = [template.format(
++                    temp = self._setup_launch_template(
++                            cli_config, self.launch_template,
++                            self.launch_default)
++                    candidates = [temp.format(
+                         rest_core, opt_sid, sid, server_addr)]
+ 
+         if not text:
+@@ -211,6 +223,32 @@ class SppPrimary(object):
+ 
+         return completions
+ 
++    def _setup_launch_template(self, cli_config, template, defaults):
++        """Check given `cli_config` for params of launch."""
++
++        if 'sec_mem' in cli_config.keys():
++            sec_mem = cli_config['sec_mem']['val']
++        else:
++            sec_mem = defaults['mem']
++        template = template.replace('__MEM__', sec_mem)
++
++        if 'sec_base_lcore' in cli_config.keys():
++            sec_base_lcore = cli_config['sec_base_lcore']['val']
++        else:
++            sec_base_lcore = defaults['base_lcore']
++        template = template.replace('__BASE_LCORE__', sec_base_lcore)
++
++        if 'sec_vhost_cli' in cli_config.keys():
++            if cli_config['sec_vhost_cli']['val']:
++                vhost_client = '--vhost-client'
++            else:
++                vhost_client = ''
++        else:
++            vhost_client = defaults['vhost_cli']
++        template = template.replace('__VHOST_CLI__', vhost_client)
++
++        return template
++
+     def _get_sec_ids(self):
+         sec_ids = []
+         res = self.spp_ctl_cli.get('processes')
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 8cf10e6..78795f7 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -30,7 +30,7 @@ class Shell(cmd.Cmd, object):
+             'topo_size': {
+                 'val': '60%', 'desc': 'Percentage or ratio of topo'},
+             'sec_mem': {
+-                'val':'-m 512', 'desc': 'Mem size'},
++                'val': '-m 512', 'desc': 'Mem size'},
+             'sec_base_lcore': {
+                 'val': '1', 'desc': 'Shared lcore among secondaryes'},
+             'sec_vf_nof_lcores': {
+@@ -39,14 +39,6 @@ class Shell(cmd.Cmd, object):
+                 'val': '', 'desc': 'Vhost client mode'},
+             }
+ 
+-    # Setup template of `pri; launch`
+-    template = "-l __BASE_LCORE__,{} "
+-    template = template + "__MEM__ "
+-    template = template + "-- "
+-    template = template + "{} {} "  # '-n 1' or '--client-id 1'
+-    template = template + "-s {} "  # '-s 192.168.1.100:6666'
+-    template = template + "__VHOST_CLI__"
+-
+     hist_file = os.path.expanduser('~/.spp_history')
+     PLUGIN_DIR = 'plugins'
+ 
+@@ -358,8 +350,9 @@ class Shell(cmd.Cmd, object):
+         """Completion for primary process commands."""
+ 
+         line = re.sub(r'\s+', " ", line)
+-        return self.primary.complete(text, line, begidx, endidx,
+-                self.cli_config, self.template)
++        return self.primary.complete(
++                text, line, begidx, endidx,
++                self.cli_config)
+ 
+     def do_nfv(self, cmd):
+         """Send a command to spp_nfv specified with ID.
+@@ -660,7 +653,7 @@ class Shell(cmd.Cmd, object):
+         if len(tokens) == 1:
+             key = tokens[0]
+             if key == '':
+-                for k,v in self.cli_config.items():
++                for k, v in self.cli_config.items():
+                     print('- {}: "{}"\t# {}'.format(k, v['val'], v['desc']))
+             elif key in self.cli_config.keys():
+                 print('- {}: "{}"\t# {}'.format(
+-- 
+2.7.4
+
+

@@ -1,0 +1,148 @@
+X-Account-Key: account1
+X-UIDL: 13928.VnvhSP5MQOnul,CtA+tMkGKOYN8=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb008.ocn.ad.jp (LHLO md-lpx-cb008) (153.138.210.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:14:16 +0900 (JST)
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-cb008 with LMTP id EE6cGQiuV1wJTgAArMKwLw
+	; Mon, 04 Feb 2019 12:14:16 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id 64AEAC00161C
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:16 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id C4B78D4027D
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:15 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 8DB1D1B1DD;
+	Mon,  4 Feb 2019 04:14:14 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id C0F75559A
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:14:12 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143EAbi006212;
+ Mon, 4 Feb 2019 12:14:10 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id DA4AF1AB;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id C81DB1AE;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:12:00 +0900
+Message-Id: <1549249921-31638-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 4/5] controller: add max_secondary to config
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The number of secondary processes is limited with MAX_SECONDARY defined
+in `spp_common.py`, and it is used to show candidates of secondary ID
+while launching secondary process. This patch is to add `max_secondary`
+to make MAX_SECONDARY configurable after launching SPP CLI.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 14 ++++++++++++--
+ src/controller/shell.py        | 26 ++++++++++++++++++--------
+ 2 files changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index aa78cef..b455b2d 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -179,13 +179,23 @@ class SppPrimary(object):
+                     candidates.append('{}'.format(pt))
+ 
+             elif len(tokens) == 4 and tokens[1] == 'launch':
++                if 'max_secondary' in cli_config.keys():
++                    max_secondary = int(cli_config['max_secondary']['val'])
++                else:
++                    max_secondary = spp_common.MAX_SECONDARY
++
+                 if tokens[2] in spp_common.SEC_TYPES:
+                     candidates = [
+-                            str(i+1) for i in range(spp_common.MAX_SECONDARY)]
++                            str(i+1) for i in range(max_secondary)]
+ 
+             elif len(tokens) == 5 and tokens[1] == 'launch':
++                if 'max_secondary' in cli_config.keys():
++                    max_secondary = int(cli_config['max_secondary']['val'])
++                else:
++                    max_secondary = spp_common.MAX_SECONDARY
++
+                 if (tokens[2] in spp_common.SEC_TYPES) and \
+-                        (int(tokens[3])-1 in range(spp_common.MAX_SECONDARY)):
++                        (int(tokens[3])-1 in range(max_secondary)):
+                     ptype = tokens[2]
+                     sid = tokens[3]
+ 
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index e8b0a0e..7a192fb 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -24,19 +24,29 @@ class Shell(cmd.Cmd, object):
+     """SPP command prompt."""
+ 
+     # Default config, but changed via `config` command
++    # TODO(yasufum) move defaults to config file and include from.
+     cli_config = {
+-            'prompt': {
+-                'val': 'spp > ', 'desc': 'Command prompt'},
+-            'topo_size': {
+-                'val': '60%', 'desc': 'Percentage or ratio of topo'},
++            'max_secondary': {
++                'val': spp_common.MAX_SECONDARY,
++                'desc': 'The maximum number of secondary processes'},
+             'sec_mem': {
+-                'val': '-m 512', 'desc': 'Mem size'},
++                'val': '-m 512',
++                'desc': 'Mem size'},
+             'sec_base_lcore': {
+-                'val': '1', 'desc': 'Shared lcore among secondaryes'},
++                'val': '1',
++                'desc': 'Shared lcore among secondaryes'},
+             'sec_vf_nof_lcores': {
+-                'val': '3', 'desc': 'Number of lcores for vf workers'},
++                'val': '3',
++                'desc': 'Number of lcores for vf workers'},
+             'sec_vhost_cli': {
+-                'val': '', 'desc': 'Vhost client mode'},
++                'val': '',
++                'desc': 'Vhost client mode'},
++            'prompt': {
++                'val': 'spp > ',
++                'desc': 'Command prompt'},
++            'topo_size': {
++                'val': '60%',
++                'desc': 'Percentage or ratio of topo'},
+             }
+ 
+     hist_file = os.path.expanduser('~/.spp_history')
+-- 
+2.7.4
+
+

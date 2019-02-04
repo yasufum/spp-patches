@@ -1,0 +1,122 @@
+X-Account-Key: account1
+X-UIDL: 13930.LQlR2V1qgyGxNOk0odJJAx7MPPM=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw001.ocn.ad.jp (LHLO md-lpx-nw001) (153.138.217.14)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:14:16 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-nw001 with LMTP id oNuPIQiuV1y7WwAA7ajWmg
+	; Mon, 04 Feb 2019 12:14:16 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id 78ABB3C00F2BA
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:16 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 0E6939C0299
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:16 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 9C6D91B1F2;
+	Mon,  4 Feb 2019 04:14:14 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id ED8EA1B192
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:14:12 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143EAcw006211;
+ Mon, 4 Feb 2019 12:14:10 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id D622B161;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id B6AF69F;
+ Mon,  4 Feb 2019 12:14:10 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:11:59 +0900
+Message-Id: <1549249921-31638-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549249921-31638-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 3/5] controller: remove nouse check_sec_cmds
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+`check_sec_cmds()` was used for validation of `sec` command which is
+already replaced with `nfv`, `vf` or so. This update is to remove nouse
+method.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 37 -------------------------------------
+ 1 file changed, 37 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 78795f7..e8b0a0e 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -203,43 +203,6 @@ class Shell(cmd.Cmd, object):
+                             return True
+         return False
+ 
+-    def check_sec_cmds(self, cmds):
+-        """Validate secondary commands before sending"""
+-
+-        # TODO(yasufum) change to return True or False, or None
+-        # instead of 0 or 1
+-
+-        level1 = ['status', 'exit', 'forward', 'stop']
+-        level2 = ['add', 'patch', 'del']
+-        patch_args = ['reset']
+-        add_del_args = ['ring', 'vhost', 'pcap', 'nullpmd']
+-        cmdlist = cmds.split(' ')
+-        valid = 0
+-
+-        length = len(cmdlist)
+-        if length == 1:
+-            if cmdlist[0] in level1:
+-                valid = 1
+-
+-        elif length == 2:
+-            if cmdlist[0] == 'patch':
+-                if cmdlist[1] in patch_args:
+-                    valid = 1
+-
+-            elif cmdlist[0] == 'add' or cmdlist[0] == 'del':
+-                p_type, p_id = cmdlist[1].split(':')
+-                if p_type in add_del_args:
+-                    if str.isdigit(p_id):
+-                        valid = 1
+-
+-        elif length == 3:
+-            if cmdlist[0] in level2:
+-                if cmdlist[0] == 'patch':
+-                    if self.is_patched_ids_valid(cmdlist[1], cmdlist[2]):
+-                        valid = 1
+-
+-        return valid
+-
+     def clean_cmd(self, cmdstr):
+         """remove unwanted spaces to avoid invalid command error"""
+ 
+-- 
+2.7.4
+
+
