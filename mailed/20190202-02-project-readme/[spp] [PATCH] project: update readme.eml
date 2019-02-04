@@ -1,0 +1,306 @@
+X-Account-Key: account1
+X-UIDL: 13934.kD6J0G5Jw1v58skU1LULv2oSN4k=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Mon, 4 Feb 2019 12:14:33 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb004 with LMTP id aJeOIRmuV1zCBQAAuuTZ3g
+	; Mon, 04 Feb 2019 12:14:33 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id 7CE133C000264
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:33 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id D983BA802A4
+	for <geminoa@juno.ocn.ne.jp>; Mon,  4 Feb 2019 12:14:32 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id D3AD95681;
+	Mon,  4 Feb 2019 04:14:31 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 8001D5589
+ for <spp@dpdk.org>; Mon,  4 Feb 2019 04:14:30 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x143ETNl006220;
+ Mon, 4 Feb 2019 12:14:29 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 4CE69161;
+ Mon,  4 Feb 2019 12:14:29 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 365E29F;
+ Mon,  4 Feb 2019 12:14:29 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon,  4 Feb 2019 12:12:08 +0900
+Message-Id: <1549249928-31689-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] project: update readme
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to update README of project root.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ README    |  21 -------
+ README.md | 200 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 200 insertions(+), 21 deletions(-)
+ delete mode 100644 README
+ create mode 100644 README.md
+
+diff --git a/README b/README
+deleted file mode 100644
+index 27e3b35..0000000
+--- a/README
++++ /dev/null
+@@ -1,21 +0,0 @@
+-Soft Patch Panel
+-================
+-
+-The goal of SPP is to easily interconnect DPDK applications together,
+-and assign resources dynamically to these applications to build a
+-pipeline.
+-
+-The first version of SPP provides for the management of DPDK ports, and
+-assigning ports to different DPDK applications.
+-
+-The framework is composed of a primary DPDK application that is
+-responsible for resource management. This primary application doesn't
+-interact with any traffic, and is used to manage creation and freeing of
+-resources only.
+-
+-A Python based management interface is provided to control the primary
+-DPDK application to create resources, which are then to be used by
+-secondary applications. This management application provides a socket
+-based interface for the primary and secondary DPDK applications to
+-interface to the manager. The management application will use OVSDB to
+-maintain all created and assigned ports.
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..4ede2f2
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,200 @@
++# Soft Patch Panel
++
++
++## Overview
++
++[Soft Patch Panel](http://git.dpdk.org/apps/spp/)
++(SPP) is a DPDK application for providing switching
++functionality for Service Function Chaining in NFV
++(Network Function Virtualization).
++DPDK stands for Data Plane Development Kit.
++
++
++## Project Goal
++
++In general, implementation and configuration of DPDK application is
++difficult because it requires deep understandings of system architecture
++and networking technologies.
++
++The goal of SPP is to easily inter-connect DPDK applications together
++and assign resources dynamically to these applications
++with patch panel like simple interface.
++
++
++## Architecture Overview
++
++The framework is composed of a primary DPDK application that is
++responsible for resource management and secondary processes as workers
++for packet forwarding. This primary application doesn't
++interact with any traffic, and is used to manage creation and freeing of
++resources only.
++
++A Python based management interfaces, `spp-ctl` and `SPP CLI`,
++are provided to control the primary DPDK application to create resources,
++which are then to be used by secondary applications.
++
++This management application provides a socket based interface for
++the primary and secondary DPDK applications to
++interface to the manager.
++
++
++## Install
++
++Before using SPP, you need to install DPDK. Briefly describ here how to install
++and setup DPDK. Please refer to SPP's
++[Getting Started](https://doc.dpdk.org/spp/setup/getting_started.html) guide
++for more details. For DPDK, refer to
++[Getting Started Guide for Linux](https://doc.dpdk.org/guides/linux_gsg/index.html).
++
++### Install DPDK
++
++It is required to install Python and libnuma-devel library before.
++
++```sh
++$ sudo apt install libnuma-dev
++
++# Python2
++$ sudo apt install python python-pip
++
++# Python3
++$ sudo apt install python3 python3-pip
++```
++
++Clone repository and compile DPDK in any directory.
++
++```
++$ cd /path/to/any
++$ git clone http://dpdk.org/git/dpdk
++```
++
++Compile DPDK with target environment.
++
++```sh
++$ cd dpdk
++$ export RTE_SDK=$(pwd)
++$ export RTE_TARGET=x86_64-native-linuxapp-gcc  # depends on your env
++$ make install T=$RTE_TARGET
++```
++
++### Install SPP
++
++Clone repository and compile SPP in any directory.
++
++```sh
++$ cd /path/to/any
++$ git clone http://dpdk.org/git/apps/spp
++$ cd spp
++$ make  # Confirm that $RTE_SDK and $RTE_TARGET are set
++```
++
++### Binding Network Ports to DPDK
++
++Network ports must be bound to DPDK with a UIO (Userspace IO) driver. UIO driver
++is for mapping device memory to userspace and registering interrupts.
++
++You usually use the standard `uio_pci_generic` for many use cases or `vfio-pci`
++for more robust and secure cases. Both of drivers are included by default in
++modern Linux kernel.
++
++```sh
++# Activate uio_pci_generic
++$ sudo modprobe uio_pci_generic
++
++# or vfio-pci
++$ sudo modprobe vfio-pci
++```
++
++Once UIO driver is activated, bind network ports with the driver. DPDK provides
++`usertools/dpdk-devbind.py` for managing devices.
++
++```
++# Bind a port with 2a:00.0 (PCI address)
++$ ./usertools/dpdk-devbind.py --bind=uio_pci_generic 2a:00.0
++
++# or eth0
++$ ./usertools/dpdk-devbind.py --bind=uio_pci_generic eth0
++```
++
++After binding two ports, you can find it is under the DPDK driver, and cannot
++find it by using `ifconfig` or `ip`.
++
++```sh
++$ $RTE_SDK/usertools/dpdk-devbind.py -s
++
++Network devices using DPDK-compatible driver
++============================================
++0000:2a:00.0 '82571EB ... 10bc' drv=uio_pci_generic unused=vfio-pci
++....
++```
++
++## How to Use
++
++You should keep in mind the order of launching processes. Primary process must
++be launched before secondary processes. `spp-ctl` need to be launched before
++`spp.py`, but no need to be launched before other processes.
++In general, `spp-ctl` should be launched first, then `spp.py` and `spp_primary`
++in each of terminals without running as background process.
++
++It has a option -b for binding address explicitly to be accessed from other
++than default, `127.0.0.1` or `localhost`.
++
++
++### SPP Controller
++
++SPP controller consists of `spp-ctl` and SPP CLI.
++`spp-ctl` is a HTTP server for REST APIs for managing SPP processes.
++
++```sh
++# terminal 1
++$ cd /path/to/spp
++$ python3 src/spp-ctl/spp-ctl -b 192.168.1.100
++```
++
++SPP CLI is a client of `spp-ctl` for providing simple user interface without
++using REST APIs.
++
++```sh
++# terminal 2
++$ cd /path/to/spp
++$ python3 src/spp.py -b 192.168.1.100
++```
++
++
++### SPP Primary
++
++Launch SPP primary and secondary processes.
++SPP primary is a resource manager and initializing EAL for secondary processes.
++Secondary process behaves as a client of primary process and a worker for doing
++tasks.
++
++```sh
++# terminal 3
++$ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    -l 1 -n 4 \
++    --socket-mem 512,512 \
++    --huge-dir=/dev/hugepages \
++    --proc-type=primary \
++    -- \
++    -p 0x03 \
++    -n 10 \
++    -s 192.168.1.100:5555
++```
++
++There are several kinds of secondary process. Here is an example of the simplest
++one.
++
++```sh
++# terminal 4
++$ cd /path/to/spp
++$ sudo ./src/nfv/x86_64-native-linuxapp-gcc/spp_nfv \
++    -l 2-3 -n 4 \
++    --proc-type=secondary \
++    -- \
++    -n 1 \
++    -s 192.168.1.100:6666
++```
++
++After all of SPP processes are launched, configure network path from SPP CLI.
++Please refer to SPP
++[Use Cases](https://doc.dpdk.org/spp/setup/use_cases.html)
++for the configuration.
+-- 
+2.7.4
+
+
