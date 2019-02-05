@@ -1,0 +1,215 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:a3f1:0:0:0:0:0 with SMTP id t46csp701360edb;
+        Tue, 5 Feb 2019 03:48:58 -0800 (PST)
+X-Google-Smtp-Source: AHgI3IYE8sSfGZ04bPBf4NEgE2eV91hzpFqlCForp9W+ZtRjI+fHDH9iuWMJmxO9oKyl0tofDkBM
+X-Received: by 2002:a17:906:4a0c:: with SMTP id w12mr3316234eju.240.1549367338128;
+        Tue, 05 Feb 2019 03:48:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1549367338; cv=none;
+        d=google.com; s=arc-20160816;
+        b=VcWShRb8sIEIEpfGbebPieGyIPOIJlWqE8kN2qjFIFC2w29Rm1IWQAb0SnLjR1pPxP
+         jotvAb1V7XARvftZJlKr8vk5RN5LufhdguJb9PnEZh7QyZ7/8xLEBS1A5fFJdy1GSc45
+         tLPPYmh5+VMhG+ayrzMo/Zwlhkw4uMMIbpyh/fSQfBMKRfYKO4xpXL/6ziP74Tn7vpPy
+         ncTqHU97JTdppH3oGaJCZb0KlsXD5uiZG/jc9dng8EegjvOeO8D6okvOAWjDD+y9d1XN
+         KWXVbWfInW55sdl6FDJu3CAB3ADkaWiUiNvrdnX2ElAjm6dMhsPGRBvMggx7mXoEQa7P
+         lO+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :date:cc:to:from:message-id;
+        bh=DSIQeclpu6NldEwMuA0cIyAsM+iH7l3HfXoNNLjuUP0=;
+        b=rgqT1YV3z3biGp6BVcCMPDQqfD1k1DMwIVSWcR4xQfvCDCIKoxiKzPD0THF5NsD1Re
+         Prr/qRnONnjHSnZMK6HEHkwh/hkvxbncuFxtHPRud9pxS2wLSNCfNhfMBDEMa6NU3rSx
+         eMdC0VoTeU4WqPVcK5lNwhofGewZ+CWmxJ6eey++SU0WxdAqht3pB3EannZ2YvXwAU+Y
+         DuQZKBMJj7RSjRA7fS7l9QUUuYxpWCQ4djnIz7dfhtxyMdJJMDOSUajYi+quySHKf0D3
+         D0QAMdip3HiBsuu5i0bN+HxUn+XG8Qf7y/M84+Dx7dJ0FX5L7vfw1i5vEDfWu8PA8Glq
+         BrWw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id i18si3715097eja.145.2019.02.05.03.48.57;
+        Tue, 05 Feb 2019 03:48:58 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id D49391B12D;
+	Tue,  5 Feb 2019 12:48:56 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id A94757CCA
+ for <spp@dpdk.org>; Tue,  5 Feb 2019 12:48:54 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x15Bmrsa015501;
+ Tue, 5 Feb 2019 20:48:53 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x15BmrMt031078;
+ Tue, 5 Feb 2019 20:48:53 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA30835;
+ Tue, 5 Feb 2019 20:47:43 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x15BlhxN014240;
+ Tue, 5 Feb 2019 20:47:43 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x15Blget014233; Tue, 5 Feb 2019 20:47:42 +0900
+Message-Id: <201902051147.x15Blget014233@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x15BlgJa025667 ; Tue, 5 Feb 2019 20:47:42 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue,  5 Feb 2019 20:47:41 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190205114742.24502-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190205114742.24502-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 4/5] spp_vf: remove to check unused cores no needed
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Checking unused core is no needed anymore after core sharing feature
+is introduced. This patch removes `type` from struct `core_info` which
+is used for checking unused or not.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c  | 13 +------------
+ src/vf/common/command_proc.c | 10 ----------
+ src/vf/common/spp_proc.c     | 14 +++++---------
+ src/vf/common/spp_proc.h     |  4 +---
+ 4 files changed, 7 insertions(+), 34 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 61dd4f4..4c3e62a 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <unistd.h>
+@@ -94,17 +94,6 @@ const char *PORT_ABILITY_STRINGS[] = {
+ 	/* termination */ "",
+ };
+ 
+-/* Get component type being updated on target core */
+-static enum spp_component_type
+-spp_get_component_type_update(unsigned int lcore_id)
+-{
+-	struct core_mng_info *core_info;
+-
+-	spp_get_mng_data_addr(NULL, NULL, NULL, &core_info, NULL, NULL, NULL);
+-	struct core_mng_info *info = (core_info + lcore_id);
+-	return info->core[info->upd_index].type;
+-}
+-
+ /* Check mac address used on the port for registering or removing */
+ static int
+ spp_check_classid_used_port(
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 3f44174..06e50e6 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -270,12 +270,6 @@ spp_update_component(
+ 		}
+ 
+ 		core = &info->core[info->upd_index];
+-		if ((core->type != SPP_COMPONENT_UNUSE) &&
+-				(core->type != type)) {
+-			RTE_LOG(ERR, APP, "Component type '%s' is invalid.\n",
+-				name);
+-			return SPP_RET_NG;
+-		}
+ 
+ 		component = (component_info + component_id);
+ 		memset(component, 0x00, sizeof(struct spp_component_info));
+@@ -284,7 +278,6 @@ spp_update_component(
+ 		component->lcore_id	= lcore_id;
+ 		component->component_id	= component_id;
+ 
+-		core->type = type;
+ 		core->id[core->num] = component_id;
+ 		core->num++;
+ 		ret = SPP_RET_OK;
+@@ -316,9 +309,6 @@ spp_update_component(
+ 			/* If deleted, decrement number. */
+ 			core->num--;
+ 
+-		if (core->num == 0)
+-			core->type = SPP_COMPONENT_UNUSE;
+-
+ 		ret = SPP_RET_OK;
+ 		*(change_component + component_id) = 0;
+ 		break;
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 9a118bd..cf0d760 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <unistd.h>
+@@ -290,15 +290,11 @@ dump_core_info(const struct core_mng_info *core_info)
+ 				lcore_id, info->status,
+ 				info->ref_index, info->upd_index);
+ 
+-		sprintf(str, "core[%d]-0 type=%d, num=%d", lcore_id,
+-				info->core[0].type, info->core[0].num);
+-		dump_buff(str, info->core[0].id,
+-				sizeof(int)*info->core[0].num);
++		memset(str, 0x00, SPP_NAME_STR_LEN);
++		dump_buff(str, info->core[0].id, sizeof(int)*info->core[0].num);
+ 
+-		sprintf(str, "core[%d]-1 type=%d, num=%d", lcore_id,
+-				info->core[1].type, info->core[1].num);
+-		dump_buff(str, info->core[1].id,
+-				sizeof(int)*info->core[1].num);
++		sprintf(str, "core[%d]-1 num=%d", lcore_id, info->core[1].num);
++		dump_buff(str, info->core[1].id, sizeof(int)*info->core[1].num);
+ 	}
+ }
+ 
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index 2fc8cc2..8112af3 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #ifndef _SPP_PROC_H_
+@@ -244,8 +244,6 @@ struct iface_info {
+ 
+ /* Manage component running in core as global variable */
+ struct core_info {
+-	volatile enum spp_component_type type;
+-			       /* Component type */
+ 	int num;	       /* The number of IDs below */
+ 	int id[RTE_MAX_LCORE]; /* ID list of components executed on cpu core */
+ };
+-- 
+2.17.1
+

@@ -1,0 +1,139 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:a3f1:0:0:0:0:0 with SMTP id t46csp701347edb;
+        Tue, 5 Feb 2019 03:48:57 -0800 (PST)
+X-Google-Smtp-Source: AHgI3IZmJ9dpdKF2/5pd1TKSXStH1bzvpU5QdUVMEoVcWcFQdwVbszvQzxkKW2v1me7vnCcVloQ2
+X-Received: by 2002:a50:b559:: with SMTP id z25mr3525577edd.239.1549367337467;
+        Tue, 05 Feb 2019 03:48:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1549367337; cv=none;
+        d=google.com; s=arc-20160816;
+        b=KIPr9IHDQtiyhETvzLzIFL1aZsdTNThO+OFzSy4pM+lqsXTxuUYIOexC9b/kZyIpdM
+         81yPgJWDWCbGmMXLUgC0qNr1rqrKaMnr73zas7dBtX1sSNI4yKcQm0mpg9liY5YyT1DI
+         ahvX0w9whbE7Wr3LHR1hiCvFN4/jJKbNfs6QEtDNcsV2I/EqsPH7f/Ijdcdx2ejAoX2A
+         zc+/x8RMQK0Oi4T3ST4ah9h7C0KnRHzIwQ0H3ISey3pzXB9jfxM65SpnX9aKAHUbK8rs
+         dh+KkAI/ixt0hqBkYHnCMS1vab6dRy1nvy7+poQCtHkPuujXjPm+UurXoTRabpj7s9BG
+         Psiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :date:cc:to:from:message-id;
+        bh=w4pw19Zb4/yXRaq4PHbJnHnBwnLMaFFCADf8v/0en9c=;
+        b=SGk0A1SUYhaIuskw23yPmm9x4EXMG1phk1z6qq7sHo20o2NVuGXMw0BYOqgQQgaA3C
+         KIXsmTS9wobyeNpzXCathMgAYmlJjtzZ1f4PrlS5wOgw4wXLWFRvfoVKsRvUMXu3ifbb
+         CbZV6Uuhdwr/Qkh/OBjVg4UghqG0SKTeNFWovYHEaPLa5lXuhHM3no6MPhfzSvgYXrP+
+         nr4cbv68W9iJbA+ikbeX4LNIW36sr3SAyuvNysE7taPsd4la/JuZvlBmsbuAYzvWRHD8
+         yQWzTabUvhnjbfRre4TjkXvSUeq8Lau3Z9wBIWvxUzASVIyZ5SgNKQqojjG4u7Ssg4Q6
+         mCmw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id ge18si430296ejb.59.2019.02.05.03.48.57;
+        Tue, 05 Feb 2019 03:48:57 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id B02D86CD8;
+	Tue,  5 Feb 2019 12:48:56 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 4D3DE69D4
+ for <spp@dpdk.org>; Tue,  5 Feb 2019 12:48:53 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x15BmqUi015469;
+ Tue, 5 Feb 2019 20:48:52 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x15BmqJc031014;
+ Tue, 5 Feb 2019 20:48:52 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA30819;
+ Tue, 5 Feb 2019 20:47:43 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x15BlgHj014226;
+ Tue, 5 Feb 2019 20:47:42 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x15Blg5C014220; Tue, 5 Feb 2019 20:47:42 +0900
+Message-Id: <201902051147.x15Blg5C014220@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x15BlgJX025667 ; Tue, 5 Feb 2019 20:47:42 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue,  5 Feb 2019 20:47:38 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190205114742.24502-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190205114742.24502-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 1/5] spp_vf: remove while loop in classifier_mac
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+So far, spp_classifier_mac_do() has while loop and it does not return
+until the classifier component is requested to stop and thus the worker
+thread can not execute packet processing for forwarder/merger.
+To introduce core-sharing, this patch removes the while loop.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/spp_vf.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index b98444d..bdc4c10 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <netinet/in.h>
+@@ -209,21 +209,18 @@ slave_main(void *arg __attribute__ ((unused)))
+ 			core = get_core_info(lcore_id);
+ 		}
+ 
++		/* It is for processing multiple components. */
+ 		for (cnt = 0; cnt < core->num; cnt++) {
+-			if (spp_get_component_type(lcore_id) ==
++			if (spp_get_component_type(core->id[cnt]) ==
+ 					SPP_COMPONENT_CLASSIFIER_MAC) {
+-				/* Classifier loops inside the function. */
+ 				ret = spp_classifier_mac_do(core->id[cnt]);
+-				break;
++				if (unlikely(ret != 0))
++					break;
++			} else {
++				ret = spp_forward(core->id[cnt]);
++				if (unlikely(ret != 0))
++					break;
+ 			}
+-
+-			/*
+-			 * Forward / Merge returns at once.
+-			 * It is for processing multiple components.
+-			 */
+-			ret = spp_forward(core->id[cnt]);
+-			if (unlikely(ret != 0))
+-				break;
+ 		}
+ 		if (unlikely(ret != 0)) {
+ 			RTE_LOG(ERR, APP, "Core[%d] Component Error. "
+-- 
+2.17.1
+
