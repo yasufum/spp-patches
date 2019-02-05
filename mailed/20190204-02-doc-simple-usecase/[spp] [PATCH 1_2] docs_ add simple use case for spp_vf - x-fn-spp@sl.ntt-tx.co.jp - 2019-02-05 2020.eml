@@ -1,0 +1,375 @@
+Delivered-To: usufumu@gmail.com
+Received: by 2002:a50:a3f1:0:0:0:0:0 with SMTP id t46csp678286edb;
+        Tue, 5 Feb 2019 03:21:43 -0800 (PST)
+X-Google-Smtp-Source: AHgI3IZoXku5bha596l5SVDg5ywdVDUCW9sC5y2E55kLbCOcoudL/aDxYiJDGjOPl71sny8agqjm
+X-Received: by 2002:a50:9784:: with SMTP id e4mr3468178edb.165.1549365703316;
+        Tue, 05 Feb 2019 03:21:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1549365703; cv=none;
+        d=google.com; s=arc-20160816;
+        b=iFTKK59Qptbu95rpxr8wwLmasUBfpSBqc7EzitFSnsAC8Ek+nJpxFDcrz72Vok9dBf
+         PcuFrzRDlABKWgVCWrxcZa04QkvV9Wuc5d2xt6ZRWf3QS5L7h/MaSX9W3VLOnSVxwrRF
+         iN0BjoF1D115Wi5IzP5btfZIDG2Byg+sJiJrZCI/dEvlmI4gOZ90dl/h6VrqfPdJhoRv
+         hoDH4nzlYgcsA/SJi4Nl/MpA98qUk7F7+ZMeI1c5STNNEUJVhFRzqg3ga4Zoxh9ED5/f
+         HVI/rzkv+0MHDyxVQaP6JyeGQqb31EIX9lsArZVq/CEXT5JzBlukhITGIpT+zvGAxLbx
+         eo9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :date:cc:to:from:message-id;
+        bh=FTvrbpXbc2xES5xQY75zz1d1f0/wsuMGXZEp7B9cNHc=;
+        b=GErzRS01tj4/XE4aK7/yEP3JLwJTJs6Pb9UH954xDi6HdPYYjxylAUB6oaTLzYefT9
+         Lxphsylohb7b3GisBywXi0CapxOAkIP1rgu8nUVeHoU3sdxoVHgMevUqTX1F1L/aOSpV
+         uvQyCFBWLlzkWGytXNZFDXcRUMCoKhjcQZAt4crkNk7Ndvi40HqXXPpEV+aTwGXind/U
+         +p+a1jriOXLF8scEB2gyv2TzrW6rvk9WK8ljd3beX2BSip+eU0nOk+hx1OfCkGwp+mOU
+         q6KV6FynlRoQz9pd1VkmxOCM5wLiZuDfqYVmSvhuRyy/L+d0m8dMZrbYoDktY/QvBzn0
+         Lztw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id e9si2113401eda.224.2019.02.05.03.21.42;
+        Tue, 05 Feb 2019 03:21:43 -0800 (PST)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 54FCB1B0FB;
+	Tue,  5 Feb 2019 12:21:42 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 6E3426833
+ for <spp@dpdk.org>; Tue,  5 Feb 2019 12:21:40 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x15BLcwA012739;
+ Tue, 5 Feb 2019 20:21:38 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x15BLc06026225;
+ Tue, 5 Feb 2019 20:21:38 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id WAA25759;
+ Tue, 5 Feb 2019 20:20:32 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x15BKWWu007606;
+ Tue, 5 Feb 2019 20:20:32 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x15BKW2K007600; Tue, 5 Feb 2019 20:20:32 +0900
+Message-Id: <201902051120.x15BKW2K007600@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x15BKVX3022598 ; Tue, 5 Feb 2019 20:20:31 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue,  5 Feb 2019 20:20:30 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190205112031.24302-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190205112031.24302-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 1/2] docs: add simple use case for spp_vf
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to another simple usecase of spp_vf because current one
+is too complex to understand how to use as noted in [1].
+
+[1] https://mails.dpdk.org/archives/spp/2018-December/001037.html
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ .../spp_vf/use_cases/basic_usecase_vf.rst     | 257 ++++++++++++++++++
+ docs/guides/spp_vf/use_cases/index.rst        |   1 +
+ 2 files changed, 258 insertions(+)
+ create mode 100644 docs/guides/spp_vf/use_cases/basic_usecase_vf.rst
+
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_vf.rst b/docs/guides/spp_vf/use_cases/basic_usecase_vf.rst
+new file mode 100644
+index 0000000..a5627fc
+--- /dev/null
++++ b/docs/guides/spp_vf/use_cases/basic_usecase_vf.rst
+@@ -0,0 +1,257 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_vf_use_cases_basic:
++
++Classify and merge ICMP packets
++===============================
++
++This usecase uses two hosts. ``spp_vf`` is running on localhost and remote host
++sends ICMP packet towards localhost to confirm packet from remote host is
++forwarded to remote host by ``spp_vf``. This section describes a usecase for
++L2 Forwarding through ``spp_vf``. To send ICMP echo packet from remote host to
++local host, you use ``ping`` command. Classifier receives incoming packets and
++classify to send to destinations based on MAC address table. Forwarder sends
++packets to merger. Merger aggregates those incoming packets from two forwarders
++and sends to remote host from outgoing port.
++
++Launch SPP Processes
++--------------------
++
++Change directory to spp and confirm that it is already compiled.
++
++.. code-block:: console
++
++    $ cd /path/to/spp
++
++Launch ``spp-ctl`` before launching SPP primary and secondary processes.
++You also need to launch ``SPP CLI`` if you use ``spp_vf`` from CLI.
++``-b`` option is for binding IP address to communicate other SPP processes,
++but no need to give it explicitly if ``127.0.0.1`` or ``localhost`` .
++
++.. code-block:: console
++
++    # terminal#1
++    # Launch spp-ctl
++    $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
++
++.. code-block:: console
++
++    # terminal#2
++    # Launch SPP CLI
++    $ python ./src/spp.py -b 127.0.0.1
++
++Then, run ``spp_primary`` on the second core with ``-l 1``.
++
++.. code-block:: console
++
++    # terminal#3
++    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++        -l 1 -n 4 \
++        --socket-mem 512,512 \
++        --huge-dir=/run/hugepages/kvm \
++        --proc-type=primary \
++        -- \
++        -p 0x03 -n 8 -s 127.0.0.1:5555
++
++After ``spp_primary`` is launched, run secondary process ``spp_vf``.
++Core list ``-l 2-6`` indicates to use five cores.
++
++.. code-block:: console
++
++     # terminal#4
++     $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
++        -l 2-6 -n 4 --proc-type=secondary \
++        -- \
++        --client-id 1 \
++        -s 127.0.0.1:6666 \
++
++Network Configuration
++---------------------
++
++Detailed configuration is described below.
++In this usecase, there are two NICs on host1 and host2 and one NIC
++is used to send packet and the other is used to receive packet.
++
++Incoming packets from NIC0 are classified based on destination address.
++For example, cls1 sends packets to fwd1 and fwd2.
++Outgoing packets are aggregated to mgr1 and sent to host1 via NIC1.
++
++.. _figure_spp_vf_use_cases_nw_config:
++
++.. figure:: ../../images/spp_vf/basic_usecase_vf_nwconfig.*
++    :width: 90%
++
++    Network Configuration
++
++First, launch threads of SPP VF called ``component`` with its CORE_ID
++and a directive for behavior.
++It is launched from ``component`` subcommand with options.
++
++.. code-block:: console
++
++    spp > sec SEC_ID; component start NAME CORE_ID BEHAVIOUR
++
++In this usecase, ``spp_vf`` is launched with ``SEC_ID`` 1.
++Let's start components for the first login path.
++``BEHAVIOUR`` for classifier ``classifier_mac`` means to classify with MAC
++address.
++``CORE_ID`` is the ID of the core that is assigned for each component.
++In this example, ``CORE_ID`` from 3 to 6 are assigned as following.
++
++.. code-block:: console
++
++    # Start component to spp_vf
++    spp > vf 1; component start cls1 3 classifier_mac
++    spp > vf 1; component start fwd1 4 forward
++    spp > vf 1; component start fwd2 5 forward
++    spp > vf 1; component start mgr1 6 merge
++
++Each of components must have rx and tx ports.
++Number of tx port and rx port are different among components.
++Add ports for each of components as following.
++You might notice that classifier has two tx ports and merger has two rx ports.
++
++.. code-block:: console
++
++    # cls1
++    spp > vf 1; port add phy:0 rx cls1
++    spp > vf 1; port add ring:0 tx cls1
++    spp > vf 1; port add ring:1 tx cls1
++
++    # fwd1
++    spp > vf 1; port add ring:0 rx fwd1
++    spp > vf 1; port add ring:2 tx fwd1
++
++    # fwd2
++    spp > vf 1; port add ring:1 rx fwd2
++    spp > vf 1; port add ring:3 tx fwd2
++
++    # mgr1
++    spp > vf 1; port add ring:2 rx mgr1
++    spp > vf 1; port add ring:3 rx mgr1
++    spp > vf 1; port add phy:1 tx mgr1
++
++As given ``classifier_mac``, classifier component decides
++the destination with MAC address by referring ``classifier_table``.
++MAC address and corresponding port is registered to the table with
++``classifier_table add mac`` command.
++
++.. code-block:: console
++
++    spp > vf SEC_ID; classifier_table add mac MAC_ADDR RES_UID
++
++In this usecase, you need to register two MAC addresses. Although
++any MAC address can be used, you assign ``52:54:00:12:34:56``
++and ``52:54:00:12:34:58`` for each port in this example.
++
++.. code-block:: console
++
++    # Register MAC address to classifier
++    spp > vf 1; classifier_table add mac 52:54:00:12:34:56 ring:0
++    spp > vf 1; classifier_table add mac 52:54:00:12:34:58 ring:1
++
++Send packet from host1
++----------------------
++
++Configure IP address of ``ens0`` and add arp entry for two MAC
++addresses statically to resolve address.
++
++.. code-block:: console
++
++    # terminal#1 at host1
++    # configure ip address of ens0
++    $ sudo ifconfig ens0 192.168.140.1 255.255.255.0 up
++
++    # set MAC address
++    $ sudo arp -i ens0 -s 192.168.140.2 52:54:00:12:34:56
++    $ sudo arp -i ens0 -s 192.168.140.3 52:54:00:12:34:58
++
++Start capture on ``ens1``.
++You can see ICMP Echo request received when ping is executed.
++
++.. code-block:: console
++
++    # terminal#2 at host1
++    # capture on ens1
++    $ sudo tcpdump -i ens1
++
++Start ping on different terminals to send ICMP Echo request.
++
++.. code-block:: console
++
++    # terminal#3 at host1
++    # ping via NIC0
++    $ ping 192.168.140.2
++
++.. code-block:: console
++
++    # terminal#4 at host1
++    # ping via NIC0
++    $ ping 192.168.140.3
++
++.. _spp_vf_use_cases_shutdown_comps:
++
++Shutdown spp_vf Components
++--------------------------
++
++Basically, you can shutdown all the SPP processes with bye all command.
++However there is a case when user want to shutdown specific secondary process
++only.
++This section describes such a shutting down process for SPP VF components.
++
++First, delete entries of ``classifier_table`` and ports of components.
++
++.. code-block:: console
++
++    # Delete MAC address from Classifier
++    spp > vf 1; classifier_table del mac 52:54:00:12:34:56 ring:0
++    spp > vf 1; classifier_table del mac 52:54:00:12:34:58 ring:1
++
++.. code-block:: console
++
++    # cls1
++    spp > vf 1; port del phy:0 rx cls1
++    spp > vf 1; port del ring:0 tx cls1
++    spp > vf 1; port del ring:1 tx cls1
++
++    # fwd1
++    spp > vf 1; port del ring:0 rx fwd1
++    spp > vf 1; port del vhost:0 tx fwd1
++
++    # fwd2
++    spp > vf 1; port del ring:1 rx fwd2
++    spp > vf 1; port del vhost:2 tx fwd2
++
++    # mgr1
++    spp > vf 1; port del ring:2 rx mgr1
++    spp > vf 1; port del ring:3 rx mgr1
++    spp > vf 1; port del phy:0 tx mgr1
++
++Then, stop components.
++
++.. code-block:: console
++
++    # Stop component to spp_vf
++    spp > vf 1; component stop cls1
++    spp > vf 1; component stop fwd1
++    spp > vf 1; component stop fwd2
++    spp > vf 1; component stop mgr1
++
++    spp > vf 1; status
++    Basic Information:
++      - client-id: 1
++      - ports: [phy:0, phy:1]
++    Classifier Table:
++      No entries.
++    Components:
++      - core:3 '' (type: unuse)
++      - core:4 '' (type: unuse)
++      - core:5 '' (type: unuse)
++      - core:6 '' (type: unuse)
++
++Finally, terminate spp_vf to finish this usecase.
++
++.. code-block:: console
++
++    spp > vf 0; exit
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+index 0a5aba3..3d14b7c 100644
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ b/docs/guides/spp_vf/use_cases/index.rst
+@@ -7,6 +7,7 @@ Use Cases
+ .. toctree::
+    :maxdepth: 2
+ 
++   basic_usecase_vf
+    usecase1
+    usecase2
+    usecase3
+-- 
+2.17.1
+
