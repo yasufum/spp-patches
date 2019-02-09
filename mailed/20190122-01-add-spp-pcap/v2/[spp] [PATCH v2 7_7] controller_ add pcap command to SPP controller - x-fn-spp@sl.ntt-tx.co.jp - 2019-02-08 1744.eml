@@ -1,0 +1,233 @@
+X-Account-Key: account3
+X-UIDL: 14006.UVhMRlGVKPYMCgF4NVZ13CQOy,0=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 8 Feb 2019 17:46:07 +0900 (JST)
+Received: from md-mta-nw009.ocn.ad.jp ([153.138.217.136])
+	by md-lpx-nw008 with LMTP id WDKfEs9BXVyFegAAqFjg7g
+	; Fri, 08 Feb 2019 17:46:07 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-nw009.ocn.ad.jp (Postfix) with ESMTP id 4318B3C00F2B8
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:46:07 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id AEAC2500268
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:46:06 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 60D041B8B6;
+	Fri,  8 Feb 2019 09:46:04 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id CCE265F33
+ for <spp@dpdk.org>; Fri,  8 Feb 2019 09:46:01 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x188k0F6009015;
+ Fri, 8 Feb 2019 17:46:00 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x188jxq3025863;
+ Fri, 8 Feb 2019 17:45:59 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id TAA25083;
+ Fri, 8 Feb 2019 17:44:38 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x188icGa030842;
+ Fri, 8 Feb 2019 17:44:38 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x188icPt030839; Fri, 8 Feb 2019 17:44:38 +0900
+Message-Id: <201902080844.x188icPt030839@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x188icg4028979 ; Fri, 8 Feb 2019 17:44:38 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Fri,  8 Feb 2019 17:44:38 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190208084438.7952-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190208084438.7952-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 7/7] controller: add pcap command to SPP controller
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This update is to 'pcap' command to Shell class for managing
+spp_pcap from SPP CLI. Spp_pcap might have several instances, and
+deciding which of ones is also similar to other secondary processes.
+'pcap' command consists of an indicator and actual command. Here is
+an example.
+
+  spp > pcap 3; start
+
+In this example, indicator 'pcap 3;' is before spp_pcap's command
+'capture start'. The number in indicator is a secondary ID actually,
+so you cannot assign the same ID of others.
+
+You can refer the usage of 'pcap' command with 'help' command.
+
+  spp > help pcap
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 87 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 84 insertions(+), 3 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index f1381b7..a695833 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+-# Copyright(c) 2015-2016 Intel Corporation
++# Copyright(c) 2015-2019 Intel Corporation
+ 
+ from __future__ import absolute_import
+ 
+@@ -11,6 +11,7 @@ from .commands import server
+ from .commands import topo
+ from .commands import vf
+ from .commands import mirror
++from .commands import pcap
+ import os
+ import re
+ import readline
+@@ -116,6 +117,10 @@ class Shell(cmd.Cmd, object):
+             self.secondaries['mirror'][sec_id] = mirror.SppMirror(
+                     self.spp_ctl_cli, sec_id)
+ 
++        self.spp_pcaps = {}
++        for sec_id in self.get_sec_ids('pcap'):
++            self.spp_pcaps[sec_id] = pcap.SppPcap(self.spp_ctl_cli, sec_id)
++
+     # Called everytime after running command. `stop` is returned from `do_*`
+     # method and SPP CLI is terminated if it is True. It means that only
+     # `do_bye` and  `do_exit` return True.
+@@ -149,7 +154,7 @@ class Shell(cmd.Cmd, object):
+     def get_sec_ids(self, ptype):
+         """Return a list of IDs of running secondary processes.
+ 
+-        'ptype' is 'nfv', 'vf' or 'mirror'.
++        'ptype' is 'nfv', 'vf' or 'mirror' or 'pcap'.
+         """
+ 
+         ids = []
+@@ -176,6 +181,7 @@ class Shell(cmd.Cmd, object):
+                 sec_obj['nfv'] = []
+                 sec_obj['vf'] = []
+                 sec_obj['mirror'] = []
++                sec_obj['pcap'] = []
+ 
+                 for proc_obj in proc_objs:
+                     if proc_obj['type'] == 'primary':
+@@ -192,7 +198,7 @@ class Shell(cmd.Cmd, object):
+                 print('- secondary:')
+                 print('  - processes:')
+                 cnt = 1
+-                for pt in ['nfv', 'vf', 'mirror']:
++                for pt in ['nfv', 'vf', 'mirror', 'pcap']:
+                     for obj in sec_obj[pt]:
+                         print('    %d: %s:%s' %
+                               (cnt, obj['type'], obj['client-id']))
+@@ -575,6 +581,81 @@ class Shell(cmd.Cmd, object):
+                 return self.secondaries['mirror'][idx].complete(
+                         self.get_sec_ids('mirror'), text, line, begidx, endidx)
+ 
++    def do_pcap(self, cmd):
++        """Send a command to spp_pcap.
++
++        spp_pcap is a secondary process for duplicating incoming
++        packets to be used as similar to TaaS in OpenStack. This
++        command has four sub commands.
++          * status
++          * start
++          * stop
++          * exit
++
++        Each of sub commands other than 'status' takes several parameters
++        for detailed operations. Notice that 'start' for launching a worker
++        is replaced with 'stop' for terminating. 'exit' for spp_pcap
++        terminating.
++
++        Examples:
++
++        # (1) show status of worker threads and resources
++        spp > pcap 1; status
++
++        # (2) launch capture thread
++        spp > pcap 1; start
++
++        # (3) terminate capture thread
++        spp > pcap 1; stop
++
++        # (4) terminate spp_pcap secondaryd
++        spp > pcap 1; exit
++        """
++
++        # remove unwanted spaces to avoid invalid command error
++        tmparg = self.clean_cmd(cmd)
++        cmds = tmparg.split(';')
++        if len(cmds) < 2:
++            print("Required an ID and ';' before the command.")
++        elif str.isdigit(cmds[0]):
++            self.spp_pcaps[int(cmds[0])].run(cmds[1])
++        else:
++            print('Invalid command: %s' % tmparg)
++
++    def complete_pcap(self, text, line, begidx, endidx):
++        """Completion for pcap command"""
++
++        line = self.clean_cmd(line)
++
++        tokens = line.split(';')
++        if len(tokens) == 1:
++            # Add SppPcap of sec_id if it is not exist
++            sec_ids = self.get_sec_ids('pcap')
++            for idx in sec_ids:
++                if self.spp_pcaps[idx] is None:
++                    self.spp_pcaps[idx] = pcap.SppPcap(self.spp_ctl_cli, idx)
++
++            if len(line.split()) == 1:
++                res = [str(i)+';' for i in sec_ids]
++            else:
++                if not (';' in line):
++                    res = [str(i)+';'
++                           for i in sec_ids
++                           if (str(i)+';').startswith(text)]
++            return res
++        elif len(tokens) == 2:
++            # Split tokens like as from 'pcap 1' to ['pcap', '1']
++            first_tokens = tokens[0].split(' ')
++            if len(first_tokens) == 2:
++                idx = int(first_tokens[1])
++
++                # Add SppPcap of sec_id if it is not exist
++                if self.spp_pcaps[idx] is None:
++                    self.spp_pcaps[idx] = pcap.SppPcap(self.spp_ctl_cli, idx)
++
++                return self.spp_pcaps[idx].complete(
++                        self.get_sec_ids('pcap'), text, line, begidx, endidx)
++
+     def do_record(self, fname):
+         """Save commands as a recipe file.
+ 
+-- 
+2.17.1
+
+
