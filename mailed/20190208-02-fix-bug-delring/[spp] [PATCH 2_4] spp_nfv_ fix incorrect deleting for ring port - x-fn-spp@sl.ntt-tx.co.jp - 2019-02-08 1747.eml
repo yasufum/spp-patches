@@ -1,0 +1,98 @@
+X-Account-Key: account3
+X-UIDL: 14013.zAgNDSEzaRSYx8p9DdjUAVMaB74=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw006.ocn.ad.jp (LHLO md-lpx-nw006) (153.138.217.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 8 Feb 2019 17:51:03 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-nw006 with LMTP id CG1bOfZCXVzERAAA0AKT/w
+	; Fri, 08 Feb 2019 17:51:02 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id E68BF3C0068C3
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:51:02 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 83B2DD40279
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:51:02 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 880A51B890;
+	Fri,  8 Feb 2019 09:51:00 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 822B91B4FB
+ for <spp@dpdk.org>; Fri,  8 Feb 2019 09:50:58 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x188ovjE010239;
+ Fri, 8 Feb 2019 17:50:57 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x188ov2Q027896;
+ Fri, 8 Feb 2019 17:50:57 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id TAA26572;
+ Fri, 8 Feb 2019 17:47:54 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x188lrvS021619;
+ Fri, 8 Feb 2019 17:47:53 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x188lrFd021615; Fri, 8 Feb 2019 17:47:53 +0900
+Message-Id: <201902080847.x188lrFd021615@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x188lrsi006016 ; Fri, 8 Feb 2019 17:47:53 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Fri,  8 Feb 2019 17:47:51 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190208084753.8049-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190208084753.8049-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 2/4] spp_nfv: fix incorrect deleting for ring port
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Spp_nfv uses `rte_eal_hotplug_remove()` in `dev_detach_by_port_id()` to
+delete a ring. However, it is wrong because it causes an error when
+adding the same ring again. This update is to use `rte_eth_dev_stop()`
+and `rte_eth_dev_close()` as correct manner.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/nfv/commands.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 36ad86d..c8f726f 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -38,7 +38,8 @@ do_del(char *res_uid)
+ 		if (port_id == PORT_RESET)
+ 			return -1;
+ 
+-		dev_detach_by_port_id(port_id);
++		rte_eth_dev_stop(port_id);
++		rte_eth_dev_close(port_id);
+ 
+ 	} else if (!strcmp(p_type, "pcap")) {
+ 		port_id = find_port_id(p_id, PCAP);
+-- 
+2.17.1
+
+

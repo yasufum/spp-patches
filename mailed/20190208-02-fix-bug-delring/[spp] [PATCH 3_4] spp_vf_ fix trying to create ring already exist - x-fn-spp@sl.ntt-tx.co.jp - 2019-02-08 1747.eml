@@ -1,0 +1,116 @@
+X-Account-Key: account3
+X-UIDL: 14009.1kuQdLOWbGGWr6npsjhYW4Lm5DU=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw002.ocn.ad.jp (LHLO md-lpx-nw002) (153.138.217.15)
+ by mzcstore251.ocn.ad.jp with LMTP; Fri, 8 Feb 2019 17:51:02 +0900 (JST)
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-nw002 with LMTP id IDtwG/ZCXVxVAgAATJVVBg
+	; Fri, 08 Feb 2019 17:51:02 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id 6280A1000048E
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:51:02 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 11AC19C026C
+	for <geminoa@juno.ocn.ne.jp>; Fri,  8 Feb 2019 17:51:02 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7BB591B889;
+	Fri,  8 Feb 2019 09:51:00 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id A8CB31B54D
+ for <spp@dpdk.org>; Fri,  8 Feb 2019 09:50:58 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x188ov3V010247;
+ Fri, 8 Feb 2019 17:50:57 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x188ovY2027910;
+ Fri, 8 Feb 2019 17:50:57 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id TAA26581;
+ Fri, 8 Feb 2019 17:47:54 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x188lr08021623;
+ Fri, 8 Feb 2019 17:47:53 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x188lrfi021618; Fri, 8 Feb 2019 17:47:53 +0900
+Message-Id: <201902080847.x188lrfi021618@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x188lrsj006016 ; Fri, 8 Feb 2019 17:47:53 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Fri,  8 Feb 2019 17:47:52 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190208084753.8049-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190208084753.8049-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 3/4] spp_vf: fix trying to create ring already exist
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Same with "shared: fix trying to create ring already exist".
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/spp_proc.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index 803e498..b7c3ec5 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -80,6 +80,8 @@ spp_vf_add_ring_pmd(int ring_id)
+ {
+ 	struct rte_ring *ring;
+ 	int ring_port_id;
++	uint16_t port_id = PORT_RESET;
++	char dev_name[RTE_ETH_NAME_MAX_LEN];
+ 
+ 	/* Lookup ring of given id */
+ 	ring = rte_ring_lookup(get_rx_queue_name(ring_id));
+@@ -90,7 +92,20 @@ spp_vf_add_ring_pmd(int ring_id)
+ 	}
+ 
+ 	/* Create ring pmd */
+-	ring_port_id = rte_eth_from_ring(ring);
++	snprintf(dev_name, RTE_ETH_NAME_MAX_LEN - 1, "net_ring_%s", ring->name);
++	/* check whether a port already exists. */
++	ring_port_id = rte_eth_dev_get_port_by_name(dev_name, &port_id);
++	if (port_id == PORT_RESET) {
++		ring_port_id = rte_eth_from_ring(ring);
++		if (ring_port_id < 0) {
++			RTE_LOG(ERR, APP, "Cannot create eth dev with "
++						"rte_eth_from_ring()\n");
++			return SPP_RET_NG;
++		}
++	} else {
++		ring_port_id = port_id;
++		rte_eth_dev_start(ring_port_id);
++	}
+ 	RTE_LOG(INFO, APP, "ring port add. (no = %d / port = %d)\n",
+ 			ring_id, ring_port_id);
+ 	return ring_port_id;
+-- 
+2.17.1
+
+
