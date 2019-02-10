@@ -1,0 +1,86 @@
+X-Account-Key: account1
+X-UIDL: 14023.xiJcpsT6mpnkhkq9vzwzvC2BNpE=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw007.ocn.ad.jp (LHLO md-lpx-nw007) (153.138.217.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Sun, 10 Feb 2019 11:45:42 +0900 (JST)
+Received: from md-mta-cb002.ocn.ad.jp ([153.138.211.70])
+	by md-lpx-nw007 with LMTP id GPAwDVaQX1yBHAAACd8mRg
+	; Sun, 10 Feb 2019 11:45:42 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb002.ocn.ad.jp (Postfix) with ESMTP id 2997A58000232
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 11:45:42 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id 9A9CCD40279
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 11:45:41 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0E2211B903;
+	Sun, 10 Feb 2019 03:45:39 +0100 (CET)
+Received: from mogw2138.ocn.ad.jp (mogw2138.ocn.ad.jp [202.234.252.40])
+ by dpdk.org (Postfix) with ESMTP id EA82A1B64B
+ for <spp@dpdk.org>; Sun, 10 Feb 2019 03:45:37 +0100 (CET)
+Received: from mf-smf-ucb019c3 (mf-smf-ucb019c3.ocn.ad.jp [153.153.66.132])
+ by mogw2138.ocn.ad.jp (Postfix) with ESMTP id 383CB6041C;
+ Sun, 10 Feb 2019 11:45:36 +0900 (JST)
+Received: from ocn-vc-mts-102c1.ocn.ad.jp ([153.153.66.81])
+ by mf-smf-ucb019c3 with ESMTP
+ id sf3xgJoJXsPKksf7ggWCDg; Sun, 10 Feb 2019 11:45:36 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-102c1.ocn.ad.jp with ESMTP
+ id sf7ggTknI8o4xsf7ggXpks; Sun, 10 Feb 2019 11:45:36 +0900
+Received: from localhost.localdomain
+ (p1649004-ipngn15701marunouchi.tokyo.ocn.ne.jp [153.204.174.4])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Sun, 10 Feb 2019 11:45:36 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Sun, 10 Feb 2019 11:45:34 +0900
+Message-Id: <1549766734-22546-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+Subject: [spp] [PATCH] controller: fix misc bug of compl for pri command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to fix bug of `pri` to not complete if spaces are not
+after `pri;`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index f1381b7..163fcf9 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -331,6 +331,7 @@ class Shell(cmd.Cmd, object):
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+ 
++        line = re.sub(r';\s*', "; ", line)
+         line = re.sub(r'\s+', " ", line)
+         return self.primary.complete(
+                 text, line, begidx, endidx,
+-- 
+2.7.4
+
+
