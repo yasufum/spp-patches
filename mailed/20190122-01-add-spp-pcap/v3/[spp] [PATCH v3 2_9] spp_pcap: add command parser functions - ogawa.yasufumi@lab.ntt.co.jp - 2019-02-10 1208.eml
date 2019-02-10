@@ -1,0 +1,389 @@
+X-Account-Key: account1
+X-UIDL: 14025.Cbri87eRvbdXBtZoYj6OS+Rz6iI=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb010.ocn.ad.jp (LHLO md-lpx-cb010) (153.138.210.83)
+ by mzcstore251.ocn.ad.jp with LMTP; Sun, 10 Feb 2019 12:08:31 +0900 (JST)
+Received: from md-mta-cb003.ocn.ad.jp ([153.138.211.71])
+	by md-lpx-cb010 with LMTP id ILg5Oa6VX1yUDgAA/ui1sQ
+	; Sun, 10 Feb 2019 12:08:30 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb003.ocn.ad.jp (Postfix) with ESMTP id E39AE7800302A
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:30 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 55D81500284
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:30 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 143A01B91A;
+	Sun, 10 Feb 2019 04:08:28 +0100 (CET)
+Received: from mogw1038.ocn.ad.jp (mogw1038.ocn.ad.jp [153.149.231.44])
+ by dpdk.org (Postfix) with ESMTP id A9D121B903
+ for <spp@dpdk.org>; Sun, 10 Feb 2019 04:08:26 +0100 (CET)
+Received: from mf-smf-unw003c1 (mf-smf-unw003c1.ocn.ad.jp [153.138.219.72])
+ by mogw1038.ocn.ad.jp (Postfix) with ESMTP id 4DC361100553;
+ Sun, 10 Feb 2019 12:08:25 +0900 (JST)
+Received: from ocn-vc-mts-102c1.ocn.ad.jp ([153.153.66.81])
+ by mf-smf-unw003c1 with ESMTP
+ id sfQjg7w1p2gjgsfTlgiw0M; Sun, 10 Feb 2019 12:08:25 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-102c1.ocn.ad.jp with ESMTP
+ id sfTlgToKm8o4xsfTlgXtGL; Sun, 10 Feb 2019 12:08:25 +0900
+Received: from localhost.localdomain
+ (p1649004-ipngn15701marunouchi.tokyo.ocn.ne.jp [153.204.174.4])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Sun, 10 Feb 2019 12:08:25 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Date: Sun, 10 Feb 2019 12:08:14 +0900
+Message-Id: <1549768101-23049-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH v3 2/9] spp_pcap: add command parser functions
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Add parser functions for `start`, `stop` and `status` commands.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/command_dec.c | 187 +++++++++++++++++++++++++++++++++++++++++++++++++
+ src/pcap/command_dec.h | 110 +++++++++++++++++++++++++++++
+ 2 files changed, 297 insertions(+)
+ create mode 100644 src/pcap/command_dec.c
+ create mode 100644 src/pcap/command_dec.h
+
+diff --git a/src/pcap/command_dec.c b/src/pcap/command_dec.c
+new file mode 100644
+index 0000000..943ab0f
+--- /dev/null
++++ b/src/pcap/command_dec.c
+@@ -0,0 +1,187 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <unistd.h>
++#include <string.h>
++
++#include <rte_ether.h>
++#include <rte_log.h>
++#include <rte_branch_prediction.h>
++
++#include "command_dec.h"
++
++#define RTE_LOGTYPE_SPP_COMMAND_DEC RTE_LOGTYPE_USER2
++
++/* set parse error */
++static inline int
++set_parse_error(struct spp_command_parse_error *error,
++		const int error_code, const char *error_name)
++{
++	error->code = error_code;
++
++	if (likely(error_name != NULL))
++		strcpy(error->value_name, error_name);
++
++	return error->code;
++}
++
++/* set parse error */
++static inline int
++set_string_value_parse_error(struct spp_command_parse_error *error,
++		const char *value, const char *error_name)
++{
++	strcpy(error->value, value);
++	return set_parse_error(error, BAD_VALUE, error_name);
++}
++
++/* Split command line parameter with spaces */
++static int
++parse_parameter_value(char *string, int max, int *argc, char *argv[])
++{
++	int cnt = 0;
++	const char *delim = " ";
++	char *argv_tok = NULL;
++	char *saveptr = NULL;
++
++	argv_tok = strtok_r(string, delim, &saveptr);
++	while (argv_tok != NULL) {
++		if (cnt >= max)
++			return SPP_RET_NG;
++		argv[cnt] = argv_tok;
++		cnt++;
++		argv_tok = strtok_r(NULL, delim, &saveptr);
++	}
++	*argc = cnt;
++
++	return SPP_RET_OK;
++}
++
++/* command list for parse */
++struct parse_command_list {
++	const char *name;       /* Command name */
++	int   param_min;        /* Min number of parameters */
++	int   param_max;        /* Max number of parameters */
++	int (*func)(struct spp_command_request *request, int argc,
++			char *argv[], struct spp_command_parse_error *error,
++			int maxargc);
++				/* Pointer to command handling function */
++	enum spp_command_type type;
++				/* Command type */
++};
++
++/* command list */
++static struct parse_command_list command_list_pcap[] = {
++	{ "_get_client_id", 1, 1, NULL, CMD_CLIENT_ID },
++	{ "status",	    1, 1, NULL, CMD_STATUS    },
++	{ "exit",           1, 1, NULL, CMD_EXIT      },
++	{ "start",          1, 1, NULL, CMD_START     },
++	{ "stop",           1, 1, NULL, CMD_STOP      },
++	{ "",               0, 0, NULL, 0 }  /* termination */
++};
++
++/* Parse command line parameters */
++static int
++parse_command_in_list(struct spp_command_request *request,
++			const char *request_str,
++			struct spp_command_parse_error *error)
++{
++	int ret = SPP_RET_OK;
++	int command_name_check = 0;
++	struct parse_command_list *list = NULL;
++	int i = 0;
++	int argc = 0;
++	char *argv[SPP_CMD_MAX_PARAMETERS];
++	char tmp_str[SPP_CMD_MAX_PARAMETERS*SPP_CMD_VALUE_BUFSZ];
++	memset(argv, 0x00, sizeof(argv));
++	memset(tmp_str, 0x00, sizeof(tmp_str));
++
++	strcpy(tmp_str, request_str);
++	ret = parse_parameter_value(tmp_str, SPP_CMD_MAX_PARAMETERS,
++			&argc, argv);
++	if (ret < SPP_RET_OK) {
++		RTE_LOG(ERR, SPP_COMMAND_DEC, "Parameter number over limit."
++				"request_str=%s\n", request_str);
++		return set_parse_error(error, BAD_FORMAT, NULL);
++	}
++	RTE_LOG(DEBUG, SPP_COMMAND_DEC, "Decode array. num=%d\n", argc);
++
++	for (i = 0; command_list_pcap[i].name[0] != '\0'; i++) {
++		list = &command_list_pcap[i];
++		if (strcmp(argv[0], list->name) != 0)
++			continue;
++
++		if (unlikely(argc < list->param_min) ||
++				unlikely(list->param_max < argc)) {
++			command_name_check = 1;
++			continue;
++		}
++
++		request->commands[0].type = command_list_pcap[i].type;
++		if (list->func != NULL)
++			return (*list->func)(request, argc, argv, error,
++							list->param_max);
++
++		return SPP_RET_OK;
++	}
++
++	if (command_name_check != 0) {
++		RTE_LOG(ERR, SPP_COMMAND_DEC, "Parameter number out of range."
++				"request_str=%s\n", request_str);
++		return set_parse_error(error, BAD_FORMAT, NULL);
++	}
++
++	RTE_LOG(ERR, SPP_COMMAND_DEC,
++			"Unknown command. command=%s, request_str=%s\n",
++			argv[0], request_str);
++	return set_string_value_parse_error(error, argv[0], "command");
++}
++
++/* parse request from no-null-terminated string */
++int
++spp_command_parse_request(
++		struct spp_command_request *request,
++		const char *request_str, size_t request_str_len,
++		struct spp_command_parse_error *error)
++{
++	int ret = SPP_RET_NG;
++	int i;
++
++	/* parse request */
++	request->num_command = 1;
++	ret = parse_command_in_list(request, request_str, error);
++	if (unlikely(ret != SPP_RET_OK)) {
++		RTE_LOG(ERR, SPP_COMMAND_DEC,
++				"Cannot parse command request. "
++				"ret=%d, request_str=%.*s\n",
++				ret, (int)request_str_len, request_str);
++		return ret;
++	}
++	request->num_valid_command = 1;
++
++	/* check getter command */
++	for (i = 0; i < request->num_valid_command; ++i) {
++		switch (request->commands[i].type) {
++		case CMD_CLIENT_ID:
++			request->is_requested_client_id = 1;
++			break;
++		case CMD_STATUS:
++			request->is_requested_status = 1;
++			break;
++		case CMD_EXIT:
++			request->is_requested_exit = 1;
++			break;
++		case CMD_START:
++			request->is_requested_start = 1;
++			break;
++		case CMD_STOP:
++			request->is_requested_stop = 1;
++			break;
++		default:
++			/* nothing to do */
++			break;
++		}
++	}
++
++	return ret;
++}
+diff --git a/src/pcap/command_dec.h b/src/pcap/command_dec.h
+new file mode 100644
+index 0000000..0835382
+--- /dev/null
++++ b/src/pcap/command_dec.h
+@@ -0,0 +1,110 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _SPP_PCAP_COMMAND_DEC_H_
++#define _SPP_PCAP_COMMAND_DEC_H_
++
++/**
++ * @file
++ * SPP pcap command parse
++ *
++ * Decode and validate the command message string.
++ */
++
++#include "spp_proc.h"
++
++/** max number of command per request */
++#define SPP_CMD_MAX_COMMANDS 32
++
++/** maximum number of parameters per command */
++#define SPP_CMD_MAX_PARAMETERS 8
++
++/** command name string buffer size (include null char) */
++#define SPP_CMD_NAME_BUFSZ  32
++
++/** command value string buffer size (include null char) */
++#define SPP_CMD_VALUE_BUFSZ 111
++
++/** parse error code */
++enum spp_command_parse_error_code {
++	/* not use 0, in general 0 is OK */
++	BAD_FORMAT = 1,  /**< Wrong format */
++	UNKNOWN_COMMAND, /**< Unknown command */
++	NO_PARAM,        /**< No parameters */
++	BAD_TYPE,        /**< Wrong data type */
++	BAD_VALUE,       /**< Wrong value */
++};
++
++/**
++ * spp command type.
++ *
++ * @attention This enumerated type must have the same order of command_list
++ *            defined in command_dec_pcap.c
++ */
++enum spp_command_type {
++	/** get_client_id command */
++	CMD_CLIENT_ID,
++
++	/** status command */
++	CMD_STATUS,
++
++	/** exit command */
++	CMD_EXIT,
++
++	/** start command */
++	CMD_START,
++
++	/** stop command */
++	CMD_STOP,
++
++};
++
++/** command parameters */
++struct spp_command {
++	enum spp_command_type type; /**< Command type */
++};
++
++/** request parameters */
++struct spp_command_request {
++	int num_command;                /**< Number of accepted commands */
++	int num_valid_command;          /**< Number of executed commands */
++	struct spp_command commands[SPP_CMD_MAX_COMMANDS];
++					/**<Information of executed commands */
++
++	int is_requested_client_id;     /**< Id for get_client_id command */
++	int is_requested_status;        /**< Id for status command */
++	int is_requested_exit;          /**< Id for exit command */
++	int is_requested_start;         /**< Id for start command */
++	int is_requested_stop;          /**< Id for stop command */
++};
++
++/** parse error information */
++struct spp_command_parse_error {
++	int code;                            /**< Error code */
++	char value_name[SPP_CMD_NAME_BUFSZ]; /**< Error value name */
++	char value[SPP_CMD_VALUE_BUFSZ];     /**< Error value */
++};
++
++/**
++ * parse request from no-null-terminated string
++ *
++ * @param request
++ *  The pointer to struct spp_command_request.@n
++ *  The result value of decoding the command message.
++ * @param request_str
++ *  The pointer to requested command message.
++ * @param request_str_len
++ *  The length of requested command message.
++ * @param error
++ *  The pointer to struct spp_command_parse_error.@n
++ *  Detailed error information will be stored.
++ *
++ * @retval SPP_RET_OK succeeded.
++ * @retval !0 failed.
++ */
++int spp_command_parse_request(struct spp_command_request *request,
++		const char *request_str, size_t request_str_len,
++		struct spp_command_parse_error *error);
++
++#endif /* _COMMAND_DEC_H_ */
+-- 
+2.7.4
+
+

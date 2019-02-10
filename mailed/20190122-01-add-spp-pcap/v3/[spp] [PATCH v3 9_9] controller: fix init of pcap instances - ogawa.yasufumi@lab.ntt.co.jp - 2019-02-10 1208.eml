@@ -1,0 +1,130 @@
+X-Account-Key: account1
+X-UIDL: 14034.6bJ5zuYv3BngOJwwoT1cJt,wAx4=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Sun, 10 Feb 2019 12:08:34 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-cb004 with LMTP id oOPOObGVX1wHUgAAuuTZ3g
+	; Sun, 10 Feb 2019 12:08:34 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id DE02A3C000423
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:33 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 5070350027C
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 9B7911B943;
+	Sun, 10 Feb 2019 04:08:29 +0100 (CET)
+Received: from mogw0933.ocn.ad.jp (mogw0933.ocn.ad.jp [153.149.227.39])
+ by dpdk.org (Postfix) with ESMTP id 30B2A1B91E
+ for <spp@dpdk.org>; Sun, 10 Feb 2019 04:08:28 +0100 (CET)
+Received: from mf-smf-unw007c1 (mf-smf-unw007c1.ocn.ad.jp [153.138.219.99])
+ by mogw0933.ocn.ad.jp (Postfix) with ESMTP id CB6D960047F;
+ Sun, 10 Feb 2019 12:08:26 +0900 (JST)
+Received: from ocn-vc-mts-102c1.ocn.ad.jp ([153.153.66.81])
+ by mf-smf-unw007c1 with ESMTP
+ id sfGggWzhMQ5zcsfTmgWU31; Sun, 10 Feb 2019 12:08:26 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-102c1.ocn.ad.jp with ESMTP
+ id sfTmgToLE8o4xsfTmgXtGm; Sun, 10 Feb 2019 12:08:26 +0900
+Received: from localhost.localdomain
+ (p1649004-ipngn15701marunouchi.tokyo.ocn.ne.jp [153.204.174.4])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Sun, 10 Feb 2019 12:08:26 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Sun, 10 Feb 2019 12:08:21 +0900
+Message-Id: <1549768101-23049-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH v3 9/9] controller: fix init of pcap instances
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Instances of SppPcap are not included in `self.secondaries` member var
+and terminated by `bye sec` command. This update is to include instances
+to the member var.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index ec4aaab..7f7d8d3 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -117,9 +117,10 @@ class Shell(cmd.Cmd, object):
+             self.secondaries['mirror'][sec_id] = mirror.SppMirror(
+                     self.spp_ctl_cli, sec_id)
+ 
+-        self.spp_pcaps = {}
++        self.secondaries['pcap'] = {}
+         for sec_id in self.get_sec_ids('pcap'):
+-            self.spp_pcaps[sec_id] = pcap.SppPcap(self.spp_ctl_cli, sec_id)
++            self.secondaries['pcap'][sec_id] = pcap.SppPcap(
++                    self.spp_ctl_cli, sec_id)
+ 
+     # Called everytime after running command. `stop` is returned from `do_*`
+     # method and SPP CLI is terminated if it is True. It means that only
+@@ -609,7 +610,7 @@ class Shell(cmd.Cmd, object):
+         if len(cmds) < 2:
+             print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+-            self.spp_pcaps[int(cmds[0])].run(cmds[1])
++            self.secondaries['pcap'][int(cmds[0])].run(cmds[1])
+         else:
+             print('Invalid command: {}'.format(tmparg))
+ 
+@@ -623,8 +624,9 @@ class Shell(cmd.Cmd, object):
+             # Add SppPcap of sec_id if it is not exist
+             sec_ids = self.get_sec_ids('pcap')
+             for idx in sec_ids:
+-                if self.spp_pcaps[idx] is None:
+-                    self.spp_pcaps[idx] = pcap.SppPcap(self.spp_ctl_cli, idx)
++                if self.secondaries['pcap'][idx] is None:
++                    self.secondaries['pcap'][idx] = pcap.SppPcap(
++                            self.spp_ctl_cli, idx)
+ 
+             if len(line.split()) == 1:
+                 res = [str(i)+';' for i in sec_ids]
+@@ -641,10 +643,11 @@ class Shell(cmd.Cmd, object):
+                 idx = int(first_tokens[1])
+ 
+                 # Add SppPcap of sec_id if it is not exist
+-                if self.spp_pcaps[idx] is None:
+-                    self.spp_pcaps[idx] = pcap.SppPcap(self.spp_ctl_cli, idx)
++                if self.secondaries['pcap'][idx] is None:
++                    self.secondaries['pcap'][idx] = pcap.SppPcap(
++                            self.spp_ctl_cli, idx)
+ 
+-                return self.spp_pcaps[idx].complete(
++                return self.secondaries['pcap'][idx].complete(
+                         self.get_sec_ids('pcap'), text, line, begidx, endidx)
+ 
+     def do_record(self, fname):
+-- 
+2.7.4
+
+

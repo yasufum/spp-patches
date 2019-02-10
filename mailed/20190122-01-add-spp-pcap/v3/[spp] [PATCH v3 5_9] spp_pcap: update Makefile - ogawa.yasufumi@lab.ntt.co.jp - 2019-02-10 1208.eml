@@ -1,0 +1,132 @@
+X-Account-Key: account1
+X-UIDL: 14026.wfJGHECOzu+bnFx8DHu9aIG0wOc=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw007.ocn.ad.jp (LHLO md-lpx-nw007) (153.138.217.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Sun, 10 Feb 2019 12:08:31 +0900 (JST)
+Received: from md-mta-nw008.ocn.ad.jp ([153.138.217.135])
+	by md-lpx-nw007 with LMTP id qAlQA6+VX1wJMQAACd8mRg
+	; Sun, 10 Feb 2019 12:08:31 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw008.ocn.ad.jp (Postfix) with ESMTP id 057263C00F21C
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:31 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 7139950026D
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:30 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3E98A1B91F;
+	Sun, 10 Feb 2019 04:08:29 +0100 (CET)
+Received: from mogw1940.ocn.ad.jp (mogw1940.ocn.ad.jp [153.138.215.106])
+ by dpdk.org (Postfix) with ESMTP id 5AA461B902
+ for <spp@dpdk.org>; Sun, 10 Feb 2019 04:08:27 +0100 (CET)
+Received: from mf-smf-unw005c3 (mf-smf-unw005c3.ocn.ad.jp [153.138.219.80])
+ by mogw1940.ocn.ad.jp (Postfix) with ESMTP id 02B6B2C0245;
+ Sun, 10 Feb 2019 12:08:26 +0900 (JST)
+Received: from ocn-vc-mts-106c1.ocn.ad.jp ([153.138.237.145])
+ by mf-smf-unw005c3 with ESMTP
+ id sfM1gnT9HwkDvsfTlgVOAN; Sun, 10 Feb 2019 12:08:25 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-106c1.ocn.ad.jp with ESMTP
+ id sfTlgOO2HygxgsfTlgp24r; Sun, 10 Feb 2019 12:08:25 +0900
+Received: from localhost.localdomain
+ (p1649004-ipngn15701marunouchi.tokyo.ocn.ne.jp [153.204.174.4])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Sun, 10 Feb 2019 12:08:25 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Date: Sun, 10 Feb 2019 12:08:17 +0900
+Message-Id: <1549768101-23049-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH v3 5/9] spp_pcap: update Makefile
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+Update Makefile of src root and add another one for spp_pcap.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/Makefile      |  1 +
+ src/pcap/Makefile | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+ create mode 100644 src/pcap/Makefile
+
+diff --git a/src/Makefile b/src/Makefile
+index 4cf7ef4..cab80db 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -42,5 +42,6 @@ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += primary
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += vf
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += mirror
++DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += pcap
+ 
+ include $(RTE_SDK)/mk/rte.extsubdir.mk
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+new file mode 100644
+index 0000000..298e2b7
+--- /dev/null
++++ b/src/pcap/Makefile
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++ifeq ($(RTE_SDK),)
++$(error "Please define RTE_SDK environment variable")
++endif
++
++# Default target, can be overridden by command line or environment
++include $(RTE_SDK)/mk/rte.vars.mk
++
++# binary name
++APP = spp_pcap
++
++# all source are stored in SRCS-y
++SRCS-y := spp_pcap.c
++SRCS-y += spp_proc.c
++SRCS-y += command_proc.c command_dec.c
++SRCS-y += ../shared/common.c
++SRCS-y += ../vf/common/command_conn.c ../vf/common/spp_port.c
++SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
++SRCS-y += /usr/lib/x86_64-linux-gnu/liblz4.a
++
++CFLAGS += -DALLOW_EXPERIMENTAL_API
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
++CFLAGS += -I$(SRCDIR)/../
++CFLAGS += -I$(SRCDIR)/../vf/common
++CFLAGS += -I$(SRCDIR)/../shared
++#CFLAGS += -DSPP_DEMONIZE
++#CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
++
++ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
++LDLIBS += -lrte_pmd_ring
++LDLIBS += -lrte_pmd_vhost
++endif
++
++include $(RTE_SDK)/mk/rte.extapp.mk
+-- 
+2.7.4
+
+

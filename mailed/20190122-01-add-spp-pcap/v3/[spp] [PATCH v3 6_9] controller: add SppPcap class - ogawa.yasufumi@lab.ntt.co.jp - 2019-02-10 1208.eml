@@ -1,0 +1,317 @@
+X-Account-Key: account1
+X-UIDL: 14035.RK6OpgL4UGcAdwQlkJ8t5DnERSc=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw005.ocn.ad.jp (LHLO md-lpx-nw005) (153.138.217.18)
+ by mzcstore251.ocn.ad.jp with LMTP; Sun, 10 Feb 2019 12:08:37 +0900 (JST)
+Received: from md-mta-cb003.ocn.ad.jp ([153.138.211.71])
+	by md-lpx-nw005 with LMTP id 2Kh3JbWVX1zJYAAA2u8eSg
+	; Sun, 10 Feb 2019 12:08:37 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb003.ocn.ad.jp (Postfix) with ESMTP id 8CEBB7800300E
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:37 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id DD4E6D4029D
+	for <geminoa@juno.ocn.ne.jp>; Sun, 10 Feb 2019 12:08:36 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6D69B1B932;
+	Sun, 10 Feb 2019 04:08:29 +0100 (CET)
+Received: from mogw1840.ocn.ad.jp (mogw1840.ocn.ad.jp [153.138.214.106])
+ by dpdk.org (Postfix) with ESMTP id 877961B903
+ for <spp@dpdk.org>; Sun, 10 Feb 2019 04:08:27 +0100 (CET)
+Received: from mf-smf-ucb022c2 (mf-smf-ucb022c2.ocn.ad.jp [153.153.66.140])
+ by mogw1840.ocn.ad.jp (Postfix) with ESMTP id 30AAB280248;
+ Sun, 10 Feb 2019 12:08:26 +0900 (JST)
+Received: from ocn-vc-mts-103c1.ocn.ad.jp ([153.138.237.78])
+ by mf-smf-ucb022c2 with ESMTP
+ id sfEmgQleAPUG3sfTmgNDyB; Sun, 10 Feb 2019 12:08:26 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-103c1.ocn.ad.jp with ESMTP
+ id sfTmg5TTqxmywsfTmgUKxO; Sun, 10 Feb 2019 12:08:26 +0900
+Received: from localhost.localdomain
+ (p1649004-ipngn15701marunouchi.tokyo.ocn.ne.jp [153.204.174.4])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Sun, 10 Feb 2019 12:08:25 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>,
+ Naoki Takada <takada.naoki@lab.ntt.co.jp>
+Date: Sun, 10 Feb 2019 12:08:18 +0900
+Message-Id: <1549768101-23049-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1549768101-23049-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH v3 6/9] controller: add SppPcap class
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This update is to add SppPcap class behaviour as a client for spp-ctl.
+An instance of the class is intended to be used from do_pcap() and
+complete_pcap() methods of Shell class in `spp.py`.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/controller/commands/pcap.py | 230 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 230 insertions(+)
+ create mode 100644 src/controller/commands/pcap.py
+
+diff --git a/src/controller/commands/pcap.py b/src/controller/commands/pcap.py
+new file mode 100644
+index 0000000..89a1a5f
+--- /dev/null
++++ b/src/controller/commands/pcap.py
+@@ -0,0 +1,230 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++
++class SppPcap(object):
++    """Exec spp_pcap command.
++
++    SppPcap class is intended to be used in Shell class as a delegator
++    for running 'pcap' command.
++
++    'self.command()' is called from do_pcap() and 'self.complete()' is called
++    from complete_() of both of which is defined in Shell.
++    """
++
++    # All of commands and sub-commands used for validation and completion.
++    PCAP_CMDS = {
++            'status': None,
++            'start': None,
++            'stop': None,
++            'exit': None}
++
++    WORKER_TYPES = ['receive', 'write']
++
++    def __init__(self, spp_ctl_cli, sec_id, use_cache=False):
++        self.spp_ctl_cli = spp_ctl_cli
++        self.sec_id = sec_id
++
++        # Update 'self.worker_names' and 'self.unused_core_ids' each time
++        # 'self.run()' is called if it is 'False'.
++        # True to 'True' if you do not wait for spp_pcap's response.
++        self.use_cache = use_cache
++
++        # Names and core IDs of worker threads
++        pcap_status = self._get_status(self.sec_id)
++
++        core_ids = pcap_status['core_ids']
++        for wk in pcap_status['workers']:
++            if wk['core_id'] in core_ids:
++                core_ids.remove(wk['core_id'])
++        self.unused_core_ids = core_ids  # used while completion to exclude
++
++        self.workers = pcap_status['workers']
++        self.worker_names = [attr['role'] for attr in pcap_status['workers']]
++
++    def run(self, cmdline):
++        """Called from do_sec() to Send command to secondary process."""
++
++        # update status each time if configured not to use cache
++        if self.use_cache is False:
++            pcap_status = self._get_status(self.sec_id)
++
++            core_ids = pcap_status['core_ids']
++            for wk in pcap_status['workers']:
++                if wk['core_id'] in core_ids:
++                    core_ids.remove(wk['core_id'])
++            self.unused_core_ids = core_ids  # used while completion to exclude
++
++            self.workers = pcap_status['workers']
++            self.worker_names = [attr['role']
++                                 for attr in pcap_status['workers']]
++
++        cmd = cmdline.split(' ')[0]
++        params = cmdline.split(' ')[1:]
++
++        if cmd == 'status':
++            res = self.spp_ctl_cli.get('pcaps/%d' % self.sec_id)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 200:
++                    self.print_status(res.json())
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'start':
++            req_params = {'action': 'start'}
++            res = self.spp_ctl_cli.put('pcaps/%d/capture'
++                                       % (self.sec_id), req_params)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Start packet capture.")
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'stop':
++            req_params = {'action': 'stop'}
++            res = self.spp_ctl_cli.put('pcaps/%d/capture'
++                                       % (self.sec_id), req_params)
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Stop packet capture.")
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        elif cmd == 'exit':
++            res = self.spp_ctl_cli.delete('pcaps/%d' % (self.sec_id))
++            if res is not None:
++                error_codes = self.spp_ctl_cli.rest_common_error_codes
++                if res.status_code == 204:
++                    print("Exit pcap %d." % (self.sec_id))
++                elif res.status_code in error_codes:
++                    pass
++                else:
++                    print('Error: unknown response.')
++
++        else:
++            print('Invalid command "%s".' % cmd)
++
++    def print_status(self, json_obj):
++        """Parse and print message from SPP PCAP.
++
++        Print status received from spp_pcap.
++
++          spp > pcap 1; status
++            - client-id: 3
++            - satus: running
++            - core:2, receive
++              - rx: phy:0
++            - core:3, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.1.1.pcap
++            - core:4, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.2.1.pcap
++            - core:5, write
++              - file: /tmp/spp_pcap.20181108110600.phy0.3.1.pcap
++            ...
++
++        """
++
++        # client id and status
++        print('  - client-id: %d' % json_obj['client-id'])
++        print('  - status: %s' % json_obj['status'])
++
++        # Core
++        for worker in json_obj['core']:
++            if 'role' in worker.keys():
++                print("  - core:%d %s" % (
++                        worker['core'], worker['role']))
++
++                if worker['role'] == 'receive':
++                    pt = worker['rx_port'][0]['port']
++                    msg = '    - %s:%s'
++                    print(msg % ('rx', pt))
++                else:
++                    print('    - filename: %s' % worker['filename'])
++
++    def complete(self, sec_ids, text, line, begidx, endidx):
++        """Completion for spp_pcap commands.
++
++        Called from complete_pcap() to complete.
++        """
++
++        try:
++            completions = []
++            tokens = line.split(';')
++
++            if len(tokens) == 2:
++                sub_tokens = tokens[1].split(' ')
++
++                if len(sub_tokens) == 1:
++                    if not (sub_tokens[0] in self.PCAP_CMDS.keys()):
++                        completions = self._compl_first_tokens(sub_tokens[0])
++                else:
++                    if sub_tokens[0] == 'status':
++                        if len(sub_tokens) < 2:
++                            if 'status'.startswith(sub_tokens[1]):
++                                completions = ['status']
++
++                    elif sub_tokens[0] == 'start':
++                        if len(sub_tokens) < 2:
++                            if 'start'.startswith(sub_tokens[1]):
++                                completions = ['start']
++
++                    elif sub_tokens[0] == 'stop':
++                        if len(sub_tokens) < 2:
++                            if 'stop'.startswith(sub_tokens[1]):
++                                completions = ['stop']
++            return completions
++        except Exception as e:
++            print(e)
++
++    def _compl_first_tokens(self, token):
++        res = []
++        for kw in self.PCAP_CMDS.keys():
++            if kw.startswith(token):
++                res.append(kw)
++        return res
++
++    def _get_status(self, sec_id):
++        """Get status of spp_pcap.
++
++        To update status of the instance of SppPcap, get the status from
++        spp-ctl. This method returns the result as a dict. For considering
++        behaviour of spp_pcap, it is enough to return worker's name and core
++        IDs as the status, but might need to be update for future updates.
++
++        # return worker's role and used core IDs, and all of core IDs.
++        {
++          'workers': [
++            {'role': 'receive', 'core_id': 5},
++            {'role': 'write', 'core_id': 6},
++            ...
++          ],
++          'core_ids': [5, 6, 7, ...]
++        }
++
++        """
++
++        status = {'workers': [], 'core_ids': []}
++        res = self.spp_ctl_cli.get('pcaps/%d' % self.sec_id)
++        if res is not None:
++            if res.status_code == 200:
++                json_obj = res.json()
++
++                if 'core' in json_obj.keys():
++                    for wk in json_obj['core']:
++                        if 'core' in wk.keys():
++                            if 'role' in wk.keys():
++                                status['workers'].append(
++                                        {'role': wk['role'],
++                                         'core_id': wk['core']})
++                            status['core_ids'].append(wk['core'])
++
++        return status
+-- 
+2.7.4
+
+
