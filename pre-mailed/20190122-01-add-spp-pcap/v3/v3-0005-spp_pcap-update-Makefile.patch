@@ -1,0 +1,71 @@
+From 3ac8b24a911422e36e71e0b3dd8509159e5da756 Mon Sep 17 00:00:00 2001
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Date: Fri, 8 Feb 2019 17:44:36 +0900
+Subject: [PATCH v3 5/9] spp_pcap: update Makefile
+
+Update Makefile of src root and add another one for spp_pcap.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/Makefile      |  1 +
+ src/pcap/Makefile | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+ create mode 100644 src/pcap/Makefile
+
+diff --git a/src/Makefile b/src/Makefile
+index 4cf7ef4..cab80db 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -42,5 +42,6 @@ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += primary
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += vf
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += mirror
++DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += pcap
+ 
+ include $(RTE_SDK)/mk/rte.extsubdir.mk
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+new file mode 100644
+index 0000000..298e2b7
+--- /dev/null
++++ b/src/pcap/Makefile
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
++
++ifeq ($(RTE_SDK),)
++$(error "Please define RTE_SDK environment variable")
++endif
++
++# Default target, can be overridden by command line or environment
++include $(RTE_SDK)/mk/rte.vars.mk
++
++# binary name
++APP = spp_pcap
++
++# all source are stored in SRCS-y
++SRCS-y := spp_pcap.c
++SRCS-y += spp_proc.c
++SRCS-y += command_proc.c command_dec.c
++SRCS-y += ../shared/common.c
++SRCS-y += ../vf/common/command_conn.c ../vf/common/spp_port.c
++SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
++SRCS-y += /usr/lib/x86_64-linux-gnu/liblz4.a
++
++CFLAGS += -DALLOW_EXPERIMENTAL_API
++CFLAGS += $(WERROR_FLAGS) -O3 -MMD
++CFLAGS += -I$(SRCDIR)/../
++CFLAGS += -I$(SRCDIR)/../vf/common
++CFLAGS += -I$(SRCDIR)/../shared
++#CFLAGS += -DSPP_DEMONIZE
++#CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
++
++ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
++LDLIBS += -lrte_pmd_ring
++LDLIBS += -lrte_pmd_vhost
++endif
++
++include $(RTE_SDK)/mk/rte.extapp.mk
+-- 
+2.7.4
+

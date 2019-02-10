@@ -1,0 +1,133 @@
+From bd103d91e6b307d5d4997e4191df556897251fcf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 10 Feb 2019 09:48:03 +0900
+Subject: [PATCH v3 8/9] controlle: refactor pcap command
+
+* Correct mal-formatted status.
+
+* Correct wrong description of comments shown in help.
+
+* Change to use `format()` for printing.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pcap.py | 24 ++++++++++--------------
+ src/controller/shell.py         | 22 ++++++----------------
+ 2 files changed, 16 insertions(+), 30 deletions(-)
+
+diff --git a/src/controller/commands/pcap.py b/src/controller/commands/pcap.py
+index 89a1a5f..d06327b 100644
+--- a/src/controller/commands/pcap.py
++++ b/src/controller/commands/pcap.py
+@@ -13,11 +13,7 @@ class SppPcap(object):
+     """
+ 
+     # All of commands and sub-commands used for validation and completion.
+-    PCAP_CMDS = {
+-            'status': None,
+-            'start': None,
+-            'stop': None,
+-            'exit': None}
++    PCAP_CMDS = { 'status': None, 'start': None, 'stop': None, 'exit': None}
+ 
+     WORKER_TYPES = ['receive', 'write']
+ 
+@@ -104,14 +100,14 @@ class SppPcap(object):
+             if res is not None:
+                 error_codes = self.spp_ctl_cli.rest_common_error_codes
+                 if res.status_code == 204:
+-                    print("Exit pcap %d." % (self.sec_id))
++                    print("Exit pcap {}.".format(self.sec_id))
+                 elif res.status_code in error_codes:
+                     pass
+                 else:
+                     print('Error: unknown response.')
+ 
+         else:
+-            print('Invalid command "%s".' % cmd)
++            print('Invalid command "{}".'.format(cmd))
+ 
+     def print_status(self, json_obj):
+         """Parse and print message from SPP PCAP.
+@@ -134,21 +130,21 @@ class SppPcap(object):
+         """
+ 
+         # client id and status
+-        print('  - client-id: %d' % json_obj['client-id'])
+-        print('  - status: %s' % json_obj['status'])
++        print('  - client-id: {}'.format(json_obj['client-id']))
++        print('  - status: {}'.format(json_obj['status']))
+ 
+         # Core
+         for worker in json_obj['core']:
+             if 'role' in worker.keys():
+-                print("  - core:%d %s" % (
+-                        worker['core'], worker['role']))
++                print("  - core:{core_id} {role}".format(
++                        core_id=worker['core'], role=worker['role']))
+ 
+                 if worker['role'] == 'receive':
+                     pt = worker['rx_port'][0]['port']
+-                    msg = '    - %s:%s'
+-                    print(msg % ('rx', pt))
++                    msg = '    - {direction}: {res_id}'
++                    print(msg.format(direction='rx', res_id=pt))
+                 else:
+-                    print('    - filename: %s' % worker['filename'])
++                    print('    - filename: {}'.format(worker['filename']))
+ 
+     def complete(self, sec_ids, text, line, begidx, endidx):
+         """Completion for spp_pcap commands.
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index ed64847..ec4aaab 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -585,31 +585,21 @@ class Shell(cmd.Cmd, object):
+     def do_pcap(self, cmd):
+         """Send a command to spp_pcap.
+ 
+-        spp_pcap is a secondary process for duplicating incoming
+-        packets to be used as similar to TaaS in OpenStack. This
+-        command has four sub commands.
+-          * status
+-          * start
+-          * stop
+-          * exit
++        Spp_pcap is a secondary process for capturing incoming packets.
+ 
+-        Each of sub commands other than 'status' takes several parameters
+-        for detailed operations. Notice that 'start' for launching a worker
+-        is replaced with 'stop' for terminating. 'exit' for spp_pcap
+-        terminating.
++        'start' for launching a worker is replaced with 'stop' for
++        terminating. 'exit' for spp_pcap terminating.
+ 
+         Examples:
+ 
+         # (1) show status of worker threads and resources
+         spp > pcap 1; status
+ 
+-        # (2) launch capture thread
++        # (2) launch or terminate capture thread
+         spp > pcap 1; start
+-
+-        # (3) terminate capture thread
+         spp > pcap 1; stop
+ 
+-        # (4) terminate spp_pcap secondaryd
++        # (3) terminate spp_pcap secondaryd
+         spp > pcap 1; exit
+         """
+ 
+@@ -621,7 +611,7 @@ class Shell(cmd.Cmd, object):
+         elif str.isdigit(cmds[0]):
+             self.spp_pcaps[int(cmds[0])].run(cmds[1])
+         else:
+-            print('Invalid command: %s' % tmparg)
++            print('Invalid command: {}'.format(tmparg))
+ 
+     def complete_pcap(self, text, line, begidx, endidx):
+         """Completion for pcap command"""
+-- 
+2.7.4
+
