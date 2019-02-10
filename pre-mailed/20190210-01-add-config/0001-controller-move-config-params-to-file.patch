@@ -1,0 +1,317 @@
+From b28ee73e3cd0f800b40afcbe7932a577c71ecd6c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 10 Feb 2019 14:18:42 +0900
+Subject: [PATCH] controller: move config params to file
+
+This update is to change config from inside Shell class to config file
+`src/controller/config/default.yml`. As defined `max_secondary` in the
+config, remove MAX_SECONDARY from `spp_common.py`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py    | 145 +++++++++++++++++++++-----------------
+ src/controller/config/default.yml |  33 +++++++++
+ src/controller/shell.py           |  45 +++---------
+ src/controller/spp_common.py      |   3 -
+ 4 files changed, 124 insertions(+), 102 deletions(-)
+ create mode 100644 src/controller/config/default.yml
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 1cf5afd..0e65883 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -25,6 +25,7 @@ class SppPrimary(object):
+         self.spp_ctl_cli = spp_ctl_cli
+ 
+         # Default args for `pri; launch`, used if given cli_config is invalid
++        # TODO(yasufum) remove local default and add checking config
+         self.launch_default = {
+                 'mem': '-m 512',
+                 'base_lcore': '1',
+@@ -189,82 +190,96 @@ class SppPrimary(object):
+             elif len(tokens) == 4 and tokens[1] == 'launch':
+                 if 'max_secondary' in cli_config.keys():
+                     max_secondary = int(cli_config['max_secondary']['val'])
+-                else:
+-                    max_secondary = spp_common.MAX_SECONDARY
+ 
+-                if tokens[2] in spp_common.SEC_TYPES:
+-                    candidates = [
+-                            str(i+1) for i in range(max_secondary)]
++                    if tokens[2] in spp_common.SEC_TYPES:
++                        candidates = [
++                                str(i+1) for i in range(max_secondary)]
++                else:
++                    logger.error(
++                            'Error: max_secondary is not defined in config')
++                    candidates = []
+ 
+             elif len(tokens) == 5 and tokens[1] == 'launch':
+                 # TODO(yasufum) move this long completion to method.
++
+                 if 'max_secondary' in cli_config.keys():
+                     max_secondary = int(cli_config['max_secondary']['val'])
+-                else:
+-                    max_secondary = spp_common.MAX_SECONDARY
+-
+-                if (tokens[2] in spp_common.SEC_TYPES) and \
+-                        (int(tokens[3])-1 in range(max_secondary)):
+-                    ptype = tokens[2]
+-                    sid = tokens[3]
+-
+-                    if ptype == 'nfv':
+-                        opt_sid = '-n'
+-                    else:
+-                        opt_sid = '--client-id'
+-
+-                    # Need to replace port from `7777` of spp-ctl to `6666`
+-                    # of secondary process.
+-                    server_addr = common.current_server_addr()
+-                    server_addr = server_addr.replace('7777', '6666')
+-
+-                    # Lcore ID of worker lcore starts from sec ID in default.
+-                    lcore_base = int(sid)
+-
+-                    # Define rest of worker lcores from config dynamically.
+-                    if ptype == 'nfv':  # one worker lcore is enough
+-                        if 'sec_nfv_nof_lcores' in cli_config.keys():
+-                            nof_workers = int(
+-                                    cli_config['sec_nfv_nof_lcores']['val'])
+-                        else:
+-                            nof_workers = int(self.defaults['nof_lcores_nfv'])
+ 
+-                    elif ptype == 'vf':
+-                        if 'sec_vf_nof_lcores' in cli_config.keys():
+-                            nof_workers = int(
+-                                    cli_config['sec_vf_nof_lcores']['val'])
+-                        else:
+-                            nof_workers = int(self.defaults['nof_lcores_vf'])
++                    if (tokens[2] in spp_common.SEC_TYPES) and \
++                            (int(tokens[3])-1 in range(max_secondary)):
++                        ptype = tokens[2]
++                        sid = tokens[3]
+ 
+-                    elif ptype == 'mirror':  # two worker cores
+-                        if 'sec_mirror_nof_lcores' in cli_config.keys():
+-                            nof_workers = int(
+-                                    cli_config['sec_mirror_nof_lcores']['val'])
++                        if ptype == 'nfv':
++                            opt_sid = '-n'
+                         else:
+-                            nof_workers = int(
+-                                    self.defaults['nof_lcore_mirror'])
+-
+-                    elif ptype == 'pcap':  # at least two worker cores
+-                        if 'sec_pcap_nof_lcores' in cli_config.keys():
+-                            nof_workers = int(
+-                                    cli_config['sec_pcap_nof_lcores']['val'])
++                            opt_sid = '--client-id'
++
++                        # Need to replace port from `7777` of spp-ctl to `6666`
++                        # of secondary process.
++                        server_addr = common.current_server_addr()
++                        server_addr = server_addr.replace('7777', '6666')
++
++                        # Lcore ID of worker lcore starts from sec ID in
++                        # default.
++                        lcore_base = int(sid)
++
++                        # Define rest of worker lcores from config dynamically.
++                        if ptype == 'nfv':  # one worker lcore is enough
++                            if 'sec_nfv_nof_lcores' in cli_config.keys():
++                                tmpkey = 'sec_nfv_nof_lcores'
++                                nof_workers = int(
++                                        cli_config[tmpkey]['val'])
++                            else:
++                                nof_workers = int(
++                                        self.defaults['nof_lcores_nfv'])
++
++                        elif ptype == 'vf':
++                            if 'sec_vf_nof_lcores' in cli_config.keys():
++                                nof_workers = int(
++                                        cli_config['sec_vf_nof_lcores']['val'])
++                            else:
++                                nof_workers = int(
++                                        elf.defaults['nof_lcores_vf'])
++
++                        elif ptype == 'mirror':  # two worker cores
++                            if 'sec_mirror_nof_lcores' in cli_config.keys():
++                                tmpkey = 'sec_mirror_nof_lcores'
++                                nof_workers = int(
++                                        cli_config[tmpkey]['val'])
++                            else:
++                                nof_workers = int(
++                                        self.defaults['nof_lcore_mirror'])
++
++                        elif ptype == 'pcap':  # at least two worker cores
++                            if 'sec_pcap_nof_lcores' in cli_config.keys():
++                                tmpkey = 'sec_pcap_nof_lcores'
++                                nof_workers = int(
++                                        cli_config[tmpkey]['val'])
++                            else:
++                                nof_workers = int(
++                                        elf.defaults['nof_lcore_pcap'])
++
++                        last_core = lcore_base + nof_workers - 1
++
++                        # Decide lcore option based on configured number of
++                        # lcores.
++                        if last_core == lcore_base:
++                            rest_core = '{}'.format(last_core)
+                         else:
+-                            nof_workers = int(self.defaults['nof_lcore_pcap'])
++                            rest_core = '{}-{}'.format(lcore_base, last_core)
+ 
+-                    last_core = lcore_base + nof_workers - 1
++                        temp = self._setup_launch_template(
++                                cli_config, self.launch_template,
++                                self.launch_default)
++                        candidates = [temp.format(
++                            wlcores=rest_core, opt_sid=opt_sid, sid=sid,
++                            sec_addr=server_addr)]
+ 
+-                    # Decide lcore option based on configured number of lcores.
+-                    if last_core == lcore_base:
+-                        rest_core = '{}'.format(last_core)
+-                    else:
+-                        rest_core = '{}-{}'.format(lcore_base, last_core)
+-
+-                    temp = self._setup_launch_template(
+-                            cli_config, self.launch_template,
+-                            self.launch_default)
+-                    candidates = [temp.format(
+-                        wlcores=rest_core, opt_sid=opt_sid, sid=sid,
+-                        sec_addr=server_addr)]
++                else:
++                    logger.error(
++                            'Error: max_secondary is not defined in config')
++                    candidates = []
+ 
+         if not text:
+             completions = candidates
+@@ -288,7 +303,7 @@ class SppPrimary(object):
+             sec_base_lcore = cli_config['sec_base_lcore']['val']
+         else:
+             sec_base_lcore = defaults['base_lcore']
+-        template = template.replace('__BASE_LCORE__', sec_base_lcore)
++        template = template.replace('__BASE_LCORE__', str(sec_base_lcore))
+ 
+         if 'sec_vhost_cli' in cli_config.keys():
+             if cli_config['sec_vhost_cli']['val']:
+diff --git a/src/controller/config/default.yml b/src/controller/config/default.yml
+new file mode 100644
+index 0000000..ee42bc3
+--- /dev/null
++++ b/src/controller/config/default.yml
+@@ -0,0 +1,33 @@
++# Common config
++max_secondary:
++    val: 16
++    desc: The maximum number of secondary processes
++prompt:
++    val: "spp > "
++    desc: Command prompt
++topo_size:
++    val: 60%
++    desc: Percentage or ratio of topo
++
++# Secondary
++sec_mem:
++    val: -m 512
++    desc: Mem size
++sec_base_lcore:
++    val: 1
++    desc: Shared lcore among secondaries
++sec_nfv_nof_lcores:
++    val: 1
++    desc: Default num of lcores for workers of spp_nfv
++sec_vf_nof_lcores:
++    val: 3
++    desc: Default num of lcores for workers of spp_vf
++sec_mirror_nof_lcores:
++    val: 2
++    desc: Default num of lcores for workers of spp_mirror
++sec_pcap_nof_lcores:
++    val: 2
++    desc: Default num of lcores for workers of spp_pcap
++sec_vhost_cli:
++    val: ""
++    desc: Vhost client mode, activated if set any of values
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 7f7d8d3..f95dbfa 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -19,45 +19,22 @@ from .shell_lib import common
+ from . import spp_common
+ from .spp_common import logger
+ import subprocess
++import yaml
+ 
+ 
+ class Shell(cmd.Cmd, object):
+     """SPP command prompt."""
+ 
+-    # Default config, but changed via `config` command
+-    # TODO(yasufum) move defaults to config file and include from.
+-    cli_config = {
+-            'max_secondary': {
+-                'val': spp_common.MAX_SECONDARY,
+-                'desc': 'The maximum number of secondary processes'},
+-            'sec_mem': {
+-                'val': '-m 512',
+-                'desc': 'Mem size'},
+-            'sec_base_lcore': {
+-                'val': '1',
+-                'desc': 'Shared lcore among secondaries'},
+-            'sec_nfv_nof_lcores': {
+-                'val': '1',
+-                'desc': 'Default num of lcores for workers of spp_nfv'},
+-            'sec_vf_nof_lcores': {
+-                'val': '3',
+-                'desc': 'Default num of lcores for workers of spp_vf'},
+-            'sec_mirror_nof_lcores': {
+-                'val': '2',
+-                'desc': 'Default num of lcores for workers of spp_mirror'},
+-            'sec_pcap_nof_lcores': {
+-                'val': '2',
+-                'desc': 'Default num of lcores for workers of spp_pcap'},
+-            'sec_vhost_cli': {
+-                'val': '',
+-                'desc': 'Vhost client mode, activated if set any of values'},
+-            'prompt': {
+-                'val': 'spp > ',
+-                'desc': 'Command prompt'},
+-            'topo_size': {
+-                'val': '60%',
+-                'desc': 'Percentage or ratio of topo'},
+-            }
++    # Load default config, can be changed via `config` command
++    # TODO(yasufum) enable to give config file from option
++    try:
++        config_file = "{}/config/default.yml".format(
++                os.path.dirname(__file__))
++        cli_config = yaml.load(open(config_file))
++    except IOError as e:
++        print('Error: no config file found!')
++        print(e)
++        exit()
+ 
+     hist_file = os.path.expanduser('~/.spp_history')
+     PLUGIN_DIR = 'plugins'
+diff --git a/src/controller/spp_common.py b/src/controller/spp_common.py
+index 6d0546e..09a6b5a 100644
+--- a/src/controller/spp_common.py
++++ b/src/controller/spp_common.py
+@@ -13,9 +13,6 @@ LOGFILE = 'spp_cli.log'  # name of logfile under `/src/controller/log/`
+ 
+ cur_server_addr = None
+ 
+-# Maximum num of sock queues for secondaries
+-MAX_SECONDARY = 16
+-
+ # Setup logger object
+ logger = logging.getLogger(__name__)
+ # handler = logging.StreamHandler()
+-- 
+2.7.4
+
