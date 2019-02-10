@@ -14,7 +14,8 @@ addresses = {
             "ogawa.yasufumi@lab.ntt.co.jp"]
         }
 
-CMD=['git', 'send-email']
+CMD = ['git', 'send-email']
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -52,10 +53,11 @@ def parse_args():
 
 def error_exit(msg):
     print("Error: {}".format(msg))
-    return None
+    exit()
+
 
 def main():
-    
+
     args = parse_args()
 
     if args.patch is None:
@@ -68,7 +70,7 @@ def main():
     for m in addrs:
         CMD.append('--to')
         CMD.append(m)
-    
+
     # Check patch format, it should include cover letter if it is dir
     if os.path.isdir(args.patch):
         files = glob.glob('{}/*'.format(args.patch))
@@ -83,7 +85,8 @@ def main():
                     if args.in_reply_to is None:
                         error_exit(
                                 "'--in-reply-to' with message ID is required")
-                    # remove ver tag nouse for checking cover letter,such as 'v2-'
+                    # remove ver tag nouse for checking cover letter,
+                    # such as 'v2-'
                     f = '-'.join(f.split('-')[1:])
 
                 # Check format of cover letter name
