@@ -1,0 +1,28 @@
+From 1185bb3977650c2df6fe248860ea40eeb035231d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 10 Feb 2019 03:28:47 +0900
+Subject: [PATCH] controller: fix misc bug of compl for pri command
+
+This patch is to fix bug of `pri` to not complete if spaces are not
+after `pri;`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index f1381b7..163fcf9 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -331,6 +331,7 @@ class Shell(cmd.Cmd, object):
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+ 
++        line = re.sub(r';\s*', "; ", line)
+         line = re.sub(r'\s+', " ", line)
+         return self.primary.complete(
+                 text, line, begidx, endidx,
+-- 
+2.7.4
+
