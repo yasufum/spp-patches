@@ -1,0 +1,133 @@
+X-Account-Key: account3
+X-UIDL: 14082.XbJNX6PNUhNYlgIgZ4XnKmvVq+8=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw008.ocn.ad.jp (LHLO md-lpx-nw008) (153.138.217.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 21:40:51 +0900 (JST)
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-nw008 with LMTP id +KDMNdK+YlxmOQAAqFjg7g
+	; Tue, 12 Feb 2019 21:40:50 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id D542C3C008020
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:40:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 4355E9C026B
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:40:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 09F287CBC;
+	Tue, 12 Feb 2019 13:40:48 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id C4E245F16
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 13:40:45 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1CCeipC004069;
+ Tue, 12 Feb 2019 21:40:44 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1CCeiph008627;
+ Tue, 12 Feb 2019 21:40:44 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id XAA08442;
+ Tue, 12 Feb 2019 21:39:29 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1CCdTXm028835;
+ Tue, 12 Feb 2019 21:39:29 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1CCdT0w028829; Tue, 12 Feb 2019 21:39:29 +0900
+Message-Id: <201902121239.x1CCdT0w028829@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x1CCdTrq021586 ; Tue, 12 Feb 2019 21:39:29 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 21:39:28 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212123928.25057-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212123928.25057-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 2/2] docs: add data management for command process
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+spp_vf and spp_mirror takes 2 step approach when reflecting
+data after reception of command input.
+This patch add explanation about with the actual code.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/explain/functions_vf.rst | 42 +++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/docs/guides/spp_vf/explain/functions_vf.rst b/docs/guides/spp_vf/explain/functions_vf.rst
+index c915655..46499db 100644
+--- a/docs/guides/spp_vf/explain/functions_vf.rst
++++ b/docs/guides/spp_vf/explain/functions_vf.rst
+@@ -421,3 +421,45 @@ For distributing multicast packet, it is cloned with
+                             (long)classifier_info->active_classifieds[i]);
+             }
+     }
++
++Data management for command processing
++--------------------------------------
++``spp_vf`` has two data areas for for port, component and core.
++One is called reference area and other is called updating area.
++The reason is for having two data areas is that updating
++reference area which is referred by packet transmitting process
++directly may lead inconsistency when transmitting packet.
++When ``spp_vf`` process command, it changes pointer of reference
++area and updating area so that data which is referred by transmitting
++process is changed.
++
++The following code shows how flush is called inside spp_vf.
++You can read that data is flushed in the order of port, core and component.
++
++Note that ``spp_vf`` and ``spp_mirror`` has code logic in common and
++the above rule applies to also on ``spp_mirror``.
++
++.. code-block:: c
++
++        spp_flush(void)
++        {
++                int ret = SPP_RET_NG;
++                struct cancel_backup_info *backup_info = NULL;
++
++                spp_get_mng_data_addr(NULL, NULL, NULL,
++                                        NULL, NULL, NULL, &backup_info);
++
++                /* Initial setting of each interface. */
++                ret = flush_port();
++                        if (ret < SPP_RET_OK)
++                        return ret;
++
++                /* Flush of core index. */
++                flush_core();
++
++                /* Flush of component */
++                ret = flush_component();
++
++                backup_mng_info(backup_info);
++                return ret;
++        }
+-- 
+2.17.1
+
+

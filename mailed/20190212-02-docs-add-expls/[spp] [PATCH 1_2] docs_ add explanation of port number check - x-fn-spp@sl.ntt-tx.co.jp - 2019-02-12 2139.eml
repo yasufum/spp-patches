@@ -1,0 +1,199 @@
+X-Account-Key: account3
+X-UIDL: 14081.dim7JbDwtuNBHhswAYmi77618bQ=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb010.ocn.ad.jp (LHLO md-lpx-cb010) (153.138.210.83)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 21:40:51 +0900 (JST)
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-cb010 with LMTP id qLb4OdK+YlxsWgAA/ui1sQ
+	; Tue, 12 Feb 2019 21:40:50 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id DFBCE3C00820F
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:40:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 44460A8026D
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:40:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 122001B123;
+	Tue, 12 Feb 2019 13:40:48 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 2E7365F1A
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 13:40:45 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1CCei4m004065;
+ Tue, 12 Feb 2019 21:40:44 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1CCeiMq008617;
+ Tue, 12 Feb 2019 21:40:44 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id XAA08440;
+ Tue, 12 Feb 2019 21:39:29 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1CCdToM028832;
+ Tue, 12 Feb 2019 21:39:29 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1CCdTxd028825; Tue, 12 Feb 2019 21:39:29 +0900
+Message-Id: <201902121239.x1CCdTxd028825@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+ id x1CCdTrp021586 ; Tue, 12 Feb 2019 21:39:29 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 21:39:27 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212123928.25057-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212123928.25057-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 1/2] docs: add explanation of port number check
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+There is a conditions where components of spp_vf and spp_mirror
+starts packet forwarding. This patch adds those descriptions
+into design section and also add explanation of check when adding port
+to components in command reference section.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ docs/guides/commands/secondary/spp_mirror.rst | 13 +++++++++++++
+ docs/guides/commands/secondary/spp_vf.rst     | 18 ++++++++++++++++++
+ docs/guides/spp_vf/design.rst                 | 10 ++++++++--
+ 3 files changed, 39 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/commands/secondary/spp_mirror.rst b/docs/guides/commands/secondary/spp_mirror.rst
+index f81d3a9..bb60f05 100644
+--- a/docs/guides/commands/secondary/spp_mirror.rst
++++ b/docs/guides/commands/secondary/spp_mirror.rst
+@@ -198,6 +198,13 @@ by duplicating the packets.
+     spp > mirror 2; port add vhost:0 tx mr1
+     spp > mirror 2; port add vhost:1 tx mr1
+ 
++Adding port may cause component to start packet forwarding. Please see
++detail in
++:ref:`design spp_mirror<spp_vf_design_spp_mirror>`.
++
++Until one rx and two tx ports are registered, ``spp_mirror`` does not start
++forwarding. If it is requested to add more than one rx and two tx ports, it
++replies an error message.
+ 
+ Deleting port
+ ~~~~~~~~~~~~~
+@@ -219,6 +226,12 @@ Here is some examples.
+     # delete tx port 'vhost:1' from 'mr1'
+     spp > mirror 2; port del vhost:1 tx mr1
+ 
++
++.. note::
++
++  Deleting port may cause component to stop packet forwarding.
++  Please see detail in :ref:`design spp_mirror<spp_vf_design_spp_mirror>`.
++
+ exit
+ ----
+ 
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index 6f1824b..d31688e 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -276,6 +276,20 @@ adds VLAN tag before sending packet outside.
+     # add VLAN tag with VLAN ID and PCP in forwarder 'fw2'
+     spp > vf 2; port add phy:1 tx fw2 add_vlantag 101 3
+ 
++Adding port may cause component to start packet forwarding. Please see
++detail in
++:ref:`design spp_vf<spp_vf_design_spp_vf>`.
++
++Until one rx port and one tx port are added, forwarder does not start packet
++forwarding. If it is requested to add more than one rx and one tx port, it
++replies an error message.
++Until at least one rx port and two tx ports are added, classifier does not
++start packet forwarding. If it is requested to add more than two rx ports, it
++replies an error message.
++Until at least two rx ports and one tx port are added, merger does not start
++packet forwarding. If it is requested to add more than two tx ports, it replies
++an error message.
++
+ Deleting port
+ ~~~~~~~~~~~~~
+ 
+@@ -298,6 +312,10 @@ Here is an example.
+     # delete tx port 'vhost:1' from 'mgr1'
+     spp > vf 2; port del vhost:1 tx mgr1
+ 
++.. note::
++
++   Deleting port may cause component to stop packet forwarding.
++   Please see detail in :ref:`design spp_vf<spp_vf_design_spp_vf>`.
+ 
+ .. _commands_spp_vf_classifier_table:
+ 
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 23246ba..4774ef7 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -1,5 +1,5 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++    Copyright(c) 2010-2014 Intel Corporation
+ 
+ .. _spp_vf_design:
+ 
+@@ -37,12 +37,16 @@ Forwarder
+ ^^^^^^^^^
+ 
+ Simply forwards packets from rx to tx port.
++Forwarder does not start forwarding until when at least one rx and one tx are
++added.
+ 
+ Merger
+ ^^^^^^
+ 
+ Receives packets from multiple rx ports to aggregate
+ packets and sends to a desctination port.
++Merger does not start forwarding until when at least two rx and one tx are
++added.
+ 
+ Classifier
+ ^^^^^^^^^^
+@@ -56,6 +60,8 @@ Classifier prepares tables for each of VLAN ID and decides
+ which of table is referred
+ if TPID (Tag Protocol Indetifier) is included in a packet and
+ equals to 0x8100 as defined in IEEE 802.1Q standard.
++Classifier does not start forwarding until when at least one rx and two tx are
++added.
+ 
+ .. _spp_vf_design_spp_mirror:
+ 
+@@ -107,7 +113,7 @@ spp_pcap
+ the second smallest ID and ``wirter`` threads on the rest of cores. You should
+ have enough cores if you need to capture large amount of packets.
+ 
+-``spp_pcap`` has 4 types of command. ``start``,``stop``,``exit`` and ``status``
++``spp_pcap`` has 4 types of command. ``start``, ``stop``, ``exit`` and ``status``
+ to control behavior of ``spp_pcap``.
+ 
+ With ``start`` command, you can start capturing.
+-- 
+2.17.1
+
+
