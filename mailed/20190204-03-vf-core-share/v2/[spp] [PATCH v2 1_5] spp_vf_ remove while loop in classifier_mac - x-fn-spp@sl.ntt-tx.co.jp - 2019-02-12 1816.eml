@@ -1,0 +1,126 @@
+X-Account-Key: account3
+X-UIDL: 14060.1p+nhPntnnZ1eZYH90hT8qv77cQ=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb004.ocn.ad.jp (LHLO md-lpx-cb004) (153.138.210.17)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-cb004 with LMTP id WFDuBLGPYlzGUAAAuuTZ3g
+	; Tue, 12 Feb 2019 18:19:45 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id 0E4811000900E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 6DE5AA8026F
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:44 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3AEA41B45B;
+	Tue, 12 Feb 2019 10:19:42 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id A5BEB1B452
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 10:19:40 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1C9JcDM012306;
+ Tue, 12 Feb 2019 18:19:38 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1C9JcGV031357;
+ Tue, 12 Feb 2019 18:19:38 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA30049;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1C9GE2o025674;
+ Tue, 12 Feb 2019 18:16:14 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1C9GESp025667; Tue, 12 Feb 2019 18:16:14 +0900
+Message-Id: <201902120916.x1C9GESp025667@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1C9GEKI025281 ; Tue, 12 Feb 2019 18:16:14 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 18:16:10 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 1/5] spp_vf: remove while loop in classifier_mac
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+So far, spp_classifier_mac_do() has while loop and it does not return
+until the classifier component is requested to stop and thus the worker
+thread can not execute packet processing for forwarder/merger.
+To introduce core-sharing, this patch removes the while loop
+to make classifier not occupy assigned core.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/spp_vf.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index b98444d..bdc4c10 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <netinet/in.h>
+@@ -209,21 +209,18 @@ slave_main(void *arg __attribute__ ((unused)))
+ 			core = get_core_info(lcore_id);
+ 		}
+ 
++		/* It is for processing multiple components. */
+ 		for (cnt = 0; cnt < core->num; cnt++) {
+-			if (spp_get_component_type(lcore_id) ==
++			if (spp_get_component_type(core->id[cnt]) ==
+ 					SPP_COMPONENT_CLASSIFIER_MAC) {
+-				/* Classifier loops inside the function. */
+ 				ret = spp_classifier_mac_do(core->id[cnt]);
+-				break;
++				if (unlikely(ret != 0))
++					break;
++			} else {
++				ret = spp_forward(core->id[cnt]);
++				if (unlikely(ret != 0))
++					break;
+ 			}
+-
+-			/*
+-			 * Forward / Merge returns at once.
+-			 * It is for processing multiple components.
+-			 */
+-			ret = spp_forward(core->id[cnt]);
+-			if (unlikely(ret != 0))
+-				break;
+ 		}
+ 		if (unlikely(ret != 0)) {
+ 			RTE_LOG(ERR, APP, "Core[%d] Component Error. "
+-- 
+2.17.1
+
+

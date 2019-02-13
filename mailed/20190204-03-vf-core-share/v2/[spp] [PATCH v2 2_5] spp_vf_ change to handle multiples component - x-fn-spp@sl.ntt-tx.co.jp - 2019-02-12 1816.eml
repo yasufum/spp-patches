@@ -1,0 +1,269 @@
+X-Account-Key: account3
+X-UIDL: 14062.2NXdPjaPZOy6SixRj5JyVxOmRYQ=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw007.ocn.ad.jp (LHLO md-lpx-nw007) (153.138.217.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received: from md-mta-cb003.ocn.ad.jp ([153.138.211.71])
+	by md-lpx-nw007 with LMTP id GL2+FrGPYlxhJAAACd8mRg
+	; Tue, 12 Feb 2019 18:19:45 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-cb003.ocn.ad.jp (Postfix) with ESMTP id 5133F7800961A
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id A8F4DD4028E
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:44 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7957D1B452;
+	Tue, 12 Feb 2019 10:19:42 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id E25401B45C
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 10:19:40 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1C9JdYX012310;
+ Tue, 12 Feb 2019 18:19:39 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1C9Jcb3031367;
+ Tue, 12 Feb 2019 18:19:38 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA30048;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1C9GEFJ025678;
+ Tue, 12 Feb 2019 18:16:14 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1C9GEdK025668; Tue, 12 Feb 2019 18:16:14 +0900
+Message-Id: <201902120916.x1C9GEdK025668@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1C9GEKJ025281 ; Tue, 12 Feb 2019 18:16:14 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 18:16:11 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 2/5] spp_vf: change to handle multiples component
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+So far, slave_main assumes that only one component is assigned for one
+core. However there is a case when multiples component are assigned
+for one core in core-sharing usecase to reduce cpu core consumption.
+This patch changes to handle multiples component per core in
+slave_main function.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/classifier_mac.c | 108 ++++++++++++++--------------------------
+ src/vf/spp_vf.c         |   3 ++
+ 2 files changed, 41 insertions(+), 70 deletions(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index cfaf96a..aac235f 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <unistd.h>
+@@ -774,7 +774,7 @@ classify_packet(struct rte_mbuf **rx_pkts, uint16_t n_rx,
+ 
+ /* change update index at classifier management information */
+ static inline void
+-change_update_index(struct management_info *mng_info, int id)
++change_classifier_index(struct management_info *mng_info, int id)
+ {
+ 	if (unlikely(mng_info->ref_index ==
+ 			mng_info->upd_index)) {
+@@ -815,11 +815,6 @@ spp_classifier_mac_update(struct spp_component_info *component_info)
+ 	RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+ 			"Component[%u] Start update component.\n", id);
+ 
+-	/* wait until no longer access the new update side */
+-	while (likely(mng_info->ref_index ==
+-			mng_info->upd_index))
+-		rte_delay_us_block(CHANGE_UPDATE_INDEX_WAIT_INTERVAL);
+-
+ 	cmp_info = mng_info->cmp_infos + mng_info->upd_index;
+ 
+ 	/* initialize update side classifier information */
+@@ -833,6 +828,7 @@ spp_classifier_mac_update(struct spp_component_info *component_info)
+ 
+ 	/* change index of reference side */
+ 	mng_info->upd_index = mng_info->ref_index;
++	mng_info->is_used = 1;
+ 
+ 	/* wait until no longer access the new update side */
+ 	while (likely(mng_info->ref_index ==
+@@ -852,10 +848,8 @@ spp_classifier_mac_update(struct spp_component_info *component_info)
+ int
+ spp_classifier_mac_do(int id)
+ {
+-	int ret = SPP_RET_NG;
+ 	int i;
+ 	int n_rx;
+-	unsigned int lcore_id = rte_lcore_id();
+ 	struct management_info *mng_info = g_mng_infos + id;
+ 	struct component_info *cmp_info = NULL;
+ 	struct rte_mbuf *rx_pkts[MAX_PKT_BURST];
+@@ -867,76 +861,50 @@ spp_classifier_mac_do(int id)
+ 	const uint64_t drain_tsc = (rte_get_tsc_hz() + US_PER_S - 1) /
+ 			US_PER_S * DRAIN_TX_PACKET_INTERVAL;
+ 
+-	/* initialize */
+-	ret = init_classifier(mng_info);
+-	if (unlikely(ret != SPP_RET_OK)) {
+-		uninit_classifier(mng_info);
+-		return ret;
+-	}
++	/* change index of update classifier management information */
++	change_classifier_index(mng_info, id);
+ 
+-	while (likely(spp_get_core_status(lcore_id) == SPP_CORE_FORWARD) &&
+-		    likely(spp_check_core_update(lcore_id) == SPP_RET_NG)) {
+-		/* change index of update side */
+-		change_update_index(mng_info, id);
+-
+-		/**
+-		 * decide classifier information of the current cycle
+-		 * If at least, one rx port, one tx port and one
+-		 * classifier_table exist, then start classifying.
+-		 * If not, stop classifying.
+-		 */
+-		cmp_info = mng_info->cmp_infos + mng_info->ref_index;
+-		clsd_data_rx = &cmp_info->classified_data_rx;
+-		clsd_data_tx = cmp_info->classified_data_tx;
++	cmp_info = mng_info->cmp_infos + mng_info->ref_index;
++	clsd_data_rx = &cmp_info->classified_data_rx;
++	clsd_data_tx = cmp_info->classified_data_tx;
+ 
+-		/**
+-		 * Perform condition check if reception/transmission
+-		 * of packet should be done or not
+-		 */
+-		if (!(clsd_data_rx->iface_type != UNDEF &&
+-				cmp_info->n_classified_data_tx >= 1 &&
++	/**
++	 * decide classifier information of the current cycle If at least,
++	 * one rx port, one tx port and one classifier_table exist, then start
++	 * classifying. If not, stop classifying.
++	 */
++	if (!(clsd_data_rx->iface_type != UNDEF &&
++			cmp_info->n_classified_data_tx >= 1 &&
+ 				cmp_info->mac_addr_entry == 1))
+-			continue;
++		return SPP_RET_OK;
+ 
+-		/* drain tx packets, if buffer is not filled for interval */
+-		cur_tsc = rte_rdtsc();
+-		if (unlikely(cur_tsc - prev_tsc > drain_tsc)) {
+-			for (i = 0; i < cmp_info->n_classified_data_tx;
+-					i++) {
+-				if (likely(clsd_data_tx[i].num_pkt == 0))
+-					continue;
+-
+-				RTE_LOG(DEBUG, SPP_CLASSIFIER_MAC,
+-						"transmit packets (drain). "
+-						"index=%d, "
+-						"num_pkt=%hu, "
+-						"interval=%lu\n",
+-						i,
+-						clsd_data_tx[i].num_pkt,
+-						cur_tsc - prev_tsc);
++	/* drain tx packets, if buffer is not filled for interval */
++	cur_tsc = rte_rdtsc();
++	if (unlikely(cur_tsc - prev_tsc > drain_tsc)) {
++		for (i = 0; i < cmp_info->n_classified_data_tx; i++) {
++			if (likely(clsd_data_tx[i].num_pkt == 0))
++				continue;
++
++			RTE_LOG(DEBUG, SPP_CLASSIFIER_MAC,
++					"transmit packets (drain). index=%d, "
++					"num_pkt=%hu, interval=%lu\n",
++					i, clsd_data_tx[i].num_pkt,
++					cur_tsc - prev_tsc);
+ 				transmit_packet(&clsd_data_tx[i]);
+-			}
+-			prev_tsc = cur_tsc;
+ 		}
+-
+-		if (clsd_data_rx->iface_type == UNDEF)
+-			continue;
+-
+-		/* retrieve packets */
+-		n_rx = spp_eth_rx_burst(clsd_data_rx->port, 0,
+-				rx_pkts, MAX_PKT_BURST);
+-		if (unlikely(n_rx == 0))
+-			continue;
+-
+-		/* classify and transmit (filled) */
+-		classify_packet(rx_pkts, n_rx, cmp_info, clsd_data_tx);
++		prev_tsc = cur_tsc;
+ 	}
+ 
+-	/* just in case */
+-	change_update_index(mng_info, id);
++	if (clsd_data_rx->iface_type == UNDEF)
++		return SPP_RET_OK;
++
++	/* retrieve packets */
++	n_rx = spp_eth_rx_burst(clsd_data_rx->port, 0, rx_pkts, MAX_PKT_BURST);
++	if (unlikely(n_rx == 0))
++		return SPP_RET_OK;
+ 
+-	/* uninitialize */
+-	uninit_classifier(mng_info);
++	/* classify and interval that transmit burst packet */
++	classify_packet(rx_pkts, n_rx, cmp_info, clsd_data_tx);
+ 
+ 	return SPP_RET_OK;
+ }
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index bdc4c10..aa60bec 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -211,12 +211,15 @@ slave_main(void *arg __attribute__ ((unused)))
+ 
+ 		/* It is for processing multiple components. */
+ 		for (cnt = 0; cnt < core->num; cnt++) {
++			/* Component classification to call a function. */
+ 			if (spp_get_component_type(core->id[cnt]) ==
+ 					SPP_COMPONENT_CLASSIFIER_MAC) {
++				/* Component type for classifier. */
+ 				ret = spp_classifier_mac_do(core->id[cnt]);
+ 				if (unlikely(ret != 0))
+ 					break;
+ 			} else {
++				/* Component type for forward or merge. */
+ 				ret = spp_forward(core->id[cnt]);
+ 				if (unlikely(ret != 0))
+ 					break;
+-- 
+2.17.1
+
+

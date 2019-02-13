@@ -1,0 +1,208 @@
+X-Account-Key: account3
+X-UIDL: 14065.kARRcVjTDumj310RPHiW0cQ+iQw=
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb008.ocn.ad.jp (LHLO md-lpx-cb008) (153.138.210.81)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 18:19:49 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb008 with LMTP id QMMwK7WPYlxuLwAArMKwLw
+	; Tue, 12 Feb 2019 18:19:49 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id A26DB3C00642D
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:49 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 1C767500268
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:49 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6AAFF1B464;
+	Tue, 12 Feb 2019 10:19:42 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id AA7611B45A
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 10:19:40 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1C9Jdiu012322;
+ Tue, 12 Feb 2019 18:19:39 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1C9Jdx0031391;
+ Tue, 12 Feb 2019 18:19:39 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA30066;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1C9GEnf025684;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1C9GEIr025675; Tue, 12 Feb 2019 18:16:14 +0900
+Message-Id: <201902120916.x1C9GEIr025675@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1C9GEKK025281 ; Tue, 12 Feb 2019 18:16:14 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 18:16:12 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 3/5] spp_vf: move classifier component init
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+So far, initialization of classifier component is called before
+while loop in spp_classifier_mac_do(). However, when introducing
+core sharing, spp_classifier_mac_do() does not loop and initialization
+of classifier component should be moved.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/classifier_mac.c      | 52 +++++++-----------------------------
+ src/vf/classifier_mac.h      | 11 +++++++-
+ src/vf/common/command_proc.c |  9 ++++++-
+ 3 files changed, 28 insertions(+), 44 deletions(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index aac235f..f8f06fa 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -469,48 +469,6 @@ init_component_info(struct component_info *cmp_info,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* initialize classifier. */
+-static int
+-init_classifier(struct management_info *mng_info)
+-{
+-	int ret = SPP_RET_NG;
+-	struct spp_component_info component_info;
+-
+-	memset(mng_info, 0, sizeof(struct management_info));
+-	/*
+-	 * Set the same value for "ref_index" and "upd_index"
+-	 * so that it will not be changed from others during initialization,
+-	 * and update "upd_index" after initialization is completed.
+-	 * Therefore, this setting is consciously described.
+-	 */
+-	mng_info->ref_index = 0;
+-	mng_info->upd_index = 0;
+-	memset(&component_info, 0x00, sizeof(component_info));
+-
+-#ifdef RTE_MACHINE_CPUFLAG_SSE4_2
+-	RTE_LOG(DEBUG, SPP_CLASSIFIER_MAC, "Enabled SSE4.2. use CRC hash.\n");
+-#else
+-	RTE_LOG(DEBUG, SPP_CLASSIFIER_MAC,
+-			"Disabled SSE4.2. use Jenkins hash.\n");
+-#endif
+-
+-	/* populate the classifier information at reference */
+-	ret = init_component_info(&mng_info->
+-			cmp_infos[mng_info->ref_index], &component_info);
+-	if (unlikely(ret != SPP_RET_OK)) {
+-		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+-				"Cannot initialize classifier mac table. "
+-				"ret=%d\n", ret);
+-		return SPP_RET_NG;
+-	}
+-
+-	/* updating side can be set by completion of initialization. */
+-	mng_info->upd_index = mng_info->ref_index + 1;
+-	mng_info->is_used = 1;
+-
+-	return SPP_RET_OK;
+-}
+-
+ /* free mac classification instance. */
+ static inline void
+ free_mac_classification(struct mac_classification *mac_cls)
+@@ -803,6 +761,16 @@ spp_classifier_mac_init(void)
+ 	return 0;
+ }
+ 
++/* initialize classifier information. */
++void
++init_classifier_info(int component_id)
++{
++	struct management_info *mng_info = NULL;
++
++	mng_info = g_mng_infos + component_id;
++	uninit_classifier(mng_info);
++}
++
+ /* classifier(mac address) update component info. */
+ int
+ spp_classifier_mac_update(struct spp_component_info *component_info)
+diff --git a/src/vf/classifier_mac.h b/src/vf/classifier_mac.h
+index ba25e75..1671ff0 100644
+--- a/src/vf/classifier_mac.h
++++ b/src/vf/classifier_mac.h
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #ifndef _CLASSIFIER_MAC_H_
+@@ -27,6 +27,15 @@ struct spp_iterate_classifier_table_params;
+  */
+ int spp_classifier_mac_init(void);
+ 
++/**
++ * initialize classifier information.
++ *
++ * @param component_id
++ *  The unique component ID.
++ *
++ */
++void init_classifier_info(int component_id);
++
+ /**
+  * classifier(mac address) update component info.
+  *
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 3011873..3f44174 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -1,5 +1,5 @@
+ /* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
++ * Copyright(c) 2017-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+ #include <unistd.h>
+@@ -303,6 +303,13 @@ spp_update_component(
+ 
+ 		info = (core_info + tmp_lcore_id);
+ 		core = &info->core[info->upd_index];
++
++#ifdef SPP_VF_MODULE
++		/* initialize classifier information */
++		if (component->type == SPP_COMPONENT_CLASSIFIER_MAC)
++			init_classifier_info(component_id);
++#endif /* SPP_VF_MODULE */
++
+ 		ret_del = del_component_info(component_id,
+ 				core->num, core->id);
+ 		if (ret_del >= 0)
+-- 
+2.17.1
+
+

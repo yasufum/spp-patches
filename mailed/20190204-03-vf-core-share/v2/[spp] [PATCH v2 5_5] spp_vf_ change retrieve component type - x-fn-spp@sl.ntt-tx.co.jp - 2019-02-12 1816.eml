@@ -1,0 +1,325 @@
+X-Account-Key: account3
+X-UIDL: 14063.GAwrhXCAfs,5,d20tvlraClRgZs=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb007.ocn.ad.jp (LHLO md-lpx-cb007) (153.138.210.80)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-cb007 with LMTP id QHv1IbGPYlzVewAAz4+SuQ
+	; Tue, 12 Feb 2019 18:19:45 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id 7CD6E3C00043C
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:45 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id E71D39C027D
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:19:44 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5BD911B461;
+	Tue, 12 Feb 2019 10:19:42 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id C6CA41B45B
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 10:19:40 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1C9JdWN012330;
+ Tue, 12 Feb 2019 18:19:39 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1C9Jd2f031405;
+ Tue, 12 Feb 2019 18:19:39 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA30067;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x1C9GFpM025696;
+ Tue, 12 Feb 2019 18:16:15 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1C9GEUt025682; Tue, 12 Feb 2019 18:16:14 +0900
+Message-Id: <201902120916.x1C9GEUt025682@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1C9GEKM025281 ; Tue, 12 Feb 2019 18:16:14 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 18:16:14 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212091614.24285-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH v2 5/5] spp_vf: change retrieve component type
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+So far, component which is assigned for a core is retrieved from
+member type of core_info. However member type is removed from
+core_info. So such information can be retrieved from referring
+spp_component_info.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_dec.c  | 17 +++---------
+ src/vf/common/command_proc.c | 52 +++++++++++++++++++-----------------
+ src/vf/common/spp_proc.c     |  9 ++++---
+ src/vf/common/spp_proc.h     | 22 ++++-----------
+ 4 files changed, 42 insertions(+), 58 deletions(-)
+
+diff --git a/src/vf/common/command_dec.c b/src/vf/common/command_dec.c
+index 4c3e62a..9523ab9 100644
+--- a/src/vf/common/command_dec.c
++++ b/src/vf/common/command_dec.c
+@@ -408,31 +408,22 @@ static int
+ decode_component_type_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+-	enum spp_component_type org_type, set_type;
++	enum spp_component_type comp_type;
+ 	struct spp_command_component *component = output;
+ 
+ 	/* "stop" has no type parameter. */
+ 	if (component->action != SPP_CMD_ACTION_START)
+ 		return SPP_RET_OK;
+ 
+-	set_type = spp_convert_component_type(arg_val);
+-	if (unlikely(set_type <= 0)) {
++	comp_type = spp_convert_component_type(arg_val);
++	if (unlikely(comp_type <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component type. val=%s\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	org_type = spp_get_component_type_update(component->core);
+-	if ((org_type != SPP_COMPONENT_UNUSE) && (org_type != set_type)) {
+-		RTE_LOG(ERR, SPP_COMMAND_PROC,
+-				"Component type does not match. "
+-				"val=%s (org=%d, new=%d)\n",
+-				arg_val, org_type, set_type);
+-		return SPP_RET_NG;
+-	}
+-
+-	component->type = set_type;
++	component->type = comp_type;
+ 	return SPP_RET_OK;
+ }
+ 
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 06e50e6..0f99827 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -235,15 +235,15 @@ spp_update_component(
+ 	int ret_del = -1;
+ 	int component_id = 0;
+ 	unsigned int tmp_lcore_id = 0;
+-	struct spp_component_info *component = NULL;
++	struct spp_component_info *comp_info = NULL;
+ 	struct core_info *core = NULL;
+ 	struct core_mng_info *info = NULL;
+-	struct spp_component_info *component_info = NULL;
++	struct spp_component_info *comp_info_base = NULL;
+ 	struct core_mng_info *core_info = NULL;
+ 	int *change_core = NULL;
+ 	int *change_component = NULL;
+ 
+-	spp_get_mng_data_addr(NULL, NULL, &component_info, &core_info,
++	spp_get_mng_data_addr(NULL, NULL, &comp_info_base, &core_info,
+ 				&change_core, &change_component, NULL);
+ 
+ 	switch (action) {
+@@ -271,12 +271,12 @@ spp_update_component(
+ 
+ 		core = &info->core[info->upd_index];
+ 
+-		component = (component_info + component_id);
+-		memset(component, 0x00, sizeof(struct spp_component_info));
+-		strcpy(component->name, name);
+-		component->type		= type;
+-		component->lcore_id	= lcore_id;
+-		component->component_id	= component_id;
++		comp_info = (comp_info_base + component_id);
++		memset(comp_info, 0x00, sizeof(struct spp_component_info));
++		strcpy(comp_info->name, name);
++		comp_info->type		= type;
++		comp_info->lcore_id	= lcore_id;
++		comp_info->component_id	= component_id;
+ 
+ 		core->id[core->num] = component_id;
+ 		core->num++;
+@@ -290,16 +290,16 @@ spp_update_component(
+ 		if (component_id < 0)
+ 			return SPP_RET_OK;
+ 
+-		component = (component_info + component_id);
+-		tmp_lcore_id = component->lcore_id;
+-		memset(component, 0x00, sizeof(struct spp_component_info));
++		comp_info = (comp_info_base + component_id);
++		tmp_lcore_id = comp_info->lcore_id;
++		memset(comp_info, 0x00, sizeof(struct spp_component_info));
+ 
+ 		info = (core_info + tmp_lcore_id);
+ 		core = &info->core[info->upd_index];
+ 
+ #ifdef SPP_VF_MODULE
+ 		/* initialize classifier information */
+-		if (component->type == SPP_COMPONENT_CLASSIFIER_MAC)
++		if (comp_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
+ 			init_classifier_info(component_id);
+ #endif /* SPP_VF_MODULE */
+ 
+@@ -334,11 +334,11 @@ spp_update_port(enum spp_command_action action,
+ 	int ret_del = -1;
+ 	int component_id = 0;
+ 	int cnt = 0;
+-	struct spp_component_info *component = NULL;
++	struct spp_component_info *comp_info = NULL;
+ 	struct spp_port_info *port_info = NULL;
+ 	int *num = NULL;
+ 	struct spp_port_info **ports = NULL;
+-	struct spp_component_info *component_info = NULL;
++	struct spp_component_info *comp_info_base = NULL;
+ 	int *change_component = NULL;
+ 
+ 	component_id = spp_get_component_id(name);
+@@ -347,17 +347,16 @@ spp_update_port(enum spp_command_action action,
+ 				"(component = %s)\n", name);
+ 		return SPP_RET_NG;
+ 	}
+-
+ 	spp_get_mng_data_addr(NULL, NULL,
+-			&component_info, NULL, NULL, &change_component, NULL);
+-	component = (component_info + component_id);
++			&comp_info_base, NULL, NULL, &change_component, NULL);
++	comp_info = (comp_info_base + component_id);
+ 	port_info = get_iface_info(port->iface_type, port->iface_no);
+ 	if (rxtx == SPP_PORT_RXTX_RX) {
+-		num = &component->num_rx_port;
+-		ports = component->rx_ports;
++		num = &comp_info->num_rx_port;
++		ports = comp_info->rx_ports;
+ 	} else {
+-		num = &component->num_tx_port;
+-		ports = component->tx_ports;
++		num = &comp_info->num_tx_port;
++		ports = comp_info->tx_ports;
+ 	}
+ 
+ 	switch (action) {
+@@ -471,6 +470,8 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 	int ret;
+ 	int lcore_id, cnt;
+ 	struct core_info *core = NULL;
++	struct spp_component_info *comp_info_base = NULL;
++	struct spp_component_info *comp_info = NULL;
+ 
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+ 		if (spp_get_core_status(lcore_id) == SPP_CORE_UNUSE)
+@@ -493,8 +494,11 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 		}
+ 
+ 		for (cnt = 0; cnt < core->num; cnt++) {
++			spp_get_mng_data_addr(NULL, NULL, &comp_info_base,
++							NULL, NULL, NULL, NULL);
++			comp_info = (comp_info_base + core->id[cnt]);
+ #ifdef SPP_VF_MODULE
+-			if (core->type == SPP_COMPONENT_CLASSIFIER_MAC) {
++			if (comp_info->type == SPP_COMPONENT_CLASSIFIER_MAC) {
+ 				ret = spp_classifier_get_component_status(
+ 						lcore_id,
+ 						core->id[cnt],
+@@ -516,7 +520,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 				RTE_LOG(ERR, APP, "Cannot iterate core "
+ 						"information. "
+ 						"(core = %d, type = %d)\n",
+-						lcore_id, core->type);
++						lcore_id, comp_info->type);
+ 				return SPP_RET_NG;
+ 			}
+ 		}
+diff --git a/src/vf/common/spp_proc.c b/src/vf/common/spp_proc.c
+index cf0d760..803e498 100644
+--- a/src/vf/common/spp_proc.c
++++ b/src/vf/common/spp_proc.c
+@@ -607,12 +607,13 @@ del_vhost_sockfile(struct spp_port_info *vhost)
+ 	}
+ }
+ 
+-/* Get component type of target core */
++/* Get component type of target component_info */
+ enum spp_component_type
+-spp_get_component_type(unsigned int lcore_id)
++spp_get_component_type(int id)
+ {
+-	struct core_mng_info *info = (g_mng_data_addr.p_core_info + lcore_id);
+-	return info->core[info->ref_index].type;
++	struct spp_component_info *component_info =
++				(g_mng_data_addr.p_component_info + id);
++	return component_info->type;
+ }
+ 
+ /* Get core ID of target component */
+diff --git a/src/vf/common/spp_proc.h b/src/vf/common/spp_proc.h
+index 8112af3..734c604 100644
+--- a/src/vf/common/spp_proc.h
++++ b/src/vf/common/spp_proc.h
+@@ -380,15 +380,15 @@ int spp_vf_add_vhost_pmd(int index, int client);
+ enum spp_core_status spp_get_core_status(unsigned int lcore_id);
+ 
+ /**
+- * Get component type of target core
++ * Get component type of target component_info
+  *
+- * @param lcore_id
+- *  Logical core ID.
++ * @param id
++ *  component ID.
+  *
+  * @return
+- *  Type of component executed on specified logical core
++ *  Type of component executed
+  */
+-enum spp_component_type spp_get_component_type(unsigned int lcore_id);
++enum spp_component_type spp_get_component_type(int id);
+ 
+ /**
+  * Run check_core_status() for SPP_CORE_STATUS_CHECK_MAX times with
+@@ -489,18 +489,6 @@ void print_ring_latency_stats(void);
+ /* Remove sock file if spp is not running */
+ void  del_vhost_sockfile(struct spp_port_info *vhost);
+ 
+-/**
+- * Get component type of target core
+- *
+- * @param lcore_id
+- *  Logical core ID.
+- *
+- * @return
+- *  Type of component executed on specified logical core
+- */
+-enum spp_component_type
+-spp_get_component_type(unsigned int lcore_id);
+-
+ /**
+  * Get core ID of target component
+  *
+-- 
+2.17.1
+
+
