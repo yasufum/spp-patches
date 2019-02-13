@@ -1,0 +1,157 @@
+X-Account-Key: account3
+X-UIDL: 14066.uaapk7Hiui9Uuz7gcXZ5,qRRXuw=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw010.ocn.ad.jp (LHLO md-lpx-nw010) (153.138.217.83)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 18:30:36 +0900 (JST)
+Received: from md-mta-nw007.ocn.ad.jp ([153.138.217.134])
+	by md-lpx-nw010 with LMTP id eHwiIDySYly3cwAAb/ylEw
+	; Tue, 12 Feb 2019 18:30:36 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-nw007.ocn.ad.jp (Postfix) with ESMTP id 7AB423C00043D
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:30:36 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id AE3B1A80269
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 18:30:35 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id E07CD1B45F;
+	Tue, 12 Feb 2019 10:30:33 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 17B5D1B45A
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 10:30:32 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1C9UVB3014846;
+ Tue, 12 Feb 2019 18:30:31 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1C9UVTZ003110;
+ Tue, 12 Feb 2019 18:30:31 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA02819;
+ Tue, 12 Feb 2019 18:29:46 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x1C9Tkfl004622;
+ Tue, 12 Feb 2019 18:29:46 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1C9Tk2I004619; Tue, 12 Feb 2019 18:29:46 +0900
+Message-Id: <201902120929.x1C9Tk2I004619@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1C9TkjT026883 ; Tue, 12 Feb 2019 18:29:46 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 18:29:46 +0900
+X-Mailer: git-send-email 2.18.0
+X-TM-AS-MML: No
+Subject: [spp] [PATCH] spp_vf: fix unexpected count up for bad request
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+The num of ports is counted up while port is not added actually if it
+is already reached to the defiend muximum number. This patch is to fix
+the issue by rejecting the count up.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/vf/common/command_proc.c | 56 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/src/vf/common/command_proc.c b/src/vf/common/command_proc.c
+index 0f99827..415a638 100644
+--- a/src/vf/common/command_proc.c
++++ b/src/vf/common/command_proc.c
+@@ -321,7 +321,55 @@ spp_update_component(
+ 	return ret;
+ }
+ 
++/* Check if over the maximum num of rx and tx ports of component. */
++static int
++check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
++								int num_tx)
++{
++	RTE_LOG(INFO, SPP_COMMAND_PROC, "port count, port_type=%d,"
++				" rx=%d, tx=%d\n", rxtx, num_rx, num_tx);
++	if (rxtx == SPP_PORT_RXTX_RX)
++		num_rx++;
++	else
++		num_tx++;
++	/* Add rx or tx port appointed in port_type. */
++	RTE_LOG(INFO, SPP_COMMAND_PROC, "Num of ports after count up,"
++				" port_type=%d, rx=%d, tx=%d\n",
++				rxtx, num_rx, num_tx);
++	switch (component_type) {
++	case SPP_COMPONENT_FORWARD:
++		if (num_rx > 1 || num_tx > 1)
++			return SPP_RET_NG;
++		break;
++
++	case SPP_COMPONENT_MERGE:
++		if (num_tx > 1)
++			return SPP_RET_NG;
++		break;
++
++	case SPP_COMPONENT_CLASSIFIER_MAC:
++		if (num_rx > 1)
++			return SPP_RET_NG;
++		break;
++
++	case SPP_COMPONENT_MIRROR:
++		if (num_rx > 1 || num_tx > 2)
++			return SPP_RET_NG;
++		break;
++
++	default:
++		/* Illegal component type. */
++		return SPP_RET_NG;
++	}
++
++	return SPP_RET_OK;
++}
++
+ /* Port add or del to execute it */
++/**
++ * TODO(Ogasawara) The name `action` should be revised to be more
++ * appropriate one.
++ */
+ static int
+ spp_update_port(enum spp_command_action action,
+ 		const struct spp_port_index *port,
+@@ -361,8 +409,14 @@ spp_update_port(enum spp_command_action action,
+ 
+ 	switch (action) {
+ 	case SPP_CMD_ACTION_ADD:
++		/* Check if over the maximum num of ports of component. */
++		if (check_port_count(comp_info->type, rxtx,
++				comp_info->num_rx_port,
++				comp_info->num_tx_port) != SPP_RET_OK)
++			return SPP_RET_NG;
++
+ 		ret_check = check_port_element(port_info, *num, ports);
+-		/* registered check */
++		/* Check whether a port has been already registered. */
+ 		if (ret_check >= SPP_RET_OK) {
+ 			/* registered */
+ 			if (ability->ope == SPP_PORT_ABILITY_OPE_ADD_VLANTAG) {
+-- 
+2.17.1
+
+
