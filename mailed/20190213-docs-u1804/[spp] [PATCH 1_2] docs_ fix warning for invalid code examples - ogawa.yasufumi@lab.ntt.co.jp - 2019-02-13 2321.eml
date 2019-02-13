@@ -1,0 +1,169 @@
+X-Account-Key: account3
+X-UIDL: 14161.8cbntPvZqcnlh,OKVe8PwG0f72Q=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb003.ocn.ad.jp (LHLO md-lpx-cb003) (153.138.210.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 13 Feb 2019 23:21:11 +0900 (JST)
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-cb003 with LMTP id QN9+OdYnZFyHKgAAjPdmzw
+	; Wed, 13 Feb 2019 23:21:11 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id DE6333C00802B
+	for <geminoa@juno.ocn.ne.jp>; Wed, 13 Feb 2019 23:21:10 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 53481500074
+	for <geminoa@juno.ocn.ne.jp>; Wed, 13 Feb 2019 23:21:10 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3E7DE7CDA;
+	Wed, 13 Feb 2019 15:21:08 +0100 (CET)
+Received: from mogw0709.ocn.ad.jp (mogw0709.ocn.ad.jp [153.149.232.10])
+ by dpdk.org (Postfix) with ESMTP id 7351C58FA
+ for <spp@dpdk.org>; Wed, 13 Feb 2019 15:21:07 +0100 (CET)
+Received: from mf-smf-unw003c1 (mf-smf-unw003c1.ocn.ad.jp [153.138.219.72])
+ by mogw0709.ocn.ad.jp (Postfix) with ESMTP id D14338023B;
+ Wed, 13 Feb 2019 23:21:05 +0900 (JST)
+Received: from ocn-vc-mts-101c1.ocn.ad.jp ([153.153.66.78])
+ by mf-smf-unw003c1 with ESMTP
+ id tvOPgATFX2gjgtvPNgnAa0; Wed, 13 Feb 2019 23:21:05 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.167])
+ by ocn-vc-mts-101c1.ocn.ad.jp with ESMTP
+ id tvPNgsIbPEH5BtvPNgu6UZ; Wed, 13 Feb 2019 23:21:05 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Wed, 13 Feb 2019 23:21:05 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 13 Feb 2019 23:21:03 +0900
+Message-Id: <20190213142104.33096-2-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190213142104.33096-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190213142104.33096-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 1/2] docs: fix warning for invalid code examples
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For compiling docs with some version of sphinx-build, for example 1.8.4
+on Ubuntu 18.04, code syntax in code-block should be valid. This example
+is invalid and warned because it includes `....` even if it is just an
+example.
+
+    ..  code-block:: json
+
+        [
+            {
+                "type": "primary"
+            },
+            ....
+        ]
+
+This patch is to correct syntax of code examples.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/api_ref/proc_independ.rst | 1 -
+ docs/guides/api_ref/spp_mirror.rst    | 2 +-
+ docs/guides/api_ref/spp_nfv.rst       | 2 +-
+ docs/guides/api_ref/spp_primary.rst   | 8 +++++++-
+ docs/guides/api_ref/spp_vf.rst        | 4 ++--
+ 5 files changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/docs/guides/api_ref/proc_independ.rst b/docs/guides/api_ref/proc_independ.rst
+index 2e73a1d..52e3002 100644
+--- a/docs/guides/api_ref/proc_independ.rst
++++ b/docs/guides/api_ref/proc_independ.rst
+@@ -62,5 +62,4 @@ Response example
+         "type": "nfv",
+         "client-id": 2
+       }
+-      ...
+     ]
+diff --git a/docs/guides/api_ref/spp_mirror.rst b/docs/guides/api_ref/spp_mirror.rst
+index a19eac7..1d4efee 100644
+--- a/docs/guides/api_ref/spp_mirror.rst
++++ b/docs/guides/api_ref/spp_mirror.rst
+@@ -316,7 +316,7 @@ Detach tx port of ``ring:1`` from component named ``mr1``.
+ .. code-block:: console
+ 
+     $ curl -X PUT -H 'application/json' \
+-      -d '{"action": "detach", "port": "ring:0", "dir": "tx"} \
++      -d '{"action": "detach", "port": "ring:0", "dir": "tx"}' \
+       http://127.0.0.1:7777/v1/mirrors/1/components/mr1/ports
+ 
+ 
+diff --git a/docs/guides/api_ref/spp_nfv.rst b/docs/guides/api_ref/spp_nfv.rst
+index c30da06..949f772 100644
+--- a/docs/guides/api_ref/spp_nfv.rst
++++ b/docs/guides/api_ref/spp_nfv.rst
+@@ -85,7 +85,7 @@ Response example
+       "client-id": 1,
+       "status": "running",
+       "ports": [
+-        "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1", ...
++        "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1"
+       ],
+       "patches": [
+         {
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index 3cbad10..276c7e9 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -125,7 +125,13 @@ Response example
+           "tx": 0,
+           "tx_drop": 0
+         },
+-        ...
++        {
++          "id": 2,
++          "rx": 0,
++          "rx_drop": 0,
++          "tx": 0,
++          "tx_drop": 0
++        }
+       ]
+     }
+ 
+diff --git a/docs/guides/api_ref/spp_vf.rst b/docs/guides/api_ref/spp_vf.rst
+index c406938..173adc4 100644
+--- a/docs/guides/api_ref/spp_vf.rst
++++ b/docs/guides/api_ref/spp_vf.rst
+@@ -139,7 +139,7 @@ Response example
+     {
+       "client-id": 1,
+       "ports": [
+-        "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1", ...
++        "phy:0", "phy:1", "vhost:0", "vhost:1", "ring:0", "ring:1"
+       ],
+       "components": [
+         {
+@@ -440,7 +440,7 @@ Request example
+ .. code-block:: console
+ 
+     $ curl -X PUT -H 'application/json' \
+-      -d '{"action": "detach", "port": "vhost:0", "dir": "tx"} \
++      -d '{"action": "detach", "port": "vhost:0", "dir": "tx"}' \
+       http://127.0.0.1:7777/v1/vfs/1/components/fwd1/ports
+ 
+ Response
+-- 
+2.17.1
+
+

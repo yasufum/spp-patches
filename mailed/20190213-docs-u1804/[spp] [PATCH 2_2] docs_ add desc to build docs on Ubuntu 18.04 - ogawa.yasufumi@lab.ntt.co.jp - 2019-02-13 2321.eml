@@ -1,0 +1,94 @@
+X-Account-Key: account3
+X-UIDL: 14162.WIZfAvaLbq3COyUl7aJ0l3LwwRo=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-nw003.ocn.ad.jp (LHLO md-lpx-nw003) (153.138.217.16)
+ by mzcstore251.ocn.ad.jp with LMTP; Wed, 13 Feb 2019 23:21:10 +0900 (JST)
+Received: from md-mta-cb001.ocn.ad.jp ([153.138.211.69])
+	by md-lpx-nw003 with LMTP id qKqhM9YnZFwdIgAABYl6EA
+	; Wed, 13 Feb 2019 23:21:10 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb001.ocn.ad.jp (Postfix) with ESMTP id C676B4400E40F
+	for <geminoa@juno.ocn.ne.jp>; Wed, 13 Feb 2019 23:21:10 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 736169C0273
+	for <geminoa@juno.ocn.ne.jp>; Wed, 13 Feb 2019 23:21:10 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 33815695D;
+	Wed, 13 Feb 2019 15:21:08 +0100 (CET)
+Received: from mogw1001.ocn.ad.jp (mogw1001.ocn.ad.jp [153.149.231.7])
+ by dpdk.org (Postfix) with ESMTP id 766C35A6A
+ for <spp@dpdk.org>; Wed, 13 Feb 2019 15:21:07 +0100 (CET)
+Received: from mf-smf-unw008c2 (mf-smf-unw008c2.ocn.ad.jp [153.138.219.103])
+ by mogw1001.ocn.ad.jp (Postfix) with ESMTP id DDDCD1200539;
+ Wed, 13 Feb 2019 23:21:05 +0900 (JST)
+Received: from ocn-vc-mts-205c1.ocn.ad.jp ([125.206.160.23])
+ by mf-smf-unw008c2 with ESMTP
+ id tvHEgeQEwqOE8tvPNgBOcX; Wed, 13 Feb 2019 23:21:05 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.167])
+ by ocn-vc-mts-205c1.ocn.ad.jp with ESMTP
+ id tvPNgVB1Xtz0QtvPNgP6AN; Wed, 13 Feb 2019 23:21:05 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Wed, 13 Feb 2019 23:21:05 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 13 Feb 2019 23:21:04 +0900
+Message-Id: <20190213142104.33096-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190213142104.33096-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190213142104.33096-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 2/2] docs: add desc to build docs on Ubuntu 18.04
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Instruction for building documentation is only for Ubuntu 16.04 LTS and
+it is not considered for 18.04. It is required to install `latexmk` if
+you use 18.04, and this update is to add the instruction.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 9847903..8cda22b 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -387,6 +387,13 @@ For PDF, inkscape and latex packages are required.
+     $ sudo apt install texlive-latex-extra
+     $ sudo apt install texlive-latex-recommended
+ 
++You might also need to install ``latexmk`` in addition to if you use
++Ubuntu 18.04 LTS.
++
++.. code-block:: console
++
++    $ sudo apt install latexmk
++
+ HTML documentation is compiled by running make with ``doc-html``. This
+ command launch sphinx for compiling HTML documents.
+ Compiled HTML files are created in ``docs/guides/_build/html/`` and
+-- 
+2.17.1
+
+
