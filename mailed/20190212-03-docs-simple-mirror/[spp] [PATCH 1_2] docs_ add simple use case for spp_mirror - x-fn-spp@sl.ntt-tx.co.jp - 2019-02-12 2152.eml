@@ -1,0 +1,274 @@
+X-Account-Key: account3
+X-UIDL: 14084.C8wiU89Rti0XogHbkk51LsmqoyI=
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: spp-bounces@dpdk.org
+Received: from md-lpx-cb006.ocn.ad.jp (LHLO md-lpx-cb006) (153.138.210.79)
+ by mzcstore251.ocn.ad.jp with LMTP; Tue, 12 Feb 2019 21:53:00 +0900 (JST)
+Received: from md-mta-cb002.ocn.ad.jp ([153.138.211.70])
+	by md-lpx-cb006 with LMTP id CETqCqzBYly2ZwAAO5fBhA
+	; Tue, 12 Feb 2019 21:53:00 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb002.ocn.ad.jp (Postfix) with ESMTP id 24D2E5800A020
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:53:00 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 7DB57A80266
+	for <geminoa@juno.ocn.ne.jp>; Tue, 12 Feb 2019 21:52:59 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3B5871B3D2;
+	Tue, 12 Feb 2019 13:52:57 +0100 (CET)
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp
+ [210.232.35.69]) by dpdk.org (Postfix) with ESMTP id 84A261B3B2
+ for <spp@dpdk.org>; Tue, 12 Feb 2019 13:52:54 +0100 (CET)
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp
+ [10.107.0.111])
+ by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x1CCqr8D004945;
+ Tue, 12 Feb 2019 21:52:53 +0900
+Received: (from root@localhost)
+ by gwchk03.silk.ntt-tx.co.jp (unknown) id x1CCqrT3010228;
+ Tue, 12 Feb 2019 21:52:53 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+ by gwchk03.silk.ntt-tx.co.jp with ESMTP id XAA09993;
+ Tue, 12 Feb 2019 21:52:15 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by
+ imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x1CCqFkZ013029;
+ Tue, 12 Feb 2019 21:52:15 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp
+ [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id
+ x1CCqF6c013024; Tue, 12 Feb 2019 21:52:15 +0900
+Message-Id: <201902121252.x1CCqF6c013024@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+ id x1CCqEUT017116 ; Tue, 12 Feb 2019 21:52:15 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Cc: spp@dpdk.org
+Date: Tue, 12 Feb 2019 21:52:13 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20190212125214.25193-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20190212125214.25193-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-MML: No
+Subject: [spp] [PATCH 1/2] docs: add simple use case for spp_mirror
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to add another simple usecase of spp_mirror
+because current one is too complex to understand how to
+use as noted in [1].
+
+[1] https://mails.dpdk.org/archives/spp/2018-December/001037.html
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ .../spp_vf/use_cases/basic_usecase_mirror.rst | 170 ++++++++++++++++++
+ docs/guides/spp_vf/use_cases/index.rst        |   1 +
+ 2 files changed, 171 insertions(+)
+ create mode 100644 docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst
+
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst b/docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst
+new file mode 100644
+index 0000000..a371b38
+--- /dev/null
++++ b/docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst
+@@ -0,0 +1,170 @@
++.. SPDX-License-Identifier: BSD-3-Clause
++   Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++.. _spp_mirror_use_cases_basic:
++
++Mirroring Packets from NIC
++==========================
++
++This usecase uses two hosts. ``spp_mirror`` is running on localhost. Remote host
++sends ARP packets to localhost by using ping command. ``spp_mirror`` duplicates
++and sends packets to destination ports.
++
++Network Configuration
++---------------------
++
++Detailed configuration is described in
++:numref:`figure_spp_mirror_use_cases_nw_config`.
++In this diagram, incoming packets from ``phy:0`` are mirrored.
++In ``spp_mirror`` process, worker thread ``mir1`` copies incoming packets and
++sends to two destinations ``phy:1`` and ``phy:2``.
++
++.. _figure_spp_mirror_use_cases_nw_config:
++
++.. figure:: ../../images/spp_vf/basic_usecase_mirror_nwconfig.*
++     :width: 80%
++
++     Network configuration of mirroring
++
++
++Setup SPP
++---------
++
++Change directory to spp and confirm that it is already compiled.
++
++.. code-block:: console
++
++    $ cd /path/to/spp
++
++Launch ``spp-ctl`` before launching SPP primary and secondary processes.
++You also need to launch ``spp.py``  if you use ``spp_mirror`` from CLI.
++``-b`` option is for binding IP address to communicate other SPP processes,
++but no need to give it explicitly if ``127.0.0.1`` or ``localhost`` .
++
++.. code-block:: console
++
++    # terminal#1
++    # Launch spp-ctl
++    $ python3 ./src/spp-ctl/spp-ctl -b 192.168.1.100
++
++.. code-block:: console
++
++    # terminal#2
++    # Launch SPP CLI
++    $ python ./src/spp.py -b 192.168.1.100
++
++Start ``spp_primary`` with core list option ``-l 1``.
++
++.. code-block:: console
++
++   # terminal#3
++   $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++       -l 1 -n 4 \
++       --socket-mem 512,512 \
++       --huge-dir=/run/hugepages/kvm \
++       --proc-type=primary \
++       -- \
++       -p 0x07 -n 10 -s 192.168.1.100:5555
++
++
++Launch spp_mirror
++~~~~~~~~~~~~~~~~~
++
++Run secondary process ``spp_mirror``.
++
++.. code-block:: console
++
++    # terminal#4
++    $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/app/spp_mirror \
++     -l 0,2 -n 4 --proc-type=secondary \
++     -- \
++     --client-id 1 \
++     -s 192.168.1.100:6666 \
++
++Start mirror component with ``CORE_ID`` 2.
++
++.. code-block:: console
++
++    # Start component on CORE_ID 2
++    spp > mirror 1; component start mir1 2 mirror
++
++Add ``phy:0`` as rx ports and add ``phy:1`` and ``phy:2`` as tx port
++to mirror.
++
++.. code-block:: none
++
++   # add ports to mir1
++   spp > mirror 1; port add phy:0 rx mir1
++   spp > mirror 1; port add phy:1 tx mir1
++   spp > mirror 1; port add phy:2 tx mir1
++
++
++Confirm Original Packet is Duplicated
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++To check sent packets are mirrored, you run tcpdump for ``ens1`` and ``ens2``
++first. As you run ping for ``ens0``, you will see the same ARP requests trying
++to resolve ``192.168.140.21`` on terminal 1 and 2.
++
++.. code-block:: console
++
++   # terminal#1 at host1
++   # capture on ens1
++   $ sudo tcpdump -i ens1
++    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
++    listening on ens1, link-type EN10MB (Ethernet), capture size 262144 bytes
++    21:18:44.183261 ARP, Request who-has 192.168.140.21 tell R740n15, length 28
++    21:18:45.202182 ARP, Request who-has 192.168.140.21 tell R740n15, length 28
++    ...
++
++.. code-block:: console
++
++   # terminal#2 at host1
++   # capture on ens2
++   $ sudo tcpdump -i ens2
++    tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
++    listening on ens2, link-type EN10MB (Ethernet), capture size 262144 bytes
++    21:18:44.183261 ARP, Request who-has 192.168.140.21 tell R740n15, length 28
++    21:18:45.202182 ARP, Request who-has 192.168.140.21 tell R740n15, length 28
++    ...
++
++Start to send ARP request with ping.
++
++.. code-block:: console
++
++   # terminal#3 at host1
++   # send packet from NIC0
++   $ ping 192.168.140.21 -I ens0
++
++
++Stop Mirroring
++~~~~~~~~~~~~~~
++
++Delete ports for components.
++
++.. code-block:: none
++
++   # Delete port for mir1
++   spp > mirror 1; port del phy:0 rx mir1
++   spp > mirror 1; port del phy:1 tx mir1
++   spp > mirror 1; port del phy:2 tx mir1
++
++Next, stop components.
++
++.. code-block:: console
++
++   # Stop mirror
++   spp > mirror 1; component stop mir1 2 mirror
++
++   spp > mirror 1; status
++   Basic Information:
++     - client-id: 1
++     - ports: [phy:0, phy:1]
++   Components:
++     - core:2 '' (type: unuse)
++
++Finally, terminate ``spp_mirror`` to finish this usecase.
++
++.. code-block:: console
++
++    spp > mirror 1; exit
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+index 3d14b7c..2a0fadb 100644
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ b/docs/guides/spp_vf/use_cases/index.rst
+@@ -9,5 +9,6 @@ Use Cases
+ 
+    basic_usecase_vf
+    usecase1
++   basic_usecase_mirror
+    usecase2
+    usecase3
+-- 
+2.17.1
+
+
