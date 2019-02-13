@@ -1,0 +1,55 @@
+From d43a6d5ddc413ce4e34b40bdf889a53abb421ff0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 10 Feb 2019 23:06:35 +0900
+Subject: [PATCH] tools/sppc: add liblua5.x-dev installation
+
+Compilation of pktgen is failed if `lua.h` is not installed. It is
+included in `liblua5.x-dev` in Ubuntu, so add the entry in the sequence
+of `apt-get`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04  | 1 +
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 1 +
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+index dac5a2a..4c4ae49 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblua5*-dev \
+     pkg-config \
+     wget \
+     && apt-get clean \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 6a0640d..1103cdc 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblua5*-dev \
+     pkg-config \
+     wget \
+     && apt-get clean \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index 3f0508d..5ff3e64 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblua5*-dev \
+     pkg-config \
+     wget \
+     && apt-get clean \
+-- 
+2.7.4
+
