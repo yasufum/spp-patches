@@ -1,0 +1,24 @@
+From 90bfea9bd0c60f21c34923616490e17a7304abf8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 13 Feb 2019 23:03:09 +0900
+Subject: [PATCH 0/2] Instructions for building docs on Ubuntu 18.04
+
+This series of update is to add modification and instruction for
+building docs on Ubuntu 18.04. Required package is changed and
+validation for syntax of docs is more stricted on Ubuntu 18.04.
+
+Yasufumi Ogawa (2):
+  docs: fix warning for invalid code examples
+  docs: add desc to build docs on Ubuntu 18.04
+
+ docs/guides/api_ref/proc_independ.rst | 1 -
+ docs/guides/api_ref/spp_mirror.rst    | 2 +-
+ docs/guides/api_ref/spp_nfv.rst       | 2 +-
+ docs/guides/api_ref/spp_primary.rst   | 8 +++++++-
+ docs/guides/api_ref/spp_vf.rst        | 4 ++--
+ docs/guides/setup/getting_started.rst | 7 +++++++
+ 6 files changed, 18 insertions(+), 6 deletions(-)
+
+-- 
+2.17.1
+

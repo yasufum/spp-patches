@@ -1,0 +1,35 @@
+From 90bfea9bd0c60f21c34923616490e17a7304abf8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 13 Feb 2019 22:48:01 +0900
+Subject: [PATCH 2/2] docs: add desc to build docs on Ubuntu 18.04
+
+Instruction for building documentation is only for Ubuntu 16.04 LTS and
+it is not considered for 18.04. It is required to install `latexmk` if
+you use 18.04, and this update is to add the instruction.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/setup/getting_started.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/docs/guides/setup/getting_started.rst b/docs/guides/setup/getting_started.rst
+index 9847903..8cda22b 100644
+--- a/docs/guides/setup/getting_started.rst
++++ b/docs/guides/setup/getting_started.rst
+@@ -387,6 +387,13 @@ For PDF, inkscape and latex packages are required.
+     $ sudo apt install texlive-latex-extra
+     $ sudo apt install texlive-latex-recommended
+ 
++You might also need to install ``latexmk`` in addition to if you use
++Ubuntu 18.04 LTS.
++
++.. code-block:: console
++
++    $ sudo apt install latexmk
++
+ HTML documentation is compiled by running make with ``doc-html``. This
+ command launch sphinx for compiling HTML documents.
+ Compiled HTML files are created in ``docs/guides/_build/html/`` and
+-- 
+2.17.1
+
