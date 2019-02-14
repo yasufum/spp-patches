@@ -1,0 +1,136 @@
+X-Account-Key: account3
+X-UIDL: c0c82b23eca4655c2b8e0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.216.231])
+	by md-bnd-nw106 with LMTP id MCSMH+ykZVwrjgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:08 +0900
+Received: from md-lpx-cb010 ([153.138.216.231])
+	by md-drt-nw102 with LMTP id ALCCHeykZVwYFQAA8iqT2w
+	; Fri, 15 Feb 2019 02:27:08 +0900
+Received: from md-mta-nw003.ocn.ad.jp ([153.138.216.231])
+	by md-lpx-cb010 with LMTP id CBjHGOykZVxaLQAA/ui1sQ
+	; Fri, 15 Feb 2019 02:27:08 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw003.ocn.ad.jp (Postfix) with ESMTP id 57D083C003224
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:08 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id BDA82500272
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:07 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 140411B462;
+	Thu, 14 Feb 2019 18:27:05 +0100 (CET)
+Received: from mogw0907.ocn.ad.jp (mogw0907.ocn.ad.jp [153.149.227.13])
+ by dpdk.org (Postfix) with ESMTP id B997C1B456
+ for <spp@dpdk.org>; Thu, 14 Feb 2019 18:27:03 +0100 (CET)
+Received: from mf-smf-unw009c3 (mf-smf-unw009c3.ocn.ad.jp [153.138.219.107])
+ by mogw0907.ocn.ad.jp (Postfix) with ESMTP id 436E41003AF;
+ Fri, 15 Feb 2019 02:27:02 +0900 (JST)
+Received: from ocn-vc-mts-104c1.ocn.ad.jp ([153.138.237.81])
+ by mf-smf-unw009c3 with ESMTP
+ id uKmqgyXDRL2QJuKmsgLm0I; Fri, 15 Feb 2019 02:27:02 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-104c1.ocn.ad.jp with ESMTP
+ id uKmsg0Whhq2v1uKmsgg7TS; Fri, 15 Feb 2019 02:27:02 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Fri, 15 Feb 2019 02:27:02 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 15 Feb 2019 02:26:57 +0900
+Message-Id: <20190214172700.5816-4-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190214172700.5816-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190214172700.5816-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 3/6] docs: move images of spp_pcap
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Correct path of images of spp_pcap placed in `images/spp_pcap` but
+should be in `images/spp_vf` conventionally.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_design.svg   | 0
+ docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_overview.svg | 0
+ docs/guides/spp_vf/design.rst                                 | 2 +-
+ docs/guides/spp_vf/overview.rst                               | 4 ++--
+ docs/guides/spp_vf/use_cases/usecase3.rst                     | 4 ++--
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_design.svg (100%)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_overview.svg (100%)
+
+diff --git a/docs/guides/images/spp_pcap/spp_pcap_design.svg b/docs/guides/images/spp_vf/spp_pcap_design.svg
+similarity index 100%
+rename from docs/guides/images/spp_pcap/spp_pcap_design.svg
+rename to docs/guides/images/spp_vf/spp_pcap_design.svg
+diff --git a/docs/guides/images/spp_pcap/spp_pcap_overview.svg b/docs/guides/images/spp_vf/spp_pcap_overview.svg
+similarity index 100%
+rename from docs/guides/images/spp_pcap/spp_pcap_overview.svg
+rename to docs/guides/images/spp_vf/spp_pcap_overview.svg
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 89b7059..b1e864a 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -131,7 +131,7 @@ packets from ``phy:0`` are captured by using three ``writer`` threads.
+ 
+ .. _figure_spp_pcap_design:
+ 
+-.. figure:: ../images/spp_pcap/spp_pcap_design.*
++.. figure:: ../images/spp_vf/spp_pcap_design.*
+     :width: 55%
+ 
+     spp_pcap internal structure
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index 09c21af..adaced6 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -101,7 +101,7 @@ threads unlike spp_vf.
+ 
+ .. _figure_spp_pcap_overview:
+ 
+-.. figure:: ../images/spp_pcap/spp_pcap_overview.*
+-   :width: 55%
++.. figure:: ../images/spp_vf/spp_pcap_overview.*
++   :width: 50%
+ 
+    Overview of spp_pcap
+diff --git a/docs/guides/spp_vf/use_cases/usecase3.rst b/docs/guides/spp_vf/use_cases/usecase3.rst
+index 146ef06..c31324e 100644
+--- a/docs/guides/spp_vf/use_cases/usecase3.rst
++++ b/docs/guides/spp_vf/use_cases/usecase3.rst
+@@ -13,8 +13,8 @@ Incoming packets received by ``phy:0`` is captured by ``spp_pcap``.
+ 
+ .. _figure_simple_capture:
+ 
+-.. figure:: ../../images/spp_pcap/spp_pcap_overview.*
+-    :width: 40%
++.. figure:: ../../images/spp_vf/spp_pcap_overview.*
++    :width: 50%
+ 
+     Simple Packet Capture
+ 
+-- 
+2.17.1
+
+

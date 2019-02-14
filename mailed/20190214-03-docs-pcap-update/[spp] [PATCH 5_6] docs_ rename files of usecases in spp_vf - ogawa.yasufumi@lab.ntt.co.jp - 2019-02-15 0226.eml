@@ -1,0 +1,129 @@
+X-Account-Key: account3
+X-UIDL: c84b0a0feda4655cb4940000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.216.232])
+	by md-bnd-nw106 with LMTP id oOwrC+2kZVy0lAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:09 +0900
+Received: from md-lpx-cb004 ([153.138.216.232])
+	by md-drt-nw102 with LMTP id iIeHCe2kZVwYFQAA8iqT2w
+	; Fri, 15 Feb 2019 02:27:09 +0900
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-cb004 with LMTP id +BPRBO2kZVwHDQAAuuTZ3g
+	; Fri, 15 Feb 2019 02:27:09 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id 06DE93C007821
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:09 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 5C4E2D4026F
+	for <geminoa@juno.ocn.ne.jp>; Fri, 15 Feb 2019 02:27:08 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 2EAE31B46E;
+	Thu, 14 Feb 2019 18:27:07 +0100 (CET)
+Received: from mogw1104.ocn.ad.jp (mogw1104.ocn.ad.jp [153.149.229.5])
+ by dpdk.org (Postfix) with ESMTP id F3B931B45F
+ for <spp@dpdk.org>; Thu, 14 Feb 2019 18:27:03 +0100 (CET)
+Received: from mf-smf-unw009c1 (mf-smf-unw009c1.ocn.ad.jp [153.138.219.105])
+ by mogw1104.ocn.ad.jp (Postfix) with ESMTP id 8DEA2900300;
+ Fri, 15 Feb 2019 02:27:02 +0900 (JST)
+Received: from ocn-vc-mts-202c1.ocn.ad.jp ([153.138.219.215])
+ by mf-smf-unw009c1 with ESMTP
+ id uKkngc6whHkOOuKmsgxBXm; Fri, 15 Feb 2019 02:27:02 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.135])
+ by ocn-vc-mts-202c1.ocn.ad.jp with ESMTP
+ id uKmsg6CitVBnyuKmsggbcN; Fri, 15 Feb 2019 02:27:02 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Fri, 15 Feb 2019 02:27:02 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 15 Feb 2019 02:26:59 +0900
+Message-Id: <20190214172700.5816-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190214172700.5816-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190214172700.5816-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 5/6] docs: rename files of usecases in spp_vf
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The filenames of usecases in spp_vf is not understandable for which of
+usecases, for instance, `usecase1.rst` or so. This update is to revise
+the filenames and update `index.rst`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/use_cases/index.rst                 | 10 +++++-----
+ .../{basic_usecase_mirror.rst => mirror_simple.rst}    |  0
+ .../spp_vf/use_cases/{usecase2.rst => mirror_vms.rst}  |  0
+ .../spp_vf/use_cases/{usecase3.rst => pcap_simple.rst} |  0
+ .../use_cases/{basic_usecase_vf.rst => vf_simple.rst}  |  0
+ .../use_cases/{usecase1.rst => vf_ssh_login.rst}       |  0
+ 6 files changed, 5 insertions(+), 5 deletions(-)
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_mirror.rst => mirror_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase2.rst => mirror_vms.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase3.rst => pcap_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_vf.rst => vf_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase1.rst => vf_ssh_login.rst} (100%)
+
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+index 2a0fadb..c9b5206 100644
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ b/docs/guides/spp_vf/use_cases/index.rst
+@@ -7,8 +7,8 @@ Use Cases
+ .. toctree::
+    :maxdepth: 2
+ 
+-   basic_usecase_vf
+-   usecase1
+-   basic_usecase_mirror
+-   usecase2
+-   usecase3
++   vf_simple
++   vf_ssh_login
++   mirror_simple
++   mirror_vms
++   pcap_simple
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst b/docs/guides/spp_vf/use_cases/mirror_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst
+rename to docs/guides/spp_vf/use_cases/mirror_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase2.rst b/docs/guides/spp_vf/use_cases/mirror_vms.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase2.rst
+rename to docs/guides/spp_vf/use_cases/mirror_vms.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase3.rst b/docs/guides/spp_vf/use_cases/pcap_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase3.rst
+rename to docs/guides/spp_vf/use_cases/pcap_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_vf.rst b/docs/guides/spp_vf/use_cases/vf_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/basic_usecase_vf.rst
+rename to docs/guides/spp_vf/use_cases/vf_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase1.rst b/docs/guides/spp_vf/use_cases/vf_ssh_login.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase1.rst
+rename to docs/guides/spp_vf/use_cases/vf_ssh_login.rst
+-- 
+2.17.1
+
+
