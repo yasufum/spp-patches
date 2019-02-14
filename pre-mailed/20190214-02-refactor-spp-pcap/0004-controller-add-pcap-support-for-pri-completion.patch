@@ -1,0 +1,50 @@
+From 23c0e49f9d0b688f71d8bbfce81aa885de80365f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 09:34:27 +0900
+Subject: [PATCH 4/6] controller: add pcap support for pri completion
+
+This update is to add `pri; launch` completion for pcap. Optional args,
+`--out-dir` and `--fsize`, are expected to be given by user and not
+completed. Here is an example.
+
+  # press TAB after `pri; launch pcap 2 `
+  spp > pri; launch pcap 2 -l 1,2-3 ... -s 192.168.1.100:6666 -c phy:0
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py    | 7 +++++++
+ src/controller/config/default.yml | 3 +++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index d76da2e..2e3c208 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -239,6 +239,13 @@ class SppPrimary(object):
+                                 nof_workers = int(
+                                         cli_config[tmpkey]['val'])
+ 
++                            if 'sec_pcap_port' in cli_config.keys():
++                                temp = '-c {}'.format(
++                                        cli_config['sec_pcap_port']['val'])
++
++                                self.launch_template = '{} {}'.format(
++                                    self.launch_template, temp)
++
+                         last_core = lcore_base + nof_workers - 1
+ 
+                         # Decide lcore option based on configured number of
+diff --git a/src/controller/config/default.yml b/src/controller/config/default.yml
+index ee42bc3..223359e 100644
+--- a/src/controller/config/default.yml
++++ b/src/controller/config/default.yml
+@@ -31,3 +31,6 @@ sec_pcap_nof_lcores:
+ sec_vhost_cli:
+     val: ""
+     desc: Vhost client mode, activated if set any of values
++sec_pcap_port:
++    val: "phy:0"
++    desc: Default captured port
+-- 
+2.17.1
+

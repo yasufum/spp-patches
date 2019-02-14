@@ -1,0 +1,28 @@
+From 380fdcc0c8a387166423c5fce2a5d8115a780649 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 11:40:19 +0900
+Subject: [PATCH 0/6] Update for spp_pcap
+
+This series of patches is to add spp_pcap support, update GNUmakefile
+and for SPP CLI and refactor spp_pcap's options. It also includes
+refactoring for the name of functions and variables.
+
+Yasufumi Ogawa (6):
+  spp_pcap: refactor app options
+  spp-ctl: update spp_pcap opts for validation
+  controller: remove local default config
+  controller: add pcap support for pri completion
+  spp_pcap: refactor name of funcs and vars
+  makefile: update dist-clean task
+
+ GNUmakefile                       |  3 +
+ src/controller/commands/pri.py    | 42 ++++----------
+ src/controller/config/default.yml |  3 +
+ src/pcap/spp_pcap.c               | 91 +++++++++++++++----------------
+ src/pcap/spp_proc.h               |  6 +-
+ src/spp-ctl/spp_proc.py           | 13 +++--
+ 6 files changed, 70 insertions(+), 88 deletions(-)
+
+-- 
+2.17.1
+

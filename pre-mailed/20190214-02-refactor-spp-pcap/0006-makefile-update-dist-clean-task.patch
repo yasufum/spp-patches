@@ -1,0 +1,33 @@
+From 380fdcc0c8a387166423c5fce2a5d8115a780649 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 11:38:08 +0900
+Subject: [PATCH 6/6] makefile: update dist-clean task
+
+* Remove objects and headers under `src/pcap`.
+
+* Remove python cache files and directories.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 8a9fc0c..fff7e77 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -25,8 +25,11 @@ DOC_ROOT = docs/guides
+ dist-clean:
+ 	make clean
+ 	rm -rf $(wildcard src/*/$(RTE_TARGET))
++	rm -rf $(wildcard src/*/*.pyc)
++	rm -rf $(wildcard src/*/__pycache__)
+ 	rm -rf $(wildcard src/*/shared)
+ 	rm -rf $(wildcard src/mirror/vf)
++	rm -rf $(wildcard src/pcap/vf)
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.17.1
+

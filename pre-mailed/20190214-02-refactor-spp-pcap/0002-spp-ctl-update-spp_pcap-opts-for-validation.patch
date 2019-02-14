@@ -1,0 +1,47 @@
+From 6310d6b922b09ba91ea98f4749626b9f2482a943 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 08:40:41 +0900
+Subject: [PATCH 2/6] spp-ctl: update spp_pcap opts for validation
+
+This patch is to update `APP_OPTS` used for validation for modified
+options.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_proc.py | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index a2d2adf..cdd7b49 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -82,10 +82,10 @@ APP_OPTS = {
+         'spp_pcap':
+         [
+             '--client-id',  # sec ID
+-            '-s',  # address nd port
+-            '-i',
+-            '--output',
+-            '--limit_file_size'
++            '-s',  # address and port
++            '-c',  # captured port
++            '--out-dir',  # captured file dir
++            '--fsize'  # max size of captured file
+             ]}
+ 
+ 
+@@ -332,8 +332,9 @@ class PrimaryProc(SppProc):
+                     if (val is not None) and (val != ''):
+                         app_opts.append(str(val))
+ 
+-        query = "launch {} {} {} -- {}".format(
+-                sec_id, proc_name, ' '.join(eal_opts), ' '.join(app_opts))
++        query = "launch {sid} {pname} {eal} -- {app}".format(
++                sid=sec_id, pname=proc_name, eal=' '.join(eal_opts),
++                app=' '.join(app_opts))
+ 
+         LOG.info("Query: {}".format(query))
+ 
+-- 
+2.17.1
+
