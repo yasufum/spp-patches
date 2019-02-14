@@ -1,9 +1,10 @@
 From 3d8c0efc59257cf3277caacb08a5b95433d72329 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 15 Feb 2019 02:10:58 +0900
-Subject: [PATCH 0/6] *** SUBJECT HERE ***
+Subject: [PATCH 0/6] Update docs of spp_pcap
 
-*** BLURB HERE ***
+This series of patches is to update docs of spp_pcap for typos, old
+descriptions and lackness of explanations.
 
 Yasufumi Ogawa (6):
   docs: update design and howto use of spp_pcap
