@@ -1,0 +1,65 @@
+From 810b4d502cd0a1022fd11902f2c00d2526ed14e4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 18:06:51 +0900
+Subject: [PATCH 5/6] docs: rename files of usecases in spp_vf
+
+The filenames of usecases in spp_vf is not understandable for which of
+usecases, for instance, `usecase1.rst` or so. This update is to revise
+the filenames and update `index.rst`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/use_cases/index.rst                 | 10 +++++-----
+ .../{basic_usecase_mirror.rst => mirror_simple.rst}    |  0
+ .../spp_vf/use_cases/{usecase2.rst => mirror_vms.rst}  |  0
+ .../spp_vf/use_cases/{usecase3.rst => pcap_simple.rst} |  0
+ .../use_cases/{basic_usecase_vf.rst => vf_simple.rst}  |  0
+ .../use_cases/{usecase1.rst => vf_ssh_login.rst}       |  0
+ 6 files changed, 5 insertions(+), 5 deletions(-)
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_mirror.rst => mirror_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase2.rst => mirror_vms.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase3.rst => pcap_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_vf.rst => vf_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase1.rst => vf_ssh_login.rst} (100%)
+
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+index 2a0fadb..c9b5206 100644
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ b/docs/guides/spp_vf/use_cases/index.rst
+@@ -7,8 +7,8 @@ Use Cases
+ .. toctree::
+    :maxdepth: 2
+ 
+-   basic_usecase_vf
+-   usecase1
+-   basic_usecase_mirror
+-   usecase2
+-   usecase3
++   vf_simple
++   vf_ssh_login
++   mirror_simple
++   mirror_vms
++   pcap_simple
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst b/docs/guides/spp_vf/use_cases/mirror_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/basic_usecase_mirror.rst
+rename to docs/guides/spp_vf/use_cases/mirror_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase2.rst b/docs/guides/spp_vf/use_cases/mirror_vms.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase2.rst
+rename to docs/guides/spp_vf/use_cases/mirror_vms.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase3.rst b/docs/guides/spp_vf/use_cases/pcap_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase3.rst
+rename to docs/guides/spp_vf/use_cases/pcap_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/basic_usecase_vf.rst b/docs/guides/spp_vf/use_cases/vf_simple.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/basic_usecase_vf.rst
+rename to docs/guides/spp_vf/use_cases/vf_simple.rst
+diff --git a/docs/guides/spp_vf/use_cases/usecase1.rst b/docs/guides/spp_vf/use_cases/vf_ssh_login.rst
+similarity index 100%
+rename from docs/guides/spp_vf/use_cases/usecase1.rst
+rename to docs/guides/spp_vf/use_cases/vf_ssh_login.rst
+-- 
+2.17.1
+

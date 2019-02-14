@@ -1,0 +1,41 @@
+From 3d8c0efc59257cf3277caacb08a5b95433d72329 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 15 Feb 2019 02:10:58 +0900
+Subject: [PATCH 0/6] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (6):
+  docs: update design and howto use of spp_pcap
+  docs: update spp_pcap commands
+  docs: move images of spp_pcap
+  docs: update overview image of spp_pcap
+  docs: rename files of usecases in spp_vf
+  docs: update usecase of spp_pcap
+
+ docs/guides/commands/secondary/spp_pcap.rst   | 109 +++++---
+ .../{spp_pcap => spp_vf}/spp_pcap_design.svg  |  71 ++----
+ .../spp_pcap_overview.svg                     |   0
+ docs/guides/spp_vf/design.rst                 |  95 ++-----
+ docs/guides/spp_vf/gsg/howto_use.rst          | 101 +++++---
+ docs/guides/spp_vf/overview.rst               |   4 +-
+ docs/guides/spp_vf/use_cases/index.rst        |  10 +-
+ ...c_usecase_mirror.rst => mirror_simple.rst} |   0
+ .../{usecase2.rst => mirror_vms.rst}          |   0
+ docs/guides/spp_vf/use_cases/pcap_simple.rst  | 235 ++++++++++++++++++
+ docs/guides/spp_vf/use_cases/usecase3.rst     | 164 ------------
+ .../{basic_usecase_vf.rst => vf_simple.rst}   |   0
+ .../{usecase1.rst => vf_ssh_login.rst}        |   0
+ 13 files changed, 409 insertions(+), 380 deletions(-)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_design.svg (90%)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_overview.svg (100%)
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_mirror.rst => mirror_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase2.rst => mirror_vms.rst} (100%)
+ create mode 100644 docs/guides/spp_vf/use_cases/pcap_simple.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/usecase3.rst
+ rename docs/guides/spp_vf/use_cases/{basic_usecase_vf.rst => vf_simple.rst} (100%)
+ rename docs/guides/spp_vf/use_cases/{usecase1.rst => vf_ssh_login.rst} (100%)
+
+-- 
+2.17.1
+

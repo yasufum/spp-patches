@@ -1,0 +1,319 @@
+From 6bcf6b16f290c8afc7104c98cc95c6d8c4369b3a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 11:59:12 +0900
+Subject: [PATCH 1/6] docs: update design and howto use of spp_pcap
+
+Some of descriptions are incorrect or remained old. This patch is to
+update them. It also includes revising miscs.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/design.rst        |  93 ++++--------------------
+ docs/guides/spp_vf/gsg/howto_use.rst | 101 ++++++++++++++++++---------
+ 2 files changed, 83 insertions(+), 111 deletions(-)
+
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 4774ef7..89b7059 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -18,6 +18,7 @@ Both of ``spp_vf`` and ``spp_mirror`` support three types of port,
+ path between them.
+ ``vhost`` is used to forward packets from a VM or sent to.
+ 
++
+ .. _spp_vf_design_spp_vf:
+ 
+ spp_vf
+@@ -63,6 +64,7 @@ equals to 0x8100 as defined in IEEE 802.1Q standard.
+ Classifier does not start forwarding until when at least one rx and two tx are
+ added.
+ 
++
+ .. _spp_vf_design_spp_mirror:
+ 
+ spp_mirror
+@@ -105,39 +107,27 @@ than ``deepcopy``, but it should be used for read only for the packet.
+ You should choose ``deepcopy`` if you use VLAN feature to make no change for
+ original packet while copied packet is modified.
+ 
++
+ .. _spp_vf_design_spp_pcap:
+ 
+ spp_pcap
+ --------
+-``spp_pcap`` cosisits of main thread, ``receiver`` thread runs on a core of
+-the second smallest ID and ``wirter`` threads on the rest of cores. You should
+-have enough cores if you need to capture large amount of packets.
+-
+-``spp_pcap`` has 4 types of command. ``start``, ``stop``, ``exit`` and ``status``
+-to control behavior of ``spp_pcap``.
+-
+-With ``start`` command, you can start capturing.
+-Incoming packets are received by ``receiver`` thread and it is transferred to
+-``writer`` thread(s) via multi-producer/multi-consumer ring.
+-Multi-producer/multi-consumer ring is the ring which multiple producers
+-can enqueue and multiple consumers can dequeue. When those packets are
+-received by ``writer`` thread(s), it will be compressed using LZ4 library and
+-then be written to storage. In case more than 1 cores are assigned,
+-incoming packets are written into storage per core basis so packet capture file
+-will be divided per core.
+-When ``spp_pcap`` has already been started, ``start`` command cannot
+-be accepted.
+ 
+-With ``stop`` command, capture will be stopped. When spp_pcap has already
+-been stopped, ``stop`` command cannot be accepted.
++``spp_pcap`` cosisits of main thread, ``receiver`` thread and one or more
++``wirter`` threads. As design policy, the number of ``receiver`` is fixed
++to 1 because to make it simple and it is enough for task of receiving.
++``spp_pcap`` requires at least three lcores, and assign to from master,
++``receiver`` and then the rest of ``writer`` threads respectively.
+ 
+-With ``exit`` command, ``spp_pcap`` exits the program. ``exit`` command
+-during started state, stops capturing and then exits the program.
++Incoming packets are received by ``receiver`` thread and transferred to
++``writer`` threads via ring buffers between threads.
+ 
+-With ``status`` command, status related to ``spp_pcap`` is shown.
++Several ``writer`` work in parallel to store packets as files in LZ4
++format. You can capture a certain amount of heavy traffic by using much
++``writer`` threads.
+ 
+-In :numref:`figure_spp_pcap_design`,
+-the internal structure of ``spp_pcap`` is shown.
++:numref:`figure_spp_pcap_design` shows an usecase of ``spp_pcap`` in which
++packets from ``phy:0`` are captured by using three ``writer`` threads.
+ 
+ .. _figure_spp_pcap_design:
+ 
+@@ -148,56 +138,3 @@ the internal structure of ``spp_pcap`` is shown.
+ 
+ .. _spp_pcap_design_output_file_format:
+ 
+-:numref:`figure_spp_pcap_design` shows the case when ``spp_pcap`` is connected
+-with ``phy:0``.
+-There is only one ``receiver`` thread and multiple ``writer`` threads.
+-Each ``writer`` writes packets into file.
+-Once exceeds maximum file size ,
+-it creates new file so that multiple output files are created.
+-
+-
+-Apptication option
+-^^^^^^^^^^^^^^^^^^
+-
+-``spp_pcap`` specific options are:
+-
+- * -client-id: client id which can be seen as secondary ID from spp.py.
+- * -s: IPv4 address and port for spp-ctl.
+- * -i: port to which spp_pcap attached with.
+- * --output: Output file path
+-   where capture files are written.\
+-   When this parameter is omitted,
+-   ``/tmp`` is used.
+- * --port_name: port_name which can be specified as
+-   either of phy:N or \
+-   ring:N.
+-   When used as part of file name ``:`` is removed to avoid misconversion.
+- * --limit_file_option: Maximum size of a capture file.
+-   Default value is ``1GiB``.Captured files are not deleted automatically
+-   because file rotation is not supported.
+-
+-The output file format is as following:
+-
+-.. code-block:: none
+-
+-    spp_pcap.YYYYMMDDhhmmss.[port_name].[wcore_num]
+-    wcore_num is write core number which starts with 1
+-
+-Each ``writer`` thread has
+-unique integer number which is used to determine the name of capture file.
+-YYYYMMDDhhmmss is the time when ``spp_pcap`` receives ``start`` command.
+-
+-.. code-block:: none
+-
+-    /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
+-
+-This example shows that ``receiver`` thread receives ``start`` command at
+-20181108110600.  Port is ring:0, wcore_num is 1 and sequential number is 2.
+-
+-
+-Until writing is finished, packets are stored into temporary file.
+-The example is as following:
+-
+-.. code-block:: none
+-
+-    /tmp/spp_pcap.20181108110600.ring0.1.2.pcap.lz4.tmp
+diff --git a/docs/guides/spp_vf/gsg/howto_use.rst b/docs/guides/spp_vf/gsg/howto_use.rst
+index dc1a7bb..260527e 100644
+--- a/docs/guides/spp_vf/gsg/howto_use.rst
++++ b/docs/guides/spp_vf/gsg/howto_use.rst
+@@ -24,8 +24,8 @@ doing explicitly in this example to be more understandable.
+ .. code-block:: console
+ 
+     # Launch spp-ctl and spp.py
+-    $ python3 ./src/spp-ctl/spp-ctl -b 127.0.0.1
+-    $ python ./src/spp.py -b 127.0.0.1
++    $ python3 ./src/spp-ctl/spp-ctl -b 192.168.1.100
++    $ python ./src/spp.py -b 192.168.1.100
+ 
+ 
+ SPP Primary
+@@ -41,22 +41,23 @@ See `Running a Sample Application
+ <http://dpdk.org/doc/guides/linux_gsg/build_sample_apps.html#running-a-sample-application>`_
+ in DPDK documentation for options.
+ 
+-Options of spp primary are:
++Application specific options of spp primary.
+ 
+-  * -p : port mask
+-  * -n : number of rings
+-  * -s : IPv4 address and port for spp primary
++  * ``-p``: Port mask.
++  * ``-n``: Number of rings.
++  * ``-s``: IPv4 address and port for spp primary.
+ 
+-Then, spp primary can be launched like this.
++This is an example of launching ``spp_primary``.
+ 
+ .. code-block:: console
+ 
+     $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
+-      -l 1 -n 4 --socket-mem 512,512 \
+-      --huge-dir=/run/hugepages/kvm \
+-      --proc-type=primary \
++      -l 0 -n 4 --socket-mem 512,512 \
++      --huge-dir /run/hugepages/kvm \
++      --proc-type primary \
+       -- \
+-      -p 0x03 -n 9 -s 127.0.0.1:5555
++      -p 0x03 -n 10 \
++      -s 192.168.1.100:5555
+ 
+ 
+ .. _spp_vf_gsg_howto_use_spp_vf:
+@@ -64,18 +65,14 @@ Then, spp primary can be launched like this.
+ spp_vf
+ ------
+ 
+-``spp_vf`` can be launched with two kinds of options, like primary process.
++``spp_vf`` is a kind of secondary process, so it takes both of EAL options and
++application specific options. Here is a list of application specific options.
+ 
+-Like primary process, ``spp_vf`` has two kinds of options. One is for
+-DPDK, the other is ``spp_vf``.
++  * ``--client-id``: Client ID unique among secondary processes.
++  * ``-s``: IPv4 address and secondary port of spp-ctl.
++  * ``--vhost-client``: Enable vhost-user client mode.
+ 
+-``spp_vf`` specific options are:
+-
+-  * --client-id: client id which can be seen as secondary ID from spp.py
+-  * -s: IPv4 address and port for spp secondary
+-  * --vhost-client: vhost-user client enable setting
+-
+-``spp_vf`` can be launched like this.
++This is an example of launching ``spp_vf``.
+ 
+ .. code-block:: console
+ 
+@@ -84,7 +81,7 @@ DPDK, the other is ``spp_vf``.
+       --proc-type=secondary \
+       -- \
+       --client-id 1 \
+-      -s 127.0.0.1:6666 \
++      -s 192.168.1.100:6666 \
+       --vhost-client
+ 
+ If ``--vhost-client`` option is specified, then ``vhost-user`` act as
+@@ -100,24 +97,27 @@ See also `Vhost Sample Application
+ spp_mirror
+ ----------
+ 
+-``spp_mirror`` takes the same options as ``spp_vf``. Here is an example.
++``spp_mirror`` is a kind of secondary process, and options are same as
++``spp_vf``.
+ 
+ .. code-block:: console
+ 
+     $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/spp_mirror \
+-      -l 2 -n 4 \
++      -l 1,2 -n 4 \
+       --proc-type=secondary \
+       -- \
+       --client-id 1 \
+-      -s 127.0.0.1:6666 \
++      -s 192.168.1.100:6666 \
+       -vhost-client
+ 
++
+ .. _spp_vf_gsg_howto_use_spp_pcap:
+ 
+ spp_pcap
+ --------
+ 
+-After run ``spp_primary`` is launched, run secondary process ``spp_pcap``.
++``spp_pcap`` is a kind of secondary process, so it takes both of EAL options
++and application specific options.
+ 
+ .. code-block:: console
+ 
+@@ -126,15 +126,50 @@ After run ``spp_primary`` is launched, run secondary process ``spp_pcap``.
+       --proc-type=secondary \
+       -- \
+       --client-id 1 \
+-      -s 127.0.0.1:6666 \
+-      -i phy:0 \
+-      --output /mnt/pcap \
+-      --limit_file_size 107374182
++      -s 192.168.1.100:6666 \
++      -c phy:0 \
++      --out-dir /path/to/dir \
++      --fsize 107374182
++
++Here is a list of ``spp_pcap`` specific options.
++
++ * ``-c``: Captured port, e.g. ``phy:0``, ``ring:1`` or so.
++ * ``--out-dir``: Optional. Path of dir for captured file. Default is ``/tmp``.
++ * ``--fsize``: Optional. Maximum size of a capture file. Default is ``1GiB``.
++
++Captured file of LZ4 is generated in ``/tmp`` by default.
++The name of file is consists of timestamp, resource ID of captured port,
++ID of ``writer`` threads and sequential number.
++Timestamp is decided when capturing is started and formatted as
++``YYYYMMDDhhmmss``.
++Both of ``writer`` thread ID and sequential number are started from ``1``.
++Sequential number is required for the case if the size of
++captured file is reached to the maximum and another file is generated to
++continue capturing.
++
++This is an example of captured file. It consists of timestamp,
++``20190214154925``, port ``phy0``, thread ID ``1`` and sequential number
++``1``.
++
++.. code-block:: none
++
++    /tmp/spp_pcap.20190214154925.phy0.1.1.pcap.lz4
++
++``spp_pcap`` also generates temporary files which are owned by each of
++``writer`` threads until capturing is finished or the size of captured file
++is reached to the maximum.
++This temporary file has additional extension ``tmp`` at the end of file
++name.
++
++.. code-block:: none
++
++    /tmp/spp_pcap.20190214154925.phy0.1.1.pcap.lz4.tmp
++
+ 
+-VM
+---
++Using VM with virsh
++-------------------
+ 
+-VM is launched with ``virsh`` command.
++In this section, VM is launched with ``virsh`` command.
+ 
+ .. code-block:: console
+ 
+-- 
+2.17.1
+

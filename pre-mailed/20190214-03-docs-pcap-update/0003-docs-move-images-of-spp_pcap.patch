@@ -1,0 +1,72 @@
+From 854ae9ee4d65056e70f0c5e45415571fa1c1b60b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 14 Feb 2019 17:08:43 +0900
+Subject: [PATCH 3/6] docs: move images of spp_pcap
+
+Correct path of images of spp_pcap placed in `images/spp_pcap` but
+should be in `images/spp_vf` conventionally.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_design.svg   | 0
+ docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_overview.svg | 0
+ docs/guides/spp_vf/design.rst                                 | 2 +-
+ docs/guides/spp_vf/overview.rst                               | 4 ++--
+ docs/guides/spp_vf/use_cases/usecase3.rst                     | 4 ++--
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_design.svg (100%)
+ rename docs/guides/images/{spp_pcap => spp_vf}/spp_pcap_overview.svg (100%)
+
+diff --git a/docs/guides/images/spp_pcap/spp_pcap_design.svg b/docs/guides/images/spp_vf/spp_pcap_design.svg
+similarity index 100%
+rename from docs/guides/images/spp_pcap/spp_pcap_design.svg
+rename to docs/guides/images/spp_vf/spp_pcap_design.svg
+diff --git a/docs/guides/images/spp_pcap/spp_pcap_overview.svg b/docs/guides/images/spp_vf/spp_pcap_overview.svg
+similarity index 100%
+rename from docs/guides/images/spp_pcap/spp_pcap_overview.svg
+rename to docs/guides/images/spp_vf/spp_pcap_overview.svg
+diff --git a/docs/guides/spp_vf/design.rst b/docs/guides/spp_vf/design.rst
+index 89b7059..b1e864a 100644
+--- a/docs/guides/spp_vf/design.rst
++++ b/docs/guides/spp_vf/design.rst
+@@ -131,7 +131,7 @@ packets from ``phy:0`` are captured by using three ``writer`` threads.
+ 
+ .. _figure_spp_pcap_design:
+ 
+-.. figure:: ../images/spp_pcap/spp_pcap_design.*
++.. figure:: ../images/spp_vf/spp_pcap_design.*
+     :width: 55%
+ 
+     spp_pcap internal structure
+diff --git a/docs/guides/spp_vf/overview.rst b/docs/guides/spp_vf/overview.rst
+index 09c21af..adaced6 100644
+--- a/docs/guides/spp_vf/overview.rst
++++ b/docs/guides/spp_vf/overview.rst
+@@ -101,7 +101,7 @@ threads unlike spp_vf.
+ 
+ .. _figure_spp_pcap_overview:
+ 
+-.. figure:: ../images/spp_pcap/spp_pcap_overview.*
+-   :width: 55%
++.. figure:: ../images/spp_vf/spp_pcap_overview.*
++   :width: 50%
+ 
+    Overview of spp_pcap
+diff --git a/docs/guides/spp_vf/use_cases/usecase3.rst b/docs/guides/spp_vf/use_cases/usecase3.rst
+index 146ef06..c31324e 100644
+--- a/docs/guides/spp_vf/use_cases/usecase3.rst
++++ b/docs/guides/spp_vf/use_cases/usecase3.rst
+@@ -13,8 +13,8 @@ Incoming packets received by ``phy:0`` is captured by ``spp_pcap``.
+ 
+ .. _figure_simple_capture:
+ 
+-.. figure:: ../../images/spp_pcap/spp_pcap_overview.*
+-    :width: 40%
++.. figure:: ../../images/spp_vf/spp_pcap_overview.*
++    :width: 50%
+ 
+     Simple Packet Capture
+ 
+-- 
+2.17.1
+
