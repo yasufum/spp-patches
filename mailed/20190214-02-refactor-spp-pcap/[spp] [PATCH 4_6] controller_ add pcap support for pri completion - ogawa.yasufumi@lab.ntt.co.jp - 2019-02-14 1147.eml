@@ -1,0 +1,114 @@
+X-Account-Key: account3
+X-UIDL: 00d06b19c6d6645c861e0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw103 ([153.138.211.104])
+	by md-bnd-nw106 with LMTP id MEk2FMbWZFyGHgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-lpx-nw002 ([153.138.211.104])
+	by md-drt-nw103 with LMTP id QMFtE8bWZFxDBwAAkEn8Lw
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-mta-cb009.ocn.ad.jp ([153.138.211.104])
+	by md-lpx-nw002 with LMTP id kKeDEsbWZFwxRwAATJVVBg
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb009.ocn.ad.jp (Postfix) with ESMTP id 4067A44001C24
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id D5C31A80289
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 662A51B296;
+	Thu, 14 Feb 2019 03:47:31 +0100 (CET)
+Received: from mogw1207.ocn.ad.jp (mogw1207.ocn.ad.jp [153.149.235.8])
+ by dpdk.org (Postfix) with ESMTP id 8AAD51B200
+ for <spp@dpdk.org>; Thu, 14 Feb 2019 03:47:29 +0100 (CET)
+Received: from mf-smf-ucb025c1 (mf-smf-ucb025c1.ocn.ad.jp [153.153.66.163])
+ by mogw1207.ocn.ad.jp (Postfix) with ESMTP id 2C408A00270;
+ Thu, 14 Feb 2019 11:47:28 +0900 (JST)
+Received: from ocn-vc-mts-104c1.ocn.ad.jp ([153.138.237.81])
+ by mf-smf-ucb025c1 with ESMTP
+ id u6z5gNeq9u8ANu73ggoY1e; Thu, 14 Feb 2019 11:47:28 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.167])
+ by ocn-vc-mts-104c1.ocn.ad.jp with ESMTP
+ id u73ggyARpq2v1u73ggdmVu; Thu, 14 Feb 2019 11:47:28 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Thu, 14 Feb 2019 11:47:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 14 Feb 2019 11:47:24 +0900
+Message-Id: <20190214024726.40861-5-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 4/6] controller: add pcap support for pri completion
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add `pri; launch` completion for pcap. Optional args,
+`--out-dir` and `--fsize`, are expected to be given by user and not
+completed. Here is an example.
+
+  # press TAB after `pri; launch pcap 2 `
+  spp > pri; launch pcap 2 -l 1,2-3 ... -s 192.168.1.100:6666 -c phy:0
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py    | 7 +++++++
+ src/controller/config/default.yml | 3 +++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index d76da2e..2e3c208 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -239,6 +239,13 @@ class SppPrimary(object):
+                                 nof_workers = int(
+                                         cli_config[tmpkey]['val'])
+ 
++                            if 'sec_pcap_port' in cli_config.keys():
++                                temp = '-c {}'.format(
++                                        cli_config['sec_pcap_port']['val'])
++
++                                self.launch_template = '{} {}'.format(
++                                    self.launch_template, temp)
++
+                         last_core = lcore_base + nof_workers - 1
+ 
+                         # Decide lcore option based on configured number of
+diff --git a/src/controller/config/default.yml b/src/controller/config/default.yml
+index ee42bc3..223359e 100644
+--- a/src/controller/config/default.yml
++++ b/src/controller/config/default.yml
+@@ -31,3 +31,6 @@ sec_pcap_nof_lcores:
+ sec_vhost_cli:
+     val: ""
+     desc: Vhost client mode, activated if set any of values
++sec_pcap_port:
++    val: "phy:0"
++    desc: Default captured port
+-- 
+2.17.1
+
+

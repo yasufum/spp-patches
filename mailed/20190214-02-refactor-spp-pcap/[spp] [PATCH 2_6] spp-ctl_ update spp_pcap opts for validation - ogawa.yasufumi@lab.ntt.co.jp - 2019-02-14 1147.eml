@@ -1,0 +1,111 @@
+X-Account-Key: account3
+X-UIDL: 60f6df19c6d6645c392d0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.211.73])
+	by md-bnd-nw106 with LMTP id AMc6F8bWZFw5LQAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-lpx-cb001 ([153.138.211.73])
+	by md-drt-nw105 with LMTP id qLBaFcbWZFwRQwAAqrOKOQ
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-cb001 with LMTP id ADwNEcbWZFweegAA9RM4zw
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 4149734003013
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id D9785D40288
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 584E01B276;
+	Thu, 14 Feb 2019 03:47:31 +0100 (CET)
+Received: from mogw1103.ocn.ad.jp (mogw1103.ocn.ad.jp [153.149.229.4])
+ by dpdk.org (Postfix) with ESMTP id 683D61B1F3
+ for <spp@dpdk.org>; Thu, 14 Feb 2019 03:47:29 +0100 (CET)
+Received: from mf-smf-unw005c3 (mf-smf-unw005c3.ocn.ad.jp [153.138.219.80])
+ by mogw1103.ocn.ad.jp (Postfix) with ESMTP id C99D2110023D;
+ Thu, 14 Feb 2019 11:47:27 +0900 (JST)
+Received: from ocn-vc-mts-205c1.ocn.ad.jp ([125.206.160.23])
+ by mf-smf-unw005c3 with ESMTP
+ id u70HgqIdRwkDvu73fga6My; Thu, 14 Feb 2019 11:47:27 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.167])
+ by ocn-vc-mts-205c1.ocn.ad.jp with ESMTP
+ id u73fgWY0ltz0Qu73fgQSRZ; Thu, 14 Feb 2019 11:47:27 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Thu, 14 Feb 2019 11:47:27 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 14 Feb 2019 11:47:22 +0900
+Message-Id: <20190214024726.40861-3-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 2/6] spp-ctl: update spp_pcap opts for validation
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to update `APP_OPTS` used for validation for modified
+options.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_proc.py | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index a2d2adf..cdd7b49 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -82,10 +82,10 @@ APP_OPTS = {
+         'spp_pcap':
+         [
+             '--client-id',  # sec ID
+-            '-s',  # address nd port
+-            '-i',
+-            '--output',
+-            '--limit_file_size'
++            '-s',  # address and port
++            '-c',  # captured port
++            '--out-dir',  # captured file dir
++            '--fsize'  # max size of captured file
+             ]}
+ 
+ 
+@@ -332,8 +332,9 @@ class PrimaryProc(SppProc):
+                     if (val is not None) and (val != ''):
+                         app_opts.append(str(val))
+ 
+-        query = "launch {} {} {} -- {}".format(
+-                sec_id, proc_name, ' '.join(eal_opts), ' '.join(app_opts))
++        query = "launch {sid} {pname} {eal} -- {app}".format(
++                sid=sec_id, pname=proc_name, eal=' '.join(eal_opts),
++                app=' '.join(app_opts))
+ 
+         LOG.info("Query: {}".format(query))
+ 
+-- 
+2.17.1
+
+

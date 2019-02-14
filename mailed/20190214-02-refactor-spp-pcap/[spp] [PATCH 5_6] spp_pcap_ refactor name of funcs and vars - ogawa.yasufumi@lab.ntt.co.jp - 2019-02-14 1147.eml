@@ -1,0 +1,216 @@
+X-Account-Key: account3
+X-UIDL: 48eb3d2ac6d6645ce1280000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.216.232])
+	by md-bnd-nw106 with LMTP id KCxNJ8bWZFzhKAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-lpx-cb010 ([153.138.216.232])
+	by md-drt-nw102 with LMTP id KBA0JcbWZFw2dwAA8iqT2w
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-cb010 with LMTP id +HIuIMbWZFz7fAAA/ui1sQ
+	; Thu, 14 Feb 2019 11:47:34 +0900
+Received: from mfgw702.ocn.ad.jp (mfgw702.ocn.ad.jp [153.153.63.103])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id 75B6C3C00021B
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:34 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw702.ocn.ad.jp (Postfix) with ESMTP id D0F7ED4026F
+	for <geminoa@juno.ocn.ne.jp>; Thu, 14 Feb 2019 11:47:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 930791B39B;
+	Thu, 14 Feb 2019 03:47:31 +0100 (CET)
+Received: from mogw2102.ocn.ad.jp (mogw2102.ocn.ad.jp [202.234.252.4])
+ by dpdk.org (Postfix) with ESMTP id 93B441B201
+ for <spp@dpdk.org>; Thu, 14 Feb 2019 03:47:29 +0100 (CET)
+Received: from mf-smf-ucb026c2 (mf-smf-ucb026c2.ocn.ad.jp [153.153.66.167])
+ by mogw2102.ocn.ad.jp (Postfix) with ESMTP id 3CDA844023E;
+ Thu, 14 Feb 2019 11:47:28 +0900 (JST)
+Received: from ocn-vc-mts-104c1.ocn.ad.jp ([153.138.237.81])
+ by mf-smf-ucb026c2 with ESMTP
+ id u6zogLBM702JJu73ggQl9r; Thu, 14 Feb 2019 11:47:28 +0900
+Received: from smtp.ocn.ne.jp ([153.149.227.167])
+ by ocn-vc-mts-104c1.ocn.ad.jp with ESMTP
+ id u73ggyARqq2v1u73ggdmVv; Thu, 14 Feb 2019 11:47:28 +0900
+Received: from localhost.localdomain (unknown [192.47.164.146])
+ by smtp.ocn.ne.jp (Postfix) with ESMTPA;
+ Thu, 14 Feb 2019 11:47:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Date: Thu, 14 Feb 2019 11:47:25 +0900
+Message-Id: <20190214024726.40861-6-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+References: <20190214024726.40861-1-ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [spp] [PATCH 5/6] spp_pcap: refactor name of funcs and vars
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to refactor the name of functions.
+
+* Rename functions starting with `decode_` to `parse_` because it does
+  not decode actually.
+
+* Rename member of `pcap_option` of file size to `fsize_limit`.
+
+* Refactor related logs.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/spp_pcap.c | 45 +++++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 24 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index c69207b..7f2e564 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -113,7 +113,7 @@ struct pcap_packet_header {
+ /* Option for pcap. */
+ struct pcap_option {
+ 	struct timespec start_time; /* start time */
+-	uint64_t file_limit;        /* file size limit */
++	uint64_t fsize_limit;        /* file size limit */
+ 	char compress_file_path[PCAP_FPATH_STRLEN]; /* file path */
+ 	char compress_file_date[PCAP_FDATE_STRLEN]; /* file name date */
+ 	struct spp_port_info port_cap;  /* capture port */
+@@ -169,7 +169,7 @@ usage(const char *progname)
+ 		" --client-id CLIENT_ID"
+ 		" -s IPADDR:PORT"
+ 		" -c CAP_PORT"
+-		" [--out-dir DIR_OUTPUT]"
++		" [--out-dir OUTPUT_DIR]"
+ 		" [--fsize MAX_FILE_SIZE]\n"
+ 		" --client-id CLIENT_ID: My client ID\n"
+ 		" -s IPADDR:PORT: IP addr and sec port for spp-ctl\n"
+@@ -180,13 +180,11 @@ usage(const char *progname)
+ }
+ 
+ /**
+- * Convert string of given client id to integer
+- *
+- * If succeeded, client id of integer is assigned to client_id and
+- * return SPP_RET_OK. Or return -SPP_RET_NG if failed.
++ * Convert string type of client ID to integer and return SPP_RET_OK, or
++ * SPP_RET_NG if failed.
+  */
+ static int
+-decode_client_id(const char *client_id_str, int *client_id)
++client_id_toi(const char *client_id_str, int *client_id)
+ {
+ 	int id = 0;
+ 	char *endptr = NULL;
+@@ -229,25 +227,25 @@ parse_server_ip(const char *server_str, char *server_ip, int *server_port)
+ }
+ 
+ 
+-/* Decode options for limit file size */
++/* Parse `--fsize` option and get the value */
+ static int
+-decode_limit_file_size(const char *limit_size_str, uint64_t *limit_size)
++parse_fsize(const char *fsize_str, uint64_t *fsize)
+ {
+-	uint64_t file_limit = 0;
++	uint64_t fs = 0;
+ 	char *endptr = NULL;
+ 
+-	file_limit = strtoull(limit_size_str, &endptr, 10);
+-	if (unlikely(limit_size_str == endptr) || unlikely(*endptr != '\0'))
++	fs = strtoull(fsize_str, &endptr, 10);
++	if (unlikely(fsize_str == endptr) || unlikely(*endptr != '\0'))
+ 		return SPP_RET_NG;
+ 
+-	*limit_size = file_limit;
+-	RTE_LOG(DEBUG, SPP_PCAP, "Set limit file zise = %ld\n", *limit_size);
++	*fsize = fs;
++	RTE_LOG(DEBUG, SPP_PCAP, "Set fzise = %ld\n", *fsize);
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Decode options for port */
++/* Parse `-c` option for captured port and get the port type and ID */
+ static int
+-decode_capture_port(const char *port_str, enum port_type *iface_type,
++parse_captured_port(const char *port_str, enum port_type *iface_type,
+ 			int *iface_no)
+ {
+ 	enum port_type type = UNDEF;
+@@ -324,7 +322,7 @@ parse_args(int argc, char *argv[])
+ 	/* option parameters init */
+ 	memset(&g_pcap_option, 0x00, sizeof(g_pcap_option));
+ 	strcpy(g_pcap_option.compress_file_path, DEFAULT_OUTPUT_DIR);
+-	g_pcap_option.file_limit = DEFAULT_FILE_LIMIT;
++	g_pcap_option.fsize_limit = DEFAULT_FILE_LIMIT;
+ 
+ 	/* Check options of application */
+ 	optind = 0;
+@@ -333,7 +331,7 @@ parse_args(int argc, char *argv[])
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
+ 		case SPP_LONGOPT_RETVAL_CLIENT_ID:
+-			if (decode_client_id(optarg,
++			if (client_id_toi(optarg,
+ 					&g_startup_param.client_id) !=
+ 								SPP_RET_OK) {
+ 				usage(progname);
+@@ -351,16 +349,15 @@ parse_args(int argc, char *argv[])
+ 			}
+ 			break;
+ 		case SPP_LONGOPT_RETVAL_FILE_SIZE:
+-			if (decode_limit_file_size(optarg,
+-						&g_pcap_option.file_limit) !=
+-						SPP_RET_OK) {
++			if (parse_fsize(optarg, &g_pcap_option.fsize_limit) !=
++					SPP_RET_OK) {
+ 				usage(progname);
+ 				return SPP_RET_NG;
+ 			}
+ 			break;
+ 		case 'c':  /* captured port */
+ 			strcpy(port_str, optarg);
+-			if (decode_capture_port(optarg,
++			if (parse_captured_port(optarg,
+ 					&g_pcap_option.port_cap.iface_type,
+ 					&g_pcap_option.port_cap.iface_no) !=
+ 					SPP_RET_OK) {
+@@ -398,7 +395,7 @@ parse_args(int argc, char *argv[])
+ 			g_startup_param.server_port,
+ 			port_str,
+ 			g_pcap_option.compress_file_path,
+-			g_pcap_option.file_limit);
++			g_pcap_option.fsize_limit);
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -697,7 +694,7 @@ static int compress_file_packet(struct pcap_mng_info *info,
+ 		return SPP_RET_OK;
+ 
+ 	/* capture file rool */
+-	if (info->file_size > g_pcap_option.file_limit) {
++	if (info->file_size > g_pcap_option.fsize_limit) {
+ 		if (file_compression_operation(info, UPDATE_MODE)
+ 							!= SPP_RET_OK)
+ 			return SPP_RET_NG;
+-- 
+2.17.1
+
+
