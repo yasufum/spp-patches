@@ -1,0 +1,156 @@
+From f15e66d46a4d505e1c093df8b9176849e9f217fb Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 18 Feb 2019 20:37:53 +0900
+Subject: [PATCH 00/20] Remove SPP VF chapter in docs
+
+Hi,
+
+As announced in [1], `SPP VF` chapter is not needed anymore. This
+series of patches is to rmeove `SPP VF` chapter and move the contents
+to other chapters such as `Overview`, `Design` or so.
+
+[1] https://mails.dpdk.org/archives/spp/2019-February/001262.html
+
+Yasufumi Ogawa (20):
+  docs: move design of SPP VF
+  docs: divide getting started guide
+  docs: move libvirt setup to gsg
+  docs: move virsh setup section
+  docs: move package installation to gsg
+  docs: move descs of packet copy mode of spp_mirror
+  docs: move usecase of spp_vf
+  docs: update usecase of ssh with spp_vf
+  docs: update how to use for virsh
+  docs: update usecase of spp_mirror
+  docs: revise how to use and usecases
+  docs: move usecase of spp_pcap
+  docs: remove SPP VF
+  docs: move image of ICMP usecase of spp_vf
+  docs: revise labels of image of spp_vf usecase
+  docs: fix image of spp_mirror monitoring usecase
+  docs: move image of design of spp_vf
+  docs: move images of design of mirror and pcap
+  docs: move image of overview of spp_pcap
+  docs: fix in image of spp_mirror monitor usecase
+
+ docs/guides/commands/secondary/spp_mirror.rst      |    6 +-
+ docs/guides/commands/secondary/spp_vf.rst          |    4 +-
+ docs/guides/design/impl/index.rst                  |   15 +
+ docs/guides/design/impl/spp_mirror.rst             |  127 ++
+ docs/guides/design/impl/spp_pcap.rst               |  144 ++
+ docs/guides/design/impl/spp_vf.rst                 |  457 +++++
+ docs/guides/design/index.rst                       |    1 +
+ docs/guides/design/spp_secondary.rst               |  159 ++
+ docs/guides/gsg/howto_use.rst                      |  912 +++++++++
+ docs/guides/gsg/index.rst                          |   14 +
+ docs/guides/gsg/install.rst                        |  307 +++
+ docs/guides/gsg/performance_opt.rst                |   85 +
+ docs/guides/gsg/setup.rst                          |  266 +++
+ docs/guides/images/design/spp_mirror_design.svg    |  564 ++++++
+ docs/guides/images/design/spp_pcap_design.svg      |  536 ++++++
+ docs/guides/images/design/spp_pcap_overview.svg    |  381 ++++
+ docs/guides/images/design/spp_vf_overview.svg      | 1149 ++++++++++++
+ .../spp_vf/basic_usecase_mirror_nwconfig.svg       |  514 -----
+ .../images/spp_vf/basic_usecase_vf_nwconfig.svg    |  752 --------
+ docs/guides/images/spp_vf/spp_mirror_design.svg    |  564 ------
+ docs/guides/images/spp_vf/spp_mirror_overview.svg  | 1433 --------------
+ .../images/spp_vf/spp_mirror_usecase_nwconfig.svg  | 1434 --------------
+ .../images/spp_vf/spp_mirror_usecase_overview.svg  |  544 ------
+ docs/guides/images/spp_vf/spp_pcap_design.svg      |  536 ------
+ docs/guides/images/spp_vf/spp_pcap_overview.svg    |  381 ----
+ docs/guides/images/spp_vf/spp_sample_config.svg    | 1916 -------------------
+ docs/guides/images/spp_vf/spp_vf_overview.svg      | 1149 ------------
+ docs/guides/images/spp_vf/usecase1_nwconfig.svg    | 1916 -------------------
+ docs/guides/images/spp_vf/usecase1_overview.svg    |  411 ----
+ docs/guides/images/usecases/mirror_dup_nwconf.svg  |  546 ++++++
+ .../images/usecases/mirror_monitor_nwconf.svg      | 1442 ++++++++++++++
+ .../images/usecases/mirror_monitor_overview.svg    |  559 ++++++
+ docs/guides/images/usecases/vf_cls_icmp_nwconf.svg |  752 ++++++++
+ docs/guides/images/usecases/vf_ssh_nwconfig.svg    | 1978 ++++++++++++++++++++
+ docs/guides/images/usecases/vf_ssh_overview.svg    |  411 ++++
+ docs/guides/index.rst                              |    3 +-
+ docs/guides/setup/getting_started.rst              |  420 -----
+ docs/guides/setup/howto_use.rst                    |  578 ------
+ docs/guides/setup/index.rst                        |   13 -
+ docs/guides/setup/performance_opt.rst              |   82 -
+ docs/guides/spp_vf/design.rst                      |  140 --
+ docs/guides/spp_vf/explain/functions_mirror.rst    |  127 --
+ docs/guides/spp_vf/explain/functions_pcap.rst      |  144 --
+ docs/guides/spp_vf/explain/functions_vf.rst        |  457 -----
+ docs/guides/spp_vf/explain/index.rst               |   12 -
+ docs/guides/spp_vf/gsg/howto_use.rst               |  197 --
+ docs/guides/spp_vf/gsg/index.rst                   |   11 -
+ docs/guides/spp_vf/gsg/setup.rst                   |  403 ----
+ docs/guides/spp_vf/index.rst                       |   15 -
+ docs/guides/spp_vf/overview.rst                    |  107 --
+ docs/guides/spp_vf/use_cases/index.rst             |   14 -
+ docs/guides/spp_vf/use_cases/mirror_simple.rst     |  170 --
+ docs/guides/spp_vf/use_cases/mirror_vms.rst        |  285 ---
+ docs/guides/spp_vf/use_cases/pcap_simple.rst       |  235 ---
+ docs/guides/spp_vf/use_cases/vf_simple.rst         |  257 ---
+ docs/guides/spp_vf/use_cases/vf_ssh_login.rst      |  411 ----
+ docs/guides/tools/sppc/getting_started.rst         |    4 +-
+ docs/guides/use_cases/index.rst                    |    3 +
+ docs/guides/use_cases/spp_mirror.rst               |  389 ++++
+ docs/guides/use_cases/spp_nfv.rst                  |   14 +-
+ docs/guides/use_cases/spp_pcap.rst                 |  238 +++
+ docs/guides/use_cases/spp_vf.rst                   |  611 ++++++
+ 62 files changed, 12063 insertions(+), 15642 deletions(-)
+ create mode 100644 docs/guides/design/impl/index.rst
+ create mode 100644 docs/guides/design/impl/spp_mirror.rst
+ create mode 100644 docs/guides/design/impl/spp_pcap.rst
+ create mode 100644 docs/guides/design/impl/spp_vf.rst
+ create mode 100644 docs/guides/gsg/howto_use.rst
+ create mode 100644 docs/guides/gsg/index.rst
+ create mode 100644 docs/guides/gsg/install.rst
+ create mode 100644 docs/guides/gsg/performance_opt.rst
+ create mode 100644 docs/guides/gsg/setup.rst
+ create mode 100644 docs/guides/images/design/spp_mirror_design.svg
+ create mode 100644 docs/guides/images/design/spp_pcap_design.svg
+ create mode 100644 docs/guides/images/design/spp_pcap_overview.svg
+ create mode 100644 docs/guides/images/design/spp_vf_overview.svg
+ delete mode 100644 docs/guides/images/spp_vf/basic_usecase_mirror_nwconfig.svg
+ delete mode 100644 docs/guides/images/spp_vf/basic_usecase_vf_nwconfig.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_mirror_design.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_mirror_overview.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_mirror_usecase_nwconfig.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_mirror_usecase_overview.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_pcap_design.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_pcap_overview.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_sample_config.svg
+ delete mode 100644 docs/guides/images/spp_vf/spp_vf_overview.svg
+ delete mode 100644 docs/guides/images/spp_vf/usecase1_nwconfig.svg
+ delete mode 100644 docs/guides/images/spp_vf/usecase1_overview.svg
+ create mode 100644 docs/guides/images/usecases/mirror_dup_nwconf.svg
+ create mode 100644 docs/guides/images/usecases/mirror_monitor_nwconf.svg
+ create mode 100644 docs/guides/images/usecases/mirror_monitor_overview.svg
+ create mode 100644 docs/guides/images/usecases/vf_cls_icmp_nwconf.svg
+ create mode 100644 docs/guides/images/usecases/vf_ssh_nwconfig.svg
+ create mode 100644 docs/guides/images/usecases/vf_ssh_overview.svg
+ delete mode 100644 docs/guides/setup/getting_started.rst
+ delete mode 100644 docs/guides/setup/howto_use.rst
+ delete mode 100644 docs/guides/setup/index.rst
+ delete mode 100644 docs/guides/setup/performance_opt.rst
+ delete mode 100644 docs/guides/spp_vf/design.rst
+ delete mode 100644 docs/guides/spp_vf/explain/functions_mirror.rst
+ delete mode 100644 docs/guides/spp_vf/explain/functions_pcap.rst
+ delete mode 100644 docs/guides/spp_vf/explain/functions_vf.rst
+ delete mode 100644 docs/guides/spp_vf/explain/index.rst
+ delete mode 100644 docs/guides/spp_vf/gsg/howto_use.rst
+ delete mode 100644 docs/guides/spp_vf/gsg/index.rst
+ delete mode 100644 docs/guides/spp_vf/gsg/setup.rst
+ delete mode 100644 docs/guides/spp_vf/index.rst
+ delete mode 100644 docs/guides/spp_vf/overview.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/index.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/mirror_simple.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/mirror_vms.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/pcap_simple.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/vf_simple.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/vf_ssh_login.rst
+ create mode 100644 docs/guides/use_cases/spp_mirror.rst
+ create mode 100644 docs/guides/use_cases/spp_pcap.rst
+ create mode 100644 docs/guides/use_cases/spp_vf.rst
+
+-- 
+2.7.4
+

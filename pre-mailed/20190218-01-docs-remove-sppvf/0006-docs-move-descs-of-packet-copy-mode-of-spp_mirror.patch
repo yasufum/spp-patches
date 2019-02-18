@@ -1,0 +1,194 @@
+From ff04b75b175a3df0cbd864ef1500b5495e4cca8e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 15 Feb 2019 23:25:36 +0900
+Subject: [PATCH 06/20] docs: move descs of packet copy mode of spp_mirror
+
+This patch is to move instruction for copy mode of spp_mirror.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/install.rst      | 35 +++++++++++-----
+ docs/guides/gsg/setup.rst        |  2 +-
+ docs/guides/spp_vf/gsg/setup.rst | 86 ----------------------------------------
+ 3 files changed, 26 insertions(+), 97 deletions(-)
+ delete mode 100644 docs/guides/spp_vf/gsg/setup.rst
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index b44cdaf..0bb3401 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -62,8 +62,8 @@ is included in ``wireshark``.
+     $ sudo apt install wireshark
+ 
+ PCAP is disabled by default in DPDK configuration.
+-``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` define the
+-configuration and enabled it to ``y``.
++``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` defined in
++config file ``common_base`` should be changed to ``y`` to enable PCAP.
+ 
+ .. code-block:: console
+ 
+@@ -85,7 +85,7 @@ Compile DPDK with target environment.
+ SPP
+ ---
+ 
+-Clone repository and compile SPP in any directory.
++Clone SPP repository and compile it in any directory.
+ 
+ .. code-block:: console
+ 
+@@ -94,15 +94,30 @@ Clone repository and compile SPP in any directory.
+     $ cd spp
+     $ make  # Confirm that $RTE_SDK and $RTE_TARGET are set
+ 
+-It also required to install Python3 and packages for running python scripts
+-as following.
+-You might need to run ``pip3`` with ``sudo`` if it is failed.
++If you use ``spp_mirror`` in deep copy mode, you should comment out
++the definition of copy mode in Makefile of ``spp_mirror`` before.
++It is for copying full payload into a new mbuf.
++Default mode is shallow copy.
++
++.. code-block:: console
++
++    # src/mirror/Makefile
++    #CFLAGS += -Dspp_mirror_SHALLOWCOPY
++
++.. note::
++
++    Before run make command, you might need to consider if using deep copy
++    for cloning packets in ``spp_mirror``. Comparing with shallow copy, it
++    clones entire packet payload into a new mbuf and it is modifiable,
++    but lower performance. Which of copy mode should be chosen depends on
++    your usage.
++
++SPP provides ``requirements.txt`` for installing required packages of Python3.
++You might fail to run ``pip3`` without sudo on some environments.
+ 
+ .. code-block:: console
+ 
+     $ sudo apt update
+-    $ sudo apt install python3
+-    $ sudo apt install python3-pip
+     $ pip3 install -r requirements.txt
+ 
+ 
+@@ -221,8 +236,8 @@ it is very similar to SPP's worker process for forwarding.
+ In this case, run this application simply with just two options
+ while DPDK has many kinds of options.
+ 
+-  - -l: core list
+-  - -p: port mask
++  * ``-l``: core list
++  * ``-p``: port mask
+ 
+ .. code-block:: console
+ 
+diff --git a/docs/guides/gsg/setup.rst b/docs/guides/gsg/setup.rst
+index 9e3d17d..d4f9543 100644
+--- a/docs/guides/gsg/setup.rst
++++ b/docs/guides/gsg/setup.rst
+@@ -137,7 +137,7 @@ You can check the value as following.
+ Vhost Client Mode
+ -----------------
+ 
+-SPP secondary process supports ``--vhost-client`` options for using vhost port.
++SPP secondary process supports ``--vhost-client`` option for using vhost port.
+ In vhost client mode, qemu creates socket file instead of secondary process.
+ It means that you can launch a VM before secondary process create vhost port.
+ 
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+deleted file mode 100644
+index eebe591..0000000
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ /dev/null
+@@ -1,86 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+-
+-.. _spp_vf_gsg_setup:
+-
+-Setup
+-=====
+-
+-Install DPDK
+-------------
+-
+-Install DPDK in any directory. This is a simple instruction and please
+-refer
+-`Getting Started Guide for Linux
+-<http://dpdk.org/doc/guides/linux_gsg/index.html>`_
+-for details.
+-
+-.. code-block:: console
+-
+-    $ cd /path/to/any_dir
+-    $ git clone http://dpdk.org/git/dpdk
+-    $ cd dpdk
+-    $ git checkout [TAG_NAME(e.g. v17.05)]
+-    $ export RTE_SDK=`pwd`
+-    $ export RTE_TARGET=x86_64-native-linuxapp-gcc
+-    $ make T=x86_64-native-linuxapp-gcc install
+-
+-
+-Install SPP
+------------
+-
+-Clone SPP in any directory and compile it.
+-
+-.. code-block:: console
+-
+-    $ cd /path/to/any_dir
+-    $ git clone http://dpdk.org/git/apps/spp
+-    $ cd spp
+-    $ make
+-
+-Setup for DPDK
+---------------
+-
+-Load igb_uio module.
+-
+-.. code-block:: console
+-
+-    $ sudo modprobe uio
+-    $ sudo insmod $RTE_SDK/x86_64-native-linuxapp-gcc/kmod/igb_uio.ko
+-    $ lsmod | grep uio
+-    igb_uio                16384  0  # igb_uio is loaded
+-    uio                    20480  1 igb_uio
+-
+-Then, bind your devices with PCI number by using ``dpdk-devbind.py``.
+-PCI number is inspected
+-
+-.. code-block:: console
+-
+-    # check your device for PCI_Number
+-    $ $RTE_SDK/usertools/dpdk-devbind.py --status
+-
+-    $ sudo $RTE_SDK/usertools/dpdk-devbind.py --bind=igb_uio PCI_NUM
+-
+-
+-Setup spp_mirror
+-----------------
+-
+-Setup of ``spp_mirror`` is almost the same as :ref:`SPP VF<spp_vf_gsg_setup>`.
+-Configuration of use of ``shallowcopy`` or ``deepcopy`` is different from
+-``spp_vf``.
+-It is defined in ``src/mirror/Makefile`` and which of copying is used is
+-configured by editing ``CFLAG`` option. It is defined to use ``shallowcopy``
+-by default.
+-
+-If you use ``deepcopy``, comment out the line of ``-Dspp_mirror_SHALLOWCOPY``
+-to be disabled.
+-
+-.. code-block:: c
+-
+-   #CFLAGS += -Dspp_mirror_SHALLOWCOPY
+-
+-Then, run make command to compile ``spp_mirror``.
+-
+-.. code-block:: console
+-
+-   $ make
+-- 
+2.7.4
+

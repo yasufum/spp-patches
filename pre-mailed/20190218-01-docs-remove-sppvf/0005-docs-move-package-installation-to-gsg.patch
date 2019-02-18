@@ -1,0 +1,72 @@
+From 68aed48e3099543719f2c85636be845b6124cb19 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 15 Feb 2019 15:35:40 +0900
+Subject: [PATCH 05/20] docs: move package installation to gsg
+
+This patch is to move instruction for packages installation from
+`SPP VF` to `Getting Started Guide`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/install.rst      | 14 ++++++++++++--
+ docs/guides/spp_vf/gsg/setup.rst | 15 ---------------
+ 2 files changed, 12 insertions(+), 17 deletions(-)
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 3bf5246..b44cdaf 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -40,15 +40,25 @@ Python and pip are also required if not installed.
+     # Python3
+     $ sudo apt install python3 python3-pip
+ 
++Some of secondary processes depend on external libraries and you failed to
++compile SPP without them.
++
+ SPP provides libpcap-based PMD for dumping packet to a file or retrieve
+ it from the file.
+-To use PCAP PMD, install ``libpcap-dev`` and enable it.
++``spp_nfv`` and ``spp_pcap`` use ``libpcap-dev`` for packet capture.
++``spp_pcap`` uses ``liblz4-dev`` and ``liblz4-tool`` to compress PCAP file.
++
++.. code-block:: console
++
++   $ sudo apt install libpcap-dev
++   $ sudo apt install liblz4-dev
++   $ sudo apt install liblz4-tool
++
+ ``text2pcap`` is also required for creating pcap file which
+ is included in ``wireshark``.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install libpcap-dev
+     $ sudo apt install wireshark
+ 
+ PCAP is disabled by default in DPDK configuration.
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+index f0b8274..eebe591 100644
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ b/docs/guides/spp_vf/gsg/setup.rst
+@@ -84,18 +84,3 @@ Then, run make command to compile ``spp_mirror``.
+ .. code-block:: console
+ 
+    $ make
+-
+-Setup spp_pcap
+---------------
+-
+-Setup of ``spp_pcap`` is almost the same as :ref:`SPP VF<spp_vf_gsg_setup>`.
+-``libpcap-dev`` is  are used by ``spp_pcap`` when capturing and packet,
+-so you need to install ``libpcap-dev`` .
+-``liblz4-dev`` and ``liblz4-tool`` are used for compression and decompression
+-respectively, so you need to install ``liblz4-dev`` and ``liblz4-tool`` .
+-
+-.. code-block:: console
+-
+-   $ sudo apt install libpcap-dev
+-   $ sudo apt install liblz4-dev
+-   $ sudo apt install liblz4-tool
+-- 
+2.7.4
+
