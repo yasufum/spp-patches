@@ -1,0 +1,205 @@
+X-Account-Key: account3
+X-UIDL: 989cad18209c6a5c69720000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.211.73])
+	by md-bnd-nw106 with LMTP id wJEgFSCcalxpcgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from md-lpx-nw009 ([153.138.211.73])
+	by md-drt-nw102 with LMTP id oL87FCCcalw1IAAA8iqT2w
+	; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from md-mta-cb005.ocn.ad.jp ([153.138.211.73])
+	by md-lpx-nw009 with LMTP id 8GAkEiCcalyfEgAAkTVMFA
+	; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb005.ocn.ad.jp (Postfix) with ESMTP id 3F67734000228
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:56 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 080D350028F
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:55 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6A9B21B129;
+	Mon, 18 Feb 2019 12:50:52 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 68FCD5F3C
+ for <spp@dpdk.org>; Mon, 18 Feb 2019 12:50:50 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1IBoniH011817;
+ Mon, 18 Feb 2019 20:50:49 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 3CB04EA817A;
+ Mon, 18 Feb 2019 20:50:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 2D8C4EA815C;
+ Mon, 18 Feb 2019 20:50:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon, 18 Feb 2019 20:48:22 +0900
+Message-Id: <1550490511-31683-12-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 11/20] docs: revise how to use and usecases
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+* Add short overviews for each of sec processes.
+
+* Add descs for editing XML config for virsh.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/howto_use.rst        | 29 +++++++++++++----------------
+ docs/guides/use_cases/spp_mirror.rst | 34 +++++++++++++++-------------------
+ 2 files changed, 28 insertions(+), 35 deletions(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 749f8ba..09e11b8 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -335,17 +335,15 @@ SPP Secondary
+ 
+ Secondary process behaves as a client of primary process and a worker
+ for doing tasks for packet processing. There are several kinds of secondary
+-process, for example, simply forwarding between ports or classsifying
+-by referring packet header.
+-
+-This section describes about the simplest ``spp_nfv`` which simply forward
+-packets similar to ``l2fwd``.
++process, for example, simply forwarding between ports, classsifying packets
++by referring its header or duplicate packets for redundancy.
+ 
+ 
+ spp_nfv
+ ~~~~~~~
+ 
+-Run ``spp_nfv`` with options.
++Run ``spp_nfv`` with options which simply forward packets as similar
++as ``l2fwd``.
+ 
+ .. code-block:: console
+ 
+@@ -381,7 +379,7 @@ See also `Vhost Sample Application
+ spp_vf
+ ~~~~~~
+ 
+-``spp_vf`` is a kind of secondary process.
++``spp_vf`` is a kind of secondary process for classify or merge packets.
+ 
+ .. code-block:: console
+ 
+@@ -404,8 +402,8 @@ options of ``spp_vf``.
+ spp_mirror
+ ~~~~~~~~~~
+ 
+-``spp_mirror`` is a kind of secondary process, and options are same as
+-``spp_vf``.
++``spp_mirror`` is a kind of secondary process for duplicating packets,
++and options are same as ``spp_vf``.
+ 
+ .. code-block:: console
+ 
+@@ -430,7 +428,8 @@ options of ``spp_mirror``.
+ spp_pcap
+ ~~~~~~~~
+ 
+-``spp_pcap`` is a kind of secondary process.
++Other than PCAP feature implemented as pcap port in ``spp_nfv``,
++SPP provides ``spp_pcap`` for capturing comparatively heavy traffic.
+ 
+ .. code-block:: console
+ 
+@@ -779,13 +778,11 @@ In addition, you need to add attributes for specific resources for DPDK and SPP.
+ * ``<qemu:commandline>``
+ 
+ Take care about the index numbers of devices should be the same value such as
+-``chr0`` or ``sock0``. It is referred as ID of vhost port from SPP.
+-
+-MAC address used in
+-can be specified when registering MAC address to classifier
+-using Secondary command.
++``chr0`` or ``sock0`` in ``virtio-net-pci`` device. This index is referred as
++ID of vhost port from SPP. MAC address defined in the attribute is used while
++registering destinations for classifier's table.
+ 
+-.. code-block:: none
++.. code-block:: xml
+ 
+     <qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>
+ 
+diff --git a/docs/guides/use_cases/spp_mirror.rst b/docs/guides/use_cases/spp_mirror.rst
+index dac565f..3a9f17b 100644
+--- a/docs/guides/use_cases/spp_mirror.rst
++++ b/docs/guides/use_cases/spp_mirror.rst
+@@ -197,23 +197,6 @@ You use ``spp_mirror`` for copying, and ``spp_vf`` classifying packets.
+    Monitoring with spp_mirror
+ 
+ 
+-Network Configuration
+-~~~~~~~~~~~~~~~~~~~~~
+-
+-Detailed configuration of :numref:`figure_usecase_monitor_overview`
+-is described in :numref:`figure_usecase_monitor_nwconfig`.
+-In this senario, worker thread ``mir1`` copies incoming packets
+-from though ``ring:0``.
+-Then, sends to orignal destination ``VM1`` and anohter one ``VM3``.
+-
+-.. _figure_usecase_monitor_nwconfig:
+-
+-.. figure:: ../images/spp_vf/spp_mirror_usecase_nwconfig.*
+-     :width: 80%
+-
+-     Network configuration of monitoring packets
+-
+-
+ Setup SPP and VMs
+ ~~~~~~~~~~~~~~~~~
+ 
+@@ -249,8 +232,21 @@ Start spp_primary with core list option ``-l 1``.
+         -n 10 -s 192.168.1.100:5555
+ 
+ 
+-Launch spp_vf
+-~~~~~~~~~~~~~
++Netowrk Configuration
++~~~~~~~~~~~~~~~~~~~~~
++
++Detailed configuration of :numref:`figure_usecase_monitor_overview`
++is described in :numref:`figure_usecase_monitor_nwconfig`.
++In this senario, worker thread ``mir1`` copies incoming packets
++from though ``ring:0``.
++Then, sends to orignal destination ``VM1`` and anohter one ``VM3``.
++
++.. _figure_usecase_monitor_nwconfig:
++
++.. figure:: ../images/spp_vf/spp_mirror_usecase_nwconfig.*
++     :width: 80%
++
++     Network configuration of monitoring packets
+ 
+ Launch ``VM1``, ``VM2`` and ``spp_vf`` with core list ``-l 0,2-8``.
+ 
+-- 
+2.7.4
+
+

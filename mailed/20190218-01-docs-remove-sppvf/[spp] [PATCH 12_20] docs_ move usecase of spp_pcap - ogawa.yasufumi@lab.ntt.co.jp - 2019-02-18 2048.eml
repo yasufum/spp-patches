@@ -1,0 +1,608 @@
+X-Account-Key: account3
+X-UIDL: d8e17205229c6a5cf26e0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw103 ([153.138.211.101])
+	by md-bnd-nw106 with LMTP id WNvUASKcalzybgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:58 +0900
+Received: from md-lpx-cb001 ([153.138.211.101])
+	by md-drt-nw103 with LMTP id sNJ4OyGcalxxOAAAkEn8Lw
+	; Mon, 18 Feb 2019 20:50:58 +0900
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-cb001 with LMTP id KGCRNiGcalxNHQAA9RM4zw
+	; Mon, 18 Feb 2019 20:50:57 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id D787AC00160D
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:57 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 04763A80274
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:57 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 966671B142;
+	Mon, 18 Feb 2019 12:50:52 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 6B8AC6833
+ for <spp@dpdk.org>; Mon, 18 Feb 2019 12:50:50 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1IBonnY011820;
+ Mon, 18 Feb 2019 20:50:49 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4A600EA8180;
+ Mon, 18 Feb 2019 20:50:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4070EEA818D;
+ Mon, 18 Feb 2019 20:50:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon, 18 Feb 2019 20:48:23 +0900
+Message-Id: <1550490511-31683-13-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 12/20] docs: move usecase of spp_pcap
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to move usecase of spp_pcap from `SPP VF`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/spp_vf/index.rst                 |   3 +-
+ docs/guides/spp_vf/use_cases/index.rst       |  10 --
+ docs/guides/spp_vf/use_cases/pcap_simple.rst | 235 --------------------------
+ docs/guides/use_cases/index.rst              |   1 +
+ docs/guides/use_cases/spp_pcap.rst           | 238 +++++++++++++++++++++++++++
+ 5 files changed, 240 insertions(+), 247 deletions(-)
+ delete mode 100644 docs/guides/spp_vf/use_cases/index.rst
+ delete mode 100644 docs/guides/spp_vf/use_cases/pcap_simple.rst
+ create mode 100644 docs/guides/use_cases/spp_pcap.rst
+
+diff --git a/docs/guides/spp_vf/index.rst b/docs/guides/spp_vf/index.rst
+index 412952c..27ab16b 100644
+--- a/docs/guides/spp_vf/index.rst
++++ b/docs/guides/spp_vf/index.rst
+@@ -5,8 +5,7 @@ SPP VF
+ ===========
+ 
+ .. toctree::
+-   :maxdepth: 2
++   :maxdepth: 1
+    :numbered:
+ 
+-   use_cases/index
+    explain/index
+diff --git a/docs/guides/spp_vf/use_cases/index.rst b/docs/guides/spp_vf/use_cases/index.rst
+deleted file mode 100644
+index 59125f4..0000000
+--- a/docs/guides/spp_vf/use_cases/index.rst
++++ /dev/null
+@@ -1,10 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+-
+-Use Cases
+-=========
+-
+-.. toctree::
+-   :maxdepth: 2
+-
+-   pcap_simple
+diff --git a/docs/guides/spp_vf/use_cases/pcap_simple.rst b/docs/guides/spp_vf/use_cases/pcap_simple.rst
+deleted file mode 100644
+index 34efce3..0000000
+--- a/docs/guides/spp_vf/use_cases/pcap_simple.rst
++++ /dev/null
+@@ -1,235 +0,0 @@
+-..  SPDX-License-Identifier: BSD-3-Clause
+-    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+-
+-
+-.. _spp_pcap_use_case:
+-
+-Packet Capture with spp_pcap
+-============================
+-
+-This section describes a usecase for capturing packets with ``spp_pcap``
+-and seeing inside of the captured file with ``tcpdump`` command.
+-:numref:`figure_simple_capture` shows the overview of scenario in which
+-incoming packets via ``phy:0`` are dumped as compressed pcap files by using
+-``spp_pcap``.
+-
+-.. _figure_simple_capture:
+-
+-.. figure:: ../../images/spp_vf/spp_pcap_overview.*
+-    :width: 50%
+-
+-    Packet capture with spp_pcap
+-
+-
+-.. _spp_pcap_use_case_launch_pcap:
+-
+-Launch spp_pcap
+-~~~~~~~~~~~~~~~
+-
+-Change directory if you are not in SPP's directory,
+-and compile if not done yet.
+-
+-.. code-block:: console
+-
+-    $ cd /path/to/spp
+-
+-Launch spp-ctl and SPP CLI in different terminals.
+-
+-.. code-block:: console
+-
+-    # terminal 1
+-    $ python3 ./src/spp-ctl/spp-ctl -b 192.168.1.100
+-
+-.. code-block:: console
+-
+-    # terminal 2
+-    $ python3 ./src/spp.py -b 192.168.1.100
+-
+-
+-Then, run ``spp_primary`` with one physical port.
+-
+-.. code-block:: console
+-
+-    # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
+-        -l 0 -n 4 \
+-        --socket-mem 512,512 \
+-        --huge-dir /run/hugepages/kvm \
+-        --proc-type primary \
+-        -- \
+-        -p 0x01 \
+-        -n 8 -s 192.168.1.100:5555
+-
+-After ``spp_primary`` is launched successfully, run ``spp_pcap`` in other
+-terminal. In this usecase, you use default values for optional arguments.
+-Output directory of captured file is ``/tmp`` and the size of file is
+-``1GiB``.
+-You notice that six lcores are assigned with ``-l 1-6``.
+-It means that you use one locre for master, one for receiver, and four for
+-writer threads.
+-
+-.. code-block:: console
+-
+-    # terminal 4
+-    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
+-       -l 1-6 -n 4 --proc-type=secondary \
+-       -- \
+-       --client-id 1 -s 192.168.1.100:6666 \
+-       -c phy:0
+-
+-You can confirm lcores and worker threads running on from ``status`` command.
+-
+-.. code-block:: none
+-
+-    # terminal 2
+-    spp > pcap 1; status
+-      - client-id: 1
+-      - status: idle
+-      - core:2 receive
+-        - rx: phy:0
+-      - core:3 write
+-        - filename:
+-      - core:4 write
+-        - filename:
+-      - core:5 write
+-        - filename:
+-      - core:6 write
+-        - filename:
+-
+-
+-.. _spp_pcap_use_case_start_capture:
+-
+-Start Capture
+-~~~~~~~~~~~~~
+-
+-If you already started to send packets to ``phy:0`` from outside,
+-you are ready to start capturing packets.
+-
+-.. code-block:: none
+-
+-    # terminal 2
+-    spp > pcap 1; start
+-    Start packet capture.
+-
+-As you run ``start`` command, PCAP files are generated for each of
+-``writer`` threads for capturing.
+-
+-.. code-block:: none
+-
+-    # terminal 2
+-    spp > pcap 1; status
+-      - client-id: 1
+-      - status: running
+-      - core:2 receive
+-        - rx: phy:0
+-      - core:3 write
+-        - filename: /tmp/spp_pcap.20190214161550.phy0.1.1.pcap.lz4
+-      - core:4 write
+-        - filename: /tmp/spp_pcap.20190214161550.phy0.2.1.pcap.lz4
+-      - core:5 write
+-        - filename: /tmp/spp_pcap.20190214161550.phy0.3.1.pcap.lz4
+-      - core:6 write
+-        - filename: /tmp/spp_pcap.20190214161550.phy0.4.1.pcap.lz4
+-
+-
+-.. _spp_pcap_use_case_stop_capture:
+-
+-Stop Capture
+-~~~~~~~~~~~~
+-
+-Stop capturing and confirm that compressed PCAP files are generated.
+-
+-.. code-block:: none
+-
+-    # terminal 2
+-    spp > pcap 1; stop
+-    spp > ls /tmp
+-    ....
+-    spp_pcap.20190214175446.phy0.1.1.pcap.lz4
+-    spp_pcap.20190214175446.phy0.1.2.pcap.lz4
+-    spp_pcap.20190214175446.phy0.1.3.pcap.lz4
+-    spp_pcap.20190214175446.phy0.2.1.pcap.lz4
+-    spp_pcap.20190214175446.phy0.2.2.pcap.lz4
+-    spp_pcap.20190214175446.phy0.2.3.pcap.lz4
+-    ....
+-
+-Index in the filename, such as ``1.1`` or ``1.2``, is a combination of
+-``writer`` thread ID and sequenceal number.
+-In this case, it means each of four threads generate three files.
+-
+-
+-.. _spp_pcap_use_case_shutdown:
+-
+-Shutdown spp_pcap
+-~~~~~~~~~~~~~~~~~
+-
+-Run ``exit`` or ``bye sec`` command to terminate ``spp_pcap``.
+-
+-.. code-block:: none
+-
+-    # terminal 2
+-    spp > pcap 1; exit
+-
+-
+-.. _spp_pcap_use_case_inspect_file:
+-
+-Inspect PCAP Files
+-~~~~~~~~~~~~~~~~~~
+-
+-You can inspect captured PCAP files by using utilities.
+-
+-Merge PCAP Files
+-^^^^^^^^^^^^^^^^
+-
+-Extract and merge compressed PCAP files.
+-
+-For extract several LZ4 files at once, use ``-d`` and ``-m`` options.
+-``-d`` is for decompression and ``-m`` is for multiple files.
+-
+-You had better not to merge divided files into single file, but still
+-several files because the size of merged file might be huge.
+-Each of extracted PCAP file is 1GiB in default, so total size of extracted
+-files is 12GiB in this case. To avoid the situation, merge files for each of
+-threads and generate four PCAP files of 3GiB.
+-
+-First, extract LZ4 files of writer thread ID 1.
+-
+-.. code-block:: console
+-
+-    # terminal 4
+-    $ lz4 -d -m /tmp/spp_pcap.20190214175446.phy0.1.*
+-
+-And confirm that the files are extracted.
+-
+-.. code-block:: console
+-
+-    # terminal 4
+-    $ ls /tmp | grep pcap$
+-    spp_pcap.20190214175446.phy0.1.1.pcap
+-    spp_pcap.20190214175446.phy0.1.2.pcap
+-    spp_pcap.20190214175446.phy0.1.3.pcap
+-
+-Run ``mergecap`` command to merge extracted files to current directory
+-as ``spp_pcap1.pcap``.
+-
+-.. code-block:: console
+-
+-    # terminal 4
+-    $ mergecap /tmp/spp_pcap.20190214175446.phy0.1.*.pcap -w spp_pcap1.pcap
+-
+-Inspect PCAP file
+-^^^^^^^^^^^^^^^^^
+-
+-You can use any of applications, for instance ``wireshark`` or ``tcpdump``,
+-for inspecting PCAP file.
+-To inspect the merged PCAP file, read packet data from ``tcpdump`` command
+-in this usecase. ``-r`` option is to dump packet data in human readable format.
+-
+-.. code-block:: console
+-
+-    # terminal 4
+-    $ tcpdump -r spp_pcap1.pcap | less
+-    17:54:52.559783 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
+-    17:54:52.559784 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
+-    17:54:52.559785 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
+-    17:54:52.559785 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
+diff --git a/docs/guides/use_cases/index.rst b/docs/guides/use_cases/index.rst
+index 1422045..f67ea5d 100644
+--- a/docs/guides/use_cases/index.rst
++++ b/docs/guides/use_cases/index.rst
+@@ -11,4 +11,5 @@ Use Cases
+    spp_nfv
+    spp_vf
+    spp_mirror
++   spp_pcap
+    multi_nodes
+diff --git a/docs/guides/use_cases/spp_pcap.rst b/docs/guides/use_cases/spp_pcap.rst
+new file mode 100644
+index 0000000..cfc1fea
+--- /dev/null
++++ b/docs/guides/use_cases/spp_pcap.rst
+@@ -0,0 +1,238 @@
++..  SPDX-License-Identifier: BSD-3-Clause
++    Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++
++.. _spp_usecases_pcap:
++
++spp_pcap
++========
++
++Packet Capture
++--------------
++
++This section describes a usecase for capturing packets with ``spp_pcap``.
++See inside of the captured file with ``tcpdump`` command.
++:numref:`figure_simple_capture` shows the overview of scenario in which
++incoming packets via ``phy:0`` are dumped as compressed pcap files by using
++``spp_pcap``.
++
++.. _figure_simple_capture:
++
++.. figure:: ../images/spp_vf/spp_pcap_overview.*
++    :width: 50%
++
++    Packet capture with spp_pcap
++
++
++.. _spp_pcap_use_case_launch_pcap:
++
++Launch spp_pcap
++~~~~~~~~~~~~~~~
++
++Change directory if you are not in SPP's directory,
++and compile if not done yet.
++
++.. code-block:: console
++
++    $ cd /path/to/spp
++
++Launch spp-ctl and SPP CLI in different terminals.
++
++.. code-block:: console
++
++    # terminal 1
++    $ python3 ./src/spp-ctl/spp-ctl -b 192.168.1.100
++
++.. code-block:: console
++
++    # terminal 2
++    $ python3 ./src/spp.py -b 192.168.1.100
++
++
++Then, run ``spp_primary`` with one physical port.
++
++.. code-block:: console
++
++    # terminal 3
++    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++        -l 0 -n 4 \
++        --socket-mem 512,512 \
++        --huge-dir /run/hugepages/kvm \
++        --proc-type primary \
++        -- \
++        -p 0x01 \
++        -n 8 -s 192.168.1.100:5555
++
++After ``spp_primary`` is launched successfully, run ``spp_pcap`` in other
++terminal. In this usecase, you use default values for optional arguments.
++Output directory of captured file is ``/tmp`` and the size of file is
++``1GiB``.
++You notice that six lcores are assigned with ``-l 1-6``.
++It means that you use one locre for master, one for receiver, and four for
++writer threads.
++
++.. code-block:: console
++
++    # terminal 4
++    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
++       -l 1-6 -n 4 --proc-type=secondary \
++       -- \
++       --client-id 1 -s 192.168.1.100:6666 \
++       -c phy:0
++
++You can confirm lcores and worker threads running on from ``status`` command.
++
++.. code-block:: none
++
++    # terminal 2
++    spp > pcap 1; status
++      - client-id: 1
++      - status: idle
++      - core:2 receive
++        - rx: phy:0
++      - core:3 write
++        - filename:
++      - core:4 write
++        - filename:
++      - core:5 write
++        - filename:
++      - core:6 write
++        - filename:
++
++
++.. _spp_pcap_use_case_start_capture:
++
++Start Capture
++~~~~~~~~~~~~~
++
++If you already started to send packets to ``phy:0`` from outside,
++you are ready to start capturing packets.
++
++.. code-block:: none
++
++    # terminal 2
++    spp > pcap 1; start
++    Start packet capture.
++
++As you run ``start`` command, PCAP files are generated for each of
++``writer`` threads for capturing.
++
++.. code-block:: none
++
++    # terminal 2
++    spp > pcap 1; status
++      - client-id: 1
++      - status: running
++      - core:2 receive
++        - rx: phy:0
++      - core:3 write
++        - filename: /tmp/spp_pcap.20190214161550.phy0.1.1.pcap.lz4
++      - core:4 write
++        - filename: /tmp/spp_pcap.20190214161550.phy0.2.1.pcap.lz4
++      - core:5 write
++        - filename: /tmp/spp_pcap.20190214161550.phy0.3.1.pcap.lz4
++      - core:6 write
++        - filename: /tmp/spp_pcap.20190214161550.phy0.4.1.pcap.lz4
++
++
++.. _spp_pcap_use_case_stop_capture:
++
++Stop Capture
++~~~~~~~~~~~~
++
++Stop capturing and confirm that compressed PCAP files are generated.
++
++.. code-block:: none
++
++    # terminal 2
++    spp > pcap 1; stop
++    spp > ls /tmp
++    ....
++    spp_pcap.20190214175446.phy0.1.1.pcap.lz4
++    spp_pcap.20190214175446.phy0.1.2.pcap.lz4
++    spp_pcap.20190214175446.phy0.1.3.pcap.lz4
++    spp_pcap.20190214175446.phy0.2.1.pcap.lz4
++    spp_pcap.20190214175446.phy0.2.2.pcap.lz4
++    spp_pcap.20190214175446.phy0.2.3.pcap.lz4
++    ....
++
++Index in the filename, such as ``1.1`` or ``1.2``, is a combination of
++``writer`` thread ID and sequenceal number.
++In this case, it means each of four threads generate three files.
++
++
++.. _spp_pcap_use_case_shutdown:
++
++Shutdown spp_pcap
++~~~~~~~~~~~~~~~~~
++
++Run ``exit`` or ``bye sec`` command to terminate ``spp_pcap``.
++
++.. code-block:: none
++
++    # terminal 2
++    spp > pcap 1; exit
++
++
++.. _spp_pcap_use_case_inspect_file:
++
++Inspect PCAP Files
++~~~~~~~~~~~~~~~~~~
++
++You can inspect captured PCAP files by using utilities.
++
++Merge PCAP Files
++^^^^^^^^^^^^^^^^
++
++Extract and merge compressed PCAP files.
++
++For extract several LZ4 files at once, use ``-d`` and ``-m`` options.
++``-d`` is for decompression and ``-m`` is for multiple files.
++
++You had better not to merge divided files into single file, but still
++several files because the size of merged file might be huge.
++Each of extracted PCAP file is 1GiB in default, so total size of extracted
++files is 12GiB in this case. To avoid the situation, merge files for each of
++threads and generate four PCAP files of 3GiB.
++
++First, extract LZ4 files of writer thread ID 1.
++
++.. code-block:: console
++
++    # terminal 4
++    $ lz4 -d -m /tmp/spp_pcap.20190214175446.phy0.1.*
++
++And confirm that the files are extracted.
++
++.. code-block:: console
++
++    # terminal 4
++    $ ls /tmp | grep pcap$
++    spp_pcap.20190214175446.phy0.1.1.pcap
++    spp_pcap.20190214175446.phy0.1.2.pcap
++    spp_pcap.20190214175446.phy0.1.3.pcap
++
++Run ``mergecap`` command to merge extracted files to current directory
++as ``spp_pcap1.pcap``.
++
++.. code-block:: console
++
++    # terminal 4
++    $ mergecap /tmp/spp_pcap.20190214175446.phy0.1.*.pcap -w spp_pcap1.pcap
++
++Inspect PCAP file
++^^^^^^^^^^^^^^^^^
++
++You can use any of applications, for instance ``wireshark`` or ``tcpdump``,
++for inspecting PCAP file.
++To inspect the merged PCAP file, read packet data from ``tcpdump`` command
++in this usecase. ``-r`` option is to dump packet data in human readable format.
++
++.. code-block:: console
++
++    # terminal 4
++    $ tcpdump -r spp_pcap1.pcap | less
++    17:54:52.559783 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
++    17:54:52.559784 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
++    17:54:52.559785 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
++    17:54:52.559785 IP 192.168.0.100.1234 > 192.168.1.1.5678: Flags [.], ...
+-- 
+2.7.4
+
+

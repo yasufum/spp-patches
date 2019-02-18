@@ -1,0 +1,133 @@
+X-Account-Key: account3
+X-UIDL: 10c80428209c6a5cf26e0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw103 ([153.138.216.231])
+	by md-bnd-nw106 with LMTP id YA+LIyCcalzybgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from md-lpx-nw010 ([153.138.216.231])
+	by md-drt-nw103 with LMTP id sLOrIiCcalxxOAAAkEn8Lw
+	; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from md-mta-nw003.ocn.ad.jp ([153.138.216.231])
+	by md-lpx-nw010 with LMTP id wDolISCcalwqBwAAb/ylEw
+	; Mon, 18 Feb 2019 20:50:56 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-nw003.ocn.ad.jp (Postfix) with ESMTP id 80AA23C00022A
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:56 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 16183A80270
+	for <geminoa@juno.ocn.ne.jp>; Mon, 18 Feb 2019 20:50:55 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5B77D1B11F;
+	Mon, 18 Feb 2019 12:50:52 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 40FDE5F2D
+ for <spp@dpdk.org>; Mon, 18 Feb 2019 12:50:49 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1IBomB9029203;
+ Mon, 18 Feb 2019 20:50:48 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9E4AFEA8180;
+ Mon, 18 Feb 2019 20:50:48 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 8FC6AEA818F;
+ Mon, 18 Feb 2019 20:50:48 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Mon, 18 Feb 2019 20:48:16 +0900
+Message-Id: <1550490511-31683-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550490511-31683-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 05/20] docs: move package installation to gsg
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This patch is to move instruction for packages installation from
+`SPP VF` to `Getting Started Guide`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/install.rst      | 14 ++++++++++++--
+ docs/guides/spp_vf/gsg/setup.rst | 15 ---------------
+ 2 files changed, 12 insertions(+), 17 deletions(-)
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 3bf5246..b44cdaf 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -40,15 +40,25 @@ Python and pip are also required if not installed.
+     # Python3
+     $ sudo apt install python3 python3-pip
+ 
++Some of secondary processes depend on external libraries and you failed to
++compile SPP without them.
++
+ SPP provides libpcap-based PMD for dumping packet to a file or retrieve
+ it from the file.
+-To use PCAP PMD, install ``libpcap-dev`` and enable it.
++``spp_nfv`` and ``spp_pcap`` use ``libpcap-dev`` for packet capture.
++``spp_pcap`` uses ``liblz4-dev`` and ``liblz4-tool`` to compress PCAP file.
++
++.. code-block:: console
++
++   $ sudo apt install libpcap-dev
++   $ sudo apt install liblz4-dev
++   $ sudo apt install liblz4-tool
++
+ ``text2pcap`` is also required for creating pcap file which
+ is included in ``wireshark``.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install libpcap-dev
+     $ sudo apt install wireshark
+ 
+ PCAP is disabled by default in DPDK configuration.
+diff --git a/docs/guides/spp_vf/gsg/setup.rst b/docs/guides/spp_vf/gsg/setup.rst
+index f0b8274..eebe591 100644
+--- a/docs/guides/spp_vf/gsg/setup.rst
++++ b/docs/guides/spp_vf/gsg/setup.rst
+@@ -84,18 +84,3 @@ Then, run make command to compile ``spp_mirror``.
+ .. code-block:: console
+ 
+    $ make
+-
+-Setup spp_pcap
+---------------
+-
+-Setup of ``spp_pcap`` is almost the same as :ref:`SPP VF<spp_vf_gsg_setup>`.
+-``libpcap-dev`` is  are used by ``spp_pcap`` when capturing and packet,
+-so you need to install ``libpcap-dev`` .
+-``liblz4-dev`` and ``liblz4-tool`` are used for compression and decompression
+-respectively, so you need to install ``liblz4-dev`` and ``liblz4-tool`` .
+-
+-.. code-block:: console
+-
+-   $ sudo apt install libpcap-dev
+-   $ sudo apt install liblz4-dev
+-   $ sudo apt install liblz4-tool
+-- 
+2.7.4
+
+
