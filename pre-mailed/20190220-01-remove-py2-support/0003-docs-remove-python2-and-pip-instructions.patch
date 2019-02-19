@@ -1,0 +1,185 @@
+From 6f33c47979c13ba3fc13a86cf7929e472443011e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 19 Feb 2019 23:59:35 +0900
+Subject: [PATCH 3/3] docs: remove python2 and pip instructions
+
+As python2 support is removed, remove instructions for installing
+packages of python2 and pip.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/commands/experimental.rst | 31 ++++++++++++++++-----------
+ docs/guides/gsg/install.rst           | 30 ++++++++++++++------------
+ docs/guides/gsg/setup.rst             |  8 ++-----
+ requirements.txt                      |  1 +
+ 4 files changed, 37 insertions(+), 33 deletions(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index e649a05..576d11e 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -31,21 +31,26 @@ gfor generating topology file.
+ You can also generate a dot formatted file or image files supported by
+ graphviz.
+ 
+-Here is a list of required tools for ``topo term`` command to output
+-in terminal.
+-MacOS is also supported optionally for which SPP controller
+-runs on a remote host.
++Here is an example for installing required tools for ``topo term`` command
++to output in a terminal.
+ 
+-* graphviz
+-* imagemagick
+-* libsixel-bin (for Ubuntu)
+-* iTerm2 and imgcat (for MacOS)
++.. code-block:: console
++
++    $ sudo apt install graphviz \
++      imagemagick \
++      libsixel-bin
++
++MacOS is also supported optionally for using SPP CLI runs on a remote host.
++In this case, iTerm2 and imgcat are required.
+ 
+-To output in browser with ``topo http`` command,
+-install packages for websocket with pip or pip3.
++To output in browser with ``topo http`` command, install required packages
++by using ``requirements.txt`` as described in
++:ref:`install SPP<setup_install_spp>`, or only for them as follwoing.
++
++.. code-block:: console
+ 
+-* tornado
+-* websocket-client
++    $ pip3 install tornado \
++      websocket-client
+ 
+ 
+ Output to Terminal
+@@ -159,7 +164,7 @@ for ``topo``.
+ 
+ .. code-block:: console
+ 
+-    spp > topo_subgraph [VERB] [LABEL] [RES_ID1,RES_ID2,...]
++    spp > topo_subgraph VERB LABEL RES_ID1,RES_ID2,...
+ 
+ Each of options are:
+ 
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 0bb3401..9181734 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -14,6 +14,9 @@ Refer to `DPDK documentation
+ For Linux, see `Getting Started Guide for Linux
+ <http://www.dpdk.org/doc/guides/linux_gsg/index.html>`_ .
+ 
++
++.. _setup_install_dpdk:
++
+ DPDK
+ ----
+ 
+@@ -30,15 +33,13 @@ To compile DPDK, required to install libnuma-devel library.
+ 
+     $ sudo apt install libnuma-dev
+ 
+-Python and pip are also required if not installed.
++Python3 and pip3 are also required if not installed.
+ 
+ .. code-block:: console
+ 
+-    # Python2
+-    $ sudo apt install python python-pip
+-
+     # Python3
+-    $ sudo apt install python3 python3-pip
++    $ sudo apt install python3 \
++      python3-pip
+ 
+ Some of secondary processes depend on external libraries and you failed to
+ compile SPP without them.
+@@ -50,9 +51,9 @@ it from the file.
+ 
+ .. code-block:: console
+ 
+-   $ sudo apt install libpcap-dev
+-   $ sudo apt install liblz4-dev
+-   $ sudo apt install liblz4-tool
++   $ sudo apt install libpcap-dev \
++     liblz4-dev \
++     liblz4-tool
+ 
+ ``text2pcap`` is also required for creating pcap file which
+ is included in ``wireshark``.
+@@ -82,6 +83,8 @@ Compile DPDK with target environment.
+     $ make install T=$RTE_TARGET
+ 
+ 
++.. _setup_install_spp:
++
+ SPP
+ ---
+ 
+@@ -117,7 +120,6 @@ You might fail to run ``pip3`` without sudo on some environments.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt update
+     $ pip3 install -r requirements.txt
+ 
+ 
+@@ -263,16 +265,16 @@ For HTML documentation, install sphinx and additional theme.
+ 
+ .. code-block:: console
+ 
+-    $ pip install sphinx
+-    $ pip install sphinx-rtd-theme
++    $ pip install sphinx \
++      sphinx-rtd-theme
+ 
+ For PDF, inkscape and latex packages are required.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install inkscape
+-    $ sudo apt install texlive-latex-extra
+-    $ sudo apt install texlive-latex-recommended
++    $ sudo apt install inkscape \
++      texlive-latex-extra \
++      texlive-latex-recommended
+ 
+ You might also need to install ``latexmk`` in addition to if you use
+ Ubuntu 18.04 LTS.
+diff --git a/docs/guides/gsg/setup.rst b/docs/guides/gsg/setup.rst
+index d4f9543..65cd156 100644
+--- a/docs/guides/gsg/setup.rst
++++ b/docs/guides/gsg/setup.rst
+@@ -245,12 +245,8 @@ Check your SELinux configuration.
+ Python 2 or 3 ?
+ ---------------
+ 
+-In SPP, Python3 is required only for running ``spp-ctl``. Other python scripts
+-are able to be launched both of Python2 and 3.
+-
+-Howevrer, Python2 will not be maintained after 2020 and SPP is going to update
+-only supporting Python3.
+-In SPP, it is planned to support only Python3 before the end of 2019.
++In SPP, Python3 is required only for running ``spp-ctl`` and SPP CLI.
++Python2 is not supported anymore.
+ 
+ 
+ Reference
+diff --git a/requirements.txt b/requirements.txt
+index f31beb8..c8823c1 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -9,4 +9,5 @@ tornado
+ websocket-client
+ 
+ # docs
++sphinx
+ sphinx-rtd-theme
+-- 
+2.17.1
+

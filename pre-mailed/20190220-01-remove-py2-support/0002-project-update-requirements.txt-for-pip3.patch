@@ -1,0 +1,37 @@
+From 35fadd2eaa0f1611b2130d804b4c4e63ff41c199 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 19 Feb 2019 23:33:16 +0900
+Subject: [PATCH 2/3] project: update requirements.txt for pip3
+
+As python2 support is removed, add packages install for SPP CLI and
+docs.
+
+* pyyaml
+* tornado
+* websocket-client
+* sphinx-rtd-theme
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ requirements.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/requirements.txt b/requirements.txt
+index 7d0b774..f31beb8 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -2,3 +2,11 @@
+ eventlet
+ bottle
+ netaddr
++
++# SPP CLI
++pyyaml
++tornado
++websocket-client
++
++# docs
++sphinx-rtd-theme
+-- 
+2.17.1
+
