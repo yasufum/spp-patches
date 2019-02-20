@@ -1,0 +1,52 @@
+From f53ac6f7a4888f81823feeba5555acde7fc5045e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 20 Feb 2019 16:25:19 +0900
+Subject: [PATCH 2/2] controller: change to wait for launching sec
+
+SPP CLI updates list of secondaries after `pri launch` command
+immediately. However, secondary is not launched when list is updated
+yet.
+
+This update is to add sleep() to wait 0.5 sec before updating. This 0.5
+sec is best effort, but should be enough on almost of environment.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 7043c2f..4124a12 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -4,6 +4,7 @@
+ from .. import spp_common
+ from ..shell_lib import common
+ from ..spp_common import logger
++import time
+ 
+ 
+ class SppPrimary(object):
+@@ -19,6 +20,9 @@ class SppPrimary(object):
+     # All of primary commands used for validation and completion.
+     PRI_CMDS = ['status', 'launch', 'clear']
+ 
++    # Wait for launched secondary as best effort. 0.5 sec is enough.
++    WAIT_LAUNCH_SEC = 0.5
++
+     def __init__(self, spp_ctl_cli):
+         self.spp_ctl_cli = spp_ctl_cli
+ 
+@@ -425,6 +429,9 @@ class SppPrimary(object):
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 204:
++                # Wait for launch sec as best effort
++                time.sleep(self.WAIT_LAUNCH_SEC)
++
+                 print('Send request to launch {ptype}:{sid}.'.format(
+                     ptype=proc_type, sid=sec_id))
+             elif res.status_code in error_codes:
+-- 
+2.17.1
+
