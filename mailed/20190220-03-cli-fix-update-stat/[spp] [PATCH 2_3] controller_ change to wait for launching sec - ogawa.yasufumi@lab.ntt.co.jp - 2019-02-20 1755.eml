@@ -1,0 +1,114 @@
+X-Account-Key: account3
+X-UIDL: c0c649257f166d5c675a0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.217.133])
+	by md-bnd-nw106 with LMTP id CLXfIX8WbVxnWgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:35 +0900
+Received: from md-lpx-nw001 ([153.138.217.133])
+	by md-drt-nw102 with LMTP id MAoxIX8WbVwMBAAA8iqT2w
+	; Wed, 20 Feb 2019 17:57:35 +0900
+Received: from md-mta-nw006.ocn.ad.jp ([153.138.217.133])
+	by md-lpx-nw001 with LMTP id GADgIH8WbVy9XQAA7ajWmg
+	; Wed, 20 Feb 2019 17:57:35 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw006.ocn.ad.jp (Postfix) with ESMTP id 801B43C000351
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:35 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 0FD7F9C02AC
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:35 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3EBA929CB;
+	Wed, 20 Feb 2019 09:57:24 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 31B3D1E34
+ for <spp@dpdk.org>; Wed, 20 Feb 2019 09:57:21 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x1K8vK3m027728;
+ Wed, 20 Feb 2019 17:57:20 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 14C5E1B0;
+ Wed, 20 Feb 2019 17:57:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id F03A4158;
+ Wed, 20 Feb 2019 17:57:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 20 Feb 2019 17:55:01 +0900
+Message-Id: <1550652902-2632-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550652902-2632-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550652902-2632-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/3] controller: change to wait for launching sec
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+SPP CLI updates list of secondaries after `pri launch` command
+immediately. However, secondary is not launched when list is updated
+yet.
+
+This update is to add sleep() to wait 0.5 sec before updating. This 0.5
+sec is best effort, but should be enough on almost of environment.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 7043c2f..4124a12 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -4,6 +4,7 @@
+ from .. import spp_common
+ from ..shell_lib import common
+ from ..spp_common import logger
++import time
+ 
+ 
+ class SppPrimary(object):
+@@ -19,6 +20,9 @@ class SppPrimary(object):
+     # All of primary commands used for validation and completion.
+     PRI_CMDS = ['status', 'launch', 'clear']
+ 
++    # Wait for launched secondary as best effort. 0.5 sec is enough.
++    WAIT_LAUNCH_SEC = 0.5
++
+     def __init__(self, spp_ctl_cli):
+         self.spp_ctl_cli = spp_ctl_cli
+ 
+@@ -425,6 +429,9 @@ class SppPrimary(object):
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 204:
++                # Wait for launch sec as best effort
++                time.sleep(self.WAIT_LAUNCH_SEC)
++
+                 print('Send request to launch {ptype}:{sid}.'.format(
+                     ptype=proc_type, sid=sec_id))
+             elif res.status_code in error_codes:
+-- 
+2.17.1
+
+

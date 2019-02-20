@@ -1,0 +1,113 @@
+X-Account-Key: account3
+X-UIDL: d896f211ae176d5c25620000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw103 ([153.138.211.105])
+	by md-bnd-nw106 with LMTP id mERpCq4XbVwlYgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:38 +0900
+Received: from md-lpx-nw004 ([153.138.211.105])
+	by md-drt-nw103 with LMTP id KG/hCa4XbVyzGgAAkEn8Lw
+	; Wed, 20 Feb 2019 18:02:38 +0900
+Received: from md-mta-cb010.ocn.ad.jp ([153.138.211.105])
+	by md-lpx-nw004 with LMTP id eCDrCK4XbVwvWwAAxo9yvA
+	; Wed, 20 Feb 2019 18:02:38 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb010.ocn.ad.jp (Postfix) with ESMTP id 1935B1400AA00
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:38 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id BF44B5002C5
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:37 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3154A288C;
+	Wed, 20 Feb 2019 09:57:24 +0100 (CET)
+Received: from bcmv-tmail01.ecl.ntt.co.jp (bcmv-tmail01.ecl.ntt.co.jp
+ [124.146.185.148]) by dpdk.org (Postfix) with ESMTP id 26207A3
+ for <spp@dpdk.org>; Wed, 20 Feb 2019 09:57:21 +0100 (CET)
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp
+ [129.60.83.123])
+ by bcmv-tmail01.ecl.ntt.co.jp (8.14.4/8.14.4) with ESMTP id x1K8vKQA027724;
+ Wed, 20 Feb 2019 17:57:20 +0900
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 0DFCF1AE;
+ Wed, 20 Feb 2019 17:57:20 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id ECEF2145;
+ Wed, 20 Feb 2019 17:57:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 20 Feb 2019 17:55:00 +0900
+Message-Id: <1550652902-2632-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550652902-2632-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550652902-2632-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/3] controller: correct status update of processes
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For getting the latest status of all of primary and secondaries, SPP CLI
+calls init_spp_procs() after command run, but hook method is
+inappripriate. This update is to change the hook from precmd() to
+postcmd() to correct.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 21543d1..e4685c7 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -70,7 +70,7 @@ class Shell(cmd.Cmd, object):
+         """Initialize delegators of SPP processes.
+ 
+         Delegators accept a command and sent it to SPP proesses. This method
+-        is also called from `precmd()` method to update it to the latest
++        is also called from `postcmd()` method to update it to the latest
+         status.
+         """
+ 
+@@ -101,6 +101,9 @@ class Shell(cmd.Cmd, object):
+     # method and SPP CLI is terminated if it is True. It means that only
+     # `do_bye` and  `do_exit` return True.
+     def postcmd(self, stop, line):
++        if self.use_cache is False:
++            self.init_spp_procs()
++
+         # TODO(yasufum) do not add to history if command is failed.
+         if line.strip().split(' ')[0] not in self.HIST_EXCEPT:
+             readline.write_history_file(self.hist_file)
+@@ -217,9 +220,6 @@ class Shell(cmd.Cmd, object):
+         It is called for checking a contents of command line.
+         """
+ 
+-        if self.use_cache is False:
+-            self.init_spp_procs()
+-
+         if self.recorded_file:
+             if not (
+                     ('playback' in line) or
+-- 
+2.17.1
+
+
