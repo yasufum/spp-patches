@@ -1,0 +1,132 @@
+From c435206c97230f13929bcbf1aa576c322ca83bb1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 20 Feb 2019 17:07:00 +0900
+Subject: [PATCH 3/3] controller: change wait for launch configurable
+
+This update is to change wait time for launching secondary from fixed
+0.5 sec to one of config values. It is changed with `config` command.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pri.py    | 14 ++++++--------
+ src/controller/config/default.yml | 19 +++++++++++++++----
+ src/controller/shell.py           |  2 +-
+ 3 files changed, 22 insertions(+), 13 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 4124a12..15bdb12 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -20,9 +20,6 @@ class SppPrimary(object):
+     # All of primary commands used for validation and completion.
+     PRI_CMDS = ['status', 'launch', 'clear']
+ 
+-    # Wait for launched secondary as best effort. 0.5 sec is enough.
+-    WAIT_LAUNCH_SEC = 0.5
+-
+     def __init__(self, spp_ctl_cli):
+         self.spp_ctl_cli = spp_ctl_cli
+ 
+@@ -38,7 +35,7 @@ class SppPrimary(object):
+         temp = temp + "__VHOST_CLI__"
+         self.launch_template = temp
+ 
+-    def run(self, cmd):
++    def run(self, cmd, cli_config):
+         """Called from do_pri() to Send command to primary process."""
+ 
+         tmpary = cmd.split(' ')
+@@ -64,7 +61,8 @@ class SppPrimary(object):
+                     print('Error: unknown response.')
+ 
+         elif subcmd == 'launch':
+-            self._run_launch(params)
++            wait_time = float(cli_config['sec_wait_launch']['val'])
++            self._run_launch(params, wait_time)
+ 
+         elif subcmd == 'clear':
+             res = self.spp_ctl_cli.delete('primary/status')
+@@ -333,7 +331,7 @@ class SppPrimary(object):
+                     prekey = None
+         return opts_dict
+ 
+-    def _run_launch(self, params):
++    def _run_launch(self, params, wait_time):
+         """Launch secondary process.
+ 
+         Parse `launch` command and send request to spp-ctl. Params of the
+@@ -429,8 +427,8 @@ class SppPrimary(object):
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 204:
+-                # Wait for launch sec as best effort
+-                time.sleep(self.WAIT_LAUNCH_SEC)
++                # Wait for launch secondary as best effort
++                time.sleep(wait_time)
+ 
+                 print('Send request to launch {ptype}:{sid}.'.format(
+                     ptype=proc_type, sid=sec_id))
+diff --git a/src/controller/config/default.yml b/src/controller/config/default.yml
+index 223359e..7625451 100644
+--- a/src/controller/config/default.yml
++++ b/src/controller/config/default.yml
+@@ -9,28 +9,39 @@ topo_size:
+     val: 60%
+     desc: Percentage or ratio of topo
+ 
+-# Secondary
++# Secondary common config
+ sec_mem:
+     val: -m 512
+     desc: Mem size
+ sec_base_lcore:
+     val: 1
+     desc: Shared lcore among secondaries
++sec_wait_launch:
++    val: 0.5
++    desc: Wait for launching secondary process in sec
++sec_vhost_cli:
++    val: ""
++    desc: Vhost client mode, activated if set any of values
++
++# spp_nfv
+ sec_nfv_nof_lcores:
+     val: 1
+     desc: Default num of lcores for workers of spp_nfv
++
++# spp_vf
+ sec_vf_nof_lcores:
+     val: 3
+     desc: Default num of lcores for workers of spp_vf
++
++# spp_mirror
+ sec_mirror_nof_lcores:
+     val: 2
+     desc: Default num of lcores for workers of spp_mirror
++
++# spp_pcap
+ sec_pcap_nof_lcores:
+     val: 2
+     desc: Default num of lcores for workers of spp_pcap
+-sec_vhost_cli:
+-    val: ""
+-    desc: Vhost client mode, activated if set any of values
+ sec_pcap_port:
+     val: "phy:0"
+     desc: Default captured port
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index e4685c7..43ef991 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -308,7 +308,7 @@ class Shell(cmd.Cmd, object):
+         if logger is not None:
+             logger.info("Receive pri command: '%s'" % command)
+ 
+-        self.primary.run(command)
++        self.primary.run(command, self.cli_config)
+ 
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+-- 
+2.17.1
+

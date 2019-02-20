@@ -1,7 +1,7 @@
 From f53ac6f7a4888f81823feeba5555acde7fc5045e Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Wed, 20 Feb 2019 16:25:19 +0900
-Subject: [PATCH 2/2] controller: change to wait for launching sec
+Subject: [PATCH 2/3] controller: change to wait for launching sec
 
 SPP CLI updates list of secondaries after `pri launch` command
 immediately. However, secondary is not launched when list is updated

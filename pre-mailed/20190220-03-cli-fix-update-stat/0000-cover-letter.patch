@@ -1,19 +1,21 @@
-From f53ac6f7a4888f81823feeba5555acde7fc5045e Mon Sep 17 00:00:00 2001
+From c435206c97230f13929bcbf1aa576c322ca83bb1 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
-Date: Wed, 20 Feb 2019 16:40:35 +0900
-Subject: [PATCH 0/2] Fix updating status in SPP CLI
+Date: Wed, 20 Feb 2019 17:17:37 +0900
+Subject: [PATCH 0/3] Fix updating status in SPP CLI
 
 SPP CLI updates list of primary and secondary processes everytime after
 running command. However, it is not updated for some of commands. This
 update is to fix the issue.
 
-Yasufumi Ogawa (2):
+Yasufumi Ogawa (3):
   controller: correct status update of processes
   controller: change to wait for launching sec
+  controller: change wait for launch configurable
 
- src/controller/commands/pri.py | 7 +++++++
- src/controller/shell.py        | 8 ++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ src/controller/commands/pri.py    | 11 ++++++++---
+ src/controller/config/default.yml | 19 +++++++++++++++----
+ src/controller/shell.py           | 10 +++++-----
+ 3 files changed, 28 insertions(+), 12 deletions(-)
 
 -- 
 2.17.1
