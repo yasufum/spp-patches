@@ -1,0 +1,126 @@
+X-Account-Key: account3
+X-UIDL: 904e3609cf176d5c5a640000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw103 ([153.138.216.232])
+	by md-bnd-nw106 with LMTP id kKDnBc8XbVxaZAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:03:11 +0900
+Received: from md-lpx-nw004 ([153.138.216.232])
+	by md-drt-nw103 with LMTP id EANlBc8XbVyeIQAAkEn8Lw
+	; Wed, 20 Feb 2019 18:03:11 +0900
+Received: from md-mta-nw004.ocn.ad.jp ([153.138.216.232])
+	by md-lpx-nw004 with LMTP id OBIVBc8XbVyOWwAAxo9yvA
+	; Wed, 20 Feb 2019 18:03:11 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-nw004.ocn.ad.jp (Postfix) with ESMTP id 0DE9B3C002C07
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:03:11 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 66030A802DD
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:03:10 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0AF052B87;
+	Wed, 20 Feb 2019 09:57:15 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id EBAF0A3
+ for <spp@dpdk.org>; Wed, 20 Feb 2019 09:57:12 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1K8vB3l008744;
+ Wed, 20 Feb 2019 17:57:11 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A771C6392D4;
+ Wed, 20 Feb 2019 17:57:11 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 99099639240;
+ Wed, 20 Feb 2019 17:57:11 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 20 Feb 2019 17:54:53 +0900
+Message-Id: <1550652894-2581-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550652894-2581-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550652894-2581-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] docs: change use_cases to usecases
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To remove ambiguity from naming of path, change to not use `use_case`
+but `usecase`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/index.rst                               | 2 +-
+ docs/guides/{use_cases => usecases}/index.rst       | 0
+ docs/guides/{use_cases => usecases}/multi_nodes.rst | 0
+ docs/guides/{use_cases => usecases}/spp_mirror.rst  | 0
+ docs/guides/{use_cases => usecases}/spp_nfv.rst     | 0
+ docs/guides/{use_cases => usecases}/spp_pcap.rst    | 0
+ docs/guides/{use_cases => usecases}/spp_vf.rst      | 0
+ 7 files changed, 1 insertion(+), 1 deletion(-)
+ rename docs/guides/{use_cases => usecases}/index.rst (100%)
+ rename docs/guides/{use_cases => usecases}/multi_nodes.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_mirror.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_nfv.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_pcap.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_vf.rst (100%)
+
+diff --git a/docs/guides/index.rst b/docs/guides/index.rst
+index 1f4a5fb..70ec4a6 100644
+--- a/docs/guides/index.rst
++++ b/docs/guides/index.rst
+@@ -11,7 +11,7 @@ SPP documentation
+    overview
+    design/index
+    gsg/index
+-   use_cases/index
++   usecases/index
+    commands/index
+    tools/index
+    api_ref/index
+diff --git a/docs/guides/use_cases/index.rst b/docs/guides/usecases/index.rst
+similarity index 100%
+rename from docs/guides/use_cases/index.rst
+rename to docs/guides/usecases/index.rst
+diff --git a/docs/guides/use_cases/multi_nodes.rst b/docs/guides/usecases/multi_nodes.rst
+similarity index 100%
+rename from docs/guides/use_cases/multi_nodes.rst
+rename to docs/guides/usecases/multi_nodes.rst
+diff --git a/docs/guides/use_cases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+similarity index 100%
+rename from docs/guides/use_cases/spp_mirror.rst
+rename to docs/guides/usecases/spp_mirror.rst
+diff --git a/docs/guides/use_cases/spp_nfv.rst b/docs/guides/usecases/spp_nfv.rst
+similarity index 100%
+rename from docs/guides/use_cases/spp_nfv.rst
+rename to docs/guides/usecases/spp_nfv.rst
+diff --git a/docs/guides/use_cases/spp_pcap.rst b/docs/guides/usecases/spp_pcap.rst
+similarity index 100%
+rename from docs/guides/use_cases/spp_pcap.rst
+rename to docs/guides/usecases/spp_pcap.rst
+diff --git a/docs/guides/use_cases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+similarity index 100%
+rename from docs/guides/use_cases/spp_vf.rst
+rename to docs/guides/usecases/spp_vf.rst
+-- 
+2.17.1
+
+

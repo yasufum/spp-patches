@@ -1,0 +1,135 @@
+X-Account-Key: account3
+X-UIDL: 489c823975166d5cde520000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.216.230])
+	by md-bnd-nw106 with LMTP id mPB0NHUWbVzeUgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:25 +0900
+Received: from md-lpx-cb010 ([153.138.216.230])
+	by md-drt-nw102 with LMTP id oFzQMnUWbVyRBQAA8iqT2w
+	; Wed, 20 Feb 2019 17:57:25 +0900
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb010 with LMTP id oF3TLnUWbVzvPQAA/ui1sQ
+	; Wed, 20 Feb 2019 17:57:25 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id B12083C004E00
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:25 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 19723A802EB
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 17:57:25 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 1B9AE2B9E;
+	Wed, 20 Feb 2019 09:57:15 +0100 (CET)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 42BA62B87
+ for <spp@dpdk.org>; Wed, 20 Feb 2019 09:57:13 +0100 (CET)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1K8vBO0025113;
+ Wed, 20 Feb 2019 17:57:11 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id AD02F63931B;
+ Wed, 20 Feb 2019 17:57:11 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 9EEFE639273;
+ Wed, 20 Feb 2019 17:57:11 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 20 Feb 2019 17:54:54 +0900
+Message-Id: <1550652894-2581-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550652894-2581-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550652894-2581-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] docs: fix typo of usecase of spp_mirror
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Correct wrong `mir1` to `mir`, `minitor` to `monitor`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/usecases/spp_mirror.rst | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/docs/guides/usecases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+index dcb8e4d..5846bd1 100644
+--- a/docs/guides/usecases/spp_mirror.rst
++++ b/docs/guides/usecases/spp_mirror.rst
+@@ -94,17 +94,17 @@ Start mirror component with core ID 2.
+ .. code-block:: console
+ 
+     # terminal 2
+-    spp > mirror 1; component start mir1 2 mirror
++    spp > mirror 1; component start mir 2 mirror
+ 
+ Add ``phy:0`` as rx port, and ``phy:1`` and ``phy:2`` as tx ports.
+ 
+ .. code-block:: none
+ 
+     # terminal 2
+-    # add ports to mir1
+-    spp > mirror 1; port add phy:0 rx mir1
+-    spp > mirror 1; port add phy:1 tx mir1
+-    spp > mirror 1; port add phy:2 tx mir1
++    # add ports to mir
++    spp > mirror 1; port add phy:0 rx mir
++    spp > mirror 1; port add phy:1 tx mir
++    spp > mirror 1; port add phy:2 tx mir
+ 
+ 
+ Duplicate Packets
+@@ -152,17 +152,17 @@ Delete ports for components.
+ 
+ .. code-block:: none
+ 
+-   # Delete port for mir1
+-   spp > mirror 1; port del phy:0 rx mir1
+-   spp > mirror 1; port del phy:1 tx mir1
+-   spp > mirror 1; port del phy:2 tx mir1
++   # Delete port for mir
++   spp > mirror 1; port del phy:0 rx mir
++   spp > mirror 1; port del phy:1 tx mir
++   spp > mirror 1; port del phy:2 tx mir
+ 
+ Next, stop components.
+ 
+ .. code-block:: console
+ 
+    # Stop mirror
+-   spp > mirror 1; component stop mir1 2 mirror
++   spp > mirror 1; component stop mir 2 mirror
+ 
+    spp > mirror 1; status
+    Basic Information:
+@@ -186,7 +186,7 @@ Monitoring Packets
+ Duplicate classified packets for monitoring before going to a VM.
+ In this usecase, we are only interested in packets going to ``VM1``.
+ Although you might be able to run packet monitor app on host,
+-run minitor on ``VM3`` considering more NFV like senario.
++run monitor on ``VM3`` considering more NFV like senario.
+ You use ``spp_mirror`` for copying, and ``spp_vf`` classifying packets.
+ 
+ .. _figure_usecase_monitor_overview:
+-- 
+2.17.1
+
+
