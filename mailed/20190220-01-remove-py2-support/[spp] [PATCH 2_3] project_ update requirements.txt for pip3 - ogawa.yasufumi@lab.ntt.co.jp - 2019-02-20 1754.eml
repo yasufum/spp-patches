@@ -1,0 +1,98 @@
+X-Account-Key: account3
+X-UIDL: 3809ad209a176d5c4a640000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.216.230])
+	by md-bnd-nw106 with LMTP id eDo5HpoXbVxKZAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:18 +0900
+Received: from md-lpx-cb005 ([153.138.216.230])
+	by md-drt-nw102 with LMTP id IDZWHJoXbVyUBQAA8iqT2w
+	; Wed, 20 Feb 2019 18:02:18 +0900
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb005 with LMTP id yGo9F5oXbVy2KQAAkBL1ug
+	; Wed, 20 Feb 2019 18:02:18 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id 556A23C000260
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:18 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id E9E21A802D1
+	for <geminoa@juno.ocn.ne.jp>; Wed, 20 Feb 2019 18:02:17 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id AAA9420BD;
+	Wed, 20 Feb 2019 09:57:06 +0100 (CET)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 825BB20BD
+ for <spp@dpdk.org>; Wed, 20 Feb 2019 09:57:04 +0100 (CET)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x1K8v0k6008734;
+ Wed, 20 Feb 2019 17:57:00 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D0CE4EA826D;
+ Wed, 20 Feb 2019 17:57:00 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id B7B82EA8283;
+ Wed, 20 Feb 2019 17:57:00 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed, 20 Feb 2019 17:54:42 +0900
+Message-Id: <1550652883-2530-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1550652883-2530-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1550652883-2530-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/3] project: update requirements.txt for pip3
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+As python2 support is removed, add packages install for SPP CLI and
+docs.
+
+* pyyaml
+* tornado
+* websocket-client
+* sphinx-rtd-theme
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ requirements.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/requirements.txt b/requirements.txt
+index 7d0b774..f31beb8 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -2,3 +2,11 @@
+ eventlet
+ bottle
+ netaddr
++
++# SPP CLI
++pyyaml
++tornado
++websocket-client
++
++# docs
++sphinx-rtd-theme
+-- 
+2.17.1
+
+
