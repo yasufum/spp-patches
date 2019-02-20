@@ -1,0 +1,29 @@
+From ba5a942b74dab233e0b2bbcf987c626d90adaa08 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 20 Feb 2019 16:38:17 +0900
+Subject: [PATCH 0/2] Revise docs
+
+This series of patches is to revise docs for typos or renames.
+
+Yasufumi Ogawa (2):
+  docs: change use_cases to usecases
+  docs: fix typo of usecase of spp_mirror
+
+ docs/guides/index.rst                         |  2 +-
+ docs/guides/{use_cases => usecases}/index.rst |  0
+ .../{use_cases => usecases}/multi_nodes.rst   |  0
+ .../{use_cases => usecases}/spp_mirror.rst    | 22 +++++++++----------
+ .../{use_cases => usecases}/spp_nfv.rst       |  0
+ .../{use_cases => usecases}/spp_pcap.rst      |  0
+ .../guides/{use_cases => usecases}/spp_vf.rst |  0
+ 7 files changed, 12 insertions(+), 12 deletions(-)
+ rename docs/guides/{use_cases => usecases}/index.rst (100%)
+ rename docs/guides/{use_cases => usecases}/multi_nodes.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_mirror.rst (95%)
+ rename docs/guides/{use_cases => usecases}/spp_nfv.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_pcap.rst (100%)
+ rename docs/guides/{use_cases => usecases}/spp_vf.rst (100%)
+
+-- 
+2.17.1
+
