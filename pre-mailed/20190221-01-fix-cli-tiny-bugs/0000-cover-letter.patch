@@ -1,0 +1,25 @@
+From 1e31e2753b6289882e680f35187c8169370426c7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 21 Feb 2019 09:56:00 +0900
+Subject: [PATCH 0/2] Fix bugs of SPP CLI
+
+This series of patches is to fix tiny bugs of SPP CLI below.
+
+* SPP CLI is terminated if target secondary process is not exist. For
+  example, it is failed to run `nfv 1` without launching nfv 1 and SPP
+  CLI is terminated.
+
+* Completion for secondary process does not work until secondary list of
+  SPP CLI is updated. It should be fixed because user might consider
+  launching sec process is failed if it is not listed in completion.
+
+Yasufumi Ogawa (2):
+  controller: fix bug terminated if no sec ID found
+  controller: fix compl for sec enabled immediately
+
+ src/controller/shell.py | 48 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
+
+-- 
+2.17.1
+

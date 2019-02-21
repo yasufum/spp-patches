@@ -1,0 +1,92 @@
+From 1d2bff4cf79b3185e4854c6794c8e108299dc8fd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 21 Feb 2019 09:32:54 +0900
+Subject: [PATCH 1/2] controller: fix bug terminated if no sec ID found
+
+SPP CLI is terminated if sec ID of process is not exist. For instance,
+it is failed and terminated if you run `nfv 1; status` without launching
+nfv 1.
+
+This update is to add `_is_sec_registered()` to check sec process is
+launched before.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/shell.py | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
+
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 43ef991..2568523 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -214,11 +214,26 @@ class Shell(cmd.Cmd, object):
+         res = re.sub(r'\s?;\s?', ";", tmparg)
+         return res
+ 
++    def _is_sec_registered(self, ptype, sid):
++        """Check secondary process is registered.
++
++        Return True if registered, or print error and return False if not.
++        """
++
++        if sid in self.secondaries[ptype]:
++            return True
++        else:
++            print('"{ptype} {sid}" does not exist.'.format(
++                ptype=ptype, sid=sid))
++            return False
++
+     def precmd(self, line):
+         """Called before running a command
+ 
+         It is called for checking a contents of command line.
+         """
++        if self.use_cache is False:
++            self.init_spp_procs()
+ 
+         if self.recorded_file:
+             if not (
+@@ -341,7 +356,8 @@ class Shell(cmd.Cmd, object):
+         if len(cmds) < 2:
+             print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+-            self.secondaries['nfv'][int(cmds[0])].run(cmds[1])
++            if self._is_sec_registered('nfv', int(cmds[0])):
++                self.secondaries['nfv'][int(cmds[0])].run(cmds[1])
+         else:
+             print('Invalid command: %s' % tmparg)
+ 
+@@ -440,7 +456,9 @@ class Shell(cmd.Cmd, object):
+         if len(cmds) < 2:
+             print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+-            self.secondaries['vf'][int(cmds[0])].run(cmds[1])
++
++            if self._is_sec_registered('vf', int(cmds[0])):
++                self.secondaries['vf'][int(cmds[0])].run(cmds[1])
+         else:
+             print('Invalid command: %s' % tmparg)
+ 
+@@ -518,7 +536,8 @@ class Shell(cmd.Cmd, object):
+         if len(cmds) < 2:
+             print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+-            self.secondaries['mirror'][int(cmds[0])].run(cmds[1])
++            if self._is_sec_registered('mirror', int(cmds[0])):
++                self.secondaries['mirror'][int(cmds[0])].run(cmds[1])
+         else:
+             print('Invalid command: %s' % tmparg)
+ 
+@@ -585,7 +604,8 @@ class Shell(cmd.Cmd, object):
+         if len(cmds) < 2:
+             print("Required an ID and ';' before the command.")
+         elif str.isdigit(cmds[0]):
+-            self.secondaries['pcap'][int(cmds[0])].run(cmds[1])
++            if self._is_sec_registered('pcap', int(cmds[0])):
++                self.secondaries['pcap'][int(cmds[0])].run(cmds[1])
+         else:
+             print('Invalid command: {}'.format(tmparg))
+ 
+-- 
+2.17.1
+
