@@ -1,0 +1,71 @@
+From 11a3f07b3531752d76f158bef067416a109706b2 Mon Sep 17 00:00:00 2001
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Date: Tue, 5 Feb 2019 09:27:33 +0900
+Subject: [PATCH v2 2/3] spp_pcap: bug fix packet is left in ring
+
+The correction of the bug that a packet is had for at the time
+of a capture stop in ring
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+---
+ src/pcap/spp_pcap.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index e10a798..1b67d9c 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -797,7 +797,7 @@ static int pcap_proc_receive(int lcore_id)
+ 		return SPP_RET_OK;
+ 
+ 	/* Write ring packets */
+-	nb_tx = rte_ring_enqueue_bulk(write_ring, (void *)bufs, nb_rx, NULL);
++	nb_tx = rte_ring_enqueue_burst(write_ring, (void *)bufs, nb_rx, NULL);
+ 
+ 	/* Discard remained packets to release mbuf */
+ 	if (unlikely(nb_tx < nb_rx)) {
+@@ -822,15 +822,8 @@ static int pcap_proc_write(int lcore_id)
+ 	struct rte_ring *read_ring = g_pcap_option.cap_ring;
+ 
+ 	if (g_capture_status == SPP_CAPTURE_IDLE) {
+-		if (info->status == SPP_CAPTURE_RUNNING) {
+-			RTE_LOG(DEBUG, SPP_PCAP, "write[%d] run->idle\n",
+-								lcore_id);
+-			info->status = SPP_CAPTURE_IDLE;
+-			if (file_compression_operation(info, CLOSE_MODE)
+-							!= SPP_RET_OK)
+-				return SPP_RET_NG;
+-		}
+-		return SPP_RET_OK;
++		if (info->status == SPP_CAPTURE_IDLE)
++			return SPP_RET_OK;
+ 	}
+ 	if (info->status == SPP_CAPTURE_IDLE) {
+ 		RTE_LOG(DEBUG, SPP_PCAP, "write[%d] idle->run\n", lcore_id);
+@@ -843,10 +836,19 @@ static int pcap_proc_write(int lcore_id)
+ 	}
+ 
+ 	/* Read packets */
+-	nb_rx =  rte_ring_dequeue_bulk(read_ring, (void *)bufs, MAX_PCAP_BURST,
+-									NULL);
+-	if (unlikely(nb_rx == 0))
++	nb_rx =  rte_ring_mc_dequeue_burst(read_ring, (void *)bufs,
++					   MAX_PCAP_BURST, NULL);
++	if (unlikely(nb_rx == 0)) {
++		if (g_capture_status == SPP_CAPTURE_IDLE) {
++			RTE_LOG(DEBUG, SPP_PCAP, "write[%d] run->idle\n",
++								lcore_id);
++			info->status = SPP_CAPTURE_IDLE;
++			if (file_compression_operation(info, CLOSE_MODE)
++							!= SPP_RET_OK)
++				return SPP_RET_NG;
++		}
+ 		return SPP_RET_OK;
++	}
+ 
+ 	for (buf = 0; buf < nb_rx; buf++) {
+ 		mbuf = bufs[buf];
+-- 
+2.18.0
+
