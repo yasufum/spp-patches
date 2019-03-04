@@ -1,0 +1,39 @@
+From b9f0ed9f97fea1aca12b5131450e4d63f7797197 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 4 Mar 2019 17:12:55 +0900
+Subject: [PATCH] version: 18.08.2
+
+This patch is to update to v18.08.2.
+
+* Add spp_mirror and spp_pcap features.
+
+* Update design of SPP controller and add multi-node support.
+
+* Enable launch secondary process from primary with `pri` command.
+
+* Revise whole of structure of documentation and update contents.
+
+* Fix misc bugs. Revise log messages and comments. Refactor for name of
+  variables, functions and defines.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index fff7e77..4fa7740 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.1
++VERSION := 18.08.2
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.17.1
+
