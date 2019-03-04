@@ -1,0 +1,142 @@
+From - Mon Mar  4 15:54:20 2019
+X-Account-Key: account1
+X-UIDL: 0000a82456a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id EBE334008C3
+	for <yo128@mail2.ecl.ntt.co.jp>; Mon,  4 Mar 2019 15:56:12 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id E47B123BC0A; Mon,  4 Mar 2019 15:56:12 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from bcmv-ns01.ecl.ntt.co.jp (bcmv-ns01.ecl.ntt.co.jp [129.60.83.123])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id D835A23B931
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Mon,  4 Mar 2019 15:56:12 +0900 (JST)
+Received: from bcmv-ns01.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id BF3C01B3;
+	Mon,  4 Mar 2019 15:56:12 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by bcmv-ns01.ecl.ntt.co.jp (Postfix) with ESMTP id 9E76615F;
+	Mon,  4 Mar 2019 15:56:12 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Cc: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Subject: [PATCH 1/3] spp_pcap: change mbuf size for dequeue packets
+Date: Mon,  4 Mar 2019 15:53:45 +0900
+Message-Id: <1551682427-13835-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1551682427-13835-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1551682427-13835-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+To increase the number of dequeued packets at once, increase the size of
+mbuf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/spp_pcap.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 7f2e564..a6b58d5 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -22,29 +22,28 @@
+ /* Declare global variables */
+ #define RTE_LOGTYPE_SPP_PCAP RTE_LOGTYPE_USER2
+ 
++/* Pcap file attributes */
+ #define PCAP_FPATH_STRLEN 128
+ #define PCAP_FNAME_STRLEN 64
+ #define PCAP_FDATE_STRLEN 16
+-/**
+- * The first 4 bytes 0xa1b2c3d4 constitute the magic number which is used to
+- * identify pcap files.
+- */
++
++/* Used to identify pcap files */
+ #define TCPDUMP_MAGIC 0xa1b2c3d4
+-/* constant which indicates major verions of libpcap file */
++
++/* Indicates major verions of libpcap file */
+ #define PCAP_VERSION_MAJOR 2
+ #define PCAP_VERSION_MINOR 4
++
+ #define PCAP_SNAPLEN_MAX 65535
+-/**
+- * pcap header value which indicates physical layer type.
+- * 1 means LINKTYPE_ETHERNET
+- */
+-#define PCAP_LINKTYPE 1
++
++#define PCAP_LINKTYPE 1  /* Link type 1 means LINKTYPE_ETHERNET */
+ #define IN_CHUNK_SIZE (16*1024)
+ #define DEFAULT_OUTPUT_DIR "/tmp"
+-#define DEFAULT_FILE_LIMIT 1073741824 /* 1GiB */
++#define DEFAULT_FILE_LIMIT 1073741824  /* 1GiB */
+ #define PORT_STR_SIZE 16
+ #define RING_SIZE 8192
+-/* macro */
++#define MAX_PCAP_BURST 256  /* Num of received packets at once */
++
+ /* Ensure snaplen not to be over the maximum size */
+ #define TRANCATE_SNAPLEN(a, b) (((a) < (b))?(a):(b))
+ 
+@@ -756,7 +755,7 @@ static int pcap_proc_receive(int lcore_id)
+ 	int nb_rx = 0;
+ 	int nb_tx = 0;
+ 	struct spp_port_info *rx;
+-	struct rte_mbuf *bufs[MAX_PKT_BURST];
++	struct rte_mbuf *bufs[MAX_PCAP_BURST];
+ 	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
+ 	struct rte_ring *write_ring = g_pcap_option.cap_ring;
+ 
+@@ -786,7 +785,7 @@ static int pcap_proc_receive(int lcore_id)
+ 	/* Receive packets */
+ 	rx = &g_pcap_option.port_cap;
+ 
+-	nb_rx = spp_eth_rx_burst(rx->dpdk_port, 0, bufs, MAX_PKT_BURST);
++	nb_rx = spp_eth_rx_burst(rx->dpdk_port, 0, bufs, MAX_PCAP_BURST);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPP_RET_OK;
+ 
+@@ -810,7 +809,7 @@ static int pcap_proc_write(int lcore_id)
+ 	int ret = SPP_RET_OK;
+ 	int buf;
+ 	int nb_rx = 0;
+-	struct rte_mbuf *bufs[MAX_PKT_BURST];
++	struct rte_mbuf *bufs[MAX_PCAP_BURST];
+ 	struct rte_mbuf *mbuf = NULL;
+ 	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
+ 	struct rte_ring *read_ring = g_pcap_option.cap_ring;
+@@ -837,7 +836,7 @@ static int pcap_proc_write(int lcore_id)
+ 	}
+ 
+ 	/* Read packets */
+-	nb_rx =  rte_ring_dequeue_bulk(read_ring, (void *)bufs, MAX_PKT_BURST,
++	nb_rx =  rte_ring_dequeue_bulk(read_ring, (void *)bufs, MAX_PCAP_BURST,
+ 									NULL);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPP_RET_OK;
+@@ -860,6 +859,7 @@ static int pcap_proc_write(int lcore_id)
+ 	/* mbuf free */
+ 	for (buf = 0; buf < nb_rx; buf++)
+ 		rte_pktmbuf_free(bufs[buf]);
++
+ 	return ret;
+ }
+ 
+-- 
+2.17.1
+
+
+
