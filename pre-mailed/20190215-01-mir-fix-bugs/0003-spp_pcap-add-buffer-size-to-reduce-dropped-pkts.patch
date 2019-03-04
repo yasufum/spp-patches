@@ -1,31 +1,35 @@
-From 4b9176bacbed5266309fc2e7685f848f1ac1f7d6 Mon Sep 17 00:00:00 2001
-From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
-Date: Tue, 5 Feb 2019 11:16:52 +0900
-Subject: [PATCH v2 3/3] spp_pcap: bug fix ring overflow
+From 970a4e74676078f7619a0113acb19295edd83c69 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 4 Mar 2019 14:49:17 +0900
+Subject: [PATCH 3/3] spp_pcap: add buffer size to reduce dropped pkts
 
-To prevent ring overflow in start which it starts and confirms of the
-write thread.
+* Increase size of ring buffer to avoid packets to be not discarded
+  before dequeuing.
+
+* Add checking the number of threads.
+
+* Add vars for logging statistics.
 
 Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
-Signed-off-by: Naoki Takada <takada.naoki@lab.ntt.co.jp>
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 ---
- src/pcap/spp_pcap.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+ src/pcap/spp_pcap.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
 diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
-index 1b67d9c..c3844db 100644
+index a59a89b..1fb6c32 100644
 --- a/src/pcap/spp_pcap.c
 +++ b/src/pcap/spp_pcap.c
-@@ -43,7 +43,7 @@
+@@ -41,7 +41,7 @@
  #define DEFAULT_OUTPUT_DIR "/tmp"
- #define DEFAULT_FILE_LIMIT 1073741824 /* 1GiB */
+ #define DEFAULT_FILE_LIMIT 1073741824  /* 1GiB */
  #define PORT_STR_SIZE 16
 -#define RING_SIZE 8192
 +#define RING_SIZE 16384
- #define MAX_PCAP_BURST 256
- /* macro */
+ #define MAX_PCAP_BURST 256  /* Num of received packets at once */
+ 
  /* Ensure snaplen not to be over the maximum size */
-@@ -138,6 +138,12 @@ struct pcap_mng_info {
+@@ -136,6 +136,12 @@ struct pcap_mng_info {
  	uint64_t file_size;            /* file write size */
  };
  
@@ -38,7 +42,7 @@ index 1b67d9c..c3844db 100644
  /* Logical core ID for main thread */
  static unsigned int g_main_lcore_id = 0xffffffff;
  
-@@ -162,6 +168,12 @@ static struct pcap_option g_pcap_option;
+@@ -160,6 +166,12 @@ static struct pcap_option g_pcap_option;
  /* pcap managed info */
  static struct pcap_mng_info g_pcap_info[RTE_MAX_LCORE];
  
@@ -51,7 +55,7 @@ index 1b67d9c..c3844db 100644
  /* Print help message */
  static void
  usage(const char *progname)
-@@ -765,13 +777,20 @@ static int pcap_proc_receive(int lcore_id)
+@@ -758,15 +770,23 @@ static int pcap_proc_receive(int lcore_id)
  	struct rte_mbuf *bufs[MAX_PCAP_BURST];
  	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
  	struct rte_ring *write_ring = g_pcap_option.cap_ring;
@@ -60,11 +64,14 @@ index 1b67d9c..c3844db 100644
  
  	if (g_capture_request == SPP_CAPTURE_IDLE) {
  		if (info->status == SPP_CAPTURE_RUNNING) {
- 			RTE_LOG(DEBUG, SPP_PCAP, "recive[%d], run->idle\n",
- 								lcore_id);
-+			RTE_LOG(INFO, SPP_PCAP, "recive[%d], total_rx=%llu, "
-+						"total_drop=%llu\n", lcore_id,
-+						total_rx, total_drop);
+ 			RTE_LOG(DEBUG, SPP_PCAP,
+ 					"Recive on lcore %d, run->idle\n",
+ 					lcore_id);
++			RTE_LOG(INFO, SPP_PCAP,
++					"Recive on lcore %d, total_rx=%llu, "
++					"total_drop=%llu\n", lcore_id,
++					total_rx, total_drop);
+ 
  			info->status = SPP_CAPTURE_IDLE;
  			g_capture_status = SPP_CAPTURE_IDLE;
 +			if (g_pcap_thread_info.start_up_cnt != 0)
@@ -72,10 +79,11 @@ index 1b67d9c..c3844db 100644
  		}
  		return SPP_RET_OK;
  	}
-@@ -787,8 +806,15 @@ static int pcap_proc_receive(int lcore_id)
- 		RTE_LOG(DEBUG, SPP_PCAP, "recive[%d], idle->run\n", lcore_id);
- 		RTE_LOG(DEBUG, SPP_PCAP, "recive[%d], start time=%s\n",
- 			lcore_id, g_pcap_option.compress_file_date);
+@@ -785,9 +805,15 @@ static int pcap_proc_receive(int lcore_id)
+ 		RTE_LOG(DEBUG, SPP_PCAP,
+ 				"Recive on lcore %d, start time=%s\n",
+ 				lcore_id, g_pcap_option.compress_file_date);
+-
 +		g_pcap_thread_info.start_up_cnt += 1;
 +		total_rx = 0;
 +		total_drop = 0;
@@ -87,8 +95,8 @@ index 1b67d9c..c3844db 100644
 +
  	/* Receive packets */
  	rx = &g_pcap_option.port_cap;
- 
-@@ -807,6 +833,9 @@ static int pcap_proc_receive(int lcore_id)
+ 	nb_rx = spp_eth_rx_burst(rx->dpdk_port, 0, bufs, MAX_PCAP_BURST);
+@@ -805,6 +831,9 @@ static int pcap_proc_receive(int lcore_id)
  			rte_pktmbuf_free(bufs[buf]);
  	}
  
@@ -98,7 +106,7 @@ index 1b67d9c..c3844db 100644
  	return SPP_RET_OK;
  }
  
-@@ -833,6 +862,8 @@ static int pcap_proc_write(int lcore_id)
+@@ -831,6 +860,8 @@ static int pcap_proc_write(int lcore_id)
  			info->status = SPP_CAPTURE_IDLE;
  			return SPP_RET_NG;
  		}
@@ -106,20 +114,22 @@ index 1b67d9c..c3844db 100644
 +		g_total_write[lcore_id] = 0;
  	}
  
- 	/* Read packets */
-@@ -842,7 +873,11 @@ static int pcap_proc_write(int lcore_id)
- 		if (g_capture_status == SPP_CAPTURE_IDLE) {
- 			RTE_LOG(DEBUG, SPP_PCAP, "write[%d] run->idle\n",
- 								lcore_id);
-+			RTE_LOG(INFO, SPP_PCAP, "write[%d] total_write=%llu\n",
+ 	/* Read packets from shared ring */
+@@ -841,8 +872,13 @@ static int pcap_proc_write(int lcore_id)
+ 			RTE_LOG(DEBUG, SPP_PCAP,
+ 					"Write on lcore %d, run->idle\n",
+ 					lcore_id);
++			RTE_LOG(INFO, SPP_PCAP,
++					"Write on lcore %d, total_write=%llu\n",
 +					lcore_id, g_total_write[lcore_id]);
+ 
  			info->status = SPP_CAPTURE_IDLE;
 +			if (g_pcap_thread_info.start_up_cnt != 0)
 +				g_pcap_thread_info.start_up_cnt -= 1;
  			if (file_compression_operation(info, CLOSE_MODE)
  							!= SPP_RET_OK)
  				return SPP_RET_NG;
-@@ -869,6 +904,7 @@ static int pcap_proc_write(int lcore_id)
+@@ -870,6 +906,7 @@ static int pcap_proc_write(int lcore_id)
  	for (buf = 0; buf < nb_rx; buf++)
  		rte_pktmbuf_free(bufs[buf]);
  
@@ -127,7 +137,7 @@ index 1b67d9c..c3844db 100644
  	return ret;
  }
  
-@@ -1038,7 +1074,10 @@ main(int argc, char *argv[])
+@@ -1039,7 +1076,10 @@ main(int argc, char *argv[])
  		/* Start worker threads of recive or write */
  		unsigned int lcore_id = 0;
  		unsigned int thread_no = 0;
@@ -139,5 +149,5 @@ index 1b67d9c..c3844db 100644
  			rte_eal_remote_launch(slave_main, NULL, lcore_id);
  		}
 -- 
-2.18.0
+2.17.1
 
