@@ -1,0 +1,75 @@
+X-Account-Key: account1
+X-UIDL: 0000ab4856a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 25D584002A9
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 12 Mar 2019 18:13:50 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 242007F2B1; Tue, 12 Mar 2019 18:13:50 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 22F5C7F29C
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 12 Mar 2019 18:13:50 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 12D03639B2B;
+	Tue, 12 Mar 2019 18:13:50 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id EE9DC639B1A;
+	Tue, 12 Mar 2019 18:13:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] spp_pcap: fix inappropriate linking of liblz4
+Date: Tue, 12 Mar 2019 18:11:20 +0900
+Message-Id: <1552381880-891-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+In Makefile of spp_pcap, `liblz4.a` is linked directly as other source
+codes. However, file path might be different on other distros, such as
+CentOS or Fedora.
+
+    SRCS-y += /usr/lib/x86_64-linux-gnu/liblz4.a
+
+This update is to correct to link this library with `-l` option as
+practical manner.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+index 298e2b7..199a8ff 100644
+--- a/src/pcap/Makefile
++++ b/src/pcap/Makefile
+@@ -18,7 +18,6 @@ SRCS-y += command_proc.c command_dec.c
+ SRCS-y += ../shared/common.c
+ SRCS-y += ../vf/common/command_conn.c ../vf/common/spp_port.c
+ SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
+-SRCS-y += /usr/lib/x86_64-linux-gnu/liblz4.a
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+@@ -28,6 +27,8 @@ CFLAGS += -I$(SRCDIR)/../shared
+ #CFLAGS += -DSPP_DEMONIZE
+ #CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
+ 
++LDLIBS += -llz4
++
+ ifeq ($(CONFIG_RTE_BUILD_SHARED_LIB),y)
+ LDLIBS += -lrte_pmd_ring
+ LDLIBS += -lrte_pmd_vhost
+-- 
+2.7.4
+
+
+
