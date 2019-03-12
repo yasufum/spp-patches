@@ -1,0 +1,30 @@
+From 970a4e74676078f7619a0113acb19295edd83c69 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 4 Mar 2019 15:39:37 +0900
+Subject: [PATCH 0/3] Fix bugs of spp_pcap
+
+This series of patches is to fix bugs of spp_pcap reported by
+Hiroyuki[1].
+
+* Fix bug of some of packets are discarded while packet capturing is stopped.
+
+* Increase the size of shared ring buffer to avoid discarding packets.
+
+* Refactors for name of variables and log messages.
+
+[1] https://mails.dpdk.org/archives/spp/2019-February/001373.html
+
+
+Hideyuki Yamashita (2):
+  spp_pcap: change mbuf size for dequeue packets
+  spp_pcap: fix bug pkts remained after pcap stopped
+
+Yasufumi Ogawa (1):
+  spp_pcap: add buffer size to reduce dropped pkts
+
+ src/pcap/spp_pcap.c | 146 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 98 insertions(+), 48 deletions(-)
+
+-- 
+2.17.1
+
