@@ -1,0 +1,32 @@
+From 632045d5c6298f9dcb289398fb35d5c0d2bb8bd8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 4 Apr 2019 18:05:50 +0900
+Subject: [PATCH 0/3] Update for compile on CentOS7
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi,
+
+Compiling SPP without `-std=c99` for C99 mode is failed on some
+environment such as CentOS7. It is required to be enable to compile
+without specific options on every envs.
+
+This series of patches is to update for compilation on CentOS7 without
+C99 mode option.
+
+Yasufumi Ogawa (3):
+  spp_nfv: remove declaration in for loop
+  spp_primary: remove declaration in for loop
+  spp_vf: change inline func calls static inside
+
+ src/nfv/main.c           | 2 +-
+ src/nfv/nfv_status.c     | 4 ++--
+ src/nfv/nfv_utils.h      | 3 ++-
+ src/primary/init.c       | 3 ++-
+ src/vf/common/spp_port.c | 6 +++---
+ 5 files changed, 10 insertions(+), 8 deletions(-)
+
+-- 
+2.7.4
+
