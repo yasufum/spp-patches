@@ -1,0 +1,100 @@
+X-Account-Key: account4
+X-UIDL: 0000b7ec56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id B4C23400551
+	for <yo128@mail2.ecl.ntt.co.jp>; Thu,  4 Apr 2019 18:59:52 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id B2F4B23BE48; Thu,  4 Apr 2019 18:59:52 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id B27BC23BE3D
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Thu,  4 Apr 2019 18:59:52 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id A56A4EA8453;
+	Thu,  4 Apr 2019 18:59:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 8AD00EA8385;
+	Thu,  4 Apr 2019 18:59:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/3] spp_nfv: remove declaration in for loop
+Date: Thu,  4 Apr 2019 18:57:38 +0900
+Message-Id: <1554371860-18206-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1554371860-18206-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1554371860-18206-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For some environment, declaration in for loop cause an error.
+
+  error: ‘for’ loop initial declarations are only allowed in C99 mode
+
+This update is move this declaration from.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/nfv/main.c       | 2 +-
+ src/nfv/nfv_status.c | 4 ++--
+ src/nfv/nfv_utils.h  | 3 ++-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 4ecc553..fbcef0c 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -248,7 +248,7 @@ main(int argc, char *argv[])
+ 		lcore_id_used[lcore_id] = 1;
+ 	}
+ 	sprintf(log_msg, "Used lcores: ");
+-	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++	for (i = 0; i < RTE_MAX_LCORE; i++) {
+ 		if (lcore_id_used[i] == 1)
+ 			sprintf(log_msg + strlen(log_msg), "%d ", i);
+ 	}
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index a3ad597..d29e083 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -54,9 +54,9 @@ int
+ append_lcore_info_json(char *str,
+ 		uint8_t lcore_id_used[RTE_MAX_LCORE])
+ {
+-
++	int i;
+ 	sprintf(str + strlen(str), "\"lcores\":[");
+-	for (int i = 0; i < RTE_MAX_LCORE; i++) {
++	for (i = 0; i < RTE_MAX_LCORE; i++) {
+ 		if (lcore_id_used[i] == 1)
+ 			sprintf(str + strlen(str), "%d,", i);
+ 	}
+diff --git a/src/nfv/nfv_utils.h b/src/nfv/nfv_utils.h
+index aca5f13..9d4f9dd 100644
+--- a/src/nfv/nfv_utils.h
++++ b/src/nfv/nfv_utils.h
+@@ -107,7 +107,8 @@ forward_array_reset(void)
+ /* Return a type of port as a enum member of porttype_map structure. */
+ static enum port_type get_port_type(char *portname)
+ {
+-	for (int i = 0; portmap[i].port_name != NULL; i++) {
++	int i;
++	for (i = 0; portmap[i].port_name != NULL; i++) {
+ 		const char *port_name = portmap[i].port_name;
+ 		if (strncmp(portname, port_name, strlen(port_name)) == 0)
+ 			return portmap[i].port_type;
+-- 
+2.7.4
+
+
