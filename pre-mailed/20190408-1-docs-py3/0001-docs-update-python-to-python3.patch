@@ -1,0 +1,170 @@
+From bfd1d74f571267ae009e789bf52a20648916089e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 8 Apr 2019 18:32:28 +0900
+Subject: [PATCH] docs: update python to python3
+
+Python2 is deprecated in SPP without experimental SPP Containerl tools.
+This patch is to update old description of python2 to 3.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/howto_use.rst        | 14 +++++---------
+ docs/guides/gsg/install.rst          | 18 +++++++++++-------
+ docs/guides/gsg/setup.rst            |  3 +--
+ docs/guides/usecases/multi_nodes.rst |  4 ++--
+ docs/guides/usecases/spp_vf.rst      |  2 +-
+ 5 files changed, 20 insertions(+), 21 deletions(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 09e11b8..21633d9 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -49,9 +49,6 @@ a process.
+     $ cd /path/to/spp
+     $ python3 src/spp-ctl/spp-ctl
+ 
+-Notice that ``spp-ctl`` is implemented in ``python3`` and cannot be
+-launched with ``python2``.
+-
+ It has a option ``-b`` for binding address explicitly to be accessed
+ from other than default, ``127.0.0.1`` or ``localhost``.
+ If you deploy SPP on multiple nodes, you might need to use ``-b`` option
+@@ -98,13 +95,12 @@ SPP CLI
+ ~~~~~~~
+ 
+ If ``spp-ctl`` is launched, go to the next terminal and launch SPP CLI.
+-It supports both of Python 2 and 3, so use ``python`` in this case.
+ 
+ .. code-block:: console
+ 
+     # terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+     Welcome to the spp.   Type help or ? to list commands.
+ 
+     spp >
+@@ -116,7 +112,7 @@ option for ``spp.py``, or failed to connect and to launch.
+ 
+     # terminal 2
+     # bind to spp-ctl on http://192.168.1.100:7777
+-    $ python src/spp.py -b 192.168.1.100
++    $ python3 src/spp.py -b 192.168.1.100
+     Welcome to the spp.   Type help or ? to list commands.
+ 
+     spp >
+@@ -142,7 +138,7 @@ for specifying ``spp-ctl``.
+ .. code-block:: console
+ 
+     # Launch SPP CLI with three nodes
+-    $ python src/spp.py -b 192.168.11.101 \
++    $ python3 src/spp.py -b 192.168.11.101 \
+         -b 192.168.11.102 \
+         -b 192.168.11.103 \
+ 
+@@ -151,7 +147,7 @@ You can also add nodes after SPP CLI is launched.
+ .. code-block:: console
+ 
+     # Launch SPP CLI with one node
+-    $ python src/spp.py -b 192.168.11.101
++    $ python3 src/spp.py -b 192.168.11.101
+     Welcome to the SPP CLI. Type `help` or `?` to list commands.
+ 
+     # Add the rest of nodes after
+@@ -182,7 +178,7 @@ All of options can be referred with help option ``-h``.
+ 
+ .. code-block:: console
+ 
+-    $ python src/spp.py -h
++    $ python3 src/spp.py -h
+     usage: spp.py [-h] [-b BIND_ADDR] [-a API_PORT]
+ 
+     SPP Controller
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 9181734..9f6dd4c 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -41,6 +41,17 @@ Python3 and pip3 are also required if not installed.
+     $ sudo apt install python3 \
+       python3-pip
+ 
++SPP provides ``requirements.txt`` for installing required packages of Python3.
++You might fail to run ``pip3`` without sudo on some environments.
++
++.. code-block:: console
++
++    $ pip3 install -r requirements.txt
++
++For some environments, ``pip3`` might install packages under your home
++directory ``$HOME/.local/bin`` and you should add it to ``$PATH`` environment
++variable.
++
+ Some of secondary processes depend on external libraries and you failed to
+ compile SPP without them.
+ 
+@@ -115,13 +126,6 @@ Default mode is shallow copy.
+     but lower performance. Which of copy mode should be chosen depends on
+     your usage.
+ 
+-SPP provides ``requirements.txt`` for installing required packages of Python3.
+-You might fail to run ``pip3`` without sudo on some environments.
+-
+-.. code-block:: console
+-
+-    $ pip3 install -r requirements.txt
+-
+ 
+ Binding Network Ports to DPDK
+ -----------------------------
+diff --git a/docs/guides/gsg/setup.rst b/docs/guides/gsg/setup.rst
+index 65cd156..73767da 100644
+--- a/docs/guides/gsg/setup.rst
++++ b/docs/guides/gsg/setup.rst
+@@ -245,8 +245,7 @@ Check your SELinux configuration.
+ Python 2 or 3 ?
+ ---------------
+ 
+-In SPP, Python3 is required only for running ``spp-ctl`` and SPP CLI.
+-Python2 is not supported anymore.
++Python2 is not supported anymore for SPP.
+ 
+ 
+ Reference
+diff --git a/docs/guides/usecases/multi_nodes.rst b/docs/guides/usecases/multi_nodes.rst
+index b44d0bd..3eaed0c 100644
+--- a/docs/guides/usecases/multi_nodes.rst
++++ b/docs/guides/usecases/multi_nodes.rst
+@@ -44,7 +44,7 @@ for each of hosts. SPP CLI is able to be launched on any of nodes.
+ .. code-block:: console
+ 
+     # Launch SPP CLI
+-    $ python src/spp.py -b 192.168.11.101 \
++    $ python3 src/spp.py -b 192.168.11.101 \
+         -b 192.168.11.102 \
+         -b 192.168.11.103 \
+         -b 192.168.11.104 \
+@@ -55,7 +55,7 @@ launching it with first node, and adding the rest of nodes after.
+ .. code-block:: console
+ 
+     # Launch SPP CLI
+-    $ python src/spp.py -b 192.168.11.101
++    $ python3 src/spp.py -b 192.168.11.101
+     Welcome to the spp.  Type help or ? to list commands.
+ 
+     spp > server add 192.168.11.102
+diff --git a/docs/guides/usecases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+index b7c304b..4810317 100644
+--- a/docs/guides/usecases/spp_vf.rst
++++ b/docs/guides/usecases/spp_vf.rst
+@@ -40,7 +40,7 @@ Launch ``spp-ctl`` and SPP CLI before primary and secondary processes.
+ .. code-block:: console
+ 
+     # terminal 2
+-    $ python ./src/spp.py -b 192.168.1.100
++    $ python3 ./src/spp.py -b 192.168.1.100
+ 
+ ``spp_primary`` on the second lcore with ``-l 0`` and two ports ``-p 0x03``.
+ 
+-- 
+2.17.1
+
