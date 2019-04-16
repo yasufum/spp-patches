@@ -1,0 +1,16 @@
+From d9b5ac3765ff2f479d43090ee3347afa94169c5b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 16 Apr 2019 12:09:06 +0900
+Subject: [PATCH v2 0/1] Get fbarrays from containerized secondary
+
+Fix spell miss in commit message.
+
+Yasufumi Ogawa (1):
+  fbarray: get fbarrays from containerized secondary
+
+ lib/librte_eal/linux/eal/eal_memalloc.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
+
+-- 
+2.17.1
+
