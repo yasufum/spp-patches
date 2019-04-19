@@ -1,0 +1,475 @@
+X-Account-Key: account1
+X-UIDL: 0000bf8d56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id CAFAF400178
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 19 Apr 2019 14:54:43 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 9ECFD7F2A9; Fri, 19 Apr 2019 14:54:43 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 9D6F27F2A0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 19 Apr 2019 14:54:43 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 88503638A52;
+	Fri, 19 Apr 2019 14:54:43 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 764A0638A3C;
+	Fri, 19 Apr 2019 14:54:43 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] docs: add setup for centos7
+Date: Fri, 19 Apr 2019 14:52:12 +0900
+Message-Id: <1555653132-9413-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add setup instructions for CentOS7.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ docs/guides/gsg/install.rst | 161 ++++++++++++++++++++++++++++++------
+ docs/guides/gsg/setup.rst   | 102 +++++++++++++++--------
+ 2 files changed, 201 insertions(+), 62 deletions(-)
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 9f6dd4c..c2763ad 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -8,49 +8,79 @@ Install DPDK and SPP
+ ====================
+ 
+ Before using SPP, you need to install DPDK.
+-In this document, briefly describ how to install and setup DPDK.
++In this document, briefly described how to install and setup DPDK.
+ Refer to `DPDK documentation
+ <https://dpdk.org/doc/guides/>`_ for more details.
+ For Linux, see `Getting Started Guide for Linux
+ <http://www.dpdk.org/doc/guides/linux_gsg/index.html>`_ .
+ 
++.. _setup_install_packages:
+ 
+-.. _setup_install_dpdk:
++Required Packages
++-----------------
+ 
+-DPDK
+-----
++Installing packages for DPDK and SPP is almost the on Ubunu and CentOS,
++but names are different for some packages.
+ 
+-Clone repository and compile DPDK in any directory.
++Ubuntu
++~~~~~~
++
++To compile DPDK, required to install following packages.
+ 
+ .. code-block:: console
+ 
+-    $ cd /path/to/any
+-    $ git clone http://dpdk.org/git/dpdk
++    $ sudo apt install libnuma-dev \
++      libarchive-dev \
++      build-essential
+ 
+-To compile DPDK, required to install libnuma-devel library.
++You also need to install linux-headers of your kernel version.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install libnuma-dev
++    $ sudo apt install linux-headers-$(uname -r)
+ 
+-Python3 and pip3 are also required if not installed.
++Some of secondary processes depend on external libraries and you failed to
++compile SPP without them.
++
++SPP provides libpcap-based PMD for dumping packet to a file or retrieve
++it from the file.
++``spp_nfv`` and ``spp_pcap`` use ``libpcap-dev`` for packet capture.
++``spp_pcap`` uses ``liblz4-dev`` and ``liblz4-tool`` to compress PCAP file.
+ 
+ .. code-block:: console
+ 
+-    # Python3
+-    $ sudo apt install python3 \
+-      python3-pip
++   $ sudo apt install libpcap-dev \
++     liblz4-dev \
++     liblz4-tool
+ 
+-SPP provides ``requirements.txt`` for installing required packages of Python3.
+-You might fail to run ``pip3`` without sudo on some environments.
++``text2pcap`` is also required for creating pcap file which
++is included in ``wireshark``.
+ 
+ .. code-block:: console
+ 
+-    $ pip3 install -r requirements.txt
++    $ sudo apt install wireshark
+ 
+-For some environments, ``pip3`` might install packages under your home
+-directory ``$HOME/.local/bin`` and you should add it to ``$PATH`` environment
+-variable.
++
++CentOS
++~~~~~~
++
++Before installing packages for DPDK, you should add
++`IUS Community repositories
++<https://ius.io/GettingStarted/>`_
++with yum command.
++
++.. code-block:: console
++
++    $ sudo yum install https://centos7.iuscommunity.org/ius-release.rpm
++
++To compile DPDK, required to install following packages.
++
++.. code-block:: console
++
++    $ sudo yum install numactl-devel \
++      libarchive-devel \
++      kernel-headers \
++      kernel-devel
+ 
+ Some of secondary processes depend on external libraries and you failed to
+ compile SPP without them.
+@@ -59,19 +89,55 @@ SPP provides libpcap-based PMD for dumping packet to a file or retrieve
+ it from the file.
+ ``spp_nfv`` and ``spp_pcap`` use ``libpcap-dev`` for packet capture.
+ ``spp_pcap`` uses ``liblz4-dev`` and ``liblz4-tool`` to compress PCAP file.
++``text2pcap`` is also required for creating pcap file which is included in ``wireshark``.
+ 
+ .. code-block:: console
+ 
+    $ sudo apt install libpcap-dev \
+-     liblz4-dev \
+-     liblz4-tool
++     libpcap \
++     libpcap-devel \
++     lz4 \
++     lz4-devel \
++     wireshark \
++     wireshark-devel \
++     libX11-devel
+ 
+-``text2pcap`` is also required for creating pcap file which
+-is included in ``wireshark``.
++
++.. _setup_install_dpdk:
++
++DPDK
++----
++
++Clone repository and compile DPDK in any directory.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install wireshark
++    $ cd /path/to/any
++    $ git clone http://dpdk.org/git/dpdk
++
++Installing on Ubuntu and CentOS are almost the same, but packages are
++different.
++
++PCAP is disabled by default in DPDK configuration.
++``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` defined in
++config file ``common_base`` should be changed to ``y`` to enable PCAP.
++
++.. code-block:: console
++
++    # dpdk/config/common_base
++    CONFIG_RTE_LIBRTE_PMD_PCAP=y
++    ...
++    CONFIG_RTE_PORT_PCAP=y
++
++Compile DPDK with target environment.
++
++.. code-block:: console
++
++    $ cd dpdk
++    $ export RTE_SDK=$(pwd)
++    $ export RTE_TARGET=x86_64-native-linuxapp-gcc  # depends on your env
++    $ make install T=$RTE_TARGET
++
+ 
+ PCAP is disabled by default in DPDK configuration.
+ ``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` defined in
+@@ -94,6 +160,38 @@ Compile DPDK with target environment.
+     $ make install T=$RTE_TARGET
+ 
+ 
++Pyhton
++------
++
++Python3 and pip3 are also required if not installed.
++
++.. code-block:: console
++
++    # Ubuntu
++    $ sudo apt install python3 \
++      python3-pip
++
++For CentOS, you need to specify minor version of python3.
++Here is an example of installing python3.6.
++
++.. code-block:: console
++
++    # CentOS
++    $ sudo yum install python36 \
++      python36-pip
++
++SPP provides ``requirements.txt`` for installing required packages of Python3.
++You might fail to run ``pip3`` without sudo on some environments.
++
++.. code-block:: console
++
++    $ pip3 install -r requirements.txt
++
++For some environments, ``pip3`` might install packages under your home
++directory ``$HOME/.local/bin`` and you should add it to ``$PATH`` environment
++variable.
++
++
+ .. _setup_install_spp:
+ 
+ SPP
+@@ -261,7 +359,7 @@ for more details.
+ Build Documentation
+ -------------------
+ 
+-This documentation is able to be biult as HTML and PDF formats from make
++This documentation is able to be built as HTML and PDF formats from make
+ command. Before compiling the documentation, you need to install some of
+ packages required to compile.
+ 
+@@ -269,17 +367,24 @@ For HTML documentation, install sphinx and additional theme.
+ 
+ .. code-block:: console
+ 
+-    $ pip install sphinx \
++    $ pip3 install sphinx \
+       sphinx-rtd-theme
+ 
+ For PDF, inkscape and latex packages are required.
+ 
+ .. code-block:: console
+ 
++    # Ubuntu
+     $ sudo apt install inkscape \
+       texlive-latex-extra \
+       texlive-latex-recommended
+ 
++.. code-block:: console
++
++    # CentOS
++    $ sudo yum install inkscape \
++      texlive-latex
++
+ You might also need to install ``latexmk`` in addition to if you use
+ Ubuntu 18.04 LTS.
+ 
+@@ -311,3 +416,7 @@ You can also compile both of HTML and PDF documentations with ``doc`` or
+     $ make doc
+     # or
+     $ make doc-all
++
++.. note::
++
++    For CentOS, compilation PDF document is not supported.
+diff --git a/docs/guides/gsg/setup.rst b/docs/guides/gsg/setup.rst
+index 73767da..c0ccfd4 100644
+--- a/docs/guides/gsg/setup.rst
++++ b/docs/guides/gsg/setup.rst
+@@ -8,57 +8,78 @@
+ Setup
+ =====
+ 
+-This documentation is described for Ubuntu 16.04 and later.
++This documentation is described for following distributions.
+ 
++- Ubuntu 16.04 and 18.04
++- CentOS 7.6
+ 
+ .. _gsg_reserve_hugep:
+ 
+ Reserving Hugepages
+ -------------------
+ 
+-Hugepages must be enabled for running DPDK with high performance.
+-Hugepage support is required to reserve large amount size of pages,
++Hugepages should be enabled for running DPDK application.
++Hugepage support is to reserve large amount size of pages,
+ 2MB or 1GB per page, to less TLB (Translation Lookaside Buffers) and
+ to reduce cache miss.
+ Less TLB means that it reduce the time for translating virtual address
+ to physical.
+ 
+-Hugepage reservation might be different for 2MB or 1GB.
++How to configure reserving hugepages is different between 2MB or 1GB.
++In general, 1GB is better for getting high performance,
++but 2MB is easier for configuration than 1GB.
+ 
+-For 1GB page, hugepage setting must be activated while booting system.
+-It must be defined in boot loader configuration, usually is
++1GB Hugepage
++~~~~~~~~~~~~
++
++For 1GB page, hugepage setting is activated while booting system.
++It must be defined in boot loader configuration, usually it is
+ ``/etc/default/grub``.
+-Add an entry to define pagesize and the number of pages.
+-Here is an example. ``hugepagesz`` is for the size and ``hugepages``
+-is for the number of pages.
++Add an entry of configuration of the size and the number of pages.
+ 
++Here is an example for Ubuntu, but almost the same as CentOS. The point is
++that ``hugepagesz`` is for the size and ``hugepages`` is for the number of
++pages.
+ You can also configure isolcpus for performance tuning as described in
+ :ref:`Performance Optimizing<gsg_performance_opt>`.
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     # /etc/default/grub
+     GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=8"
+ 
++For Ubuntu, you should run ``update-grub`` for updating
++``/boot/grub/grub.cfg`` after editing to update grub's
++config file, or this configuration is not activated.
++
++.. code-block:: console
++
++    $ sudo update-grub
++    Generating grub configuration file ...
++
++For CentOS7, you use ``grub2-mkconfig`` instead of ``update-grub``.
++In this case, you should give the output file with ``-o`` option.
++The output path might be different, so you should find your correct
++``grub.cfg`` by yourself.
++
++.. code-block:: console
++
++    $ sudo grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
++
+ .. note::
+ 
+-    1GB hugepages might not be supported in your machine. It depends on
+-    that CPUs support 1GB pages or not. You can check it by referring
+-    ``/proc/cpuinfo``. If it is supported, you can find ``pdpe1gb`` in
+-    the ``flags`` attribute.
++    1GB hugepages might possibly not be supported on your hardware.
++    It depends on that CPUs support 1GB pages or not. You can check it
++    by referring ``/proc/cpuinfo``. If it is supported, you can find
++    ``pdpe1gb`` in the ``flags`` attribute.
+ 
+     .. code-block:: console
+ 
+         $ cat /proc/cpuinfo | grep pdpe1gb
+         flags           : fpu vme ... pdpe1gb ...
+ 
+-You should run ``update-grub`` after editing to update grub's config file,
+-or this configuration is not activated.
+-
+-.. code-block:: console
+-
+-   $ sudo update-grub
+-   Generating grub configuration file ...
++2MB Hugepage
++~~~~~~~~~~~~
+ 
+ For 2MB page, you can activate hugepages while booting or at anytime
+ after system is booted.
+@@ -88,14 +109,14 @@ point in ``/etc/fstab``, or after booted.
+ The mount point for 2MB or 1GB can be made permanent accross reboot.
+ For 2MB, it is no need to declare the size of hugepages explicity.
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     # /etc/fstab
+     nodev /mnt/huge hugetlbfs defaults 0 0
+ 
+ For 1GB, the size of hugepage must be specified.
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     # /etc/fstab
+     nodev /mnt/huge_1GB hugetlbfs pagesize=1GB 0 0
+@@ -134,37 +155,46 @@ You can check the value as following.
+     $ sysctl -n kernel.randomize_va_space
+ 
+ 
+-Vhost Client Mode
+------------------
++Using Virtual Machine
++---------------------
+ 
+-SPP secondary process supports ``--vhost-client`` option for using vhost port.
+-In vhost client mode, qemu creates socket file instead of secondary process.
+-It means that you can launch a VM before secondary process create vhost port.
++SPP provides vhost interface for inter VM communication.
++You can use any of hypervisors, but this document describes usecases of
++qemu and libvirt.
+ 
+-.. note::
++Server mode v.s. Client mode
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+-    Vhost client mode is supported by qemu 2.7 or later.
++For using vhost, vhost port should be created before VM is launched in
++server mode, or SPP is launched in client mode to be able to create
++vhost port after VM is launched.
+ 
++Client mode is optional and supported in qemu 2.7 or later.
++For using this mode, launch secondary process with ``--vhost-client``.
++Qemu creates socket file instead of secondary process.
++It means that you can launch a VM before secondary process create vhost port.
+ 
+-Using Libvirt
+--------------
++Libvirt
++~~~~~~~
+ 
+ If you use libvirt for managing virtual machines, you might need some
+ additional configurations.
+ 
+-Uncomment user and group in ``/etc/libvirt/qemu.conf``.
++To have access to resources with your account, update and
++activate user and group parameters in ``/etc/libvirt/qemu.conf``.
++Here is an example.
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     # /etc/libvirt/qemu.conf
+ 
+     user = "root"
+     group = "root"
+ 
+-To use hugepages with libvirt, change ``KVM_HUGEPAGES`` from 0 to 1
++For using hugepages with libvirt, change ``KVM_HUGEPAGES`` from 0 to 1
+ in ``/etc/default/qemu-kvm``.
+ 
+-.. code-block:: console
++.. code-block:: none
+ 
+     # /etc/default/qemu-kvm
+ 
+-- 
+2.17.1
+
+
+
