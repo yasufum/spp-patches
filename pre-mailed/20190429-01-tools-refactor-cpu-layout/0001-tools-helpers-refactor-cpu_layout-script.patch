@@ -1,0 +1,104 @@
+From 4d519eadadec4318687d38e94f676a64a6564934 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 19 Apr 2019 17:15:51 +0900
+Subject: [PATCH] tools/helpers: refactor cpu_layout script
+
+Update cpu_layout.py to comply with pep3.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ tools/helpers/cpu_layout.py | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/tools/helpers/cpu_layout.py b/tools/helpers/cpu_layout.py
+index 58a2bd6..bf86583 100755
+--- a/tools/helpers/cpu_layout.py
++++ b/tools/helpers/cpu_layout.py
+@@ -7,41 +7,40 @@
+ from __future__ import print_function
+ import argparse
+ import json
+-import sys
++
+ try:
+     xrange  # Python 2
+ except NameError:
+     xrange = range  # Python 3
+ 
+-base_path = "/sys/devices/system/cpu"
++BASE_PATH = "/sys/devices/system/cpu"
+ 
+ 
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Show CPU layout")
+-
+     parser.add_argument(
+-            "--json", action="store_true",
+-            help="Output in JSON format")
++        "--json", action="store_true",
++        help="Output in JSON format")
+     return parser.parse_args()
+ 
+ 
+ def get_max_cpus():
+-    fd = open("{}/kernel_max".format(base_path))
++    fd = open("{}/kernel_max".format(BASE_PATH))
+     max_cpus = int(fd.read())
+     fd.close()
+     return max_cpus
+ 
+ 
+ def get_resource_info(max_cpus):
+-    """Return a set of sockets, cores and core_map as a tuple."""
++    """Return a set of sockets, cores and core_map as tuple."""
+     sockets = []
+     cores = []
+     core_map = {}
+ 
+     for cpu in xrange(max_cpus + 1):
+         try:
+-            topo_path = "{}/cpu{}/topology".format(base_path, cpu)
++            topo_path = "{}/cpu{}/topology".format(BASE_PATH, cpu)
+ 
+             # Get physical core ID.
+             fd = open("{}/core_id".format(topo_path))
+@@ -72,10 +71,10 @@ def get_resource_info(max_cpus):
+ 
+ 
+ def print_header(cores, sockets):
+-    print(format("=" * (47 + len(base_path))))
++    print(format("=" * (47 + len(BASE_PATH))))
+     print("Core and Socket Information (as reported by '{}')".format(
+-        base_path))
+-    print("{}\n".format("=" * (47 + len(base_path))))
++        BASE_PATH))
++    print("{}\n".format("=" * (47 + len(BASE_PATH))))
+     print("cores = ", cores)
+     print("sockets = ", sockets)
+     print("")
+@@ -92,7 +91,7 @@ def print_body(cores, sockets, core_map):
+     output = " ".ljust(max_core_id_len + len('Core '))
+     for s in sockets:
+         output += " Socket %s" % str(s).ljust(
+-                max_core_map_len - len('Socket '))
++            max_core_map_len - len('Socket '))
+     print(output)
+ 
+     output = " ".ljust(max_core_id_len + len('Core '))
+@@ -115,10 +114,10 @@ def core_map_to_json(core_map):
+     cpu_layout = []
+     cpu_sockets = {}
+     for (s, c), cpus in core_map.items():
+-        if not (s in cpu_sockets):
++        if not s in cpu_sockets:
+             cpu_sockets[s] = {}
+             cpu_sockets[s]["cores"] = []
+-        cpu_sockets[s]["cores"].append({"core_id": c, "cpus": cpus})
++        cpu_sockets[s]["cores"].append({"core_id": c, "lcores": cpus})
+ 
+     for sid, val in cpu_sockets.items():
+         cpu_layout.append({"socket_id": sid, "cores": val["cores"]})
+-- 
+2.17.1
+
