@@ -1,0 +1,146 @@
+From 5964ccf74ac2a78f2b36f07b42c80034fbefda47 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 21 Apr 2019 14:33:36 +0900
+Subject: [PATCH] bin: add SPP launcher scripts
+
+SPP is mult-process application, so primary process should be launched
+before other processes. In addition, spp-ctl should be launched before
+primary. Users should keep in mind the order of launching processes,
+but make a mistake sometimes.
+
+This update is to add launcher scripts in `bin/` for SPP. Users can
+configure options defined in `bin/env.sh` and launch spp-ctl,
+spp_primary and SPP CLI from `bin/start.sh`.
+
+    $ bin/start.sh
+
+In general, spp_primary has a port while launching and is failed to
+launch if there are no ports. In this case, you need to add a vdev
+and it supports `PRI_VHOST_IDS` in `bin/env.sh` which defines a list
+of IDS of vhost devices attached to spp_primary. You should keep in mind
+the total number of ports is the same as ports you have as
+`PRI_PORTMASK`.
+
+You can find log files of all of processes launched from this
+`start.sh` in `spp/log` directory.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ bin/env.sh     | 19 +++++++++++++++++++
+ bin/spp_pri.sh | 41 +++++++++++++++++++++++++++++++++++++++++
+ bin/start.sh   | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+)
+ create mode 100644 bin/env.sh
+ create mode 100644 bin/spp_pri.sh
+ create mode 100755 bin/start.sh
+
+diff --git a/bin/env.sh b/bin/env.sh
+new file mode 100644
+index 0000000..915c093
+--- /dev/null
++++ b/bin/env.sh
+@@ -0,0 +1,19 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++SPP_HOST_IP=127.0.0.1
++SPP_HUGEPAGES=/dev/hugepages
++
++# spp_primary options
++LOGLEVEL=7  # change to 8 if you refer debug messages.
++PRI_CORE_LIST=0  # required one lcore usually.
++PRI_MEM=1024
++PRI_MEMCHAN=4  # change for your memory channels.
++NUM_RINGS=8
++PRI_PORTMASK=0x03  # total num of ports of spp_primary.
++#PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
++
++# You do not need to change usually.
++# Log files created in 'spp/log/'.
++SPP_CTL_LOG=spp_ctl.log
++PRI_LOG=spp_primary.log
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+new file mode 100644
+index 0000000..2f45b83
+--- /dev/null
++++ b/bin/spp_pri.sh
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++# Activate for debugging
++#set -x
++
++SPP_PRI_VHOST=""
++
++function clean_sock_files() {
++    # clean /tmp/sock*
++    sudo rm -f /tmp/sock*
++}
++
++# Add vdevs if no physical ports.
++function setup_vdevs() {
++    if [ ${PRI_VHOST_IDS} ]; then
++        for id in ${PRI_VHOST_IDS[@]}; do
++            SPP_SOCK="/tmp/sock${id}"
++            SPP_PRI_VHOST="${SPP_PRI_VHOST} --vdev eth_vhost${id},iface=${SPP_SOCK}"
++        done
++    fi
++}
++
++# Launch spp_primary.
++function spp_pri() {
++    SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
++    sudo ${SPP_PRI_BIN} \
++        -l ${PRI_CORE_LIST} \
++        -n ${PRI_MEMCHAN} \
++        --socket-mem ${PRI_MEM} \
++        --huge-dir ${SPP_HUGEPAGES} \
++        --proc-type primary \
++        --base-virtaddr 0x100000000 \
++        --log-level ${LOGLEVEL} \
++        ${SPP_PRI_VHOST} \
++        -- \
++        -p ${PRI_PORTMASK} \
++        -n ${NUM_RINGS} \
++        -s ${SPP_HOST_IP}:5555 \
++        > ${SPP_DIR}/log/${PRI_LOG} 2>&1 &
++}
+diff --git a/bin/start.sh b/bin/start.sh
+new file mode 100755
+index 0000000..6a6f304
+--- /dev/null
++++ b/bin/start.sh
+@@ -0,0 +1,29 @@
++#!/bin/bash
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++# This script is for launching spp-ctl, spp_primary and SPP CLI.
++# You can launch secondaries from SPP CLI by using `pri; launch ...`.
++
++# Activate for debugging
++#set -x
++
++SPP_DIR=$(cd $(dirname $0); pwd)/..
++
++# import vars and functions
++. ${SPP_DIR}/bin/env.sh
++
++echo "Start spp-ctl"
++python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
++    > ${SPP_DIR}/log/${SPP_CTL_LOG} 2>&1 &
++
++echo "Start spp_primary"
++. ${SPP_DIR}/bin/spp_pri.sh
++clean_sock_files  # remove /tmp/sock* as initialization
++setup_vdevs  # you use vdevs if you have no phy ports
++spp_pri  # launch spp_primary
++
++echo "Waiting for spp-ctl is ready ..."
++sleep 1
++
++python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP}
+-- 
+2.17.1
+
