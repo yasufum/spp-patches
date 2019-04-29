@@ -1,0 +1,20 @@
+From 76d2214ea00e13b590ed1fa7b87e969d8771fd69 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 21 Apr 2019 12:30:42 +0900
+Subject: [PATCH 2/2] controller: change file mode of SPP CLI
+
+Executable file should not be included in `src` directory, or warned
+while checking with `devtools/checkpatches.sh` of DPDK.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ mode change 100755 => 100644 src/spp.py
+
+diff --git a/src/spp.py b/src/spp.py
+old mode 100755
+new mode 100644
+-- 
+2.17.1
+

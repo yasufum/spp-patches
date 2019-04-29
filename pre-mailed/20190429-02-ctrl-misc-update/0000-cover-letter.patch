@@ -1,0 +1,26 @@
+From 76d2214ea00e13b590ed1fa7b87e969d8771fd69 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 30 Apr 2019 07:38:37 +0900
+Subject: [PATCH 0/2] Fix misc issues of python scripts
+
+* As PyYAML has changed to require load() specify `Loader` option
+  explicitly or show warning message, add this option to the method
+  calling.
+
+* Putting executable file in `src` directory is not recommended, but
+  `src/spp.py` is as remained as executable. This update is change file
+  mode.
+
+Yasufumi Ogawa (2):
+  controller: fix warning for pyyaml loader
+  controller: change file mode of SPP CLI
+
+ src/controller/commands/topo.py | 2 +-
+ src/controller/shell.py         | 3 ++-
+ src/spp.py                      | 0
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+ mode change 100755 => 100644 src/spp.py
+
+-- 
+2.17.1
+

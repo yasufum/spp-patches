@@ -1,0 +1,44 @@
+From e67ab1c67dc47acb74112afbd3b3f332d2037cc7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 21 Apr 2019 10:53:53 +0900
+Subject: [PATCH 1/2] controller: fix warning for pyyaml loader
+
+Using `yaml.load` without loader has deprecated. This update is to add
+loader `FullLoader` to the method call for fixing warning.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/topo.py | 2 +-
+ src/controller/shell.py         | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/controller/commands/topo.py b/src/controller/commands/topo.py
+index e8afa4a..3b24c1a 100644
+--- a/src/controller/commands/topo.py
++++ b/src/controller/commands/topo.py
+@@ -375,7 +375,7 @@ class SppTopo(object):
+         stat = stat.replace("\x00", "")
+         stat = stat.replace("'", "")
+ 
+-        stat_obj = yaml.load(stat)
++        stat_obj = yaml.load(stat, Loader=yaml.FullLoader)
+         res = {}
+         res['sec_id'] = sec_id
+         res['status'] = stat_obj['status']
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index e3f1ff8..057f70a 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -28,7 +28,8 @@ class Shell(cmd.Cmd, object):
+     try:
+         config_file = "{}/config/default.yml".format(
+                 os.path.dirname(__file__))
+-        cli_config = yaml.load(open(config_file))
++        cli_config = yaml.load(open(config_file),
++                Loader=yaml.FullLoader)
+     except IOError as e:
+         print('Error: no config file found!')
+         print(e)
+-- 
+2.17.1
+
