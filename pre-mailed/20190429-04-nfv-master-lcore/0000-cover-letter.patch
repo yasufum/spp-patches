@@ -1,0 +1,23 @@
+From 8405ea43c5a870d8a9c4d1fb8b386c97da03f077 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 30 Apr 2019 07:37:56 +0900
+Subject: [PATCH 0/2] Get spp_nfv's master lcore ID in status
+
+To know which one is master lcore is required for considering core
+assignment if master is shared among mulit processes. In SPP, master
+lcore is not used for a worker thread and can be shared among other
+processes to reduce the number of occupied cores.
+
+This update is to add master lcore ID in response of status command.
+
+Yasufumi Ogawa (2):
+  spp_nfv: add master lcore in status msg
+  controller: update paring lcores for master
+
+ src/controller/commands/nfv.py | 15 +++++++++++----
+ src/nfv/nfv_status.c           |  2 ++
+ 2 files changed, 13 insertions(+), 4 deletions(-)
+
+-- 
+2.17.1
+
