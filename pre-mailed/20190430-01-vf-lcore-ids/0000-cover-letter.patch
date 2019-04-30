@@ -1,0 +1,26 @@
+From b45286dcf13952a2a16bde0f8e157db6ae6b293e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 1 May 2019 03:17:21 +0900
+Subject: [PATCH 0/5] Show lcores in status of spp_vf and siblings
+
+This series of patches is to show lcore IDs in the response of status
+command as spp_nfv.
+
+Yasufumi Ogawa (5):
+  spp_vf/common: add lcore IDs in status message
+  controller: add paring lcore IDs for vf and mirror
+  spp-ctl: add master lcore entry for SPP CLI
+  spp_pcap: add lcore IDs in status message
+  controller: add parsing lcore IDs for spp_pcap
+
+ src/controller/commands/mirror.py | 14 +++++++++++
+ src/controller/commands/pcap.py   | 19 +++++++++++++--
+ src/controller/commands/vf.py     | 15 ++++++++++--
+ src/pcap/command_proc.c           | 11 +++++++++
+ src/spp-ctl/spp_webapi.py         |  1 +
+ src/vf/common/command_proc.c      | 39 +++++++++++++++++++++++++++++++
+ 6 files changed, 95 insertions(+), 4 deletions(-)
+
+-- 
+2.17.1
+

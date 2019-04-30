@@ -1,0 +1,28 @@
+From 337a8c263de640d3b17a613effa2b26c0c7a5802 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 1 May 2019 02:32:35 +0900
+Subject: [PATCH 3/5] spp-ctl: add master lcore entry for SPP CLI
+
+To show master lcore ID in the result of status command, add
+`master-lcore` entry in the message sent to SPP CLI.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/spp-ctl/spp_webapi.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 39530dd..3ad34d0 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -173,6 +173,7 @@ class V1VFCommon(object):
+         for key in ["phy", "vhost", "ring"]:
+             for idx in info[key]:
+                 vf["ports"].append(key + ":" + str(idx))
++        vf["master-lcore"] = info["master-lcore"]
+         vf["components"] = info["core"]
+         if "classifier_table" in info:
+             vf["classifier_table"] = info["classifier_table"]
+-- 
+2.17.1
+
