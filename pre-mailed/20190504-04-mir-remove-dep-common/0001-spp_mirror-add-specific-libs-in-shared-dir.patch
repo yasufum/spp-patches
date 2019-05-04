@@ -1,0 +1,62 @@
+From 1b0bc7171447574deadb46252ad8d638a0297028 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 5 May 2019 02:32:50 +0900
+Subject: [PATCH 1/2] spp_mirror: add specific libs in shared dir
+
+This patch is same as previous oen for spp_vf.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/mirror_deps.h     | 40 +++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 src/shared/secondary/spp_worker_th/mirror_deps.h
+
+diff --git a/src/shared/secondary/spp_worker_th/mirror_deps.h b/src/shared/secondary/spp_worker_th/mirror_deps.h
+new file mode 100644
+index 0000000..31d64b7
+--- /dev/null
++++ b/src/shared/secondary/spp_worker_th/mirror_deps.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef __SPP_WORKER_TH_MIRROR_DEPS_H__
++#define __SPP_WORKER_TH_MIRROR_DEPS_H__
++
++#include "spp_proc.h"
++
++/**
++ * Update Mirror info
++ *
++ * @param component
++ *  The pointer to struct spp_component_info.@n
++ *  The data for updating the internal data of mirror.
++ *
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
++ */
++int spp_mirror_update(struct spp_component_info *component);
++
++/**
++ * Mirror get component status
++ *
++ * @param lcore_id
++ *  The logical core ID for forwarder and merger.
++ * @param id
++ *  The unique component ID.
++ * @param params
++ *  The pointer to struct spp_iterate_core_params.@n
++ *  Detailed data of mirror status.
++ *
++ * @retval SPP_RET_OK succeeded.
++ * @retval SPP_RET_NG failed.
++ */
++int spp_mirror_get_component_status(
++		unsigned int lcore_id, int id,
++		struct spp_iterate_core_params *params);
++
++#endif  /* __SPP_WORKER_TH_MIRROR_DEPS_H__ */
+-- 
+2.17.1
+

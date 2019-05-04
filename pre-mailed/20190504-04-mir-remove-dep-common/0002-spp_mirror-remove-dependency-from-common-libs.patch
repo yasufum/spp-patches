@@ -1,0 +1,113 @@
+From e39201b1bdc2381251cec2136cbed0d2adb2a318 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 5 May 2019 02:34:50 +0900
+Subject: [PATCH 2/2] spp_mirror: remove dependency from common libs
+
+Some of functions in `src/shared` depend on spp_mirror's functions
+under `src/mirror`. This update is to resolve the dependency for cleanup
+codes for maintainance.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/spp_mirror.c                       | 11 +++----
+ src/mirror/spp_mirror.h                       | 32 ++-----------------
+ src/shared/secondary/spp_worker_th/spp_proc.c |  5 +--
+ 3 files changed, 8 insertions(+), 40 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 4835d55..ba0919a 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -9,14 +9,13 @@
+ #include <rte_common.h>
+ #include <rte_cycles.h>
+ 
++#include "shared/secondary/spp_worker_th/mirror_deps.h"
+ #include "shared/common.h"
+ #include "shared/secondary/utils.h"
+-
+-#include "spp_proc.h"
+-#include "spp_mirror.h"
+-#include "command_proc.h"
+-#include "command_dec.h"
+-#include "spp_port.h"
++#include "shared/secondary/spp_worker_th/command_proc.h"
++#include "shared/secondary/spp_worker_th/command_dec.h"
++#include "shared/secondary/spp_worker_th/spp_proc.h"
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_MIRROR RTE_LOGTYPE_USER1
+diff --git a/src/mirror/spp_mirror.h b/src/mirror/spp_mirror.h
+index eec2537..17fa522 100644
+--- a/src/mirror/spp_mirror.h
++++ b/src/mirror/spp_mirror.h
+@@ -5,6 +5,8 @@
+ #ifndef __SPP_MIRROR_H__
+ #define __SPP_MIRROR_H__
+ 
++#include "shared/secondary/spp_worker_th/spp_proc.h"
++
+ /**
+  * @file
+  * SPP_MIRROR main
+@@ -21,34 +23,4 @@
+  *  I do not do the deletion of the VLAN tag, the addition.
+  */
+ 
+-/**
+- * Update Mirror info
+- *
+- * @param component
+- *  The pointer to struct spp_component_info.@n
+- *  The data for updating the internal data of mirror.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_mirror_update(struct spp_component_info *component);
+-
+-/**
+- * Mirror get component status
+- *
+- * @param lcore_id
+- *  The logical core ID for forwarder and merger.
+- * @param id
+- *  The unique component ID.
+- * @param params
+- *  The pointer to struct spp_iterate_core_params.@n
+- *  Detailed data of mirror status.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_mirror_get_component_status(
+-		unsigned int lcore_id, int id,
+-		struct spp_iterate_core_params *params);
+-
+ #endif /* __SPP_MIRROR_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 8009527..1d39e89 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -12,16 +12,13 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "vf_deps.h"
++#include "mirror_deps.h"
+ #include "spp_proc.h"
+ #include "spp_port.h"
+ 
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+-#ifdef SPP_MIRROR_MODULE
+-#include "../../mirror/spp_mirror.h"
+-#endif /* SPP_MIRROR_MODULE */
+-
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+ /* Manage data to addoress */
+-- 
+2.17.1
+

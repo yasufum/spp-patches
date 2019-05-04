@@ -1,0 +1,23 @@
+From e39201b1bdc2381251cec2136cbed0d2adb2a318 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 5 May 2019 02:53:26 +0900
+Subject: [PATCH 0/2] Remove depencency of spp_mirror from common lib
+
+As spp_vf, some of common libs depend on spp_mirror specific libs under
+`src/mirror` and it should be cleaned. This series of patches is to
+update spp_mirror and common functions for the purpose.
+
+Yasufumi Ogawa (2):
+  spp_mirror: add specific libs in shared dir
+  spp_mirror: remove dependency from common libs
+
+ src/mirror/spp_mirror.c                       | 11 +++--
+ src/mirror/spp_mirror.h                       | 32 +--------------
+ .../secondary/spp_worker_th/mirror_deps.h     | 40 +++++++++++++++++++
+ src/shared/secondary/spp_worker_th/spp_proc.c |  5 +--
+ 4 files changed, 48 insertions(+), 40 deletions(-)
+ create mode 100644 src/shared/secondary/spp_worker_th/mirror_deps.h
+
+-- 
+2.17.1
+
