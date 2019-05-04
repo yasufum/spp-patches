@@ -1,0 +1,51 @@
+From 65e27dc147612778a0e94a78d564212758f9190b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 4 May 2019 00:24:38 +0900
+Subject: [PATCH 2/4] spp_vf: update makefile for moved common files
+
+As common files are moved from `src/vf/common`, update include and
+source paths.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/Makefile | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index 03c668f..a8b60fb 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -11,19 +11,26 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ # binary name
+ APP = spp_vf
+ 
++SPP_WKT_DIR = ../shared/secondary/spp_worker_th
++
+ # all source are stored in SRCS-y
+ SRCS-y := spp_vf.c classifier_mac.c spp_forward.c
+-SRCS-y += common/string_buffer.c common/ringlatencystats.c common/spp_port.c
+-SRCS-y += common/command_conn.c common/command_dec.c common/command_proc.c
+-SRCS-y += common/spp_proc.c
++SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
++SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
++SRCS-y += $(SPP_WKT_DIR)/spp_port.c
++SRCS-y += $(SPP_WKT_DIR)/command_conn.c
++SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/command_proc.c
++SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += ../shared/common.c
+ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../
+-CFLAGS += -I$(SRCDIR)/common
+ CFLAGS += -DSPP_VF_MODULE
++
++# Optional Settings
+ #CFLAGS += -DSPP_DEMONIZE
+ #CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
+ 
+-- 
+2.17.1
+

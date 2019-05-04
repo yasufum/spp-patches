@@ -1,0 +1,65 @@
+From 811f1d662ad19b5740775611557d7d171c6dce65 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 4 May 2019 07:03:02 +0900
+Subject: [PATCH 0/4] Move vf/common to under shared directory
+
+Spp_vf and its siblings use common libs `srv/vf/common`. However, it is
+not good design considering conventions, but should be placed
+`src/shared` in the case of SPP. In addition, codes of spp_vf siblings
+are not neat and tightly coupled and many of functions in `vf/common`
+uses spp_vf siblings and vice versa.
+
+This series of patches is to fix the issue by moving common libs to
+under `src/shared` and remove dependency referring from common
+functions to each of siblings. However, some of functions used specific
+sibling, which are not common actually, are still remained as
+`src/shared/secondary/spp_worker_th/vf_deps.h`
+because of too much complexity of data structure and functions. This
+`vf_deps.h` is released in next update, but will be removed from shared
+dir in a future update for refactoring.
+
+Yasufumi Ogawa (4):
+  spp_vf: move common of vf siblings to shared dir
+  spp_vf: update makefile for moved common files
+  spp_vf: update include paths
+  spp_vf: remove dependency from common functions
+
+ .../secondary/spp_worker_th}/command_conn.c   |   0
+ .../secondary/spp_worker_th}/command_conn.h   |   0
+ .../secondary/spp_worker_th}/command_dec.c    |   0
+ .../secondary/spp_worker_th}/command_dec.h    |   0
+ .../secondary/spp_worker_th}/command_proc.c   |  37 +++++-
+ .../secondary/spp_worker_th}/command_proc.h   |   0
+ .../spp_worker_th}/ringlatencystats.c         |   0
+ .../spp_worker_th}/ringlatencystats.h         |   0
+ .../secondary/spp_worker_th}/spp_port.c       |   0
+ .../secondary/spp_worker_th}/spp_port.h       |   0
+ .../secondary/spp_worker_th}/spp_proc.c       |   5 +-
+ .../secondary/spp_worker_th}/spp_proc.h       |   0
+ .../secondary/spp_worker_th}/string_buffer.c  |   0
+ .../secondary/spp_worker_th}/string_buffer.h  |   0
+ src/vf/Makefile                               |  15 ++-
+ src/vf/classifier_mac.c                       | 121 +-----------------
+ src/vf/classifier_mac.h                       |  32 -----
+ src/vf/spp_forward.c                          |   3 +-
+ src/vf/spp_forward.h                          |  30 -----
+ src/vf/spp_vf.c                               |   8 +-
+ 20 files changed, 54 insertions(+), 197 deletions(-)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.c (98%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.c (99%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.h (100%)
+
+-- 
+2.17.1
+

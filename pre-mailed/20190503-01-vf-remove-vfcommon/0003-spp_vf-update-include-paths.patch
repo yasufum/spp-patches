@@ -1,0 +1,72 @@
+From d59c8b75401b607c8566bc562de44b324dc4251b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 4 May 2019 00:29:17 +0900
+Subject: [PATCH 3/4] spp_vf: update include paths
+
+As common files are moved from `src/vf/common`, upadte include paths in
+following files.
+
+* src/vf/classifier_mac.c
+* src/vf/spp_forward.c
+* src/vf/spp_vf.c
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/vf/classifier_mac.c | 2 +-
+ src/vf/spp_forward.c    | 2 +-
+ src/vf/spp_vf.c         | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index f8f06fa..f599731 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -22,8 +22,8 @@
+ #include <rte_launch.h>
+ #include <rte_hash.h>
+ 
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "spp_vf.h"
+-#include "spp_port.h"
+ #include "classifier_mac.h"
+ 
+ #define RTE_LOGTYPE_SPP_CLASSIFIER_MAC RTE_LOGTYPE_USER1
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index 2dbb171..8aaee80 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -4,8 +4,8 @@
+ 
+ #include <rte_cycles.h>
+ 
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "spp_vf.h"
+-#include "spp_port.h"
+ #include "spp_forward.h"
+ 
+ #define RTE_LOGTYPE_FORWARD RTE_LOGTYPE_USER1
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index aa60bec..b2acb58 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -6,13 +6,13 @@
+ #include <arpa/inet.h>
+ #include <getopt.h>
+ 
+-#include "spp_proc.h"
++#include "shared/secondary/spp_worker_th/spp_proc.h"
+ #include "spp_vf.h"
+ #include "classifier_mac.h"
+ #include "spp_forward.h"
+-#include "command_proc.h"
+-#include "command_dec.h"
+-#include "spp_port.h"
++#include "shared/secondary/spp_worker_th/command_proc.h"
++#include "shared/secondary/spp_worker_th/command_dec.h"
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+ /* Declare global variables */
+ /* Logical core ID for main process */
+-- 
+2.17.1
+

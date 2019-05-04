@@ -1,0 +1,102 @@
+From 6e32ed87f55435f2d9941f8b627540bb21c993e8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 3 May 2019 14:38:20 +0900
+Subject: [PATCH 1/4] spp_vf: move common of vf siblings to shared dir
+
+Common files of spp_vf and its siblings are located under
+`src/vf/common/`, but it should be moved under `src/shared/` because
+it is used by processes other than spp_vf. This update is to move
+common files to `src/shared/secondary/spp_worker_th`. The directory name
+means common files of worker threads of SPP secondary processes.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/{vf/common => shared/secondary/spp_worker_th}/command_conn.c  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_conn.h  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_dec.c   | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_dec.h   | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_proc.c  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_proc.h  | 0
+ .../common => shared/secondary/spp_worker_th}/ringlatencystats.c  | 0
+ .../common => shared/secondary/spp_worker_th}/ringlatencystats.h  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_port.c      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_port.h      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.c      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.h      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.c | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.h | 0
+ 14 files changed, 0 insertions(+), 0 deletions(-)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.h (100%)
+
+diff --git a/src/vf/common/command_conn.c b/src/shared/secondary/spp_worker_th/command_conn.c
+similarity index 100%
+rename from src/vf/common/command_conn.c
+rename to src/shared/secondary/spp_worker_th/command_conn.c
+diff --git a/src/vf/common/command_conn.h b/src/shared/secondary/spp_worker_th/command_conn.h
+similarity index 100%
+rename from src/vf/common/command_conn.h
+rename to src/shared/secondary/spp_worker_th/command_conn.h
+diff --git a/src/vf/common/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+similarity index 100%
+rename from src/vf/common/command_dec.c
+rename to src/shared/secondary/spp_worker_th/command_dec.c
+diff --git a/src/vf/common/command_dec.h b/src/shared/secondary/spp_worker_th/command_dec.h
+similarity index 100%
+rename from src/vf/common/command_dec.h
+rename to src/shared/secondary/spp_worker_th/command_dec.h
+diff --git a/src/vf/common/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+similarity index 100%
+rename from src/vf/common/command_proc.c
+rename to src/shared/secondary/spp_worker_th/command_proc.c
+diff --git a/src/vf/common/command_proc.h b/src/shared/secondary/spp_worker_th/command_proc.h
+similarity index 100%
+rename from src/vf/common/command_proc.h
+rename to src/shared/secondary/spp_worker_th/command_proc.h
+diff --git a/src/vf/common/ringlatencystats.c b/src/shared/secondary/spp_worker_th/ringlatencystats.c
+similarity index 100%
+rename from src/vf/common/ringlatencystats.c
+rename to src/shared/secondary/spp_worker_th/ringlatencystats.c
+diff --git a/src/vf/common/ringlatencystats.h b/src/shared/secondary/spp_worker_th/ringlatencystats.h
+similarity index 100%
+rename from src/vf/common/ringlatencystats.h
+rename to src/shared/secondary/spp_worker_th/ringlatencystats.h
+diff --git a/src/vf/common/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+similarity index 100%
+rename from src/vf/common/spp_port.c
+rename to src/shared/secondary/spp_worker_th/spp_port.c
+diff --git a/src/vf/common/spp_port.h b/src/shared/secondary/spp_worker_th/spp_port.h
+similarity index 100%
+rename from src/vf/common/spp_port.h
+rename to src/shared/secondary/spp_worker_th/spp_port.h
+diff --git a/src/vf/common/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+similarity index 100%
+rename from src/vf/common/spp_proc.c
+rename to src/shared/secondary/spp_worker_th/spp_proc.c
+diff --git a/src/vf/common/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+similarity index 100%
+rename from src/vf/common/spp_proc.h
+rename to src/shared/secondary/spp_worker_th/spp_proc.h
+diff --git a/src/vf/common/string_buffer.c b/src/shared/secondary/spp_worker_th/string_buffer.c
+similarity index 100%
+rename from src/vf/common/string_buffer.c
+rename to src/shared/secondary/spp_worker_th/string_buffer.c
+diff --git a/src/vf/common/string_buffer.h b/src/shared/secondary/spp_worker_th/string_buffer.h
+similarity index 100%
+rename from src/vf/common/string_buffer.h
+rename to src/shared/secondary/spp_worker_th/string_buffer.h
+-- 
+2.17.1
+
