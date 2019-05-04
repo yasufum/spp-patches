@@ -1,0 +1,20 @@
+From caf356ed0d7853ad56c8886503ea71b30479bc6e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 5 May 2019 03:27:13 +0900
+Subject: [PATCH 0/2] Update spp_pcap for removed vf/common
+
+As `vf/common` is removed and common libs are moved to under
+`src/shared`, update spp_pcap for the changes.
+
+Yasufumi Ogawa (2):
+  spp_pcap: update makefile for moved common files
+  spp_pcap: update include paths
+
+ src/pcap/Makefile       | 12 +++++++++---
+ src/pcap/command_proc.c |  4 ++--
+ src/pcap/spp_pcap.c     |  2 +-
+ 3 files changed, 12 insertions(+), 6 deletions(-)
+
+-- 
+2.17.1
+

@@ -1,0 +1,49 @@
+From caf356ed0d7853ad56c8886503ea71b30479bc6e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 5 May 2019 03:23:49 +0900
+Subject: [PATCH 2/2] spp_pcap: update include paths
+
+As Makefile is updated for `vf/common` is removed, update include paths
+of following files.
+
+* src/pcap/command_proc.c
+* src/pcap/spp_pcap.c
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/command_proc.c | 4 ++--
+ src/pcap/spp_pcap.c     | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/pcap/command_proc.c b/src/pcap/command_proc.c
+index 96218c0..2987cad 100644
+--- a/src/pcap/command_proc.c
++++ b/src/pcap/command_proc.c
+@@ -7,9 +7,9 @@
+ 
+ #include <rte_log.h>
+ 
+-#include "string_buffer.h"
++#include "shared/secondary/spp_worker_th/string_buffer.h"
+ #include "spp_pcap.h"
+-#include "command_conn.h"
++#include "shared/secondary/spp_worker_th/command_conn.h"
+ #include "command_dec.h"
+ #include "command_proc.h"
+ 
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 1fb6c32..f8f3f79 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -17,7 +17,7 @@
+ #include "spp_pcap.h"
+ #include "command_proc.h"
+ #include "command_dec.h"
+-#include "spp_port.h"
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_SPP_PCAP RTE_LOGTYPE_USER2
+-- 
+2.17.1
+
