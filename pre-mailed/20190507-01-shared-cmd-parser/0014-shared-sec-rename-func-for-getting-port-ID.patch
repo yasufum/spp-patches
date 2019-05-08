@@ -1,0 +1,48 @@
+From 37905a162609be8f94db118b94130f9468ed6935 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 8 May 2019 07:49:35 +0900
+Subject: [PATCH 14/17] shared/sec: rename func for getting port ID
+
+Function `spp_get_dpdk_port()` is for getting consistent port ID
+provided by rte ethdev library, and intended to be used to convert SPP's
+resource UID such as `phy:0` to consistent ID. The name of function is
+not describing the purpose exactly. This update is to rename it to
+`sppwk_get_ethdev_port_id()` for refactoring.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/command_proc.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 34bfe82..9c8672b 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -594,9 +594,12 @@ spp_iterate_classifier_table(
+ }
+ #endif /* SPP_VF_MODULE */
+ 
+-/* Get port number assigned by DPDK lib */
++/**
++ * Get consistent port ID of rte ethdev from resource UID such as `phy:0`.
++ * It returns a port ID, or error code if it's failed to.
++ */
+ static int
+-spp_get_dpdk_port(enum port_type iface_type, int iface_no)
++sppwk_get_ethdev_port_id(enum port_type iface_type, int iface_no)
+ {
+ 	struct iface_info *iface_info = NULL;
+ 
+@@ -1097,7 +1100,8 @@ append_port_block(char **output, const struct sppwk_port_idx *port,
+ 		return SPP_RET_NG;
+ 
+ 	ret = append_vlan_block("vlan", &tmp_buff,
+-			spp_get_dpdk_port(port->iface_type, port->iface_no),
++			sppwk_get_ethdev_port_id(
++				port->iface_type, port->iface_no),
+ 			rxtx);
+ 	if (unlikely(ret < SPP_RET_OK))
+ 		return SPP_RET_NG;
+-- 
+2.17.1
+

@@ -1,0 +1,29 @@
+From fd1a6f81d590fcb7196f8442ffe915cad27cbdd2 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 6 May 2019 20:27:33 +0900
+Subject: [PATCH 07/17] shared/sec: remove unused define of cmd parser
+
+Remove define SPP_CMD_UNUSE because it is not referred from anywhere.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 99346cb..965c99b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -24,9 +24,6 @@
+ /* Size of string buffer of detailed message including null char. */
+ #define SPPWK_VAL_BUFSZ 111
+ 
+-/* Fix value for 'unused' status. */
+-#define SPP_CMD_UNUSE "unuse"
+-
+ /**
+  * Error code for diagnosis and notifying the reason. It starts from 1 because
+  * 0 is used for succeeded and not appropriate for error in general.
+-- 
+2.17.1
+

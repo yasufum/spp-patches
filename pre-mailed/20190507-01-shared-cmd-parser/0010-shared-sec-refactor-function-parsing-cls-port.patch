@@ -1,0 +1,95 @@
+From 2fe1fc56bab0e4b9a8076c1aec10b10fab603ceb Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 7 May 2019 18:57:16 +0900
+Subject: [PATCH 10/17] shared/sec: refactor function parsing cls port
+
+Change function name `decode_classifier_port_value` to `parse_cls_port`
+to be more simple and specific. The names of argument are also
+refactored for the reason.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/command_dec.c     | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 4316b10..9904ad8 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -701,11 +701,11 @@ decode_classifier_vid_value(void *output, const char *arg_val,
+ 
+ /* decoding procedure of port for classifier_table command */
+ static int
+-decode_classifier_port_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_cls_port(void *cls_cmd_attr, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	struct sppwk_cls_cmd_attr *classifier_table = output;
++	struct sppwk_cls_cmd_attr *cls_attr = cls_cmd_attr;
+ 	struct spp_port_index tmp_port;
+ 	int64_t mac_addr = 0;
+ 
+@@ -720,10 +720,10 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (classifier_table->type == SPP_CLASSIFIER_TYPE_MAC)
+-		classifier_table->vid = ETH_VLAN_ID_MAX;
++	if (cls_attr->type == SPP_CLASSIFIER_TYPE_MAC)
++		cls_attr->vid = ETH_VLAN_ID_MAX;
+ 
+-	if (unlikely(classifier_table->wk_action == SPPWK_ACT_ADD)) {
++	if (unlikely(cls_attr->wk_action == SPPWK_ACT_ADD)) {
+ 		if (!spp_check_classid_used_port(ETH_VLAN_ID_MAX, 0,
+ 				tmp_port.iface_type, tmp_port.iface_no)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Port in used. "
+@@ -731,12 +731,12 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+-	} else if (unlikely(classifier_table->wk_action == SPPWK_ACT_DEL)) {
+-		mac_addr = spp_change_mac_str_to_int64(classifier_table->mac);
++	} else if (unlikely(cls_attr->wk_action == SPPWK_ACT_DEL)) {
++		mac_addr = spp_change_mac_str_to_int64(cls_attr->mac);
+ 		if (mac_addr < 0)
+ 			return SPP_RET_NG;
+ 
+-		if (!spp_check_classid_used_port(classifier_table->vid,
++		if (!spp_check_classid_used_port(cls_attr->vid,
+ 				(uint64_t)mac_addr,
+ 				tmp_port.iface_type, tmp_port.iface_no)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Port in used. "
+@@ -746,8 +746,8 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 		}
+ 	}
+ 
+-	classifier_table->port.iface_type = tmp_port.iface_type;
+-	classifier_table->port.iface_no   = tmp_port.iface_no;
++	cls_attr->port.iface_type = tmp_port.iface_type;
++	cls_attr->port.iface_no   = tmp_port.iface_no;
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -787,7 +787,7 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table),
+-			.func = decode_classifier_port_value
++			.func = parse_cls_port
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+ 	},
+@@ -820,7 +820,7 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table),
+-			.func = decode_classifier_port_value
++			.func = parse_cls_port
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+ 	},
+-- 
+2.17.1
+

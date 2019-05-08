@@ -1,0 +1,117 @@
+From d3d048fc77c2ac3b582ec7853b4597b14ecca79f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 8 May 2019 05:24:39 +0900
+Subject: [PATCH 12/17] shared/sec: change struct of comp command
+
+For refactoring, change the name of struct `spp_command_component` to
+`sppwk_cmd_comp`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   |  4 ++--
+ src/shared/secondary/spp_worker_th/command_dec.c  | 14 +++++++-------
+ src/shared/secondary/spp_worker_th/command_proc.c |  8 ++++----
+ 3 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 04f9f75..669f199 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -87,7 +87,7 @@ struct sppwk_cmd_flush {
+ };
+ 
+ /* `component` command parameters. */
+-struct spp_command_component {
++struct sppwk_cmd_comp {
+ 	enum sppwk_action wk_action;  /**< start or stop */
+ 	char name[SPPWK_NAME_BUFSZ];  /**< component name */
+ 	unsigned int core;  /**< logical core number */
+@@ -109,7 +109,7 @@ struct spp_command {
+ 	union {  /**< command descriptors */
+ 		struct sppwk_cls_cmd_attr cls_table;
+ 		struct sppwk_cmd_flush flush;
+-		struct spp_command_component component;
++		struct sppwk_cmd_comp comp;
+ 		struct spp_command_port port;
+ 	} spec;
+ };
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 9904ad8..493d9cb 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -372,7 +372,7 @@ decode_component_name_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	struct spp_command_component *component = output;
++	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+ 	if (component->wk_action == SPPWK_ACT_START) {
+@@ -393,7 +393,7 @@ static int
+ decode_component_core_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+-	struct spp_command_component *component = output;
++	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+ 	if (component->wk_action != SPPWK_ACT_START)
+@@ -408,7 +408,7 @@ decode_component_type_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	enum spp_component_type comp_type;
+-	struct spp_command_component *component = output;
++	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* "stop" has no type parameter. */
+ 	if (component->wk_action != SPPWK_ACT_START)
+@@ -831,22 +831,22 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.component.wk_action),
++					spec.comp.wk_action),
+ 			.func = decode_component_action_value
+ 		},
+ 		{
+ 			.name = "component name",
+-			.offset = offsetof(struct spp_command, spec.component),
++			.offset = offsetof(struct spp_command, spec.comp),
+ 			.func = decode_component_name_value
+ 		},
+ 		{
+ 			.name = "core",
+-			.offset = offsetof(struct spp_command, spec.component),
++			.offset = offsetof(struct spp_command, spec.comp),
+ 			.func = decode_component_core_value
+ 		},
+ 		{
+ 			.name = "component type",
+-			.offset = offsetof(struct spp_command, spec.component),
++			.offset = offsetof(struct spp_command, spec.comp),
+ 			.func = decode_component_type_value
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index c5b1273..3e8c52a 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -760,10 +760,10 @@ execute_command(const struct spp_command *command)
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute component command.\n");
+ 		ret = spp_update_component(
+-				command->spec.component.wk_action,
+-				command->spec.component.name,
+-				command->spec.component.core,
+-				command->spec.component.type);
++				command->spec.comp.wk_action,
++				command->spec.comp.name,
++				command->spec.comp.core,
++				command->spec.comp.type);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 					"Execute flush.\n");
+-- 
+2.17.1
+

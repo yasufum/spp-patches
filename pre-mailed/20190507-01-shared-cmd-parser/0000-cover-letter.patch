@@ -1,0 +1,61 @@
+From 12dd98d0b82396fced5b05166a7e7e24fede12ba Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 8 May 2019 10:35:32 +0900
+Subject: [PATCH 00/17] Refactor command parser of SPP worker
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hi,
+
+The name of group of spp_vf siblings is changed to SPP worker for
+removing ambiguity by which prefix of libs of SPP worker `spp_` is
+renamed to `sppwk_`. For this update, each of common functions and vars
+should also be renamed.
+
+This series of patches is the first step of the update.
+
+* Rename `command_dec.h` to `cmd_parser.h`.
+* Update all of functions and vars in `cmd_parser.h` to apply with the
+  above changes.
+
+Regards,
+Yasufumi
+
+Yasufumi Ogawa (17):
+  shared/sec: change prefix of common functions
+  shared/sec: refactor parse error code
+  shared/sec: revice cmd parser of SPP worker
+  shared/sec: refactor branching for cmd action
+  shared/sec: rename define starts from SPP_CMD_MAX
+  shared/sec: rename define of buffer size for cmds
+  shared/sec: remove unused define of cmd parser
+  shared/sec: refactor commad type of SPP worker
+  shared/sec: change struct of classier table attrs
+  shared/sec: refactor function parsing cls port
+  shared/sec: rename func of flush command
+  shared/sec: change struct of comp command
+  shared/sec: revise port info of SPP worker
+  shared/sec: rename func for getting port ID
+  shared/sec: rename dpdk_port attr
+  shared/sec: rename struct for command request
+  shared/sec: rename func for parsing request
+
+ src/mirror/spp_mirror.c                       |  30 +--
+ .../secondary/spp_worker_th/cmd_parser.h      | 157 ++++++++++++
+ .../secondary/spp_worker_th/command_dec.c     | 233 +++++++++---------
+ .../secondary/spp_worker_th/command_dec.h     | 201 ---------------
+ .../secondary/spp_worker_th/command_proc.c    | 168 ++++++-------
+ src/shared/secondary/spp_worker_th/spp_port.c |   6 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c |  80 +++---
+ src/shared/secondary/spp_worker_th/spp_proc.h |  72 +++---
+ src/vf/classifier_mac.c                       |  42 ++--
+ src/vf/spp_forward.c                          |  26 +-
+ src/vf/spp_vf.c                               |   2 +-
+ 11 files changed, 487 insertions(+), 530 deletions(-)
+ create mode 100644 src/shared/secondary/spp_worker_th/cmd_parser.h
+ delete mode 100644 src/shared/secondary/spp_worker_th/command_dec.h
+
+-- 
+2.17.1
+

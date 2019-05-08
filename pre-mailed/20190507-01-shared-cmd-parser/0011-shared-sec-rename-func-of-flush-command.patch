@@ -1,0 +1,38 @@
+From f096e13304f7604f8e4d0da571aaddbefd925852 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 7 May 2019 19:21:01 +0900
+Subject: [PATCH 11/17] shared/sec: rename func of flush command
+
+For refactoring, rename function `spp_command_flush` to
+`sppwk_cmd_flush`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index db60499..04f9f75 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -82,7 +82,7 @@ struct sppwk_cls_cmd_attr {
+ };
+ 
+ /* `flush` command specific parameters. */
+-struct spp_command_flush {
++struct sppwk_cmd_flush {
+ 	/* nothing specific */
+ };
+ 
+@@ -108,7 +108,7 @@ struct spp_command {
+ 
+ 	union {  /**< command descriptors */
+ 		struct sppwk_cls_cmd_attr cls_table;
+-		struct spp_command_flush flush;
++		struct sppwk_cmd_flush flush;
+ 		struct spp_command_component component;
+ 		struct spp_command_port port;
+ 	} spec;
+-- 
+2.17.1
+

@@ -1,0 +1,141 @@
+From 30392f1ad324c2c29b80af097bc3cbf11ce7e0e8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 7 May 2019 17:25:20 +0900
+Subject: [PATCH 09/17] shared/sec: change struct of classier table attrs
+
+For refactoring, change `spp_command_classifier_table` to
+`sppwk_cls_cmd_attr`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.h      |  4 ++--
+ .../secondary/spp_worker_th/command_dec.c     | 20 +++++++++----------
+ .../secondary/spp_worker_th/command_proc.c    | 10 +++++-----
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 5922654..db60499 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -73,7 +73,7 @@ enum sppwk_cmd_type {
+ };
+ 
+ /* `classifier_table` command specific parameters. */
+-struct spp_command_classifier_table {
++struct sppwk_cls_cmd_attr {
+ 	enum sppwk_action wk_action;  /**< add or del */
+ 	enum spp_classifier_type type;  /**< currently only for mac */
+ 	int vid;  /**< VLAN ID  */
+@@ -107,7 +107,7 @@ struct spp_command {
+ 	enum sppwk_cmd_type type; /**< command type */
+ 
+ 	union {  /**< command descriptors */
+-		struct spp_command_classifier_table classifier_table;
++		struct sppwk_cls_cmd_attr cls_table;
+ 		struct spp_command_flush flush;
+ 		struct spp_command_component component;
+ 		struct spp_command_port port;
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 7a65269..4316b10 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -705,7 +705,7 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	struct spp_command_classifier_table *classifier_table = output;
++	struct sppwk_cls_cmd_attr *classifier_table = output;
+ 	struct spp_port_index tmp_port;
+ 	int64_t mac_addr = 0;
+ 
+@@ -768,25 +768,25 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.wk_action),
++					spec.cls_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.type),
++					spec.cls_table.type),
+ 			.func = decode_classifier_type_value
+ 		},
+ 		{
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.mac),
++					spec.cls_table.mac),
+ 			.func = decode_mac_addr_str_value
+ 		},
+ 		{
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table),
++					spec.cls_table),
+ 			.func = decode_classifier_port_value
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+@@ -795,31 +795,31 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.wk_action),
++					spec.cls_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.type),
++					spec.cls_table.type),
+ 			.func = decode_classifier_type_value
+ 		},
+ 		{
+ 			.name = "vlan id",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.vid),
++					spec.cls_table.vid),
+ 			.func = decode_classifier_vid_value
+ 		},
+ 		{
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.mac),
++					spec.cls_table.mac),
+ 			.func = decode_mac_addr_str_value
+ 		},
+ 		{
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table),
++					spec.cls_table),
+ 			.func = decode_classifier_port_value
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 5ae34d0..c5b1273 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -744,11 +744,11 @@ execute_command(const struct spp_command *command)
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute classifier_table command.\n");
+ 		ret = spp_update_classifier_table(
+-				command->spec.classifier_table.wk_action,
+-				command->spec.classifier_table.type,
+-				command->spec.classifier_table.vid,
+-				command->spec.classifier_table.mac,
+-				&command->spec.classifier_table.port);
++				command->spec.cls_table.wk_action,
++				command->spec.cls_table.type,
++				command->spec.cls_table.vid,
++				command->spec.cls_table.mac,
++				&command->spec.cls_table.port);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 					"Execute flush.\n");
+-- 
+2.17.1
+

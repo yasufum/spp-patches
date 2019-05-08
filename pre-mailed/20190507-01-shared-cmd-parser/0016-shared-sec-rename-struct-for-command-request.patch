@@ -1,0 +1,161 @@
+From 21b1b198b7f4df2993fac7e878cf875692fcd1b7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 8 May 2019 08:48:02 +0900
+Subject: [PATCH 16/17] shared/sec: rename struct for command request
+
+This update is to rename struct `spp_command_request` to `sppwk_cmd_req`
+to be more simple and specific.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   |  6 +++---
+ src/shared/secondary/spp_worker_th/command_dec.c  | 14 +++++++-------
+ src/shared/secondary/spp_worker_th/command_proc.c | 10 +++++-----
+ 3 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 3d31833..e42bc14 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -116,7 +116,7 @@ struct spp_command {
+ };
+ 
+ /* Request parameters. */
+-struct spp_command_request {
++struct sppwk_cmd_req {
+ 	int num_command;  /**< Number of accepted commands */
+ 	int num_valid_command;  /**< Number of executed commands */
+ 	struct spp_command commands[SPPWK_MAX_CMDS];  /**< list of cmds */
+@@ -137,7 +137,7 @@ struct sppwk_parse_err_msg {
+  * Parse request of non null terminated string.
+  *
+  * @param request
+- *  The pointer to struct spp_command_request.@n
++ *  The pointer to struct sppwk_cmd_req.@n
+  *  The result value of decoding the command message.
+  * @param request_str
+  *  The pointer to requested command message.
+@@ -150,7 +150,7 @@ struct sppwk_parse_err_msg {
+  * @retval SPP_RET_OK succeeded.
+  * @retval !0 failed.
+  */
+-int spp_command_decode_request(struct spp_command_request *request,
++int spp_command_decode_request(struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg);
+ 
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 918c2a2..80fd6d2 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -893,7 +893,7 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 
+ /* Validate given command. */
+ static int
+-decode_command_parameter_component(struct spp_command_request *request,
++decode_command_parameter_component(struct sppwk_cmd_req *request,
+ 				int argc, char *argv[],
+ 				struct sppwk_parse_err_msg *wk_err_msg,
+ 				int maxargc __attribute__ ((unused)))
+@@ -921,7 +921,7 @@ decode_command_parameter_component(struct spp_command_request *request,
+ 
+ /* Validate given command for clssfier_table. */
+ static int
+-decode_command_parameter_cls_table(struct spp_command_request *request,
++decode_command_parameter_cls_table(struct sppwk_cmd_req *request,
+ 				int argc, char *argv[],
+ 				struct sppwk_parse_err_msg *wk_err_msg,
+ 				int maxargc)
+@@ -934,7 +934,7 @@ decode_command_parameter_cls_table(struct spp_command_request *request,
+ }
+ /* Validate given command for clssfier_table of vlan. */
+ static int
+-decode_command_parameter_cls_table_vlan(struct spp_command_request *request,
++decode_command_parameter_cls_table_vlan(struct sppwk_cmd_req *request,
+ 				int argc, char *argv[],
+ 				struct sppwk_parse_err_msg *wk_err_msg,
+ 				int maxargc __attribute__ ((unused)))
+@@ -961,7 +961,7 @@ decode_command_parameter_cls_table_vlan(struct spp_command_request *request,
+ 
+ /* Validate given command for port. */
+ static int
+-decode_command_parameter_port(struct spp_command_request *request,
++decode_command_parameter_port(struct sppwk_cmd_req *request,
+ 				int argc, char *argv[],
+ 				struct sppwk_parse_err_msg *wk_err_msg,
+ 				int maxargc)
+@@ -997,7 +997,7 @@ struct decode_command_list {
+ 	const char *name;       /* Command name */
+ 	int   param_min;        /* Min number of parameters */
+ 	int   param_max;        /* Max number of parameters */
+-	int (*func)(struct spp_command_request *request, int argc,
++	int (*func)(struct sppwk_cmd_req *request, int argc,
+ 			char *argv[], struct sppwk_parse_err_msg *wk_err_msg,
+ 			int maxargc);
+ 				/* Pointer to command handling function */
+@@ -1023,7 +1023,7 @@ static struct decode_command_list command_list[] = {
+ 
+ /* Parse command line parameters. */
+ static int
+-decode_command_in_list(struct spp_command_request *request,
++decode_command_in_list(struct sppwk_cmd_req *request,
+ 			const char *request_str,
+ 			struct sppwk_parse_err_msg *wk_err_msg)
+ {
+@@ -1083,7 +1083,7 @@ decode_command_in_list(struct spp_command_request *request,
+ /* decode request from no-null-terminated string */
+ int
+ spp_command_decode_request(
+-		struct spp_command_request *request,
++		struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg)
+ {
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 6ce407e..1cb43e7 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -866,7 +866,7 @@ set_command_results(struct command_result *result,
+ /* set decode error to command result */
+ static void
+ set_decode_error_to_results(struct command_result *results,
+-		const struct spp_command_request *request,
++		const struct sppwk_cmd_req *request,
+ 		const struct sppwk_parse_err_msg *err_msg)
+ {
+ 	int i;
+@@ -1501,7 +1501,7 @@ append_info_value(const char *name, char **output)
+ /* send response for decode error */
+ static void
+ send_decode_error_response(int *sock,
+-		const struct spp_command_request *request,
++		const struct sppwk_cmd_req *request,
+ 		struct command_result *command_results)
+ {
+ 	int ret = SPP_RET_NG;
+@@ -1560,7 +1560,7 @@ send_decode_error_response(int *sock,
+ /* send response for command execution result */
+ static void
+ send_command_result_response(int *sock,
+-		const struct spp_command_request *request,
++		const struct sppwk_cmd_req *request,
+ 		struct command_result *command_results)
+ {
+ 	int ret = SPP_RET_NG;
+@@ -1647,11 +1647,11 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	int ret = SPP_RET_NG;
+ 	int i;
+ 
+-	struct spp_command_request request;
++	struct sppwk_cmd_req request;
+ 	struct sppwk_parse_err_msg wk_err_msg;
+ 	struct command_result command_results[SPPWK_MAX_CMDS];
+ 
+-	memset(&request, 0, sizeof(struct spp_command_request));
++	memset(&request, 0, sizeof(struct sppwk_cmd_req));
+ 	memset(&wk_err_msg, 0, sizeof(struct sppwk_parse_err_msg));
+ 	memset(command_results, 0, sizeof(command_results));
+ 
+-- 
+2.17.1
+

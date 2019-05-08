@@ -1,0 +1,60 @@
+From 12dd98d0b82396fced5b05166a7e7e24fede12ba Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 8 May 2019 10:24:02 +0900
+Subject: [PATCH 17/17] shared/sec: rename func for parsing request
+
+For refactoring, This update is to rename `spp_command_decode_request()`
+to `sppwk_parse_req()` because it is too long and not for decoding.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   | 2 +-
+ src/shared/secondary/spp_worker_th/command_dec.c  | 4 ++--
+ src/shared/secondary/spp_worker_th/command_proc.c | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index e42bc14..785fffe 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -150,7 +150,7 @@ struct sppwk_parse_err_msg {
+  * @retval SPP_RET_OK succeeded.
+  * @retval !0 failed.
+  */
+-int spp_command_decode_request(struct sppwk_cmd_req *request,
++int sppwk_parse_req(struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg);
+ 
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 80fd6d2..723d8c4 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -1080,9 +1080,9 @@ decode_command_in_list(struct sppwk_cmd_req *request,
+ 	return set_string_value_decode_error(wk_err_msg, argv[0], "command");
+ }
+ 
+-/* decode request from no-null-terminated string */
++/* Parse request of non null terminated string. */
+ int
+-spp_command_decode_request(
++sppwk_parse_req(
+ 		struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg)
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 1cb43e7..f345759 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -1660,7 +1660,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 			(int)request_str_len, request_str);
+ 
+ 	/* decode request message */
+-	ret = spp_command_decode_request(
++	ret = sppwk_parse_req(
+ 			&request, request_str, request_str_len, &wk_err_msg);
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		/* send error response */
+-- 
+2.17.1
+

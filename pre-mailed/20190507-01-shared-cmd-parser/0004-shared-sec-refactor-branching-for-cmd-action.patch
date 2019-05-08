@@ -1,0 +1,362 @@
+From 919bbc9845b03ca018ab45b49f04714bd8f09575 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 6 May 2019 19:27:13 +0900
+Subject: [PATCH 04/17] shared/sec: refactor branching for cmd action
+
+For refactor branching of command action which is too redundant to
+understand, change the name of enum `spp_command_action` to
+`sppwk_action` because it is for just SPP worker thread and not for
+all of SPP processes. Prefix of members of the enum is also changed
+from `SPP_CMD_ACTION_` to `SPPWK_ACT_` to be more specific and
+simple to use.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.h      | 19 ++++----
+ .../secondary/spp_worker_th/command_dec.c     | 43 +++++++++----------
+ .../secondary/spp_worker_th/command_proc.c    | 37 ++++++++--------
+ 3 files changed, 47 insertions(+), 52 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 6792b08..ccdf6bb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -46,13 +46,12 @@ enum sppwk_parse_error_code {
+  *   - port            : add, del
+  *   - classifier_table: add, del
+  */
+-/* TODO(yasufum) refactor each name prefix `SPP_CMD_ACTION_`. */
+-enum spp_command_action {
+-	SPP_CMD_ACTION_NONE,  /**< none */
+-	SPP_CMD_ACTION_START, /**< start */
+-	SPP_CMD_ACTION_STOP,  /**< stop */
+-	SPP_CMD_ACTION_ADD,   /**< add */
+-	SPP_CMD_ACTION_DEL,   /**< delete */
++enum sppwk_action {
++	SPPWK_ACT_NONE,  /**< none */
++	SPPWK_ACT_START, /**< start */
++	SPPWK_ACT_STOP,  /**< stop */
++	SPPWK_ACT_ADD,   /**< add */
++	SPPWK_ACT_DEL,   /**< delete */
+ };
+ 
+ /**
+@@ -74,7 +73,7 @@ enum spp_command_type {
+ 
+ /* `classifier_table` command specific parameters. */
+ struct spp_command_classifier_table {
+-	enum spp_command_action action;  /**< add or del */
++	enum sppwk_action wk_action;  /**< add or del */
+ 	enum spp_classifier_type type;  /**< currently only for mac */
+ 	int vid;  /**< VLAN ID  */
+ 	char mac[SPP_CMD_VALUE_BUFSZ];  /**< MAC address  */
+@@ -88,7 +87,7 @@ struct spp_command_flush {
+ 
+ /* `component` command parameters. */
+ struct spp_command_component {
+-	enum spp_command_action action;  /**< start or stop */
++	enum sppwk_action wk_action;  /**< start or stop */
+ 	char name[SPP_CMD_NAME_BUFSZ];  /**< component name */
+ 	unsigned int core;  /**< logical core number */
+ 	enum spp_component_type type;  /**< component type */
+@@ -96,7 +95,7 @@ struct spp_command_component {
+ 
+ /* `port` command parameters. */
+ struct spp_command_port {
+-	enum spp_command_action action;  /**< add or del */
++	enum sppwk_action wk_action;  /**< add or del */
+ 	struct spp_port_index port;  /**< port type and number */
+ 	enum spp_port_rxtx rxtx;  /**< rx or tx identifier */
+ 	char name[SPP_CMD_NAME_BUFSZ];  /**<  component name */
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 77f15c5..f9849bb 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -56,9 +56,9 @@ const char *CLASSIFILER_TYPE_STRINGS[] = {
+ 	/* termination */ "",
+ };
+ 
+-/*
+- * command action type string list
+- * do it same as the order of enum spp_command_action (cmd_parser.h)
++/**
++ * List of command action. The order of items should be same as the order of
++ * enum `sppwk_action` in cmd_parser.h.
+  */
+ const char *COMMAND_ACTION_STRINGS[] = {
+ 	SPP_ACTION_NONE_STR,
+@@ -66,8 +66,7 @@ const char *COMMAND_ACTION_STRINGS[] = {
+ 	SPP_ACTION_STOP_STR,
+ 	SPP_ACTION_ADD_STR,
+ 	SPP_ACTION_DEL_STR,
+-
+-	/* termination */ "",
++	"",  /* termination */
+ };
+ 
+ /*
+@@ -355,8 +354,8 @@ decode_component_action_value(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (unlikely(ret != SPP_CMD_ACTION_START) &&
+-			unlikely(ret != SPP_CMD_ACTION_STOP)) {
++	if (unlikely(ret != SPPWK_ACT_START) &&
++			unlikely(ret != SPPWK_ACT_STOP)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component action. val=%s\n",
+ 				arg_val);
+@@ -376,7 +375,7 @@ decode_component_name_value(void *output, const char *arg_val,
+ 	struct spp_command_component *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+-	if (component->action == SPP_CMD_ACTION_START) {
++	if (component->wk_action == SPPWK_ACT_START) {
+ 		ret = spp_get_component_id(arg_val);
+ 		if (unlikely(ret >= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -397,7 +396,7 @@ decode_component_core_value(void *output, const char *arg_val,
+ 	struct spp_command_component *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+-	if (component->action != SPP_CMD_ACTION_START)
++	if (component->wk_action != SPPWK_ACT_START)
+ 		return SPP_RET_OK;
+ 
+ 	return decode_core_value(&component->core, arg_val);
+@@ -412,7 +411,7 @@ decode_component_type_value(void *output, const char *arg_val,
+ 	struct spp_command_component *component = output;
+ 
+ 	/* "stop" has no type parameter. */
+-	if (component->action != SPP_CMD_ACTION_START)
++	if (component->wk_action != SPPWK_ACT_START)
+ 		return SPP_RET_OK;
+ 
+ 	comp_type = spp_convert_component_type(arg_val);
+@@ -441,8 +440,8 @@ decode_port_action_value(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (unlikely(ret != SPP_CMD_ACTION_ADD) &&
+-			unlikely(ret != SPP_CMD_ACTION_DEL)) {
++	if (unlikely(ret != SPPWK_ACT_ADD) &&
++			unlikely(ret != SPPWK_ACT_DEL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown port action. val=%s\n",
+ 				arg_val);
+@@ -467,7 +466,7 @@ decode_port_port_value(void *output, const char *arg_val, int allow_override)
+ 
+ 	/* add vlantag command check */
+ 	if (allow_override == 0) {
+-		if ((port->action == SPP_CMD_ACTION_ADD) &&
++		if ((port->wk_action == SPPWK_ACT_ADD) &&
+ 				(spp_check_used_port(tmp_port.iface_type,
+ 						tmp_port.iface_no,
+ 						SPP_PORT_RXTX_RX) >= 0) &&
+@@ -502,7 +501,7 @@ decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
+ 
+ 	/* add vlantag command check */
+ 	if (allow_override == 0) {
+-		if ((port->action == SPP_CMD_ACTION_ADD) &&
++		if ((port->wk_action == SPPWK_ACT_ADD) &&
+ 				(spp_check_used_port(port->port.iface_type,
+ 					port->port.iface_no, ret) >= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -656,8 +655,8 @@ decode_classifier_action_value(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (unlikely(ret != SPP_CMD_ACTION_ADD) &&
+-			unlikely(ret != SPP_CMD_ACTION_DEL)) {
++	if (unlikely(ret != SPPWK_ACT_ADD) &&
++			unlikely(ret != SPPWK_ACT_DEL)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port action. val=%s\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+@@ -724,7 +723,7 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 	if (classifier_table->type == SPP_CLASSIFIER_TYPE_MAC)
+ 		classifier_table->vid = ETH_VLAN_ID_MAX;
+ 
+-	if (unlikely(classifier_table->action == SPP_CMD_ACTION_ADD)) {
++	if (unlikely(classifier_table->wk_action == SPPWK_ACT_ADD)) {
+ 		if (!spp_check_classid_used_port(ETH_VLAN_ID_MAX, 0,
+ 				tmp_port.iface_type, tmp_port.iface_no)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC, "Port in used. "
+@@ -732,7 +731,7 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+-	} else if (unlikely(classifier_table->action == SPP_CMD_ACTION_DEL)) {
++	} else if (unlikely(classifier_table->wk_action == SPPWK_ACT_DEL)) {
+ 		mac_addr = spp_change_mac_str_to_int64(classifier_table->mac);
+ 		if (mac_addr < 0)
+ 			return SPP_RET_NG;
+@@ -769,7 +768,7 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.action),
++					spec.classifier_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+@@ -796,7 +795,7 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.action),
++					spec.classifier_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+@@ -832,7 +831,7 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.component.action),
++					spec.component.wk_action),
+ 			.func = decode_component_action_value
+ 		},
+ 		{
+@@ -856,7 +855,7 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.port.action),
++					spec.port.wk_action),
+ 			.func = decode_port_action_value
+ 		},
+ 		{
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 38cc45f..b6d5b4b 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -129,10 +129,10 @@ spp_check_flush_port(enum port_type iface_type, int iface_no)
+ 	return port->dpdk_port >= 0;
+ }
+ 
+-/* update classifier table according to the specified action(add or del). */
++/* Update classifier table with given action, add or del. */
+ static int
+ spp_update_classifier_table(
+-		enum spp_command_action action,
++		enum sppwk_action wk_action,
+ 		enum spp_classifier_type type __attribute__ ((unused)),
+ 		int vid,
+ 		const char *mac_addr_str,
+@@ -166,7 +166,7 @@ spp_update_classifier_table(
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (action == SPP_CMD_ACTION_DEL) {
++	if (wk_action == SPPWK_ACT_DEL) {
+ 		/* Delete */
+ 		if ((port_info->class_id.vlantag.vid != 0) &&
+ 				unlikely(port_info->class_id.vlantag.vid !=
+@@ -188,7 +188,7 @@ spp_update_classifier_table(
+ 		memset(port_info->class_id.mac_addr_str, 0x00,
+ 							SPP_MIN_STR_LEN);
+ 
+-	} else if (action == SPP_CMD_ACTION_ADD) {
++	} else if (wk_action == SPPWK_ACT_ADD) {
+ 		/* Setting */
+ 		if (unlikely(port_info->class_id.vlantag.vid !=
+ 				ETH_VLAN_ID_MAX)) {
+@@ -216,13 +216,10 @@ spp_update_classifier_table(
+ 	return SPP_RET_OK;
+ }
+ 
+-/**
+- * Assign or remove component to/from specified lcore depending
+- * on component action
+- */
++/* Assign worker thread or remove on specified lcore. */
+ static int
+ spp_update_component(
+-		enum spp_command_action action,
++		enum sppwk_action wk_action,
+ 		const char *name,
+ 		unsigned int lcore_id,
+ 		enum spp_component_type type)
+@@ -242,8 +239,8 @@ spp_update_component(
+ 	spp_get_mng_data_addr(NULL, NULL, &comp_info_base, &core_info,
+ 				&change_core, &change_component, NULL);
+ 
+-	switch (action) {
+-	case SPP_CMD_ACTION_START:
++	switch (wk_action) {
++	case SPPWK_ACT_START:
+ 		info = (core_info + lcore_id);
+ 		if (info->status == SPP_CORE_UNUSE) {
+ 			RTE_LOG(ERR, APP, "Core %d is not available because "
+@@ -281,7 +278,7 @@ spp_update_component(
+ 		*(change_component + component_id) = 1;
+ 		break;
+ 
+-	case SPP_CMD_ACTION_STOP:
++	case SPPWK_ACT_STOP:
+ 		component_id = spp_get_component_id(name);
+ 		if (component_id < 0)
+ 			return SPP_RET_OK;
+@@ -367,7 +364,7 @@ check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
+  * appropriate one.
+  */
+ static int
+-spp_update_port(enum spp_command_action action,
++spp_update_port(enum sppwk_action wk_action,
+ 		const struct spp_port_index *port,
+ 		enum spp_port_rxtx rxtx,
+ 		const char *name,
+@@ -403,8 +400,8 @@ spp_update_port(enum spp_command_action action,
+ 		ports = comp_info->tx_ports;
+ 	}
+ 
+-	switch (action) {
+-	case SPP_CMD_ACTION_ADD:
++	switch (wk_action) {
++	case SPPWK_ACT_ADD:
+ 		/* Check if over the maximum num of ports of component. */
+ 		if (check_port_count(comp_info->type, rxtx,
+ 				comp_info->num_rx_port,
+@@ -462,7 +459,7 @@ spp_update_port(enum spp_command_action action,
+ 		ret = SPP_RET_OK;
+ 		break;
+ 
+-	case SPP_CMD_ACTION_DEL:
++	case SPPWK_ACT_DEL:
+ 		for (cnt = 0; cnt < SPP_PORT_ABILITY_MAX; cnt++) {
+ 			if (port_info->ability[cnt].ope ==
+ 					SPP_PORT_ABILITY_OPE_NONE)
+@@ -747,7 +744,7 @@ execute_command(const struct spp_command *command)
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute classifier_table command.\n");
+ 		ret = spp_update_classifier_table(
+-				command->spec.classifier_table.action,
++				command->spec.classifier_table.wk_action,
+ 				command->spec.classifier_table.type,
+ 				command->spec.classifier_table.vid,
+ 				command->spec.classifier_table.mac,
+@@ -763,7 +760,7 @@ execute_command(const struct spp_command *command)
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute component command.\n");
+ 		ret = spp_update_component(
+-				command->spec.component.action,
++				command->spec.component.wk_action,
+ 				command->spec.component.name,
+ 				command->spec.component.core,
+ 				command->spec.component.type);
+@@ -777,9 +774,9 @@ execute_command(const struct spp_command *command)
+ 	case SPP_CMDTYPE_PORT:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute port command. (act = %d)\n",
+-				command->spec.port.action);
++				command->spec.port.wk_action);
+ 		ret = spp_update_port(
+-				command->spec.port.action,
++				command->spec.port.wk_action,
+ 				&command->spec.port.port,
+ 				command->spec.port.rxtx,
+ 				command->spec.port.name,
+-- 
+2.17.1
+
