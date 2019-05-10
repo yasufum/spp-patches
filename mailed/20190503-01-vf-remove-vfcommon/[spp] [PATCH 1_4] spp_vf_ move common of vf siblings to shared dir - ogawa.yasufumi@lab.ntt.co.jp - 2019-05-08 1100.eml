@@ -1,0 +1,163 @@
+X-Account-Key: account3
+X-UIDL: d8139835b338d25c876a0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw101 ([153.138.211.102])
+	by md-bnd-nw106 with LMTP id UJTBMbM40lyHagAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:02:27 +0900
+Received: from md-lpx-nw006 ([153.138.211.102])
+	by md-drt-nw101 with LMTP id qCKaMbM40lx3PwAAZBuwvA
+	; Wed, 08 May 2019 11:02:27 +0900
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-nw006 with LMTP id mFhYL7M40lyvVAAA0AKT/w
+	; Wed, 08 May 2019 11:02:27 +0900
+Received: from mfgw722.ocn.ad.jp (mfgw722.ocn.ad.jp [153.153.63.105])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id B502410004200
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:27 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw722.ocn.ad.jp (Postfix) with ESMTP id 2AC2E9C027A
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:27 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 1EEBB1F28;
+	Wed,  8 May 2019 04:02:26 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 6C1B9DE3
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:02:23 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4822M8K023024;
+ Wed, 8 May 2019 11:02:22 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 54C32EA7096;
+ Wed,  8 May 2019 11:02:22 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 47880EA705C;
+ Wed,  8 May 2019 11:02:22 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:00:03 +0900
+Message-Id: <1557280806-7672-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280806-7672-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280806-7672-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/4] spp_vf: move common of vf siblings to shared dir
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Common files of spp_vf and its siblings are located under
+`src/vf/common/`, but it should be moved under `src/shared/` because
+it is used by processes other than spp_vf. This update is to move
+common files to `src/shared/secondary/spp_worker_th`. The directory name
+means common files of worker threads of SPP secondary processes.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/{vf/common => shared/secondary/spp_worker_th}/command_conn.c  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_conn.h  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_dec.c   | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_dec.h   | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_proc.c  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/command_proc.h  | 0
+ .../common => shared/secondary/spp_worker_th}/ringlatencystats.c  | 0
+ .../common => shared/secondary/spp_worker_th}/ringlatencystats.h  | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_port.c      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_port.h      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.c      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.h      | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.c | 0
+ src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.h | 0
+ 14 files changed, 0 insertions(+), 0 deletions(-)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_conn.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_dec.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/command_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/ringlatencystats.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_port.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/spp_proc.h (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.c (100%)
+ rename src/{vf/common => shared/secondary/spp_worker_th}/string_buffer.h (100%)
+
+diff --git a/src/vf/common/command_conn.c b/src/shared/secondary/spp_worker_th/command_conn.c
+similarity index 100%
+rename from src/vf/common/command_conn.c
+rename to src/shared/secondary/spp_worker_th/command_conn.c
+diff --git a/src/vf/common/command_conn.h b/src/shared/secondary/spp_worker_th/command_conn.h
+similarity index 100%
+rename from src/vf/common/command_conn.h
+rename to src/shared/secondary/spp_worker_th/command_conn.h
+diff --git a/src/vf/common/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+similarity index 100%
+rename from src/vf/common/command_dec.c
+rename to src/shared/secondary/spp_worker_th/command_dec.c
+diff --git a/src/vf/common/command_dec.h b/src/shared/secondary/spp_worker_th/command_dec.h
+similarity index 100%
+rename from src/vf/common/command_dec.h
+rename to src/shared/secondary/spp_worker_th/command_dec.h
+diff --git a/src/vf/common/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+similarity index 100%
+rename from src/vf/common/command_proc.c
+rename to src/shared/secondary/spp_worker_th/command_proc.c
+diff --git a/src/vf/common/command_proc.h b/src/shared/secondary/spp_worker_th/command_proc.h
+similarity index 100%
+rename from src/vf/common/command_proc.h
+rename to src/shared/secondary/spp_worker_th/command_proc.h
+diff --git a/src/vf/common/ringlatencystats.c b/src/shared/secondary/spp_worker_th/ringlatencystats.c
+similarity index 100%
+rename from src/vf/common/ringlatencystats.c
+rename to src/shared/secondary/spp_worker_th/ringlatencystats.c
+diff --git a/src/vf/common/ringlatencystats.h b/src/shared/secondary/spp_worker_th/ringlatencystats.h
+similarity index 100%
+rename from src/vf/common/ringlatencystats.h
+rename to src/shared/secondary/spp_worker_th/ringlatencystats.h
+diff --git a/src/vf/common/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+similarity index 100%
+rename from src/vf/common/spp_port.c
+rename to src/shared/secondary/spp_worker_th/spp_port.c
+diff --git a/src/vf/common/spp_port.h b/src/shared/secondary/spp_worker_th/spp_port.h
+similarity index 100%
+rename from src/vf/common/spp_port.h
+rename to src/shared/secondary/spp_worker_th/spp_port.h
+diff --git a/src/vf/common/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+similarity index 100%
+rename from src/vf/common/spp_proc.c
+rename to src/shared/secondary/spp_worker_th/spp_proc.c
+diff --git a/src/vf/common/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+similarity index 100%
+rename from src/vf/common/spp_proc.h
+rename to src/shared/secondary/spp_worker_th/spp_proc.h
+diff --git a/src/vf/common/string_buffer.c b/src/shared/secondary/spp_worker_th/string_buffer.c
+similarity index 100%
+rename from src/vf/common/string_buffer.c
+rename to src/shared/secondary/spp_worker_th/string_buffer.c
+diff --git a/src/vf/common/string_buffer.h b/src/shared/secondary/spp_worker_th/string_buffer.h
+similarity index 100%
+rename from src/vf/common/string_buffer.h
+rename to src/shared/secondary/spp_worker_th/string_buffer.h
+-- 
+2.17.1
+
+
