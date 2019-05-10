@@ -1,0 +1,205 @@
+X-Account-Key: account3
+X-UIDL: 88f174258038d25cf5960000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.211.103])
+	by md-bnd-nw106 with LMTP id wGHyHYA40lz1lgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:01:36 +0900
+Received: from md-lpx-nw008 ([153.138.211.103])
+	by md-drt-nw102 with LMTP id YMDQHYA40lyIEQAA8iqT2w
+	; Wed, 08 May 2019 11:01:36 +0900
+Received: from md-mta-cb008.ocn.ad.jp ([153.138.211.103])
+	by md-lpx-nw008 with LMTP id sF57G4A40lzlVAAAqFjg7g
+	; Wed, 08 May 2019 11:01:36 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb008.ocn.ad.jp (Postfix) with ESMTP id 8F7571400C036
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:35 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 5B6EB50028D
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:33 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6EDF71F28;
+	Wed,  8 May 2019 04:01:31 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id ECB23A49
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:01:29 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4821ShV022992;
+ Wed, 8 May 2019 11:01:28 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5EB50637FDC;
+ Wed,  8 May 2019 11:01:28 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4099C637FB5;
+ Wed,  8 May 2019 11:01:28 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 10:59:11 +0900
+Message-Id: <1557280751-7516-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] bin: add SPP launcher scripts
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+SPP is mult-process application, so primary process should be launched
+before other processes. In addition, spp-ctl should be launched before
+primary. Users should keep in mind the order of launching processes,
+but make a mistake sometimes.
+
+This update is to add launcher scripts in `bin/` for SPP. Users can
+configure options defined in `bin/env.sh` and launch spp-ctl,
+spp_primary and SPP CLI from `bin/start.sh`.
+
+    $ bin/start.sh
+
+In general, spp_primary has a port while launching and is failed to
+launch if there are no ports. In this case, you need to add a vdev
+and it supports `PRI_VHOST_IDS` in `bin/env.sh` which defines a list
+of IDS of vhost devices attached to spp_primary. You should keep in mind
+the total number of ports is the same as ports you have as
+`PRI_PORTMASK`.
+
+You can find log files of all of processes launched from this
+`start.sh` in `spp/log` directory.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ bin/env.sh     | 19 +++++++++++++++++++
+ bin/spp_pri.sh | 41 +++++++++++++++++++++++++++++++++++++++++
+ bin/start.sh   | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+)
+ create mode 100644 bin/env.sh
+ create mode 100644 bin/spp_pri.sh
+ create mode 100755 bin/start.sh
+
+diff --git a/bin/env.sh b/bin/env.sh
+new file mode 100644
+index 0000000..915c093
+--- /dev/null
++++ b/bin/env.sh
+@@ -0,0 +1,19 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++SPP_HOST_IP=127.0.0.1
++SPP_HUGEPAGES=/dev/hugepages
++
++# spp_primary options
++LOGLEVEL=7  # change to 8 if you refer debug messages.
++PRI_CORE_LIST=0  # required one lcore usually.
++PRI_MEM=1024
++PRI_MEMCHAN=4  # change for your memory channels.
++NUM_RINGS=8
++PRI_PORTMASK=0x03  # total num of ports of spp_primary.
++#PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
++
++# You do not need to change usually.
++# Log files created in 'spp/log/'.
++SPP_CTL_LOG=spp_ctl.log
++PRI_LOG=spp_primary.log
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+new file mode 100644
+index 0000000..2f45b83
+--- /dev/null
++++ b/bin/spp_pri.sh
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++# Activate for debugging
++#set -x
++
++SPP_PRI_VHOST=""
++
++function clean_sock_files() {
++    # clean /tmp/sock*
++    sudo rm -f /tmp/sock*
++}
++
++# Add vdevs if no physical ports.
++function setup_vdevs() {
++    if [ ${PRI_VHOST_IDS} ]; then
++        for id in ${PRI_VHOST_IDS[@]}; do
++            SPP_SOCK="/tmp/sock${id}"
++            SPP_PRI_VHOST="${SPP_PRI_VHOST} --vdev eth_vhost${id},iface=${SPP_SOCK}"
++        done
++    fi
++}
++
++# Launch spp_primary.
++function spp_pri() {
++    SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
++    sudo ${SPP_PRI_BIN} \
++        -l ${PRI_CORE_LIST} \
++        -n ${PRI_MEMCHAN} \
++        --socket-mem ${PRI_MEM} \
++        --huge-dir ${SPP_HUGEPAGES} \
++        --proc-type primary \
++        --base-virtaddr 0x100000000 \
++        --log-level ${LOGLEVEL} \
++        ${SPP_PRI_VHOST} \
++        -- \
++        -p ${PRI_PORTMASK} \
++        -n ${NUM_RINGS} \
++        -s ${SPP_HOST_IP}:5555 \
++        > ${SPP_DIR}/log/${PRI_LOG} 2>&1 &
++}
+diff --git a/bin/start.sh b/bin/start.sh
+new file mode 100755
+index 0000000..6a6f304
+--- /dev/null
++++ b/bin/start.sh
+@@ -0,0 +1,29 @@
++#!/bin/bash
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++# This script is for launching spp-ctl, spp_primary and SPP CLI.
++# You can launch secondaries from SPP CLI by using `pri; launch ...`.
++
++# Activate for debugging
++#set -x
++
++SPP_DIR=$(cd $(dirname $0); pwd)/..
++
++# import vars and functions
++. ${SPP_DIR}/bin/env.sh
++
++echo "Start spp-ctl"
++python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
++    > ${SPP_DIR}/log/${SPP_CTL_LOG} 2>&1 &
++
++echo "Start spp_primary"
++. ${SPP_DIR}/bin/spp_pri.sh
++clean_sock_files  # remove /tmp/sock* as initialization
++setup_vdevs  # you use vdevs if you have no phy ports
++spp_pri  # launch spp_primary
++
++echo "Waiting for spp-ctl is ready ..."
++sleep 1
++
++python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP}
+-- 
+2.17.1
+
+

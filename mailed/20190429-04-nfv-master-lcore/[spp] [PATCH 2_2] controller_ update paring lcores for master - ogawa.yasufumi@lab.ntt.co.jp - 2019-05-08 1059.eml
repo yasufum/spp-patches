@@ -1,0 +1,111 @@
+X-Account-Key: account3
+X-UIDL: c0e2b52e8e38d25ca55e0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.217.135])
+	by md-bnd-nw106 with LMTP id cBueK4440lylXgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:01:50 +0900
+Received: from md-lpx-nw010 ([153.138.217.135])
+	by md-drt-nw102 with LMTP id mB1lK4440lx6FgAA8iqT2w
+	; Wed, 08 May 2019 11:01:50 +0900
+Received: from md-mta-nw008.ocn.ad.jp ([153.138.217.135])
+	by md-lpx-nw010 with LMTP id WN+KKY440lxfCQAAb/ylEw
+	; Wed, 08 May 2019 11:01:50 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw008.ocn.ad.jp (Postfix) with ESMTP id A44323C003005
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:50 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 46EA7A802C6
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:50 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 8CE1B293B;
+	Wed,  8 May 2019 04:01:48 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 4F5A0DE3
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:01:46 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4821jXh023003;
+ Wed, 8 May 2019 11:01:45 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 44015EA407F;
+ Wed,  8 May 2019 11:01:45 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 31F8BEA7089;
+ Wed,  8 May 2019 11:01:45 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 10:59:29 +0900
+Message-Id: <1557280769-7569-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280769-7569-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280769-7569-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] controller: update paring lcores for master
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+As master lcore ID is the response of status command, update parsing
+lcore IDs for this change.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/nfv.py | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index 2613bc2..92d2a3f 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -74,8 +74,15 @@ class SppNfv(object):
+         """
+ 
+         nfv_attr = json_obj
+-        print('- status: %s' % nfv_attr['status'])
+-        print('- lcores: %s' % nfv_attr['lcores'])
++        print('- status: {}'.format(nfv_attr['status']))
++        print('- lcore_ids:')
++        print('  - master: {}'.format(nfv_attr['master-lcore']))
++        # remove master and show remained
++        nfv_attr['lcores'].remove(nfv_attr['master-lcore'])
++        if len(nfv_attr['lcores']) > 1:
++            print('  - slaves: {}'.format(nfv_attr['lcores']))
++        else:
++            print('  - slave: {}'.format(nfv_attr['lcores'][0]))
+         print('- ports:')
+         for port in nfv_attr['ports']:
+             dst = None
+@@ -84,9 +91,9 @@ class SppNfv(object):
+                     dst = patch['dst']
+ 
+             if dst is None:
+-                print('  - %s' % port)
++                print('  - {}'.format(port))
+             else:
+-                print('  - %s -> %s' % (port, dst))
++                print('  - {} -> {}'.format(port, dst))
+ 
+     def get_ports(self):
+         """Get all of ports as a list."""
+-- 
+2.17.1
+
+

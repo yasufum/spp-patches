@@ -1,0 +1,105 @@
+X-Account-Key: account3
+X-UIDL: 2814a0057638d25c754b0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw101 ([153.138.217.136])
+	by md-bnd-nw106 with LMTP id cLWqAnY40lx1SwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:01:26 +0900
+Received: from md-lpx-cb009 ([153.138.217.136])
+	by md-drt-nw101 with LMTP id gAcYAXY40lzgOQAAZBuwvA
+	; Wed, 08 May 2019 11:01:26 +0900
+Received: from md-mta-nw009.ocn.ad.jp ([153.138.217.136])
+	by md-lpx-cb009 with LMTP id mBEZOHU40lwgWwAA4uB72A
+	; Wed, 08 May 2019 11:01:25 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw009.ocn.ad.jp (Postfix) with ESMTP id D95263C000C96
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:25 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 656E29C026C
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:01:25 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 5E5082BD5;
+	Wed,  8 May 2019 04:01:23 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 025492BB8
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:01:21 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4821HL4022989;
+ Wed, 8 May 2019 11:01:20 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 5F4BAEA7093;
+ Wed,  8 May 2019 11:01:17 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 516FAEA702A;
+ Wed,  8 May 2019 11:01:17 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 10:59:00 +0900
+Message-Id: <1557280741-7465-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280741-7465-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280741-7465-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/2] controller: fix warning for pyyaml loader
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Using `yaml.load` without loader has deprecated. This update is to add
+loader `FullLoader` to the method call for fixing warning.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/topo.py | 2 +-
+ src/controller/shell.py         | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/controller/commands/topo.py b/src/controller/commands/topo.py
+index e8afa4a..3b24c1a 100644
+--- a/src/controller/commands/topo.py
++++ b/src/controller/commands/topo.py
+@@ -375,7 +375,7 @@ class SppTopo(object):
+         stat = stat.replace("\x00", "")
+         stat = stat.replace("'", "")
+ 
+-        stat_obj = yaml.load(stat)
++        stat_obj = yaml.load(stat, Loader=yaml.FullLoader)
+         res = {}
+         res['sec_id'] = sec_id
+         res['status'] = stat_obj['status']
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index e3f1ff8..057f70a 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -28,7 +28,8 @@ class Shell(cmd.Cmd, object):
+     try:
+         config_file = "{}/config/default.yml".format(
+                 os.path.dirname(__file__))
+-        cli_config = yaml.load(open(config_file))
++        cli_config = yaml.load(open(config_file),
++                Loader=yaml.FullLoader)
+     except IOError as e:
+         print('Error: no config file found!')
+         print(e)
+-- 
+2.17.1
+
+
