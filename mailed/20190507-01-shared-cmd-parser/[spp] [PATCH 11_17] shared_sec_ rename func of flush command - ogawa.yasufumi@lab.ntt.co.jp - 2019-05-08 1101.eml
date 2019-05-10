@@ -1,0 +1,99 @@
+X-Account-Key: account3
+X-UIDL: d8b1ef301039d25c65830000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.216.229])
+	by md-bnd-nw106 with LMTP id wDBKKRA50lxlgwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:04:00 +0900
+Received: from md-lpx-nw008 ([153.138.216.229])
+	by md-drt-nw105 with LMTP id aFIrKRA50lwhBAAAqrOKOQ
+	; Wed, 08 May 2019 11:04:00 +0900
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-nw008 with LMTP id 4IeTJxA50lygWQAAqFjg7g
+	; Wed, 08 May 2019 11:04:00 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id 9DFA13C000328
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:04:00 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 17A91D4029C
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:04:00 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 0B09A4CAB;
+	Wed,  8 May 2019 04:03:58 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id A90C61D7
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qoS023078;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 6A10CEA407F;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 59B0CEA709B;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:29 +0900
+Message-Id: <1557280895-7978-12-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 11/17] shared/sec: rename func of flush command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, rename function `spp_command_flush` to
+`sppwk_cmd_flush`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index db60499..04f9f75 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -82,7 +82,7 @@ struct sppwk_cls_cmd_attr {
+ };
+ 
+ /* `flush` command specific parameters. */
+-struct spp_command_flush {
++struct sppwk_cmd_flush {
+ 	/* nothing specific */
+ };
+ 
+@@ -108,7 +108,7 @@ struct spp_command {
+ 
+ 	union {  /**< command descriptors */
+ 		struct sppwk_cls_cmd_attr cls_table;
+-		struct spp_command_flush flush;
++		struct sppwk_cmd_flush flush;
+ 		struct spp_command_component component;
+ 		struct spp_command_port port;
+ 	} spec;
+-- 
+2.17.1
+
+

@@ -1,0 +1,175 @@
+X-Account-Key: account3
+X-UIDL: 589774050d39d25ca15e0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.211.104])
+	by md-bnd-nw106 with LMTP id ILVsOww50lyhXgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-lpx-nw002 ([153.138.211.104])
+	by md-drt-nw105 with LMTP id UAdeOww50lybBwAAqrOKOQ
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-mta-cb009.ocn.ad.jp ([153.138.211.104])
+	by md-lpx-nw002 with LMTP id cN9NOgw50lzyCQAATJVVBg
+	; Wed, 08 May 2019 11:03:56 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb009.ocn.ad.jp (Postfix) with ESMTP id E22C844001C22
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:56 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 5D870500291
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:56 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7767C37B7;
+	Wed,  8 May 2019 04:03:55 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 777822BB8
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qKj023064;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 445ADEA705C;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 405E7EA7089;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:26 +0900
+Message-Id: <1557280895-7978-9-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 08/17] shared/sec: refactor commad type of SPP worker
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Refactor enum `spp_command_type`. Rename the name of enum to
+`sppwk_cmd_type` and also each of members.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.h      | 24 +++++++++++--------
+ .../secondary/spp_worker_th/command_dec.c     |  6 ++---
+ .../secondary/spp_worker_th/command_proc.c    |  8 +++----
+ 3 files changed, 21 insertions(+), 17 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 965c99b..5922654 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -57,15 +57,19 @@ enum sppwk_action {
+  * @attention This enumerated type must have the same order of command_list
+  *            defined in command_dec.c
+  */
+-/* TODO(yasufum) refactor each name prefix `SPP_`. */
+-enum spp_command_type {
+-	SPP_CMDTYPE_CLASSIFIER_TABLE_MAC,
+-	SPP_CMDTYPE_CLASSIFIER_TABLE_VLAN,
+-	SPP_CMDTYPE_CLIENT_ID,  /**< get_client_id */
+-	SPP_CMDTYPE_STATUS,  /**< status */
+-	SPP_CMDTYPE_EXIT,  /**< exit */
+-	SPP_CMDTYPE_COMPONENT,  /**< component */
+-	SPP_CMDTYPE_PORT,  /**< port */
++/*
++ * TODO(yasufum) consider to divide because each of target of scope is
++ * different and not so understandable for usage. For example, worker is
++ * including classifier or it status.
++ */
++enum sppwk_cmd_type {
++	SPPWK_CMDTYPE_CLS_MAC,
++	SPPWK_CMDTYPE_CLS_VLAN,
++	SPPWK_CMDTYPE_CLIENT_ID,  /**< get_client_id */
++	SPPWK_CMDTYPE_STATUS,  /**< status */
++	SPPWK_CMDTYPE_EXIT,  /**< exit */
++	SPPWK_CMDTYPE_WORKER,  /**< worker thread */
++	SPPWK_CMDTYPE_PORT,  /**< port */
+ };
+ 
+ /* `classifier_table` command specific parameters. */
+@@ -100,7 +104,7 @@ struct spp_command_port {
+ };
+ 
+ struct spp_command {
+-	enum spp_command_type type; /**< command type */
++	enum sppwk_cmd_type type; /**< command type */
+ 
+ 	union {  /**< command descriptors */
+ 		struct spp_command_classifier_table classifier_table;
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 519ce3a..7a65269 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -1107,13 +1107,13 @@ spp_command_decode_request(
+ 	/* check getter command */
+ 	for (i = 0; i < request->num_valid_command; ++i) {
+ 		switch (request->commands[i].type) {
+-		case SPP_CMDTYPE_CLIENT_ID:
++		case SPPWK_CMDTYPE_CLIENT_ID:
+ 			request->is_requested_client_id = 1;
+ 			break;
+-		case SPP_CMDTYPE_STATUS:
++		case SPPWK_CMDTYPE_STATUS:
+ 			request->is_requested_status = 1;
+ 			break;
+-		case SPP_CMDTYPE_EXIT:
++		case SPPWK_CMDTYPE_EXIT:
+ 			request->is_requested_exit = 1;
+ 			break;
+ 		default:
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 7fd5fcd..5ae34d0 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -739,8 +739,8 @@ execute_command(const struct spp_command *command)
+ 	int ret = SPP_RET_OK;
+ 
+ 	switch (command->type) {
+-	case SPP_CMDTYPE_CLASSIFIER_TABLE_MAC:
+-	case SPP_CMDTYPE_CLASSIFIER_TABLE_VLAN:
++	case SPPWK_CMDTYPE_CLS_MAC:
++	case SPPWK_CMDTYPE_CLS_VLAN:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute classifier_table command.\n");
+ 		ret = spp_update_classifier_table(
+@@ -756,7 +756,7 @@ execute_command(const struct spp_command *command)
+ 		}
+ 		break;
+ 
+-	case SPP_CMDTYPE_COMPONENT:
++	case SPPWK_CMDTYPE_WORKER:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute component command.\n");
+ 		ret = spp_update_component(
+@@ -771,7 +771,7 @@ execute_command(const struct spp_command *command)
+ 		}
+ 		break;
+ 
+-	case SPP_CMDTYPE_PORT:
++	case SPPWK_CMDTYPE_PORT:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute port command. (act = %d)\n",
+ 				command->spec.port.wk_action);
+-- 
+2.17.1
+
+

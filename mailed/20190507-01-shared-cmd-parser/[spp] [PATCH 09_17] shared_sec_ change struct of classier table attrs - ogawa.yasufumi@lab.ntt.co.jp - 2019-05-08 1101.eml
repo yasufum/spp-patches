@@ -1,0 +1,203 @@
+X-Account-Key: account3
+X-UIDL: b8b57d1e0f39d25c846a0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.217.133])
+	by md-bnd-nw106 with LMTP id OPjEGQ850lyEagAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-lpx-cb005 ([153.138.217.133])
+	by md-drt-nw105 with LMTP id CAE5GA850lyQBwAAqrOKOQ
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-mta-nw006.ocn.ad.jp ([153.138.217.133])
+	by md-lpx-cb005 with LMTP id oHfQEg850lyZfQAAkBL1ug
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw006.ocn.ad.jp (Postfix) with ESMTP id 3D74C3C000362
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:59 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id AB237500286
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:58 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id C328B343C;
+	Wed,  8 May 2019 04:03:57 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 835A9343C
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qqc023069;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4A62CEA70AA;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4673CEA70A7;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:27 +0900
+Message-Id: <1557280895-7978-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 09/17] shared/sec: change struct of classier table
+	attrs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, change `spp_command_classifier_table` to
+`sppwk_cls_cmd_attr`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.h      |  4 ++--
+ .../secondary/spp_worker_th/command_dec.c     | 20 +++++++++----------
+ .../secondary/spp_worker_th/command_proc.c    | 10 +++++-----
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 5922654..db60499 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -73,7 +73,7 @@ enum sppwk_cmd_type {
+ };
+ 
+ /* `classifier_table` command specific parameters. */
+-struct spp_command_classifier_table {
++struct sppwk_cls_cmd_attr {
+ 	enum sppwk_action wk_action;  /**< add or del */
+ 	enum spp_classifier_type type;  /**< currently only for mac */
+ 	int vid;  /**< VLAN ID  */
+@@ -107,7 +107,7 @@ struct spp_command {
+ 	enum sppwk_cmd_type type; /**< command type */
+ 
+ 	union {  /**< command descriptors */
+-		struct spp_command_classifier_table classifier_table;
++		struct sppwk_cls_cmd_attr cls_table;
+ 		struct spp_command_flush flush;
+ 		struct spp_command_component component;
+ 		struct spp_command_port port;
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 7a65269..4316b10 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -705,7 +705,7 @@ decode_classifier_port_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	struct spp_command_classifier_table *classifier_table = output;
++	struct sppwk_cls_cmd_attr *classifier_table = output;
+ 	struct spp_port_index tmp_port;
+ 	int64_t mac_addr = 0;
+ 
+@@ -768,25 +768,25 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.wk_action),
++					spec.cls_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.type),
++					spec.cls_table.type),
+ 			.func = decode_classifier_type_value
+ 		},
+ 		{
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.mac),
++					spec.cls_table.mac),
+ 			.func = decode_mac_addr_str_value
+ 		},
+ 		{
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table),
++					spec.cls_table),
+ 			.func = decode_classifier_port_value
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+@@ -795,31 +795,31 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.wk_action),
++					spec.cls_table.wk_action),
+ 			.func = decode_classifier_action_value
+ 		},
+ 		{
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.type),
++					spec.cls_table.type),
+ 			.func = decode_classifier_type_value
+ 		},
+ 		{
+ 			.name = "vlan id",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.vid),
++					spec.cls_table.vid),
+ 			.func = decode_classifier_vid_value
+ 		},
+ 		{
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table.mac),
++					spec.cls_table.mac),
+ 			.func = decode_mac_addr_str_value
+ 		},
+ 		{
+ 			.name = "port",
+ 			.offset = offsetof(struct spp_command,
+-					spec.classifier_table),
++					spec.cls_table),
+ 			.func = decode_classifier_port_value
+ 		},
+ 		DECODE_PARAMETER_LIST_EMPTY,
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 5ae34d0..c5b1273 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -744,11 +744,11 @@ execute_command(const struct spp_command *command)
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 				"Execute classifier_table command.\n");
+ 		ret = spp_update_classifier_table(
+-				command->spec.classifier_table.wk_action,
+-				command->spec.classifier_table.type,
+-				command->spec.classifier_table.vid,
+-				command->spec.classifier_table.mac,
+-				&command->spec.classifier_table.port);
++				command->spec.cls_table.wk_action,
++				command->spec.cls_table.type,
++				command->spec.cls_table.vid,
++				command->spec.cls_table.mac,
++				&command->spec.cls_table.port);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, SPP_COMMAND_PROC,
+ 					"Execute flush.\n");
+-- 
+2.17.1
+
+

@@ -1,0 +1,121 @@
+X-Account-Key: account3
+X-UIDL: b8629b031139d25c77ac0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw104 ([153.138.211.72])
+	by md-bnd-nw106 with LMTP id 8JlIABE50lx3rAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:04:01 +0900
+Received: from md-lpx-cb002 ([153.138.211.72])
+	by md-drt-nw104 with LMTP id SJ+6OhA50lw/fgAA0kHKbQ
+	; Wed, 08 May 2019 11:04:01 +0900
+Received: from md-mta-cb004.ocn.ad.jp ([153.138.211.72])
+	by md-lpx-cb002 with LMTP id cBOHNhA50lzFSQAAtwVFfA
+	; Wed, 08 May 2019 11:04:00 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-cb004.ocn.ad.jp (Postfix) with ESMTP id CEEE7C000A0C
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:04:00 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 4AC729C027C
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:04:00 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 73C19568A;
+	Wed,  8 May 2019 04:03:58 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id CAEFE1D7
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:54 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823r2O016078;
+ Wed, 8 May 2019 11:03:53 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 76FFDEA407F;
+ Wed,  8 May 2019 11:03:53 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 42124EA7093;
+ Wed,  8 May 2019 11:03:53 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:35 +0900
+Message-Id: <1557280895-7978-18-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 17/17] shared/sec: rename func for parsing request
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, This update is to rename `spp_command_decode_request()`
+to `sppwk_parse_req()` because it is too long and not for decoding.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   | 2 +-
+ src/shared/secondary/spp_worker_th/command_dec.c  | 4 ++--
+ src/shared/secondary/spp_worker_th/command_proc.c | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index e42bc14..785fffe 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -150,7 +150,7 @@ struct sppwk_parse_err_msg {
+  * @retval SPP_RET_OK succeeded.
+  * @retval !0 failed.
+  */
+-int spp_command_decode_request(struct sppwk_cmd_req *request,
++int sppwk_parse_req(struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg);
+ 
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 80fd6d2..723d8c4 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -1080,9 +1080,9 @@ decode_command_in_list(struct sppwk_cmd_req *request,
+ 	return set_string_value_decode_error(wk_err_msg, argv[0], "command");
+ }
+ 
+-/* decode request from no-null-terminated string */
++/* Parse request of non null terminated string. */
+ int
+-spp_command_decode_request(
++sppwk_parse_req(
+ 		struct sppwk_cmd_req *request,
+ 		const char *request_str, size_t request_str_len,
+ 		struct sppwk_parse_err_msg *wk_err_msg)
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 1cb43e7..f345759 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -1660,7 +1660,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 			(int)request_str_len, request_str);
+ 
+ 	/* decode request message */
+-	ret = spp_command_decode_request(
++	ret = sppwk_parse_req(
+ 			&request, request_str, request_str_len, &wk_err_msg);
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		/* send error response */
+-- 
+2.17.1
+
+

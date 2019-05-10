@@ -1,0 +1,109 @@
+X-Account-Key: account3
+X-UIDL: 1866b1250f39d25c60830000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.217.133])
+	by md-bnd-nw106 with LMTP id WJirIg850lxggwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-lpx-nw009 ([153.138.217.133])
+	by md-drt-nw102 with LMTP id YAp9Ig850lxLEwAA8iqT2w
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-mta-nw006.ocn.ad.jp ([153.138.217.133])
+	by md-lpx-nw009 with LMTP id mFbcIA850lzJbAAAkTVMFA
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw006.ocn.ad.jp (Postfix) with ESMTP id 7AF0E3C000351
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:59 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 30758500283
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:59 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id EF1184C95;
+	Wed,  8 May 2019 04:03:57 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id F1347378B
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qKN016075;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9EEE0EA7093;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9120FEA705C;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:32 +0900
+Message-Id: <1557280895-7978-15-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 14/17] shared/sec: rename func for getting port ID
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Function `spp_get_dpdk_port()` is for getting consistent port ID
+provided by rte ethdev library, and intended to be used to convert SPP's
+resource UID such as `phy:0` to consistent ID. The name of function is
+not describing the purpose exactly. This update is to rename it to
+`sppwk_get_ethdev_port_id()` for refactoring.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/command_proc.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 34bfe82..9c8672b 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -594,9 +594,12 @@ spp_iterate_classifier_table(
+ }
+ #endif /* SPP_VF_MODULE */
+ 
+-/* Get port number assigned by DPDK lib */
++/**
++ * Get consistent port ID of rte ethdev from resource UID such as `phy:0`.
++ * It returns a port ID, or error code if it's failed to.
++ */
+ static int
+-spp_get_dpdk_port(enum port_type iface_type, int iface_no)
++sppwk_get_ethdev_port_id(enum port_type iface_type, int iface_no)
+ {
+ 	struct iface_info *iface_info = NULL;
+ 
+@@ -1097,7 +1100,8 @@ append_port_block(char **output, const struct sppwk_port_idx *port,
+ 		return SPP_RET_NG;
+ 
+ 	ret = append_vlan_block("vlan", &tmp_buff,
+-			spp_get_dpdk_port(port->iface_type, port->iface_no),
++			sppwk_get_ethdev_port_id(
++				port->iface_type, port->iface_no),
+ 			rxtx);
+ 	if (unlikely(ret < SPP_RET_OK))
+ 		return SPP_RET_NG;
+-- 
+2.17.1
+
+

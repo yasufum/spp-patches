@@ -1,0 +1,179 @@
+X-Account-Key: account3
+X-UIDL: 38a51d0a0d39d25ca55e0000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw101 ([153.138.216.229])
+	by md-bnd-nw106 with LMTP id yGqpBQ050lylXgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-lpx-nw005 ([153.138.216.229])
+	by md-drt-nw101 with LMTP id QE2BBQ050lx4PwAAZBuwvA
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-mta-nw001.ocn.ad.jp ([153.138.216.229])
+	by md-lpx-nw005 with LMTP id WOr+BA050lxebAAA2u8eSg
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from mfgw701.ocn.ad.jp (mfgw701.ocn.ad.jp [153.153.63.99])
+	by md-mta-nw001.ocn.ad.jp (Postfix) with ESMTP id 0E1423C000327
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:57 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb070: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb070; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw701.ocn.ad.jp (Postfix) with ESMTP id 698DDD40282
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:56 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6081037A2;
+	Wed,  8 May 2019 04:03:55 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 61390293B
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qL1023063;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 2C151EA709C;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1D646EA705C;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:24 +0900
+Message-Id: <1557280895-7978-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 06/17] shared/sec: rename define of buffer size for
+	cmds
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, rename SPP_CMD_NAME_BUFSZ and SPP_CMD_NAME_VALUE_BUFSZ
+to SPPWK_NAME_BUFSZ and SPPWK_VAL_BUFSZ to be more simple and specific.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   | 14 +++++++-------
+ src/shared/secondary/spp_worker_th/command_dec.c  |  4 ++--
+ src/shared/secondary/spp_worker_th/command_proc.c |  4 ++--
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 2a0e580..99346cb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -19,10 +19,10 @@
+ #define SPPWK_MAX_PARAMS 8
+ 
+ /* Size of string buffer of message including null char. */
+-#define SPP_CMD_NAME_BUFSZ  32
++#define SPPWK_NAME_BUFSZ  32
+ 
+ /* Size of string buffer of detailed message including null char. */
+-#define SPP_CMD_VALUE_BUFSZ 111
++#define SPPWK_VAL_BUFSZ 111
+ 
+ /* Fix value for 'unused' status. */
+ #define SPP_CMD_UNUSE "unuse"
+@@ -76,7 +76,7 @@ struct spp_command_classifier_table {
+ 	enum sppwk_action wk_action;  /**< add or del */
+ 	enum spp_classifier_type type;  /**< currently only for mac */
+ 	int vid;  /**< VLAN ID  */
+-	char mac[SPP_CMD_VALUE_BUFSZ];  /**< MAC address  */
++	char mac[SPPWK_VAL_BUFSZ];  /**< MAC address  */
+ 	struct spp_port_index port;/**< Destination port type and number */
+ };
+ 
+@@ -88,7 +88,7 @@ struct spp_command_flush {
+ /* `component` command parameters. */
+ struct spp_command_component {
+ 	enum sppwk_action wk_action;  /**< start or stop */
+-	char name[SPP_CMD_NAME_BUFSZ];  /**< component name */
++	char name[SPPWK_NAME_BUFSZ];  /**< component name */
+ 	unsigned int core;  /**< logical core number */
+ 	enum spp_component_type type;  /**< component type */
+ };
+@@ -98,7 +98,7 @@ struct spp_command_port {
+ 	enum sppwk_action wk_action;  /**< add or del */
+ 	struct spp_port_index port;  /**< port type and number */
+ 	enum spp_port_rxtx rxtx;  /**< rx or tx identifier */
+-	char name[SPP_CMD_NAME_BUFSZ];  /**<  component name */
++	char name[SPPWK_NAME_BUFSZ];  /**<  component name */
+ 	struct spp_port_ability ability;  /**< port ability */
+ };
+ 
+@@ -127,8 +127,8 @@ struct spp_command_request {
+ /* Error message if parse failed. */
+ struct sppwk_parse_err_msg {
+ 	int code;  /**< Code in enu sppwk_parse_error_code */
+-	char msg[SPP_CMD_NAME_BUFSZ];   /**< Message in short */
+-	char details[SPP_CMD_VALUE_BUFSZ];  /**< Detailed message */
++	char msg[SPPWK_NAME_BUFSZ];   /**< Message in short */
++	char details[SPPWK_VAL_BUFSZ];  /**< Detailed message */
+ };
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 1dbd510..519ce3a 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -302,7 +302,7 @@ get_uint_value(
+ static int
+ decode_str_value(char *output, const char *arg_val)
+ {
+-	if (strlen(arg_val) >= SPP_CMD_VALUE_BUFSZ)
++	if (strlen(arg_val) >= SPPWK_VAL_BUFSZ)
+ 		return SPP_RET_NG;
+ 
+ 	strcpy(output, arg_val);
+@@ -1035,7 +1035,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	int i = 0;
+ 	int argc = 0;
+ 	char *argv[SPPWK_MAX_PARAMS];
+-	char tmp_str[SPPWK_MAX_PARAMS*SPP_CMD_VALUE_BUFSZ];
++	char tmp_str[SPPWK_MAX_PARAMS*SPPWK_VAL_BUFSZ];
+ 	memset(argv, 0x00, sizeof(argv));
+ 	memset(tmp_str, 0x00, sizeof(tmp_str));
+ 
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 1ab8111..7fd5fcd 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -48,7 +48,7 @@ struct command_result {
+ 	int code;
+ 
+ 	/* Response message */
+-	char result[SPP_CMD_NAME_BUFSZ];
++	char result[SPPWK_NAME_BUFSZ];
+ 
+ 	/* Detailed response message */
+ 	char error_message[CMD_RES_ERR_MSG_SIZE];
+@@ -57,7 +57,7 @@ struct command_result {
+ /* command response list control structure */
+ struct command_response_list {
+ 	/* Tag name */
+-	char tag_name[SPP_CMD_NAME_BUFSZ];
++	char tag_name[SPPWK_NAME_BUFSZ];
+ 
+ 	/* Pointer to handling function */
+ 	int (*func)(const char *name, char **output, void *tmp);
+-- 
+2.17.1
+
+

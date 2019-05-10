@@ -1,0 +1,149 @@
+X-Account-Key: account3
+X-UIDL: 00a27e250f39d25c25970000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.211.71])
+	by md-bnd-nw106 with LMTP id kIFTIg850lwllwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-lpx-cb007 ([153.138.211.71])
+	by md-drt-nw102 with LMTP id KN/rIA850lwdFAAA8iqT2w
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from md-mta-cb003.ocn.ad.jp ([153.138.211.71])
+	by md-lpx-cb007 with LMTP id kD//HA850lydPQAAz4+SuQ
+	; Wed, 08 May 2019 11:03:59 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-cb003.ocn.ad.jp (Postfix) with ESMTP id 6E03B78006E59
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:59 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id DF9F59C0277
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:58 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DF55A4C90;
+	Wed,  8 May 2019 04:03:57 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 7EA2D2BD5
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:53 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qwq016070;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 19F48EA7096;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 14FDFEA7089;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:23 +0900
+Message-Id: <1557280895-7978-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 05/17] shared/sec: rename define starts from
+	SPP_CMD_MAX
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, rename SPP_CMD_MAX_COMMANDS and SPP_CMD_MAX_PARAMETERS
+to SPPWK_MAX_CMDS and SPPWK_MAX_PARAMS to be more simple and specific.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.h   | 6 +++---
+ src/shared/secondary/spp_worker_th/command_dec.c  | 8 ++++----
+ src/shared/secondary/spp_worker_th/command_proc.c | 2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index ccdf6bb..2a0e580 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -13,10 +13,10 @@
+ #include "spp_proc.h"
+ 
+ /* Maximum number of commands per request. */
+-#define SPP_CMD_MAX_COMMANDS 32
++#define SPPWK_MAX_CMDS 32
+ 
+ /* Maximum number of parameters per command. */
+-#define SPP_CMD_MAX_PARAMETERS 8
++#define SPPWK_MAX_PARAMS 8
+ 
+ /* Size of string buffer of message including null char. */
+ #define SPP_CMD_NAME_BUFSZ  32
+@@ -117,7 +117,7 @@ struct spp_command {
+ struct spp_command_request {
+ 	int num_command;  /**< Number of accepted commands */
+ 	int num_valid_command;  /**< Number of executed commands */
+-	struct spp_command commands[SPP_CMD_MAX_COMMANDS];  /**< list of cmds */
++	struct spp_command commands[SPPWK_MAX_CMDS];  /**< list of cmds */
+ 
+ 	int is_requested_client_id;
+ 	int is_requested_status;
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index f9849bb..1dbd510 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -763,7 +763,7 @@ struct decode_parameter_list {
+ 
+ /* parameter list for each command */
+ static struct decode_parameter_list
+-parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
++parameter_list[][SPPWK_MAX_PARAMS] = {
+ 	{                                /* classifier_table(mac) */
+ 		{
+ 			.name = "action",
+@@ -1034,13 +1034,13 @@ decode_command_in_list(struct spp_command_request *request,
+ 	struct decode_command_list *list = NULL;
+ 	int i = 0;
+ 	int argc = 0;
+-	char *argv[SPP_CMD_MAX_PARAMETERS];
+-	char tmp_str[SPP_CMD_MAX_PARAMETERS*SPP_CMD_VALUE_BUFSZ];
++	char *argv[SPPWK_MAX_PARAMS];
++	char tmp_str[SPPWK_MAX_PARAMS*SPP_CMD_VALUE_BUFSZ];
+ 	memset(argv, 0x00, sizeof(argv));
+ 	memset(tmp_str, 0x00, sizeof(tmp_str));
+ 
+ 	strcpy(tmp_str, request_str);
+-	ret = decode_parameter_value(tmp_str, SPP_CMD_MAX_PARAMETERS,
++	ret = decode_parameter_value(tmp_str, SPPWK_MAX_PARAMS,
+ 			&argc, argv);
+ 	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number over limit."
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index b6d5b4b..1ab8111 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -1645,7 +1645,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	struct spp_command_request request;
+ 	struct sppwk_parse_err_msg wk_err_msg;
+-	struct command_result command_results[SPP_CMD_MAX_COMMANDS];
++	struct command_result command_results[SPPWK_MAX_CMDS];
+ 
+ 	memset(&request, 0, sizeof(struct spp_command_request));
+ 	memset(&wk_err_msg, 0, sizeof(struct sppwk_parse_err_msg));
+-- 
+2.17.1
+
+

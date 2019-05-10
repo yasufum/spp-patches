@@ -1,0 +1,189 @@
+X-Account-Key: account3
+X-UIDL: 48e2c6090d39d25c17970000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.217.137])
+	by md-bnd-nw106 with LMTP id 2GDGBQ050lwXlwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-lpx-nw002 ([153.138.217.137])
+	by md-drt-nw105 with LMTP id 8EagBQ050lxjBgAAqrOKOQ
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-mta-nw010.ocn.ad.jp ([153.138.217.137])
+	by md-lpx-nw002 with LMTP id 0HAPBQ050lzvCQAATJVVBg
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from mfgw721.ocn.ad.jp (mfgw721.ocn.ad.jp [153.153.63.101])
+	by md-mta-nw010.ocn.ad.jp (Postfix) with ESMTP id 0BFF23C00164F
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:57 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb072: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb072; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw721.ocn.ad.jp (Postfix) with ESMTP id 6D6269C0279
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:56 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 3C1312BB8;
+	Wed,  8 May 2019 04:03:55 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 1BFB71F28
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:52 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qkm023059;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 06355EA705C;
+ Wed,  8 May 2019 11:03:52 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E19A7EA7089;
+ Wed,  8 May 2019 11:03:51 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:20 +0900
+Message-Id: <1557280895-7978-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 02/17] shared/sec: refactor parse error code
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Revise the name of enum `spp_comamnd_decode_error_code` to
+`sppwk_parse_error_code`, and its members started from `SPP_CMD_DERR_`
+to `SPPWK_PARSE_` to be more reasonable. The prefix of the members does
+not need to include the word `ERR` because following word, such as
+`INVALID_VALUE`, can be understood as error.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/command_dec.c     |  6 ++---
+ .../secondary/spp_worker_th/command_dec.h     | 18 ++++++++-------
+ .../secondary/spp_worker_th/command_proc.c    | 23 ++++++++++---------
+ 3 files changed, 25 insertions(+), 22 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 236cabf..db69dfe 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -220,7 +220,7 @@ set_string_value_decode_error(struct sppwk_parse_err_msg *error,
+ 		const char *value, const char *error_name)
+ {
+ 	strcpy(error->value, value);
+-	return set_parse_error(error, SPP_CMD_DERR_BAD_VALUE, error_name);
++	return set_parse_error(error, SPPWK_PARSE_INVALID_VALUE, error_name);
+ }
+ 
+ /* Split command line parameter with spaces */
+@@ -1046,7 +1046,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number over limit."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
++		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 	RTE_LOG(DEBUG, SPP_COMMAND_PROC, "Decode array. num=%d\n", argc);
+ 
+@@ -1072,7 +1072,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	if (command_name_check != 0) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number out of range."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
++		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 
+ 	RTE_LOG(ERR, SPP_COMMAND_PROC,
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.h b/src/shared/secondary/spp_worker_th/command_dec.h
+index da94cf3..7da562a 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.h
++++ b/src/shared/secondary/spp_worker_th/command_dec.h
+@@ -29,14 +29,16 @@
+ /** string that specify unused */
+ #define SPP_CMD_UNUSE "unuse"
+ 
+-/** decode error code */
+-enum spp_command_decode_error_code {
+-	/* not use 0, in general 0 is OK */
+-	SPP_CMD_DERR_BAD_FORMAT = 1,  /**< Wrong format */
+-	SPP_CMD_DERR_UNKNOWN_COMMAND, /**< Unknown command */
+-	SPP_CMD_DERR_NO_PARAM,        /**< No parameters */
+-	SPP_CMD_DERR_BAD_TYPE,        /**< Wrong data type */
+-	SPP_CMD_DERR_BAD_VALUE,       /**< Wrong value */
++/**
++ * Error code for diagnosis and notifying the reason. It starts from 1 because
++ * 0 is used for succeeded and not appropriate for error in general.
++ */
++enum sppwk_parse_error_code {
++	SPPWK_PARSE_WRONG_FORMAT = 1,  /**< Wrong format */
++	SPPWK_PARSE_UNKNOWN_CMD,  /**< Unknown command */
++	SPPWK_PARSE_NO_PARAM,  /**< No parameters */
++	SPPWK_PARSE_INVALID_TYPE,  /**< Invalid data type */
++	SPPWK_PARSE_INVALID_VALUE,  /**< Invalid value */
+ };
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 40b3121..2911266 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -809,30 +809,31 @@ make_decode_error_message(
+ 		char *message)
+ {
+ 	switch (err_msg->code) {
+-	case SPP_CMD_DERR_BAD_FORMAT:
+-		sprintf(message, "bad message format");
++	case SPPWK_PARSE_WRONG_FORMAT:
++		sprintf(message, "Wrong message format");
+ 		break;
+ 
+-	case SPP_CMD_DERR_UNKNOWN_COMMAND:
+-		sprintf(message, "unknown command(%s)", err_msg->value);
++	case SPPWK_PARSE_UNKNOWN_CMD:
++		/* TODO(yasufum) Fix compile err if space exists before "(" */
++		sprintf(message, "Unknown command(%s)", err_msg->value);
+ 		break;
+ 
+-	case SPP_CMD_DERR_NO_PARAM:
+-		sprintf(message, "not enough parameter(%s)",
++	case SPPWK_PARSE_NO_PARAM:
++		sprintf(message, "No or insufficient number of params (%s)",
+ 				err_msg->value_name);
+ 		break;
+ 
+-	case SPP_CMD_DERR_BAD_TYPE:
+-		sprintf(message, "bad value type(%s)",
++	case SPPWK_PARSE_INVALID_TYPE:
++		sprintf(message, "Invalid value type (%s)",
+ 				err_msg->value_name);
+ 		break;
+ 
+-	case SPP_CMD_DERR_BAD_VALUE:
+-		sprintf(message, "bad value(%s)", err_msg->value_name);
++	case SPPWK_PARSE_INVALID_VALUE:
++		sprintf(message, "Invalid value (%s)", err_msg->value_name);
+ 		break;
+ 
+ 	default:
+-		sprintf(message, "error occur");
++		sprintf(message, "Failed to parse with unexpected reason");
+ 		break;
+ 	}
+ 
+-- 
+2.17.1
+
+

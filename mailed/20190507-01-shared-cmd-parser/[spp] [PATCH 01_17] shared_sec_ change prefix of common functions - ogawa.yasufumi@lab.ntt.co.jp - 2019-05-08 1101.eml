@@ -1,0 +1,335 @@
+X-Account-Key: account3
+X-UIDL: 904ad1120d39d25ca55e0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.211.102])
+	by md-bnd-nw106 with LMTP id 4HjnDw050lylXgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-lpx-cb002 ([153.138.211.102])
+	by md-drt-nw102 with LMTP id 0BSPDg050lxLEwAA8iqT2w
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-cb002 with LMTP id 2JrOCQ050lzzSgAAtwVFfA
+	; Wed, 08 May 2019 11:03:57 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id 16F3E10002C1A
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:57 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 3B1AB500273
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:56 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 4CD3834F0;
+	Wed,  8 May 2019 04:03:55 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 1BE41DE3
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:52 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4823qns016066;
+ Wed, 8 May 2019 11:03:52 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E8515EA7093;
+ Wed,  8 May 2019 11:03:51 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D69F5EA705C;
+ Wed,  8 May 2019 11:03:51 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:01:19 +0900
+Message-Id: <1557280895-7978-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280895-7978-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 01/17] shared/sec: change prefix of common functions
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of common functions are prefixed with `spp_`, but not common
+especially for spp_vf siblings. From this patch, change the prefix to
+`sppwk_` to be more specific. The meaning of `sppwk` is “SPP worker
+(thread)”.
+
+This patch is to refactor struct `spp_command_decode_error` to
+`sppwk_parse_err_msg`. It also include refactor of func names, such as
+from `set_decode_error()` to `set_parse_error()` for formatting error
+message object because it does not decode actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/command_dec.c     | 36 +++++++++----------
+ .../secondary/spp_worker_th/command_dec.h     |  6 ++--
+ .../secondary/spp_worker_th/command_proc.c    | 28 +++++++--------
+ 3 files changed, 35 insertions(+), 35 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/command_dec.c
+index 9523ab9..236cabf 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.c
++++ b/src/shared/secondary/spp_worker_th/command_dec.c
+@@ -201,26 +201,26 @@ spp_convert_component_type(const char *type_str)
+ 	return SPP_COMPONENT_UNUSE;
+ }
+ 
+-/* set decode error */
++/* Format error message object and return error code for an error case */
+ static inline int
+-set_decode_error(struct spp_command_decode_error *error,
+-		const int error_code, const char *error_name)
++set_parse_error(struct sppwk_parse_err_msg *err_msg,
++		const int err_code, const char *err_name)
+ {
+-	error->code = error_code;
++	err_msg->code = err_code;
+ 
+-	if (likely(error_name != NULL))
+-		strcpy(error->value_name, error_name);
++	if (likely(err_name != NULL))
++		strcpy(err_msg->value_name, err_name);
+ 
+-	return error->code;
++	return err_msg->code;
+ }
+ 
+ /* set decode error */
+ static inline int
+-set_string_value_decode_error(struct spp_command_decode_error *error,
++set_string_value_decode_error(struct sppwk_parse_err_msg *error,
+ 		const char *value, const char *error_name)
+ {
+ 	strcpy(error->value, value);
+-	return set_decode_error(error, SPP_CMD_DERR_BAD_VALUE, error_name);
++	return set_parse_error(error, SPP_CMD_DERR_BAD_VALUE, error_name);
+ }
+ 
+ /* Split command line parameter with spaces */
+@@ -898,7 +898,7 @@ parameter_list[][SPP_CMD_MAX_PARAMETERS] = {
+ static int
+ decode_command_parameter_component(struct spp_command_request *request,
+ 				int argc, char *argv[],
+-				struct spp_command_decode_error *error,
++				struct sppwk_parse_err_msg *error,
+ 				int maxargc __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+@@ -926,7 +926,7 @@ decode_command_parameter_component(struct spp_command_request *request,
+ static int
+ decode_command_parameter_cls_table(struct spp_command_request *request,
+ 				int argc, char *argv[],
+-				struct spp_command_decode_error *error,
++				struct sppwk_parse_err_msg *error,
+ 				int maxargc)
+ {
+ 	return decode_command_parameter_component(request,
+@@ -939,7 +939,7 @@ decode_command_parameter_cls_table(struct spp_command_request *request,
+ static int
+ decode_command_parameter_cls_table_vlan(struct spp_command_request *request,
+ 				int argc, char *argv[],
+-				struct spp_command_decode_error *error,
++				struct sppwk_parse_err_msg *error,
+ 				int maxargc __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+@@ -966,7 +966,7 @@ decode_command_parameter_cls_table_vlan(struct spp_command_request *request,
+ static int
+ decode_command_parameter_port(struct spp_command_request *request,
+ 				int argc, char *argv[],
+-				struct spp_command_decode_error *error,
++				struct sppwk_parse_err_msg *error,
+ 				int maxargc)
+ {
+ 	int ret = SPP_RET_OK;
+@@ -1001,7 +1001,7 @@ struct decode_command_list {
+ 	int   param_min;        /* Min number of parameters */
+ 	int   param_max;        /* Max number of parameters */
+ 	int (*func)(struct spp_command_request *request, int argc,
+-			char *argv[], struct spp_command_decode_error *error,
++			char *argv[], struct sppwk_parse_err_msg *error,
+ 			int maxargc);
+ 				/* Pointer to command handling function */
+ };
+@@ -1028,7 +1028,7 @@ static struct decode_command_list command_list[] = {
+ static int
+ decode_command_in_list(struct spp_command_request *request,
+ 			const char *request_str,
+-			struct spp_command_decode_error *error)
++			struct sppwk_parse_err_msg *error)
+ {
+ 	int ret = SPP_RET_OK;
+ 	int command_name_check = 0;
+@@ -1046,7 +1046,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number over limit."
+ 				"request_str=%s\n", request_str);
+-		return set_decode_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
++		return set_parse_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
+ 	}
+ 	RTE_LOG(DEBUG, SPP_COMMAND_PROC, "Decode array. num=%d\n", argc);
+ 
+@@ -1072,7 +1072,7 @@ decode_command_in_list(struct spp_command_request *request,
+ 	if (command_name_check != 0) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Parameter number out of range."
+ 				"request_str=%s\n", request_str);
+-		return set_decode_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
++		return set_parse_error(error, SPP_CMD_DERR_BAD_FORMAT, NULL);
+ 	}
+ 
+ 	RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -1086,7 +1086,7 @@ int
+ spp_command_decode_request(
+ 		struct spp_command_request *request,
+ 		const char *request_str, size_t request_str_len,
+-		struct spp_command_decode_error *error)
++		struct sppwk_parse_err_msg *error)
+ {
+ 	int ret = SPP_RET_NG;
+ 	int i;
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.h b/src/shared/secondary/spp_worker_th/command_dec.h
+index 93b4ebe..da94cf3 100644
+--- a/src/shared/secondary/spp_worker_th/command_dec.h
++++ b/src/shared/secondary/spp_worker_th/command_dec.h
+@@ -171,7 +171,7 @@ struct spp_command_request {
+ };
+ 
+ /** decode error information */
+-struct spp_command_decode_error {
++struct sppwk_parse_err_msg {
+ 	int code;                            /**< Error code */
+ 	char value_name[SPP_CMD_NAME_BUFSZ]; /**< Error value name */
+ 	char value[SPP_CMD_VALUE_BUFSZ];     /**< Error value */
+@@ -188,7 +188,7 @@ struct spp_command_decode_error {
+  * @param request_str_len
+  *  The length of requested command message.
+  * @param error
+- *  The pointer to struct spp_command_decode_error.@n
++ *  The pointer to struct sppwk_parse_err_msg.@n
+  *  Detailed error information will be stored.
+  *
+  * @retval SPP_RET_OK succeeded.
+@@ -196,6 +196,6 @@ struct spp_command_decode_error {
+  */
+ int spp_command_decode_request(struct spp_command_request *request,
+ 		const char *request_str, size_t request_str_len,
+-		struct spp_command_decode_error *error);
++		struct sppwk_parse_err_msg *err_msg);
+ 
+ #endif /* _COMMAND_DEC_H_ */
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 1e16bd0..40b3121 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -805,30 +805,30 @@ execute_command(const struct spp_command *command)
+ /* make decode error message for response */
+ static const char *
+ make_decode_error_message(
+-		const struct spp_command_decode_error *decode_error,
++		const struct sppwk_parse_err_msg *err_msg,
+ 		char *message)
+ {
+-	switch (decode_error->code) {
++	switch (err_msg->code) {
+ 	case SPP_CMD_DERR_BAD_FORMAT:
+ 		sprintf(message, "bad message format");
+ 		break;
+ 
+ 	case SPP_CMD_DERR_UNKNOWN_COMMAND:
+-		sprintf(message, "unknown command(%s)", decode_error->value);
++		sprintf(message, "unknown command(%s)", err_msg->value);
+ 		break;
+ 
+ 	case SPP_CMD_DERR_NO_PARAM:
+ 		sprintf(message, "not enough parameter(%s)",
+-				decode_error->value_name);
++				err_msg->value_name);
+ 		break;
+ 
+ 	case SPP_CMD_DERR_BAD_TYPE:
+ 		sprintf(message, "bad value type(%s)",
+-				decode_error->value_name);
++				err_msg->value_name);
+ 		break;
+ 
+ 	case SPP_CMD_DERR_BAD_VALUE:
+-		sprintf(message, "bad value(%s)", decode_error->value_name);
++		sprintf(message, "bad value(%s)", err_msg->value_name);
+ 		break;
+ 
+ 	default:
+@@ -866,21 +866,21 @@ set_command_results(struct command_result *result,
+ static void
+ set_decode_error_to_results(struct command_result *results,
+ 		const struct spp_command_request *request,
+-		const struct spp_command_decode_error *decode_error)
++		const struct sppwk_parse_err_msg *err_msg)
+ {
+ 	int i;
+ 	const char *tmp_buff;
+ 	char error_messege[CMD_RES_ERR_MSG_SIZE];
+ 
+ 	for (i = 0; i < request->num_command; i++) {
+-		if (decode_error->code == 0)
++		if (err_msg->code == 0)
+ 			set_command_results(&results[i], CRES_SUCCESS, "");
+ 		else
+ 			set_command_results(&results[i], CRES_INVALID, "");
+ 	}
+ 
+-	if (decode_error->code != 0) {
+-		tmp_buff = make_decode_error_message(decode_error,
++	if (err_msg->code != 0) {
++		tmp_buff = make_decode_error_message(err_msg,
+ 				error_messege);
+ 		set_command_results(&results[request->num_valid_command],
+ 				CRES_FAILURE, tmp_buff);
+@@ -1646,11 +1646,11 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	int i;
+ 
+ 	struct spp_command_request request;
+-	struct spp_command_decode_error decode_error;
++	struct sppwk_parse_err_msg wk_err_msg;
+ 	struct command_result command_results[SPP_CMD_MAX_COMMANDS];
+ 
+ 	memset(&request, 0, sizeof(struct spp_command_request));
+-	memset(&decode_error, 0, sizeof(struct spp_command_decode_error));
++	memset(&wk_err_msg, 0, sizeof(struct sppwk_parse_err_msg));
+ 	memset(command_results, 0, sizeof(command_results));
+ 
+ 	RTE_LOG(DEBUG, SPP_COMMAND_PROC, "Start command request processing. "
+@@ -1659,11 +1659,11 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	/* decode request message */
+ 	ret = spp_command_decode_request(
+-			&request, request_str, request_str_len, &decode_error);
++			&request, request_str, request_str_len, &wk_err_msg);
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		/* send error response */
+ 		set_decode_error_to_results(command_results, &request,
+-				&decode_error);
++				&wk_err_msg);
+ 		send_decode_error_response(sock, &request, command_results);
+ 		RTE_LOG(DEBUG, SPP_COMMAND_PROC,
+ 				"End command request processing.\n");
+-- 
+2.17.1
+
+
