@@ -1,0 +1,118 @@
+X-Account-Key: account3
+X-UIDL: c01014259e38d25c22970000676ddb7c
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw101 ([153.138.211.104])
+	by md-bnd-nw106 with LMTP id oN30Hp440lwilwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:02:06 +0900
+Received: from md-lpx-nw001 ([153.138.211.104])
+	by md-drt-nw101 with LMTP id QPTeHp440lw2PwAAZBuwvA
+	; Wed, 08 May 2019 11:02:06 +0900
+Received: from md-mta-cb009.ocn.ad.jp ([153.138.211.104])
+	by md-lpx-nw001 with LMTP id 2DrjHZ440lz1bAAA7ajWmg
+	; Wed, 08 May 2019 11:02:06 +0900
+Received: from mfgw711.ocn.ad.jp (mfgw711.ocn.ad.jp [153.153.63.100])
+	by md-mta-cb009.ocn.ad.jp (Postfix) with ESMTP id 6E37F44001C19
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:06 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw711.ocn.ad.jp (Postfix) with ESMTP id 2539550026C
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:06 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id F235744C3;
+	Wed,  8 May 2019 04:02:03 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 86BBE293B
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:02:01 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x48220YI023007;
+ Wed, 8 May 2019 11:02:00 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4879D637FED;
+ Wed,  8 May 2019 11:02:00 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3AB40637FDC;
+ Wed,  8 May 2019 11:02:00 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 10:59:44 +0900
+Message-Id: <1557280784-7620-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280784-7620-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280784-7620-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 5/5] controller: add parsing lcore IDs for spp_pcap
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+To show lcore IDs, add parsing the response from spp_pcap.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/controller/commands/pcap.py | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/controller/commands/pcap.py b/src/controller/commands/pcap.py
+index d06327b..88dd5c8 100644
+--- a/src/controller/commands/pcap.py
++++ b/src/controller/commands/pcap.py
+@@ -115,8 +115,13 @@ class SppPcap(object):
+         Print status received from spp_pcap.
+ 
+           spp > pcap 1; status
++          Basic Information:
+             - client-id: 3
+             - satus: running
++            - lcore_ids:
++              - master: 1
++              - slaves: [2, 3, 3, 4, 5, 6]
++          Components:
+             - core:2, receive
+               - rx: phy:0
+             - core:3, write
+@@ -129,11 +134,21 @@ class SppPcap(object):
+ 
+         """
+ 
+-        # client id and status
++        # Extract slave lcore IDs first
++        slave_lcore_ids = []
++        for worker in json_obj['core']:
++            slave_lcore_ids.append(str(worker['core']))
++
++        # Basic Information
++        print('Basic Information:')
+         print('  - client-id: {}'.format(json_obj['client-id']))
+         print('  - status: {}'.format(json_obj['status']))
++        print('  - lcore_ids:')
++        print('    - master: {}'.format(json_obj['master-lcore']))
++        print('    - slaves: [{}]'.format(', '.join(slave_lcore_ids)))
+ 
+-        # Core
++        # Componennts
++        print('Components:')
+         for worker in json_obj['core']:
+             if 'role' in worker.keys():
+                 print("  - core:{core_id} {role}".format(
+-- 
+2.17.1
+
+
