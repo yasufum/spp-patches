@@ -1,0 +1,307 @@
+X-Account-Key: account3
+X-UIDL: b0a356006038d55ccf460000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.216.230])
+	by md-bnd-nw106 with LMTP id WIwjOV841VzPRgAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:51 +0900
+Received: from md-lpx-cb006 ([153.138.216.230])
+	by md-drt-nw105 with LMTP id OIEJOF841VwYbAAAqrOKOQ
+	; Fri, 10 May 2019 17:37:51 +0900
+Received: from md-mta-nw002.ocn.ad.jp ([153.138.216.230])
+	by md-lpx-cb006 with LMTP id kI84NF841VzRZgAAO5fBhA
+	; Fri, 10 May 2019 17:37:51 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw002.ocn.ad.jp (Postfix) with ESMTP id C89CB3C000614
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:51 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 348DF500289
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:51 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id CF5F35398;
+	Fri, 10 May 2019 10:37:48 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id F19A74CA7
+ for <spp@dpdk.org>; Fri, 10 May 2019 10:37:46 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4A8bjjP008249;
+ Fri, 10 May 2019 17:37:45 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 294376385DB;
+ Fri, 10 May 2019 17:37:45 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 19E116385F7;
+ Fri, 10 May 2019 17:37:45 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 10 May 2019 17:35:27 +0900
+Message-Id: <1557477327-11611-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 5/5] shared/sec: rename sppwk port util functions
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some functions for managing sppwk port are prefixed `spp_` but file
+local, or the name is not so intuitive. This update is to rename the
+names.
+
+* Change file local `spp_check_added_port()` to `is_added_port()`.
+
+* Change file local `spp_convert_port_to_iface()` to
+  `parse_resource_uid()`.
+
+* Change `get_iface_info()` to `get_sppwk_port()` because the word
+  `iface info` is ambiguous.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 73 +++++++++----------
+ .../secondary/spp_worker_th/command_proc.c    |  6 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c |  9 +--
+ src/shared/secondary/spp_worker_th/spp_proc.h | 15 +---
+ 4 files changed, 42 insertions(+), 61 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 6e536eb..ac1b035 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -67,72 +67,67 @@ is_used_with_addr(
+ 		int vid, uint64_t mac_addr,
+ 		enum port_type iface_type, int iface_no)
+ {
+-	struct sppwk_port_info *wk_port = get_iface_info(
++	struct sppwk_port_info *wk_port = get_sppwk_port(
+ 			iface_type, iface_no);
+ 
+ 	return ((mac_addr == wk_port->cls_attrs.mac_addr) &&
+ 		(vid == wk_port->cls_attrs.vlantag.vid));
+ }
+ 
+-/* Check if port has been added. */
++/* Return 1 as true if given port is already used. */
+ static int
+-spp_check_added_port(enum port_type iface_type, int iface_no)
++is_added_port(enum port_type iface_type, int iface_no)
+ {
+-	struct sppwk_port_info *port = get_iface_info(iface_type, iface_no);
++	struct sppwk_port_info *port = get_sppwk_port(iface_type, iface_no);
+ 	return port->iface_type != UNDEF;
+ }
+ 
+ /**
+- * Separate port id of combination of iface type and number and
+- * assign to given argument, iface_type and iface_no.
+- *
+- * For instance, 'ring:0' is separated to 'ring' and '0'.
++ * Separate resource UID of combination of iface type and number and assign to
++ * given argument, iface_type and iface_no. For instance, 'ring:0' is separated
++ * to 'ring' and '0'. The supported types are `phy`, `vhost` and `ring`.
+  */
+ static int
+-spp_convert_port_to_iface(const char *port,
++parse_resource_uid(const char *res_uid,
+ 		    enum port_type *iface_type,
+ 		    int *iface_no)
+ {
+-	enum port_type type = UNDEF;
+-	const char *no_str = NULL;
++	enum port_type ptype = UNDEF;
++	const char *iface_no_str = NULL;
+ 	char *endptr = NULL;
+ 
+-	/* Find out which type of interface from port */
+-	if (strncmp(port, SPP_IFTYPE_NIC_STR ":",
++	/**
++	 * TODO(yasufum) consider this checking of zero value is recommended
++	 * way, or should be changed.
++	 */
++	if (strncmp(res_uid, SPP_IFTYPE_NIC_STR ":",
+ 			strlen(SPP_IFTYPE_NIC_STR)+1) == 0) {
+-		/* NIC */
+-		type = PHY;
+-		no_str = &port[strlen(SPP_IFTYPE_NIC_STR)+1];
+-	} else if (strncmp(port, SPP_IFTYPE_VHOST_STR ":",
++		ptype = PHY;
++		iface_no_str = &res_uid[strlen(SPP_IFTYPE_NIC_STR)+1];
++	} else if (strncmp(res_uid, SPP_IFTYPE_VHOST_STR ":",
+ 			strlen(SPP_IFTYPE_VHOST_STR)+1) == 0) {
+-		/* VHOST */
+-		type = VHOST;
+-		no_str = &port[strlen(SPP_IFTYPE_VHOST_STR)+1];
+-	} else if (strncmp(port, SPP_IFTYPE_RING_STR ":",
++		ptype = VHOST;
++		iface_no_str = &res_uid[strlen(SPP_IFTYPE_VHOST_STR)+1];
++	} else if (strncmp(res_uid, SPP_IFTYPE_RING_STR ":",
+ 			strlen(SPP_IFTYPE_RING_STR)+1) == 0) {
+-		/* RING */
+-		type = RING;
+-		no_str = &port[strlen(SPP_IFTYPE_RING_STR)+1];
++		ptype = RING;
++		iface_no_str = &res_uid[strlen(SPP_IFTYPE_RING_STR)+1];
+ 	} else {
+-		/* OTHER */
+-		RTE_LOG(ERR, APP, "Unknown interface type. (port = %s)\n",
+-				port);
++		RTE_LOG(ERR, APP, "Unexpected port type in '%s'.\n", res_uid);
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	/* Change type of number of interface */
+-	int ret_no = strtol(no_str, &endptr, 0);
+-	if (unlikely(no_str == endptr) || unlikely(*endptr != '\0')) {
+-		/* No IF number */
+-		RTE_LOG(ERR, APP, "No interface number. (port = %s)\n", port);
++	int port_id = strtol(iface_no_str, &endptr, 0);
++	if (unlikely(iface_no_str == endptr) || unlikely(*endptr != '\0')) {
++		RTE_LOG(ERR, APP, "No interface number in '%s'.\n", res_uid);
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	*iface_type = type;
+-	*iface_no = ret_no;
++	*iface_type = ptype;
++	*iface_no = port_id;
+ 
+-	RTE_LOG(DEBUG, APP, "Port = %s => Type = %d No = %d\n",
+-			port, *iface_type, *iface_no);
++	RTE_LOG(DEBUG, APP, "Parsed '%s' to '%d' and '%d'.\n",
++			res_uid, *iface_type, *iface_no);
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -280,8 +275,7 @@ decode_port_value(void *output, const char *arg_val)
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct sppwk_port_idx *port = output;
+-	ret = spp_convert_port_to_iface(arg_val, &port->iface_type,
+-							&port->iface_no);
++	ret = parse_resource_uid(arg_val, &port->iface_type, &port->iface_no);
+ 	if (unlikely(ret != 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad port. val=%s\n", arg_val);
+ 		return SPP_RET_NG;
+@@ -678,8 +672,7 @@ parse_cls_port(void *cls_cmd_attr, const char *arg_val,
+ 	if (ret < SPP_RET_OK)
+ 		return SPP_RET_NG;
+ 
+-	if (spp_check_added_port(tmp_port.iface_type,
+-					tmp_port.iface_no) == 0) {
++	if (is_added_port(tmp_port.iface_type, tmp_port.iface_no) == 0) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Port not added. val=%s\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index ab0bbb3..19f96d7 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -124,7 +124,7 @@ spp_get_process_type(void)
+ static int
+ spp_check_flush_port(enum port_type iface_type, int iface_no)
+ {
+-	struct sppwk_port_info *port = get_iface_info(iface_type, iface_no);
++	struct sppwk_port_info *port = get_sppwk_port(iface_type, iface_no);
+ 	return port->ethdev_port_id >= 0;
+ }
+ 
+@@ -153,7 +153,7 @@ spp_update_classifier_table(
+ 	}
+ 	mac_addr = (uint64_t)ret_mac;
+ 
+-	port_info = get_iface_info(port->iface_type, port->iface_no);
++	port_info = get_sppwk_port(port->iface_type, port->iface_no);
+ 	if (unlikely(port_info == NULL)) {
+ 		RTE_LOG(ERR, APP, "No port. ( port = %d:%d )\n",
+ 				port->iface_type, port->iface_no);
+@@ -390,7 +390,7 @@ spp_update_port(enum sppwk_action wk_action,
+ 	spp_get_mng_data_addr(NULL, NULL,
+ 			&comp_info_base, NULL, NULL, &change_component, NULL);
+ 	comp_info = (comp_info_base + component_id);
+-	port_info = get_iface_info(port->iface_type, port->iface_no);
++	port_info = get_sppwk_port(port->iface_type, port->iface_no);
+ 	if (rxtx == SPP_PORT_RXTX_RX) {
+ 		num = &comp_info->num_rx_port;
+ 		ports = comp_info->rx_ports;
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 370f071..53dd3f8 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -265,12 +265,11 @@ stop_process(int signal)
+ }
+ 
+ /**
+- * Return port info of given type and num of interface
+- *
+- * It returns NULL value if given type is invalid.
++ * Return sppwk_port_info of given type and num of interface. It returns NULL
++ * if given type is invalid.
+  */
+ struct sppwk_port_info *
+-get_iface_info(enum port_type iface_type, int iface_no)
++get_sppwk_port(enum port_type iface_type, int iface_no)
+ {
+ 	struct iface_info *iface_info = g_mng_data_addr.p_iface_info;
+ 
+@@ -663,7 +662,7 @@ spp_check_used_port(
+ 	int cnt, port_cnt, max = 0;
+ 	struct spp_component_info *component = NULL;
+ 	struct sppwk_port_info **port_array = NULL;
+-	struct sppwk_port_info *port = get_iface_info(iface_type, iface_no);
++	struct sppwk_port_info *port = get_sppwk_port(iface_type, iface_no);
+ 	struct spp_component_info *component_info =
+ 					g_mng_data_addr.p_component_info;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index abf16e7..aeb8e92 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -428,23 +428,12 @@ void set_all_core_status(enum spp_core_status status);
+  *
+  * @param signl
+  *  received signal.
+- *
+  */
+ void stop_process(int signal);
+ 
+-/**
+- * Return port info of given type and num of interface
+- *
+- * @param iface_type
+- *  Interface type to be validated.
+- * @param iface_no
+- *  Interface number to be validated.
+- *
+- * @retval !NULL  sppwk_port_info.
+- * @retval NULL   failed.
+- */
++/* Return sppwk_port_info of given type and num of interface. */
+ struct sppwk_port_info *
+-get_iface_info(enum port_type iface_type, int iface_no);
++get_sppwk_port(enum port_type iface_type, int iface_no);
+ 
+ /* Dump of core information */
+ void dump_core_info(const struct core_mng_info *core_info);
+-- 
+2.17.1
+
+

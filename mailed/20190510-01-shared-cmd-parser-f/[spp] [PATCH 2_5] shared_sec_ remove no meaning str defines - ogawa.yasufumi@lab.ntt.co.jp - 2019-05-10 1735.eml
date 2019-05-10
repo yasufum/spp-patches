@@ -1,0 +1,218 @@
+X-Account-Key: account3
+X-UIDL: a0b7a71e6038d55cb53d0000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.211.102])
+	by md-bnd-nw106 with LMTP id GIToG2A41Vy1PQAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:52 +0900
+Received: from md-lpx-cb005 ([153.138.211.102])
+	by md-drt-nw105 with LMTP id aGHBGmA41VxabAAAqrOKOQ
+	; Fri, 10 May 2019 17:37:52 +0900
+Received: from md-mta-cb007.ocn.ad.jp ([153.138.211.102])
+	by md-lpx-cb005 with LMTP id YEtSFmA41VzMZwAAkBL1ug
+	; Fri, 10 May 2019 17:37:52 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb007.ocn.ad.jp (Postfix) with ESMTP id 554AF100004A2
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:52 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id B24E0A802AE
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:51 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DD3B45681;
+	Fri, 10 May 2019 10:37:48 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 029C84CC3
+ for <spp@dpdk.org>; Fri, 10 May 2019 10:37:46 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4A8bj5S008243;
+ Fri, 10 May 2019 17:37:45 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 146296385F4;
+ Fri, 10 May 2019 17:37:45 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 05A7B6385E7;
+ Fri, 10 May 2019 17:37:45 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 10 May 2019 17:35:24 +0900
+Message-Id: <1557477327-11611-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/5] shared/sec: remove no meaning str defines
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Defines of fixed string, such as `#define SPP_COMMAND_EXIT "exit"`, are
+no meaning because this long define is referred just one time. In
+addition, there are other similar defines which are actually required.
+It makes code complex and hard to maintain. This update is to remove
+such kind of defines.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 97 ++++++-------------
+ 1 file changed, 29 insertions(+), 68 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 723d8c4..8efbfdb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -14,46 +14,15 @@
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+ 
+-/* command string  */
+-#define SPP_COMMAND_CLASSFIER_TABLE_STR "classifier_table"
+-#define SPP_COMMAND_GET_CLIENT_ID_STR   "_get_client_id"
+-#define SPP_COMMAND_STATUS_STR          "status"
+-#define SPP_COMMAND_EXIT_STR            "exit"
+-#define SPP_COMMAND_COMPONENT_STR       "component"
+-#define SPP_COMMAND_PORT_STR            "port"
+-
+-/* classifiler_type string */
+-#define SPP_CLASSIFLER_NONE_STR         "none"
+-#define SPP_CLASSIFLER_MAC_STR          "mac"
+-#define SPP_CLASSIFLER_VLAN_STR         "vlan"
+-
+-/* command action string */
+-#define SPP_ACTION_NONE_STR             "none"
+-#define SPP_ACTION_START_STR            "start"
+-#define SPP_ACTION_STOP_STR             "stop"
+-#define SPP_ACTION_ADD_STR              "add"
+-#define SPP_ACTION_DEL_STR              "del"
+-
+-/* port rx/tx string */
+-#define SPP_PORT_RXTX_NONE_STR          "none"
+-#define SPP_PORT_RXTX_RX_STR            "rx"
+-#define SPP_PORT_RXTX_TX_STR            "tx"
+-
+-/* port ability string */
+-#define SPP_ABILITY_NONE_STR            "none"
+-#define SPP_ABILITY_ADD_VLANTAG_STR     "add_vlantag"
+-#define SPP_ABILITY_DEL_VLANTAG_STR     "del_vlantag"
+-
+ /*
+- * classifier type string list
+- * do it same as the order of enum spp_classifier_type (spp_proc.h)
++ * List of classifier type. The order of items should be same as the order of
++ * enum `spp_classifier_type` defined in spp_proc.h.
+  */
+ const char *CLASSIFILER_TYPE_STRINGS[] = {
+-	SPP_CLASSIFLER_NONE_STR,
+-	SPP_CLASSIFLER_MAC_STR,
+-	SPP_CLASSIFLER_VLAN_STR,
+-
+-	/* termination */ "",
++	"none",
++	"mac",
++	"vlan",
++	"",  /* termination */
+ };
+ 
+ /**
+@@ -61,24 +30,23 @@ const char *CLASSIFILER_TYPE_STRINGS[] = {
+  * enum `sppwk_action` in cmd_parser.h.
+  */
+ const char *COMMAND_ACTION_STRINGS[] = {
+-	SPP_ACTION_NONE_STR,
+-	SPP_ACTION_START_STR,
+-	SPP_ACTION_STOP_STR,
+-	SPP_ACTION_ADD_STR,
+-	SPP_ACTION_DEL_STR,
++	"none",
++	"start",
++	"stop",
++	"add",
++	"del",
+ 	"",  /* termination */
+ };
+ 
+ /*
+- * port rxtx string list
+- * do it same as the order of enum spp_port_rxtx (spp_vf.h)
++ * List of port type. The order of items should be same as the order of
++ * enum `spp_port_rxtx` in spp_vf.h.
+  */
+ const char *PORT_RXTX_STRINGS[] = {
+-	SPP_PORT_RXTX_NONE_STR,
+-	SPP_PORT_RXTX_RX_STR,
+-	SPP_PORT_RXTX_TX_STR,
+-
+-	/* termination */ "",
++	"none",
++	"rx",
++	"tx",
++	"",  /* termination */
+ };
+ 
+ /*
+@@ -86,11 +54,10 @@ const char *PORT_RXTX_STRINGS[] = {
+  * do it same as the order of enum spp_port_ability_type (spp_vf.h)
+  */
+ const char *PORT_ABILITY_STRINGS[] = {
+-	SPP_ABILITY_NONE_STR,
+-	SPP_ABILITY_ADD_VLANTAG_STR,
+-	SPP_ABILITY_DEL_VLANTAG_STR,
+-
+-	/* termination */ "",
++	"none",
++	"add_vlantag",
++	"del_vlantag",
++	"",  /* termination */
+ };
+ 
+ /* Check mac address used on the port for registering or removing */
+@@ -1005,20 +972,14 @@ struct decode_command_list {
+ 
+ /* command list */
+ static struct decode_command_list command_list[] = {
+-	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 5, 5,
+-		decode_command_parameter_cls_table  },
+-						/* classifier_table(mac)  */
+-	{ SPP_COMMAND_CLASSFIER_TABLE_STR, 6, 6,
+-		decode_command_parameter_cls_table_vlan },
+-						/* classifier_table(vlan) */
+-	{ SPP_COMMAND_GET_CLIENT_ID_STR, 1, 1, NULL }, /* _get_client_id  */
+-	{ SPP_COMMAND_STATUS_STR,	 1, 1, NULL }, /* status          */
+-	{ SPP_COMMAND_EXIT_STR,		 1, 1, NULL }, /* exit            */
+-	{ SPP_COMMAND_COMPONENT_STR,	 3, 5,
+-		decode_command_parameter_component  }, /* component       */
+-	{ SPP_COMMAND_PORT_STR,		 5, 8,
+-		decode_command_parameter_port       }, /* port            */
+-	{ "",				 0, 0, NULL }  /* termination     */
++	{ "classifier_table", 5, 5, decode_command_parameter_cls_table },
++	{ "classifier_table", 6, 6, decode_command_parameter_cls_table_vlan },
++	{ "_get_client_id", 1, 1, NULL },
++	{ "static", 1, 1, NULL },
++	{ "exit", 1, 1, NULL },
++	{ "component", 3, 5, decode_command_parameter_component },
++	{ "port", 5, 8, decode_command_parameter_port },
++	{ "", 0, 0, NULL }  /* termination */
+ };
+ 
+ /* Parse command line parameters. */
+-- 
+2.17.1
+
+

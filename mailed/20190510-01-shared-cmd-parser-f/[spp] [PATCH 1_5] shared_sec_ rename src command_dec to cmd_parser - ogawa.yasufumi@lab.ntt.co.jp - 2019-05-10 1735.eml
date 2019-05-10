@@ -1,0 +1,124 @@
+X-Account-Key: account3
+X-UIDL: b0c25f0f6038d55c1c280000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw105 ([153.138.217.135])
+	by md-bnd-nw106 with LMTP id eF6lC2A41VwcKAAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:52 +0900
+Received: from md-lpx-nw005 ([153.138.217.135])
+	by md-drt-nw105 with LMTP id 4N2GC2A41Vx9agAAqrOKOQ
+	; Fri, 10 May 2019 17:37:52 +0900
+Received: from md-mta-nw008.ocn.ad.jp ([153.138.217.135])
+	by md-lpx-nw005 with LMTP id CLMWC2A41Vw4dwAA2u8eSg
+	; Fri, 10 May 2019 17:37:52 +0900
+Received: from mfgw692.ocn.ad.jp (mfgw692.ocn.ad.jp [153.153.63.102])
+	by md-mta-nw008.ocn.ad.jp (Postfix) with ESMTP id 2381B3C000226
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:52 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw692.ocn.ad.jp (Postfix) with ESMTP id 7C79BA80267
+	for <geminoa@juno.ocn.ne.jp>; Fri, 10 May 2019 17:37:51 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id C42344F90;
+	Fri, 10 May 2019 10:37:48 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id EC4514C8F
+ for <spp@dpdk.org>; Fri, 10 May 2019 10:37:46 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4A8bjhx012413;
+ Fri, 10 May 2019 17:37:45 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 0E4606385F0;
+ Fri, 10 May 2019 17:37:45 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id F419F6385DB;
+ Fri, 10 May 2019 17:37:44 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 10 May 2019 17:35:23 +0900
+Message-Id: <1557477327-11611-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557477327-11611-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 1/5] shared/sec: rename src command_dec to cmd_parser
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+For refactoring, rename source file `command_dec.c` to `cmd_parser.c`
+because it defines vars and functions for parsing command, not decoding.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile                                             | 2 +-
+ .../secondary/spp_worker_th/{command_dec.c => cmd_parser.c}     | 0
+ src/shared/secondary/spp_worker_th/cmd_parser.h                 | 2 +-
+ src/vf/Makefile                                                 | 2 +-
+ 4 files changed, 3 insertions(+), 3 deletions(-)
+ rename src/shared/secondary/spp_worker_th/{command_dec.c => cmd_parser.c} (100%)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index be58e3a..3104059 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -20,7 +20,7 @@ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+-SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/command_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+similarity index 100%
+rename from src/shared/secondary/spp_worker_th/command_dec.c
+rename to src/shared/secondary/spp_worker_th/cmd_parser.c
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 785fffe..b03a920 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -55,7 +55,7 @@ enum sppwk_action {
+  * SPP command type.
+  *
+  * @attention This enumerated type must have the same order of command_list
+- *            defined in command_dec.c
++ *            defined in cmd_parser.c
+  */
+ /*
+  * TODO(yasufum) consider to divide because each of target of scope is
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index a8b60fb..8c1cb2b 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -19,7 +19,7 @@ SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+-SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/command_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += ../shared/common.c
+-- 
+2.17.1
+
+
