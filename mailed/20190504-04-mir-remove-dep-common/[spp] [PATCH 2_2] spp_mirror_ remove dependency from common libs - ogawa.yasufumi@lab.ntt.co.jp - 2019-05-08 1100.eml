@@ -1,0 +1,174 @@
+X-Account-Key: account3
+X-UIDL: e8ea6b07e338d25c87890000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw102 ([153.138.217.136])
+	by md-bnd-nw106 with LMTP id iGSWBOM40lyHiQAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:03:15 +0900
+Received: from md-lpx-cb001 ([153.138.217.136])
+	by md-drt-nw102 with LMTP id wAY7A+M40lx7FgAA8iqT2w
+	; Wed, 08 May 2019 11:03:15 +0900
+Received: from md-mta-nw009.ocn.ad.jp ([153.138.217.136])
+	by md-lpx-cb001 with LMTP id kFX0OeI40lwjewAA9RM4zw
+	; Wed, 08 May 2019 11:03:15 +0900
+Received: from mfgw712.ocn.ad.jp (mfgw712.ocn.ad.jp [153.153.63.104])
+	by md-mta-nw009.ocn.ad.jp (Postfix) with ESMTP id DB29E3C000308
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:14 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb071: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb071; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw712.ocn.ad.jp (Postfix) with ESMTP id 550B2500276
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:03:14 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DA591343C;
+	Wed,  8 May 2019 04:03:12 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id B7DD91F28
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:03:10 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x48239WZ016057;
+ Wed, 8 May 2019 11:03:09 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 4F6CBEA702A;
+ Wed,  8 May 2019 11:03:09 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 3AE4EEA7089;
+ Wed,  8 May 2019 11:03:09 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:00:53 +0900
+Message-Id: <1557280853-7872-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1557280853-7872-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1557280853-7872-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 2/2] spp_mirror: remove dependency from common libs
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Some of functions in `src/shared` depend on spp_mirror's functions
+under `src/mirror`. This update is to resolve the dependency for cleanup
+codes for maintainance.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/spp_mirror.c                       | 11 +++----
+ src/mirror/spp_mirror.h                       | 32 ++-----------------
+ src/shared/secondary/spp_worker_th/spp_proc.c |  5 +--
+ 3 files changed, 8 insertions(+), 40 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 4835d55..ba0919a 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -9,14 +9,13 @@
+ #include <rte_common.h>
+ #include <rte_cycles.h>
+ 
++#include "shared/secondary/spp_worker_th/mirror_deps.h"
+ #include "shared/common.h"
+ #include "shared/secondary/utils.h"
+-
+-#include "spp_proc.h"
+-#include "spp_mirror.h"
+-#include "command_proc.h"
+-#include "command_dec.h"
+-#include "spp_port.h"
++#include "shared/secondary/spp_worker_th/command_proc.h"
++#include "shared/secondary/spp_worker_th/command_dec.h"
++#include "shared/secondary/spp_worker_th/spp_proc.h"
++#include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_MIRROR RTE_LOGTYPE_USER1
+diff --git a/src/mirror/spp_mirror.h b/src/mirror/spp_mirror.h
+index eec2537..17fa522 100644
+--- a/src/mirror/spp_mirror.h
++++ b/src/mirror/spp_mirror.h
+@@ -5,6 +5,8 @@
+ #ifndef __SPP_MIRROR_H__
+ #define __SPP_MIRROR_H__
+ 
++#include "shared/secondary/spp_worker_th/spp_proc.h"
++
+ /**
+  * @file
+  * SPP_MIRROR main
+@@ -21,34 +23,4 @@
+  *  I do not do the deletion of the VLAN tag, the addition.
+  */
+ 
+-/**
+- * Update Mirror info
+- *
+- * @param component
+- *  The pointer to struct spp_component_info.@n
+- *  The data for updating the internal data of mirror.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_mirror_update(struct spp_component_info *component);
+-
+-/**
+- * Mirror get component status
+- *
+- * @param lcore_id
+- *  The logical core ID for forwarder and merger.
+- * @param id
+- *  The unique component ID.
+- * @param params
+- *  The pointer to struct spp_iterate_core_params.@n
+- *  Detailed data of mirror status.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
+- */
+-int spp_mirror_get_component_status(
+-		unsigned int lcore_id, int id,
+-		struct spp_iterate_core_params *params);
+-
+ #endif /* __SPP_MIRROR_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 8009527..1d39e89 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -12,16 +12,13 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "vf_deps.h"
++#include "mirror_deps.h"
+ #include "spp_proc.h"
+ #include "spp_port.h"
+ 
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+-#ifdef SPP_MIRROR_MODULE
+-#include "../../mirror/spp_mirror.h"
+-#endif /* SPP_MIRROR_MODULE */
+-
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+ /* Manage data to addoress */
+-- 
+2.17.1
+
+
