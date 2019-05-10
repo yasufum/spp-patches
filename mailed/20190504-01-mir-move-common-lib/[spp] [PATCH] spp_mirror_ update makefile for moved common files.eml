@@ -1,0 +1,113 @@
+X-Account-Key: account3
+X-UIDL: 00bb780dc438d25c4d970000676ddb7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <spp-bounces@dpdk.org>
+Delivered-To: geminoa@juno.ocn.ne.jp
+Received: from md-drt-nw101 ([153.138.211.101])
+	by md-bnd-nw106 with LMTP id QB7TCsQ40lxNlwAAZ23bfA
+	for <geminoa@juno.ocn.ne.jp>; Wed, 08 May 2019 11:02:44 +0900
+Received: from md-lpx-cb002 ([153.138.211.101])
+	by md-drt-nw101 with LMTP id IG2qCcQ40lxAPgAAZBuwvA
+	; Wed, 08 May 2019 11:02:44 +0900
+Received: from md-mta-cb006.ocn.ad.jp ([153.138.211.101])
+	by md-lpx-cb002 with LMTP id ICC6BcQ40lzcSgAAtwVFfA
+	; Wed, 08 May 2019 11:02:44 +0900
+Received: from mfgw691.ocn.ad.jp (mfgw691.ocn.ad.jp [153.153.63.98])
+	by md-mta-cb006.ocn.ad.jp (Postfix) with ESMTP id 10CDCC000E05
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:44 +0900 (JST)
+Received-SPF: pass (mf-ofc-ucb069: domain designate client-ip as permitted sender) client-ip=92.243.14.124; envelope-from=<spp-bounces@dpdk.org>; helo=dpdk.org;
+Authentication-Results: mf-ofc-ucb069; spf=pass smtp.mailfrom=spp-bounces@dpdk.org
+Received: from dpdk.org (dpdk.org [92.243.14.124])
+	by mfgw691.ocn.ad.jp (Postfix) with ESMTP id 960D9A80268
+	for <geminoa@juno.ocn.ne.jp>; Wed,  8 May 2019 11:02:42 +0900 (JST)
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 6E19B1F28;
+	Wed,  8 May 2019 04:02:41 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 135E2A49
+ for <spp@dpdk.org>; Wed,  8 May 2019 04:02:39 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4822cBN023035;
+ Wed, 8 May 2019 11:02:39 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id E056E637FF3;
+ Wed,  8 May 2019 11:02:38 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id D0274637FED;
+ Wed,  8 May 2019 11:02:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Wed,  8 May 2019 11:00:23 +0900
+Message-Id: <1557280823-7725-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] spp_mirror: update makefile for moved common files
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+As common files are moved from `src/vf/common`, update include and
+source paths.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index f1995fc..be58e3a 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -11,21 +11,28 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ # binary name
+ APP = spp_mirror
+ 
++SPP_WKT_DIR = ../shared/secondary/spp_worker_th
++
+ # all source are stored in SRCS-y
+ SRCS-y := spp_mirror.c
+ SRCS-y += ../shared/common.c
+ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+-SRCS-y += ../vf/common/spp_proc.c ../vf/common/spp_port.c
+-SRCS-y += ../vf/common/command_conn.c ../vf/common/command_proc.c
+-SRCS-y += ../vf/common/command_dec.c
+-SRCS-y += ../vf/common/ringlatencystats.c ../vf/common/string_buffer.c
++SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
++SRCS-y += $(SPP_WKT_DIR)/spp_port.c
++SRCS-y += $(SPP_WKT_DIR)/command_conn.c
++SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/command_proc.c
++SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
++SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../
+-CFLAGS += -I$(SRCDIR)/../vf/common
+ CFLAGS += -DSPP_MIRROR_MODULE
++
+ CFLAGS += -DSPP_MIRROR_SHALLOWCOPY
++
++# Optional Settings
+ #CFLAGS += -DSPP_DEMONIZE
+ #CFLAGS += -DSPP_RINGLATENCYSTATS_ENABLE
+ 
+-- 
+2.17.1
+
+
