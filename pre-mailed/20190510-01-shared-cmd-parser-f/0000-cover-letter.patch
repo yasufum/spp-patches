@@ -1,0 +1,30 @@
+From 04c287b5a0e9e18ef7fb5b635ae151a56be9d973 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 10 May 2019 17:27:39 +0900
+Subject: [PATCH 0/5] Refactor source of cmd parser port utils
+
+This series of update is to change the name `command_dec.c` to
+`cmd_parser.c` and refactor vars and functions mainly for port
+management defined in the file.
+
+Yasufumi Ogawa (5):
+  shared/sec: rename src command_dec to cmd_parser
+  shared/sec: remove no meaning str defines
+  shared/sec: rename lists of fixed strings
+  shared/sec: rename struct for attrs of classify
+  shared/sec: rename sppwk port util functions
+
+ src/mirror/Makefile                           |   2 +-
+ .../{command_dec.c => cmd_parser.c}           | 234 +++++++-----------
+ .../secondary/spp_worker_th/cmd_parser.h      |   6 +-
+ .../secondary/spp_worker_th/command_proc.c    |  75 +++---
+ src/shared/secondary/spp_worker_th/spp_proc.c |  33 ++-
+ src/shared/secondary/spp_worker_th/spp_proc.h |  28 +--
+ src/vf/Makefile                               |   2 +-
+ src/vf/classifier_mac.c                       |   8 +-
+ 8 files changed, 165 insertions(+), 223 deletions(-)
+ rename src/shared/secondary/spp_worker_th/{command_dec.c => cmd_parser.c} (81%)
+
+-- 
+2.17.1
+
