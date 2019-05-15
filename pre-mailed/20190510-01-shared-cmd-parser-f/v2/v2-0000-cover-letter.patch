@@ -1,9 +1,10 @@
 From 0d4c104de89262c880a19e1bab4de4347b25a5ce Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Wed, 15 May 2019 12:06:21 +0900
-Subject: [PATCH v2 0/5] *** SUBJECT HERE ***
+Subject: [PATCH v2 0/5] Fix typo of status command
 
-*** BLURB HERE ***
+This v2 patches is to fix type of status command in the second patch to
+remove defines.
 
 Yasufumi Ogawa (5):
   shared/sec: rename src command_dec to cmd_parser
