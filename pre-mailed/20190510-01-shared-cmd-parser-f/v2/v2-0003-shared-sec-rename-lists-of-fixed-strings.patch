@@ -1,0 +1,244 @@
+From 5f2eff25c274c16e3b3ce26fcd7b3fd87d25579e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 9 May 2019 08:46:55 +0900
+Subject: [PATCH v2 3/5] shared/sec: rename lists of fixed strings
+
+As redundant defines are removed, rename lists of fixed strings named
+`*_STRINGS`, such as `PORT_ABILITY_STATUS_STRINGS`, to `*_LIST` because
+it is not needed to declare as string explicitly.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 51 ++++++++++---------
+ .../secondary/spp_worker_th/command_proc.c    | 41 ++++++++-------
+ src/shared/secondary/spp_worker_th/spp_proc.h |  1 +
+ 3 files changed, 47 insertions(+), 46 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 6ce60f9..d617276 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -14,22 +14,11 @@
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+ 
+-/*
+- * List of classifier type. The order of items should be same as the order of
+- * enum `spp_classifier_type` defined in spp_proc.h.
+- */
+-const char *CLASSIFILER_TYPE_STRINGS[] = {
+-	"none",
+-	"mac",
+-	"vlan",
+-	"",  /* termination */
+-};
+-
+ /**
+  * List of command action. The order of items should be same as the order of
+  * enum `sppwk_action` in cmd_parser.h.
+  */
+-const char *COMMAND_ACTION_STRINGS[] = {
++const char *CMD_ACT_LIST[] = {
+ 	"none",
+ 	"start",
+ 	"stop",
+@@ -38,22 +27,34 @@ const char *COMMAND_ACTION_STRINGS[] = {
+ 	"",  /* termination */
+ };
+ 
+-/*
+- * List of port type. The order of items should be same as the order of
++/**
++ * List of classifier type. The order of items should be same as the order of
++ * enum `spp_classifier_type` defined in spp_proc.h.
++ */
++/* TODO(yasufum) fix sinmilar var in command_proc.c */
++const char *CLS_TYPE_LIST[] = {
++	"none",
++	"mac",
++	"vlan",
++	"",  /* termination */
++};
++
++/**
++ * List of port direction. The order of items should be same as the order of
+  * enum `spp_port_rxtx` in spp_vf.h.
+  */
+-const char *PORT_RXTX_STRINGS[] = {
++const char *PORT_DIR_LIST[] = {
+ 	"none",
+ 	"rx",
+ 	"tx",
+ 	"",  /* termination */
+ };
+ 
+-/*
+- * port ability string list
+- * do it same as the order of enum spp_port_ability_type (spp_vf.h)
++/**
++ * List of port abilities. The order of items should be same as the order of
++ * enum `spp_port_ability_type` in spp_vf.h.
+  */
+-const char *PORT_ABILITY_STRINGS[] = {
++const char *PORT_ABILITY_LIST[] = {
+ 	"none",
+ 	"add_vlantag",
+ 	"del_vlantag",
+@@ -311,7 +312,7 @@ decode_component_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
++	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component action. val=%s\n",
+@@ -397,7 +398,7 @@ decode_port_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
++	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown port action. val=%s\n",
+@@ -457,7 +458,7 @@ decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
+ 	int ret = SPP_RET_OK;
+ 	struct sppwk_cmd_port *port = output;
+ 
+-	ret = get_arrary_index(arg_val, PORT_RXTX_STRINGS);
++	ret = get_arrary_index(arg_val, PORT_DIR_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port rxtx. val=%s\n",
+ 				arg_val);
+@@ -508,7 +509,7 @@ decode_port_vlan_operation(void *output, const char *arg_val,
+ 
+ 	switch (ability->ope) {
+ 	case SPP_PORT_ABILITY_OPE_NONE:
+-		ret = get_arrary_index(arg_val, PORT_ABILITY_STRINGS);
++		ret = get_arrary_index(arg_val, PORT_ABILITY_LIST);
+ 		if (unlikely(ret <= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Unknown port ability. val=%s\n",
+@@ -613,7 +614,7 @@ decode_classifier_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, COMMAND_ACTION_STRINGS);
++	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port action. val=%s\n",
+ 				arg_val);
+@@ -637,7 +638,7 @@ decode_classifier_type_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, CLASSIFILER_TYPE_STRINGS);
++	ret = get_arrary_index(arg_val, CLS_TYPE_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown classifier type. val=%s\n",
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index f345759..9df4cdc 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -63,40 +63,39 @@ struct command_response_list {
+ 	int (*func)(const char *name, char **output, void *tmp);
+ };
+ 
+-/*
+- * seconary type string list
+- * do it same the order enum secondary_type (spp_proc.h)
++/**
++ * List of worker process type. The order of items should be same as the order
++ * of enum `secondary_type` in spp_proc.h.
+  */
+-const char *SECONDARY_PROCESS_TYPE_SRINGS[] = {
++/* TODO(yasufum) rename `secondary_type` to `sppwk_proc_type`. */
++const char *SPPWK_PROC_TYPE_LIST[] = {
+ 	"none",
+ 	"vf",
+ 	"mirror",
+-
+-	/* termination */ "",
++	"",  /* termination */
+ };
+ 
+-/*
+- * port ability string list
+- * do it same as the order of enum spp_port_ability_type (spp_vf.h)
++/**
++ * List of port abilities. The order of items should be same as the order of
++ * enum `spp_port_ability_type` in spp_vf.h.
+  */
+-const char *PORT_ABILITY_STATUS_STRINGS[] = {
++const char *PORT_ABILITY_STAT_LIST[] = {
+ 	"none",
+ 	"add",
+ 	"del",
+-
+-	/* termination */ "",
++	"",  /* termination */
+ };
+ 
+-/*
+- * classifier type string list
+- * do it same as the order of enum spp_classifier_type (spp_vf.h)
++/**
++ * List of classifier type. The order of items should be same as the order of
++ * enum `spp_classifier_type` defined in spp_proc.h.
+  */
+-const char *CLASSIFILER_TYPE_STATUS_STRINGS[] = {
++/* TODO(yasufum) fix similar var in cmd_parser.c */
++const char *CLS_TYPE_A_LIST[] = {
+ 	"none",
+ 	"mac",
+ 	"vlan",
+-
+-	/* termination */ "",
++	"",  /* termination */
+ };
+ 
+ /* get client id */
+@@ -969,7 +968,7 @@ append_process_type_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+ 	return append_json_str_value(name, output,
+-			SECONDARY_PROCESS_TYPE_SRINGS[spp_get_process_type()]);
++			SPPWK_PROC_TYPE_LIST[spp_get_process_type()]);
+ }
+ 
+ /* append a list of interface numbers for JSON format */
+@@ -1012,7 +1011,7 @@ append_vlan_value(char **output, const int ope, const int vid, const int pcp)
+ {
+ 	int ret = SPP_RET_OK;
+ 	ret = append_json_str_value("operation", output,
+-			PORT_ABILITY_STATUS_STRINGS[ope]);
++			PORT_ABILITY_STAT_LIST[ope]);
+ 	if (unlikely(ret < SPP_RET_OK))
+ 		return SPP_RET_NG;
+ 
+@@ -1269,7 +1268,7 @@ append_classifier_element_value(
+ 	spp_format_port_string(port_str, port->iface_type, port->iface_no);
+ 
+ 	ret = append_json_str_value("type", &tmp_buff,
+-			CLASSIFILER_TYPE_STATUS_STRINGS[type]);
++			CLS_TYPE_A_LIST[type]);
+ 	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index d7952fb..bca2c0e 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -149,6 +149,7 @@ enum copy_mng_flg {
+ };
+ 
+ /* secondary process type used only from spp_vf and spp_mirror */
++/* TODO(yasufum) rename `secondary_type` to `sppwk_proc_type`. */
+ enum secondary_type {
+ 	SECONDARY_TYPE_NONE,
+ 	SECONDARY_TYPE_VF,
+-- 
+2.17.1
+

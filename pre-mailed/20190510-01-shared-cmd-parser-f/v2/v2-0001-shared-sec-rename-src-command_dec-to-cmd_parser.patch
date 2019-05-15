@@ -1,0 +1,63 @@
+From ddb17594cca75a6a686677f2b496dc55c0aa7626 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 9 May 2019 03:53:04 +0900
+Subject: [PATCH v2 1/5] shared/sec: rename src command_dec to cmd_parser
+
+For refactoring, rename source file `command_dec.c` to `cmd_parser.c`
+because it defines vars and functions for parsing command, not decoding.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile                                             | 2 +-
+ .../secondary/spp_worker_th/{command_dec.c => cmd_parser.c}     | 0
+ src/shared/secondary/spp_worker_th/cmd_parser.h                 | 2 +-
+ src/vf/Makefile                                                 | 2 +-
+ 4 files changed, 3 insertions(+), 3 deletions(-)
+ rename src/shared/secondary/spp_worker_th/{command_dec.c => cmd_parser.c} (100%)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index be58e3a..3104059 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -20,7 +20,7 @@ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+-SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/command_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+diff --git a/src/shared/secondary/spp_worker_th/command_dec.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+similarity index 100%
+rename from src/shared/secondary/spp_worker_th/command_dec.c
+rename to src/shared/secondary/spp_worker_th/cmd_parser.c
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 785fffe..b03a920 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -55,7 +55,7 @@ enum sppwk_action {
+  * SPP command type.
+  *
+  * @attention This enumerated type must have the same order of command_list
+- *            defined in command_dec.c
++ *            defined in cmd_parser.c
+  */
+ /*
+  * TODO(yasufum) consider to divide because each of target of scope is
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index a8b60fb..8c1cb2b 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -19,7 +19,7 @@ SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+-SRCS-y += $(SPP_WKT_DIR)/command_dec.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/command_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += ../shared/common.c
+-- 
+2.17.1
+

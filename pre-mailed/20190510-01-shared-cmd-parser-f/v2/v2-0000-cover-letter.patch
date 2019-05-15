@@ -1,0 +1,28 @@
+From 0d4c104de89262c880a19e1bab4de4347b25a5ce Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 15 May 2019 12:06:21 +0900
+Subject: [PATCH v2 0/5] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (5):
+  shared/sec: rename src command_dec to cmd_parser
+  shared/sec: remove no meaning str defines
+  shared/sec: rename lists of fixed strings
+  shared/sec: rename struct for attrs of classify
+  shared/sec: rename sppwk port util functions
+
+ src/mirror/Makefile                           |   2 +-
+ .../{command_dec.c => cmd_parser.c}           | 234 +++++++-----------
+ .../secondary/spp_worker_th/cmd_parser.h      |   6 +-
+ .../secondary/spp_worker_th/command_proc.c    |  75 +++---
+ src/shared/secondary/spp_worker_th/spp_proc.c |  33 ++-
+ src/shared/secondary/spp_worker_th/spp_proc.h |  28 +--
+ src/vf/Makefile                               |   2 +-
+ src/vf/classifier_mac.c                       |   8 +-
+ 8 files changed, 165 insertions(+), 223 deletions(-)
+ rename src/shared/secondary/spp_worker_th/{command_dec.c => cmd_parser.c} (81%)
+
+-- 
+2.17.1
+
