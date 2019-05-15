@@ -97,6 +97,10 @@ def main():
             if flg is not True:
                 error_exit("No cover letter is included!")
 
+            if args.in_reply_to is not None:
+                CMD.append('--in-reply-to')
+                CMD.append(args.in_reply_to)
+
             CMD.append('--annotate')
     else:
         if not args.patch.endswith('.patch'):
