@@ -1,0 +1,66 @@
+From a6d7ec6df2cc4222197bf3b3fa66d74d5ba0303d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sun, 12 May 2019 18:01:32 +0900
+Subject: [PATCH 3/6] shared/sec: remove misunderstandable validate func
+
+Function `decode_str_value()` is not for decoding, but just validate
+length of given string. In addition, It just consists of four lines and
+used from two statements. This update is to remove almost nouse
+function.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 23 ++++++++-----------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 4ee8773..02528d6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -258,17 +258,6 @@ get_vlan_uint_val(unsigned int *output, const char *arg_val, unsigned int min,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of string */
+-static int
+-decode_str_value(char *output, const char *arg_val)
+-{
+-	if (strlen(arg_val) >= SPPWK_VAL_BUFSZ)
+-		return SPP_RET_NG;
+-
+-	strcpy(output, arg_val);
+-	return SPP_RET_OK;
+-}
+-
+ /* decoding procedure of port */
+ static int
+ decode_port_value(void *output, const char *arg_val)
+@@ -344,7 +333,11 @@ decode_component_name_value(void *output, const char *arg_val,
+ 		}
+ 	}
+ 
+-	return decode_str_value(component->name, arg_val);
++	if (strlen(arg_val) >= SPPWK_VAL_BUFSZ)
++		return SPP_RET_NG;
++
++	strcpy(component->name, arg_val);
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of core id for component command */
+@@ -488,7 +481,11 @@ decode_port_name_value(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	return decode_str_value(output, arg_val);
++	if (strlen(arg_val) >= SPPWK_VAL_BUFSZ)
++		return SPP_RET_NG;
++
++	strcpy(output, arg_val);
++	return SPP_RET_OK;
+ }
+ 
+ /* decoding procedure of vlan operation for port command */
+-- 
+2.17.1
+

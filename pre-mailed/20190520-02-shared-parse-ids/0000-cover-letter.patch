@@ -1,0 +1,24 @@
+From acc4570878a87682f6c9f9a5f11ab4164af59a65 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 18:01:14 +0900
+Subject: [PATCH 0/6] Refactor parsing resource UID
+
+This series of patches is for fixing typo of func name, revising
+ambiguous name of func and vars, and updating comments and log
+messages.
+
+Yasufumi Ogawa (6):
+  shared/sec: refactor func for getting VLAN ID
+  shared/sec: rename misspelled get_arrary_index
+  shared/sec: remove misunderstandable validate func
+  shared/sec: rename func for parsing port UID
+  shared/sec: fix funcs for getting int and uint
+  shared/sec: rename func for parsing lcore ID
+
+ .../secondary/spp_worker_th/cmd_parser.c      | 108 +++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h |   4 +-
+ 2 files changed, 55 insertions(+), 57 deletions(-)
+
+-- 
+2.17.1
+
