@@ -1,0 +1,265 @@
+X-Account-Key: account4
+X-UIDL: 0000c83956a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 51B01400833
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 4EB907F36B; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 4DB1A7F368
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 397C3638A28;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 2B5166388EB;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 4/8] shared/sec: rename parsing vlan operations
+Date: Tue, 21 May 2019 11:32:20 +0900
+Message-Id: <1558405944-8355-5-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_port_vlan_operation()` to
+`parse_port_vlan_ops()`, and enum `spp_port_ability_ope` to
+`sppwk_port_abl_ops` and its members to be more specific.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 28 ++++++++++---------
+ .../secondary/spp_worker_th/command_proc.c    | 26 ++++++++---------
+ src/shared/secondary/spp_worker_th/spp_port.c | 12 ++++----
+ src/shared/secondary/spp_worker_th/spp_proc.h | 14 +++++-----
+ 4 files changed, 41 insertions(+), 39 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 0c65018..7f678d5 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -506,17 +506,19 @@ parse_comp_name_portcmd(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of vlan operation for port command */
++/* Parse vlan operation for port command. */
++/* TODO(yasufum) add desc for how to be used. */
++/* TODO(yasufum) add desc for what is port ability. */
+ static int
+-decode_port_vlan_operation(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_port_vlan_ops(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	struct sppwk_cmd_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+-	switch (ability->ope) {
+-	case SPP_PORT_ABILITY_OPE_NONE:
++	switch (ability->ops) {
++	case SPPWK_PORT_ABL_OPS_NONE:
+ 		ret = get_list_idx(arg_val, PORT_ABILITY_LIST);
+ 		if (unlikely(ret <= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -524,10 +526,10 @@ decode_port_vlan_operation(void *output, const char *arg_val,
+ 					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+-		ability->ope  = ret;
++		ability->ops  = ret;
+ 		ability->rxtx = port->rxtx;
+ 		break;
+-	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++	case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+ 		/* Nothing to do. */
+ 		break;
+ 	default:
+@@ -547,8 +549,8 @@ decode_port_vid(void *output, const char *arg_val,
+ 	struct sppwk_cmd_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+-	switch (ability->ope) {
+-	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++	switch (ability->ops) {
++	case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+ 		ret = get_int_in_range(&ability->data.vlantag.vid,
+ 			arg_val, 0, ETH_VLAN_ID_MAX);
+ 		if (unlikely(ret < SPP_RET_OK)) {
+@@ -575,8 +577,8 @@ decode_port_pcp(void *output, const char *arg_val,
+ 	struct sppwk_cmd_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+-	switch (ability->ope) {
+-	case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++	switch (ability->ops) {
++	case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+ 		ret = get_int_in_range(&ability->data.vlantag.pcp,
+ 				arg_val, 0, SPP_VLAN_PCP_MAX);
+ 		if (unlikely(ret < SPP_RET_OK)) {
+@@ -850,7 +852,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "port vlan operation",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_vlan_operation
++			.func = parse_port_vlan_ops
+ 		},
+ 		{
+ 			.name = "port vid",
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 19f96d7..fbc0c90 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -411,10 +411,10 @@ spp_update_port(enum sppwk_action wk_action,
+ 		/* Check whether a port has been already registered. */
+ 		if (ret_check >= SPP_RET_OK) {
+ 			/* registered */
+-			if (ability->ope == SPP_PORT_ABILITY_OPE_ADD_VLANTAG) {
++			if (ability->ops == SPPWK_PORT_ABL_OPS_ADD_VLANTAG) {
+ 				while ((cnt < SPP_PORT_ABILITY_MAX) &&
+-					    (port_info->ability[cnt].ope !=
+-					    SPP_PORT_ABILITY_OPE_ADD_VLANTAG))
++					    (port_info->ability[cnt].ops !=
++					    SPPWK_PORT_ABL_OPS_ADD_VLANTAG))
+ 					cnt++;
+ 				if (cnt >= SPP_PORT_ABILITY_MAX) {
+ 					RTE_LOG(ERR, APP, "update VLAN tag "
+@@ -436,10 +436,10 @@ spp_update_port(enum sppwk_action wk_action,
+ 			return SPP_RET_NG;
+ 		}
+ 
+-		if (ability->ope != SPP_PORT_ABILITY_OPE_NONE) {
++		if (ability->ops != SPPWK_PORT_ABL_OPS_NONE) {
+ 			while ((cnt < SPP_PORT_ABILITY_MAX) &&
+-					(port_info->ability[cnt].ope !=
+-					SPP_PORT_ABILITY_OPE_NONE)) {
++					(port_info->ability[cnt].ops !=
++					SPPWK_PORT_ABL_OPS_NONE)) {
+ 				cnt++;
+ 			}
+ 			if (cnt >= SPP_PORT_ABILITY_MAX) {
+@@ -460,8 +460,8 @@ spp_update_port(enum sppwk_action wk_action,
+ 
+ 	case SPPWK_ACT_DEL:
+ 		for (cnt = 0; cnt < SPP_PORT_ABILITY_MAX; cnt++) {
+-			if (port_info->ability[cnt].ope ==
+-					SPP_PORT_ABILITY_OPE_NONE)
++			if (port_info->ability[cnt].ops ==
++					SPPWK_PORT_ABL_OPS_NONE)
+ 				continue;
+ 
+ 			if (port_info->ability[cnt].rxtx == rxtx)
+@@ -1045,10 +1045,10 @@ append_vlan_block(const char *name, char **output,
+ 
+ 	spp_port_ability_get_info(port_id, rxtx, &info);
+ 	for (i = 0; i < SPP_PORT_ABILITY_MAX; i++) {
+-		switch (info[i].ope) {
+-		case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
+-		case SPP_PORT_ABILITY_OPE_DEL_VLANTAG:
+-			ret = append_vlan_value(&tmp_buff, info[i].ope,
++		switch (info[i].ops) {
++		case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
++		case SPPWK_PORT_ABL_OPS_DEL_VLANTAG:
++			ret = append_vlan_value(&tmp_buff, info[i].ops,
+ 					info[i].data.vlantag.vid,
+ 					info[i].data.vlantag.pcp);
+ 			if (unlikely(ret < SPP_RET_OK))
+@@ -1067,7 +1067,7 @@ append_vlan_block(const char *name, char **output,
+ 		}
+ 	}
+ 	if (i == SPP_PORT_ABILITY_MAX) {
+-		ret = append_vlan_value(&tmp_buff, SPP_PORT_ABILITY_OPE_NONE,
++		ret = append_vlan_value(&tmp_buff, SPPWK_PORT_ABL_OPS_NONE,
+ 				0, 0);
+ 		if (unlikely(ret < SPP_RET_OK))
+ 			return SPP_RET_NG;
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+index 9c0e109..5b02d90 100644
+--- a/src/shared/secondary/spp_worker_th/spp_port.c
++++ b/src/shared/secondary/spp_worker_th/spp_port.c
+@@ -284,13 +284,13 @@ port_ability_set_ability(
+ 		memcpy(&out_ability[out_cnt], &in_ability[in_cnt],
+ 				sizeof(struct spp_port_ability));
+ 
+-		switch (out_ability[out_cnt].ope) {
+-		case SPP_PORT_ABILITY_OPE_ADD_VLANTAG:
++		switch (out_ability[out_cnt].ops) {
++		case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+ 			tag = &out_ability[out_cnt].data.vlantag;
+ 			tag->tci = rte_cpu_to_be_16(SPP_VLANTAG_CALC_TCI(
+ 					tag->vid, tag->pcp));
+ 			break;
+-		case SPP_PORT_ABILITY_OPE_DEL_VLANTAG:
++		case SPPWK_PORT_ABL_OPS_DEL_VLANTAG:
+ 		default:
+ 			/* Nothing to do. */
+ 			break;
+@@ -344,14 +344,14 @@ port_ability_each_operation(uint16_t port_id,
+ 	struct spp_port_ability *info = NULL;
+ 
+ 	spp_port_ability_get_info(port_id, rxtx, &info);
+-	if (unlikely(info[0].ope == SPP_PORT_ABILITY_OPE_NONE))
++	if (unlikely(info[0].ops == SPPWK_PORT_ABL_OPS_NONE))
+ 		return nb_pkts;
+ 
+ 	for (cnt = 0; cnt < SPP_PORT_ABILITY_MAX; cnt++) {
+-		if (info[cnt].ope == SPP_PORT_ABILITY_OPE_NONE)
++		if (info[cnt].ops == SPPWK_PORT_ABL_OPS_NONE)
+ 			break;
+ 
+-		ok_pkts = port_ability_function_list[info[cnt].ope](
++		ok_pkts = port_ability_function_list[info[cnt].ops](
+ 				pkts, ok_pkts, &info->data);
+ 	}
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index 8f9f11d..ffd8972 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -123,10 +123,10 @@ enum spp_port_rxtx {
+  * Port ability operation which indicates vlan tag operation on the port
+  * (e.g. add vlan tag or delete vlan tag)
+  */
+-enum spp_port_ability_ope {
+-	SPP_PORT_ABILITY_OPE_NONE,	  /**< none */
+-	SPP_PORT_ABILITY_OPE_ADD_VLANTAG, /**< add VLAN tag */
+-	SPP_PORT_ABILITY_OPE_DEL_VLANTAG, /**< delete VLAN tag */
++enum sppwk_port_abl_ops {
++	SPPWK_PORT_ABL_OPS_NONE,
++	SPPWK_PORT_ABL_OPS_ADD_VLANTAG,
++	SPPWK_PORT_ABL_OPS_DEL_VLANTAG,
+ };
+ 
+ /* getopt_long return value for long option */
+@@ -174,9 +174,9 @@ union spp_ability_data {
+ 
+ /** Port ability information */
+ struct spp_port_ability {
+-	enum spp_port_ability_ope ope; /**< Operation */
+-	enum spp_port_rxtx rxtx;       /**< rx/tx identifier */
+-	union spp_ability_data data;   /**< Port ability data */
++	enum sppwk_port_abl_ops ops;  /**< Port ability Operations */
++	enum spp_port_rxtx rxtx;      /**< rx/tx identifier */
++	union spp_ability_data data;  /**< Port ability data */
+ };
+ 
+ /* Attributes for classifying . */
+-- 
+2.17.1
+
+

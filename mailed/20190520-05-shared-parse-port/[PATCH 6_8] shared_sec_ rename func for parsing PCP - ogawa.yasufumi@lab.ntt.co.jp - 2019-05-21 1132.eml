@@ -1,0 +1,92 @@
+X-Account-Key: account4
+X-UIDL: 0000c83b56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 560F1400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 54B7923BAF8; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 5432523BAC0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 4352D6387B4;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 35894638746;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 6/8] shared/sec: rename func for parsing PCP
+Date: Tue, 21 May 2019 11:32:22 +0900
+Message-Id: <1558405944-8355-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_port_pcp()` to `parse_port_pcp()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 0fd105c..fc30463 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -569,22 +569,23 @@ parse_port_vid(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of pcp for port command */
++/* Parse PCP for port command */
+ static int
+-decode_port_pcp(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_port_pcp(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int pcp;
+ 	struct sppwk_cmd_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+ 	switch (ability->ops) {
+ 	case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+-		ret = get_int_in_range(&ability->data.vlantag.pcp,
++		pcp = get_int_in_range(&ability->data.vlantag.pcp,
+ 				arg_val, 0, SPP_VLAN_PCP_MAX);
+-		if (unlikely(ret < SPP_RET_OK)) {
++		if (unlikely(pcp < SPP_RET_OK)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+-					"Bad VLAN PCP. val=%s\n", arg_val);
++					"Invalid `%s`for parsing PCP.\n",
++					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+ 		break;
+@@ -863,7 +864,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "port pcp",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_pcp
++			.func = parse_port_pcp
+ 		},
+ 		SPPWK_CMD_NO_PARAMS,
+ 	},
+-- 
+2.17.1
+
+

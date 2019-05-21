@@ -1,0 +1,110 @@
+X-Account-Key: account4
+X-UIDL: 0000c83a56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 49521400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 476217F369; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 465BA7F368
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3435B638742;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 25B19638845;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/8] shared/sec: rename parsing comp for port cmd
+Date: Tue, 21 May 2019 11:32:19 +0900
+Message-Id: <1558405944-8355-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_port_name_value()` to
+`parse_comp_name_portcmd()`. This parsing component name is almost same
+as `parse_comp_name()` and ambiguous why it is required, so it should
+be confirmed later it is required or not actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 14 ++++++++------
+ src/shared/secondary/spp_worker_th/spp_proc.c   |  3 ++-
+ 2 files changed, 10 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 0083770..0c65018 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -334,8 +334,8 @@ parse_comp_name(void *output, const char *arg_val,
+ 
+ 	/* Parsing the name is required only for action `start`. */
+ 	if (component->wk_action == SPPWK_ACT_START) {
+-		/* Get lcore ID as comp name, or NG code. */
+-		ret = spp_get_component_id(arg_val);
++		/* Check if lcore is already used. */
++		ret = spp_get_component_id(arg_val);  /* Get lcore ID. */
+ 		if (unlikely(ret >= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Comp name '%s' is already used.\n",
+@@ -483,14 +483,16 @@ parse_port_rxtx(void *output, const char *arg_val, int allow_override)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of component name for port command */
++/* Parse comp name for `port` command. */
++/* TODO(yasufum) confirm why parsing comp name "for port cmd" is required. */
+ static int
+-decode_port_name_value(void *output, const char *arg_val,
++parse_comp_name_portcmd(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+ 
+-	ret = spp_get_component_id(arg_val);
++	/* Check if lcore is already used. */
++	ret = spp_get_component_id(arg_val);  /* Get lcore ID. */
+ 	if (unlikely(ret < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component name. val=%s\n", arg_val);
+@@ -843,7 +845,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "component name",
+ 			.offset = offsetof(struct spp_command, spec.port.name),
+-			.func = decode_port_name_value
++			.func = parse_comp_name_portcmd
+ 		},
+ 		{
+ 			.name = "port vlan operation",
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index e552bf1..7333e62 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -725,7 +725,8 @@ get_free_component(void)
+ 	return SPP_RET_NG;
+ }
+ 
+-/* Get component id for specified component name */
++/* Get lcore id for as component name. */
++/* TODO(yasufum) change the name because it's not comp ID. */
+ int
+ spp_get_component_id(const char *name)
+ {
+-- 
+2.17.1
+
+

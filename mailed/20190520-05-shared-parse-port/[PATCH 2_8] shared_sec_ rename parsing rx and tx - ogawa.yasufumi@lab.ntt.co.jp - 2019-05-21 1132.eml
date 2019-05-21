@@ -1,0 +1,74 @@
+X-Account-Key: account4
+X-UIDL: 0000c83756a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 40F41400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 3F91623BAF8; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 3F0D723BAC0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 2E9596389FB;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 175F563874A;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/8] shared/sec: rename parsing rx and tx
+Date: Tue, 21 May 2019 11:32:18 +0900
+Message-Id: <1558405944-8355-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_port_rxtx_value()` to
+`parse_port_rxtx()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 64828ca..0083770 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -453,9 +453,9 @@ parse_port(void *output, const char *arg_val, int allow_override)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of rxtx type for port command */
++/* Parse port rx and tx value. */
+ static int
+-decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
++parse_port_rxtx(void *output, const char *arg_val, int allow_override)
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct sppwk_cmd_port *port = output;
+@@ -838,7 +838,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "port rxtx",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_rxtx_value
++			.func = parse_port_rxtx
+ 		},
+ 		{
+ 			.name = "component name",
+-- 
+2.17.1
+
+

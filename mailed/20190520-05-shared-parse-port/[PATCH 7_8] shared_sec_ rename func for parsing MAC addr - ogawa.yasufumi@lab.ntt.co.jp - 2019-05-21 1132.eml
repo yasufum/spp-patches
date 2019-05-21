@@ -1,0 +1,103 @@
+X-Account-Key: account4
+X-UIDL: 0000c83c56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 5D7AB400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 5B71B7F369; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 5A8B97F368
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 48EC7638845;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3A42F638A37;
+	Tue, 21 May 2019 11:34:49 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 7/8] shared/sec: rename func for parsing MAC addr
+Date: Tue, 21 May 2019 11:32:23 +0900
+Message-Id: <1558405944-8355-8-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405944-8355-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_mac_addr_str_value()` to
+`parse_mac_addr()` and refactor the function.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index fc30463..064b18f 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -597,22 +597,23 @@ parse_port_pcp(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of mac address string */
++/* Parse mac address string. */
+ static int
+-decode_mac_addr_str_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_mac_addr(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int64_t ret = SPP_RET_OK;
++	int64_t res;
+ 	const char *str_val = arg_val;
+ 
+-	/* if default specification, convert to internal dummy address */
++	/* If given value is the default, use dummy address instead. */
+ 	if (unlikely(strcmp(str_val, SPP_DEFAULT_CLASSIFIED_SPEC_STR) == 0))
+ 		str_val = SPP_DEFAULT_CLASSIFIED_DMY_ADDR_STR;
+ 
+-	ret = spp_change_mac_str_to_int64(str_val);
+-	if (unlikely(ret < SPP_RET_OK)) {
++	/* Check if the given value is valid. */
++	res = spp_change_mac_str_to_int64(str_val);
++	if (unlikely(res < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+-				"Bad mac address string. val=%s\n", str_val);
++				"Invalid MAC address `%s`.\n", str_val);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -759,7 +760,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table.mac),
+-			.func = decode_mac_addr_str_value
++			.func = parse_mac_addr
+ 		},
+ 		{
+ 			.name = "port",
+@@ -792,7 +793,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "mac address",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table.mac),
+-			.func = decode_mac_addr_str_value
++			.func = parse_mac_addr
+ 		},
+ 		{
+ 			.name = "port",
+-- 
+2.17.1
+
+
