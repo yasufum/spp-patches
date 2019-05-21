@@ -1,0 +1,53 @@
+From 9d42fbd3746332028da1418ad9a4d9567016d42d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 17:22:04 +0900
+Subject: [PATCH 3/3] shared/sec: rename func for parsing VLAN ID
+
+This update is to rename function for parsing and getting VLAN ID for
+classifier_table command `decode_classifier_vid_value()` to
+`parse_cls_vid()` and refactoring.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 4cd36ca..f78664b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -668,15 +668,15 @@ parse_cls_type(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of vlan id for classifier_table command */
++/* Parse VLAN ID for classifier_table command. */
+ static int
+-decode_classifier_vid_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_cls_vid(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_NG;
+-	ret = get_int_in_range(output, arg_val, 0, ETH_VLAN_ID_MAX);
+-	if (unlikely(ret < SPP_RET_OK)) {
+-		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad VLAN ID. val=%s\n",
++	int idx;
++	idx = get_int_in_range(output, arg_val, 0, ETH_VLAN_ID_MAX);
++	if (unlikely(idx < SPP_RET_OK)) {
++		RTE_LOG(ERR, SPP_COMMAND_PROC, "Invalid VLAN ID `%s`.\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+ 	}
+@@ -792,7 +792,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "vlan id",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table.vid),
+-			.func = decode_classifier_vid_value
++			.func = parse_cls_vid
+ 		},
+ 		{
+ 			.name = "mac address",
+-- 
+2.17.1
+

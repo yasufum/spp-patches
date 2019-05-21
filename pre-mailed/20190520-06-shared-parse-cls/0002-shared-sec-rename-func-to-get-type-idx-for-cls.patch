@@ -1,0 +1,68 @@
+From fba04f7364eb24eb5e7a2f100370ada8147a5fc8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 17:08:16 +0900
+Subject: [PATCH 2/3] shared/sec: rename func to get type idx for cls
+
+This update is to rename function for parsing getting index of type of
+classifier `decode_classifier_type_value()` to `parse_cls_type()`,
+and refactoring.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c       | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 70cf254..4cd36ca 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -650,21 +650,21 @@ parse_cls_action(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of type for classifier_table command */
++/* Parse cls type and get index for classifier_table command. */
+ static int
+-decode_classifier_type_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_cls_type(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
+-	ret = get_list_idx(arg_val, CLS_TYPE_LIST);
+-	if (unlikely(ret <= 0)) {
++	int idx;
++	idx = get_list_idx(arg_val, CLS_TYPE_LIST);
++	if (unlikely(idx <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown classifier type. val=%s\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	*(int *)output = ret;
++	*(int *)output = idx;
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -759,7 +759,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table.type),
+-			.func = decode_classifier_type_value
++			.func = parse_cls_type
+ 		},
+ 		{
+ 			.name = "mac address",
+@@ -786,7 +786,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "type",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.cls_table.type),
+-			.func = decode_classifier_type_value
++			.func = parse_cls_type
+ 		},
+ 		{
+ 			.name = "vlan id",
+-- 
+2.17.1
+
