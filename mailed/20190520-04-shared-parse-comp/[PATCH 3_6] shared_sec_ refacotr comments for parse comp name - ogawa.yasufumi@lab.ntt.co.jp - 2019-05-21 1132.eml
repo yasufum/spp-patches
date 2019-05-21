@@ -1,0 +1,78 @@
+X-Account-Key: account4
+X-UIDL: 0000c83156a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 2186E400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id 1F7117F369; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id 1E9227F368
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 11A3AEA7A87;
+	Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 041D2EA7939;
+	Tue, 21 May 2019 11:34:30 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 3/6] shared/sec: refacotr comments for parse comp name
+Date: Tue, 21 May 2019 11:32:01 +0900
+Message-Id: <1558405924-8303-4-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to refactor comments for function for parsing component
+name which is updated previous patch.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index e99cdeb..cf6c4a1 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -323,7 +323,7 @@ parse_comp_action(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of action for component command */
++/* Parse given name `arg_val` of component. */
+ static int
+ parse_comp_name(void *output, const char *arg_val,
+ 		int allow_override __attribute__ ((unused)))
+@@ -331,12 +331,13 @@ parse_comp_name(void *output, const char *arg_val,
+ 	int ret;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+-	/* "stop" has no core ID parameter. */
++	/* Parsing the name is required only for action `start`. */
+ 	if (component->wk_action == SPPWK_ACT_START) {
++		/* Get lcore ID as comp name, or NG code. */
+ 		ret = spp_get_component_id(arg_val);
+ 		if (unlikely(ret >= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+-					"Component name in used. val=%s\n",
++					"Comp name '%s' is already used.\n",
+ 					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+-- 
+2.17.1
+
+

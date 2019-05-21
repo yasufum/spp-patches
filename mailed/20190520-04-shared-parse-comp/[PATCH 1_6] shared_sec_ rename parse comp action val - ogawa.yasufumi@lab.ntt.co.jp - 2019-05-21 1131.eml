@@ -1,0 +1,76 @@
+X-Account-Key: account4
+X-UIDL: 0000c82e56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 15611400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 13E9023BAF8; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 1355623BAC0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 062CCEA7954;
+	Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id ED018EA783F;
+	Tue, 21 May 2019 11:34:29 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/6] shared/sec: rename parse comp action val
+Date: Tue, 21 May 2019 11:31:59 +0900
+Message-Id: <1558405924-8303-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The name `decode_component_action_value` is too long and not intuitive.
+This update is to fix the issue by renaming to `parse_comp_action`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index ae845f4..6fc3a51 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -299,10 +299,10 @@ parse_lcore_id(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_action_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_comp_action(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	ret = get_list_idx(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -797,7 +797,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.comp.wk_action),
+-			.func = decode_component_action_value
++			.func = parse_comp_action
+ 		},
+ 		{
+ 			.name = "component name",
+-- 
+2.17.1
+
+

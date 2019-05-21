@@ -1,0 +1,90 @@
+X-Account-Key: account4
+X-UIDL: 0000c83056a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 1B18540082F
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 192A923BAF8; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 18B3923BAC0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 0BC71EA7A6B;
+	Tue, 21 May 2019 11:34:30 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id F28F9EA78C6;
+	Tue, 21 May 2019 11:34:29 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/6] shared/sec: rename func for parsing comp name
+Date: Tue, 21 May 2019 11:32:00 +0900
+Message-Id: <1558405924-8303-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405924-8303-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename function `decode_component_name_value()` to
+`parse_comp_name()` which is enough to describe the behaviour.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 8 ++++----
+ src/shared/secondary/spp_worker_th/spp_proc.c   | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 6fc3a51..e99cdeb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -325,10 +325,10 @@ parse_comp_action(void *output, const char *arg_val,
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_name_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_comp_name(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+@@ -802,7 +802,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "component name",
+ 			.offset = offsetof(struct spp_command, spec.comp),
+-			.func = decode_component_name_value
++			.func = parse_comp_name
+ 		},
+ 		{
+ 			.name = "core",
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 53dd3f8..e552bf1 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -730,7 +730,7 @@ int
+ spp_get_component_id(const char *name)
+ {
+ 	struct spp_component_info *component_info =
+-					g_mng_data_addr.p_component_info;
++		g_mng_data_addr.p_component_info;
+ 
+ 	int cnt = 0;
+ 	if (name[0] == '\0')
+-- 
+2.17.1
+
+
