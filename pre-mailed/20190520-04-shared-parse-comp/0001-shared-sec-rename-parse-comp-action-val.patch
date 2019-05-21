@@ -1,0 +1,43 @@
+From b30eb69b12679b859afcd6bb2ce486ef95735cf7 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 14 May 2019 05:42:54 +0900
+Subject: [PATCH 1/6] shared/sec: rename parse comp action val
+
+The name `decode_component_action_value` is too long and not intuitive.
+This update is to fix the issue by renaming to `parse_comp_action`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index ae845f4..6fc3a51 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -299,10 +299,10 @@ parse_lcore_id(void *output, const char *arg_val)
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_action_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_comp_action(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	ret = get_list_idx(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+@@ -797,7 +797,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+ 					spec.comp.wk_action),
+-			.func = decode_component_action_value
++			.func = parse_comp_action
+ 		},
+ 		{
+ 			.name = "component name",
+-- 
+2.17.1
+

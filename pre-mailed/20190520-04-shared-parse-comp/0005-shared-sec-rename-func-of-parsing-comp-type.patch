@@ -1,0 +1,60 @@
+From 84bee1692b40516ddcb47cccb9ea04c1019c3e2a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 17 May 2019 03:58:22 +0900
+Subject: [PATCH 5/6] shared/sec: rename func of parsing comp type
+
+This update is to redundant rename `decode_component_type_value()` to
+`parse_comp_type()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index b03f9b8..7d56146 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -364,22 +364,25 @@ parse_comp_lcore_id(void *output, const char *arg_val,
+ 	return parse_lcore_id(&component->core, arg_val);
+ }
+ 
+-/* decoding procedure of type for component command */
++/**
++ * Parse given type of component of `arg_val`. Return OK code if succeeded, or
++ * NG code.
++ */
+ static int
+-decode_component_type_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_comp_type(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+ 	enum spp_component_type comp_type;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+-	/* "stop" has no type parameter. */
++	/* Parsing comp type is required only for action `start`. */
+ 	if (component->wk_action != SPPWK_ACT_START)
+ 		return SPP_RET_OK;
+ 
+ 	comp_type = get_comp_type_from_str(arg_val);
+ 	if (unlikely(comp_type <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+-				"Unknown component type. val=%s\n",
++				"Unknown component type '%s'.\n",
+ 				arg_val);
+ 		return SPP_RET_NG;
+ 	}
+@@ -813,7 +816,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "component type",
+ 			.offset = offsetof(struct spp_command, spec.comp),
+-			.func = decode_component_type_value
++			.func = parse_comp_type
+ 		},
+ 		SPPWK_CMD_NO_PARAMS,
+ 	},
+-- 
+2.17.1
+

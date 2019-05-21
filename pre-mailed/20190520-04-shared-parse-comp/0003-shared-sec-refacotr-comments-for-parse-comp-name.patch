@@ -1,0 +1,45 @@
+From b309ae988411aed8cfaa000ce6e06b7d2cfc6528 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 16 May 2019 03:18:20 +0900
+Subject: [PATCH 3/6] shared/sec: refacotr comments for parse comp name
+
+This update is to refactor comments for function for parsing component
+name which is updated previous patch.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index e99cdeb..cf6c4a1 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -323,7 +323,7 @@ parse_comp_action(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of action for component command */
++/* Parse given name `arg_val` of component. */
+ static int
+ parse_comp_name(void *output, const char *arg_val,
+ 		int allow_override __attribute__ ((unused)))
+@@ -331,12 +331,13 @@ parse_comp_name(void *output, const char *arg_val,
+ 	int ret;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+-	/* "stop" has no core ID parameter. */
++	/* Parsing the name is required only for action `start`. */
+ 	if (component->wk_action == SPPWK_ACT_START) {
++		/* Get lcore ID as comp name, or NG code. */
+ 		ret = spp_get_component_id(arg_val);
+ 		if (unlikely(ret >= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+-					"Component name in used. val=%s\n",
++					"Comp name '%s' is already used.\n",
+ 					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+-- 
+2.17.1
+

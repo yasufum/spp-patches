@@ -1,0 +1,57 @@
+From 95437f80069936b0d25845bfb4f020fb5deb0fe9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 16 May 2019 02:56:32 +0900
+Subject: [PATCH 2/6] shared/sec: rename func for parsing comp name
+
+This update is to rename function `decode_component_name_value()` to
+`parse_comp_name()` which is enough to describe the behaviour.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 8 ++++----
+ src/shared/secondary/spp_worker_th/spp_proc.c   | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 6fc3a51..e99cdeb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -325,10 +325,10 @@ parse_comp_action(void *output, const char *arg_val,
+ 
+ /* decoding procedure of action for component command */
+ static int
+-decode_component_name_value(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_comp_name(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* "stop" has no core ID parameter. */
+@@ -802,7 +802,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "component name",
+ 			.offset = offsetof(struct spp_command, spec.comp),
+-			.func = decode_component_name_value
++			.func = parse_comp_name
+ 		},
+ 		{
+ 			.name = "core",
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 53dd3f8..e552bf1 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -730,7 +730,7 @@ int
+ spp_get_component_id(const char *name)
+ {
+ 	struct spp_component_info *component_info =
+-					g_mng_data_addr.p_component_info;
++		g_mng_data_addr.p_component_info;
+ 
+ 	int cnt = 0;
+ 	if (name[0] == '\0')
+-- 
+2.17.1
+

@@ -1,0 +1,24 @@
+From 84fd780d544ee0af81fab5a6e87757e875ba8ea8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 18:04:31 +0900
+Subject: [PATCH 0/6] Revise name of funcs for parsing actions
+
+SPP worker processes defines a series of actions for given resources,
+but the name of functions for parsing the actinos are not incorrect or
+ambiguous in meaning. This series of update is to revise them.
+
+Yasufumi Ogawa (6):
+  shared/sec: rename parse comp action val
+  shared/sec: rename func for parsing comp name
+  shared/sec: refacotr comments for parse comp name
+  shared/sec: rename func for parsing lcore ID
+  shared/sec: rename func of parsing comp type
+  shared/sec: rename parsing comp action
+
+ .../secondary/spp_worker_th/cmd_parser.c      | 63 ++++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.c |  2 +-
+ 2 files changed, 36 insertions(+), 29 deletions(-)
+
+-- 
+2.17.1
+
