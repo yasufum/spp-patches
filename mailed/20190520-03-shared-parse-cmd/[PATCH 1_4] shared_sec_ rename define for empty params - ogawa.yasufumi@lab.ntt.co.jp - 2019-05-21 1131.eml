@@ -1,0 +1,132 @@
+X-Account-Key: account4
+X-UIDL: 0000c82a56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id B448B400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:34:08 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id B2B6123BAF8; Tue, 21 May 2019 11:34:08 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id B212C23BAC0
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:34:08 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A0461638845;
+	Tue, 21 May 2019 11:34:08 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 92726638746;
+	Tue, 21 May 2019 11:34:08 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/4] shared/sec: rename define for empty params
+Date: Tue, 21 May 2019 11:31:40 +0900
+Message-Id: <1558405903-8252-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405903-8252-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405903-8252-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The name of define `DECODE_PARAMETER_LIST_EMPTY` is a set of null vars
+used for command which takes no params. It is redundant and ambiguous
+for meaning. This update is to rename to `SPPWK_CMD_NO_PARAMS`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 29 ++++++++++---------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 84e5b55..6122cee 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -710,8 +710,6 @@ parse_cls_port(void *cls_cmd_attr, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-#define DECODE_PARAMETER_LIST_EMPTY { NULL, 0, NULL }
+-
+ /* parameter list for decoding */
+ struct decode_parameter_list {
+ 	const char *name;       /* Parameter name */
+@@ -720,10 +718,13 @@ struct decode_parameter_list {
+ 				/* Pointer to parameter handling function */
+ };
+ 
++/* Used for command which takes no params, such as `status`. */
++#define SPPWK_CMD_NO_PARAMS { NULL, 0, NULL }
++
+ /* parameter list for each command */
+ static struct decode_parameter_list
+ parameter_list[][SPPWK_MAX_PARAMS] = {
+-	{                                /* classifier_table(mac) */
++	{  /* classifier_table(mac) */
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+@@ -748,9 +749,9 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 					spec.cls_table),
+ 			.func = parse_cls_port
+ 		},
+-		DECODE_PARAMETER_LIST_EMPTY,
++		SPPWK_CMD_NO_PARAMS,
+ 	},
+-	{                                /* classifier_table(VLAN) */
++	{  /* classifier_table(VLAN) */
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+@@ -781,12 +782,12 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 					spec.cls_table),
+ 			.func = parse_cls_port
+ 		},
+-		DECODE_PARAMETER_LIST_EMPTY,
++		SPPWK_CMD_NO_PARAMS,
+ 	},
+-	{ DECODE_PARAMETER_LIST_EMPTY }, /* _get_client_id   */
+-	{ DECODE_PARAMETER_LIST_EMPTY }, /* status           */
+-	{ DECODE_PARAMETER_LIST_EMPTY }, /* exit             */
+-	{                                /* component        */
++	{ SPPWK_CMD_NO_PARAMS },  /* _get_client_id */
++	{ SPPWK_CMD_NO_PARAMS },  /* status */
++	{ SPPWK_CMD_NO_PARAMS },  /* exit */
++	{  /* component */
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+@@ -808,9 +809,9 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 			.offset = offsetof(struct spp_command, spec.comp),
+ 			.func = decode_component_type_value
+ 		},
+-		DECODE_PARAMETER_LIST_EMPTY,
++		SPPWK_CMD_NO_PARAMS,
+ 	},
+-	{                                /* port             */
++	{  /* port */
+ 		{
+ 			.name = "action",
+ 			.offset = offsetof(struct spp_command,
+@@ -847,9 +848,9 @@ parameter_list[][SPPWK_MAX_PARAMS] = {
+ 			.offset = offsetof(struct spp_command, spec.port),
+ 			.func = decode_port_pcp
+ 		},
+-		DECODE_PARAMETER_LIST_EMPTY,
++		SPPWK_CMD_NO_PARAMS,
+ 	},
+-	{ DECODE_PARAMETER_LIST_EMPTY }, /* termination      */
++	{ SPPWK_CMD_NO_PARAMS }, /* termination */
+ };
+ 
+ /* Validate given command. */
+-- 
+2.17.1
+
+
