@@ -1,0 +1,122 @@
+From e15cbd0271c713ae5503036178823f46da977ad1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 16:41:26 +0900
+Subject: [PATCH 8/8] shared/sec: rename func to convert MAC addr type
+
+This update is to refactor function for converting MAC address from
+string to int64_t type, and revise comments and log messages for
+maintenance.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      |  4 ++--
+ .../secondary/spp_worker_th/command_proc.c    |  2 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c | 20 ++++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h |  2 +-
+ 4 files changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 064b18f..b043b4c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -610,7 +610,7 @@ parse_mac_addr(void *output, const char *arg_val,
+ 		str_val = SPP_DEFAULT_CLASSIFIED_DMY_ADDR_STR;
+ 
+ 	/* Check if the given value is valid. */
+-	res = spp_change_mac_str_to_int64(str_val);
++	res = sppwk_convert_mac_str_to_int64(str_val);
+ 	if (unlikely(res < SPP_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Invalid MAC address `%s`.\n", str_val);
+@@ -710,7 +710,7 @@ parse_cls_port(void *cls_cmd_attr, const char *arg_val,
+ 			return SPP_RET_NG;
+ 		}
+ 	} else if (unlikely(cls_attrs->wk_action == SPPWK_ACT_DEL)) {
+-		mac_addr = spp_change_mac_str_to_int64(cls_attrs->mac);
++		mac_addr = sppwk_convert_mac_str_to_int64(cls_attrs->mac);
+ 		if (mac_addr < 0)
+ 			return SPP_RET_NG;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index fbc0c90..17d0645 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -145,7 +145,7 @@ spp_update_classifier_table(
+ 			"( type = mac, mac addr = %s, port = %d:%d )\n",
+ 			mac_addr_str, port->iface_type, port->iface_no);
+ 
+-	ret_mac = spp_change_mac_str_to_int64(mac_addr_str);
++	ret_mac = sppwk_convert_mac_str_to_int64(mac_addr_str);
+ 	if (unlikely(ret_mac == -1)) {
+ 		RTE_LOG(ERR, APP, "MAC address format error. ( mac = %s )\n",
+ 			mac_addr_str);
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 7333e62..4105fb8 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -943,9 +943,9 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Change mac address of 'aa:bb:cc:dd:ee:ff' to int64 and return it */
++/* Convert MAC address of 'aa:bb:cc:dd:ee:ff' to value of int64_t. */
+ int64_t
+-spp_change_mac_str_to_int64(const char *mac)
++sppwk_convert_mac_str_to_int64(const char *macaddr)
+ {
+ 	int64_t ret_mac = 0;
+ 	int64_t token_val = 0;
+@@ -955,19 +955,20 @@ spp_change_mac_str_to_int64(const char *mac)
+ 	char *saveptr = NULL;
+ 	char *endptr = NULL;
+ 
+-	RTE_LOG(DEBUG, APP, "MAC address change. (mac = %s)\n", mac);
++	RTE_LOG(DEBUG, APP, "Try to convert MAC addr `%s`.\n", macaddr);
+ 
+-	strcpy(tmp_mac, mac);
++	strcpy(tmp_mac, macaddr);
+ 	while (1) {
+-		/* Split by colon(':') */
++		/* Split by colon ':'. */
+ 		char *ret_tok = strtok_r(str, ":", &saveptr);
+ 		if (unlikely(ret_tok == NULL))
+ 			break;
+ 
+ 		/* Check for mal-formatted address */
+ 		if (unlikely(token_cnt >= ETHER_ADDR_LEN)) {
+-			RTE_LOG(ERR, APP, "MAC address format error. "
+-					"(mac = %s)\n", mac);
++			RTE_LOG(ERR, APP,
++					"Invalid MAC address `%s`.\n",
++					macaddr);
+ 			return SPP_RET_NG;
+ 		}
+ 
+@@ -983,8 +984,9 @@ spp_change_mac_str_to_int64(const char *mac)
+ 		str = NULL;
+ 	}
+ 
+-	RTE_LOG(DEBUG, APP, "MAC address change. (mac = %s => 0x%08lx)\n",
+-			 mac, ret_mac);
++	RTE_LOG(DEBUG, APP,
++			"Succeeded to convert MAC addr `%s` to `0x%08lx`.\n",
++			macaddr, ret_mac);
+ 	return ret_mac;
+ }
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index ffd8972..dffa6a5 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -652,7 +652,7 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+  * @retval 0< int64 that store mac address
+  * @retval SPP_RET_NG
+  */
+-int64_t spp_change_mac_str_to_int64(const char *mac);
++int64_t sppwk_convert_mac_str_to_int64(const char *macaddr);
+ 
+ /**
+  * Set mange data address
+-- 
+2.17.1
+

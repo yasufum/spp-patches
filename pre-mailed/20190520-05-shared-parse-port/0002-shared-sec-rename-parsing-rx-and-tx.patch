@@ -1,0 +1,41 @@
+From 503682455be286131679d053dc8a9b8c55d23176 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 18 May 2019 18:30:26 +0900
+Subject: [PATCH 2/8] shared/sec: rename parsing rx and tx
+
+This update is to rename `decode_port_rxtx_value()` to
+`parse_port_rxtx()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 64828ca..0083770 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -453,9 +453,9 @@ parse_port(void *output, const char *arg_val, int allow_override)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of rxtx type for port command */
++/* Parse port rx and tx value. */
+ static int
+-decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
++parse_port_rxtx(void *output, const char *arg_val, int allow_override)
+ {
+ 	int ret = SPP_RET_OK;
+ 	struct sppwk_cmd_port *port = output;
+@@ -838,7 +838,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "port rxtx",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_rxtx_value
++			.func = parse_port_rxtx
+ 		},
+ 		{
+ 			.name = "component name",
+-- 
+2.17.1
+

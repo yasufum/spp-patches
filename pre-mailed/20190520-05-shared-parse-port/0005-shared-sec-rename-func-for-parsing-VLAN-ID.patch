@@ -1,0 +1,60 @@
+From 78a778839bc4c5ccec0f60cb69e175bcc9f5886a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 15:47:14 +0900
+Subject: [PATCH 5/8] shared/sec: rename func for parsing VLAN ID
+
+This update is to rename `decode_port_vlan()` to `parse_port_vlan()`
+and refactor the function.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 7f678d5..0fd105c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -540,22 +540,23 @@ parse_port_vlan_ops(void *output, const char *arg_val,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of vid  for port command */
++/* Parse VLAN ID  for port command. */
+ static int
+-decode_port_vid(void *output, const char *arg_val,
+-				int allow_override __attribute__ ((unused)))
++parse_port_vid(void *output, const char *arg_val,
++		int allow_override __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_OK;
++	int vlan_id;
+ 	struct sppwk_cmd_port *port = output;
+ 	struct spp_port_ability *ability = &port->ability;
+ 
+ 	switch (ability->ops) {
+ 	case SPPWK_PORT_ABL_OPS_ADD_VLANTAG:
+-		ret = get_int_in_range(&ability->data.vlantag.vid,
++		vlan_id = get_int_in_range(&ability->data.vlantag.vid,
+ 			arg_val, 0, ETH_VLAN_ID_MAX);
+-		if (unlikely(ret < SPP_RET_OK)) {
++		if (unlikely(vlan_id < SPP_RET_OK)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+-					"Bad VLAN ID. val=%s\n", arg_val);
++					"Invalid `%s` for parsing VLAN ID.\n",
++					arg_val);
+ 			return SPP_RET_NG;
+ 		}
+ 		ability->data.vlantag.pcp = -1;
+@@ -857,7 +858,7 @@ cmd_ops_list[][SPPWK_MAX_PARAMS] = {
+ 		{
+ 			.name = "port vid",
+ 			.offset = offsetof(struct spp_command, spec.port),
+-			.func = decode_port_vid
++			.func = parse_port_vid
+ 		},
+ 		{
+ 			.name = "port pcp",
+-- 
+2.17.1
+

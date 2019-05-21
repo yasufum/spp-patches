@@ -1,0 +1,28 @@
+From e15cbd0271c713ae5503036178823f46da977ad1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 18:07:17 +0900
+Subject: [PATCH 0/8] Refactor funcs for parsing port cmd
+
+This series of update is to refactor functions for parsing `port`
+command of SPP workers and its comments, log messages for maintenance.
+
+Yasufumi Ogawa (8):
+  shared/sec: rename parsing port for port cmd
+  shared/sec: rename parsing rx and tx
+  shared/sec: rename parsing comp for port cmd
+  shared/sec: rename parsing vlan operations
+  shared/sec: rename func for parsing VLAN ID
+  shared/sec: rename func for parsing PCP
+  shared/sec: rename func for parsing MAC addr
+  shared/sec: rename func to convert MAC addr type
+
+ .../secondary/spp_worker_th/cmd_parser.c      | 131 +++++++++---------
+ .../secondary/spp_worker_th/command_proc.c    |  28 ++--
+ src/shared/secondary/spp_worker_th/spp_port.c |  12 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c |  23 +--
+ src/shared/secondary/spp_worker_th/spp_proc.h |  16 +--
+ 5 files changed, 110 insertions(+), 100 deletions(-)
+
+-- 
+2.17.1
+
