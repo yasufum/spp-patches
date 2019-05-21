@@ -1,0 +1,86 @@
+X-Account-Key: account4
+X-UIDL: 0000c82656a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 13896400224
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:33:47 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 1220D23BBDC; Tue, 21 May 2019 11:33:47 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 11AD123BAF8
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:33:47 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 03BC7EA7927;
+	Tue, 21 May 2019 11:33:47 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id EA914EA77F7;
+	Tue, 21 May 2019 11:33:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 6/6] shared/sec: rename func for parsing lcore ID
+Date: Tue, 21 May 2019 11:31:22 +0900
+Message-Id: <1558405882-8201-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405882-8201-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405882-8201-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename `decode_core_value()` to `parse_lcore_id()`
+which is not for decoding but parsing.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index e0da244..84e5b55 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -278,18 +278,17 @@ parse_port_uid(void *output, const char *arg_val)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* decoding procedure of core */
++/* Parse given lcore ID. */
+ static int
+-decode_core_value(void *output, const char *arg_val)
++parse_lcore_id(void *output, const char *arg_val)
+ {
+-	int ret = SPP_RET_OK;
++	int ret;
+ 	ret = get_uint_in_range(output, arg_val, 0, RTE_MAX_LCORE-1);
+ 	if (unlikely(ret < 0)) {
+-		RTE_LOG(ERR, SPP_COMMAND_PROC, "Bad core id. val=%s\n",
+-				arg_val);
++		RTE_LOG(ERR, SPP_COMMAND_PROC,
++				"Invalid lcore id '%s'.\n", arg_val);
+ 		return SPP_RET_NG;
+ 	}
+-
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -356,7 +355,7 @@ decode_component_core_value(void *output, const char *arg_val,
+ 	if (component->wk_action != SPPWK_ACT_START)
+ 		return SPP_RET_OK;
+ 
+-	return decode_core_value(&component->core, arg_val);
++	return parse_lcore_id(&component->core, arg_val);
+ }
+ 
+ /* decoding procedure of type for component command */
+-- 
+2.17.1
+
+

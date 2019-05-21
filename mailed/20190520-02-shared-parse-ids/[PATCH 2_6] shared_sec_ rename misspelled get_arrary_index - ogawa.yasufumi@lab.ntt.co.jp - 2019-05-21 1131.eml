@@ -1,0 +1,125 @@
+X-Account-Key: account4
+X-UIDL: 0000c82556a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 04C4A40082F
+	for <yo128@mail2.ecl.ntt.co.jp>; Tue, 21 May 2019 11:33:47 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 0374423BAF8; Tue, 21 May 2019 11:33:47 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id ED82F23BB46
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Tue, 21 May 2019 11:33:46 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id E1230EA7A6B;
+	Tue, 21 May 2019 11:33:46 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id D2F54EA78C6;
+	Tue, 21 May 2019 11:33:46 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/6] shared/sec: rename misspelled get_arrary_index
+Date: Tue, 21 May 2019 11:31:18 +0900
+Message-Id: <1558405882-8201-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1558405882-8201-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1558405882-8201-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The name of function `get_arrary_index()` of `arrary` is misspelled.
+This update is to change the name to `get_list_idx()` and revise its
+comment.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c       | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index cf7a7a6..4ee8773 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -207,13 +207,13 @@ split_cmd_params(char *string, int max, int *argc, char *argv[])
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Get index of array */
++/* Get index of given str from list. */
+ static int
+-get_arrary_index(const char *match, const char *list[])
++get_list_idx(const char *str, const char *list[])
+ {
+ 	int i;
+ 	for (i = 0; list[i][0] != '\0'; i++) {
+-		if (strcmp(list[i], match) == 0)
++		if (strcmp(list[i], str) == 0)
+ 			return i;
+ 	}
+ 	return SPP_RET_NG;
+@@ -305,7 +305,7 @@ decode_component_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
++	ret = get_list_idx(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown component action. val=%s\n",
+@@ -391,7 +391,7 @@ decode_port_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
++	ret = get_list_idx(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown port action. val=%s\n",
+@@ -451,7 +451,7 @@ decode_port_rxtx_value(void *output, const char *arg_val, int allow_override)
+ 	int ret = SPP_RET_OK;
+ 	struct sppwk_cmd_port *port = output;
+ 
+-	ret = get_arrary_index(arg_val, PORT_DIR_LIST);
++	ret = get_list_idx(arg_val, PORT_DIR_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port rxtx. val=%s\n",
+ 				arg_val);
+@@ -502,7 +502,7 @@ decode_port_vlan_operation(void *output, const char *arg_val,
+ 
+ 	switch (ability->ope) {
+ 	case SPP_PORT_ABILITY_OPE_NONE:
+-		ret = get_arrary_index(arg_val, PORT_ABILITY_LIST);
++		ret = get_list_idx(arg_val, PORT_ABILITY_LIST);
+ 		if (unlikely(ret <= 0)) {
+ 			RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 					"Unknown port ability. val=%s\n",
+@@ -607,7 +607,7 @@ decode_classifier_action_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, CMD_ACT_LIST);
++	ret = get_list_idx(arg_val, CMD_ACT_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Unknown port action. val=%s\n",
+ 				arg_val);
+@@ -631,7 +631,7 @@ decode_classifier_type_value(void *output, const char *arg_val,
+ 				int allow_override __attribute__ ((unused)))
+ {
+ 	int ret = SPP_RET_OK;
+-	ret = get_arrary_index(arg_val, CLS_TYPE_LIST);
++	ret = get_list_idx(arg_val, CLS_TYPE_LIST);
+ 	if (unlikely(ret <= 0)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC,
+ 				"Unknown classifier type. val=%s\n",
+-- 
+2.17.1
+
+
