@@ -1,0 +1,21 @@
+From f766090b67e6f1a075c484cea2835503f123e81d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 18:02:56 +0900
+Subject: [PATCH 0/4] Revise name of funcs and data for parsing
+
+This series of patches is to revise name of functions and data
+structures because they are incorrect or ambiguous in meaning.
+
+Yasufumi Ogawa (4):
+  shared/sec: rename define for empty params
+  shared/sec: rename struct of cmd operators
+  shared/sec: rename func for parsing given command
+  shared/sec: rename operator func for parsing cmds
+
+ .../secondary/spp_worker_th/cmd_parser.c      | 189 ++++++++++--------
+ .../secondary/spp_worker_th/cmd_parser.h      |   2 +-
+ 2 files changed, 106 insertions(+), 85 deletions(-)
+
+-- 
+2.17.1
+
