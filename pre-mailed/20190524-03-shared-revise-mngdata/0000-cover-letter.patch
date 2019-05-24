@@ -1,0 +1,22 @@
+From efabbbdcb842f26d158ea9ada75b027391f7022a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 24 May 2019 17:37:55 +0900
+Subject: [PATCH 0/3] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (3):
+  shared/sec: rename func for getting mng data
+  shared/sec: rename func for management data
+  shared/sec: revise name of vars of global mng data
+
+ src/mirror/spp_mirror.c                       |  16 +-
+ .../secondary/spp_worker_th/command_proc.c    |  14 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c | 186 +++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h |  46 ++---
+ src/vf/spp_vf.c                               |  17 +-
+ 5 files changed, 138 insertions(+), 141 deletions(-)
+
+-- 
+2.17.1
+

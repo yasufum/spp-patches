@@ -1,0 +1,33 @@
+From ceceeeba03f71b05df7374d1b4410bcc495d1f32 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 24 May 2019 17:47:35 +0900
+Subject: [PATCH 00/11] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (11):
+  shared/sec: rename functions of sppwk_cmd_runner
+  shared/sec: revise enum for cmd response
+  shared/sec: refactor passing err in cmd_runner
+  shared/sec: rename struct for command response
+  shared/sec: refactor funcs for managing port info
+  shared/sec: rename util functions in cmd_runner
+  shared/sec: rename func for getting component ID
+  shared/sec: refactor func for updating cls table
+  shared/sec: rename func for executing command
+  shared/sec: add helpers for logging cmd parser
+  shared/sec: rename func for updating port
+
+ src/mirror/spp_mirror.c                       |   4 +-
+ .../secondary/spp_worker_th/cmd_parser.c      |  52 ++-
+ .../secondary/spp_worker_th/cmd_parser.h      |   4 +
+ .../secondary/spp_worker_th/cmd_runner.c      | 408 ++++++++----------
+ .../secondary/spp_worker_th/cmd_runner.h      |  32 +-
+ src/shared/secondary/spp_worker_th/spp_proc.c |  76 ++--
+ src/shared/secondary/spp_worker_th/spp_proc.h |  53 +--
+ src/vf/spp_vf.c                               |   4 +-
+ 8 files changed, 319 insertions(+), 314 deletions(-)
+
+-- 
+2.17.1
+

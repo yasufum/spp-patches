@@ -1,0 +1,44 @@
+From ceceeeba03f71b05df7374d1b4410bcc495d1f32 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 24 May 2019 15:44:48 +0900
+Subject: [PATCH 11/11] shared/sec: rename func for updating port
+
+This update is to rename from `spp_update_port()` to `update_port()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_runner.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 5584a48..e917007 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -345,7 +345,7 @@ check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
+ 
+ /* Port add or del to execute it */
+ static int
+-spp_update_port(enum sppwk_action wk_action,
++update_port(enum sppwk_action wk_action,
+ 		const struct sppwk_port_idx *port,
+ 		enum spp_port_rxtx rxtx,
+ 		const char *name,
+@@ -754,12 +754,9 @@ exec_cmd(const struct spp_command *cmd)
+ 	case SPPWK_CMDTYPE_PORT:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC, "with action `%s`.\n",
+ 				sppwk_action_str(cmd->spec.port.wk_action));
+-		ret = spp_update_port(
+-				cmd->spec.port.wk_action,
+-				&cmd->spec.port.port,
+-				cmd->spec.port.rxtx,
+-				cmd->spec.port.name,
+-				&cmd->spec.port.ability);
++		ret = update_port(cmd->spec.port.wk_action,
++				&cmd->spec.port.port, cmd->spec.port.rxtx,
++				cmd->spec.port.name, &cmd->spec.port.ability);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, SPP_COMMAND_PROC, "Exec flush.\n");
+ 			ret = spp_flush();
+-- 
+2.17.1
+

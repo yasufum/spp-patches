@@ -1,0 +1,91 @@
+From ab21ed59fd72ead2d7e69cdc7f2331af859b1946 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 20 May 2019 17:43:54 +0900
+Subject: [PATCH 1/2] shared/sec: rename func for getting parse err msg
+
+The name of function for getting error message from its object is
+`make_decode_error_message()`, but it is not describing this feature.
+This update is to rename the function to `get_parse_err_msg()` simply.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/command_proc.c    | 25 +++++++++----------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index 17d0645..fae9aab 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -801,34 +801,34 @@ execute_command(const struct spp_command *command)
+ 	return ret;
+ }
+ 
+-/* Fill err_msg obj with given error message. */
++/* Get error message of parsing from given wk_err_msg object. */
+ static const char *
+-make_decode_error_message(
+-		const struct sppwk_parse_err_msg *err_msg,
++get_parse_err_msg(
++		const struct sppwk_parse_err_msg *wk_err_msg,
+ 		char *message)
+ {
+-	switch (err_msg->code) {
++	switch (wk_err_msg->code) {
+ 	case SPPWK_PARSE_WRONG_FORMAT:
+ 		sprintf(message, "Wrong message format");
+ 		break;
+ 
+ 	case SPPWK_PARSE_UNKNOWN_CMD:
+ 		/* TODO(yasufum) Fix compile err if space exists before "(" */
+-		sprintf(message, "Unknown command(%s)", err_msg->details);
++		sprintf(message, "Unknown command(%s)", wk_err_msg->details);
+ 		break;
+ 
+ 	case SPPWK_PARSE_NO_PARAM:
+ 		sprintf(message, "No or insufficient number of params (%s)",
+-				err_msg->msg);
++				wk_err_msg->msg);
+ 		break;
+ 
+ 	case SPPWK_PARSE_INVALID_TYPE:
+ 		sprintf(message, "Invalid value type (%s)",
+-				err_msg->msg);
++				wk_err_msg->msg);
+ 		break;
+ 
+ 	case SPPWK_PARSE_INVALID_VALUE:
+-		sprintf(message, "Invalid value (%s)", err_msg->msg);
++		sprintf(message, "Invalid value (%s)", wk_err_msg->msg);
+ 		break;
+ 
+ 	default:
+@@ -866,22 +866,21 @@ set_command_results(struct command_result *result,
+ static void
+ set_decode_error_to_results(struct command_result *results,
+ 		const struct sppwk_cmd_req *request,
+-		const struct sppwk_parse_err_msg *err_msg)
++		const struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int i;
+ 	const char *tmp_buff;
+ 	char error_messege[CMD_RES_ERR_MSG_SIZE];
+ 
+ 	for (i = 0; i < request->num_command; i++) {
+-		if (err_msg->code == 0)
++		if (wk_err_msg->code == 0)
+ 			set_command_results(&results[i], CRES_SUCCESS, "");
+ 		else
+ 			set_command_results(&results[i], CRES_INVALID, "");
+ 	}
+ 
+-	if (err_msg->code != 0) {
+-		tmp_buff = make_decode_error_message(err_msg,
+-				error_messege);
++	if (wk_err_msg->code != 0) {
++		tmp_buff = get_parse_err_msg(wk_err_msg, error_messege);
+ 		set_command_results(&results[request->num_valid_command],
+ 				CRES_FAILURE, tmp_buff);
+ 	}
+-- 
+2.17.1
+

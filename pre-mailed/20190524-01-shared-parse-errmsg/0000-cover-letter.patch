@@ -1,0 +1,17 @@
+From 2ed29a38d9ee8af768bdc9c1a0f4f7187cb99499 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 24 May 2019 17:33:25 +0900
+Subject: [PATCH 0/2] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (2):
+  shared/sec: rename func for getting parse err msg
+  shared/sec: rename func for setup err msg
+
+ .../secondary/spp_worker_th/command_proc.c    | 35 +++++++++----------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
+
+-- 
+2.17.1
+

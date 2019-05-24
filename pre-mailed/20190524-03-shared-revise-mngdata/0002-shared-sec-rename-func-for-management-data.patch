@@ -1,0 +1,197 @@
+From a606cb3e7c0aaa937cee2d50e5a32f474df536c8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 22 May 2019 03:13:57 +0900
+Subject: [PATCH 2/3] shared/sec: rename func for management data
+
+This update is to rename getting or setting maangement data of global
+variable, from `spp_get_mng_data_addr()` to `sppwk_get_mng_data()` and
+from `spp_set_mng_data_addr()` to `sppwk_set_mng_data()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/spp_mirror.c                       | 16 +++---
+ src/shared/secondary/spp_worker_th/spp_proc.c | 49 ++++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h | 30 ++++++------
+ src/vf/spp_vf.c                               | 17 +++----
+ 4 files changed, 54 insertions(+), 58 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 29eac4e..2e6b58a 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -601,16 +601,12 @@ main(int argc, char *argv[])
+ 		/* Get lcore id of main thread to set its status after */
+ 		g_main_lcore_id = rte_lcore_id();
+ 
+-		/* set manage address */
+-		if (spp_set_mng_data_addr(&g_startup_param,
+-					  &g_iface_info,
+-					  g_component_info,
+-					  g_core_info,
+-					  g_change_core,
+-					  g_change_component,
+-					  &g_backup_info,
+-					  g_main_lcore_id) < 0) {
+-			RTE_LOG(ERR, MIRROR, "manage address set is failed.\n");
++		if (sppwk_set_mng_data(&g_startup_param, &g_iface_info,
++					g_component_info, g_core_info,
++					g_change_core, g_change_component,
++					&g_backup_info, g_main_lcore_id) < 0) {
++			RTE_LOG(ERR, MIRROR,
++				"Failed to set management data.\n");
+ 			break;
+ 		}
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 57b6321..ccefa5b 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -990,37 +990,40 @@ sppwk_convert_mac_str_to_int64(const char *macaddr)
+ 	return ret_mac;
+ }
+ 
+-/* Set mange data address */
+-int spp_set_mng_data_addr(struct startup_param *startup_param_addr,
+-			  struct iface_info *iface_addr,
+-			  struct spp_component_info *component_addr,
+-			  struct core_mng_info *core_mng_addr,
+-			  int *change_core_addr,
+-			  int *change_component_addr,
+-			  struct cancel_backup_info *backup_info_addr,
+-			  unsigned int main_lcore_id)
++/* Set management data of global var for given non-NULL args. */
++int sppwk_set_mng_data(
++		struct startup_param *startup_param_p,
++		struct iface_info *iface_p,
++		struct spp_component_info *component_p,
++		struct core_mng_info *core_mng_p,
++		int *change_core_p,
++		int *change_component_p,
++		struct cancel_backup_info *backup_info_p,
++		unsigned int main_lcore_id)
+ {
+-	if (startup_param_addr == NULL || iface_addr == NULL ||
+-			component_addr == NULL || core_mng_addr == NULL ||
+-			change_core_addr == NULL ||
+-			change_component_addr == NULL ||
+-			backup_info_addr == NULL ||
+-			main_lcore_id == 0xffffffff)
++	/**
++	 * TODO(yasufum) confirm why the last `0xffffffff` is same as NULL,
++	 * although it is reserved for meaning as invalid.
++	 */
++	if (startup_param_p == NULL || iface_p == NULL ||
++			component_p == NULL || core_mng_p == NULL ||
++			change_core_p == NULL || change_component_p == NULL ||
++			backup_info_p == NULL || main_lcore_id == 0xffffffff)
+ 		return SPP_RET_NG;
+ 
+-	g_mng_data_addr.p_startup_param = startup_param_addr;
+-	g_mng_data_addr.p_iface_info = iface_addr;
+-	g_mng_data_addr.p_component_info = component_addr;
+-	g_mng_data_addr.p_core_info = core_mng_addr;
+-	g_mng_data_addr.p_change_core = change_core_addr;
+-	g_mng_data_addr.p_change_component = change_component_addr;
+-	g_mng_data_addr.p_backup_info = backup_info_addr;
++	g_mng_data_addr.p_startup_param = startup_param_p;
++	g_mng_data_addr.p_iface_info = iface_p;
++	g_mng_data_addr.p_component_info = component_p;
++	g_mng_data_addr.p_core_info = core_mng_p;
++	g_mng_data_addr.p_change_core = change_core_p;
++	g_mng_data_addr.p_change_component = change_component_p;
++	g_mng_data_addr.p_backup_info = backup_info_p;
+ 	g_mng_data_addr.main_lcore_id = main_lcore_id;
+ 
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Get manage data from global var for given non-NULL args. */
++/* Get management data from global var for given non-NULL args. */
+ void sppwk_get_mng_data(
+ 		struct startup_param **startup_param_p,
+ 		struct iface_info **iface_p,
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index 921aead..30bd8be 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -657,19 +657,19 @@ int64_t sppwk_convert_mac_str_to_int64(const char *macaddr);
+ /**
+  * Set mange data address
+  *
+- * @param startup_param_addr
++ * @param startup_param_p
+  *  g_startup_param address
+- * @param iface_addr
++ * @param iface_p
+  *  g_iface_info address
+- * @param component_addr
++ * @param component_p
+  *  g_component_info address
+- * @param core_mng_addr
++ * @param core_mng_p
+  *  g_core_info address
+- * @param change_core_addr
++ * @param change_core_p
+  *  g_change_core address
+- * @param change_component_addr
++ * @param change_component_p
+  *  g_change_component address
+- * @param backup_info_addr
++ * @param backup_info_p
+  *  g_backup_info address
+  * @param main_lcore_id
+  *  main_lcore_id mask
+@@ -677,14 +677,14 @@ int64_t sppwk_convert_mac_str_to_int64(const char *macaddr);
+  * @retval SPP_RET_OK succeeded.
+  * @retval SPP_RET_NG failed.
+  */
+-int spp_set_mng_data_addr(struct startup_param *startup_param_addr,
+-			  struct iface_info *iface_addr,
+-			  struct spp_component_info *component_addr,
+-			  struct core_mng_info *core_mng_addr,
+-			  int *change_core_addr,
+-			  int *change_component_addr,
+-			  struct cancel_backup_info *backup_info_addr,
+-			  unsigned int main_lcore_id);
++int sppwk_set_mng_data(struct startup_param *startup_param_p,
++		struct iface_info *iface_p,
++		struct spp_component_info *component_p,
++		struct core_mng_info *core_mng_p,
++		int *change_core_p,
++		int *change_component_p,
++		struct cancel_backup_info *backup_info_p,
++		unsigned int main_lcore_id);
+ 
+ /**
+  * Get mange data address
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 9831058..8e6e187 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -277,16 +277,13 @@ main(int argc, char *argv[])
+ 		/* Get lcore id of main thread to set its status after */
+ 		g_main_lcore_id = rte_lcore_id();
+ 
+-		/* set manage address */
+-		if (spp_set_mng_data_addr(&g_startup_param,
+-					  &g_iface_info,
+-					  g_component_info,
+-					  g_core_info,
+-					  g_change_core,
+-					  g_change_component,
+-					  &g_backup_info,
+-					  g_main_lcore_id) < SPP_RET_OK) {
+-			RTE_LOG(ERR, APP, "manage address set is failed.\n");
++		if (sppwk_set_mng_data(&g_startup_param, &g_iface_info,
++					g_component_info, g_core_info,
++					g_change_core, g_change_component,
++					&g_backup_info,
++					g_main_lcore_id) < SPP_RET_OK) {
++			RTE_LOG(ERR, APP,
++				"Failed to set management data.\n");
+ 			break;
+ 		}
+ 
+-- 
+2.17.1
+

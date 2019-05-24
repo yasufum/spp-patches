@@ -1,0 +1,254 @@
+From 47e0187800878a6c7f7ff5221585fb1acd9add1f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Thu, 23 May 2019 17:02:34 +0900
+Subject: [PATCH 05/11] shared/sec: refactor funcs for managing port info
+
+This patch is to refactor functions for getting and deleting port info.
+
+* Function `check_port_element()` is used for getting index of given port
+  info array, and the name does not describe this feature. To fix this
+  issue, rename to `get_idx_port_info()`.
+
+* `get_del_port_element()` does not get anything, but just delete given
+  port from the array. It is renamed as `delete_port_info()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_runner.c      | 30 +++++-----
+ src/shared/secondary/spp_worker_th/spp_proc.c | 55 +++++++++----------
+ src/shared/secondary/spp_worker_th/spp_proc.h | 37 +++++--------
+ 3 files changed, 53 insertions(+), 69 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index a7005c3..2a82edd 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -352,10 +352,6 @@ check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
+ }
+ 
+ /* Port add or del to execute it */
+-/**
+- * TODO(Ogasawara) The name `action` should be revised to be more
+- * appropriate one.
+- */
+ static int
+ spp_update_port(enum sppwk_action wk_action,
+ 		const struct sppwk_port_idx *port,
+@@ -364,13 +360,13 @@ spp_update_port(enum sppwk_action wk_action,
+ 		const struct spp_port_ability *ability)
+ {
+ 	int ret = SPP_RET_NG;
+-	int ret_check = -1;
++	int port_idx;
+ 	int ret_del = -1;
+ 	int component_id = 0;
+ 	int cnt = 0;
+ 	struct spp_component_info *comp_info = NULL;
+ 	struct sppwk_port_info *port_info = NULL;
+-	int *num = NULL;
++	int *nof_ports = NULL;
+ 	struct sppwk_port_info **ports = NULL;
+ 	struct spp_component_info *comp_info_base = NULL;
+ 	int *change_component = NULL;
+@@ -386,10 +382,10 @@ spp_update_port(enum sppwk_action wk_action,
+ 	comp_info = (comp_info_base + component_id);
+ 	port_info = get_sppwk_port(port->iface_type, port->iface_no);
+ 	if (rxtx == SPP_PORT_RXTX_RX) {
+-		num = &comp_info->num_rx_port;
++		nof_ports = &comp_info->num_rx_port;
+ 		ports = comp_info->rx_ports;
+ 	} else {
+-		num = &comp_info->num_tx_port;
++		nof_ports = &comp_info->num_tx_port;
+ 		ports = comp_info->tx_ports;
+ 	}
+ 
+@@ -401,9 +397,9 @@ spp_update_port(enum sppwk_action wk_action,
+ 				comp_info->num_tx_port) != SPP_RET_OK)
+ 			return SPP_RET_NG;
+ 
+-		ret_check = check_port_element(port_info, *num, ports);
+-		/* Check whether a port has been already registered. */
+-		if (ret_check >= SPP_RET_OK) {
++		/* Check if the port_info is included in array `ports`. */
++		port_idx = get_idx_port_info(port_info, *nof_ports, ports);
++		if (port_idx >= SPP_RET_OK) {
+ 			/* registered */
+ 			if (ability->ops == SPPWK_PORT_ABL_OPS_ADD_VLANTAG) {
+ 				while ((cnt < SPP_PORT_ABILITY_MAX) &&
+@@ -424,7 +420,7 @@ spp_update_port(enum sppwk_action wk_action,
+ 			return SPP_RET_OK;
+ 		}
+ 
+-		if (*num >= RTE_MAX_ETHPORTS) {
++		if (*nof_ports >= RTE_MAX_ETHPORTS) {
+ 			RTE_LOG(ERR, APP, "Cannot assign port over the "
+ 				"maximum number.\n");
+ 			return SPP_RET_NG;
+@@ -446,8 +442,8 @@ spp_update_port(enum sppwk_action wk_action,
+ 		}
+ 
+ 		port_info->iface_type = port->iface_type;
+-		ports[*num] = port_info;
+-		(*num)++;
++		ports[*nof_ports] = port_info;
++		(*nof_ports)++;
+ 
+ 		ret = SPP_RET_OK;
+ 		break;
+@@ -463,14 +459,14 @@ spp_update_port(enum sppwk_action wk_action,
+ 					sizeof(struct spp_port_ability));
+ 		}
+ 
+-		ret_del = get_del_port_element(port_info, *num, ports);
++		ret_del = delete_port_info(port_info, *nof_ports, ports);
+ 		if (ret_del == 0)
+-			(*num)--; /* If deleted, decrement number. */
++			(*nof_ports)--; /* If deleted, decrement number. */
+ 
+ 		ret = SPP_RET_OK;
+ 		break;
+ 
+-	default:
++	default:  /* This case cannot be happend without invlid wk_action. */
+ 		return SPP_RET_NG;
+ 	}
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 2cd98c3..971ec9c 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -771,45 +771,44 @@ del_component_info(int component_id, int component_num, int *componet_array)
+ 	return 0;
+ }
+ 
+-/* get port element which matches the condition */
++/**
++ * Get index of given entry in given port info array. It returns the index,
++ * or NG code if the entry is not found.
++ */
+ int
+-check_port_element(
+-		struct sppwk_port_info *info,
+-		int num,
+-		struct sppwk_port_info *array[])
++get_idx_port_info(struct sppwk_port_info *p_info, int nof_ports,
++		struct sppwk_port_info *p_info_ary[])
+ {
+ 	int cnt = 0;
+-	int match = SPP_RET_NG;
+-	for (cnt = 0; cnt < num; cnt++) {
+-		if (info == array[cnt])
+-			match = cnt;
++	int ret = SPP_RET_NG;
++	for (cnt = 0; cnt < nof_ports; cnt++) {
++		if (p_info == p_info_ary[cnt])
++			ret = cnt;
+ 	}
+-	return match;
++	return ret;
+ }
+ 
+-/* search matched port_info from array and delete it */
++/* Delete given port info from the port info array. */
+ int
+-get_del_port_element(
+-		struct sppwk_port_info *info,
+-		int num,
+-		struct sppwk_port_info *array[])
++delete_port_info(struct sppwk_port_info *p_info, int nof_ports,
++		struct sppwk_port_info *p_info_ary[])
+ {
+-	int cnt = 0;
+-	int match = SPP_RET_NG;
+-	int max = num;
++	int target_idx;  /* The index of deleted port */
++	int cnt;
+ 
+-	match = check_port_element(info, num, array);
+-	if (match < 0)
++	/* Find index of target port to be deleted. */
++	target_idx = get_idx_port_info(p_info, nof_ports, p_info_ary);
++	if (target_idx < 0)
+ 		return SPP_RET_NG;
+ 
+-	/* Last element is excluded from movement. */
+-	max--;
+-
+-	for (cnt = match; cnt < max; cnt++)
+-		array[cnt] = array[cnt+1];
+-
+-	/* Last element is cleared. */
+-	array[cnt] = NULL;
++	/**
++	 * Overwrite the deleted port by the next one, and shift all of
++	 * remained ports.
++	 */
++	nof_ports--;
++	for (cnt = target_idx; cnt < nof_ports; cnt++)
++		p_info_ary[cnt] = p_info_ary[cnt+1];
++	p_info_ary[cnt] = NULL;  /* Remove old last port. */
+ 	return SPP_RET_OK;
+ }
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index 30bd8be..b490471 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -571,40 +571,29 @@ int
+ del_component_info(int component_id, int component_num, int *componet_array);
+ 
+ /**
+- * get port element which matches the condition.
++ * Get index of given entry in given port info array. It returns the index,
++ * or NG code if the entry is not found.
+  *
+- * @param info
+- *  sppwk_port_info address
+- * @param num
+- *  port count
+- * @param array[]
+- *  sppwk_port_info array address
+- *
+- * @retval 0~ match index.
+- * @retval -1 failed.
++ * @param[in] p_info Target port_info for getting index.
++ * @param[in] nof_ports Num of ports for iterating given array.
++ * @param[in] p_info_ary The array of port_info.
++ * @return Index of given array, or NG code if not found.
+  */
+-int check_port_element(
+-		struct sppwk_port_info *info,
+-		int num,
+-		struct sppwk_port_info *array[]);
++int get_idx_port_info(struct sppwk_port_info *p_info, int nof_ports,
++		struct sppwk_port_info *p_info_ary[]);
+ 
+ /**
+  *  search matched port_info from array and delete it.
+  *
+- * @param info
+- *  sppwk_port_info address
+- * @param num
+- *  port count
+- * @param array[]
+- *  sppwk_port_info array address
++ * @param[in] p_info Target port to be deleted.
++ * @param[in] nof_ports Number of ports of given p_info_ary.
++ * @param[in] array[] Array of p_info.
+  *
+  * @retval 0  succeeded.
+  * @retval -1 failed.
+  */
+-int get_del_port_element(
+-		struct sppwk_port_info *info,
+-		int num,
+-		struct sppwk_port_info *array[]);
++int delete_port_info(struct sppwk_port_info *p_info, int nof_ports,
++		struct sppwk_port_info *p_info_ary[]);
+ 
+ /**
+  * Flush initial setting of each interface.
+-- 
+2.17.1
+
