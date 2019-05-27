@@ -1,0 +1,579 @@
+From 4769ddfa56fd7ec11391e9e488a48cff720f3c7e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 25 May 2019 08:44:10 +0900
+Subject: [PATCH 2/6] shared/sec: revise types of spp worker
+
+This update is to revise SPP worker types to be more specific. enum
+`spp_component_type` is changed to `sppwk_worker_type` and the member
+of the enum is also changed as following.
+
+  * SPPWK_TYPE_NONE which has no roles.
+  * SPPWK_TYPE_CLS for classifier.
+  * SPPWK_TYPE_MRG for merger.
+  * SPPWK_TYPE_FWD for forwarder.
+  * SPPWK_TYPE_MIR for mirror.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/spp_mirror.c                       | 47 +++++++++----------
+ .../secondary/spp_worker_th/cmd_parser.c      | 16 +++----
+ .../secondary/spp_worker_th/cmd_parser.h      |  2 +-
+ .../secondary/spp_worker_th/cmd_runner.c      | 24 +++++-----
+ src/shared/secondary/spp_worker_th/spp_proc.c | 18 +++----
+ src/shared/secondary/spp_worker_th/spp_proc.h | 18 +++----
+ src/vf/classifier_mac.c                       |  2 +-
+ src/vf/spp_forward.c                          | 23 +++++----
+ src/vf/spp_vf.c                               |  2 +-
+ 9 files changed, 74 insertions(+), 78 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 202475a..26c250b 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -24,8 +24,8 @@
+ #define SPP_MIRROR_POOL_NAME_MAX 32
+ #define MAX_PKT_MIRROR 4096
+ #define MEMPOOL_CACHE_SIZE 256
+-#define RTE_TEST_RX_DESC_DEFAULT 1024
+-#define RTE_TEST_TX_DESC_DEFAULT 1024
++#define MIR_RX_DESC_DEFAULT 1024
++#define MIR_TX_DESC_DEFAULT 1024
+ 
+ /* A set of port info of rx and tx */
+ struct mirror_rxtx {
+@@ -35,13 +35,11 @@ struct mirror_rxtx {
+ 
+ /* Information on the path used for mirror. */
+ struct mirror_path {
+-	char name[SPP_NAME_STR_LEN];	/* component name	   */
+-	volatile enum spp_component_type type;
+-					/* component type	   */
+-	int num_rx;			/* number of receive ports */
+-	int num_tx;			/* number of mirror ports  */
+-	struct mirror_rxtx ports[RTE_MAX_ETHPORTS];
+-					/* port used for mirror	   */
++	char name[SPP_NAME_STR_LEN];  /* component name */
++	volatile enum sppwk_worker_type wk_type;
++	int nof_rx;  /* number of receive ports */
++	int nof_tx;  /* number of mirror ports */
++	struct mirror_rxtx ports[RTE_MAX_ETHPORTS];  /* used for mirror */
+ };
+ 
+ /* Information for mirror. */
+@@ -52,9 +50,8 @@ struct mirror_info {
+ 				/* Information of data path */
+ };
+ 
+-/*  */
+-static uint16_t nb_rxd = RTE_TEST_RX_DESC_DEFAULT;
+-static uint16_t nb_txd = RTE_TEST_TX_DESC_DEFAULT;
++static uint16_t nb_rxd = MIR_RX_DESC_DEFAULT;
++static uint16_t nb_txd = MIR_TX_DESC_DEFAULT;
+ 
+ /* Logical core ID for main process */
+ static unsigned int g_main_lcore_id = 0xffffffff;
+@@ -292,7 +289,7 @@ spp_mirror_update(struct spp_component_info *component)
+ 	if (unlikely(num_rx > 1)) {
+ 		RTE_LOG(ERR, MIRROR,
+ 			"Component[%d] Setting error. (type = %d, rx = %d)\n",
+-			component->component_id, component->type, num_rx);
++			component->component_id, component->wk_type, num_rx);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -300,7 +297,7 @@ spp_mirror_update(struct spp_component_info *component)
+ 	if (unlikely(num_tx > 2)) {
+ 		RTE_LOG(ERR, MIRROR,
+ 			"Component[%d] Setting error. (type = %d, tx = %d)\n",
+-			component->component_id, component->type, num_tx);
++			component->component_id, component->wk_type, num_tx);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -311,12 +308,12 @@ spp_mirror_update(struct spp_component_info *component)
+ 			"(name = %s, type = %d)\n",
+ 			component->component_id,
+ 			component->name,
+-			component->type);
++			component->wk_type);
+ 
+ 	memcpy(&path->name, component->name, SPP_NAME_STR_LEN);
+-	path->type = component->type;
+-	path->num_rx = component->num_rx_port;
+-	path->num_tx = component->num_tx_port;
++	path->wk_type = component->wk_type;
++	path->nof_rx = component->num_rx_port;
++	path->nof_tx = component->num_tx_port;
+ 	for (cnt = 0; cnt < num_rx; cnt++)
+ 		memcpy(&path->ports[cnt].rx, component->rx_ports[cnt],
+ 				sizeof(struct sppwk_port_info));
+@@ -335,7 +332,7 @@ spp_mirror_update(struct spp_component_info *component)
+ 			"(name = %s, type = %d)\n",
+ 			component->component_id,
+ 			component->name,
+-			component->type);
++			component->wk_type);
+ 
+ 	return SPP_RET_OK;
+ }
+@@ -378,7 +375,7 @@ mirror_proc(int id)
+ 	path = &info->path[info->ref_index];
+ 
+ 	/* Practice condition check */
+-	if (!(path->num_tx == 2 && path->num_rx == 1))
++	if (!(path->nof_tx == 2 && path->nof_rx == 1))
+ 		return SPP_RET_OK;
+ 
+ 	rx = &path->ports[0].rx;
+@@ -481,24 +478,24 @@ spp_mirror_get_component_status(
+ 	struct sppwk_port_idx rx_ports[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_idx tx_ports[RTE_MAX_ETHPORTS];
+ 
+-	if (unlikely(path->type == SPP_COMPONENT_UNUSE)) {
++	if (unlikely(path->wk_type == SPPWK_TYPE_NONE)) {
+ 		RTE_LOG(ERR, MIRROR,
+ 				"Component[%d] Not used. "
+ 				"(status)(core = %d, type = %d)\n",
+-				id, lcore_id, path->type);
++				id, lcore_id, path->wk_type);
+ 		return SPP_RET_NG;
+ 	}
+ 
+ 	component_type = SPP_TYPE_MIRROR_STR;
+ 
+ 	memset(rx_ports, 0x00, sizeof(rx_ports));
+-	for (cnt = 0; cnt < path->num_rx; cnt++) {
++	for (cnt = 0; cnt < path->nof_rx; cnt++) {
+ 		rx_ports[cnt].iface_type = path->ports[cnt].rx.iface_type;
+ 		rx_ports[cnt].iface_no   = path->ports[cnt].rx.iface_no;
+ 	}
+ 
+ 	memset(tx_ports, 0x00, sizeof(tx_ports));
+-	for (cnt = 0; cnt < path->num_tx; cnt++) {
++	for (cnt = 0; cnt < path->nof_tx; cnt++) {
+ 		tx_ports[cnt].iface_type = path->ports[cnt].tx.iface_type;
+ 		tx_ports[cnt].iface_no   = path->ports[cnt].tx.iface_no;
+ 	}
+@@ -507,7 +504,7 @@ spp_mirror_get_component_status(
+ 	ret = (*params->element_proc)(
+ 		params, lcore_id,
+ 		path->name, component_type,
+-		path->num_rx, rx_ports, path->num_tx, tx_ports);
++		path->nof_rx, rx_ports, path->nof_tx, tx_ports);
+ 	if (unlikely(ret != 0))
+ 		return SPP_RET_NG;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 77efbd7..0f0e64c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -178,7 +178,7 @@ parse_resource_uid(const char *res_uid,
+ 
+ /* Get component type from string of its name. */
+ /* TODO(yasufum) should be worker local, separated for vf and mirror. */
+-static enum spp_component_type
++static enum sppwk_worker_type
+ get_comp_type_from_str(const char *type_str)
+ {
+ 	RTE_LOG(DEBUG, WK_CMD_PARSER, "type_str is %s\n", type_str);
+@@ -186,23 +186,23 @@ get_comp_type_from_str(const char *type_str)
+ #ifdef SPP_VF_MODULE
+ 	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
+ 			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
+-		return SPP_COMPONENT_CLASSIFIER_MAC;
++		return SPPWK_TYPE_CLS;
+ 	} else if (strncmp(type_str, CORE_TYPE_MERGE_STR,
+ 			strlen(CORE_TYPE_MERGE_STR)+1) == 0) {
+-		return SPP_COMPONENT_MERGE;
++		return SPPWK_TYPE_MRG;
+ 	} else if (strncmp(type_str, CORE_TYPE_FORWARD_STR,
+ 			strlen(CORE_TYPE_FORWARD_STR)+1) == 0) {
+-		return SPP_COMPONENT_FORWARD;
++		return SPPWK_TYPE_FWD;
+ 	}
+ #endif /* SPP_VF_MODULE */
+ 
+ #ifdef SPP_MIRROR_MODULE
+ 	if (strncmp(type_str, SPP_TYPE_MIRROR_STR,
+ 			strlen(SPP_TYPE_MIRROR_STR)+1) == 0)
+-		return SPP_COMPONENT_MIRROR;
++		return SPPWK_TYPE_MIR;
+ #endif /* SPP_MIRROR_MODULE */
+ 
+-	return SPP_COMPONENT_UNUSE;
++	return SPPWK_TYPE_NONE;
+ }
+ 
+ /* Format error message object and return error code for an error case. */
+@@ -418,7 +418,7 @@ static int
+ parse_comp_type(void *output, const char *arg_val,
+ 		int allow_override __attribute__ ((unused)))
+ {
+-	enum spp_component_type comp_type;
++	enum sppwk_worker_type comp_type;
+ 	struct sppwk_cmd_comp *component = output;
+ 
+ 	/* Parsing comp type is required only for action `start`. */
+@@ -433,7 +433,7 @@ parse_comp_type(void *output, const char *arg_val,
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	component->type = comp_type;
++	component->wk_type = comp_type;
+ 	return SPP_RET_OK;
+ }
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index b90f52a..c8839f1 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -95,7 +95,7 @@ struct sppwk_cmd_comp {
+ 	enum sppwk_action wk_action;  /**< start or stop */
+ 	char name[SPPWK_NAME_BUFSZ];  /**< component name */
+ 	unsigned int core;  /**< logical core number */
+-	enum spp_component_type type;  /**< component type */
++	enum sppwk_worker_type wk_type;  /**< worker thread type */
+ };
+ 
+ /* `port` command parameters. */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index cf86a6a..5df7b92 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -210,7 +210,7 @@ update_cls_table(enum sppwk_action wk_action,
+ /* TODO(yasufum) revise func name for removing the term `component`. */
+ static int
+ update_comp(enum sppwk_action wk_action, const char *name,
+-		unsigned int lcore_id, enum spp_component_type type)
++		unsigned int lcore_id, enum sppwk_worker_type wk_type)
+ {
+ 	int ret;
+ 	int ret_del;
+@@ -257,7 +257,7 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 		comp_info = (comp_info_base + comp_lcore_id);
+ 		memset(comp_info, 0x00, sizeof(struct spp_component_info));
+ 		strcpy(comp_info->name, name);
+-		comp_info->type		= type;
++		comp_info->wk_type = wk_type;
+ 		comp_info->lcore_id	= lcore_id;
+ 		comp_info->component_id	= comp_lcore_id;
+ 
+@@ -286,7 +286,7 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 		 */
+ #ifdef SPP_VF_MODULE
+ 		/* initialize classifier information */
+-		if (comp_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
++		if (comp_info->wk_type == SPPWK_TYPE_CLS)
+ 			init_classifier_info(comp_lcore_id);
+ #endif /* SPP_VF_MODULE */
+ 
+@@ -324,22 +324,22 @@ check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
+ 				" port_type=%d, rx=%d, tx=%d\n",
+ 				rxtx, num_rx, num_tx);
+ 	switch (component_type) {
+-	case SPP_COMPONENT_FORWARD:
++	case SPPWK_TYPE_FWD:
+ 		if (num_rx > 1 || num_tx > 1)
+ 			return SPP_RET_NG;
+ 		break;
+ 
+-	case SPP_COMPONENT_MERGE:
++	case SPPWK_TYPE_MRG:
+ 		if (num_tx > 1)
+ 			return SPP_RET_NG;
+ 		break;
+ 
+-	case SPP_COMPONENT_CLASSIFIER_MAC:
++	case SPPWK_TYPE_CLS:
+ 		if (num_rx > 1)
+ 			return SPP_RET_NG;
+ 		break;
+ 
+-	case SPP_COMPONENT_MIRROR:
++	case SPPWK_TYPE_MIR:
+ 		if (num_rx > 1 || num_tx > 2)
+ 			return SPP_RET_NG;
+ 		break;
+@@ -393,7 +393,7 @@ update_port(enum sppwk_action wk_action,
+ 	switch (wk_action) {
+ 	case SPPWK_ACT_ADD:
+ 		/* Check if over the maximum num of ports of component. */
+-		if (check_port_count(comp_info->type, rxtx,
++		if (check_port_count(comp_info->wk_type, rxtx,
+ 				comp_info->num_rx_port,
+ 				comp_info->num_tx_port) != SPP_RET_OK)
+ 			return SPP_RET_NG;
+@@ -524,7 +524,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 				RTE_LOG(ERR, WK_CMD_RUNNER, "Cannot iterate core "
+ 						"information. "
+ 						"(core = %d, type = %d)\n",
+-						lcore_id, SPP_COMPONENT_UNUSE);
++						lcore_id, SPPWK_TYPE_NONE);
+ 				return SPP_RET_NG;
+ 			}
+ 			continue;
+@@ -535,7 +535,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 							NULL, NULL, NULL, NULL);
+ 			comp_info = (comp_info_base + core->id[cnt]);
+ #ifdef SPP_VF_MODULE
+-			if (comp_info->type == SPP_COMPONENT_CLASSIFIER_MAC) {
++			if (comp_info->wk_type == SPPWK_TYPE_CLS) {
+ 				ret = spp_classifier_get_component_status(
+ 						lcore_id,
+ 						core->id[cnt],
+@@ -557,7 +557,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 				RTE_LOG(ERR, WK_CMD_RUNNER, "Cannot iterate core "
+ 						"information. "
+ 						"(core = %d, type = %d)\n",
+-						lcore_id, comp_info->type);
++						lcore_id, comp_info->wk_type);
+ 				return SPP_RET_NG;
+ 			}
+ 		}
+@@ -753,7 +753,7 @@ exec_cmd(const struct spp_command *cmd)
+ 				cmd->spec.comp.wk_action,
+ 				cmd->spec.comp.name,
+ 				cmd->spec.comp.core,
+-				cmd->spec.comp.type);
++				cmd->spec.comp.wk_type);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, WK_CMD_RUNNER, "Exec flush.\n");
+ 			ret = spp_flush();
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 386144f..b51486f 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -315,12 +315,12 @@ dump_component_info(const struct spp_component_info *comp_info)
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+ 		tmp_ci = &comp_info[cnt];
+-		if (tmp_ci->type == SPP_COMPONENT_UNUSE)
++		if (tmp_ci->wk_type == SPPWK_TYPE_NONE)
+ 			continue;
+ 
+ 		RTE_LOG(DEBUG, APP, "component[%d] name=%s, type=%d, "
+ 				"core=%u, index=%d\n",
+-				cnt, tmp_ci->name, tmp_ci->type,
++				cnt, tmp_ci->name, tmp_ci->wk_type,
+ 				tmp_ci->lcore_id, tmp_ci->component_id);
+ 
+ 		sprintf(str, "component[%d] rx=%d", cnt,
+@@ -616,12 +616,12 @@ del_vhost_sockfile(struct sppwk_port_info *vhost)
+ }
+ 
+ /* Get component type of target component_info */
+-enum spp_component_type
++enum sppwk_worker_type
+ spp_get_component_type(int id)
+ {
+ 	struct spp_component_info *component_info =
+ 				(g_mng_data.p_component_info + id);
+-	return component_info->type;
++	return component_info->wk_type;
+ }
+ 
+ /* Get core ID of target component */
+@@ -671,7 +671,7 @@ spp_check_used_port(
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+ 		component = (component_info + cnt);
+-		if (component->type == SPP_COMPONENT_UNUSE)
++		if (component->wk_type == SPPWK_TYPE_NONE)
+ 			continue;
+ 
+ 		if (rxtx == SPP_PORT_RXTX_RX) {
+@@ -718,7 +718,7 @@ get_free_lcore_id(void)
+ 
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if ((comp_info + cnt)->type == SPP_COMPONENT_UNUSE)
++		if ((comp_info + cnt)->wk_type == SPPWK_TYPE_NONE)
+ 			return cnt;
+ 	}
+ 	return SPP_RET_NG;
+@@ -749,7 +749,7 @@ sppwk_get_lcore_id(const char *comp_name)
+ int
+ del_comp_info(int lcore_id, int nof_comps, int *comp_ary)
+ {
+-	int idx;  /* The index of comp_ary to be deleted. */
++	int idx = 0;  /* The index of comp_ary to be deleted. */
+ 	int cnt;
+ 
+ 	/* Find the index. */
+@@ -896,7 +896,7 @@ flush_component(void)
+ 		spp_port_ability_update(component_info);
+ 
+ #ifdef SPP_VF_MODULE
+-		if (component_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
++		if (component_info->wk_type == SPPWK_TYPE_CLS)
+ 			ret = spp_classifier_mac_update(component_info);
+ 		else
+ 			ret = spp_forward_update(component_info);
+@@ -908,7 +908,7 @@ flush_component(void)
+ 			RTE_LOG(ERR, APP, "Flush error. "
+ 					"( component = %s, type = %d)\n",
+ 					component_info->name,
+-					component_info->type);
++					component_info->wk_type);
+ 			return SPP_RET_NG;
+ 		}
+ 	}
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index 61f3597..491274a 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -87,13 +87,13 @@ enum spp_core_status {
+ 	SPP_CORE_IDLE_REQUEST /**< Request idling */
+ };
+ 
+-/* Process type for each component */
+-enum spp_component_type {
+-	SPP_COMPONENT_UNUSE,          /**< Not used */
+-	SPP_COMPONENT_CLASSIFIER_MAC, /**< Classifier_mac */
+-	SPP_COMPONENT_MERGE,	      /**< Merger */
+-	SPP_COMPONENT_FORWARD,	      /**< Forwarder */
+-	SPP_COMPONENT_MIRROR,	      /**< Mirror */
++/* Type of SPP worker thread. */
++enum sppwk_worker_type {
++	SPPWK_TYPE_NONE,  /**< Not used */
++	SPPWK_TYPE_CLS,  /**< Classifier_mac */
++	SPPWK_TYPE_MRG,  /**< Merger */
++	SPPWK_TYPE_FWD,  /**< Forwarder */
++	SPPWK_TYPE_MIR,  /**< Mirror */
+ };
+ 
+ /* Classifier Type */
+@@ -207,7 +207,7 @@ struct sppwk_port_info {
+ /* Component info */
+ struct spp_component_info {
+ 	char name[SPP_NAME_STR_LEN];	/**< Component name */
+-	enum spp_component_type type;	/**< Component type */
++	enum sppwk_worker_type wk_type;	/**< Component type */
+ 	unsigned int lcore_id;		/**< Logical core ID for component */
+ 	int component_id;		/**< Component ID */
+ 	int num_rx_port;		/**< The number of rx ports */
+@@ -388,7 +388,7 @@ enum spp_core_status spp_get_core_status(unsigned int lcore_id);
+  * @return
+  *  Type of component executed
+  */
+-enum spp_component_type spp_get_component_type(int id);
++enum sppwk_worker_type spp_get_component_type(int id);
+ 
+ /**
+  * Run check_core_status() for SPP_CORE_STATUS_CHECK_MAX times with
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 9fd8da1..0eb8234 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -824,7 +824,7 @@ spp_classifier_get_component_status(
+ 		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+ 				"Component[%d] Not used. "
+ 				"(status)(core = %d, type = %d)\n",
+-				id, lcore_id, SPP_COMPONENT_CLASSIFIER_MAC);
++				id, lcore_id, SPPWK_TYPE_CLS);
+ 		return SPP_RET_NG;
+ 	}
+ 
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index 67fcd19..cededb2 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -20,8 +20,7 @@ struct forward_rxtx {
+ /* Information on the path used for forward. */
+ struct forward_path {
+ 	char name[SPP_NAME_STR_LEN];    /* component name          */
+-	volatile enum spp_component_type type;
+-					/* component type          */
++	volatile enum sppwk_worker_type wk_type;
+ 	int num_rx;                     /* number of receive ports */
+ 	int num_tx;                     /* number of trans ports   */
+ 	struct forward_rxtx ports[RTE_MAX_ETHPORTS];
+@@ -62,11 +61,11 @@ spp_forward_update(struct spp_component_info *component)
+ 	struct forward_path *path = &info->path[info->upd_index];
+ 
+ 	/* Forward component allows only one receiving port. */
+-	if ((component->type == SPP_COMPONENT_FORWARD) &&
++	if ((component->wk_type == SPPWK_TYPE_FWD) &&
+ 			unlikely(num_rx > 1)) {
+ 		RTE_LOG(ERR, FORWARD,
+ 			"Component[%d] Setting error. (type = %d, rx = %d)\n",
+-			component->component_id, component->type, num_rx);
++			component->component_id, component->wk_type, num_rx);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -74,7 +73,7 @@ spp_forward_update(struct spp_component_info *component)
+ 	if (unlikely(num_tx != 0) && unlikely(num_tx != 1)) {
+ 		RTE_LOG(ERR, FORWARD,
+ 			"Component[%d] Setting error. (type = %d, tx = %d)\n",
+-			component->component_id, component->type, num_tx);
++			component->component_id, component->wk_type, num_tx);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -85,10 +84,10 @@ spp_forward_update(struct spp_component_info *component)
+ 			"(name = %s, type = %d)\n",
+ 			component->component_id,
+ 			component->name,
+-			component->type);
++			component->wk_type);
+ 
+ 	memcpy(&path->name, component->name, SPP_NAME_STR_LEN);
+-	path->type = component->type;
++	path->wk_type = component->wk_type;
+ 	path->num_rx = component->num_rx_port;
+ 	path->num_tx = component->num_tx_port;
+ 	for (cnt = 0; cnt < num_rx; cnt++)
+@@ -109,7 +108,7 @@ spp_forward_update(struct spp_component_info *component)
+ 			"(name = %s, type = %d)\n",
+ 			component->component_id,
+ 			component->name,
+-			component->type);
++			component->wk_type);
+ 
+ 	return SPP_RET_OK;
+ }
+@@ -149,7 +148,7 @@ spp_forward(int id)
+ 	path = &info->path[info->ref_index];
+ 
+ 	/* Practice condition check */
+-	if (path->type == SPP_COMPONENT_MERGE) {
++	if (path->wk_type == SPPWK_TYPE_MRG) {
+ 		/* merger */
+ 		if (!(path->num_tx == 1 && path->num_rx >= 1))
+ 			return SPP_RET_OK;
+@@ -197,15 +196,15 @@ spp_forward_get_component_status(
+ 	struct sppwk_port_idx rx_ports[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_idx tx_ports[RTE_MAX_ETHPORTS];
+ 
+-	if (unlikely(path->type == SPP_COMPONENT_UNUSE)) {
++	if (unlikely(path->wk_type == SPPWK_TYPE_NONE)) {
+ 		RTE_LOG(ERR, FORWARD,
+ 				"Component[%d] Not used. "
+ 				"(status)(core = %d, type = %d)\n",
+-				id, lcore_id, path->type);
++				id, lcore_id, path->wk_type);
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	if (path->type == SPP_COMPONENT_MERGE)
++	if (path->wk_type == SPPWK_TYPE_MRG)
+ 		component_type = SPP_TYPE_MERGE_STR;
+ 	else
+ 		component_type = SPP_TYPE_FORWARD_STR;
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 4134647..5075c95 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -213,7 +213,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 		for (cnt = 0; cnt < core->num; cnt++) {
+ 			/* Component classification to call a function. */
+ 			if (spp_get_component_type(core->id[cnt]) ==
+-					SPP_COMPONENT_CLASSIFIER_MAC) {
++					SPPWK_TYPE_CLS) {
+ 				/* Component type for classifier. */
+ 				ret = spp_classifier_mac_do(core->id[cnt]);
+ 				if (unlikely(ret != 0))
+-- 
+2.17.1
+

@@ -1,0 +1,48 @@
+From 434cdac90c1f7043bf628010c3cdbd8ab037b0f1 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 27 May 2019 16:10:24 +0900
+Subject: [PATCH 0/6] *** SUBJECT HERE ***
+
+*** BLURB HERE ***
+
+Yasufumi Ogawa (6):
+  shared/sec: refactor func for deleting comp info
+  shared/sec: revise types of spp worker
+  shared/sec: rename funcs of flush cmd
+  shared/sec: rename file spp_proc to cmd_utils
+  shared/sec: refactor name of funcs for exec cmd
+  shared/sec: rename struct spp_command
+
+ src/mirror/Makefile                           |   2 +-
+ src/mirror/spp_mirror.c                       |  51 +++---
+ src/pcap/Makefile                             |   2 +-
+ src/pcap/{spp_proc.c => cmd_utils.c}          |   2 +-
+ src/pcap/{spp_proc.h => cmd_utils.h}          |   6 +-
+ src/pcap/command_dec.h                        |   2 +-
+ src/pcap/command_proc.h                       |   2 +-
+ src/pcap/spp_pcap.c                           |   2 +-
+ src/pcap/spp_pcap.h                           |   2 +-
+ .../secondary/spp_worker_th/cmd_parser.c      |  63 +++----
+ .../secondary/spp_worker_th/cmd_parser.h      |  12 +-
+ .../secondary/spp_worker_th/cmd_runner.c      | 159 +++++++++---------
+ .../secondary/spp_worker_th/cmd_runner.h      |  10 +-
+ .../spp_worker_th/{spp_proc.c => cmd_utils.c} |  87 +++++-----
+ .../spp_worker_th/{spp_proc.h => cmd_utils.h} |  70 ++++----
+ .../secondary/spp_worker_th/command_conn.h    |   2 +-
+ .../secondary/spp_worker_th/mirror_deps.h     |   2 +-
+ .../spp_worker_th/ringlatencystats.c          |   2 +-
+ src/shared/secondary/spp_worker_th/spp_port.h |   8 +-
+ src/shared/secondary/spp_worker_th/vf_deps.h  |   8 +-
+ src/vf/Makefile                               |   2 +-
+ src/vf/classifier_mac.c                       |   2 +-
+ src/vf/spp_forward.c                          |  23 ++-
+ src/vf/spp_vf.c                               |   6 +-
+ 24 files changed, 263 insertions(+), 264 deletions(-)
+ rename src/pcap/{spp_proc.c => cmd_utils.c} (99%)
+ rename src/pcap/{spp_proc.h => cmd_utils.h} (99%)
+ rename src/shared/secondary/spp_worker_th/{spp_proc.c => cmd_utils.c} (94%)
+ rename src/shared/secondary/spp_worker_th/{spp_proc.h => cmd_utils.h} (92%)
+
+-- 
+2.17.1
+

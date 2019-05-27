@@ -1,0 +1,215 @@
+From 3c5461beeb2e49bb9d5cb22c4e276fe3978659e4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Sat, 25 May 2019 23:17:18 +0900
+Subject: [PATCH 3/6] shared/sec: rename funcs of flush cmd
+
+This update is to rename functions of flushing temporarily stored
+command.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_runner.c      | 23 +++++------
+ src/shared/secondary/spp_worker_th/spp_proc.c | 40 ++++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h | 22 +++++-----
+ 3 files changed, 42 insertions(+), 43 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 5df7b92..f8ce5ac 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -475,26 +475,25 @@ update_port(enum sppwk_action wk_action,
+ 	return ret;
+ }
+ 
+-/* Flush command to execute it */
++/* Activate temporarily stored command. */
+ static int
+-spp_flush(void)
++flush_cmd(void)
+ {
+-	int ret = SPP_RET_NG;
++	int ret;
+ 	struct cancel_backup_info *backup_info = NULL;
+ 
+ 	sppwk_get_mng_data(NULL, NULL, NULL,
+ 				NULL, NULL, NULL, &backup_info);
+ 
+-	/* Initial setting of each interface. */
+-	ret = flush_port();
++	ret = update_port_info();
+ 	if (ret < SPP_RET_OK)
+ 		return ret;
+ 
+-	/* Flush of core index. */
+-	flush_core();
++	/* TODO(yasufum) confirm why no returned value. */
++	update_lcore_info();
+ 
+-	/* Flush of component */
+-	ret = flush_component();
++	/* TODO(yasufum) confirm why no checking for returned value. */
++	ret = update_comp_info();
+ 
+ 	backup_mng_info(backup_info);
+ 	return ret;
+@@ -744,7 +743,7 @@ exec_cmd(const struct spp_command *cmd)
+ 				&cmd->spec.cls_table.port);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, WK_CMD_RUNNER, "Exec flush.\n");
+-			ret = spp_flush();
++			ret = flush_cmd();
+ 		}
+ 		break;
+ 
+@@ -756,7 +755,7 @@ exec_cmd(const struct spp_command *cmd)
+ 				cmd->spec.comp.wk_type);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, WK_CMD_RUNNER, "Exec flush.\n");
+-			ret = spp_flush();
++			ret = flush_cmd();
+ 		}
+ 		break;
+ 
+@@ -768,7 +767,7 @@ exec_cmd(const struct spp_command *cmd)
+ 				cmd->spec.port.name, &cmd->spec.port.ability);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, WK_CMD_RUNNER, "Exec flush.\n");
+-			ret = spp_flush();
++			ret = flush_cmd();
+ 		}
+ 		break;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index b51486f..3cdc108 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -19,6 +19,7 @@
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
++/* TODO(yasufum) change log label after filename is revised. */
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+ /* A set of pointers of management data */
+@@ -812,9 +813,9 @@ delete_port_info(struct sppwk_port_info *p_info, int nof_ports,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Flush initial setting of each interface. */
++/* Activate temporarily stored port info while flushing. */
+ int
+-flush_port(void)
++update_port_info(void)
+ {
+ 	int ret = 0;
+ 	int cnt = 0;
+@@ -846,9 +847,9 @@ flush_port(void)
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Flush changed core. */
++/* Activate temporarily stored lcore info while flushing. */
+ void
+-flush_core(void)
++update_lcore_info(void)
+ {
+ 	int cnt = 0;
+ 	struct core_mng_info *info = NULL;
+@@ -877,38 +878,39 @@ flush_core(void)
+ 	}
+ }
+ 
+-/* Flush change for forwarder or classifier_mac */
++/* Activate temporarily stored component info while flushing. */
+ int
+-flush_component(void)
++update_comp_info(void)
+ {
+ 	int ret = 0;
+ 	int cnt = 0;
+-	struct spp_component_info *component_info = NULL;
+-	int *p_change_component = g_mng_data.p_change_component;
+-	struct spp_component_info *p_component_info =
+-					g_mng_data.p_component_info;
++	struct spp_component_info *comp_info = NULL;
++	int *p_change_comp = g_mng_data.p_change_component;
++	struct spp_component_info *p_comp_info = g_mng_data.p_component_info;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (*(p_change_component + cnt) == 0)
++		if (*(p_change_comp + cnt) == 0)
+ 			continue;
+ 
+-		component_info = (p_component_info + cnt);
+-		spp_port_ability_update(component_info);
++		comp_info = (p_comp_info + cnt);
++		spp_port_ability_update(comp_info);
+ 
+ #ifdef SPP_VF_MODULE
+-		if (component_info->wk_type == SPPWK_TYPE_CLS)
+-			ret = spp_classifier_mac_update(component_info);
++		if (comp_info->wk_type == SPPWK_TYPE_CLS)
++			ret = spp_classifier_mac_update(comp_info);
+ 		else
+-			ret = spp_forward_update(component_info);
++			ret = spp_forward_update(comp_info);
+ #endif /* SPP_VF_MODULE */
++
+ #ifdef SPP_MIRROR_MODULE
+-		ret = spp_mirror_update(component_info);
++		ret = spp_mirror_update(comp_info);
+ #endif /* SPP_MIRROR_MODULE */
++
+ 		if (unlikely(ret < 0)) {
+ 			RTE_LOG(ERR, APP, "Flush error. "
+ 					"( component = %s, type = %d)\n",
+-					component_info->name,
+-					component_info->wk_type);
++					comp_info->name,
++					comp_info->wk_type);
+ 			return SPP_RET_NG;
+ 		}
+ 	}
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index 491274a..c066f0c 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -595,25 +595,23 @@ int delete_port_info(struct sppwk_port_info *p_info, int nof_ports,
+ 		struct sppwk_port_info *p_info_ary[]);
+ 
+ /**
+- * Flush initial setting of each interface.
++ * Activate temporarily stored port info while flushing.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @retval SPP_RET_OK if succeeded.
++ * @retval SPP_RET_NG if failed.
+  */
+-int flush_port(void);
++int update_port_info(void);
+ 
+-/**
+- *  Flush changed core.
+- */
+-void flush_core(void);
++/* Activate temporarily stored lcore info while flushing. */
++void update_lcore_info(void);
+ 
+ /**
+- *  Flush change for forwarder or classifier_mac.
++ * Activate temporarily stored component info while flushing.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @retval SPP_RET_OK if succeeded.
++ * @retval SPP_RET_NG if failed.
+  */
+-int flush_component(void);
++int update_comp_info(void);
+ 
+ /**
+  * Port type to string
+-- 
+2.17.1
+
