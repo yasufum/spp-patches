@@ -1,9 +1,9 @@
 From 6bffe7d912e0e18b7fc944f14e9c3c3d6533a2c4 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Mon, 27 May 2019 16:11:24 +0900
-Subject: [PATCH 0/2] *** SUBJECT HERE ***
+Subject: [PATCH 0/2] Rename struct of component
 
-*** BLURB HERE ***
+This update is to rename structs of component info.
 
 Yasufumi Ogawa (2):
   shared/sec: rename struct spp_component_info
