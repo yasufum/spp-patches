@@ -1,9 +1,10 @@
 From 434cdac90c1f7043bf628010c3cdbd8ab037b0f1 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Mon, 27 May 2019 16:10:24 +0900
-Subject: [PATCH 0/6] *** SUBJECT HERE ***
+Subject: [PATCH 0/6] Refactor functions for manipulating thread info
 
-*** BLURB HERE ***
+This series of update is to refactor functions for manipulating info of
+worker thread previously called as component.
 
 Yasufumi Ogawa (6):
   shared/sec: refactor func for deleting comp info

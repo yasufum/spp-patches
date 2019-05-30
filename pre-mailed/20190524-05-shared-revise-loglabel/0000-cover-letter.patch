@@ -1,9 +1,11 @@
 From fdcc06f1d385b07bf8348399e7cca2bcee2dadce Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 24 May 2019 17:50:36 +0900
-Subject: [PATCH 0/2] *** SUBJECT HERE ***
+Subject: [PATCH 0/2] Update old log labels APP
 
-*** BLURB HERE ***
+Log label `APP` was used in SPP secondary processes, but revised as
+subdivided into several modules. However, it is still remained in some
+of functions. This series of patches is to update this old label.
 
 Yasufumi Ogawa (2):
   shared/sec: change log label in cmd parser

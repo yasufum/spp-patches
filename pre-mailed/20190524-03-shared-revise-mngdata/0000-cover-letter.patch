@@ -1,9 +1,11 @@
 From efabbbdcb842f26d158ea9ada75b027391f7022a Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 24 May 2019 17:37:55 +0900
-Subject: [PATCH 0/3] *** SUBJECT HERE ***
+Subject: [PATCH 0/3] Rename global management data
 
-*** BLURB HERE ***
+This series of patches is to revise variables of global management data
+`g_mng_data_addr` and its members, functions for getting or setting the
+data.
 
 Yasufumi Ogawa (3):
   shared/sec: rename func for getting mng data

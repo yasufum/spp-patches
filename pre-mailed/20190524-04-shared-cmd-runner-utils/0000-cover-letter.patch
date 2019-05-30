@@ -1,9 +1,11 @@
 From ceceeeba03f71b05df7374d1b4410bcc495d1f32 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Fri, 24 May 2019 17:47:35 +0900
-Subject: [PATCH 00/11] *** SUBJECT HERE ***
+Subject: [PATCH 00/11] Refactor functions for handling commands
 
-*** BLURB HERE ***
+Some of function in SPP workers such as parsing command or checking
+params for are named or have comments inappropriately. This series of
+update is to refactor this issues.
 
 Yasufumi Ogawa (11):
   shared/sec: rename functions of sppwk_cmd_runner
