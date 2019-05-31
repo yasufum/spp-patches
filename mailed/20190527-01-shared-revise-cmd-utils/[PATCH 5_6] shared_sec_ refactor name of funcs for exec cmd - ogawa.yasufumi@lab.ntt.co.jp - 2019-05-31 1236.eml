@@ -1,0 +1,259 @@
+X-Account-Key: account4
+X-UIDL: 0000cbc656a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 858E9400931
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 8436623C25B; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 819C423C257
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 6B3106395DA;
+	Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5CA7A6395DB;
+	Fri, 31 May 2019 12:39:31 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 5/6] shared/sec: refactor name of funcs for exec cmd
+Date: Fri, 31 May 2019 12:36:58 +0900
+Message-Id: <1559273819-26243-6-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273819-26243-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273819-26243-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename function for executing several commands at once
+`process_request()` to `exec_cmds()`, and each of commands `exec_cmd()
+to `exec_one_cmd()` to be clear the relationship. Some comments and log
+messages are also revised.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/spp_mirror.c                       |  2 +-
+ .../secondary/spp_worker_th/cmd_runner.c      | 81 +++++++++----------
+ .../secondary/spp_worker_th/cmd_runner.h      |  4 +-
+ src/vf/spp_vf.c                               |  2 +-
+ 4 files changed, 41 insertions(+), 48 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 574e31f..501b214 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -672,7 +672,7 @@ main(int argc, char *argv[])
+ 		{
+ #endif
+ 			/* Receive command */
+-			ret_do = sppwk_cmd_run();
++			ret_do = sppwk_run_cmd();
+ 			if (unlikely(ret_do != SPP_RET_OK))
+ 				break;
+ 			/*
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index f8ce5ac..3c80db9 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -58,7 +58,7 @@ struct cmd_response {
+ 
+ /**
+  * List of worker process type. The order of items should be same as the order
+- * of enum `secondary_type` in spp_proc.h.
++ * of enum `secondary_type` in cmd_utils.h.
+  */
+ /* TODO(yasufum) rename `secondary_type` to `sppwk_proc_type`. */
+ const char *SPPWK_PROC_TYPE_LIST[] = {
+@@ -81,7 +81,7 @@ const char *PORT_ABILITY_STAT_LIST[] = {
+ 
+ /**
+  * List of classifier type. The order of items should be same as the order of
+- * enum `spp_classifier_type` defined in spp_proc.h.
++ * enum `spp_classifier_type` defined in cmd_utils.h.
+  */
+ /* TODO(yasufum) fix similar var in cmd_parser.c */
+ const char *CLS_TYPE_A_LIST[] = {
+@@ -726,7 +726,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ 
+ /* Execute one command. */
+ static int
+-exec_cmd(const struct spp_command *cmd)
++exec_one_cmd(const struct spp_command *cmd)
+ {
+ 	int ret;
+ 
+@@ -1620,72 +1620,65 @@ send_command_result_response(int *sock,
+ 	spp_strbuf_free(msg);
+ }
+ 
+-/* process command request from no-null-terminated string */
++/* Execute series of commands. */
+ static int
+-process_request(int *sock, const char *request_str, size_t request_str_len)
++exec_cmds(int *sock, const char *req_str, size_t req_str_len)
+ {
+ 	int ret = SPP_RET_NG;
+ 	int i;
+ 
+-	struct sppwk_cmd_req request;
++	struct sppwk_cmd_req cmd_req;
+ 	struct sppwk_parse_err_msg wk_err_msg;
+-	struct cmd_result command_results[SPPWK_MAX_CMDS];
++	struct cmd_result cmd_results[SPPWK_MAX_CMDS];
+ 
+-	memset(&request, 0, sizeof(struct sppwk_cmd_req));
++	memset(&cmd_req, 0, sizeof(struct sppwk_cmd_req));
+ 	memset(&wk_err_msg, 0, sizeof(struct sppwk_parse_err_msg));
+-	memset(command_results, 0, sizeof(command_results));
+-
+-	RTE_LOG(DEBUG, WK_CMD_RUNNER, "Start command request processing. "
+-			"request_str=\n%.*s\n",
+-			(int)request_str_len, request_str);
++	memset(cmd_results, 0, sizeof(cmd_results));
+ 
+ 	/* Parse request message. */
+-	ret = sppwk_parse_req(
+-			&request, request_str, request_str_len, &wk_err_msg);
++	RTE_LOG(DEBUG, WK_CMD_RUNNER, "Parse cmds, %.*s\n",
++			(int)req_str_len, req_str);
++	ret = sppwk_parse_req(&cmd_req, req_str, req_str_len, &wk_err_msg);
++
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		/* Setup and send error response. */
+-		prepare_parse_err_msg(command_results, &request,
+-				&wk_err_msg);
+-		send_decode_error_response(sock, &request, command_results);
+-		RTE_LOG(DEBUG, WK_CMD_RUNNER,
+-				"End command request processing.\n");
++		prepare_parse_err_msg(cmd_results, &cmd_req, &wk_err_msg);
++		send_decode_error_response(sock, &cmd_req, cmd_results);
++		RTE_LOG(DEBUG, WK_CMD_RUNNER, "Failed to parse cmds.\n");
+ 		return SPP_RET_OK;
+ 	}
+ 
+-	RTE_LOG(DEBUG, WK_CMD_RUNNER, "Command request is valid. "
+-			"num_command=%d, num_valid_command=%d\n",
+-			request.num_command, request.num_valid_command);
++	RTE_LOG(DEBUG, WK_CMD_RUNNER,
++			"Num of cmds is %d, and valid cmds is %d\n",
++			cmd_req.num_command, cmd_req.num_valid_command);
+ 
+ 	/* execute commands */
+-	for (i = 0; i < request.num_command ; ++i) {
+-		ret = exec_cmd(request.commands + i);
++	for (i = 0; i < cmd_req.num_command ; ++i) {
++		ret = exec_one_cmd(cmd_req.commands + i);
+ 		if (unlikely(ret != SPP_RET_OK)) {
+-			set_cmd_result(&command_results[i], CMD_FAILED,
++			set_cmd_result(&cmd_results[i], CMD_FAILED,
+ 					"error occur");
+-
+-			/* not execute remaining commands */
+-			for (++i; i < request.num_command ; ++i)
+-				set_cmd_result(&command_results[i],
++			/* Does not execute remaining commands */
++			for (++i; i < cmd_req.num_command ; ++i)
++				set_cmd_result(&cmd_results[i],
+ 					CMD_INVALID, "");
+-
+ 			break;
+ 		}
+ 
+-		set_cmd_result(&command_results[i], CMD_SUCCESS, "");
++		set_cmd_result(&cmd_results[i], CMD_SUCCESS, "");
+ 	}
+ 
+-	if (request.is_requested_exit) {
+-		/* Terminated by process exit command.                       */
+-		/* Other route is normal end because it responds to command. */
+-		set_cmd_result(&command_results[0], CMD_SUCCESS, "");
+-		send_command_result_response(sock, &request, command_results);
++	/* Exec exit command. */
++	if (cmd_req.is_requested_exit) {
++		set_cmd_result(&cmd_results[0], CMD_SUCCESS, "");
++		send_command_result_response(sock, &cmd_req, cmd_results);
+ 		RTE_LOG(INFO, WK_CMD_RUNNER,
+-				"Terminate process for exit.\n");
++				"Process is terminated with exit cmd.\n");
+ 		return SPP_RET_NG;
+ 	}
+ 
+ 	/* send response */
+-	send_command_result_response(sock, &request, command_results);
++	send_command_result_response(sock, &cmd_req, cmd_results);
+ 
+ 	RTE_LOG(DEBUG, WK_CMD_RUNNER, "End command request processing.\n");
+ 
+@@ -1699,12 +1692,12 @@ sppwk_cmd_runner_conn(const char *ctl_ipaddr, int ctl_port)
+ 	return spp_command_conn_init(ctl_ipaddr, ctl_port);
+ }
+ 
+-/* Run command from spp-ctl. */
++/* Run command sent from spp-ctl. */
+ int
+-sppwk_cmd_run(void)
++sppwk_run_cmd(void)
+ {
+-	int ret = SPP_RET_NG;
+-	int msg_ret = -1;
++	int ret;
++	int msg_ret;
+ 
+ 	static int sock = -1;
+ 	static char *msgbuf;
+@@ -1734,7 +1727,7 @@ sppwk_cmd_run(void)
+ 			return SPP_RET_NG;
+ 	}
+ 
+-	ret = process_request(&sock, msgbuf, msg_ret);
++	ret = exec_cmds(&sock, msgbuf, msg_ret);
+ 	spp_strbuf_remove_front(msgbuf, msg_ret);
+ 
+ 	return ret;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.h b/src/shared/secondary/spp_worker_th/cmd_runner.h
+index 5c79247..5d85733 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.h
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.h
+@@ -30,13 +30,13 @@ int
+ sppwk_cmd_runner_conn(const char *ctl_ipaddr, int ctl_port);
+ 
+ /**
+- * Run command from spp-ctl.
++ * Run command sent from spp-ctl.
+  *
+  * @retval SPP_RET_OK if succeeded.
+  * TODO(yasufum) change exclude case of exit cmd because it is not NG.
+  * @retval SPP_RET_NG if connection failure or received exit command.
+  */
+ int
+-sppwk_cmd_run(void);
++sppwk_run_cmd(void);
+ 
+ #endif  /* _SPPWK_CMD_RUNNER_H_ */
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index fd8944f..deb5c7e 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -342,7 +342,7 @@ main(int argc, char *argv[])
+ 		{
+ #endif
+ 			/* Receive command */
+-			ret_do = sppwk_cmd_run();
++			ret_do = sppwk_run_cmd();
+ 			if (unlikely(ret_do != SPP_RET_OK))
+ 				break;
+ 
+-- 
+2.17.1
+
+

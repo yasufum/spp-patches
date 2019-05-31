@@ -1,0 +1,198 @@
+X-Account-Key: account4
+X-UIDL: 0000cbc356a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 618844008B6
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 5FFF823C257; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 5DFBB23BC0A
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 49BDC6395DC;
+	Fri, 31 May 2019 12:39:31 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 3B23C6395D8;
+	Fri, 31 May 2019 12:39:31 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 1/6] shared/sec: refactor func for deleting comp info
+Date: Fri, 31 May 2019 12:36:54 +0900
+Message-Id: <1559273819-26243-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273819-26243-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273819-26243-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename function misspelled `del_componet_info()` to
+`del_comp_info()` to be simple, and revise name of vars and comments
+for refactoring.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_runner.c      | 19 +++++++----
+ src/shared/secondary/spp_worker_th/spp_proc.c | 33 ++++++++++---------
+ src/shared/secondary/spp_worker_th/spp_proc.h | 19 ++++++-----
+ 3 files changed, 41 insertions(+), 30 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 613e924..cf86a6a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -207,18 +207,21 @@ update_cls_table(enum sppwk_action wk_action,
+ }
+ 
+ /* Assign worker thread or remove on specified lcore. */
++/* TODO(yasufum) revise func name for removing the term `component`. */
+ static int
+ update_comp(enum sppwk_action wk_action, const char *name,
+ 		unsigned int lcore_id, enum spp_component_type type)
+ {
+-	int ret = SPP_RET_NG;
+-	int ret_del = -1;
++	int ret;
++	int ret_del;
+ 	int comp_lcore_id = 0;
+ 	unsigned int tmp_lcore_id = 0;
+ 	struct spp_component_info *comp_info = NULL;
++	/* TODO(yasufum) revise `core` to be more specific. */
+ 	struct core_info *core = NULL;
+ 	struct core_mng_info *info = NULL;
+ 	struct spp_component_info *comp_info_base = NULL;
++	/* TODO(yasufum) revise `core_info` which is same as struct name. */
+ 	struct core_mng_info *core_info = NULL;
+ 	int *change_core = NULL;
+ 	int *change_component = NULL;
+@@ -277,23 +280,27 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 		info = (core_info + tmp_lcore_id);
+ 		core = &info->core[info->upd_index];
+ 
++		/**
++		 * TODO(yasufum) check if this ifdef is simply removed by
++		 * running other than spp_vf.
++		 */
+ #ifdef SPP_VF_MODULE
+ 		/* initialize classifier information */
+ 		if (comp_info->type == SPP_COMPONENT_CLASSIFIER_MAC)
+ 			init_classifier_info(comp_lcore_id);
+ #endif /* SPP_VF_MODULE */
+ 
+-		ret_del = del_component_info(comp_lcore_id,
+-				core->num, core->id);
++		/* The latest lcore is released if worker thread is stopped. */
++		ret_del = del_comp_info(comp_lcore_id, core->num, core->id);
+ 		if (ret_del >= 0)
+-			/* If deleted, decrement number. */
+ 			core->num--;
+ 
+ 		ret = SPP_RET_OK;
+ 		*(change_component + comp_lcore_id) = 0;
+ 		break;
+ 
+-	default:
++	default:  /* Unexpected case. */
++		ret = SPP_RET_NG;
+ 		break;
+ 	}
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.c b/src/shared/secondary/spp_worker_th/spp_proc.c
+index 9c62bab..386144f 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.c
++++ b/src/shared/secondary/spp_worker_th/spp_proc.c
+@@ -742,30 +742,33 @@ sppwk_get_lcore_id(const char *comp_name)
+ }
+ 
+ /* Delete component information */
++/**
++ * TODO(yasufum) consider to move to cmd_runner because this func is only
++ * used in.
++ */
+ int
+-del_component_info(int component_id, int component_num, int *componet_array)
++del_comp_info(int lcore_id, int nof_comps, int *comp_ary)
+ {
++	int idx;  /* The index of comp_ary to be deleted. */
+ 	int cnt;
+-	int match = -1;
+-	int max = component_num;
+ 
+-	for (cnt = 0; cnt < max; cnt++) {
+-		if (component_id == componet_array[cnt])
+-			match = cnt;
++	/* Find the index. */
++	for (cnt = 0; cnt < nof_comps; cnt++) {
++		if (lcore_id == comp_ary[cnt])
++			idx = cnt;
+ 	}
+-
+-	if (match < 0)
++	if (idx < 0)
+ 		return SPP_RET_NG;
+ 
+-	/* Last element is excluded from movement. */
+-	max--;
++	/* Overwrite the deleted entry, and shift the remained. */
++	nof_comps--;
++	for (cnt = idx; cnt < nof_comps; cnt++)
++		comp_ary[cnt] = comp_ary[cnt + 1];
+ 
+-	for (cnt = match; cnt < max; cnt++)
+-		componet_array[cnt] = componet_array[cnt+1];
++	/* Clean the unused last entry. */
++	comp_ary[cnt] = 0;
+ 
+-	/* Last element is cleared. */
+-	componet_array[cnt] = 0;
+-	return 0;
++	return SPP_RET_OK;
+ }
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/spp_proc.h b/src/shared/secondary/spp_worker_th/spp_proc.h
+index bdd628e..61f3597 100644
+--- a/src/shared/secondary/spp_worker_th/spp_proc.h
++++ b/src/shared/secondary/spp_worker_th/spp_proc.h
+@@ -555,18 +555,19 @@ int sppwk_get_lcore_id(const char *comp_name);
+ /**
+  *  Delete component information.
+  *
+- * @param component_id
+- *  check data
+- * @param component_num
+- *  array check count
+- * @param componet_array
+- *  check array address
++ * @param[in] lcore_id The lcore ID of deleted comp.
++ * @param[in] nof_comps The num of elements in comp_ary.
++ * @param[in] *comp_ary Set of comps from which an comp is deleted.
+  *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
++ */
++/**
++ * TODO(yasufum) consider to move to cmd_runner because this func is only
++ * used in.
+  */
+ int
+-del_component_info(int component_id, int component_num, int *componet_array);
++del_comp_info(int lcore_id, int nof_comps, int *comp_ary);
+ 
+ /**
+  * Get index of given entry in given port info array. It returns the index,
+-- 
+2.17.1
+
+
