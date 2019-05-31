@@ -1,4 +1,4 @@
-From 7a4394f746cbfef694a693d5c35d134022fe3c88 Mon Sep 17 00:00:00 2001
+From 963ad55ca3b8902956bbbca429da60a1456c1315 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Mon, 27 May 2019 20:20:52 +0900
 Subject: [PATCH 8/9] spp_pcap: rename struct spp_port_info
@@ -11,8 +11,8 @@ Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 ---
  src/pcap/cmd_utils.c |  8 ++++----
  src/pcap/cmd_utils.h | 18 +++++++++---------
- src/pcap/spp_pcap.c  | 16 ++++++++--------
- 3 files changed, 21 insertions(+), 21 deletions(-)
+ src/pcap/spp_pcap.c  | 17 +++++++++--------
+ 3 files changed, 22 insertions(+), 21 deletions(-)
 
 diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
 index 05f9da1..08e4c98 100644
@@ -98,7 +98,7 @@ index 2bd1100..862eb27 100644
  
  /**
 diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
-index 2aad0ad..54ba80a 100644
+index 2aad0ad..ee89b0a 100644
 --- a/src/pcap/spp_pcap.c
 +++ b/src/pcap/spp_pcap.c
 @@ -115,7 +115,7 @@ struct pcap_option {
@@ -139,16 +139,17 @@ index 2aad0ad..54ba80a 100644
  						port_cap->iface_type,
  						port_cap->iface_no);
  		if (port_info == NULL) {
-@@ -1027,7 +1027,7 @@ main(int argc, char *argv[])
+@@ -1027,7 +1027,8 @@ main(int argc, char *argv[])
  		}
  		if (port_cap->iface_type == PHY) {
  			if (port_info->iface_type != UNDEF)
 -				port_cap->dpdk_port = port_info->dpdk_port;
-+				port_cap->ethdev_port_id = port_info->ethdev_port_id;
++				port_cap->ethdev_port_id =
++					port_info->ethdev_port_id;
  			else {
  				RTE_LOG(ERR, SPP_PCAP,
  					"caputre port undefined.(phy:%d)\n",
-@@ -1043,7 +1043,7 @@ main(int argc, char *argv[])
+@@ -1043,7 +1044,7 @@ main(int argc, char *argv[])
  						port_cap->iface_no);
  					break;
  				}
@@ -157,7 +158,7 @@ index 2aad0ad..54ba80a 100644
  			} else {
  				RTE_LOG(ERR, SPP_PCAP, "caputre port "
  						"undefined.(ring:%d)\n",
-@@ -1054,7 +1054,7 @@ main(int argc, char *argv[])
+@@ -1054,7 +1055,7 @@ main(int argc, char *argv[])
  		RTE_LOG(DEBUG, SPP_PCAP,
  				"Recv port type=%d, no=%d, port_id=%d\n",
  				port_cap->iface_type, port_cap->iface_no,

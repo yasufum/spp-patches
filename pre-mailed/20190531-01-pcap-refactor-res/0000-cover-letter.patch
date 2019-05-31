@@ -1,6 +1,6 @@
-From ea1442fd63d8d5989801e014bbf8ebec328312ca Mon Sep 17 00:00:00 2001
+From 1a83a15ba4925c9fccda83c2fa4639806c17ccce Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
-Date: Fri, 31 May 2019 16:20:13 +0900
+Date: Fri, 31 May 2019 17:50:27 +0900
 Subject: [PATCH 0/9] Refactor func and struct for spp_pcap resources
 
 This series of patches is to refactor functions, structs and vars for
@@ -24,10 +24,10 @@ Yasufumi Ogawa (9):
  src/pcap/{command_proc.h => cmd_runner.h}     |  14 +-
  src/pcap/cmd_utils.c                          |  62 ++--
  src/pcap/cmd_utils.h                          |  90 +++---
- src/pcap/spp_pcap.c                           | 192 +++++------
+ src/pcap/spp_pcap.c                           | 193 +++++------
  src/pcap/spp_pcap.h                           |   4 +-
  .../secondary/spp_worker_th/cmd_utils.h       |   2 +-
- 10 files changed, 397 insertions(+), 389 deletions(-)
+ 10 files changed, 398 insertions(+), 389 deletions(-)
  rename src/pcap/{command_dec.c => cmd_parser.c} (68%)
  rename src/pcap/{command_dec.h => cmd_parser.h} (69%)
  rename src/pcap/{command_proc.c => cmd_runner.c} (81%)

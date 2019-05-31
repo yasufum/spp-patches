@@ -1,4 +1,4 @@
-From ea1442fd63d8d5989801e014bbf8ebec328312ca Mon Sep 17 00:00:00 2001
+From 1a83a15ba4925c9fccda83c2fa4639806c17ccce Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
 Date: Mon, 27 May 2019 20:42:34 +0900
 Subject: [PATCH 9/9] spp_pcap: rename struct spp_port_index
@@ -133,7 +133,7 @@ index 862eb27..8487c23 100644
  /**
   * iterate core table parameters which is
 diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
-index 54ba80a..84b42e4 100644
+index ee89b0a..bfb0233 100644
 --- a/src/pcap/spp_pcap.c
 +++ b/src/pcap/spp_pcap.c
 @@ -420,7 +420,7 @@ spp_pcap_get_core_status(
