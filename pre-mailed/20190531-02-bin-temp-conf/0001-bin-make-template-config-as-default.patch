@@ -1,0 +1,69 @@
+From a5f0afeb0d94e9c9a3c6fa2372f9ebd29d60812d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 28 May 2019 00:31:18 +0900
+Subject: [PATCH] bin: make template config as default
+
+Config file of startup script `bin/env.sh` is under management of git,
+but it is not convenient for developers if this file is changed and
+asked to `git add` even if subtle changes. This update is to add
+template config under the management of git and to use customized
+config which is not included under git.
+
+The startup script expects to find customized `bin/config.sh`, or create
+it by copying template `bin/sample/config.sh` if it does not exist.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .gitignore                       |  1 +
+ bin/{env.sh => sample/config.sh} |  0
+ bin/start.sh                     | 15 +++++++++++++--
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+ rename bin/{env.sh => sample/config.sh} (100%)
+
+diff --git a/.gitignore b/.gitignore
+index b31ab54..34c2ea8 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,6 +1,7 @@
+ *.swp
+ *.pyc
+ *.log
++bin/config.sh
+ docs/guides/_build/*
+ docs/guides/images/**/*.pdf
+ src/controller/3rd_party/*
+diff --git a/bin/env.sh b/bin/sample/config.sh
+similarity index 100%
+rename from bin/env.sh
+rename to bin/sample/config.sh
+diff --git a/bin/start.sh b/bin/start.sh
+index 6a6f304..9bc1ff0 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -8,10 +8,21 @@
+ # Activate for debugging
+ #set -x
+ 
+-SPP_DIR=$(cd $(dirname $0); pwd)/..
++WORK_DIR=$(cd $(dirname $0); pwd)
++SPP_DIR=${WORK_DIR}/..
++
++DEFAULT_CONFIG=${WORK_DIR}/sample/config.sh
++CONFIG=${WORK_DIR}/config.sh
++
++if [ ! -f ${CONFIG} ]; then
++    echo "Creating config file ..."
++    cp ${DEFAULT_CONFIG} ${CONFIG}
++    echo "Edit '${CONFIG}' and run this script again!"
++    exit
++fi
+ 
+ # import vars and functions
+-. ${SPP_DIR}/bin/env.sh
++. ${CONFIG}
+ 
+ echo "Start spp-ctl"
+ python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
+-- 
+2.17.1
+
