@@ -1,0 +1,38 @@
+From ea1442fd63d8d5989801e014bbf8ebec328312ca Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 31 May 2019 16:20:13 +0900
+Subject: [PATCH 0/9] Refactor func and struct for spp_pcap resources
+
+This series of patches is to refactor functions, structs and vars for
+manipulating resources of spp_pcap.
+
+Yasufumi Ogawa (9):
+  spp_pcap: rename enum spp_core_status
+  spp_pcap: rename file of util libs
+  spp_pcap: refactor parse error code
+  spp_pcap: rename define starts from SPP_CMD_MAX
+  spp_pcap: rename define of buffer size for cmds
+  spp_pcap: revise name of error message object
+  spp_pcap: revise return codes
+  spp_pcap: rename struct spp_port_info
+  spp_pcap: rename struct spp_port_index
+
+ src/pcap/Makefile                             |   2 +-
+ src/pcap/{command_dec.c => cmd_parser.c}      |  72 +++--
+ src/pcap/{command_dec.h => cmd_parser.h}      |  44 +--
+ src/pcap/{command_proc.c => cmd_runner.c}     | 304 +++++++++---------
+ src/pcap/{command_proc.h => cmd_runner.h}     |  14 +-
+ src/pcap/cmd_utils.c                          |  62 ++--
+ src/pcap/cmd_utils.h                          |  90 +++---
+ src/pcap/spp_pcap.c                           | 192 +++++------
+ src/pcap/spp_pcap.h                           |   4 +-
+ .../secondary/spp_worker_th/cmd_utils.h       |   2 +-
+ 10 files changed, 397 insertions(+), 389 deletions(-)
+ rename src/pcap/{command_dec.c => cmd_parser.c} (68%)
+ rename src/pcap/{command_dec.h => cmd_parser.h} (69%)
+ rename src/pcap/{command_proc.c => cmd_runner.c} (81%)
+ rename src/pcap/{command_proc.h => cmd_runner.h} (71%)
+
+-- 
+2.17.1
+

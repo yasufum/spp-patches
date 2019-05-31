@@ -1,0 +1,250 @@
+From 6dde1032eabaf63b306c4e6957d005a0ed8b7fd9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 27 May 2019 15:51:41 +0900
+Subject: [PATCH 6/9] spp_pcap: revise name of error message object
+
+This update is to the name of struct for containing error message
+objects to `sppwk_parse_err_msg` and its members.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c | 38 ++++++++++++++++++++------------------
+ src/pcap/cmd_parser.h | 14 +++++++-------
+ src/pcap/cmd_runner.c | 27 +++++++++++++--------------
+ 3 files changed, 40 insertions(+), 39 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index a5f3a4a..48a8bd6 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -15,24 +15,24 @@
+ 
+ /* set parse error */
+ static inline int
+-set_parse_error(struct spp_command_parse_error *error,
+-		const int error_code, const char *error_name)
++set_parse_error(struct sppwk_parse_err_msg *wk_err_msg,
++		const int err_code, const char *err_msg)
+ {
+-	error->code = error_code;
++	wk_err_msg->code = err_code;
+ 
+-	if (likely(error_name != NULL))
+-		strcpy(error->value_name, error_name);
++	if (likely(err_msg != NULL))
++		strcpy(wk_err_msg->msg, err_msg);
+ 
+-	return error->code;
++	return wk_err_msg->code;
+ }
+ 
+ /* set parse error */
+ static inline int
+-set_string_value_parse_error(struct spp_command_parse_error *error,
+-		const char *value, const char *error_name)
++set_string_value_parse_error(struct sppwk_parse_err_msg *wk_err_msg,
++		const char *err_details, const char *err_msg)
+ {
+-	strcpy(error->value, value);
+-	return set_parse_error(error, SPPWK_PARSE_INVALID_VALUE, error_name);
++	strcpy(wk_err_msg->details, err_details);
++	return set_parse_error(wk_err_msg, SPPWK_PARSE_INVALID_VALUE, err_msg);
+ }
+ 
+ /* Split command line parameter with spaces */
+@@ -63,7 +63,7 @@ struct parse_command_list {
+ 	int   param_min;        /* Min number of parameters */
+ 	int   param_max;        /* Max number of parameters */
+ 	int (*func)(struct spp_command_request *request, int argc,
+-			char *argv[], struct spp_command_parse_error *error,
++			char *argv[], struct sppwk_parse_err_msg *error,
+ 			int maxargc);
+ 				/* Pointer to command handling function */
+ 	enum spp_command_type type;
+@@ -84,7 +84,7 @@ static struct parse_command_list command_list_pcap[] = {
+ static int
+ parse_command_in_list(struct spp_command_request *request,
+ 			const char *request_str,
+-			struct spp_command_parse_error *error)
++			struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int ret = SPP_RET_OK;
+ 	int command_name_check = 0;
+@@ -102,7 +102,8 @@ parse_command_in_list(struct spp_command_request *request,
+ 	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, PCAP_PARSER, "Parameter number over limit."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
++		return set_parse_error(wk_err_msg,
++				SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 	RTE_LOG(DEBUG, PCAP_PARSER, "Decode array. num=%d\n", argc);
+ 
+@@ -119,7 +120,7 @@ parse_command_in_list(struct spp_command_request *request,
+ 
+ 		request->commands[0].type = command_list_pcap[i].type;
+ 		if (list->func != NULL)
+-			return (*list->func)(request, argc, argv, error,
++			return (*list->func)(request, argc, argv, wk_err_msg,
+ 							list->param_max);
+ 
+ 		return SPP_RET_OK;
+@@ -128,13 +129,14 @@ parse_command_in_list(struct spp_command_request *request,
+ 	if (command_name_check != 0) {
+ 		RTE_LOG(ERR, PCAP_PARSER, "Parameter number out of range."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
++		return set_parse_error(wk_err_msg,
++				SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 
+ 	RTE_LOG(ERR, PCAP_PARSER,
+ 			"Unknown command. command=%s, request_str=%s\n",
+ 			argv[0], request_str);
+-	return set_string_value_parse_error(error, argv[0], "command");
++	return set_string_value_parse_error(wk_err_msg, argv[0], "command");
+ }
+ 
+ /* parse request from no-null-terminated string */
+@@ -142,14 +144,14 @@ int
+ spp_command_parse_request(
+ 		struct spp_command_request *request,
+ 		const char *request_str, size_t request_str_len,
+-		struct spp_command_parse_error *error)
++		struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int ret = SPP_RET_NG;
+ 	int i;
+ 
+ 	/* parse request */
+ 	request->num_command = 1;
+-	ret = parse_command_in_list(request, request_str, error);
++	ret = parse_command_in_list(request, request_str, wk_err_msg);
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, PCAP_PARSER,
+ 				"Cannot parse command request. "
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index 5945e62..9fa1b7b 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -79,11 +79,11 @@ struct spp_command_request {
+ 	int is_requested_stop;          /**< Id for stop command */
+ };
+ 
+-/** parse error information */
+-struct spp_command_parse_error {
+-	int code;                            /**< Error code */
+-	char value_name[SPPWK_NAME_BUFSZ]; /**< Error value name */
+-	char value[SPPWK_VAL_BUFSZ];     /**< Error value */
++/* Error message if parse failed. */
++struct sppwk_parse_err_msg {
++	int code;  /**< Code in enu sppwk_parse_error_code */
++	char msg[SPPWK_NAME_BUFSZ];   /**< Message in short */
++	char details[SPPWK_VAL_BUFSZ];  /**< Detailed message */
+ };
+ 
+ /**
+@@ -97,7 +97,7 @@ struct spp_command_parse_error {
+  * @param request_str_len
+  *  The length of requested command message.
+  * @param error
+- *  The pointer to struct spp_command_parse_error.@n
++ *  The pointer to struct sppwk_parse_err_msg.@n
+  *  Detailed error information will be stored.
+  *
+  * @retval SPP_RET_OK succeeded.
+@@ -105,6 +105,6 @@ struct spp_command_parse_error {
+  */
+ int spp_command_parse_request(struct spp_command_request *request,
+ 		const char *request_str, size_t request_str_len,
+-		struct spp_command_parse_error *error);
++		struct sppwk_parse_err_msg *error);
+ 
+ #endif /* _SPP_PCAP_CMD_PARSER_H_ */
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index d5ae3a5..6ecf99d 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -272,31 +272,31 @@ execute_command(const struct spp_command *command)
+ /* parse error message for response */
+ static const char *
+ parse_error_message(
+-		const struct spp_command_parse_error *parse_error,
++		const struct sppwk_parse_err_msg *wk_err_msg,
+ 		char *message)
+ {
+-	switch (parse_error->code) {
++	switch (wk_err_msg->code) {
+ 	case SPPWK_PARSE_WRONG_FORMAT:
+ 		sprintf(message, "Wrong message format");
+ 		break;
+ 
+ 	case SPPWK_PARSE_UNKNOWN_CMD:
+ 		/* TODO(yasufum) Fix compile err if space exists before "(" */
+-		sprintf(message, "Unknown command(%s)", parse_error->value);
++		sprintf(message, "Unknown command(%s)", wk_err_msg->details);
+ 		break;
+ 
+ 	case SPPWK_PARSE_NO_PARAM:
+ 		sprintf(message, "No or insufficient number of params (%s)",
+-				parse_error->value_name);
++				wk_err_msg->msg);
+ 		break;
+ 
+ 	case SPPWK_PARSE_INVALID_TYPE:
+ 		sprintf(message, "Invalid value type (%s)",
+-				parse_error->value_name);
++				wk_err_msg->msg);
+ 		break;
+ 
+ 	case SPPWK_PARSE_INVALID_VALUE:
+-		sprintf(message, "Invalid value (%s)", parse_error->value_name);
++		sprintf(message, "Invalid value (%s)", wk_err_msg->msg);
+ 		break;
+ 
+ 	default:
+@@ -334,22 +334,21 @@ set_command_results(struct command_result *result,
+ static void
+ set_parse_error_to_results(struct command_result *results,
+ 		const struct spp_command_request *request,
+-		const struct spp_command_parse_error *parse_error)
++		const struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int i;
+ 	const char *tmp_buff;
+-	char error_messege[CMD_RES_ERR_MSG_SIZE];
++	char err_msg[CMD_RES_ERR_MSG_SIZE];
+ 
+ 	for (i = 0; i < request->num_command; i++) {
+-		if (parse_error->code == 0)
++		if (wk_err_msg->code == 0)
+ 			set_command_results(&results[i], CMD_SUCCESS, "");
+ 		else
+ 			set_command_results(&results[i], CMD_INVALID, "");
+ 	}
+ 
+-	if (parse_error->code != 0) {
+-		tmp_buff = parse_error_message(parse_error,
+-				error_messege);
++	if (wk_err_msg->code != 0) {
++		tmp_buff = parse_error_message(wk_err_msg, err_msg);
+ 		set_command_results(&results[request->num_valid_command],
+ 				CMD_FAILURE, tmp_buff);
+ 	}
+@@ -876,11 +875,11 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	int i;
+ 
+ 	struct spp_command_request request;
+-	struct spp_command_parse_error parse_error;
++	struct sppwk_parse_err_msg parse_error;
+ 	struct command_result command_results[SPPWK_MAX_CMDS];
+ 
+ 	memset(&request, 0, sizeof(struct spp_command_request));
+-	memset(&parse_error, 0, sizeof(struct spp_command_parse_error));
++	memset(&parse_error, 0, sizeof(struct sppwk_parse_err_msg));
+ 	memset(command_results, 0, sizeof(command_results));
+ 
+ 	RTE_LOG(DEBUG, PCAP_RUNNER, "Start command request processing. "
+-- 
+2.17.1
+

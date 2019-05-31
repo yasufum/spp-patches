@@ -1,0 +1,171 @@
+From 7a4394f746cbfef694a693d5c35d134022fe3c88 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 27 May 2019 20:20:52 +0900
+Subject: [PATCH 8/9] spp_pcap: rename struct spp_port_info
+
+This update is to rename struct `spp_port_info` to `sppwk_port_info` to
+be more specific, and its member `dpdk_port` to `ethdev_port_id`
+correctly.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_utils.c |  8 ++++----
+ src/pcap/cmd_utils.h | 18 +++++++++---------
+ src/pcap/spp_pcap.c  | 16 ++++++++--------
+ 3 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 05f9da1..08e4c98 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -146,7 +146,7 @@ stop_process(int signal)
+  *
+  * It returns NULL value if given type is invalid.
+  */
+-struct spp_port_info *
++struct sppwk_port_info *
+ get_iface_info(enum port_type iface_type, int iface_no)
+ {
+ 	struct iface_info *iface_info = g_mng_data_addr.p_iface_info;
+@@ -175,12 +175,12 @@ init_iface_info(void)
+ 	for (port_cnt = 0; port_cnt < RTE_MAX_ETHPORTS; port_cnt++) {
+ 		p_iface_info->nic[port_cnt].iface_type = UNDEF;
+ 		p_iface_info->nic[port_cnt].iface_no   = port_cnt;
+-		p_iface_info->nic[port_cnt].dpdk_port  = -1;
++		p_iface_info->nic[port_cnt].ethdev_port_id  = -1;
+ 		p_iface_info->nic[port_cnt].class_id.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+ 		p_iface_info->ring[port_cnt].iface_type = UNDEF;
+ 		p_iface_info->ring[port_cnt].iface_no   = port_cnt;
+-		p_iface_info->ring[port_cnt].dpdk_port  = -1;
++		p_iface_info->ring[port_cnt].ethdev_port_id  = -1;
+ 		p_iface_info->ring[port_cnt].class_id.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+ 	}
+@@ -212,7 +212,7 @@ set_nic_interface(void)
+ 
+ 	for (nic_cnt = 0; nic_cnt < p_iface_info->num_nic; nic_cnt++) {
+ 		p_iface_info->nic[nic_cnt].iface_type   = PHY;
+-		p_iface_info->nic[nic_cnt].dpdk_port = nic_cnt;
++		p_iface_info->nic[nic_cnt].ethdev_port_id = nic_cnt;
+ 	}
+ 
+ 	return SPPWK_RET_OK;
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 2bd1100..862eb27 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -139,11 +139,11 @@ struct spp_port_class_identifier {
+ 	struct spp_vlantag_info vlantag;        /**< VLAN tag information */
+ };
+ 
+-/* Port info */
+-struct spp_port_info {
+-	enum port_type iface_type;      /**< Interface type (phy/vhost/ring) */
+-	int            iface_no;        /**< Interface number */
+-	int            dpdk_port;       /**< DPDK port number */
++/* Define detailed port params in addition to `sppwk_port_idx`. */
++struct sppwk_port_info {
++	enum port_type iface_type;  /**< phy, vhost or ring */
++	int iface_no;
++	int ethdev_port_id;  /**< Consistent ID of ethdev */
+ 	struct spp_port_class_identifier class_id;
+ 					/**< Port class identifier */
+ 	struct spp_port_ability ability[SPP_PORT_ABILITY_MAX];
+@@ -175,9 +175,9 @@ struct startup_param {
+ struct iface_info {
+ 	int num_nic;            /* The number of phy */
+ 	int num_ring;           /* The number of ring */
+-	struct spp_port_info nic[RTE_MAX_ETHPORTS];
++	struct sppwk_port_info nic[RTE_MAX_ETHPORTS];
+ 				/* Port information of phy */
+-	struct spp_port_info ring[RTE_MAX_ETHPORTS];
++	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
+ 				/* Port information of ring */
+ };
+ 
+@@ -289,10 +289,10 @@ void stop_process(int signal);
+  * @param iface_no
+  *  Interface number to be validated.
+  *
+- * @retval !NULL  spp_port_info.
++ * @retval !NULL  sppwk_port_info.
+  * @retval NULL   failed.
+  */
+-struct spp_port_info *
++struct sppwk_port_info *
+ get_iface_info(enum port_type iface_type, int iface_no);
+ 
+ /**
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 2aad0ad..54ba80a 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -115,7 +115,7 @@ struct pcap_option {
+ 	uint64_t fsize_limit;        /* file size limit */
+ 	char compress_file_path[PCAP_FPATH_STRLEN]; /* file path */
+ 	char compress_file_date[PCAP_FDATE_STRLEN]; /* file name date */
+-	struct spp_port_info port_cap;  /* capture port */
++	struct sppwk_port_info port_cap;  /* capture port */
+ 	struct rte_ring *cap_ring;      /* RTE ring structure */
+ };
+ 
+@@ -766,7 +766,7 @@ static int pcap_proc_receive(int lcore_id)
+ 	int buf;
+ 	int nb_rx = 0;
+ 	int nb_tx = 0;
+-	struct spp_port_info *rx;
++	struct sppwk_port_info *rx;
+ 	struct rte_mbuf *bufs[MAX_PCAP_BURST];
+ 	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
+ 	struct rte_ring *write_ring = g_pcap_option.cap_ring;
+@@ -816,7 +816,7 @@ static int pcap_proc_receive(int lcore_id)
+ 
+ 	/* Receive packets */
+ 	rx = &g_pcap_option.port_cap;
+-	nb_rx = spp_eth_rx_burst(rx->dpdk_port, 0, bufs, MAX_PCAP_BURST);
++	nb_rx = spp_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PCAP_BURST);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPPWK_RET_OK;
+ 
+@@ -1017,8 +1017,8 @@ main(int argc, char *argv[])
+ 			break;
+ 
+ 		/* capture port setup */
+-		struct spp_port_info *port_cap = &g_pcap_option.port_cap;
+-		struct spp_port_info *port_info = get_iface_info(
++		struct sppwk_port_info *port_cap = &g_pcap_option.port_cap;
++		struct sppwk_port_info *port_info = get_iface_info(
+ 						port_cap->iface_type,
+ 						port_cap->iface_no);
+ 		if (port_info == NULL) {
+@@ -1027,7 +1027,7 @@ main(int argc, char *argv[])
+ 		}
+ 		if (port_cap->iface_type == PHY) {
+ 			if (port_info->iface_type != UNDEF)
+-				port_cap->dpdk_port = port_info->dpdk_port;
++				port_cap->ethdev_port_id = port_info->ethdev_port_id;
+ 			else {
+ 				RTE_LOG(ERR, SPP_PCAP,
+ 					"caputre port undefined.(phy:%d)\n",
+@@ -1043,7 +1043,7 @@ main(int argc, char *argv[])
+ 						port_cap->iface_no);
+ 					break;
+ 				}
+-				port_cap->dpdk_port = ret;
++				port_cap->ethdev_port_id = ret;
+ 			} else {
+ 				RTE_LOG(ERR, SPP_PCAP, "caputre port "
+ 						"undefined.(ring:%d)\n",
+@@ -1054,7 +1054,7 @@ main(int argc, char *argv[])
+ 		RTE_LOG(DEBUG, SPP_PCAP,
+ 				"Recv port type=%d, no=%d, port_id=%d\n",
+ 				port_cap->iface_type, port_cap->iface_no,
+-				port_cap->dpdk_port);
++				port_cap->ethdev_port_id);
+ 
+ 		/* create ring */
+ 		char ring_name[PORT_STR_SIZE];
+-- 
+2.17.1
+

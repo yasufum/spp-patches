@@ -1,0 +1,115 @@
+From c0d09c23a11f54596b3ac23084fe69891e8ae699 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 27 May 2019 14:36:23 +0900
+Subject: [PATCH 3/9] spp_pcap: refactor parse error code
+
+Revise the name of enum `spp_comamnd_decode_error_code` to
+`sppwk_parse_error_code`, and its members to be more reasonable.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c |  6 +++---
+ src/pcap/cmd_parser.h | 12 ++++++------
+ src/pcap/cmd_runner.c | 21 +++++++++++----------
+ 3 files changed, 20 insertions(+), 19 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index 6734c1e..e7ad50e 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -32,7 +32,7 @@ set_string_value_parse_error(struct spp_command_parse_error *error,
+ 		const char *value, const char *error_name)
+ {
+ 	strcpy(error->value, value);
+-	return set_parse_error(error, BAD_VALUE, error_name);
++	return set_parse_error(error, SPPWK_PARSE_INVALID_VALUE, error_name);
+ }
+ 
+ /* Split command line parameter with spaces */
+@@ -102,7 +102,7 @@ parse_command_in_list(struct spp_command_request *request,
+ 	if (ret < SPP_RET_OK) {
+ 		RTE_LOG(ERR, SPP_COMMAND_DEC, "Parameter number over limit."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, BAD_FORMAT, NULL);
++		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 	RTE_LOG(DEBUG, SPP_COMMAND_DEC, "Decode array. num=%d\n", argc);
+ 
+@@ -128,7 +128,7 @@ parse_command_in_list(struct spp_command_request *request,
+ 	if (command_name_check != 0) {
+ 		RTE_LOG(ERR, SPP_COMMAND_DEC, "Parameter number out of range."
+ 				"request_str=%s\n", request_str);
+-		return set_parse_error(error, BAD_FORMAT, NULL);
++		return set_parse_error(error, SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 
+ 	RTE_LOG(ERR, SPP_COMMAND_DEC,
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index 84f7ae6..3893214 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -27,13 +27,13 @@
+ #define SPP_CMD_VALUE_BUFSZ 111
+ 
+ /** parse error code */
+-enum spp_command_parse_error_code {
++enum sppwk_parse_error_code {
+ 	/* not use 0, in general 0 is OK */
+-	BAD_FORMAT = 1,  /**< Wrong format */
+-	UNKNOWN_COMMAND, /**< Unknown command */
+-	NO_PARAM,        /**< No parameters */
+-	BAD_TYPE,        /**< Wrong data type */
+-	BAD_VALUE,       /**< Wrong value */
++	SPPWK_PARSE_WRONG_FORMAT = 1,  /**< Wrong format */
++	SPPWK_PARSE_UNKNOWN_CMD,  /**< Unknown command */
++	SPPWK_PARSE_NO_PARAM,  /**< No parameters */
++	SPPWK_PARSE_INVALID_TYPE,  /**< Wrong data type */
++	SPPWK_PARSE_INVALID_VALUE,  /**< Wrong value */
+ };
+ 
+ /**
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index f51b819..44d00ae 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -276,26 +276,27 @@ parse_error_message(
+ 		char *message)
+ {
+ 	switch (parse_error->code) {
+-	case BAD_FORMAT:
+-		sprintf(message, "bad message format");
++	case SPPWK_PARSE_WRONG_FORMAT:
++		sprintf(message, "Wrong message format");
+ 		break;
+ 
+-	case UNKNOWN_COMMAND:
+-		sprintf(message, "unknown command(%s)", parse_error->value);
++	case SPPWK_PARSE_UNKNOWN_CMD:
++		/* TODO(yasufum) Fix compile err if space exists before "(" */
++		sprintf(message, "Unknown command(%s)", parse_error->value);
+ 		break;
+ 
+-	case NO_PARAM:
+-		sprintf(message, "not enough parameter(%s)",
++	case SPPWK_PARSE_NO_PARAM:
++		sprintf(message, "No or insufficient number of params (%s)",
+ 				parse_error->value_name);
+ 		break;
+ 
+-	case BAD_TYPE:
+-		sprintf(message, "bad value type(%s)",
++	case SPPWK_PARSE_INVALID_TYPE:
++		sprintf(message, "Invalid value type (%s)",
+ 				parse_error->value_name);
+ 		break;
+ 
+-	case BAD_VALUE:
+-		sprintf(message, "bad value(%s)", parse_error->value_name);
++	case SPPWK_PARSE_INVALID_VALUE:
++		sprintf(message, "Invalid value (%s)", parse_error->value_name);
+ 		break;
+ 
+ 	default:
+-- 
+2.17.1
+
