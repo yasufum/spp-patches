@@ -1,0 +1,226 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d18cdeaf1d83
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp370317lfg;
+        Fri, 31 May 2019 01:54:17 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzww+kxqd7fnsHnIv18eVO2yPJnV1tJqwKO3DqOGrPPZfjQw6dW2u00dv51RuC1UMUQAt4v
+X-Received: by 2002:a50:f286:: with SMTP id f6mr7422252edm.44.1559292857603;
+        Fri, 31 May 2019 01:54:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292857; cv=none;
+        d=google.com; s=arc-20160816;
+        b=oTyGTWJwZ/krHW2qGXmN98C5DNodvoLzNYitRnVVRBQRwvWbs7sc2asRZMHf7q7WCb
+         /j6oQui92w+DBuJHWj3cogfJ2QtiEh3p5jgevB/5upISjNECAfwRHBYpJpWCvWAIalyl
+         3FD7rJr7FuTY+KQfBHdqHT3WQbJucR2umCFfICEn/RuotLjCzA6e7C7Ah6fk6ca3hmHb
+         fOSkZUHrAObcrexcTlfbFtDv/DaOETQ7cFzjrhROhsaxYxMTweO2ecU0IXaabX2+7gBQ
+         f0TxF2+pDMzSVI69/qH7rhz3ggyU/nGEyeKL5PVkuOvXU5hyxo4L3kotzHPAeSVAzgX/
+         UkqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=5qx1COjlF66QEZRddi3EcoFW4tklaE/FnOicalniXo0=;
+        b=c/WBLbPw2lu262LWz3zclFShYC9Za9vxpvRDJtU1s+Bh2mG5BlEhYbRb9uki67WDMZ
+         mqgWLq28n68MlJJBBiLYtLS5FfoShNh0JpnDeUxXwzF9U/RLY0OVak4wxk5chs0ILD2b
+         zjYo8a1G0sinyaMY2ChNBz9AWQl2MC5+wDAEizFYQd4zRDZt1bMGUGPo3CPvGW2OkshO
+         sT7Hkm6ZpcQOYIH6liJMA4Va+nnNWkx93QYAJPCRIdSj0rYaL32BJIZTXCiVHvpU5Zxf
+         JaiJ+uhe+hAYSdtcEXWE1rvlQiOpYAJ5U0/rF0FAbnqqmVzdaGN195s88/BrlowK6oHL
+         seOQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id b11si609541ejq.382.2019.05.31.01.54.17;
+        Fri, 31 May 2019 01:54:17 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DC5E81B952;
+	Fri, 31 May 2019 10:54:15 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 409AC1B94A
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:54:13 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8sDYp027711;
+ Fri, 31 May 2019 17:54:13 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 153EDEA8605;
+ Fri, 31 May 2019 17:54:13 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 08D82EA85FD;
+ Fri, 31 May 2019 17:54:13 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:51:39 +0900
+Message-Id: <1559292699-26940-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292699-26940-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292699-26940-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 9/9] spp_pcap: rename struct spp_port_index
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Rename struct `spp_port_index` to `sppwk_port_idx` to be more specific,
+and its members.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_runner.c |  8 ++++----
+ src/pcap/cmd_utils.c  |  4 ++--
+ src/pcap/cmd_utils.h  | 31 +++++++++++++++----------------
+ src/pcap/spp_pcap.c   |  2 +-
+ 4 files changed, 22 insertions(+), 23 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 4d133e3..a931956 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -416,7 +416,7 @@ append_client_id_value(const char *name, char **output,
+ 
+ /* append a block of port entry for JSON format */
+ static int
+-append_port_entry(char **output, const struct spp_port_index *port,
++append_port_entry(char **output, const struct sppwk_port_idx *port,
+ 		const enum spp_port_rxtx rxtx __attribute__ ((unused)))
+ {
+ 	int ret = SPPWK_RET_NG;
+@@ -441,7 +441,7 @@ append_port_entry(char **output, const struct spp_port_index *port,
+ /* append a list of port numbers for JSON format */
+ static int
+ append_port_array(const char *name, char **output, const int num,
+-		const struct spp_port_index *ports,
++		const struct sppwk_port_idx *ports,
+ 		const enum spp_port_rxtx rxtx)
+ {
+ 	int ret = SPPWK_RET_NG;
+@@ -479,9 +479,9 @@ append_pcap_core_element_value(
+ 		const unsigned int lcore_id,
+ 		const char *name, const char *type,
+ 		const int num_rx,
+-		const struct spp_port_index *rx_ports,
++		const struct sppwk_port_idx *rx_ports,
+ 		const int num_tx __attribute__ ((unused)),
+-		const struct spp_port_index *tx_ports __attribute__ ((unused)))
++		const struct sppwk_port_idx *tx_ports __attribute__ ((unused)))
+ {
+ 	int ret = SPPWK_RET_NG;
+ 	int unuse_flg = 0;
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 08e4c98..084b3ca 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -176,12 +176,12 @@ init_iface_info(void)
+ 		p_iface_info->nic[port_cnt].iface_type = UNDEF;
+ 		p_iface_info->nic[port_cnt].iface_no   = port_cnt;
+ 		p_iface_info->nic[port_cnt].ethdev_port_id  = -1;
+-		p_iface_info->nic[port_cnt].class_id.vlantag.vid =
++		p_iface_info->nic[port_cnt].cls_attrs.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+ 		p_iface_info->ring[port_cnt].iface_type = UNDEF;
+ 		p_iface_info->ring[port_cnt].iface_no   = port_cnt;
+ 		p_iface_info->ring[port_cnt].ethdev_port_id  = -1;
+-		p_iface_info->ring[port_cnt].class_id.vlantag.vid =
++		p_iface_info->ring[port_cnt].cls_attrs.vlantag.vid =
+ 				ETH_VLAN_ID_MAX;
+ 	}
+ }
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 862eb27..8487c23 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -103,12 +103,6 @@ enum SPP_LONGOPT_RETVAL {
+ 	SPP_LONGOPT_RETVAL_FILE_SIZE   /* --fsize */
+ };
+ 
+-/* Interface information structure */
+-struct spp_port_index {
+-	enum port_type  iface_type; /**< Interface type (phy/ring) */
+-	int             iface_no;   /**< Interface number */
+-};
+-
+ /** VLAN tag information */
+ struct spp_vlantag_info {
+ 	int vid; /**< VLAN ID */
+@@ -132,11 +126,18 @@ struct spp_port_ability {
+ 	union spp_ability_data data;   /**< Port ability data */
+ };
+ 
+-/** Port class identifier for classifying */
+-struct spp_port_class_identifier {
+-	uint64_t mac_addr;                      /**< Mac address (binary) */
+-	char     mac_addr_str[SPP_MIN_STR_LEN]; /**< Mac address (text) */
+-	struct spp_vlantag_info vlantag;        /**< VLAN tag information */
++/* TODO(yasufum) confirm why vlantag is required for spp_pcap. */
++/* Attributes for classifying . */
++struct sppwk_cls_attrs {
++	uint64_t mac_addr;  /**< Mac address (binary) */
++	char mac_addr_str[SPP_MIN_STR_LEN];  /**< Mac address (text) */
++	struct spp_vlantag_info vlantag;   /**< VLAN tag information */
++};
++
++/* Interface information structure */
++struct sppwk_port_idx {
++	enum port_type iface_type;  /**< phy, vhost or ring. */
++	int iface_no;
+ };
+ 
+ /* Define detailed port params in addition to `sppwk_port_idx`. */
+@@ -144,10 +145,8 @@ struct sppwk_port_info {
+ 	enum port_type iface_type;  /**< phy, vhost or ring */
+ 	int iface_no;
+ 	int ethdev_port_id;  /**< Consistent ID of ethdev */
+-	struct spp_port_class_identifier class_id;
+-					/**< Port class identifier */
++	struct sppwk_cls_attrs cls_attrs;
+ 	struct spp_port_ability ability[SPP_PORT_ABILITY_MAX];
+-					/**< Port ability */
+ };
+ 
+ /* TODO(yasufum) merge it to the same definition in shared/.../cmd_utils.h */
+@@ -200,9 +199,9 @@ typedef int (*spp_iterate_core_element_proc)(
+ 		const char *name,
+ 		const char *type,
+ 		const int num_rx,
+-		const struct spp_port_index *rx_ports,
++		const struct sppwk_port_idx *rx_ports,
+ 		const int num_tx,
+-		const struct spp_port_index *tx_ports);
++		const struct sppwk_port_idx *tx_ports);
+ 
+ /**
+  * iterate core table parameters which is
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index ee89b0a..bfb0233 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -420,7 +420,7 @@ spp_pcap_get_core_status(
+ 	char role_type[8];
+ 	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
+ 	char name[PCAP_FPATH_STRLEN + PCAP_FDATE_STRLEN];
+-	struct spp_port_index rx_ports[1];
++	struct sppwk_port_idx rx_ports[1];
+ 	int rx_num = 0;
+ 
+ 	RTE_LOG(DEBUG, SPP_PCAP, "status core[%d]\n", lcore_id);
+-- 
+2.17.1
+
+

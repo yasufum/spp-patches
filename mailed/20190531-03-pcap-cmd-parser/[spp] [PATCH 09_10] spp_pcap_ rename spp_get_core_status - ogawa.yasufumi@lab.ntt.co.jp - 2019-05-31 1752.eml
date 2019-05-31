@@ -1,0 +1,257 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d19c05c41699
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp371167lfg;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyy1RPaHbFORytwWRiiiOnMzDQyzv5X1PxjXe/XaRGpgu7RWbBE5MiaTOVwgykp//myLUc6
+X-Received: by 2002:a17:906:329a:: with SMTP id 26mr8219048ejw.9.1559292919888;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292919; cv=none;
+        d=google.com; s=arc-20160816;
+        b=OmSJcNi7m0VtUbH5/cFGR+oftyFmsni7sgTwtIswUJoBBG+QOK509wH7FIr4Ts6Xsc
+         laum9d/1tO3Tdtpw0f7zFZQfQe+9FZ2v+f7B7flCMfjzoEFSnXQX/Lhj8QQfACTIW92o
+         WDBV+LkPqOEfFbuKIu8DAdq1cSbPH+GNbsb/whsOk5aoalbqQh7h3sFr6IkV6kpxtSKS
+         lwfSONN7GMuUygGAtskKUfMKFYnEAxby5MRem10e2oVmBEGXqHYkiBn8R4hzbGHznLNr
+         bkS5Q3/RkTzpZvcT+7KW0FiWKLBBcft6msB/1jMY1CDT+NOL6Y6BQJf71iKNOuFk7az4
+         bzXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=99KdUhqRTyQMF5SV1t7pXd0z7ZK35whXnM3UjBSYrWI=;
+        b=frR5a0nnAGYdXR7btKT79ukNITHt++hj1iq5D/Fmkb1KM8mc9sEmwqcKTklDBP2j4p
+         IBUyqAG8z5/zhmGV4HzIN4cRp0Qd6MLgky8gu+70Ysu1r3Yolv+Eq+jFVgRAv8UtAUgy
+         0vsqNi/aLzBmmRkbr0DGSzAh8VYY4hmqM0poA1b/SnfTVFXbMlyp0vp03PBNaMRaz/bY
+         wX2VHWY1FODF2z5RIPvn5ER9f5aw/f390sPmR1LuBrkdRXGeYJvliZ0AW985eGO180ev
+         3ulrZd40hefBI/RxjQr2F/Tif2YHqmmZeMLUdHpj89LyJVCGcFXBmy6f+TdlJAuQ+V2T
+         /b4A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id p56si4128928eda.176.2019.05.31.01.55.19;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 7EE6A1B964;
+	Fri, 31 May 2019 10:55:19 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id AF2911B94A
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:55:16 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8tF8d000714;
+ Fri, 31 May 2019 17:55:15 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 98052EA8605;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 90A03EA85FC;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:41 +0900
+Message-Id: <1559292762-27042-10-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 09/10] spp_pcap: rename spp_get_core_status
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Revise misleading function names in spp_pcap, spp_get_core_status() and
+spp_pcap_get_core_status(). First one is to get lcore status actually,
+but second one is to thread info on the lcore and the name is not
+appropriate. This update is to rename first one to be more specific.
+The second one is to be revise in the next patch.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_runner.c |  2 +-
+ src/pcap/cmd_utils.c  |  4 ++--
+ src/pcap/cmd_utils.h  | 28 +++++++++++-----------------
+ src/pcap/spp_pcap.c   | 21 ++++++++++-----------
+ 4 files changed, 24 insertions(+), 31 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 3080242..f94deea 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -79,7 +79,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 	int lcore_id;
+ 
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		if (spp_get_core_status(lcore_id) == SPP_CORE_UNUSE)
++		if (sppwk_get_lcore_status(lcore_id) == SPP_CORE_UNUSE)
+ 			continue;
+ 
+ 		ret = spp_pcap_get_core_status(lcore_id, params);
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 084b3ca..726ad9e 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -63,9 +63,9 @@ add_ring_pmd(int ring_id)
+ 	return ring_port_id;
+ }
+ 
+-/* Get core status */
++/* Get status of lcore of given ID from global management info. */
+ enum sppwk_lcore_status
+-spp_get_core_status(unsigned int lcore_id)
++sppwk_get_lcore_status(unsigned int lcore_id)
+ {
+ 	return (g_mng_data_addr.p_core_info + lcore_id)->status;
+ }
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 8487c23..5528e00 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -186,6 +186,7 @@ struct core_mng_info {
+ 	volatile enum sppwk_lcore_status status;
+ };
+ 
++/* TODO(yasufum) refactor name of func and vars, and comments. */
+ struct spp_iterate_core_params;
+ /**
+  * definition of iterated core element procedure function
+@@ -203,6 +204,7 @@ typedef int (*spp_iterate_core_element_proc)(
+ 		const int num_tx,
+ 		const struct sppwk_port_idx *tx_ports);
+ 
++/* TODO(yasufum) refactor name of func and vars, and comments. */
+ /**
+  * iterate core table parameters which is
+  * used when listing core table content
+@@ -228,36 +230,28 @@ struct spp_iterate_core_params {
+ int add_ring_pmd(int ring_id);
+ 
+ /**
+- * Get core status
++ * Get status of lcore of given ID from global management info.
+  *
+- * @param lcore_id
+- *  Logical core ID.
+- *
+- * @return
+- *  Status of specified logical core.
++ * @param[in] lcore_id Logical core ID.
++ * @return Status of specified logical core.
+  */
+-enum sppwk_lcore_status spp_get_core_status(unsigned int lcore_id);
++enum sppwk_lcore_status sppwk_get_lcore_status(unsigned int lcore_id);
+ 
+ /**
+  * Run check_core_status() for SPP_CORE_STATUS_CHECK_MAX times with
+  * interval time (1sec)
+  *
+- * @param status
+- *  wait check status.
+- *
+- * @retval 0  succeeded.
+- * @retval -1 failed.
++ * @param status Wait check status.
++ * @retval 0  If succeeded.
++ * @retval -1 If failed.
+  */
+ int check_core_status_wait(enum sppwk_lcore_status status);
+ 
+ /**
+  * Set core status
+  *
+- * @param lcore_id
+- *  Logical core ID.
+- * @param status
+- *  set status.
+- *
++ * @param lcore_id Logical core ID.
++ * @param status Set status.
+  */
+ void set_core_status(unsigned int lcore_id, enum sppwk_lcore_status status);
+ 
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index a7f95e9..dec3f37 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -322,8 +322,6 @@ parse_args(int argc, char *argv[])
+ 	g_pcap_option.fsize_limit = DEFAULT_FILE_LIMIT;
+ 
+ 	/* Check options of application */
+-	optind = 0;
+-	opterr = 0;
+ 	while ((opt = getopt_long(argc, argvopt, "c:s:", lgopts,
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
+@@ -396,18 +394,22 @@ parse_args(int argc, char *argv[])
+ 	return SPPWK_RET_OK;
+ }
+ 
+-/* Pcap get core status */
++/* TODO(yasufum) refactor name of func and vars, and comments. */
++/**
++ * Get each of attrs such as name, type or nof ports of a thread on a lcore.
++ * MEMO: This func is not for getting core status, but thread info actually.
++ */
+ int
+ spp_pcap_get_core_status(
+ 		unsigned int lcore_id,
+ 		struct spp_iterate_core_params *params)
+ {
+-	int ret = SPPWK_RET_NG;
+ 	char role_type[8];
+ 	struct pcap_mng_info *info = &g_pcap_info[lcore_id];
+ 	char name[PCAP_FPATH_STRLEN + PCAP_FDATE_STRLEN];
+ 	struct sppwk_port_idx rx_ports[1];
+ 	int rx_num = 0;
++	int res;
+ 
+ 	RTE_LOG(DEBUG, SPP_PCAP, "status core[%d]\n", lcore_id);
+ 	if (info->type == PCAP_RECEIVE) {
+@@ -426,13 +428,10 @@ spp_pcap_get_core_status(
+ 		strcpy(role_type, "write");
+ 	}
+ 
+-
+-	/* Set the information with the function specified by the command. */
+-	ret = (*params->element_proc)(
+-		params, lcore_id,
+-		name, role_type,
++	/* Set information with specified by the command. */
++	res = (*params->element_proc)(params, lcore_id, name, role_type,
+ 		rx_num, rx_ports, 0, NULL);
+-	if (unlikely(ret != 0))
++	if (unlikely(res != 0))
+ 		return SPPWK_RET_NG;
+ 
+ 	return SPPWK_RET_OK;
+@@ -915,7 +914,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 	set_core_status(lcore_id, SPP_CORE_IDLE);
+ 
+ 	while (1) {
+-		if (spp_get_core_status(lcore_id) == SPP_CORE_STOP_REQUEST) {
++		if (sppwk_get_lcore_status(lcore_id) == SPP_CORE_STOP_REQUEST) {
+ 			if (pcap_info->status == SPP_CAPTURE_IDLE)
+ 				break;
+ 			if (pcap_info->type == PCAP_RECEIVE)
+-- 
+2.17.1
+
+

@@ -1,0 +1,286 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d19c061be406
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp371169lfg;
+        Fri, 31 May 2019 01:55:20 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzIGGursuuQg9FydWGlHa1m65bk194grerQu7VGkGIJFiaazTbZ3igXHdC3jiluh1Vo+YCK
+X-Received: by 2002:a17:906:7541:: with SMTP id a1mr8013129ejn.50.1559292920017;
+        Fri, 31 May 2019 01:55:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292920; cv=none;
+        d=google.com; s=arc-20160816;
+        b=G3P6DedKR+Gvk5GurncrOxggQWzvWp7b879L7GNWl5RT0avei5BqlnqLH3WHiW06E2
+         zjd5iRRZbntEM3VCQjxDG9Gsc/MhkfBCiZEBqPz6PvIlEsP9GDxaAStRwhMiXOGyjtuS
+         NrMpBr4X6W7Z+QNz0hw0SS2vspNJIaKNS2zrw8Iwv0S6C++x90uyh2PIrrioqosZJwjS
+         tUww5Jmhyf20ORtYN6Y6IgH24XEnbmuCIjQfC+n1Yp+zWYsDS19MnThkXxgtQVqWzqlI
+         zqYm3gveR9nrUK2bmrjuL3Jt/pDtKsM09oNm+RKVTVUHRn/VqMbe2LhAftDTKQGg3K7J
+         pObQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=K7l7tTFLnPZ5N48YsEDAPiqcpiYrblCnMrYKPXps9ck=;
+        b=ZjNA2GfPqYo5QyVTj8JxRK+fvj7RJ4Mf/bJMu4NDDuQEEfAGyguoJGmGJnkgwG20WB
+         WvnZZZvkFj74nZNY3NhmpW3kbhuFKsMMlbDrX356bnKzhVQTrdYPstHPcmfsj6aT3aiK
+         ps8KGvk8GwB1xuRcmnRDZSXRif58Jp2GDfBex2ylSi1WUEwtw4d5pLlalGmPK5OSMfS3
+         qDUlIYmSaHKfPGuJGYlyve+Epfz8TQvmR014rrHtIf75XA7QBsLDeg//Th/X7Gn651IA
+         vDjX+VyHKlAxr7Pg6mh0vKmzQyVfJbq87+RLyR4XYKHBj3pJz9XUdIf+i6aCUMf/3ET4
+         VTFw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id l26si490129ejg.369.2019.05.31.01.55.19;
+        Fri, 31 May 2019 01:55:20 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id AAE581B96E;
+	Fri, 31 May 2019 10:55:19 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id BBC8E1B94C
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:55:16 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8tF0f027729;
+ Fri, 31 May 2019 17:55:15 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9EBBCEA85FF;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 9A46CEA8606;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:42 +0900
+Message-Id: <1559292762-27042-11-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 10/10] spp_pcap: revise name of vars for parser error
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to revise the name of vars for handling parse error to be
+more concisely.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_runner.c                         | 57 ++++++++++---------
+ .../secondary/spp_worker_th/cmd_runner.c      |  6 +-
+ 2 files changed, 31 insertions(+), 32 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index f94deea..d623d8c 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -16,13 +16,14 @@
+ #define RTE_LOGTYPE_PCAP_RUNNER RTE_LOGTYPE_USER2
+ 
+ /* request message initial size */
+-#define CMD_RES_ERR_MSG_SIZE  128
++#define CMD_ERR_MSG_SIZE  128
+ #define CMD_TAG_APPEND_SIZE   16
+ #define CMD_REQ_BUF_INIT_SIZE 2048
+ #define CMD_RES_BUF_INIT_SIZE 2048
+ 
+ #define COMMAND_RESP_LIST_EMPTY { "", NULL }
+ 
++/* TODO(yasufum) confirm why using "" for the alternative of comma? */
+ #define JSON_APPEND_COMMA(flg)    ((flg)?", ":"")
+ #define JSON_APPEND_VALUE(format) "%s\"%s\": "format
+ #define JSON_APPEND_ARRAY         "%s\"%s\": [ %s ]"
+@@ -40,8 +41,8 @@ enum cmd_res_code {
+ /* TODO(yasufum) merge it to the same definition in shared/.../cmd_runner.c */
+ struct cmd_result {
+ 	int code;  /* Response code */
+-	char msg[SPPWK_NAME_BUFSZ];  /* Response msg in short. */
+-	char err_msg[CMD_RES_ERR_MSG_SIZE];  /* Used only if cmd is failed. */
++	char result[SPPWK_NAME_BUFSZ];  /* Response msg in short. */
++	char err_msg[CMD_ERR_MSG_SIZE];  /* Used only if cmd is failed. */
+ };
+ 
+ /* command response list control structure */
+@@ -290,47 +291,47 @@ parse_error_message(
+ 
+ /* set the command result */
+ static inline void
+-set_command_results(struct cmd_result *result,
++set_command_results(struct cmd_result *cmd_res,
+ 		int code, const char *error_messege)
+ {
+-	result->code = code;
++	cmd_res->code = code;
+ 	switch (code) {
+ 	case CMD_SUCCESS:
+-		strcpy(result->msg, "success");
+-		memset(result->err_msg, 0x00, CMD_RES_ERR_MSG_SIZE);
++		strcpy(cmd_res->result, "success");
++		memset(cmd_res->err_msg, 0x00, CMD_ERR_MSG_SIZE);
+ 		break;
+ 	case CMD_FAILURE:
+-		strcpy(result->msg, "error");
+-		strcpy(result->err_msg, error_messege);
++		strcpy(cmd_res->result, "error");
++		strcpy(cmd_res->err_msg, error_messege);
+ 		break;
+ 	case CMD_INVALID: /* FALLTHROUGH */
+ 	default:
+-		strcpy(result->msg, "invalid");
+-		memset(result->err_msg, 0x00, CMD_RES_ERR_MSG_SIZE);
++		strcpy(cmd_res->result, "invalid");
++		memset(cmd_res->err_msg, 0x00, CMD_ERR_MSG_SIZE);
+ 		break;
+ 	}
+ }
+ 
+ /* set parse error to command result */
+ static void
+-set_parse_error_to_results(struct cmd_result *results,
++set_parse_error_to_results(struct cmd_result *cmd_results,
+ 		const struct spp_command_request *request,
+ 		const struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int i;
+ 	const char *tmp_buff;
+-	char err_msg[CMD_RES_ERR_MSG_SIZE];
++	char err_msg[CMD_ERR_MSG_SIZE];
+ 
+ 	for (i = 0; i < request->num_command; i++) {
+ 		if (wk_err_msg->code == 0)
+-			set_command_results(&results[i], CMD_SUCCESS, "");
++			set_command_results(&cmd_results[i], CMD_SUCCESS, "");
+ 		else
+-			set_command_results(&results[i], CMD_INVALID, "");
++			set_command_results(&cmd_results[i], CMD_INVALID, "");
+ 	}
+ 
+ 	if (wk_err_msg->code != 0) {
+ 		tmp_buff = parse_error_message(wk_err_msg, err_msg);
+-		set_command_results(&results[request->num_valid_command],
++		set_command_results(&cmd_results[request->num_valid_command],
+ 				CMD_FAILURE, tmp_buff);
+ 	}
+ }
+@@ -339,8 +340,8 @@ set_parse_error_to_results(struct cmd_result *results,
+ static int
+ append_result_value(const char *name, char **output, void *tmp)
+ {
+-	const struct cmd_result *result = tmp;
+-	return append_json_str_value(name, output, result->msg);
++	const struct cmd_result *res = tmp;
++	return append_json_str_value(name, output, res->result);
+ }
+ 
+ /* append error details for JSON format */
+@@ -857,11 +858,11 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	struct spp_command_request request;
+ 	struct sppwk_parse_err_msg parse_error;
+-	struct cmd_result command_results[SPPWK_MAX_CMDS];
++	struct cmd_result cmd_results[SPPWK_MAX_CMDS];
+ 
+ 	memset(&request, 0, sizeof(struct spp_command_request));
+ 	memset(&parse_error, 0, sizeof(struct sppwk_parse_err_msg));
+-	memset(command_results, 0, sizeof(command_results));
++	memset(cmd_results, 0, sizeof(cmd_results));
+ 
+ 	RTE_LOG(DEBUG, PCAP_RUNNER, "Start command request processing. "
+ 			"request_str=\n%.*s\n",
+@@ -872,9 +873,9 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 			&parse_error);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		/* send error response */
+-		set_parse_error_to_results(command_results, &request,
++		set_parse_error_to_results(cmd_results, &request,
+ 				&parse_error);
+-		send_parse_error_response(sock, &request, command_results);
++		send_parse_error_response(sock, &request, cmd_results);
+ 		RTE_LOG(DEBUG, PCAP_RUNNER,
+ 				"End command request processing.\n");
+ 		return SPPWK_RET_OK;
+@@ -888,32 +889,32 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 	for (i = 0; i < request.num_command ; ++i) {
+ 		ret = execute_command(request.cmd_attrs + i);
+ 		if (unlikely(ret != SPPWK_RET_OK)) {
+-			set_command_results(&command_results[i], CMD_FAILURE,
++			set_command_results(&cmd_results[i], CMD_FAILURE,
+ 					"error occur");
+ 
+ 			/* not execute remaining commands */
+ 			for (++i; i < request.num_command ; ++i)
+-				set_command_results(&command_results[i],
++				set_command_results(&cmd_results[i],
+ 					CMD_INVALID, "");
+ 
+ 			break;
+ 		}
+ 
+-		set_command_results(&command_results[i], CMD_SUCCESS, "");
++		set_command_results(&cmd_results[i], CMD_SUCCESS, "");
+ 	}
+ 
+ 	if (request.is_requested_exit) {
+ 		/* Terminated by process exit command.                       */
+ 		/* Other route is normal end because it responds to command. */
+-		set_command_results(&command_results[0], CMD_SUCCESS, "");
+-		send_command_result_response(sock, &request, command_results);
++		set_command_results(&cmd_results[0], CMD_SUCCESS, "");
++		send_command_result_response(sock, &request, cmd_results);
+ 		RTE_LOG(INFO, PCAP_RUNNER,
+ 				"Terminate process for exit.\n");
+ 		return SPPWK_RET_NG;
+ 	}
+ 
+ 	/* send response */
+-	send_command_result_response(sock, &request, command_results);
++	send_command_result_response(sock, &request, cmd_results);
+ 
+ 	RTE_LOG(DEBUG, PCAP_RUNNER, "End command request processing.\n");
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index ba3fdc6..ef3b2d9 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -25,10 +25,8 @@
+ #define CMD_REQ_BUF_INIT_SIZE 2048
+ #define CMD_RES_BUF_INIT_SIZE 2048
+ 
+-/* TODO(yasufum) revise later `JSON_*`. */
+-#define JSON_COMMA                ", "
+ /* TODO(yasufum) confirm why using "" for the alternative of comma? */
+-#define JSON_APPEND_COMMA(flg)    ((flg)?JSON_COMMA:"")
++#define JSON_APPEND_COMMA(flg)    ((flg)?", ":"")
+ #define JSON_APPEND_VALUE(format) "%s\"%s\": "format
+ #define JSON_APPEND_ARRAY         "%s\"%s\": [ %s ]"
+ #define JSON_APPEND_BLOCK         "%s\"%s\": { %s }"
+@@ -610,7 +608,7 @@ sppwk_get_ethdev_port_id(enum port_type iface_type, int iface_no)
+ static int
+ append_json_comma(char **output)
+ {
+-	*output = spp_strbuf_append(*output, JSON_COMMA, strlen(JSON_COMMA));
++	*output = spp_strbuf_append(*output, ", ", strlen(", "));
+ 	if (unlikely(*output == NULL)) {
+ 		RTE_LOG(ERR, WK_CMD_RUNNER,
+ 				"JSON's comma failed to add.\n");
+-- 
+2.17.1
+
+

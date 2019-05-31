@@ -1,0 +1,172 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d19bf921b3e5
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp371157lfg;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxRU2myuba+OfnA5bm536b24U+p94I+2iQcTQTHA7XNSVSmuT/Irq0tmwb4RfrOMFBuis7h
+X-Received: by 2002:a17:906:aed1:: with SMTP id me17mr1248895ejb.135.1559292919482;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292919; cv=none;
+        d=google.com; s=arc-20160816;
+        b=nmV/rhPE8z+J0zTRl37ZuqIWs9Po6u99FNRLBou4pjhXdEdZKcJ+TfWGe6WgBrLaiL
+         v+LkAPiIk++o61LnkhjfjeIIHknSpo7DzkppZCMtY36j/d/Fan4QxILGP43pgWNBoX2+
+         ZJwceav+TbcdRlRNIzsngX6tQbrtxeO8m2eDluN2P+kPVXK3TcXENS3m4dub4DwRZwp2
+         AMWiFlrJj2B5TQMWJGG0NsaiKeIGSog12M/VEO4qJU4KytHTq9bkRb4le/Zy2kMKZtUB
+         l5ipLyP7tbXbNQRNRjm4yizAk63TDV0Cc9MgXTQA0bMKN4cZ1ngODrftVDiO0R7kmD2y
+         PNZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=835B0Ylh1fze0ZSoci6B7ZwmpEGoYtzQdlGqdw7TxGs=;
+        b=VrWWC9KkARYiMnNl8HztHYJYb/xByIRL4LWS82uY0fW9e+7DDQIfua3CNE2woT5cMT
+         TY1EdyBd87e4nlpb0zXFbHL7cbqRLonXOau5LNX4akwULifTF5zfnM8DLQQ7wKovi1bx
+         87m+N8H0NL9W35a7Jk86/0rP5fvJKY7RIFHHFIs0S50+OB+zO+sEj6zxq7PBAmqfR9Y2
+         xUorsauV85yK2vsyl/8wfTB8k44vndDVX19+tUK7q0Yero9X5J9VIGCykgvkLKSMwSPi
+         ZOZzwiZu1WTR3ae1/updaJe0xoTgFWzrRWbTuwskczw+BJdNG9CePpptpdA5qc89giuH
+         A42A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id p56si4128928eda.176.2019.05.31.01.55.19;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 24D0B1B952;
+	Fri, 31 May 2019 10:55:19 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 8B70E1B945
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:55:16 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8tF6o000711;
+ Fri, 31 May 2019 17:55:15 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 6A7F0EA860A;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 5D636EA85FD;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:34 +0900
+Message-Id: <1559292762-27042-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 02/10] spp_pcap: rename struct spp_command
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Rename struct `spp_command` to `pcap_cmd_attr` because it is not a
+command, but a set of attributes actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c | 7 ++++---
+ src/pcap/cmd_parser.h | 7 +++----
+ src/pcap/cmd_runner.c | 4 ++--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index 946300e..1624347 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -13,7 +13,8 @@
+ 
+ #define RTE_LOGTYPE_PCAP_PARSER RTE_LOGTYPE_USER2
+ 
+-/* set parse error */
++/* Format error message object and return error code for an error case. */
++/* TODO(yasufum) merge it to the same definition in shared/.../cmd_parser.c */
+ static inline int
+ set_parse_error(struct sppwk_parse_err_msg *wk_err_msg,
+ 		const int err_code, const char *err_msg)
+@@ -118,7 +119,7 @@ parse_command_in_list(struct spp_command_request *request,
+ 			continue;
+ 		}
+ 
+-		request->commands[0].type = command_list_pcap[i].type;
++		request->cmd_attrs[0].type = command_list_pcap[i].type;
+ 		if (list->func != NULL)
+ 			return (*list->func)(request, argc, argv, wk_err_msg,
+ 							list->param_max);
+@@ -163,7 +164,7 @@ spp_command_parse_request(
+ 
+ 	/* check getter command */
+ 	for (i = 0; i < request->num_valid_command; ++i) {
+-		switch (request->commands[i].type) {
++		switch (request->cmd_attrs[i].type) {
+ 		case PCAP_CMDTYPE_CLIENT_ID:
+ 			request->is_requested_client_id = 1;
+ 			break;
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index fd110cb..706144d 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -51,16 +51,15 @@ enum pcap_cmd_type {
+ 	PCAP_CMDTYPE_STOP,  /**< port */
+ };
+ 
+-/** command parameters */
+-struct spp_command {
+-	enum pcap_cmd_type type; /**< Command type */
++struct pcap_cmd_attr {
++	enum pcap_cmd_type type;
+ };
+ 
+ /** request parameters */
+ struct spp_command_request {
+ 	int num_command;                /**< Number of accepted commands */
+ 	int num_valid_command;          /**< Number of executed commands */
+-	struct spp_command commands[SPPWK_MAX_CMDS];
++	struct pcap_cmd_attr cmd_attrs[SPPWK_MAX_CMDS];
+ 					/**<Information of executed commands */
+ 
+ 	int is_requested_client_id;     /**< Id for get_client_id command */
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index c83006f..9e4f4cf 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -236,7 +236,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ /* TODO(yasufum) confirm why this function does nothing is needed. */
+ /* execute one command */
+ static int
+-execute_command(const struct spp_command *command)
++execute_command(const struct pcap_cmd_attr *command)
+ {
+ 	int ret = SPPWK_RET_OK;
+ 
+@@ -892,7 +892,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	/* execute commands */
+ 	for (i = 0; i < request.num_command ; ++i) {
+-		ret = execute_command(request.commands + i);
++		ret = execute_command(request.cmd_attrs + i);
+ 		if (unlikely(ret != SPPWK_RET_OK)) {
+ 			set_command_results(&command_results[i], CMD_FAILURE,
+ 					"error occur");
+-- 
+2.17.1
+
+

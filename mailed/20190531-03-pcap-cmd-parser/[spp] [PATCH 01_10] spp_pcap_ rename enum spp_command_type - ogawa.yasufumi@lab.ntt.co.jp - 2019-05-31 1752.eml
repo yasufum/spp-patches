@@ -1,0 +1,283 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d19bc154d162
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp371136lfg;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyxAHl8w1HgZKOZm+I8+CFzkSuBSjI4/DCUq6jk7c54RzzgDhgX0B5uGoKUVRPEtxfWObL7
+X-Received: by 2002:a17:906:ca9:: with SMTP id k9mr2073189ejh.4.1559292918924;
+        Fri, 31 May 2019 01:55:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292918; cv=none;
+        d=google.com; s=arc-20160816;
+        b=x2PLhVUv4+NNVHc7OHY0ZDW2+Fi/idWd1/+QToGXZ8duY4yUQuBzlGT1CJKV+Zzvus
+         0MqUnmiwkWbNvK+M0obweZzzCyu3T2Kp7AYJbMFFpBhwBIhXR82pIaU8YiwF00mWv4UZ
+         FFhwkEMf5WjK7ThPMhSqd5OzPKODjX4Bwb14Fz/Cjxf5wgASWX0uD1TW+RjS51RupnVW
+         RjVCH63HGt8A+govLKgf2+YadZlb8zO+3hj9Or21BGCxzDNKy01VFYiKSd4mIdheYjmb
+         kvt/goezSLgmKFP0kiRMR5efbRv5yUZUshNjYORgU7ExwWyfuNgnsudQV9x9JclywfOE
+         TH2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=pgkAEMuYqb0WjZS4iA345dRYjtaWYMisHqMiGrXxvbw=;
+        b=anZdlHz44eUVc6A0VeTgtTuK/XRD6YfudNsN5rMOOTfjoMsLKxqfu4sPrCD62x73Vo
+         HPmWj+znTftck0E0gC8z/sG2ZUr/aJjWrl9LlCK1ZTxF4YCiCaj9a+wxmhiw0Emt26qJ
+         SpIFko3QqkzMY3unAZ84DrmR8hDViX1CvaocDJIzcHomyJv42EoFRMaVo6aTYuTw4hW9
+         9Nhx5AxvK4deDfy8mVEFFVuNAS3J1Xk/fN/zTrWUJj0wkcYaLyQ7bxIuwPlJdAkRHTSR
+         nlFDoTfwvqwqGuOkkUrzeC1hvddTE3IOkhGSNvmuGaD1I/nNMyRSmoVmsNJUZW+/2nt3
+         93Vg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id w43si1884086edd.168.2019.05.31.01.55.18;
+        Fri, 31 May 2019 01:55:18 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 83BF3375B;
+	Fri, 31 May 2019 10:55:18 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id 76D97375B
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:55:16 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8tFbU000708;
+ Fri, 31 May 2019 17:55:15 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 651C5EA8606;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 56F57EA85FC;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:33 +0900
+Message-Id: <1559292762-27042-2-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 01/10] spp_pcap: rename enum spp_command_type
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename enum `spp_command_type` to `pcap_cmd_type` and
+its members.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c                         | 24 ++++++-------
+ src/pcap/cmd_parser.h                         | 25 +++++--------
+ src/pcap/cmd_runner.c                         | 35 ++++++-------------
+ .../secondary/spp_worker_th/cmd_parser.h      |  3 +-
+ 4 files changed, 33 insertions(+), 54 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index 4cf8059..946300e 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -66,18 +66,18 @@ struct parse_command_list {
+ 			char *argv[], struct sppwk_parse_err_msg *error,
+ 			int maxargc);
+ 				/* Pointer to command handling function */
+-	enum spp_command_type type;
++	enum pcap_cmd_type type;
+ 				/* Command type */
+ };
+ 
+ /* command list */
+ static struct parse_command_list command_list_pcap[] = {
+-	{ "_get_client_id", 1, 1, NULL, CMD_CLIENT_ID },
+-	{ "status",	    1, 1, NULL, CMD_STATUS    },
+-	{ "exit",           1, 1, NULL, CMD_EXIT      },
+-	{ "start",          1, 1, NULL, CMD_START     },
+-	{ "stop",           1, 1, NULL, CMD_STOP      },
+-	{ "",               0, 0, NULL, 0 }  /* termination */
++	{ "_get_client_id", 1, 1, NULL, PCAP_CMDTYPE_CLIENT_ID },
++	{ "status", 1, 1, NULL, PCAP_CMDTYPE_STATUS },
++	{ "exit",  1, 1, NULL, PCAP_CMDTYPE_EXIT },
++	{ "start", 1, 1, NULL, PCAP_CMDTYPE_START },
++	{ "stop",  1, 1, NULL, PCAP_CMDTYPE_STOP },
++	{ "", 0, 0, NULL, 0 }  /* termination */
+ };
+ 
+ /* Parse command line parameters */
+@@ -164,19 +164,19 @@ spp_command_parse_request(
+ 	/* check getter command */
+ 	for (i = 0; i < request->num_valid_command; ++i) {
+ 		switch (request->commands[i].type) {
+-		case CMD_CLIENT_ID:
++		case PCAP_CMDTYPE_CLIENT_ID:
+ 			request->is_requested_client_id = 1;
+ 			break;
+-		case CMD_STATUS:
++		case PCAP_CMDTYPE_STATUS:
+ 			request->is_requested_status = 1;
+ 			break;
+-		case CMD_EXIT:
++		case PCAP_CMDTYPE_EXIT:
+ 			request->is_requested_exit = 1;
+ 			break;
+-		case CMD_START:
++		case PCAP_CMDTYPE_START:
+ 			request->is_requested_start = 1;
+ 			break;
+-		case CMD_STOP:
++		case PCAP_CMDTYPE_STOP:
+ 			request->is_requested_stop = 1;
+ 			break;
+ 		default:
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index 88ad862..fd110cb 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -42,27 +42,18 @@ enum sppwk_parse_error_code {
+  * @attention This enumerated type must have the same order of command_list
+  *            defined in command_dec_pcap.c
+  */
+-enum spp_command_type {
+-	/** get_client_id command */
+-	CMD_CLIENT_ID,
+-
+-	/** status command */
+-	CMD_STATUS,
+-
+-	/** exit command */
+-	CMD_EXIT,
+-
+-	/** start command */
+-	CMD_START,
+-
+-	/** stop command */
+-	CMD_STOP,
+-
++/* TODO(yasufum) consider to remove restriction above. */
++enum pcap_cmd_type {
++	PCAP_CMDTYPE_CLIENT_ID,  /**< get_client_id */
++	PCAP_CMDTYPE_STATUS,  /**< status */
++	PCAP_CMDTYPE_EXIT,  /**< exit */
++	PCAP_CMDTYPE_START,  /**< worker thread */
++	PCAP_CMDTYPE_STOP,  /**< port */
+ };
+ 
+ /** command parameters */
+ struct spp_command {
+-	enum spp_command_type type; /**< Command type */
++	enum pcap_cmd_type type; /**< Command type */
+ };
+ 
+ /** request parameters */
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index a931956..c83006f 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -233,6 +233,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ 	return SPPWK_RET_OK;
+ }
+ 
++/* TODO(yasufum) confirm why this function does nothing is needed. */
+ /* execute one command */
+ static int
+ execute_command(const struct spp_command *command)
+@@ -240,29 +241,20 @@ execute_command(const struct spp_command *command)
+ 	int ret = SPPWK_RET_OK;
+ 
+ 	switch (command->type) {
+-	case CMD_CLIENT_ID:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute get_client_id command.\n");
++	case PCAP_CMDTYPE_CLIENT_ID:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec get_client_id cmd.\n");
+ 		break;
+-
+-	case CMD_STATUS:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute status command.\n");
++	case PCAP_CMDTYPE_STATUS:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec status cmd.\n");
+ 		break;
+-
+-	case CMD_EXIT:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute exit command.\n");
++	case PCAP_CMDTYPE_EXIT:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec exit cmd.\n");
+ 		break;
+-
+-	case CMD_START:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute start command.\n");
++	case PCAP_CMDTYPE_START:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec start cmd.\n");
+ 		break;
+-
+-	case CMD_STOP:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute stop command.\n");
++	case PCAP_CMDTYPE_STOP:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec stop cmd.\n");
+ 		break;
+ 	}
+ 
+@@ -279,26 +271,21 @@ parse_error_message(
+ 	case SPPWK_PARSE_WRONG_FORMAT:
+ 		sprintf(message, "Wrong message format");
+ 		break;
+-
+ 	case SPPWK_PARSE_UNKNOWN_CMD:
+ 		/* TODO(yasufum) Fix compile err if space exists before "(" */
+ 		sprintf(message, "Unknown command(%s)", wk_err_msg->details);
+ 		break;
+-
+ 	case SPPWK_PARSE_NO_PARAM:
+ 		sprintf(message, "No or insufficient number of params (%s)",
+ 				wk_err_msg->msg);
+ 		break;
+-
+ 	case SPPWK_PARSE_INVALID_TYPE:
+ 		sprintf(message, "Invalid value type (%s)",
+ 				wk_err_msg->msg);
+ 		break;
+-
+ 	case SPPWK_PARSE_INVALID_VALUE:
+ 		sprintf(message, "Invalid value (%s)", wk_err_msg->msg);
+ 		break;
+-
+ 	default:
+ 		sprintf(message, "error occur");
+ 		break;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 5a7df84..1018444 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -59,7 +59,8 @@ const char *sppwk_action_str(enum sppwk_action wk_action);
+  * @attention This enumerated type must have the same order of command_list
+  *            defined in cmd_parser.c
+  */
+-/*
++/* TODO(yasufum) consider to remove restriction above. */
++/**
+  * TODO(yasufum) consider to divide because each of target of scope is
+  * different and not so understandable for usage. For example, worker is
+  * including classifier or it status.
+-- 
+2.17.1
+
+

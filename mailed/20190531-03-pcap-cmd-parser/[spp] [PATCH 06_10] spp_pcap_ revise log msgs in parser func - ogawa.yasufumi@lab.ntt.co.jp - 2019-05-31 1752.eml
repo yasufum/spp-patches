@@ -1,0 +1,147 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d19bcc2c2adc
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp371149lfg;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqzjaVVQ2cZ1tsBEI9m+vf3m7BwSadFPPq53ByyvsBsvq8heXZ79hywuy5hQ0O0mh/NDQkLA
+X-Received: by 2002:a17:906:1c4a:: with SMTP id l10mr8090897ejg.124.1559292919272;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292919; cv=none;
+        d=google.com; s=arc-20160816;
+        b=VQQcS2YWqOhry3jX5g1rqBihCdWOJXWgAyvJgvo1K6RhiExjMRiHj8mkMJPxnad0fy
+         0t5PM3FfoISpX2F0KBDpAuFKV/fm8X/31z0YBkiJQmdvft1BRFKhXWp9gsP65UAxoR9x
+         tEbV/8kWGwvPmQeS8EshHFJqn75rEd1arPtyqkUVW5oE/ayTLwdsCo4zG3TUwvMhQx1y
+         fZ80zNu+jLK/djVKvfOUlSNqs9tlFXkgjOZBZaS0Fv77SLRU15n3exM8UXpjrNqfwyYc
+         MKNb2puvj+D6IVs1nrOGip5kcB+Xv1njrLCHo2NqW1NOoFbAQyFORLtg4SvGGp7R02pc
+         WT4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:references:in-reply-to
+         :message-id:date:to:from;
+        bh=cOllBt+aj0CKPdrMRzVPSbBMHI7mUhje4L7+CeeafVY=;
+        b=bflyl+ajuH9li0lmi+MUnUVyD/+MvJtnUobCbJ7uyUhYZp3ebNYgL1SRqt+VEL0DHn
+         FCtQU0wamNxPxFugsOlWiC7CRkf1trGevt0M8NUpOP6VursLODFU0CeuDbF49X/yUttc
+         S9f6z8M7oby9l4Fw+el25Og/kVEz7AH0al9LBmOb5k3J6aPkhO2IQy6klu224d3yHLL6
+         a4qUzhZ77KczbQZ+OnrFvGe1fO2I8meOCNV5J3PQxyF+lsZW8BipGPVvgzvkywsYly31
+         8KC//IIrad6V88smJSH8ISaqvXQGi/KUPDEursIk9utrRbh1gRYsSFjWDBM9FGvITQoM
+         wDRw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id h23si2615795ejq.375.2019.05.31.01.55.19;
+        Fri, 31 May 2019 01:55:19 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id DED5E1B94C;
+	Fri, 31 May 2019 10:55:18 +0200 (CEST)
+Received: from tama50.ecl.ntt.co.jp (tama50.ecl.ntt.co.jp [129.60.39.147])
+ by dpdk.org (Postfix) with ESMTP id 8C1871B948
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:55:16 +0200 (CEST)
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+ by tama50.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8tF0d027729;
+ Fri, 31 May 2019 17:55:15 +0900
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 82A61EA8605;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 7567FEA85FC;
+ Fri, 31 May 2019 17:55:15 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:38 +0900
+Message-Id: <1559292762-27042-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559292762-27042-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH 06/10] spp_pcap: revise log msgs in parser func
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to revise redundant or no meaning log messages in
+function parse_pcap_cmd().
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index cf1f2b9..c6f3387 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -97,7 +97,7 @@ static struct pcap_cmd_parse_attr pcap_cmd_attrs[] = {
+ /* Parse command requested from spp-ctl. */
+ static int
+ parse_pcap_cmd(struct spp_command_request *request,
+-		const char *request_str,
++		const char *cmd_str,
+ 		struct sppwk_parse_err_msg *wk_err_msg)
+ {
+ 	int is_invalid_cmd = 0;
+@@ -110,16 +110,18 @@ parse_pcap_cmd(struct spp_command_request *request,
+ 	memset(tokens, 0x00, sizeof(tokens));
+ 	memset(tmp_str, 0x00, sizeof(tmp_str));
+ 
+-	strcpy(tmp_str, request_str);
++	strcpy(tmp_str, cmd_str);
+ 	ret = split_cmd_tokens(tmp_str, SPPWK_MAX_PARAMS,
+ 			&nof_tokens, tokens);
+ 	if (ret < SPPWK_RET_OK) {
+-		RTE_LOG(ERR, PCAP_PARSER, "Parameter number over limit."
+-				"request_str=%s\n", request_str);
++		RTE_LOG(ERR, PCAP_PARSER, "Invalid cmd '%s', "
++				"num of tokens is over SPPWK_MAX_PARAMS.\n",
++				cmd_str);
+ 		return set_parse_error(wk_err_msg,
+ 				SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+-	RTE_LOG(DEBUG, PCAP_PARSER, "Decode array. num=%d\n", nof_tokens);
++	RTE_LOG(DEBUG, PCAP_PARSER, "Parsed cmd '%s', nof token is %d\n",
++			cmd_str, nof_tokens);
+ 
+ 	for (i = 0; pcap_cmd_attrs[i].cmd_name[0] != '\0'; i++) {
+ 		cmd_attr = &pcap_cmd_attrs[i];
+@@ -142,15 +144,14 @@ parse_pcap_cmd(struct spp_command_request *request,
+ 	}
+ 
+ 	if (is_invalid_cmd != 0) {
+-		RTE_LOG(ERR, PCAP_PARSER, "Parameter number out of range."
+-				"request_str=%s\n", request_str);
++		RTE_LOG(ERR, PCAP_PARSER, "Invalid cmd '%s', "
++				"num of params is out of range.\n", cmd_str);
+ 		return set_parse_error(wk_err_msg,
+ 				SPPWK_PARSE_WRONG_FORMAT, NULL);
+ 	}
+ 
+ 	RTE_LOG(ERR, PCAP_PARSER,
+-			"Unknown command. command=%s, request_str=%s\n",
+-			tokens[0], request_str);
++			"Unknown cmd '%s' in '%s'.\n", tokens[0], cmd_str);
+ 	return set_string_value_parse_error(wk_err_msg, tokens[0], "command");
+ }
+ 
+-- 
+2.17.1
+
+

@@ -1,0 +1,142 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b0d193a85f4df1
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a19:dc05:0:0:0:0:0 with SMTP id t5csp370678lfg;
+        Fri, 31 May 2019 01:54:45 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx69MG00/canMR+nFLe7zKHAEGqpTzh20hqFlntXnWitvUB/Yf/DHnwFqAIXf7p2MzrCa0Y
+X-Received: by 2002:a50:90dd:: with SMTP id d29mr9942206eda.127.1559292885682;
+        Fri, 31 May 2019 01:54:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1559292885; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Rh8a7Bew0t57KnUk8zwzDOB1UE4WcHidHiha+trcEYwIPNuBSeU2JFvSi/MGegm5dn
+         qTqZpAnMAPiPFx6NndCBi57blxrnz3mAN/ecD3vIzfIONVsf0KZFoJu31OzdTkoHqRtD
+         Oh2suLkvPbZ1RQBjplAwjy2G0a5kjbp2qNfMFG+KSnbxBzARsgz0kAchXxUeunsLxPbu
+         ub9KqJMmLItn4EB7gg/DqvRZjki/CbEn1ewIgix5SsLuXdK3ptQ57E7s6rREKanaUZXl
+         gZ/i6j1rWI2aZoEvP2WNX2D7YkpxM/0zkMTCuT+lfTqnsde0KbJAcUbu5oZiNbmOTmcK
+         BZJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=sender:errors-to:list-subscribe:list-help:list-post:list-archive
+         :list-unsubscribe:list-id:precedence:subject:message-id:date:to:from;
+        bh=XoMjK+EbG4M0x7+nISnJHmmcpz93frGIDWWYtpxeVs4=;
+        b=xJfu5sNQkjnD4rqKlLBgweRYVI1Yyl3Y0qaDkjed8D8Unoj8kKEdEJ5d1/4LzXENwj
+         W1BjuXDKd1UoLt5DnlOgOjdS4gzFhXsjkIGFoWwjypetSmcqhYCPSrlBzOGfeIbobuS/
+         SGBEroAnxKWMS1Gr1Nzx+Wbv1OhjjHcnN7rjVtNAV3fZKwrmxIFwS8kWado7emgpr1zU
+         FQoBXywvPkzKa6qcveMq5ixRWK0zfhbkSw1e9taDVeXQNLERa1quhZJnPN3ZaAS3lkPJ
+         1ZkanCwqFCpvrSwQVvNX34X8vfa3Yof7WXW7uGK+dyiAuhWcpnozoQuWV2KF0S1k25EH
+         K4zg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Return-Path: <spp-bounces@dpdk.org>
+Received: from dpdk.org (dpdk.org. [92.243.14.124])
+        by mx.google.com with ESMTP id v54si1643960edc.436.2019.05.31.01.54.45;
+        Fri, 31 May 2019 01:54:45 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) client-ip=92.243.14.124;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spp-bounces@dpdk.org designates 92.243.14.124 as permitted sender) smtp.mailfrom=spp-bounces@dpdk.org
+Received: from [92.243.14.124] (localhost [127.0.0.1])
+	by dpdk.org (Postfix) with ESMTP id 666F3375B;
+	Fri, 31 May 2019 10:54:45 +0200 (CEST)
+Received: from tama500.ecl.ntt.co.jp (tama500.ecl.ntt.co.jp [129.60.39.148])
+ by dpdk.org (Postfix) with ESMTP id ED3EE2C60
+ for <spp@dpdk.org>; Fri, 31 May 2019 10:54:43 +0200 (CEST)
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+ by tama500.ecl.ntt.co.jp (8.13.8/8.13.8) with ESMTP id x4V8sgcY000704;
+ Fri, 31 May 2019 17:54:42 +0900
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 9C9E3639615;
+ Fri, 31 May 2019 17:54:42 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp
+ [129.60.13.95])
+ by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 8EADD639613;
+ Fri, 31 May 2019 17:54:42 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, ogawa.yasufumi@lab.ntt.co.jp
+Date: Fri, 31 May 2019 17:52:09 +0900
+Message-Id: <1559292729-26993-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+Subject: [spp] [PATCH] bin: make template config as default
+X-BeenThere: spp@dpdk.org
+X-Mailman-Version: 2.1.15
+Precedence: list
+List-Id: Soft Patch Panel <spp.dpdk.org>
+List-Unsubscribe: <https://mails.dpdk.org/options/spp>,
+ <mailto:spp-request@dpdk.org?subject=unsubscribe>
+List-Archive: <http://mails.dpdk.org/archives/spp/>
+List-Post: <mailto:spp@dpdk.org>
+List-Help: <mailto:spp-request@dpdk.org?subject=help>
+List-Subscribe: <https://mails.dpdk.org/listinfo/spp>,
+ <mailto:spp-request@dpdk.org?subject=subscribe>
+Errors-To: spp-bounces@dpdk.org
+Sender: "spp" <spp-bounces@dpdk.org>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+Config file of startup script `bin/env.sh` is under management of git,
+but it is not convenient for developers if this file is changed and
+asked to `git add` even if subtle changes. This update is to add
+template config under the management of git and to use customized
+config which is not included under git.
+
+The startup script expects to find customized `bin/config.sh`, or create
+it by copying template `bin/sample/config.sh` if it does not exist.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .gitignore                       |  1 +
+ bin/{env.sh => sample/config.sh} |  0
+ bin/start.sh                     | 15 +++++++++++++--
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+ rename bin/{env.sh => sample/config.sh} (100%)
+
+diff --git a/.gitignore b/.gitignore
+index b31ab54..34c2ea8 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,6 +1,7 @@
+ *.swp
+ *.pyc
+ *.log
++bin/config.sh
+ docs/guides/_build/*
+ docs/guides/images/**/*.pdf
+ src/controller/3rd_party/*
+diff --git a/bin/env.sh b/bin/sample/config.sh
+similarity index 100%
+rename from bin/env.sh
+rename to bin/sample/config.sh
+diff --git a/bin/start.sh b/bin/start.sh
+index 6a6f304..9bc1ff0 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -8,10 +8,21 @@
+ # Activate for debugging
+ #set -x
+ 
+-SPP_DIR=$(cd $(dirname $0); pwd)/..
++WORK_DIR=$(cd $(dirname $0); pwd)
++SPP_DIR=${WORK_DIR}/..
++
++DEFAULT_CONFIG=${WORK_DIR}/sample/config.sh
++CONFIG=${WORK_DIR}/config.sh
++
++if [ ! -f ${CONFIG} ]; then
++    echo "Creating config file ..."
++    cp ${DEFAULT_CONFIG} ${CONFIG}
++    echo "Edit '${CONFIG}' and run this script again!"
++    exit
++fi
+ 
+ # import vars and functions
+-. ${SPP_DIR}/bin/env.sh
++. ${CONFIG}
+ 
+ echo "Start spp-ctl"
+ python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
+-- 
+2.17.1
+
+
