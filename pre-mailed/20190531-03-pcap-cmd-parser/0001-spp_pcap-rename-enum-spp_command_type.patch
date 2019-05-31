@@ -1,0 +1,207 @@
+From d32b203983bd0cb839ed2ad8dae375cddeaabe5a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 28 May 2019 08:29:05 +0900
+Subject: [PATCH 01/10] spp_pcap: rename enum spp_command_type
+
+This update is to rename enum `spp_command_type` to `pcap_cmd_type` and
+its members.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c                         | 24 ++++++-------
+ src/pcap/cmd_parser.h                         | 25 +++++--------
+ src/pcap/cmd_runner.c                         | 35 ++++++-------------
+ .../secondary/spp_worker_th/cmd_parser.h      |  3 +-
+ 4 files changed, 33 insertions(+), 54 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index 4cf8059..946300e 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -66,18 +66,18 @@ struct parse_command_list {
+ 			char *argv[], struct sppwk_parse_err_msg *error,
+ 			int maxargc);
+ 				/* Pointer to command handling function */
+-	enum spp_command_type type;
++	enum pcap_cmd_type type;
+ 				/* Command type */
+ };
+ 
+ /* command list */
+ static struct parse_command_list command_list_pcap[] = {
+-	{ "_get_client_id", 1, 1, NULL, CMD_CLIENT_ID },
+-	{ "status",	    1, 1, NULL, CMD_STATUS    },
+-	{ "exit",           1, 1, NULL, CMD_EXIT      },
+-	{ "start",          1, 1, NULL, CMD_START     },
+-	{ "stop",           1, 1, NULL, CMD_STOP      },
+-	{ "",               0, 0, NULL, 0 }  /* termination */
++	{ "_get_client_id", 1, 1, NULL, PCAP_CMDTYPE_CLIENT_ID },
++	{ "status", 1, 1, NULL, PCAP_CMDTYPE_STATUS },
++	{ "exit",  1, 1, NULL, PCAP_CMDTYPE_EXIT },
++	{ "start", 1, 1, NULL, PCAP_CMDTYPE_START },
++	{ "stop",  1, 1, NULL, PCAP_CMDTYPE_STOP },
++	{ "", 0, 0, NULL, 0 }  /* termination */
+ };
+ 
+ /* Parse command line parameters */
+@@ -164,19 +164,19 @@ spp_command_parse_request(
+ 	/* check getter command */
+ 	for (i = 0; i < request->num_valid_command; ++i) {
+ 		switch (request->commands[i].type) {
+-		case CMD_CLIENT_ID:
++		case PCAP_CMDTYPE_CLIENT_ID:
+ 			request->is_requested_client_id = 1;
+ 			break;
+-		case CMD_STATUS:
++		case PCAP_CMDTYPE_STATUS:
+ 			request->is_requested_status = 1;
+ 			break;
+-		case CMD_EXIT:
++		case PCAP_CMDTYPE_EXIT:
+ 			request->is_requested_exit = 1;
+ 			break;
+-		case CMD_START:
++		case PCAP_CMDTYPE_START:
+ 			request->is_requested_start = 1;
+ 			break;
+-		case CMD_STOP:
++		case PCAP_CMDTYPE_STOP:
+ 			request->is_requested_stop = 1;
+ 			break;
+ 		default:
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index 88ad862..fd110cb 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -42,27 +42,18 @@ enum sppwk_parse_error_code {
+  * @attention This enumerated type must have the same order of command_list
+  *            defined in command_dec_pcap.c
+  */
+-enum spp_command_type {
+-	/** get_client_id command */
+-	CMD_CLIENT_ID,
+-
+-	/** status command */
+-	CMD_STATUS,
+-
+-	/** exit command */
+-	CMD_EXIT,
+-
+-	/** start command */
+-	CMD_START,
+-
+-	/** stop command */
+-	CMD_STOP,
+-
++/* TODO(yasufum) consider to remove restriction above. */
++enum pcap_cmd_type {
++	PCAP_CMDTYPE_CLIENT_ID,  /**< get_client_id */
++	PCAP_CMDTYPE_STATUS,  /**< status */
++	PCAP_CMDTYPE_EXIT,  /**< exit */
++	PCAP_CMDTYPE_START,  /**< worker thread */
++	PCAP_CMDTYPE_STOP,  /**< port */
+ };
+ 
+ /** command parameters */
+ struct spp_command {
+-	enum spp_command_type type; /**< Command type */
++	enum pcap_cmd_type type; /**< Command type */
+ };
+ 
+ /** request parameters */
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index a931956..c83006f 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -233,6 +233,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ 	return SPPWK_RET_OK;
+ }
+ 
++/* TODO(yasufum) confirm why this function does nothing is needed. */
+ /* execute one command */
+ static int
+ execute_command(const struct spp_command *command)
+@@ -240,29 +241,20 @@ execute_command(const struct spp_command *command)
+ 	int ret = SPPWK_RET_OK;
+ 
+ 	switch (command->type) {
+-	case CMD_CLIENT_ID:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute get_client_id command.\n");
++	case PCAP_CMDTYPE_CLIENT_ID:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec get_client_id cmd.\n");
+ 		break;
+-
+-	case CMD_STATUS:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute status command.\n");
++	case PCAP_CMDTYPE_STATUS:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec status cmd.\n");
+ 		break;
+-
+-	case CMD_EXIT:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute exit command.\n");
++	case PCAP_CMDTYPE_EXIT:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec exit cmd.\n");
+ 		break;
+-
+-	case CMD_START:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute start command.\n");
++	case PCAP_CMDTYPE_START:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec start cmd.\n");
+ 		break;
+-
+-	case CMD_STOP:
+-		RTE_LOG(INFO, PCAP_RUNNER,
+-				"Execute stop command.\n");
++	case PCAP_CMDTYPE_STOP:
++		RTE_LOG(INFO, PCAP_RUNNER, "Exec stop cmd.\n");
+ 		break;
+ 	}
+ 
+@@ -279,26 +271,21 @@ parse_error_message(
+ 	case SPPWK_PARSE_WRONG_FORMAT:
+ 		sprintf(message, "Wrong message format");
+ 		break;
+-
+ 	case SPPWK_PARSE_UNKNOWN_CMD:
+ 		/* TODO(yasufum) Fix compile err if space exists before "(" */
+ 		sprintf(message, "Unknown command(%s)", wk_err_msg->details);
+ 		break;
+-
+ 	case SPPWK_PARSE_NO_PARAM:
+ 		sprintf(message, "No or insufficient number of params (%s)",
+ 				wk_err_msg->msg);
+ 		break;
+-
+ 	case SPPWK_PARSE_INVALID_TYPE:
+ 		sprintf(message, "Invalid value type (%s)",
+ 				wk_err_msg->msg);
+ 		break;
+-
+ 	case SPPWK_PARSE_INVALID_VALUE:
+ 		sprintf(message, "Invalid value (%s)", wk_err_msg->msg);
+ 		break;
+-
+ 	default:
+ 		sprintf(message, "error occur");
+ 		break;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 5a7df84..1018444 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -59,7 +59,8 @@ const char *sppwk_action_str(enum sppwk_action wk_action);
+  * @attention This enumerated type must have the same order of command_list
+  *            defined in cmd_parser.c
+  */
+-/*
++/* TODO(yasufum) consider to remove restriction above. */
++/**
+  * TODO(yasufum) consider to divide because each of target of scope is
+  * different and not so understandable for usage. For example, worker is
+  * including classifier or it status.
+-- 
+2.17.1
+

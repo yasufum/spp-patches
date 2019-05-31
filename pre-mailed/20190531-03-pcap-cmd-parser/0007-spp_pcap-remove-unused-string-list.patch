@@ -1,0 +1,35 @@
+From adba3cb989aa0f26abe193ebead9025d8cc0db17 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 29 May 2019 14:13:06 +0900
+Subject: [PATCH 07/10] spp_pcap: remove unused string list
+
+Remove definition of `const char *CAPTURE_THREAD_TYPE_STRINGS[]` which
+is not used actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/spp_pcap.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 84b42e4..7c66f16 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -67,14 +67,6 @@ enum comp_file_generate_mode {
+ 	CLOSE_MODE   /* close mode which is used when capture is stopped */
+ };
+ 
+-/* capture thread name string  */
+-const char *CAPTURE_THREAD_TYPE_STRINGS[] = {
+-	"unuse",
+-	"receive",
+-	"write",
+-	/* termination */ "",
+-};
+-
+ /* lz4 preferences */
+ static const LZ4F_preferences_t g_kprefs = {
+ 	{
+-- 
+2.17.1
+

@@ -1,0 +1,36 @@
+From cf7d36fa5ea1dbbf128bab8d8fe37f4f70a22f7a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Fri, 31 May 2019 17:37:18 +0900
+Subject: [PATCH 00/10] Refactor cmd parser in spp_pcap
+
+This series of patches is to revise a set of functions, structs and vars
+to be appropriately because Some of them are too redundant or vague in
+meaning.
+
+Yasufumi Ogawa (10):
+  spp_pcap: rename enum spp_command_type
+  spp_pcap: rename struct spp_command
+  spp_pcap: revise command response codes
+  spp_pcap: revise parser functions
+  spp_pcap: refactor func for splitting cmd tokens
+  spp_pcap: revise log msgs in parser func
+  spp_pcap: remove unused string list
+  spp_pcap: refactor comments of spp_pcap
+  spp_pcap: rename spp_get_core_status
+  spp_pcap: revise name of vars for parser error
+
+ src/pcap/cmd_parser.c                         | 158 ++++++++++--------
+ src/pcap/cmd_parser.h                         |  32 ++--
+ src/pcap/cmd_runner.c                         | 142 +++++++---------
+ src/pcap/cmd_utils.c                          |   4 +-
+ src/pcap/cmd_utils.h                          |  28 ++--
+ src/pcap/spp_pcap.c                           |  95 +++++------
+ src/pcap/spp_pcap.h                           |  12 +-
+ .../secondary/spp_worker_th/cmd_parser.c      |   4 +-
+ .../secondary/spp_worker_th/cmd_parser.h      |   3 +-
+ .../secondary/spp_worker_th/cmd_runner.c      |   8 +-
+ 10 files changed, 221 insertions(+), 265 deletions(-)
+
+-- 
+2.17.1
+

@@ -1,0 +1,96 @@
+From 63e92dc7222c04c6e97b9f60ae6aeffe48c11760 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Tue, 28 May 2019 12:41:50 +0900
+Subject: [PATCH 02/10] spp_pcap: rename struct spp_command
+
+Rename struct `spp_command` to `pcap_cmd_attr` because it is not a
+command, but a set of attributes actually.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/pcap/cmd_parser.c | 7 ++++---
+ src/pcap/cmd_parser.h | 7 +++----
+ src/pcap/cmd_runner.c | 4 ++--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index 946300e..1624347 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -13,7 +13,8 @@
+ 
+ #define RTE_LOGTYPE_PCAP_PARSER RTE_LOGTYPE_USER2
+ 
+-/* set parse error */
++/* Format error message object and return error code for an error case. */
++/* TODO(yasufum) merge it to the same definition in shared/.../cmd_parser.c */
+ static inline int
+ set_parse_error(struct sppwk_parse_err_msg *wk_err_msg,
+ 		const int err_code, const char *err_msg)
+@@ -118,7 +119,7 @@ parse_command_in_list(struct spp_command_request *request,
+ 			continue;
+ 		}
+ 
+-		request->commands[0].type = command_list_pcap[i].type;
++		request->cmd_attrs[0].type = command_list_pcap[i].type;
+ 		if (list->func != NULL)
+ 			return (*list->func)(request, argc, argv, wk_err_msg,
+ 							list->param_max);
+@@ -163,7 +164,7 @@ spp_command_parse_request(
+ 
+ 	/* check getter command */
+ 	for (i = 0; i < request->num_valid_command; ++i) {
+-		switch (request->commands[i].type) {
++		switch (request->cmd_attrs[i].type) {
+ 		case PCAP_CMDTYPE_CLIENT_ID:
+ 			request->is_requested_client_id = 1;
+ 			break;
+diff --git a/src/pcap/cmd_parser.h b/src/pcap/cmd_parser.h
+index fd110cb..706144d 100644
+--- a/src/pcap/cmd_parser.h
++++ b/src/pcap/cmd_parser.h
+@@ -51,16 +51,15 @@ enum pcap_cmd_type {
+ 	PCAP_CMDTYPE_STOP,  /**< port */
+ };
+ 
+-/** command parameters */
+-struct spp_command {
+-	enum pcap_cmd_type type; /**< Command type */
++struct pcap_cmd_attr {
++	enum pcap_cmd_type type;
+ };
+ 
+ /** request parameters */
+ struct spp_command_request {
+ 	int num_command;                /**< Number of accepted commands */
+ 	int num_valid_command;          /**< Number of executed commands */
+-	struct spp_command commands[SPPWK_MAX_CMDS];
++	struct pcap_cmd_attr cmd_attrs[SPPWK_MAX_CMDS];
+ 					/**<Information of executed commands */
+ 
+ 	int is_requested_client_id;     /**< Id for get_client_id command */
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index c83006f..9e4f4cf 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -236,7 +236,7 @@ append_json_block_brackets(const char *name, char **output, const char *str)
+ /* TODO(yasufum) confirm why this function does nothing is needed. */
+ /* execute one command */
+ static int
+-execute_command(const struct spp_command *command)
++execute_command(const struct pcap_cmd_attr *command)
+ {
+ 	int ret = SPPWK_RET_OK;
+ 
+@@ -892,7 +892,7 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ 	/* execute commands */
+ 	for (i = 0; i < request.num_command ; ++i) {
+-		ret = execute_command(request.commands + i);
++		ret = execute_command(request.cmd_attrs + i);
+ 		if (unlikely(ret != SPPWK_RET_OK)) {
+ 			set_command_results(&command_results[i], CMD_FAILURE,
+ 					"error occur");
+-- 
+2.17.1
+
