@@ -1,0 +1,151 @@
+X-Account-Key: account4
+X-UIDL: 0000cbae56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail2.ecl.ntt.co.jp (dmail2.ecl.ntt.co.jp [129.60.86.152])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id C28454008B6
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:38:19 +0900 (JST)
+Received: by dmail2.ecl.ntt.co.jp (Postfix)
+	id C0AF87F735; Fri, 31 May 2019 12:38:19 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail2.ecl.ntt.co.jp (Postfix) with ESMTP id B5D647F5CE
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:38:19 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id A23DC6395D8;
+	Fri, 31 May 2019 12:38:19 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 936176395BB;
+	Fri, 31 May 2019 12:38:19 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH] shared/sec: rename fname of command_proc
+Date: Fri, 31 May 2019 12:35:45 +0900
+Message-Id: <1559273745-26028-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+The name of file `command_proc.c` and its header has the meaning
+"to process command sent from controller", but the term `process` is
+is not clear in meaning in this context because noun is usually used as
+file name and `process` means a computing entity.
+
+This update is to rename to be clear as `cmd_runner.c`, and
+also its header file.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/mirror/Makefile                                         | 2 +-
+ src/mirror/spp_mirror.c                                     | 2 +-
+ .../spp_worker_th/{command_proc.c => cmd_runner.c}          | 2 +-
+ .../spp_worker_th/{command_proc.h => cmd_runner.h}          | 6 +++---
+ src/vf/Makefile                                             | 2 +-
+ src/vf/spp_vf.c                                             | 2 +-
+ 6 files changed, 8 insertions(+), 8 deletions(-)
+ rename src/shared/secondary/spp_worker_th/{command_proc.c => cmd_runner.c} (99%)
+ rename src/shared/secondary/spp_worker_th/{command_proc.h => cmd_runner.h} (89%)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 3104059..07bf7ca 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -21,7 +21,7 @@ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+-SRCS-y += $(SPP_WKT_DIR)/command_proc.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_runner.c
+ SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 2e6b58a..d46d3da 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -12,7 +12,7 @@
+ #include "shared/secondary/spp_worker_th/mirror_deps.h"
+ #include "shared/common.h"
+ #include "shared/secondary/utils.h"
+-#include "shared/secondary/spp_worker_th/command_proc.h"
++#include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/spp_proc.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+similarity index 99%
+rename from src/shared/secondary/spp_worker_th/command_proc.c
+rename to src/shared/secondary/spp_worker_th/cmd_runner.c
+index 94f4142..153ea01 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -15,7 +15,7 @@
+ 
+ #include "command_conn.h"
+ #include "cmd_parser.h"
+-#include "command_proc.h"
++#include "cmd_runner.h"
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.h b/src/shared/secondary/spp_worker_th/cmd_runner.h
+similarity index 89%
+rename from src/shared/secondary/spp_worker_th/command_proc.h
+rename to src/shared/secondary/spp_worker_th/cmd_runner.h
+index 5e846a3..bccc0c5 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.h
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.h
+@@ -2,8 +2,8 @@
+  * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+  */
+ 
+-#ifndef _COMMAND_PROC_H_
+-#define _COMMAND_PROC_H_
++#ifndef _SPPWK_CMD_RUNNER_H_
++#define _SPPWK_CMD_RUNNER_H_
+ 
+ /**
+  * @file
+@@ -39,4 +39,4 @@ spp_command_proc_init(const char *controller_ip, int controller_port);
+ int
+ spp_command_proc_do(void);
+ 
+-#endif /* _COMMAND_PROC_H_ */
++#endif  /* _SPPWK_CMD_RUNNER_H_ */
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index 8c1cb2b..399871f 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -20,7 +20,7 @@ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/command_conn.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+-SRCS-y += $(SPP_WKT_DIR)/command_proc.c
++SRCS-y += $(SPP_WKT_DIR)/cmd_runner.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_proc.c
+ SRCS-y += ../shared/common.c
+ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 8e6e187..cbaa0c1 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -10,7 +10,7 @@
+ #include "spp_vf.h"
+ #include "classifier_mac.h"
+ #include "spp_forward.h"
+-#include "shared/secondary/spp_worker_th/command_proc.h"
++#include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+-- 
+2.17.1
+
+

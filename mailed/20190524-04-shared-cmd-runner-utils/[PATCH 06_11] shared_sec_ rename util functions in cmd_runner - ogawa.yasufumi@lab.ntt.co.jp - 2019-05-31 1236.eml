@@ -1,0 +1,131 @@
+X-Account-Key: account4
+X-UIDL: 0000cbba56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 7126E4008B6
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 6FC6A23C25B; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 6F47323C257
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5B1B56395DB;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 441676395E0;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 06/11] shared/sec: rename util functions in cmd_runner
+Date: Fri, 31 May 2019 12:36:00 +0900
+Message-Id: <1559273765-26130-7-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename utility functions.
+
+* `spp_get_client_id()` for getting client ID from global variable is
+  renamed to `sppwk_get_client_id()`.
+
+* `spp_get_process_type()` for getting process type from global variable
+  is renamed to `sppwk_get_process_type()`.
+
+* `spp_check_flush_port()` is simply renamed to `is_port_flushed()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_runner.c      | 34 ++++++++-----------
+ 1 file changed, 15 insertions(+), 19 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 2a82edd..3d07a28 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -92,31 +92,27 @@ const char *CLS_TYPE_A_LIST[] = {
+ 	"",  /* termination */
+ };
+ 
+-/* get client id */
++/* Get client ID from global command params. */
+ static int
+-spp_get_client_id(void)
++sppwk_get_client_id(void)
+ {
+-	struct startup_param *startup_param;
+-
+-	sppwk_get_mng_data(&startup_param,
+-			NULL, NULL, NULL, NULL, NULL, NULL);
+-	return startup_param->client_id;
++	struct startup_param *params;
++	sppwk_get_mng_data(&params, NULL, NULL, NULL, NULL, NULL, NULL);
++	return params->client_id;
+ }
+ 
+-/* get process type */
++/* Get proc type from global command params. */
+ static int
+-spp_get_process_type(void)
++sppwk_get_proc_type(void)
+ {
+-	struct startup_param *startup_param;
+-
+-	sppwk_get_mng_data(&startup_param,
+-			NULL, NULL, NULL, NULL, NULL, NULL);
+-	return startup_param->secondary_type;
++	struct startup_param *params;
++	sppwk_get_mng_data(&params, NULL, NULL, NULL, NULL, NULL, NULL);
++	return params->secondary_type;
+ }
+ 
+-/* Check if port has been flushed. */
++/* Check if port is already flushed. */
+ static int
+-spp_check_flush_port(enum port_type iface_type, int iface_no)
++is_port_flushed(enum port_type iface_type, int iface_no)
+ {
+ 	struct sppwk_port_info *port = get_sppwk_port(iface_type, iface_no);
+ 	return port->ethdev_port_id >= 0;
+@@ -926,7 +922,7 @@ static int
+ append_client_id_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	return append_json_int_value(name, output, spp_get_client_id());
++	return append_json_int_value(name, output, sppwk_get_client_id());
+ }
+ 
+ /* append a list of interface numbers */
+@@ -937,7 +933,7 @@ append_interface_array(char **output, const enum port_type type)
+ 	char tmp_str[CMD_TAG_APPEND_SIZE];
+ 
+ 	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
+-		if (!spp_check_flush_port(type, i))
++		if (!is_port_flushed(type, i))
+ 			continue;
+ 
+ 		sprintf(tmp_str, "%s%d", JSON_APPEND_COMMA(port_cnt), i);
+@@ -962,7 +958,7 @@ append_process_type_value(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+ 	return append_json_str_value(name, output,
+-			SPPWK_PROC_TYPE_LIST[spp_get_process_type()]);
++			SPPWK_PROC_TYPE_LIST[sppwk_get_proc_type()]);
+ }
+ 
+ /* append a list of interface numbers for JSON format */
+-- 
+2.17.1
+
+

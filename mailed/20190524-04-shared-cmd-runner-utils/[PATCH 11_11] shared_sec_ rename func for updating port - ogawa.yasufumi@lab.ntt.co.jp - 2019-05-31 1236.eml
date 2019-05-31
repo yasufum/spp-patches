@@ -1,0 +1,77 @@
+X-Account-Key: account4
+X-UIDL: 0000cbbd56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 867ED4008B6
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 84F2223C25F; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 847AB23C257
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 6AB206395BB;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 672876395DE;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 11/11] shared/sec: rename func for updating port
+Date: Fri, 31 May 2019 12:36:05 +0900
+Message-Id: <1559273765-26130-12-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename from `spp_update_port()` to `update_port()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_runner.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 5584a48..e917007 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -345,7 +345,7 @@ check_port_count(int component_type, enum spp_port_rxtx rxtx, int num_rx,
+ 
+ /* Port add or del to execute it */
+ static int
+-spp_update_port(enum sppwk_action wk_action,
++update_port(enum sppwk_action wk_action,
+ 		const struct sppwk_port_idx *port,
+ 		enum spp_port_rxtx rxtx,
+ 		const char *name,
+@@ -754,12 +754,9 @@ exec_cmd(const struct spp_command *cmd)
+ 	case SPPWK_CMDTYPE_PORT:
+ 		RTE_LOG(INFO, SPP_COMMAND_PROC, "with action `%s`.\n",
+ 				sppwk_action_str(cmd->spec.port.wk_action));
+-		ret = spp_update_port(
+-				cmd->spec.port.wk_action,
+-				&cmd->spec.port.port,
+-				cmd->spec.port.rxtx,
+-				cmd->spec.port.name,
+-				&cmd->spec.port.ability);
++		ret = update_port(cmd->spec.port.wk_action,
++				&cmd->spec.port.port, cmd->spec.port.rxtx,
++				cmd->spec.port.name, &cmd->spec.port.ability);
+ 		if (ret == 0) {
+ 			RTE_LOG(INFO, SPP_COMMAND_PROC, "Exec flush.\n");
+ 			ret = spp_flush();
+-- 
+2.17.1
+
+

@@ -1,0 +1,193 @@
+X-Account-Key: account4
+X-UIDL: 0000cbbc56a584ea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 84BFB4008B6
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 8355023C25B; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc2.ecl.ntt.co.jp (vc2.ecl.ntt.co.jp [129.60.86.154])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 82C9F23C257
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from vc2.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 65FBB6395D8;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc2.ecl.ntt.co.jp (Postfix) with ESMTP id 5EF946395F0;
+	Fri, 31 May 2019 12:38:38 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 10/11] shared/sec: add helpers for logging cmd parser
+Date: Fri, 31 May 2019 12:36:04 +0900
+Message-Id: <1559273765-26130-11-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273765-26130-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to add helper functions for refactoring logging messages.
+Some of INFO log messages show internal codes which users cannot
+understand. These helper functions replace the internal code to
+meaningful word such as `status`, `exit` or so.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ .../secondary/spp_worker_th/cmd_parser.c      | 48 ++++++++++++++++++-
+ .../secondary/spp_worker_th/cmd_parser.h      |  4 ++
+ .../secondary/spp_worker_th/cmd_runner.c      | 17 +++----
+ 3 files changed, 56 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 084b3e2..af8cc3e 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -15,8 +15,9 @@
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER2
+ 
+ /**
+- * List of command action. The order of items should be same as the order of
+- * enum `sppwk_action` in cmd_parser.h.
++ * List of command action for getting the index of enum enum `sppwk_action`.
++ * The order of items should be same as the order of enum `sppwk_action` in
++ * cmd_parser.h.
+  */
+ const char *CMD_ACT_LIST[] = {
+ 	"none",
+@@ -27,6 +28,49 @@ const char *CMD_ACT_LIST[] = {
+ 	"",  /* termination */
+ };
+ 
++/* Get string of action. It is mainly used for logging. */
++const char*
++sppwk_action_str(enum sppwk_action wk_action)
++{
++	switch (wk_action) {
++	case SPPWK_ACT_NONE:
++		return "none";
++	case SPPWK_ACT_START:
++		return "start";
++	case SPPWK_ACT_STOP:
++		return "stop";
++	case SPPWK_ACT_ADD:
++		return "add";
++	case SPPWK_ACT_DEL:
++		return "del";
++	default:
++		return "unknown";
++	}
++}
++
++/* Get string of cmd type. It is mainly used for logging. */
++const char*
++sppwk_cmd_type_str(enum sppwk_cmd_type ctype)
++{
++	switch (ctype) {
++	case SPPWK_CMDTYPE_CLS_MAC:
++	case SPPWK_CMDTYPE_CLS_VLAN:
++		return "classifier_mac";
++	case SPPWK_CMDTYPE_CLIENT_ID:
++		return "_get_client_id";
++	case SPPWK_CMDTYPE_STATUS:
++		return "status";
++	case SPPWK_CMDTYPE_EXIT:
++		return "exit";
++	case SPPWK_CMDTYPE_WORKER:
++		return "component";
++	case SPPWK_CMDTYPE_PORT:
++		return "port";
++	default:
++		return "unknown";
++	}
++}
++
+ /**
+  * List of classifier type. The order of items should be same as the order of
+  * enum `spp_classifier_type` defined in spp_proc.h.
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.h b/src/shared/secondary/spp_worker_th/cmd_parser.h
+index 286fde0..b90f52a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.h
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.h
+@@ -51,6 +51,8 @@ enum sppwk_action {
+ 	SPPWK_ACT_DEL,   /**< delete */
+ };
+ 
++const char *sppwk_action_str(enum sppwk_action wk_action);
++
+ /**
+  * SPP command type.
+  *
+@@ -72,6 +74,8 @@ enum sppwk_cmd_type {
+ 	SPPWK_CMDTYPE_PORT,  /**< port */
+ };
+ 
++const char *sppwk_cmd_type_str(enum sppwk_cmd_type ctype);
++
+ /* `classifier_table` command specific parameters. */
+ struct sppwk_cls_cmd_attrs {
+ 	enum sppwk_action wk_action;  /**< add or del */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 0000203..5584a48 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -722,11 +722,12 @@ exec_cmd(const struct spp_command *cmd)
+ {
+ 	int ret;
+ 
++	RTE_LOG(INFO, SPP_COMMAND_PROC, "Exec `%s` cmd.\n",
++			sppwk_cmd_type_str(cmd->type));
++
+ 	switch (cmd->type) {
+ 	case SPPWK_CMDTYPE_CLS_MAC:
+ 	case SPPWK_CMDTYPE_CLS_VLAN:
+-		RTE_LOG(INFO, SPP_COMMAND_PROC,
+-				"Exec classifier_table cmd.\n");
+ 		ret = update_cls_table(cmd->spec.cls_table.wk_action,
+ 				cmd->spec.cls_table.type,
+ 				cmd->spec.cls_table.vid,
+@@ -739,8 +740,6 @@ exec_cmd(const struct spp_command *cmd)
+ 		break;
+ 
+ 	case SPPWK_CMDTYPE_WORKER:
+-		RTE_LOG(INFO, SPP_COMMAND_PROC,
+-				"Exec component cmd.\n");
+ 		ret = update_comp(
+ 				cmd->spec.comp.wk_action,
+ 				cmd->spec.comp.name,
+@@ -753,9 +752,8 @@ exec_cmd(const struct spp_command *cmd)
+ 		break;
+ 
+ 	case SPPWK_CMDTYPE_PORT:
+-		RTE_LOG(INFO, SPP_COMMAND_PROC,
+-				"Exec port command, act=%d.\n",
+-				cmd->spec.port.wk_action);
++		RTE_LOG(INFO, SPP_COMMAND_PROC, "with action `%s`.\n",
++				sppwk_action_str(cmd->spec.port.wk_action));
+ 		ret = spp_update_port(
+ 				cmd->spec.port.wk_action,
+ 				&cmd->spec.port.port,
+@@ -769,10 +767,7 @@ exec_cmd(const struct spp_command *cmd)
+ 		break;
+ 
+ 	default:
+-		RTE_LOG(INFO, SPP_COMMAND_PROC,
+-				"Exec other command, type=%d.\n",
+-				cmd->type);
+-		/* nothing to do here */
++		/* Do nothing. */
+ 		ret = SPP_RET_OK;
+ 		break;
+ 	}
+-- 
+2.17.1
+
+

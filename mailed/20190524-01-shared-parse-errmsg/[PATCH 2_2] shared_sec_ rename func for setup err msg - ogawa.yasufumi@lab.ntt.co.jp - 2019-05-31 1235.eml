@@ -1,0 +1,81 @@
+X-Account-Key: account4
+X-UIDL: 0000cbac56a584ea
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <ogawa.yasufumi@lab.ntt.co.jp>
+X-Original-To: yo128@mail2.ecl.ntt.co.jp
+Delivered-To: yo128@mail2.ecl.ntt.co.jp
+Received: from dmail1.ecl.ntt.co.jp (dmail1.ecl.ntt.co.jp [129.60.86.151])
+	by jcms-pop21.ecl.ntt.co.jp (Postfix) with ESMTP id 31D44400931
+	for <yo128@mail2.ecl.ntt.co.jp>; Fri, 31 May 2019 12:38:11 +0900 (JST)
+Received: by dmail1.ecl.ntt.co.jp (Postfix)
+	id 2C2B223BEBB; Fri, 31 May 2019 12:38:11 +0900 (JST)
+Delivered-To: ogawa.yasufumi@lab.ntt.co.jp
+Received: from vc1.ecl.ntt.co.jp (vc1.ecl.ntt.co.jp [129.60.86.153])
+	by dmail1.ecl.ntt.co.jp (Postfix) with ESMTP id 2A73C23C25B
+	for <ogawa.yasufumi@lab.ntt.co.jp>; Fri, 31 May 2019 12:38:11 +0900 (JST)
+Received: from vc1.ecl.ntt.co.jp (localhost [127.0.0.1])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 1C340EA85CD;
+	Fri, 31 May 2019 12:38:11 +0900 (JST)
+Received: from localhost.localdomain (lobster.nslab.ecl.ntt.co.jp [129.60.13.95])
+	by vc1.ecl.ntt.co.jp (Postfix) with ESMTP id 0F0DEEA85C9;
+	Fri, 31 May 2019 12:38:11 +0900 (JST)
+From: ogawa.yasufumi@lab.ntt.co.jp
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	ogawa.yasufumi@lab.ntt.co.jp
+Subject: [PATCH 2/2] shared/sec: rename func for setup err msg
+Date: Fri, 31 May 2019 12:35:39 +0900
+Message-Id: <1559273739-25977-3-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1559273739-25977-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+References: <1559273739-25977-1-git-send-email-ogawa.yasufumi@lab.ntt.co.jp>
+X-TM-AS-MML: disable
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+This update is to rename func `set_decode_error_to_result()` to
+`prepare_parse_err_msg()`.
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ src/shared/secondary/spp_worker_th/command_proc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/command_proc.c b/src/shared/secondary/spp_worker_th/command_proc.c
+index fae9aab..151aaa6 100644
+--- a/src/shared/secondary/spp_worker_th/command_proc.c
++++ b/src/shared/secondary/spp_worker_th/command_proc.c
+@@ -862,9 +862,9 @@ set_command_results(struct command_result *result,
+ 	}
+ }
+ 
+-/* set decode error to command result */
++/* Setup error message of parsing for requested command. */
+ static void
+-set_decode_error_to_results(struct command_result *results,
++prepare_parse_err_msg(struct command_result *results,
+ 		const struct sppwk_cmd_req *request,
+ 		const struct sppwk_parse_err_msg *wk_err_msg)
+ {
+@@ -1657,12 +1657,12 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 			"request_str=\n%.*s\n",
+ 			(int)request_str_len, request_str);
+ 
+-	/* decode request message */
++	/* Parse request message. */
+ 	ret = sppwk_parse_req(
+ 			&request, request_str, request_str_len, &wk_err_msg);
+ 	if (unlikely(ret != SPP_RET_OK)) {
+-		/* send error response */
+-		set_decode_error_to_results(command_results, &request,
++		/* Setup and send error response. */
++		prepare_parse_err_msg(command_results, &request,
+ 				&wk_err_msg);
+ 		send_decode_error_response(sock, &request, command_results);
+ 		RTE_LOG(DEBUG, SPP_COMMAND_PROC,
+-- 
+2.17.1
+
+
