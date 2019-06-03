@@ -11,7 +11,7 @@ addresses = {
         'spp': [
             "spp@dpdk.org",
             "ferruh.yigit@intel.com",
-            "ogawa.yasufumi@lab.ntt.co.jp"]
+            "yasufum.o@gmail.com"]
         }
 
 CMD = ['git', 'send-email']
