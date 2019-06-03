@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cpanm install Net::SSL
+sudo cpanm install Net::SSL
