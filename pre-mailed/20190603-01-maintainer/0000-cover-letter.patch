@@ -1,0 +1,28 @@
+From 775a6ac7e5ec5979f8631aa18d279b73561ac34f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 3 Jun 2019 13:29:02 +0900
+Subject: [PATCH 0/1] Change email address in MAINTAINER
+
+Hi,
+
+For email usage policy was changed in NTT, my email address
+`ogawa.yasufumi@lab.ntt.co.jp` was discarded. Although recieving emails
+for the address is transferred to new account for a while, it is going
+to be disabled.Because it is not allowed to use `git send-email` for the
+new account, I have started gmail `yasufum.o@gmail.com` instead of my
+company's email.
+
+This patch is to update my email in MAINTAINER file.
+
+Thanks,
+Yasufumi
+
+Yasufumi Ogawa (1):
+  maintainers: update email address
+
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.17.1
+
