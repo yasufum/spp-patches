@@ -1,0 +1,156 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88264b4575e9b
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id m5sm9447177pjl.24.2019.06.23.23.22.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 23:22:19 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: move get_comp_type_from_str
+Date: Mon, 24 Jun 2019 15:22:15 +0900
+Message-Id: <20190624062215.22613-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to move get_comp_type_from_str() from shared dir to each
+of workers. It is to remove ifdef switches.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c                   | 13 ++++++++
+ .../secondary/spp_worker_th/cmd_parser.c      | 31 ++-----------------
+ .../secondary/spp_worker_th/mirror_deps.h     |  2 ++
+ src/shared/secondary/spp_worker_th/vf_deps.h  |  1 +
+ src/vf/vf_cmd_runner.c                        | 20 ++++++++++++
+ 5 files changed, 38 insertions(+), 29 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 0cbd79d..5f0932a 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -401,3 +401,16 @@ update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
+ 	}
+ 	return SPP_RET_OK;
+ }
++
++/* Get component type from string of its name. */
++enum sppwk_worker_type
++get_comp_type_from_str(const char *type_str)
++{
++	RTE_LOG(DEBUG, MIR_CMD_RUNNER, "type_str is %s\n", type_str);
++
++	if (strncmp(type_str, SPPWK_TYPE_MIR_STR,
++			strlen(SPPWK_TYPE_MIR_STR)+1) == 0)
++		return SPPWK_TYPE_MIR;
++
++	return SPPWK_TYPE_NONE;
++}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 200e41b..fcec28b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -10,6 +10,8 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_parser.h"
++#include "vf_deps.h"
++#include "mirror_deps.h"
+ #include "shared/secondary/return_codes.h"
+ 
+ #define RTE_LOGTYPE_WK_CMD_PARSER RTE_LOGTYPE_USER1
+@@ -177,35 +179,6 @@ parse_resource_uid(const char *res_uid,
+ 	return SPP_RET_OK;
+ }
+ 
+-/* Get component type from string of its name. */
+-/* TODO(yasufum) should be worker local, separated for vf and mirror. */
+-static enum sppwk_worker_type
+-get_comp_type_from_str(const char *type_str)
+-{
+-	RTE_LOG(DEBUG, WK_CMD_PARSER, "type_str is %s\n", type_str);
+-
+-#ifdef SPP_VF_MODULE
+-	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
+-			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
+-		return SPPWK_TYPE_CLS;
+-	} else if (strncmp(type_str, CORE_TYPE_MERGE_STR,
+-			strlen(CORE_TYPE_MERGE_STR)+1) == 0) {
+-		return SPPWK_TYPE_MRG;
+-	} else if (strncmp(type_str, CORE_TYPE_FORWARD_STR,
+-			strlen(CORE_TYPE_FORWARD_STR)+1) == 0) {
+-		return SPPWK_TYPE_FWD;
+-	}
+-#endif /* SPP_VF_MODULE */
+-
+-#ifdef SPP_MIRROR_MODULE
+-	if (strncmp(type_str, SPPWK_TYPE_MIR_STR,
+-			strlen(SPPWK_TYPE_MIR_STR)+1) == 0)
+-		return SPPWK_TYPE_MIR;
+-#endif /* SPP_MIRROR_MODULE */
+-
+-	return SPPWK_TYPE_NONE;
+-}
+-
+ /* Format error message object and return error code for an error case. */
+ /* TODO(yasufum) confirm usage of `set_parse_error` and
+  * `set_detailed_parse_error`, which should be used ?
+diff --git a/src/shared/secondary/spp_worker_th/mirror_deps.h b/src/shared/secondary/spp_worker_th/mirror_deps.h
+index ef32697..43326ed 100644
+--- a/src/shared/secondary/spp_worker_th/mirror_deps.h
++++ b/src/shared/secondary/spp_worker_th/mirror_deps.h
+@@ -32,4 +32,6 @@ int update_mirror(struct sppwk_comp_info *wk_comp_info);
+  */
+ int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
+ 
++enum sppwk_worker_type get_comp_type_from_str(const char *type_str);
++
+ #endif  /* __SPP_WORKER_TH_MIRROR_DEPS_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index ded5b1d..81fc18f 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -100,4 +100,5 @@ int add_classifier_table_val(
+  */
+ int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
+ 
++enum sppwk_worker_type get_comp_type_from_str(const char *type_str);
+ #endif  /* _SPPWK_TH_VF_DEPS_H_ */
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index e832e18..c7d34a6 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -535,3 +535,23 @@ update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
+ 	}
+ 	return SPP_RET_OK;
+ }
++
++/* Get component type from string of its name. */
++enum sppwk_worker_type
++get_comp_type_from_str(const char *type_str)
++{
++	RTE_LOG(DEBUG, VF_CMD_RUNNER, "type_str is %s\n", type_str);
++
++	if (strncmp(type_str, CORE_TYPE_CLASSIFIER_MAC_STR,
++			strlen(CORE_TYPE_CLASSIFIER_MAC_STR)+1) == 0) {
++		return SPPWK_TYPE_CLS;
++	} else if (strncmp(type_str, CORE_TYPE_MERGE_STR,
++			strlen(CORE_TYPE_MERGE_STR)+1) == 0) {
++		return SPPWK_TYPE_MRG;
++	} else if (strncmp(type_str, CORE_TYPE_FORWARD_STR,
++			strlen(CORE_TYPE_FORWARD_STR)+1) == 0) {
++		return SPPWK_TYPE_FWD;
++	}
++
++	return SPPWK_TYPE_NONE;
++}
+-- 
+2.17.1
+
+
