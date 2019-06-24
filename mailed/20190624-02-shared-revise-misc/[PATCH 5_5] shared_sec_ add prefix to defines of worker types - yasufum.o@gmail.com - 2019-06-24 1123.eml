@@ -1,0 +1,140 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b874bf8e1a81a0
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y5sm9127726pgv.12.2019.06.23.19.23.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 19:23:51 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 5/5] shared/sec: add prefix to defines of worker types
+Date: Mon, 24 Jun 2019 11:23:25 +0900
+Message-Id: <20190624022325.18695-6-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624022325.18695-1-yasufum.o@gmail.com>
+References: <20190624022325.18695-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to prefix `SPPWK_` to defines of strings of worker types
+such as `classifier_mac`, `merge` or so.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                         |  2 +-
+ src/shared/secondary/spp_worker_th/cmd_parser.c |  4 ++--
+ src/shared/secondary/spp_worker_th/cmd_runner.c |  4 ++--
+ src/shared/secondary/spp_worker_th/cmd_utils.h  | 10 +++++-----
+ src/vf/classifier_mac.c                         |  2 +-
+ src/vf/spp_forward.c                            |  4 ++--
+ 6 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index b68eccc..f62ae7e 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -485,7 +485,7 @@ spp_mirror_get_component_status(
+ 		return SPP_RET_NG;
+ 	}
+ 
+-	component_type = SPP_TYPE_MIRROR_STR;
++	component_type = SPPWK_TYPE_MIR_STR;
+ 
+ 	memset(rx_ports, 0x00, sizeof(rx_ports));
+ 	for (cnt = 0; cnt < path->nof_rx; cnt++) {
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 9fc88dd..55fc1d2 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -197,8 +197,8 @@ get_comp_type_from_str(const char *type_str)
+ #endif /* SPP_VF_MODULE */
+ 
+ #ifdef SPP_MIRROR_MODULE
+-	if (strncmp(type_str, SPP_TYPE_MIRROR_STR,
+-			strlen(SPP_TYPE_MIRROR_STR)+1) == 0)
++	if (strncmp(type_str, SPPWK_TYPE_MIR_STR,
++			strlen(SPPWK_TYPE_MIR_STR)+1) == 0)
+ 		return SPPWK_TYPE_MIR;
+ #endif /* SPP_MIRROR_MODULE */
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 9235857..a768575 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -514,7 +514,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 		if (core->num == 0) {
+ 			ret = (*params->element_proc)(
+ 				params, lcore_id,
+-				"", SPP_TYPE_UNUSE_STR,
++				"", SPPWK_TYPE_NONE_STR,
+ 				0, NULL, 0, NULL);
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, WK_CMD_RUNNER, "Cannot iterate core "
+@@ -1145,7 +1145,7 @@ append_core_element_value(
+ 	}
+ 
+ 	/* there is unnecessary data when "unuse" by type */
+-	unuse_flg = strcmp(type, SPP_TYPE_UNUSE_STR);
++	unuse_flg = strcmp(type, SPPWK_TYPE_NONE_STR);
+ 
+ 	/**
+ 	 * TODO(yasufum) change ambiguous "core" to more specific one such as
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index ed46370..ee44cee 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -19,11 +19,11 @@
+  *  "merge" -> "merger", "forward" -> "forwarder".
+  */
+ /** Identifier string for each component (status command) */
+-#define SPP_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
+-#define SPP_TYPE_MERGE_STR	    "merge"
+-#define SPP_TYPE_FORWARD_STR	    "forward"
+-#define SPP_TYPE_MIRROR_STR	    "mirror"
+-#define SPP_TYPE_UNUSE_STR	    "unuse"
++#define SPPWK_TYPE_CLS_STR "classifier_mac"
++#define SPPWK_TYPE_MRG_STR "merge"
++#define SPPWK_TYPE_FWD_STR "forward"
++#define SPPWK_TYPE_MIR_STR "mirror"
++#define SPPWK_TYPE_NONE_STR "unuse"
+ 
+ /** Identifier string for each interface */
+ #define SPP_IFTYPE_NIC_STR   "phy"
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 8f9c0f5..b3a6cba 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -850,7 +850,7 @@ spp_classifier_get_component_status(
+ 	/* Set the information with the function specified by the command. */
+ 	ret = (*params->element_proc)(
+ 		params, lcore_id,
+-		cmp_info->name, SPP_TYPE_CLASSIFIER_MAC_STR,
++		cmp_info->name, SPPWK_TYPE_CLS_STR,
+ 		nof_rx, rx_ports, nof_tx, tx_ports);
+ 	if (unlikely(ret != SPP_RET_OK))
+ 		return SPP_RET_NG;
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index 668b31c..909f084 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -205,9 +205,9 @@ spp_forward_get_component_status(
+ 	}
+ 
+ 	if (path->wk_type == SPPWK_TYPE_MRG)
+-		component_type = SPP_TYPE_MERGE_STR;
++		component_type = SPPWK_TYPE_MRG_STR;
+ 	else
+-		component_type = SPP_TYPE_FORWARD_STR;
++		component_type = SPPWK_TYPE_FWD_STR;
+ 
+ 	memset(rx_ports, 0x00, sizeof(rx_ports));
+ 	for (cnt = 0; cnt < path->num_rx; cnt++) {
+-- 
+2.17.1
+
+

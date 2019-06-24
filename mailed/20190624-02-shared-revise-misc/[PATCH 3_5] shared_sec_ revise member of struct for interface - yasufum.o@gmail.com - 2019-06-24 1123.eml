@@ -1,0 +1,147 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b874bdd772e9c1
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y5sm9127726pgv.12.2019.06.23.19.23.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 19:23:44 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 3/5] shared/sec: revise member of struct for interface
+Date: Mon, 24 Jun 2019 11:23:23 +0900
+Message-Id: <20190624022325.18695-4-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624022325.18695-1-yasufum.o@gmail.com>
+References: <20190624022325.18695-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to revise names of structs for describing features of
+interface, for example, change `num_nic` to `nof_phys` to become
+explixitly that it is not a number in a range of phy NICs but the total
+number itself.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 14 +++++++-------
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 14 +++++++-------
+ src/vf/classifier_mac.c                        | 10 +++++-----
+ 3 files changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 7f0a1ce..c519624 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -337,9 +337,9 @@ log_interface_info(const struct iface_info *iface_info)
+ 	const struct sppwk_port_info *port = NULL;
+ 	int cnt = 0;
+ 	RTE_LOG(DEBUG, APP, "interface phy=%d, vhost=%d, ring=%d\n",
+-			iface_info->num_nic,
+-			iface_info->num_vhost,
+-			iface_info->num_ring);
++			iface_info->nof_phys,
++			iface_info->nof_vhosts,
++			iface_info->nof_rings);
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+ 		port = &iface_info->nic[cnt];
+ 		if (port->iface_type == UNDEF)
+@@ -522,11 +522,11 @@ set_nic_interface(void)
+ 	struct iface_info *p_iface_info = g_mng_data.p_iface_info;
+ 
+ 	/* NIC Setting */
+-	p_iface_info->num_nic = rte_eth_dev_count_avail();
+-	if (p_iface_info->num_nic > RTE_MAX_ETHPORTS)
+-		p_iface_info->num_nic = RTE_MAX_ETHPORTS;
++	p_iface_info->nof_phys = rte_eth_dev_count_avail();
++	if (p_iface_info->nof_phys > RTE_MAX_ETHPORTS)
++		p_iface_info->nof_phys = RTE_MAX_ETHPORTS;
+ 
+-	for (nic_cnt = 0; nic_cnt < p_iface_info->num_nic; nic_cnt++) {
++	for (nic_cnt = 0; nic_cnt < p_iface_info->nof_phys; nic_cnt++) {
+ 		p_iface_info->nic[nic_cnt].iface_type   = PHY;
+ 		p_iface_info->nic[nic_cnt].ethdev_port_id = nic_cnt;
+ 	}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 65a66b8..b6c2542 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -220,9 +220,9 @@ struct startup_param {
+ 
+ /* Manage number of interfaces  and port information as global variable. */
+ struct iface_info {
+-	int num_nic;    /* The number of phy */
+-	int num_vhost;  /* The number of vhost */
+-	int num_ring;   /* The number of ring */
++	int nof_phys;    /* Number of phy ports */
++	int nof_vhosts;  /* Number of vhost ports */
++	int nof_rings;   /* Number of ring ports */
+ 	struct sppwk_port_info nic[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_info vhost[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
+@@ -258,11 +258,11 @@ struct spp_iterate_core_params;
+ typedef int (*spp_iterate_core_element_proc)(
+ 		struct spp_iterate_core_params *params,
+ 		const unsigned int lcore_id,
+-		const char *name,
+-		const char *type,
+-		const int num_rx,
++		const char *wk_name,  /* Name of worker named as component. */
++		const char *wk_type,  /* Type of worker named as component. */
++		const int nof_rx,  /* Number of RX ports */
+ 		const struct sppwk_port_idx *rx_ports,
+-		const int num_tx,
++		const int nof_tx,  /* Number of TX ports */
+ 		const struct sppwk_port_idx *tx_ports);
+ 
+ /**
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index c8cc7df..b5260b0 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -812,7 +812,7 @@ spp_classifier_get_component_status(
+ 		struct spp_iterate_core_params *params)
+ {
+ 	int ret = SPP_RET_NG;
+-	int i, num_tx, num_rx = 0;
++	int i, nof_tx, nof_rx = 0;  /* Num of RX and TX ports. */
+ 	struct management_info *mng_info;
+ 	struct component_info *cmp_info;
+ 	struct classified_data *clsd_data;
+@@ -833,7 +833,7 @@ spp_classifier_get_component_status(
+ 
+ 	memset(rx_ports, 0x00, sizeof(rx_ports));
+ 	if (cmp_info->classified_data_rx.iface_type != UNDEF) {
+-		num_rx = 1;
++		nof_rx = 1;
+ 		rx_ports[0].iface_type = cmp_info->
+ 				classified_data_rx.iface_type;
+ 		rx_ports[0].iface_no   = cmp_info->
+@@ -841,8 +841,8 @@ spp_classifier_get_component_status(
+ 	}
+ 
+ 	memset(tx_ports, 0x00, sizeof(tx_ports));
+-	num_tx = cmp_info->n_classified_data_tx;
+-	for (i = 0; i < num_tx; i++) {
++	nof_tx = cmp_info->n_classified_data_tx;
++	for (i = 0; i < nof_tx; i++) {
+ 		tx_ports[i].iface_type = clsd_data[i].iface_type;
+ 		tx_ports[i].iface_no   = clsd_data[i].iface_no_global;
+ 	}
+@@ -851,7 +851,7 @@ spp_classifier_get_component_status(
+ 	ret = (*params->element_proc)(
+ 		params, lcore_id,
+ 		cmp_info->name, SPP_TYPE_CLASSIFIER_MAC_STR,
+-		num_rx, rx_ports, num_tx, tx_ports);
++		nof_rx, rx_ports, nof_tx, tx_ports);
+ 	if (unlikely(ret != SPP_RET_OK))
+ 		return SPP_RET_NG;
+ 
+-- 
+2.17.1
+
+
