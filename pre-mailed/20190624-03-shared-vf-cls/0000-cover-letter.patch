@@ -1,0 +1,39 @@
+From d306818c45f4b3abc2cb7f858b27ae8404a3eaae Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 11:04:43 +0900
+Subject: [PATCH 00/11] Refactor libs for classifier in spp_vf
+
+Functions for classifier table are hard to maintain because for long
+names of functions and variables, complex dependencies of shared libs
+and dedicated functions, or so.
+
+This update is to fix these issues. Some of dependencies are still
+remained, but reduced by separating many dedicated functions from shared
+libs or adding comments for explaining.
+
+Yasufumi Ogawa (11):
+  shared/sec: refactor defines of VLAN in spp_vf
+  shared/sec: rename struct mac_classification
+  shared/sec: refactor comments in vf_deps.h
+  shared/sec: rename struct classified_data
+  shared/sec: revise usage of term component_info
+  shared/sec: revise members of struct cls_port_info
+  shared/sec: rename func free_mac_classification
+  shared/sec: refactor updating classifier info
+  shared/sec: refactor updating forwarder
+  shared/sec: refactor getting classifier status
+  shared/sec: refactor setup cls table stat in JSON
+
+ .../secondary/spp_worker_th/cmd_parser.c      |   2 +-
+ .../secondary/spp_worker_th/cmd_runner.c      |  37 +-
+ .../secondary/spp_worker_th/cmd_utils.c       |   4 +-
+ .../secondary/spp_worker_th/cmd_utils.h       |   5 +-
+ src/shared/secondary/spp_worker_th/vf_deps.h  | 158 +++-----
+ src/vf/classifier_mac.c                       | 382 +++++++++---------
+ src/vf/classifier_mac.h                       |   2 +-
+ src/vf/spp_forward.c                          | 105 +++--
+ 8 files changed, 330 insertions(+), 365 deletions(-)
+
+-- 
+2.17.1
+
