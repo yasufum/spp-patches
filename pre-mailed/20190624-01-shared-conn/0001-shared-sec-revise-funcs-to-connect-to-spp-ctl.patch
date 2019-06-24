@@ -1,0 +1,278 @@
+From 05a4269b9cc1da3413aeaacc142249e3d2c20729 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 4 Jun 2019 14:09:26 +0900
+Subject: [PATCH 1/2] shared/sec: revise funcs to connect to spp-ctl
+
+Functions defined in `command_conn.c` and its header are prefixed as
+`spp_`, but there are not application wide and the prefix should be
+removed. This update is to simplize the name of functions, and revise
+comments.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_runner.c                         | 12 +--
+ .../secondary/spp_worker_th/cmd_runner.c      | 10 +--
+ .../secondary/spp_worker_th/command_conn.c    | 18 ++---
+ .../secondary/spp_worker_th/command_conn.h    | 74 ++++++++-----------
+ 4 files changed, 51 insertions(+), 63 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index d623d8c..9541cbb 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -743,7 +743,7 @@ send_parse_error_response(int *sock,
+ 			"response_str=\n%s\n", msg);
+ 
+ 	/* send response to requester */
+-	ret = spp_send_message(sock, msg, strlen(msg));
++	ret = send_ctl_msg(sock, msg, strlen(msg));
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		RTE_LOG(ERR, PCAP_RUNNER,
+ 				"Failed to send parse error response.\n");
+@@ -839,7 +839,7 @@ send_command_result_response(int *sock,
+ 			"response_str=\n%s\n", msg);
+ 
+ 	/* send response to requester */
+-	ret = spp_send_message(sock, msg, strlen(msg));
++	ret = send_ctl_msg(sock, msg, strlen(msg));
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		RTE_LOG(ERR, PCAP_RUNNER,
+ 			"Failed to send command result response.\n");
+@@ -923,9 +923,9 @@ process_request(int *sock, const char *request_str, size_t request_str_len)
+ 
+ /* initialize command processor. */
+ int
+-spp_command_proc_init(const char *controller_ip, int controller_port)
++spp_command_proc_init(const char *ctl_ipaddr, int ctl_port)
+ {
+-	return spp_command_conn_init(controller_ip, controller_port);
++	return conn_spp_ctl_init(ctl_ipaddr, ctl_port);
+ }
+ 
+ /* process command from controller. */
+@@ -948,11 +948,11 @@ spp_command_proc_do(void)
+ 		}
+ 	}
+ 
+-	ret = spp_connect_to_controller(&sock);
++	ret = conn_spp_ctl(&sock);
+ 	if (unlikely(ret != SPPWK_RET_OK))
+ 		return SPPWK_RET_OK;
+ 
+-	msg_ret = spp_receive_message(&sock, &msgbuf);
++	msg_ret = recv_ctl_msg(&sock, &msgbuf);
+ 	if (unlikely(msg_ret <= 0)) {
+ 		if (likely(msg_ret == 0))
+ 			return SPPWK_RET_OK;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index ef3b2d9..92d727b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -1525,7 +1525,7 @@ send_decode_error_response(int *sock,
+ 			"response_str=\n%s\n", msg);
+ 
+ 	/* send response to requester */
+-	ret = spp_send_message(sock, msg, strlen(msg));
++	ret = send_ctl_msg(sock, msg, strlen(msg));
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, WK_CMD_RUNNER,
+ 				"Failed to send decode error response.\n");
+@@ -1608,7 +1608,7 @@ send_command_result_response(int *sock,
+ 			"response_str=\n%s\n", msg);
+ 
+ 	/* send response to requester */
+-	ret = spp_send_message(sock, msg, strlen(msg));
++	ret = send_ctl_msg(sock, msg, strlen(msg));
+ 	if (unlikely(ret != SPP_RET_OK)) {
+ 		RTE_LOG(ERR, WK_CMD_RUNNER,
+ 			"Failed to send command result response.\n");
+@@ -1687,7 +1687,7 @@ exec_cmds(int *sock, const char *req_str, size_t req_str_len)
+ int
+ sppwk_cmd_runner_conn(const char *ctl_ipaddr, int ctl_port)
+ {
+-	return spp_command_conn_init(ctl_ipaddr, ctl_port);
++	return conn_spp_ctl_init(ctl_ipaddr, ctl_port);
+ }
+ 
+ /* Run command sent from spp-ctl. */
+@@ -1710,12 +1710,12 @@ sppwk_run_cmd(void)
+ 		}
+ 	}
+ 
+-	ret = spp_connect_to_controller(&sock);
++	ret = conn_spp_ctl(&sock);
+ 
+ 	if (unlikely(ret != SPP_RET_OK))
+ 		return SPP_RET_OK;
+ 
+-	msg_ret = spp_receive_message(&sock, &msgbuf);
++	msg_ret = recv_ctl_msg(&sock, &msgbuf);
+ 	if (unlikely(msg_ret <= 0)) {
+ 		if (likely(msg_ret == 0))
+ 			return SPP_RET_OK;
+diff --git a/src/shared/secondary/spp_worker_th/command_conn.c b/src/shared/secondary/spp_worker_th/command_conn.c
+index 915ad20..b80c54b 100644
+--- a/src/shared/secondary/spp_worker_th/command_conn.c
++++ b/src/shared/secondary/spp_worker_th/command_conn.c
+@@ -27,19 +27,19 @@ static char g_controller_ip[128] = "";
+ /* controller's port number */
+ static int g_controller_port;
+ 
+-/* initialize command connection */
++/* Initialize connection to spp-ctl. */
+ int
+-spp_command_conn_init(const char *controller_ip, int controller_port)
++conn_spp_ctl_init(const char *ctl_ipaddr, int ctl_port)
+ {
+-	strcpy(g_controller_ip, controller_ip);
+-	g_controller_port = controller_port;
++	strcpy(g_controller_ip, ctl_ipaddr);
++	g_controller_port = ctl_port;
+ 
+ 	return SPP_RET_OK;
+ }
+ 
+ /* connect to controller */
+ int
+-spp_connect_to_controller(int *sock)
++conn_spp_ctl(int *sock)
+ {
+ 	static struct sockaddr_in controller_addr;
+ 	int ret = SPP_RET_NG;
+@@ -90,7 +90,7 @@ spp_connect_to_controller(int *sock)
+ 
+ /* receive message */
+ int
+-spp_receive_message(int *sock, char **strbuf)
++recv_ctl_msg(int *sock, char **strbuf)
+ {
+ 	int ret = SPP_RET_NG;
+ 	int n_rx = 0;
+@@ -134,13 +134,13 @@ spp_receive_message(int *sock, char **strbuf)
+ 	return n_rx;
+ }
+ 
+-/* send message */
++/* Send message to spp-ctl. */
+ int
+-spp_send_message(int *sock, const char *message, size_t message_len)
++send_ctl_msg(int *sock, const char *msg, size_t msg_len)
+ {
+ 	int ret = SPP_RET_NG;
+ 
+-	ret = send(*sock, message, message_len, 0);
++	ret = send(*sock, msg, msg_len, 0);
+ 	if (unlikely(ret == -1)) {
+ 		RTE_LOG(ERR, SPP_COMMAND_PROC, "Send failure. ret=%d\n", ret);
+ 		close(*sock);
+diff --git a/src/shared/secondary/spp_worker_th/command_conn.h b/src/shared/secondary/spp_worker_th/command_conn.h
+index 9112847..0d06131 100644
+--- a/src/shared/secondary/spp_worker_th/command_conn.h
++++ b/src/shared/secondary/spp_worker_th/command_conn.h
+@@ -6,8 +6,7 @@
+ #define _COMMAND_CONN_H_
+ 
+ /**
+- * @file
+- * SPP Connection
++ * @file SPP Connection
+  *
+  * Command connection management.
+  */
+@@ -20,63 +19,52 @@
+ #define SPP_CONNERR_FATAL     -2
+ 
+ /**
+- * initialize command connection.
++ * Initialize connection to spp-ctl.
+  *
+- * @param controller_ip
+- *  The controller's ip address.
+- * @param controller_port
+- *  The controller's port number.
+- *
+- * @retval SPP_RET_OK  succeeded.
+- * @retval SPP_RET_NG failed.
++ * @param[in] ctl_ipaddr IP address of spp-ctl.
++ * @param[in] ctl_port Port num of spp-ctl.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
+  */
+-int spp_command_conn_init(const char *controller_ip, int controller_port);
++int conn_spp_ctl_init(const char *ctl_ipaddr, int ctl_port);
+ 
+ /**
+- * connect to controller.
++ * Connect to spp-ctl.
+  *
+  * @note bocking.
+- *
+- * @param sock
+- *  Socket number for connecting to controller.
+- *
+- * @retval SPP_RET_OK		 succeeded.
+- * @retval SPP_CONNERR_TEMPORARY temporary error. please retry.
++ * @param sock Socket number for connecting to controller.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_CONNERR_TEMPORARY Temporary error for retry.
+  */
+-int spp_connect_to_controller(int *sock);
++int conn_spp_ctl(int *sock);
+ 
+ /**
+- * receive message.
+- *
+- * @note non-blocking.
++ * Receive message from spp-ctl.
+  *
+- * @param sock
+- *  The socket number for the connection.
+- * @param msgbuf
+- *  The pointer to command message buffer.
++ * This function returns the num of received  msg in bytes, or SPP_RET_OK
++ * if empty message. Given socket is closed if spp-ctl has terminated the
++ * session.
+  *
+- * @retval 0 <			 succeeded. number of bytes received.
+- * @retval SPP_RET_OK		 no receive message.
+- * @retval SPP_CONNERR_TEMPORARY temporary error. please reconnect.
+- * @retval SPP_CONNERR_FATAL	fatal error occurred. should terminate process.
++ * @note non-blocking.
++ * @param[in,out] sock Socket.
++ * @param[in,out] msgbuf The pointer to command message buffer.
++ * @retval NOB_BYTES Num of bytes of received msg if succeeded.
++ * @retval SPP_RET_OK No receive message.
++ * @retval SPP_CONNERR_TEMPORARY Temporary error for retry.
++ * @retval SPP_CONNERR_FATAL Fatal error for terminating the process.
+  */
+-int spp_receive_message(int *sock, char **msgbuf);
++int recv_ctl_msg(int *sock, char **msgbuf);
+ 
+ /**
+- * send message.
++ * Send message to spp-ctl.
+  *
+  * @note non-blocking.
+- *
+- * @param sock
+- *  The socket number to be sent.
+- * @param message
+- *  The pointer to the message to be sent.
+- * @param message_len
+- *  The length of message.
+- *
+- * @retval SPP_RET_OK		 succeeded.
+- * @retval SPP_CONNERR_TEMPORARY temporary error. please reconnect.
++ * @param[in,out] sock Socket.
++ * @param[in] msg Message sent to spp-ctl.
++ * @param[in] msg_len Length of given message.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_CONNERR_TEMPORARY Temporary error for retry.
+  */
+-int spp_send_message(int *sock, const char *message, size_t message_len);
++int send_ctl_msg(int *sock, const char *msg, size_t msg_len);
+ 
+ #endif /* _COMMAND_CONN_H_ */
+-- 
+2.17.1
+
