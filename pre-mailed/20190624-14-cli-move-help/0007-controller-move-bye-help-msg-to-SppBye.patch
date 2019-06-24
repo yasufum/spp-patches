@@ -1,0 +1,81 @@
+From c35378f39b533ee7535dabda1858b210b2a80ba3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 14 Jun 2019 22:48:00 +0900
+Subject: [PATCH 07/10] controller: move bye help msg to SppBye
+
+This patch is to move comment of `do_bye` to `SppBye.help` to reduce
+the number of lines.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/bye.py | 19 +++++++++++++++++++
+ src/controller/shell.py        | 19 +++++--------------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
+
+diff --git a/src/controller/commands/bye.py b/src/controller/commands/bye.py
+index cd14961..df06500 100644
+--- a/src/controller/commands/bye.py
++++ b/src/controller/commands/bye.py
+@@ -47,3 +47,22 @@ class SppBye(object):
+         for sec_type, spp_procs in spp_secondaries.items():
+             for sec in spp_procs.values():
+                 sec.run('exit')
++
++    @classmethod
++    def help(cls):
++        msg = """Terminate SPP processes and controller.
++
++        There are three usages for terminating processes.
++        It terminates logging if you activated recording.
++
++        (1) Terminate secondary processes
++            spp > bye sec
++
++        (2) Terminate primary and secondary processes
++            spp > bye all
++
++        (3) Terminate SPP controller (not for primary and secondary)
++            spp > bye
++        """
++
++        print(msg)
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 52fe645..8cb74a0 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -696,20 +696,7 @@ class Shell(cmd.Cmd, object):
+         return common.compl_common(text, line)
+ 
+     def do_bye(self, args):
+-        """Terminate SPP processes and controller.
+-
+-        There are three usages for terminating processes.
+-        It terminates logging if you activated recording.
+-
+-        (1) Terminate secondary processes
+-        spp > bye sec
+-
+-        (2) Terminate primary and secondary processes
+-        spp > bye all
+-
+-        (3) Terminate SPP controller (not for primary and secondary)
+-        spp > bye
+-        """
++        """Terminate SPP processes and controller."""
+ 
+         cmds = args.split(' ')
+         if cmds[0] == '':  # terminate SPP CLI itself
+@@ -719,6 +706,10 @@ class Shell(cmd.Cmd, object):
+             spp_bye = bye.SppBye()
+             spp_bye.run(args, self.primary, self.secondaries)
+ 
++    def help_bye(self):
++        """Print help message of bye command."""
++        bye.SppBye.help()
++
+     def complete_bye(self, text, line, begidx, endidx):
+         """Completion for bye commands"""
+ 
+-- 
+2.17.1
+

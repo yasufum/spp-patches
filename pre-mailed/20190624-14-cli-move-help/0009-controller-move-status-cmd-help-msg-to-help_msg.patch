@@ -1,0 +1,83 @@
+From befe0c4f47ee825ff2c72a6a0caba640fe6558aa Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 15 Jun 2019 12:18:38 +0900
+Subject: [PATCH 09/10] controller: move status cmd help msg to help_msg
+
+This update is to move help message of status command to `help_msg`
+module which is for defining a set of command name and message.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/help_msg.py | 10 ++++++++++
+ src/controller/shell.py             | 15 ++++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
+ create mode 100644 src/controller/commands/help_msg.py
+
+diff --git a/src/controller/commands/help_msg.py b/src/controller/commands/help_msg.py
+new file mode 100644
+index 0000000..9e15123
+--- /dev/null
++++ b/src/controller/commands/help_msg.py
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++commands = {
++        'status':
++        """Display status info of SPP processes.
++
++        spp > status
++        """
++        }
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 54376c9..065fb07 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -10,6 +10,7 @@ from .commands import topo
+ from .commands import vf
+ from .commands import mirror
+ from .commands import pcap
++from .commands import help_msg
+ import os
+ import re
+ import readline
+@@ -29,7 +30,7 @@ class Shell(cmd.Cmd, object):
+         config_file = "{}/config/default.yml".format(
+                 os.path.dirname(__file__))
+         cli_config = yaml.load(open(config_file),
+-                Loader=yaml.FullLoader)
++                               Loader=yaml.FullLoader)
+     except IOError as e:
+         print('Error: no config file found!')
+         print(e)
+@@ -205,7 +206,7 @@ class Shell(cmd.Cmd, object):
+                 pt2 = id2.split(delim)[0]
+                 if (pt1 in spp_common.PORT_TYPES) \
+                         and (pt2 in spp_common.PORT_TYPES):
+-                            return True
++                    return True
+         return False
+ 
+     def clean_cmd(self, cmdstr):
+@@ -270,13 +271,13 @@ class Shell(cmd.Cmd, object):
+         return res
+ 
+     def do_status(self, _):
+-        """Display status info of SPP processes
+-
+-        spp > status
+-        """
+-
++        """Display status info of SPP processes."""
+         self.print_status()
+ 
++    def help_status(self):
++        """Print help message of status command."""
++        print(help_msg.commads['status'])
++
+     def do_pri(self, command):
+         """Send a command to primary process."""
+ 
+-- 
+2.17.1
+

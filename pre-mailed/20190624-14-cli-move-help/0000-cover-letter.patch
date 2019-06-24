@@ -1,0 +1,51 @@
+From 92445eeec12abb769f2901ea2f38a07af7e1fdfc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 14:15:15 +0900
+Subject: [PATCH 00/10] Move help messages of CLI in shell.py
+
+SPP CLI uses python standard `cmd` library for implementing interactive
+environment. For using `help` command of `cmd` lib, you define help
+message as a comment of method starts with `do_` which defines a
+behaviour of command as default.
+
+However, SPP CLI have got supported many commands and the number of
+lines of `shell.py` is over 1,000 or more. It should be changed to
+move help messages outside of the file for considering to add
+additional commands in future releases possibly.
+
+This series of update is to fix the issue. Add methods start with
+`help_` and define help messages in the methods because `cmd` calls
+it for help instead of using comments if defined. By this update,
+all of classes defined in `src/controller/commands` has method help()
+for the message. For some of commands which are implemented without
+class, such as `pwd` or `ls`, it is changed to define help messages as
+a dict of command name and message in `help_msg.py`.
+
+Yasufumi Ogawa (10):
+  controller: move vf help msg to SppVf.help
+  controller: move server help msg to SppCtlServer
+  controller: move pri help msg to SppPrimary
+  controller: move nfv help msg to SppNfv
+  controller: move mirror help msg to SppMirror
+  controller: move pcap help msg to SppPcap
+  controller: move bye help msg to SppBye
+  controller: move topo help msg to SppBye
+  controller: move status cmd help msg to help_msg
+  controller: move rest of help msg to help_msg
+
+ src/controller/commands/bye.py      |  19 ++
+ src/controller/commands/help_msg.py | 131 ++++++++
+ src/controller/commands/mirror.py   |  36 +++
+ src/controller/commands/nfv.py      |  19 ++
+ src/controller/commands/pcap.py     |  24 ++
+ src/controller/commands/pri.py      |  17 ++
+ src/controller/commands/server.py   |  33 +++
+ src/controller/commands/topo.py     |  52 ++++
+ src/controller/commands/vf.py       |  54 ++++
+ src/controller/shell.py             | 443 ++++++++--------------------
+ 10 files changed, 513 insertions(+), 315 deletions(-)
+ create mode 100644 src/controller/commands/help_msg.py
+
+-- 
+2.17.1
+

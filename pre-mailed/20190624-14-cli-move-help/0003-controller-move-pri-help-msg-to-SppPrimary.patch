@@ -1,0 +1,107 @@
+From f1483a54e2fe7a2f0fdca980623947946f887a71 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 14 Jun 2019 22:02:22 +0900
+Subject: [PATCH 03/10] controller: move pri help msg to SppPrimary
+
+This patch is to move comment of `do_pri` to `SppPrimary.help` to
+reduce the number of lines.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/pri.py | 17 +++++++++++++++++
+ src/controller/shell.py        | 33 +++++++--------------------------
+ 2 files changed, 24 insertions(+), 26 deletions(-)
+
+diff --git a/src/controller/commands/pri.py b/src/controller/commands/pri.py
+index 15bdb12..b119a5c 100644
+--- a/src/controller/commands/pri.py
++++ b/src/controller/commands/pri.py
+@@ -436,3 +436,20 @@ class SppPrimary(object):
+                 pass
+             else:
+                 print('Error: unknown response.')
++
++    @classmethod
++    def help(cls):
++        msg = """Send a command to primary process.
++
++        Show resources and statistics, or clear it.
++            spp > pri; status  # show status
++            spp > pri; clear   # clear statistics
++
++        Launch secondary process..
++            # Launch nfv:1
++            spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n 1 -s 192.168....
++            # Launch vf:2
++            spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
++        """
++
++        print(msg)
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index b86ba5c..bfe963b 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -278,22 +278,7 @@ class Shell(cmd.Cmd, object):
+         self.print_status()
+ 
+     def do_pri(self, command):
+-        """Send a command to primary process.
+-
+-        Show resources and statistics, or clear it.
+-
+-            spp > pri; status  # show status
+-
+-            spp > pri; clear   # clear statistics
+-
+-        Launch secondary process..
+-
+-            # Launch nfv:1
+-            spp > pri; launch nfv 1 -l 1,2 -m 512 -- -n 1 -s 192.168....
+-
+-            # Launch vf:2
+-            spp > pri; launch vf 2 -l 1,4-7 -m 512 -- --client-id 2 -s ...
+-        """
++        """Send a command to primary process."""
+ 
+         # Remove unwanted spaces and first char ';'
+         command = self.clean_cmd(command)[1:]
+@@ -303,6 +288,10 @@ class Shell(cmd.Cmd, object):
+ 
+         self.primary.run(command, self.cli_config)
+ 
++    def help_pri(self):
++        """Print help message of pri command."""
++        pri.SppPrimary.help()
++
+     def complete_pri(self, text, line, begidx, endidx):
+         """Completion for primary process commands."""
+ 
+@@ -381,15 +370,7 @@ class Shell(cmd.Cmd, object):
+                 return res
+ 
+     def do_vf(self, cmd):
+-        """Send a command to spp_vf.
+-
+-        spp_vf is a secondary process for pseudo SR-IOV features. This
+-        command has four sub commands.
+-          * status
+-          * component
+-          * port
+-          * classifier_table
+-        """
++        """Send a command to spp_vf."""
+ 
+         # remove unwanted spaces to avoid invalid command error
+         tmparg = self.clean_cmd(cmd)
+@@ -404,7 +385,7 @@ class Shell(cmd.Cmd, object):
+             print('Invalid command: %s' % tmparg)
+ 
+     def help_vf(self):
+-        """Print help message of spp_vf."""
++        """Print help message of vf command."""
+         vf.SppVf.help()
+ 
+     def complete_vf(self, text, line, begidx, endidx):
+-- 
+2.17.1
+
