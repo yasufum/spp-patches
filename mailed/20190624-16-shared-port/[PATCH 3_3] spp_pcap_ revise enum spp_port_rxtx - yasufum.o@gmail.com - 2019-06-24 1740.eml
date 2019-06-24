@@ -1,0 +1,115 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88a52508324a1
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 30sm28759534pjk.17.2019.06.24.01.40.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 01:40:52 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 3/3] spp_pcap: revise enum spp_port_rxtx
+Date: Mon, 24 Jun 2019 17:40:43 +0900
+Message-Id: <20190624084043.23718-4-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624084043.23718-1-yasufum.o@gmail.com>
+References: <20190624084043.23718-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to revise the name of enum `spp_port_rxtx` to
+`sppwk_port_dir` because it is used to specify which of direction
+packets are forwarded on a port. Term `rxtx` is used for a set of RX and
+TX, so it should not be used for specifying the direction. This update
+is also rename members of the enum, and a member of structs using this
+enum from `rxtx` to `dir`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_runner.c |  8 ++++----
+ src/pcap/cmd_utils.h  | 17 +++++++----------
+ 2 files changed, 11 insertions(+), 14 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 4a74af2..7f17d40 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -399,7 +399,7 @@ append_client_id_value(const char *name, char **output,
+ /* append a block of port entry for JSON format */
+ static int
+ append_port_entry(char **output, const struct sppwk_port_idx *port,
+-		const enum spp_port_rxtx rxtx __attribute__ ((unused)))
++		const enum sppwk_port_dir dir __attribute__ ((unused)))
+ {
+ 	int ret = SPPWK_RET_NG;
+ 	char port_str[CMD_TAG_APPEND_SIZE];
+@@ -424,7 +424,7 @@ append_port_entry(char **output, const struct sppwk_port_idx *port,
+ static int
+ append_port_array(const char *name, char **output, const int num,
+ 		const struct sppwk_port_idx *ports,
+-		const enum spp_port_rxtx rxtx)
++		const enum sppwk_port_dir dir)
+ {
+ 	int ret = SPPWK_RET_NG;
+ 	int i = 0;
+@@ -437,7 +437,7 @@ append_port_array(const char *name, char **output, const int num,
+ 	}
+ 
+ 	for (i = 0; i < num; i++) {
+-		ret = append_port_entry(&tmp_buff, &ports[i], rxtx);
++		ret = append_port_entry(&tmp_buff, &ports[i], dir);
+ 		if (unlikely(ret < SPPWK_RET_OK))
+ 			return SPPWK_RET_NG;
+ 	}
+@@ -493,7 +493,7 @@ append_pcap_core_element_value(
+ 
+ 	if (num_rx != 0)
+ 		ret = append_port_array("rx_port", &tmp_buff,
+-				num_rx, rx_ports, SPP_PORT_RXTX_RX);
++				num_rx, rx_ports, SPPWK_PORT_DIR_RX);
+ 	else
+ 		ret = append_json_str_value("filename", &tmp_buff, name);
+ 	if (unlikely(ret < 0))
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 5528e00..d38e0eb 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -59,15 +59,12 @@ enum sppwk_return_val {
+ 	SPPWK_RET_NG = -1, /**< failed */
+ };
+ 
+-/**
+- * Port type (rx or tx) to indicate which direction packet goes
+- * (e.g. receiving or transmitting)
+- */
+-enum spp_port_rxtx {
+-	SPP_PORT_RXTX_NONE, /**< none */
+-	SPP_PORT_RXTX_RX,   /**< rx port */
+-	SPP_PORT_RXTX_TX,   /**< tx port */
+-	SPP_PORT_RXTX_ALL,  /**< rx/tx port */
++/* Direction of RX or TX on a port. */
++enum sppwk_port_dir {
++	SPPWK_PORT_DIR_NONE,  /**< None */
++	SPPWK_PORT_DIR_RX,    /**< RX port */
++	SPPWK_PORT_DIR_TX,    /**< TX port */
++	SPPWK_PORT_DIR_BOTH,  /**< Both of RX and TX */
+ };
+ 
+ /* TODO(yasufum) merge it to the same definition in shared/.../cmd_utils.h */
+@@ -122,7 +119,7 @@ union spp_ability_data {
+ /** Port ability information */
+ struct spp_port_ability {
+ 	enum spp_port_ability_ope ope; /**< Operation */
+-	enum spp_port_rxtx rxtx;       /**< rx/tx identifier */
++	enum sppwk_port_dir dir;  /**< Direction of RX, TX or both */
+ 	union spp_ability_data data;   /**< Port ability data */
+ };
+ 
+-- 
+2.17.1
+
+
