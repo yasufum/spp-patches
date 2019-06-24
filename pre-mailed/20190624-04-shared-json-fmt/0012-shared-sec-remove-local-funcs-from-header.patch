@@ -1,0 +1,116 @@
+From f8b98cb4d4a26c46e02e360200acef17305c80cc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 9 Jun 2019 14:05:56 +0900
+Subject: [PATCH 12/13] shared/sec: remove local funcs from header
+
+Some of functions start with `add_` defined in `cmd_res_formatter.h` are
+not used from outside. This update is to remove these functions from
+header file without add_client_id() and add_classifier_table().
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../spp_worker_th/cmd_res_formatter.c         | 21 ++++++++++++++-----
+ .../spp_worker_th/cmd_res_formatter.h         | 13 ------------
+ 2 files changed, 16 insertions(+), 18 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index ab08fcd..24b5608 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -10,6 +10,17 @@
+ 
+ #define RTE_LOGTYPE_WK_CMD_RES_FMT RTE_LOGTYPE_USER1
+ 
++/* Proto type declaration for a list of operator functions. */
++static int append_result_value(const char *name, char **output, void *tmp);
++static int append_error_details_value(const char *name, char **output,
++		void *tmp);
++static int add_interface(const char *name, char **output,
++		void *tmp __attribute__ ((unused)));
++static int add_master_lcore(const char *name, char **output,
++		void *tmp __attribute__ ((unused)));
++static int add_core(const char *name, char **output,
++		void *tmp __attribute__ ((unused)));
++
+ /**
+  * List of worker process type. The order of items should be same as the order
+  * of enum `secondary_type` in cmd_utils.h.
+@@ -78,7 +89,7 @@ struct cmd_response response_info_list[] = {
+ };
+ 
+ /* append a command result for JSON format */
+-int
++static int
+ append_result_value(const char *name, char **output, void *tmp)
+ {
+ 	const struct cmd_result *result = tmp;
+@@ -86,7 +97,7 @@ append_result_value(const char *name, char **output, void *tmp)
+ }
+ 
+ /* append error details for JSON format */
+-int
++static int
+ append_error_details_value(const char *name, char **output, void *tmp)
+ {
+ 	int ret = SPP_RET_NG;
+@@ -672,7 +683,7 @@ add_client_id(const char *name, char **output,
+ }
+ 
+ /* Add entry of port to a response in JSON such as "phy:0". */
+-int
++static int
+ add_interface(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+@@ -706,7 +717,7 @@ add_interface(const char *name, char **output,
+ }
+ 
+ /* Add entry of master lcore to a response in JSON. */
+-int
++static int
+ add_master_lcore(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+@@ -716,7 +727,7 @@ add_master_lcore(const char *name, char **output,
+ }
+ 
+ /* Add entry of core info of worker to a response in JSON such as "core:0". */
+-int
++static int
+ add_core(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+index d9481e3..cf5f81b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+@@ -32,10 +32,6 @@ struct cmd_response {
+ 	int (*func)(const char *name, char **output, void *tmp);
+ };
+ 
+-int append_result_value(const char *name, char **output, void *tmp);
+-
+-int append_error_details_value(const char *name, char **output, void *tmp);
+-
+ int append_interface_array(char **output, const enum port_type type);
+ 
+ int append_process_type_value(const char *name, char **output,
+@@ -82,15 +78,6 @@ int append_info_value(const char *name, char **output);
+ int add_client_id(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)));
+ 
+-int add_interface(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)));
+-
+-int add_master_lcore(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)));
+-
+-int add_core(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)));
+-
+ int add_classifier_table(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)));
+ #endif
+-- 
+2.17.1
+

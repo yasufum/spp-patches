@@ -1,0 +1,62 @@
+From 4bb8dbca95a9ccaa84ab938862d900b8afff537a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 13:26:23 +0900
+Subject: [PATCH 00/13] Move JSON utils from libs for running cmds
+
+There are many JSON utils in shared lib for running commands, and
+hard to maintain because several features are defined in a huge file.
+This series of patches is to separate JSON utils from other functions
+and fix complex dependencies among them.
+
+Yasufumi Ogawa (13):
+  shared/sec: rename ops for setup cmd response
+  shared/sec: rename functions for spp_mirror
+  shared/sec: move principle JSON formatter funcs
+  shared/sec: change order of args of JSON fmtters
+  shared/sec: move JSON formatter to shard/secondary
+  shared/sec: revise including headers
+  shared/sec: move JSON formatters from cmd_runner
+  shared/sec: move rest of JSON formatters
+  shared/sec: move lcore funcs in response_info_list
+  shared/sec: move ope cli-id in response_info_list
+  shared/sec: move rest of ops in response_info_list
+  shared/sec: remove local funcs from header
+  shared/sec: refactor comments for JSON formatter
+
+ src/mirror/Makefile                           |  11 +-
+ src/mirror/spp_mirror.c                       |  75 +-
+ src/mirror/spp_mirror.h                       |  26 -
+ src/pcap/Makefile                             |   3 +-
+ src/pcap/cmd_runner.c                         |   2 +-
+ src/shared/secondary/json_helper.c            | 136 +++
+ src/shared/secondary/json_helper.h            | 101 ++
+ src/shared/secondary/return_codes.h           |  13 +
+ .../secondary/spp_worker_th/cmd_parser.c      |   1 +
+ .../spp_worker_th/cmd_res_formatter.c         | 831 +++++++++++++++
+ .../spp_worker_th/cmd_res_formatter.h         |  83 ++
+ .../secondary/spp_worker_th/cmd_runner.c      | 952 +-----------------
+ .../secondary/spp_worker_th/cmd_utils.c       |   6 +-
+ .../secondary/spp_worker_th/cmd_utils.h       |   8 +-
+ .../secondary/spp_worker_th/conn_spp_ctl.c    |   3 +-
+ .../secondary/spp_worker_th/mirror_deps.h     |  33 +-
+ src/shared/secondary/spp_worker_th/spp_port.c |   1 +
+ src/shared/secondary/spp_worker_th/vf_deps.h  |   2 +-
+ .../{spp_worker_th => }/string_buffer.c       |   0
+ .../{spp_worker_th => }/string_buffer.h       |   2 +
+ src/vf/Makefile                               |   7 +-
+ src/vf/classifier_mac.c                       |   6 +-
+ src/vf/spp_forward.c                          |   5 +-
+ src/vf/spp_vf.c                               |   3 +-
+ 24 files changed, 1260 insertions(+), 1050 deletions(-)
+ delete mode 100644 src/mirror/spp_mirror.h
+ create mode 100644 src/shared/secondary/json_helper.c
+ create mode 100644 src/shared/secondary/json_helper.h
+ create mode 100644 src/shared/secondary/return_codes.h
+ create mode 100644 src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+ create mode 100644 src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+ rename src/shared/secondary/{spp_worker_th => }/string_buffer.c (100%)
+ rename src/shared/secondary/{spp_worker_th => }/string_buffer.h (98%)
+
+-- 
+2.17.1
+

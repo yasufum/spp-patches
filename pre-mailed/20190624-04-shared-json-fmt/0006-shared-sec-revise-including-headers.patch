@@ -1,0 +1,233 @@
+From 402de3641b988c93a067f37cb69354c3c5d11e17 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 8 Jun 2019 05:27:36 +0900
+Subject: [PATCH 06/13] shared/sec: revise including headers
+
+Some of including headers in SPP secondary are roughly described in
+header files, so dependency is not obvious in each of source code. This
+update is to refactor this situation by revising where including header
+files.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/Makefile                           |  4 +++
+ src/mirror/spp_mirror.c                       |  3 ++-
+ src/mirror/spp_mirror.h                       | 26 -------------------
+ .../secondary/spp_worker_th/cmd_parser.c      |  1 +
+ .../secondary/spp_worker_th/cmd_utils.c       |  4 ++-
+ .../secondary/spp_worker_th/cmd_utils.h       |  4 +--
+ .../secondary/spp_worker_th/conn_spp_ctl.c    |  1 +
+ src/shared/secondary/spp_worker_th/spp_port.c |  1 +
+ src/vf/classifier_mac.c                       |  6 +++--
+ src/vf/spp_forward.c                          |  5 ++--
+ src/vf/spp_vf.c                               |  3 ++-
+ 11 files changed, 23 insertions(+), 35 deletions(-)
+ delete mode 100644 src/mirror/spp_mirror.h
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index b31e116..fc18d1e 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -32,6 +32,10 @@ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+ CFLAGS += -I$(SRCDIR)/../
+ CFLAGS += -DSPP_MIRROR_MODULE
+ 
++# There are two kinds of copy mode, deep copy and shallow copy. If this
++# `DSPP_MIRROR_SHALLOWCOPY` is commented out, spp_mirror runs as in
++# deep copy mode.
++# Default mode is shallow copy.
+ CFLAGS += -DSPP_MIRROR_SHALLOWCOPY
+ 
+ # Optional Settings
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index c2ec09d..c00cad6 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -9,9 +9,10 @@
+ #include <rte_common.h>
+ #include <rte_cycles.h>
+ 
+-#include "shared/secondary/spp_worker_th/mirror_deps.h"
+ #include "shared/common.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/utils.h"
++#include "shared/secondary/spp_worker_th/mirror_deps.h"
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/cmd_utils.h"
+diff --git a/src/mirror/spp_mirror.h b/src/mirror/spp_mirror.h
+deleted file mode 100644
+index 17fa522..0000000
+--- a/src/mirror/spp_mirror.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+- */
+-
+-#ifndef __SPP_MIRROR_H__
+-#define __SPP_MIRROR_H__
+-
+-#include "shared/secondary/spp_worker_th/spp_proc.h"
+-
+-/**
+- * @file
+- * SPP_MIRROR main
+- *
+- * Main function of spp_mirror.
+- * This provides the function for initializing and starting the threads.
+- *
+- * There is two kinds of reproduction classification. I choose it by a
+- * compilation switch.
+- *  -DeepCopy
+- *  -ShallowCopy
+- *
+- * Attention
+- *  I do not do the deletion of the VLAN tag, the addition.
+- */
+-
+-#endif /* __SPP_MIRROR_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 13e7013..200e41b 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -10,6 +10,7 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_parser.h"
++#include "shared/secondary/return_codes.h"
+ 
+ #define RTE_LOGTYPE_WK_CMD_PARSER RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 79dd2e7..098c8c1 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -2,8 +2,8 @@
+  * Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+-#include <unistd.h>
+ #include <string.h>
++#include <unistd.h>
+ 
+ #include <rte_eth_ring.h>
+ #include <rte_eth_vhost.h>
+@@ -13,12 +13,14 @@
+ 
+ #include "vf_deps.h"
+ #include "mirror_deps.h"
++#include "shared/secondary/return_codes.h"
+ #include "cmd_utils.h"
+ #include "spp_port.h"
+ 
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
++
+ /* TODO(yasufum) change log label after filename is revised. */
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 3ee3142..f9d7015 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -5,14 +5,14 @@
+ #ifndef _SPPWK_CMD_UTILS_H_
+ #define _SPPWK_CMD_UTILS_H_
+ 
++#include <netinet/in.h>
++
+ /**
+  * @file cmd_utils.h
+  *
+  * Command utility functions for SPP worker thread.
+  */
+ 
+-#include <netinet/in.h>
+-#include "shared/secondary/return_codes.h"
+ #include "shared/common.h"
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/conn_spp_ctl.c b/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
+index 70e06f9..a67cd10 100644
+--- a/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
++++ b/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
+@@ -15,6 +15,7 @@
+ #include "shared/common.h"
+ #include "shared/secondary/string_buffer.h"
+ #include "conn_spp_ctl.h"
++#include "shared/secondary/return_codes.h"
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+index 7a8a088..3163274 100644
+--- a/src/shared/secondary/spp_worker_th/spp_port.c
++++ b/src/shared/secondary/spp_worker_th/spp_port.c
+@@ -9,6 +9,7 @@
+ #include <rte_net_crc.h>
+ 
+ #include "spp_port.h"
++#include "shared/secondary/return_codes.h"
+ #include "ringlatencystats.h"
+ 
+ /* Port ability management information */
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 8d677a9..6d8e664 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -19,11 +19,13 @@
+ #include <rte_per_lcore.h>
+ #include <rte_eal.h>
+ #include <rte_launch.h>
++#include <netinet/in.h>
+ 
++#include "classifier_mac.h"
++#include "spp_vf.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+-#include "spp_vf.h"
+-#include "classifier_mac.h"
+ 
+ #define RTE_LOGTYPE_SPP_CLASSIFIER_MAC RTE_LOGTYPE_USER1
+ 
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index 3d40951..d381c92 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -4,10 +4,11 @@
+ 
+ #include <rte_cycles.h>
+ 
++#include "spp_forward.h"
++#include "spp_vf.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+-#include "spp_vf.h"
+-#include "spp_forward.h"
+ 
+ #define RTE_LOGTYPE_FORWARD RTE_LOGTYPE_USER1
+ 
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 94da67a..e55e3f0 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -6,10 +6,11 @@
+ #include <arpa/inet.h>
+ #include <getopt.h>
+ 
+-#include "shared/secondary/spp_worker_th/cmd_utils.h"
+ #include "spp_vf.h"
++#include "shared/secondary/spp_worker_th/cmd_utils.h"
+ #include "classifier_mac.h"
+ #include "spp_forward.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+-- 
+2.17.1
+

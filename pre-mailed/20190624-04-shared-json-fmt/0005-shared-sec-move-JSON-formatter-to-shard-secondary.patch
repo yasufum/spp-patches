@@ -1,0 +1,233 @@
+From 1bbfc21ff314cc71261c08a04e6608b655d346d5 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 8 Jun 2019 04:14:05 +0900
+Subject: [PATCH 05/13] shared/sec: move JSON formatter to shard/secondary
+
+Principle JSON formatters, such as append_json_int_value(), can be used
+from all of SPP secondary processes. This update is to move files
+`json_helper.*` and `string_buffer.*` to the parent directory
+`shared/secondary`. Definition of return codes of `SPP_RET_OK` and
+`SPP_RET_NG` is also moved to the directory for the change.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/Makefile                                 |  7 ++++---
+ src/pcap/Makefile                                   |  3 ++-
+ src/pcap/cmd_runner.c                               |  2 +-
+ .../secondary/{spp_worker_th => }/json_helper.c     |  0
+ .../secondary/{spp_worker_th => }/json_helper.h     |  6 +++++-
+ src/shared/secondary/return_codes.h                 | 13 +++++++++++++
+ src/shared/secondary/spp_worker_th/cmd_runner.c     |  4 ++--
+ src/shared/secondary/spp_worker_th/cmd_utils.h      |  6 +-----
+ src/shared/secondary/spp_worker_th/conn_spp_ctl.c   |  2 +-
+ .../secondary/{spp_worker_th => }/string_buffer.c   |  0
+ .../secondary/{spp_worker_th => }/string_buffer.h   |  0
+ src/vf/Makefile                                     |  7 ++++---
+ 12 files changed, 33 insertions(+), 17 deletions(-)
+ rename src/shared/secondary/{spp_worker_th => }/json_helper.c (100%)
+ rename src/shared/secondary/{spp_worker_th => }/json_helper.h (95%)
+ create mode 100644 src/shared/secondary/return_codes.h
+ rename src/shared/secondary/{spp_worker_th => }/string_buffer.c (100%)
+ rename src/shared/secondary/{spp_worker_th => }/string_buffer.h (100%)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 6b6b9b9..b31e116 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -11,19 +11,20 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ # binary name
+ APP = spp_mirror
+ 
++SPP_SEC_DIR = ../shared/secondary
+ SPP_WKT_DIR = ../shared/secondary/spp_worker_th
+ 
+ # all source are stored in SRCS-y
+ SRCS-y := spp_mirror.c
+ SRCS-y += ../shared/common.c
+-SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
++SRCS-y += $(SPP_SEC_DIR)/utils.c $(SPP_SEC_DIR)/add_port.c
++SRCS-y += $(SPP_SEC_DIR)/json_helper.c
++SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_utils.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_runner.c
+-SRCS-y += $(SPP_WKT_DIR)/json_helper.c
+-SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+index c3d5ae4..852d036 100644
+--- a/src/pcap/Makefile
++++ b/src/pcap/Makefile
+@@ -11,6 +11,7 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ # binary name
+ APP = spp_pcap
+ 
++SPP_SEC_DIR = ../shared/secondary
+ SPP_WKT_DIR = ../shared/secondary/spp_worker_th
+ 
+ # all source are stored in SRCS-y
+@@ -18,10 +19,10 @@ SRCS-y := spp_pcap.c
+ SRCS-y += cmd_utils.c
+ SRCS-y += cmd_runner.c cmd_parser.c
+ SRCS-y += ../shared/common.c
++SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+-SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 8a1fb87..55f15bf 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -7,7 +7,7 @@
+ 
+ #include <rte_log.h>
+ 
+-#include "shared/secondary/spp_worker_th/string_buffer.h"
++#include "shared/secondary/string_buffer.h"
+ #include "spp_pcap.h"
+ #include "shared/secondary/spp_worker_th/conn_spp_ctl.h"
+ #include "cmd_parser.h"
+diff --git a/src/shared/secondary/spp_worker_th/json_helper.c b/src/shared/secondary/json_helper.c
+similarity index 100%
+rename from src/shared/secondary/spp_worker_th/json_helper.c
+rename to src/shared/secondary/json_helper.c
+diff --git a/src/shared/secondary/spp_worker_th/json_helper.h b/src/shared/secondary/json_helper.h
+similarity index 95%
+rename from src/shared/secondary/spp_worker_th/json_helper.h
+rename to src/shared/secondary/json_helper.h
+index 0bfe0bf..b004428 100644
+--- a/src/shared/secondary/spp_worker_th/json_helper.h
++++ b/src/shared/secondary/json_helper.h
+@@ -5,7 +5,11 @@
+ #ifndef _SPPWK_JSON_HELPER_H_
+ #define _SPPWK_JSON_HELPER_H_
+ 
+-#include "cmd_utils.h"
++#include <string.h>
++#include <rte_branch_prediction.h>
++#include <rte_log.h>
++#include "return_codes.h"
++#include "string_buffer.h"
+ 
+ /* TODO(yasufum) revise name considering the usage. */
+ #define JSON_APPEND_LEN 16
+diff --git a/src/shared/secondary/return_codes.h b/src/shared/secondary/return_codes.h
+new file mode 100644
+index 0000000..18b4711
+--- /dev/null
++++ b/src/shared/secondary/return_codes.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _SPP_SEC_RETURN_CODES_H_
++#define _SPP_SEC_RETURN_CODES_H_
++
++enum spp_return_val {
++	SPP_RET_OK = 0,  /**< succeeded */
++	SPP_RET_NG = -1, /**< failed */
++};
++
++#endif
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index e41fd85..b1718fa 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -11,9 +11,9 @@
+ #include "vf_deps.h"
+ #include "mirror_deps.h"
+ #include "spp_port.h"
+-#include "string_buffer.h"
++#include "shared/secondary/string_buffer.h"
+ 
+-#include "json_helper.h"
++#include "shared/secondary/json_helper.h"
+ #include "conn_spp_ctl.h"
+ #include "cmd_parser.h"
+ #include "cmd_runner.h"
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index b8ab10c..3ee3142 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include <netinet/in.h>
++#include "shared/secondary/return_codes.h"
+ #include "shared/common.h"
+ 
+ /**
+@@ -94,11 +95,6 @@ enum spp_classifier_type {
+ 	SPP_CLASSIFIER_TYPE_VLAN  /**< VLAN ID */
+ };
+ 
+-enum sppwk_return_val {
+-	SPP_RET_OK = 0,  /**< succeeded */
+-	SPP_RET_NG = -1, /**< failed */
+-};
+-
+ /**
+  * Port type (rx or tx) to indicate which direction packet goes
+  * (e.g. receiving or transmitting)
+diff --git a/src/shared/secondary/spp_worker_th/conn_spp_ctl.c b/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
+index 030da92..70e06f9 100644
+--- a/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
++++ b/src/shared/secondary/spp_worker_th/conn_spp_ctl.c
+@@ -13,7 +13,7 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "shared/common.h"
+-#include "string_buffer.h"
++#include "shared/secondary/string_buffer.h"
+ #include "conn_spp_ctl.h"
+ 
+ #define RTE_LOGTYPE_SPP_COMMAND_PROC RTE_LOGTYPE_USER1
+diff --git a/src/shared/secondary/spp_worker_th/string_buffer.c b/src/shared/secondary/string_buffer.c
+similarity index 100%
+rename from src/shared/secondary/spp_worker_th/string_buffer.c
+rename to src/shared/secondary/string_buffer.c
+diff --git a/src/shared/secondary/spp_worker_th/string_buffer.h b/src/shared/secondary/string_buffer.h
+similarity index 100%
+rename from src/shared/secondary/spp_worker_th/string_buffer.h
+rename to src/shared/secondary/string_buffer.h
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index ca8d2b3..3cbdb01 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -11,20 +11,21 @@ include $(RTE_SDK)/mk/rte.vars.mk
+ # binary name
+ APP = spp_vf
+ 
++SPP_SEC_DIR = ../shared/secondary
+ SPP_WKT_DIR = ../shared/secondary/spp_worker_th
+ 
+ # all source are stored in SRCS-y
+ SRCS-y := spp_vf.c classifier_mac.c spp_forward.c
+-SRCS-y += $(SPP_WKT_DIR)/string_buffer.c
++SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
++SRCS-y += $(SPP_SEC_DIR)/json_helper.c
++SRCS-y += $(SPP_SEC_DIR)/utils.c $(SPP_SEC_DIR)/add_port.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_runner.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_utils.c
+-SRCS-y += $(SPP_WKT_DIR)/json_helper.c
+ SRCS-y += ../shared/common.c
+-SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+ CFLAGS += $(WERROR_FLAGS) -O3 -MMD
+-- 
+2.17.1
+
