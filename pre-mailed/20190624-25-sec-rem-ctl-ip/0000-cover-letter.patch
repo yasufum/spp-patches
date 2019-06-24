@@ -1,0 +1,29 @@
+From c8ad8ff6b72d05ba6841d784dd8572feb1f7c246 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 19:24:47 +0900
+Subject: [PATCH 0/4] Remove global vars of IP and port of spp-ctl
+
+In secondary processes, IP address and port given as command args are
+defined as global variables, but no need to be global. This update is to
+change them to be retrieved from functions and remove global
+variables.
+
+Yasufumi Ogawa (4):
+  spp_nfv: remove global vars of spp-ctl IP and port
+  spp_vf: remove global vars of spp-ctl IP and port
+  spp_mirror: remove global vars spp-ctl IP and port
+  spp_pcap: remove global vars spp-ctl IP and port
+
+ src/mirror/spp_mirror.c | 60 ++++++++++++-------------------
+ src/nfv/commands.h      |  6 ++--
+ src/nfv/main.c          |  6 +++-
+ src/nfv/params.h        |  7 ----
+ src/pcap/spp_pcap.c     | 78 +++++++++++++++++------------------------
+ src/shared/common.c     | 48 +++++++++++++++++++++++++
+ src/shared/common.h     | 42 +++++++++++++++++++++-
+ src/vf/spp_vf.c         | 60 ++++++++++++-------------------
+ 8 files changed, 175 insertions(+), 132 deletions(-)
+
+-- 
+2.17.1
+
