@@ -1,0 +1,271 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88261f6206f3a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id t29sm14724946pfq.156.2019.06.23.23.22.07
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 23:22:08 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: remove update_comp_info from shared
+Date: Mon, 24 Jun 2019 15:22:03 +0900
+Message-Id: <20190624062203.22560-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to move update_comp_info() from shared dir to each of
+workers because it has ifdef switches to select each of worker specific
+tasks. Ifdef switches are removed by this update.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c                   | 29 +++++++++++++
+ .../secondary/spp_worker_th/cmd_runner.c      | 10 +++--
+ .../secondary/spp_worker_th/cmd_utils.c       | 42 +------------------
+ .../secondary/spp_worker_th/cmd_utils.h       |  8 ----
+ .../secondary/spp_worker_th/mirror_deps.h     | 10 +++++
+ src/shared/secondary/spp_worker_th/vf_deps.h  | 10 +++++
+ src/vf/vf_cmd_runner.c                        | 34 +++++++++++++++
+ 7 files changed, 91 insertions(+), 52 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 461e85c..0cbd79d 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -372,3 +372,32 @@ add_core(const char *name, char **output,
+ 	spp_strbuf_free(itr_params.output);
+ 	return ret;
+ }
++
++/* Activate temporarily stored component info while flushing. */
++int
++update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
++{
++	int ret = 0;
++	int cnt = 0;
++	struct sppwk_comp_info *comp_info = NULL;
++
++	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
++		if (*(p_change_comp + cnt) == 0)
++			continue;
++
++		comp_info = (p_comp_info + cnt);
++		spp_port_ability_update(comp_info);
++
++		ret = update_mirror(comp_info);
++		RTE_LOG(DEBUG, MIR_CMD_RUNNER, "Update mirror.\n");
++
++		if (unlikely(ret < 0)) {
++			RTE_LOG(ERR, MIR_CMD_RUNNER, "Flush error. "
++					"( component = %s, type = %d)\n",
++					comp_info->name,
++					comp_info->wk_type);
++			return SPP_RET_NG;
++		}
++	}
++	return SPP_RET_OK;
++}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 64aef19..68436f3 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -34,10 +34,12 @@ int
+ flush_cmd(void)
+ {
+ 	int ret;
+-	struct cancel_backup_info *backup_info = NULL;
++	int *p_change_comp;
++	struct sppwk_comp_info *p_comp_info;
++	struct cancel_backup_info *backup_info;
+ 
+-	sppwk_get_mng_data(NULL, NULL, NULL,
+-				NULL, NULL, NULL, &backup_info);
++	sppwk_get_mng_data(NULL, NULL, &p_comp_info,
++				NULL, NULL, &p_change_comp, &backup_info);
+ 
+ 	ret = update_port_info();
+ 	if (ret < SPP_RET_OK)
+@@ -47,7 +49,7 @@ flush_cmd(void)
+ 	update_lcore_info();
+ 
+ 	/* TODO(yasufum) confirm why no checking for returned value. */
+-	ret = update_comp_info();
++	ret = update_comp_info(p_comp_info, p_change_comp);
+ 
+ 	backup_mng_info(backup_info);
+ 	return ret;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 098c8c1..5a089c6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -25,13 +25,14 @@
+ #define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+ 
+ /* A set of pointers of management data */
++/* TODO(yasufum) change names start with `p_change` because it wrong meanig. */
+ struct mng_data_info {
+ 	struct startup_param *p_startup_param;
+ 	struct iface_info *p_iface_info;
+ 	struct sppwk_comp_info *p_component_info;
+ 	struct core_mng_info *p_core_info;
+ 	int *p_change_core;
+-	int *p_change_component;
++	int *p_change_component;  /* Set of flags for udpated components */
+ 	struct cancel_backup_info *p_backup_info;
+ 	unsigned int main_lcore_id;
+ };
+@@ -874,45 +875,6 @@ update_lcore_info(void)
+ 	}
+ }
+ 
+-/* Activate temporarily stored component info while flushing. */
+-int
+-update_comp_info(void)
+-{
+-	int ret = 0;
+-	int cnt = 0;
+-	struct sppwk_comp_info *comp_info = NULL;
+-	int *p_change_comp = g_mng_data.p_change_component;
+-	struct sppwk_comp_info *p_comp_info = g_mng_data.p_component_info;
+-
+-	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+-		if (*(p_change_comp + cnt) == 0)
+-			continue;
+-
+-		comp_info = (p_comp_info + cnt);
+-		spp_port_ability_update(comp_info);
+-
+-#ifdef SPP_VF_MODULE
+-		if (comp_info->wk_type == SPPWK_TYPE_CLS)
+-			ret = update_classifier(comp_info);
+-		else
+-			ret = update_forwarder(comp_info);
+-#endif /* SPP_VF_MODULE */
+-
+-#ifdef SPP_MIRROR_MODULE
+-		ret = update_mirror(comp_info);
+-#endif /* SPP_MIRROR_MODULE */
+-
+-		if (unlikely(ret < 0)) {
+-			RTE_LOG(ERR, APP, "Flush error. "
+-					"( component = %s, type = %d)\n",
+-					comp_info->name,
+-					comp_info->wk_type);
+-			return SPP_RET_NG;
+-		}
+-	}
+-	return SPP_RET_OK;
+-}
+-
+ /**
+  * Generate a formatted string of combination from interface type and
+  * number and assign to given 'port'
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index f9d7015..b0009c3 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -521,14 +521,6 @@ int update_port_info(void);
+ /* Activate temporarily stored lcore info while flushing. */
+ void update_lcore_info(void);
+ 
+-/**
+- * Activate temporarily stored component info while flushing.
+- *
+- * @retval SPP_RET_OK If succeeded.
+- * @retval SPP_RET_NG If failed.
+- */
+-int update_comp_info(void);
+-
+ /**
+  * Port type to string.
+  *
+diff --git a/src/shared/secondary/spp_worker_th/mirror_deps.h b/src/shared/secondary/spp_worker_th/mirror_deps.h
+index 2cf0fd9..ef32697 100644
+--- a/src/shared/secondary/spp_worker_th/mirror_deps.h
++++ b/src/shared/secondary/spp_worker_th/mirror_deps.h
+@@ -22,4 +22,14 @@ int add_core(const char *name, char **output,
+  */
+ int update_mirror(struct sppwk_comp_info *wk_comp_info);
+ 
++/**
++ * Activate temporarily stored component info while flushing.
++ *
++ * @param[in] p_comp_info Info of component.
++ * @param[in] p_change_comp Pointer to a set of Flags for udpated component.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
++ */
++int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
++
+ #endif  /* __SPP_WORKER_TH_MIRROR_DEPS_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 2ec700e..ded5b1d 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -90,4 +90,14 @@ void uninit_component_info(struct cls_comp_info *cmp_info);
+ int add_classifier_table_val(
+ 		struct spp_iterate_classifier_table_params *params);
+ 
++/**
++ * Activate temporarily stored component info while flushing.
++ *
++ * @param[in] p_comp_info Info of component.
++ * @param[in] p_change_comp Pointer to a set of Flags for udpated component.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
++ */
++int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
++
+ #endif  /* _SPPWK_TH_VF_DEPS_H_ */
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index 182a917..e832e18 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -501,3 +501,37 @@ add_core(const char *name, char **output,
+ 	spp_strbuf_free(itr_params.output);
+ 	return ret;
+ }
++
++/* Activate temporarily stored component info while flushing. */
++int
++update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
++{
++	int ret = 0;
++	int cnt = 0;
++	struct sppwk_comp_info *comp_info = NULL;
++
++	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
++		if (*(p_change_comp + cnt) == 0)
++			continue;
++
++		comp_info = (p_comp_info + cnt);
++		spp_port_ability_update(comp_info);
++
++		if (comp_info->wk_type == SPPWK_TYPE_CLS) {
++			ret = update_classifier(comp_info);
++			RTE_LOG(DEBUG, VF_CMD_RUNNER, "Update classifier.\n");
++		} else {
++			ret = update_forwarder(comp_info);
++			RTE_LOG(DEBUG, VF_CMD_RUNNER, "Update forwarder.\n");
++		}
++
++		if (unlikely(ret < 0)) {
++			RTE_LOG(ERR, VF_CMD_RUNNER, "Flush error. "
++					"( component = %s, type = %d)\n",
++					comp_info->name,
++					comp_info->wk_type);
++			return SPP_RET_NG;
++		}
++	}
++	return SPP_RET_OK;
++}
+-- 
+2.17.1
+
+
