@@ -1,0 +1,22 @@
+From e827f6e7de11174978540769aa2e5eeb5c1a0c4c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 14:13:22 +0900
+Subject: [PATCH 0/2] Rename struct cmd_response
+
+Struct cmd_response is to define a set of combinations of tag and ope
+function, so the name is not appropriate considering this feature.
+This update is to rename it to `cmd_res_formatter_ops` for spp_vf,
+spp_mirror and spp_pcap.
+
+Yasufumi Ogawa (2):
+  shared/sec: change name of struct cmd_response
+  spp_pcap: change name of struct cmd_response
+
+ src/pcap/cmd_runner.c                               |  8 ++++----
+ .../secondary/spp_worker_th/cmd_res_formatter.c     | 13 ++++++-------
+ .../secondary/spp_worker_th/cmd_res_formatter.h     | 11 +++++------
+ 3 files changed, 15 insertions(+), 17 deletions(-)
+
+-- 
+2.17.1
+
