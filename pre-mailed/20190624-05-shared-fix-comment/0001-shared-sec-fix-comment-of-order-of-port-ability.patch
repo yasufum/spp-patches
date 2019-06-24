@@ -1,0 +1,31 @@
+From 016473b65671e49e2fa471da2317fb24d380f60f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 10 Jun 2019 19:36:13 +0900
+Subject: [PATCH] shared/sec: fix comment of order of port ability
+
+The order of members of enum `sppwk_port_abl_ops` should be the same as
+`PORT_ABILITY_STAT_LIST` and it is described as comment, but the name of
+enum is different. This update is to correct the name to
+`sppwk_port_abl_ops`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_res_formatter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index 21024b9..9c0c873 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -35,7 +35,7 @@ const char *SPPWK_PROC_TYPE_LIST[] = {
+ 
+ /**
+  * List of port abilities. The order of items should be same as the order of
+- * enum `spp_port_ability_type` in spp_vf.h.
++ * enum `sppwk_port_abl_ops` in spp_vf.h.
+  */
+ const char *PORT_ABILITY_STAT_LIST[] = {
+ 	"none",
+-- 
+2.17.1
+
