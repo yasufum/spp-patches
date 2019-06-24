@@ -1,0 +1,213 @@
+From 6210611e14bd74c488c7df48b1359a32d5888fa8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 14 Jun 2019 01:14:54 +0900
+Subject: [PATCH 1/2] shared/sec: move append_classifier_element_value
+
+This update is to move append_classifier_element_value() from shared dir
+to spp_vf's dir because this functions is for spp_vf.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../spp_worker_th/cmd_res_formatter.c         | 71 -------------------
+ .../spp_worker_th/cmd_res_formatter.h         |  6 --
+ src/vf/vf_cmd_runner.c                        | 70 ++++++++++++++++++
+ 3 files changed, 70 insertions(+), 77 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index f389939..a0c22d2 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -48,18 +48,6 @@ const char *PORT_ABILITY_STAT_LIST[] = {
+ 	"",  /* termination */
+ };
+ 
+-/**
+- * List of classifier type. The order of items should be same as the order of
+- * enum `spp_classifier_type` defined in cmd_utils.h.
+- */
+-/* TODO(yasufum) fix similar var in cmd_parser.c */
+-const char *CLS_TYPE_A_LIST[] = {
+-	"none",
+-	"mac",
+-	"vlan",
+-	"",  /* termination */
+-};
+-
+ /* command response result string list */
+ struct cmd_response response_result_list[] = {
+ 	{ "result", append_result_value },
+@@ -402,65 +390,6 @@ append_core_element_value(
+ 	return ret;
+ }
+ 
+-#ifdef SPP_VF_MODULE
+-/**
+- * Operator function called in iterator for getting each of entries of
+- * classifier table named as iterate_adding_mac_entry().
+- */
+-int
+-append_classifier_element_value(
+-		struct spp_iterate_classifier_table_params *params,
+-		enum spp_classifier_type type,
+-		int vid, const char *mac,
+-		const struct sppwk_port_idx *port)
+-{
+-	int ret = SPP_RET_NG;
+-	char *buff, *tmp_buff;
+-	char port_str[CMD_TAG_APPEND_SIZE];
+-	char value_str[STR_LEN_SHORT];
+-	buff = params->output;
+-	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+-	if (unlikely(tmp_buff == NULL)) {
+-		RTE_LOG(ERR, WK_CMD_RES_FMT,
+-				/* TODO(yasufum) refactor no meaning err msg */
+-				"allocate error. (name = classifier_table)\n");
+-		return ret;
+-	}
+-
+-	spp_format_port_string(port_str, port->iface_type, port->iface_no);
+-
+-	ret = append_json_str_value(&tmp_buff, "type", CLS_TYPE_A_LIST[type]);
+-	if (unlikely(ret < SPP_RET_OK))
+-		return ret;
+-
+-	memset(value_str, 0x00, STR_LEN_SHORT);
+-	switch (type) {
+-	case SPP_CLASSIFIER_TYPE_MAC:
+-		sprintf(value_str, "%s", mac);
+-		break;
+-	case SPP_CLASSIFIER_TYPE_VLAN:
+-		sprintf(value_str, "%d/%s", vid, mac);
+-		break;
+-	default:
+-		/* not used */
+-		break;
+-	}
+-
+-	ret = append_json_str_value(&tmp_buff, "value", value_str);
+-	if (unlikely(ret < 0))
+-		return ret;
+-
+-	ret = append_json_str_value(&tmp_buff, "port", port_str);
+-	if (unlikely(ret < SPP_RET_OK))
+-		return ret;
+-
+-	ret = append_json_block_brackets(&buff, "", tmp_buff);
+-	spp_strbuf_free(tmp_buff);
+-	params->output = buff;
+-	return ret;
+-}
+-#endif /* SPP_VF_MODULE */
+-
+ /* append string of command response list for JSON format */
+ int
+ append_response_list_value(char **output, struct cmd_response *responses,
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+index cf5f81b..6ae2c5d 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+@@ -56,12 +56,6 @@ int append_core_element_value(struct spp_iterate_core_params *params,
+ 		const int num_rx, const struct sppwk_port_idx *rx_ports,
+ 		const int num_tx, const struct sppwk_port_idx *tx_ports);
+ 
+-int append_classifier_element_value(
+-		struct spp_iterate_classifier_table_params *params,
+-		enum spp_classifier_type type,
+-		int vid, const char *mac,
+-		const struct sppwk_port_idx *port);
+-
+ int append_response_list_value(char **output, struct cmd_response *responses,
+ 		void *tmp);
+ 
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index c7d34a6..ecb36ff 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -14,6 +14,18 @@
+ 
+ #define RTE_LOGTYPE_VF_CMD_RUNNER RTE_LOGTYPE_USER1
+ 
++/**
++ * List of classifier type. The order of items should be same as the order of
++ * enum `spp_classifier_type` defined in cmd_utils.h.
++ */
++/* TODO(yasufum) fix similar var in cmd_parser.c */
++const char *CLS_TYPE_A_LIST[] = {
++	"none",
++	"mac",
++	"vlan",
++	"",  /* termination */
++};
++
+ /* Update classifier table with given action, add or del. */
+ static int
+ update_cls_table(enum sppwk_action wk_action,
+@@ -536,7 +548,65 @@ update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
+ 	return SPP_RET_OK;
+ }
+ 
++/**
++ * Operator function called in iterator for getting each of entries of
++ * classifier table named as iterate_adding_mac_entry().
++ */
++int
++append_classifier_element_value(
++		struct spp_iterate_classifier_table_params *params,
++		enum spp_classifier_type type,
++		int vid, const char *mac,
++		const struct sppwk_port_idx *port)
++{
++	int ret = SPP_RET_NG;
++	char *buff, *tmp_buff;
++	char port_str[CMD_TAG_APPEND_SIZE];
++	char value_str[STR_LEN_SHORT];
++	buff = params->output;
++	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
++	if (unlikely(tmp_buff == NULL)) {
++		RTE_LOG(ERR, VF_CMD_RUNNER,
++				/* TODO(yasufum) refactor no meaning err msg */
++				"allocate error. (name = classifier_table)\n");
++		return ret;
++	}
++
++	spp_format_port_string(port_str, port->iface_type, port->iface_no);
++
++	ret = append_json_str_value(&tmp_buff, "type", CLS_TYPE_A_LIST[type]);
++	if (unlikely(ret < SPP_RET_OK))
++		return ret;
++
++	memset(value_str, 0x00, STR_LEN_SHORT);
++	switch (type) {
++	case SPP_CLASSIFIER_TYPE_MAC:
++		sprintf(value_str, "%s", mac);
++		break;
++	case SPP_CLASSIFIER_TYPE_VLAN:
++		sprintf(value_str, "%d/%s", vid, mac);
++		break;
++	default:
++		/* not used */
++		break;
++	}
++
++	ret = append_json_str_value(&tmp_buff, "value", value_str);
++	if (unlikely(ret < 0))
++		return ret;
++
++	ret = append_json_str_value(&tmp_buff, "port", port_str);
++	if (unlikely(ret < SPP_RET_OK))
++		return ret;
++
++	ret = append_json_block_brackets(&buff, "", tmp_buff);
++	spp_strbuf_free(tmp_buff);
++	params->output = buff;
++	return ret;
++}
++
+ /* Get component type from string of its name. */
++/* TODO(yasufum) consider to create and move to vf_cmd_parser.c */
+ enum sppwk_worker_type
+ get_comp_type_from_str(const char *type_str)
+ {
+-- 
+2.17.1
+

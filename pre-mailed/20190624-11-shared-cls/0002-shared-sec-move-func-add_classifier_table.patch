@@ -1,0 +1,186 @@
+From de0fcc3eee2e4a51ba77944c51825f5d1c01cf3a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 14 Jun 2019 02:21:50 +0900
+Subject: [PATCH 2/2] shared/sec: move func add_classifier_table
+
+This update is to move add_classifier_table() from shared dir to
+`classifier_mac.c` because this functions is not shared function.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../spp_worker_th/cmd_res_formatter.c         | 55 ------------------
+ src/shared/secondary/spp_worker_th/vf_deps.h  |  9 +++
+ src/vf/classifier_mac.c                       | 57 +++++++++++++++++++
+ src/vf/vf_cmd_runner.c                        |  1 -
+ 4 files changed, 66 insertions(+), 56 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index a0c22d2..e4912d6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -615,58 +615,3 @@ add_master_lcore(const char *name, char **output,
+ 	return ret;
+ }
+ 
+-#ifdef SPP_VF_MODULE
+-/* Iterate classifier_table to create response to status command */
+-static int
+-_add_classifier_table(
+-		struct spp_iterate_classifier_table_params *params)
+-{
+-	int ret;
+-
+-	ret = add_classifier_table_val(params);
+-	if (unlikely(ret != 0)) {
+-		RTE_LOG(ERR, WK_CMD_RES_FMT,
+-				"Cannot iterate classifier_mac_table.\n");
+-		return SPP_RET_NG;
+-	}
+-
+-	return SPP_RET_OK;
+-}
+-
+-/**
+- * Add entries of classifier table in JSON. Before iterating the entries,
+- * this function calls several nested functions.
+- *   add_classifier_table()  // This function.
+- *     -> _add_classifier_table()  // Wrapper and doesn't almost nothing.
+- *       -> add_classifier_table_val()  // Setup data and call iterator.
+- *         -> iterate_adding_mac_entry()
+- */
+-int
+-add_classifier_table(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)))
+-{
+-	int ret = SPP_RET_NG;
+-	struct spp_iterate_classifier_table_params itr_params;
+-	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+-	if (unlikely(tmp_buff == NULL)) {
+-		RTE_LOG(ERR, WK_CMD_RES_FMT,
+-				/* TODO(yasufum) refactor no meaning err msg */
+-				"allocate error. (name = %s)\n",
+-				name);
+-		return SPP_RET_NG;
+-	}
+-
+-	itr_params.output = tmp_buff;
+-	itr_params.element_proc = append_classifier_element_value;
+-
+-	ret = _add_classifier_table(&itr_params);
+-	if (unlikely(ret != SPP_RET_OK)) {
+-		spp_strbuf_free(itr_params.output);
+-		return SPP_RET_NG;
+-	}
+-
+-	ret = append_json_array_brackets(output, name, itr_params.output);
+-	spp_strbuf_free(itr_params.output);
+-	return ret;
+-}
+-#endif /* SPP_VF_MODULE */
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 7d77e87..72a6960 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -100,6 +100,15 @@ int add_classifier_table_val(
+  */
+ int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
+ 
++int append_classifier_element_value(
++		struct spp_iterate_classifier_table_params *params,
++		enum spp_classifier_type type,
++		int vid, const char *mac,
++		const struct sppwk_port_idx *port);
++
++int add_classifier_table(const char *name, char **output,
++		void *tmp __attribute__ ((unused)));
++
+ enum sppwk_worker_type get_comp_type_from_str(const char *type_str);
+ 
+ #endif  /* _SPPWK_TH_VF_DEPS_H_ */
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 6d8e664..4387fd5 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -24,6 +24,9 @@
+ #include "classifier_mac.h"
+ #include "spp_vf.h"
+ #include "shared/secondary/return_codes.h"
++#include "shared/secondary/string_buffer.h"
++#include "shared/secondary/json_helper.h"
++#include "shared/secondary/spp_worker_th/cmd_res_formatter.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
+ 
+@@ -956,3 +959,57 @@ add_classifier_table_val(
+ 
+ 	return SPP_RET_OK;
+ }
++
++/* Iterate classifier_table to create response to status command */
++static int
++_add_classifier_table(
++		struct spp_iterate_classifier_table_params *params)
++{
++	int ret;
++
++	ret = add_classifier_table_val(params);
++	if (unlikely(ret != 0)) {
++		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
++				"Cannot iterate classifier_mac_table.\n");
++		return SPP_RET_NG;
++	}
++
++	return SPP_RET_OK;
++}
++
++/**
++ * Add entries of classifier table in JSON. Before iterating the entries,
++ * this function calls several nested functions.
++ *   add_classifier_table()  // This function.
++ *     -> _add_classifier_table()  // Wrapper and doesn't almost nothing.
++ *       -> add_classifier_table_val()  // Setup data and call iterator.
++ *         -> iterate_adding_mac_entry()
++ */
++int
++add_classifier_table(const char *name, char **output,
++		void *tmp __attribute__ ((unused)))
++{
++	int ret = SPP_RET_NG;
++	struct spp_iterate_classifier_table_params itr_params;
++	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
++	if (unlikely(tmp_buff == NULL)) {
++		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
++				/* TODO(yasufum) refactor no meaning err msg */
++				"allocate error. (name = %s)\n",
++				name);
++		return SPP_RET_NG;
++	}
++
++	itr_params.output = tmp_buff;
++	itr_params.element_proc = append_classifier_element_value;
++
++	ret = _add_classifier_table(&itr_params);
++	if (unlikely(ret != SPP_RET_OK)) {
++		spp_strbuf_free(itr_params.output);
++		return SPP_RET_NG;
++	}
++
++	ret = append_json_array_brackets(output, name, itr_params.output);
++	spp_strbuf_free(itr_params.output);
++	return ret;
++}
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index ecb36ff..4c75b7e 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -5,7 +5,6 @@
+ #include "classifier_mac.h"
+ #include "spp_forward.h"
+ #include "shared/secondary/return_codes.h"
+-#include "shared/secondary/string_buffer.h"
+ #include "shared/secondary/json_helper.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+-- 
+2.17.1
+

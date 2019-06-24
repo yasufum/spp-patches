@@ -1,0 +1,22 @@
+From de0fcc3eee2e4a51ba77944c51825f5d1c01cf3a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 24 Jun 2019 14:10:15 +0900
+Subject: [PATCH 0/2] Move spp_vf specific funcs from shared
+
+This series of patches is to move functions used only for spp_vf from
+shared to spp_vf's directory.
+
+Yasufumi Ogawa (2):
+  shared/sec: move append_classifier_element_value
+  shared/sec: move func add_classifier_table
+
+ .../spp_worker_th/cmd_res_formatter.c         | 126 ------------------
+ .../spp_worker_th/cmd_res_formatter.h         |   6 -
+ src/shared/secondary/spp_worker_th/vf_deps.h  |   9 ++
+ src/vf/classifier_mac.c                       |  57 ++++++++
+ src/vf/vf_cmd_runner.c                        |  71 +++++++++-
+ 5 files changed, 136 insertions(+), 133 deletions(-)
+
+-- 
+2.17.1
+
