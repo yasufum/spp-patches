@@ -1,0 +1,248 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b8911f72409a70
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id r7sm15293540pfl.134.2019.06.24.03.39.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 03:39:44 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: rename structs of port ability
+Date: Mon, 24 Jun 2019 19:39:39 +0900
+Message-Id: <20190624103939.24655-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+In spp_vf, attribute of port such as direction, operation functions or
+VLAN tag info as port ability. However, names of structures are not
+appropriate, for example `spp_port_ability` is owned by
+`port_ability_mng_info` to contain a set of abilities and it is owned
+by `port_ability_port_mng_info` to contain other attributes. It is so
+confusing and not describing the features.
+
+This update is to fix the issue, to `port_abl_mng_info` has
+`port_abl_info`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../secondary/spp_worker_th/cmd_utils.h       |  7 +--
+ src/shared/secondary/spp_worker_th/spp_port.c | 47 ++++++++-----------
+ src/shared/secondary/spp_worker_th/spp_port.h | 31 ++++--------
+ 3 files changed, 33 insertions(+), 52 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index d90aff5..d68b0d6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -40,6 +40,7 @@
+ #define STR_LEN_SHORT 32  /* Size of short string. */
+ #define STR_LEN_NAME 128  /* Size of string for names. */
+ 
++/* TODO(yasufum) confirm usage of this value and why it is 4. */
+ #define SPP_PORT_ABILITY_MAX 4  /* Max num of port abilities. */
+ 
+ /** Maximum VLAN PCP */
+@@ -139,7 +140,7 @@ enum sppwk_proc_type {
+ };
+ 
+ /** VLAN tag information */
+-struct spp_vlantag_info {
++struct sppwk_vlan_tag {
+ 	int vid; /**< VLAN ID */
+ 	int pcp; /**< Priority Code Point */
+ 	int tci; /**< Tag Control Information */
+@@ -148,7 +149,7 @@ struct spp_vlantag_info {
+ /* Ability for vlantag for a port. */
+ union spp_ability_data {
+ 	/** VLAN tag information */
+-	struct spp_vlantag_info vlantag;
++	struct sppwk_vlan_tag vlantag;
+ };
+ 
+ /* Port ability information. */
+@@ -162,7 +163,7 @@ struct spp_port_ability {
+ struct sppwk_cls_attrs {
+ 	uint64_t mac_addr;  /**< Mac address (binary) */
+ 	char mac_addr_str[STR_LEN_SHORT];  /**< Mac address (text) */
+-	struct spp_vlantag_info vlantag;   /**< VLAN tag information */
++	struct sppwk_vlan_tag vlantag;   /**< VLAN tag information */
+ };
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+index 9f7ac5a..0b79531 100644
+--- a/src/shared/secondary/spp_worker_th/spp_port.c
++++ b/src/shared/secondary/spp_worker_th/spp_port.c
+@@ -13,30 +13,23 @@
+ #include "ringlatencystats.h"
+ 
+ /* Port ability management information */
+-struct port_ability_mng_info {
+-	volatile int ref_index; /* Index to reference area */
+-	volatile int upd_index; /* Index to update area    */
++struct port_abl_info {
++	volatile int ref_index; /* Index to reference area. */
++	volatile int upd_index; /* Index to update area. */
+ 	struct spp_port_ability ability[TWO_SIDES][SPP_PORT_ABILITY_MAX];
+-				/* Port ability information */
++				/* Port ability information. */
+ };
+ 
+ /* Port ability port information */
+-struct port_ability_port_mng_info {
+-	/* Interface type (phy/vhost/ring) */
+-	enum port_type iface_type;
+-
+-	/* Interface number */
+-	int            iface_no;
+-
+-	/* Management data of port ability for receiving */
+-	struct port_ability_mng_info rx;
+-
+-	/* Management data of port ability for sending */
+-	struct port_ability_mng_info tx;
++struct port_mng_info {
++	enum port_type iface_type;  /* Interface type (phy, vhost or so). */
++	int iface_no;  /* Interface number. */
++	struct port_abl_info rx;  /* Mng data of port ability for RX. */
++	struct port_abl_info tx;  /* Mng data of port ability for Tx. */
+ };
+ 
+ /* Information for VLAN tag management. */
+-struct port_ability_port_mng_info g_port_mng_info[RTE_MAX_ETHPORTS];
++struct port_mng_info g_port_mng_info[RTE_MAX_ETHPORTS];
+ 
+ /* TPID of VLAN. */
+ static uint16_t g_vlan_tpid;
+@@ -62,7 +55,7 @@ spp_port_ability_get_info(
+ 		int port_id, enum sppwk_port_dir dir,
+ 		struct spp_port_ability **info)
+ {
+-	struct port_ability_mng_info *mng = NULL;
++	struct port_abl_info *mng = NULL;
+ 
+ 	switch (dir) {
+ 	case SPPWK_PORT_DIR_RX:
+@@ -97,7 +90,7 @@ add_vlantag_packet(
+ 	struct ether_hdr *old_ether = NULL;
+ 	struct ether_hdr *new_ether = NULL;
+ 	struct vlan_hdr  *vlan      = NULL;
+-	const struct spp_vlantag_info *vlantag = &data->vlantag;
++	const struct sppwk_vlan_tag *vlantag = &data->vlantag;
+ 
+ 	old_ether = rte_pktmbuf_mtod(pkt, struct ether_hdr *);
+ 	if (old_ether->ether_type == g_vlan_tpid) {
+@@ -208,7 +201,7 @@ spp_port_ability_change_index(
+ 	static int rx_list[RTE_MAX_ETHPORTS];
+ 	static int num_tx;
+ 	static int tx_list[RTE_MAX_ETHPORTS];
+-	struct port_ability_mng_info *mng = NULL;
++	struct port_abl_info *mng = NULL;
+ 
+ 	if (type == PORT_ABILITY_CHG_INDEX_UPD) {
+ 		switch (dir) {
+@@ -246,18 +239,16 @@ spp_port_ability_change_index(
+ 
+ /* Set ability data of port ability. */
+ static void
+-port_ability_set_ability(
+-		struct sppwk_port_info *port,
++port_ability_set_ability(struct sppwk_port_info *port,
+ 		enum sppwk_port_dir dir)
+ {
+ 	int in_cnt, out_cnt = 0;
+ 	int port_id = port->ethdev_port_id;
+-	struct port_ability_port_mng_info *port_mng =
+-						&g_port_mng_info[port_id];
+-	struct port_ability_mng_info *mng         = NULL;
+-	struct spp_port_ability      *in_ability  = port->ability;
+-	struct spp_port_ability      *out_ability = NULL;
+-	struct spp_vlantag_info      *tag         = NULL;
++	struct port_mng_info *port_mng = &g_port_mng_info[port_id];
++	struct port_abl_info *mng = NULL;
++	struct spp_port_ability *in_ability = port->ability;
++	struct spp_port_ability *out_ability = NULL;
++	struct sppwk_vlan_tag *tag = NULL;
+ 
+ 	port_mng->iface_type = port->iface_type;
+ 	port_mng->iface_no   = port->iface_no;
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.h b/src/shared/secondary/spp_worker_th/spp_port.h
+index 5cde7d2..a6fb313 100644
+--- a/src/shared/secondary/spp_worker_th/spp_port.h
++++ b/src/shared/secondary/spp_worker_th/spp_port.h
+@@ -19,11 +19,8 @@
+ 
+ /** Type for changing index. */
+ enum port_ability_chg_index_type {
+-	/** Type for changing index to reference area. */
+-	PORT_ABILITY_CHG_INDEX_REF,
+-
+-	/** Type for changing index to update area. */
+-	PORT_ABILITY_CHG_INDEX_UPD,
++	PORT_ABILITY_CHG_INDEX_REF,  /** To change index to reference area. */
++	PORT_ABILITY_CHG_INDEX_UPD,  /** To change index to update area. */
+ };
+ 
+ /** Initialize port ability. */
+@@ -32,12 +29,9 @@ void spp_port_ability_init(void);
+ /**
+  * Get information of port ability.
+  *
+- * @param port_id
+- *  The port identifier of the Ethernet device.
+- * @param rxtx
+- *  rx/tx identifier of port_id.
+- * @param info
+- *  Port ability information.
++ * @param port_id Etherdev ID.
++ * @param rxtx RX/TX ID of port_id.
++ * @param info Port ability information.
+  */
+ void spp_port_ability_get_info(
+ 		int port_id, enum sppwk_port_dir dir,
+@@ -46,12 +40,9 @@ void spp_port_ability_get_info(
+ /**
+  * Change index of management information.
+  *
+- * @param port_id
+- *  The port identifier of the Ethernet device.
+- * @param rxtx
+- *  rx/tx identifier of port_id.
+- * @param type
+- *  Type for changing index.
++ * @param port_id Etherdev ID.
++ * @param rxtx RX/TX ID of port_id.
++ * @param type Type for changing index.
+  */
+ void spp_port_ability_change_index(
+ 		enum port_ability_chg_index_type type,
+@@ -69,8 +60,7 @@ void spp_port_ability_update(const struct sppwk_comp_info *component);
+ /**
+  * Wrapper function for rte_eth_rx_burst().
+  *
+- * @param port_id
+- *  The port identifier of the Ethernet device.
++ * @param port_id Etherdev ID.
+  * @param queue_id
+  *  The index of the receive queue from which to retrieve input packets.
+  *  SPP is fixed at 0.
+@@ -91,8 +81,7 @@ uint16_t spp_eth_rx_burst(uint16_t port_id, uint16_t queue_id,
+ /**
+  * Wrapper function for rte_eth_tx_burst().
+  *
+- * @param port_id
+- *  The port identifier of the Ethernet device.
++ * @param port_id Etherdev ID.
+  * @param queue_id
+  *  The index of the transmit queue through which output packets must be sent.
+  *  SPP is fixed at 0.
+-- 
+2.17.1
+
+

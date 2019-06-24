@@ -1,0 +1,173 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b89155e20ff17e
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id w65sm1760073pfw.168.2019.06.24.03.43.26
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 03:43:27 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_nfv: remove global variable client_id
+Date: Mon, 24 Jun 2019 19:43:23 +0900
+Message-Id: <20190624104323.24923-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+`client_id` is defined as a global variable in `params.h`, but it is
+better to use get_client_id() instead. This update is to replace it.
+This update is also to make a change for formatter function
+`get_sec_stats_json()` which takes client ID as uint16_t, but
+get_client_id() returns the ID as int.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/commands.h   | 13 ++++++-------
+ src/nfv/main.c       |  8 ++++++--
+ src/nfv/nfv_status.c |  4 ++--
+ src/nfv/nfv_status.h |  2 +-
+ src/nfv/params.h     |  2 --
+ 5 files changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index c8f726f..708d084 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -152,6 +152,7 @@ static int
+ parse_command(char *str)
+ {
+ 	char *token_list[MAX_PARAMETER] = {NULL};
++	int cli_id;
+ 	int max_token = 0;
+ 	int ret = 0;
+ 
+@@ -174,11 +175,11 @@ parse_command(char *str)
+ 		RTE_LOG(DEBUG, SPP_NFV, "status\n");
+ 		memset(str, '\0', MSG_SIZE);
+ 		if (cmd == FORWARD)
+-			get_sec_stats_json(str, client_id, "running",
++			get_sec_stats_json(str, get_client_id(), "running",
+ 					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 		else
+-			get_sec_stats_json(str, client_id, "idling",
++			get_sec_stats_json(str, get_client_id(), "idling",
+ 					lcore_id_used,
+ 					ports_fwd_array, port_map);
+ 
+@@ -186,14 +187,12 @@ parse_command(char *str)
+ 		memset(str, '\0', MSG_SIZE);
+ 		sprintf(str, "{%s:%s,%s:%d,%s:%s}",
+ 				"\"results\"", "[{\"result\":\"success\"}]",
+-				"\"client_id\"", client_id,
++				"\"client_id\"", get_client_id(),
+ 				"\"process_type\"", "\"nfv\"");
+ 
+ 	} else if (!strcmp(token_list[0], "_set_client_id")) {
+-		int id;
+-
+-		if (spp_atoi(token_list[1], &id) >= 0)
+-			client_id = id;
++		if (spp_atoi(token_list[1], &cli_id) >= 0)
++			set_client_id(cli_id);
+ 
+ 	} else if (!strcmp(token_list[0], "exit")) {
+ 		RTE_LOG(DEBUG, SPP_NFV, "exit\n");
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index fbcef0c..ae4168c 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -12,6 +12,7 @@
+ #include <rte_log.h>
+ 
+ #include "shared/common.h"
++#include "shared/secondary/utils.h"
+ #include "shared/secondary/add_port.h"
+ 
+ #include "params.h"
+@@ -61,6 +62,7 @@ static int
+ parse_app_args(int argc, char *argv[])
+ {
+ 	int option_index, opt;
++	int cli_id;
+ 	char **argvopt = argv;
+ 	const char *progname = argv[0];
+ 	int ret;
+@@ -72,10 +74,11 @@ parse_app_args(int argc, char *argv[])
+ 			g_enable_vhost_cli = 1;
+ 			break;
+ 		case 'n':
+-			if (parse_num_clients(&client_id, optarg) != 0) {
++			if (parse_client_id(&cli_id, optarg) != 0) {
+ 				usage(progname);
+ 				return -1;
+ 			}
++			set_client_id(cli_id);
+ 			break;
+ 		case 's':
+ 			ret = parse_server(&server_ip, &server_port, optarg);
+@@ -259,7 +262,8 @@ main(int argc, char *argv[])
+ 		rte_eal_remote_launch(main_loop, NULL, lcore_id);
+ 	}
+ 
+-	RTE_LOG(INFO, SPP_NFV, "My ID %d start handling message\n", client_id);
++	RTE_LOG(INFO, SPP_NFV, "My ID %d start handling message\n",
++			get_client_id());
+ 	RTE_LOG(INFO, SPP_NFV, "[Press Ctrl-C to quit ...]\n");
+ 
+ 	/* send and receive msg loop */
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index 7e3dbd4..c40d0b4 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -26,13 +26,13 @@
+  *   }
+  */
+ void
+-get_sec_stats_json(char *str, uint16_t client_id,
++get_sec_stats_json(char *str, int cli_id,
+ 		const char *running_stat,
+ 		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+ 		struct port_map *port_map)
+ {
+-	sprintf(str, "{\"client-id\":%d,", client_id);
++	sprintf(str, "{\"client-id\":%d,", cli_id);
+ 
+ 	sprintf(str + strlen(str), "\"status\":");
+ 	sprintf(str + strlen(str), "\"%s\",", running_stat);
+diff --git a/src/nfv/nfv_status.h b/src/nfv/nfv_status.h
+index ef9cd00..14225cc 100644
+--- a/src/nfv/nfv_status.h
++++ b/src/nfv/nfv_status.h
+@@ -6,7 +6,7 @@
+ #define _NFV_STATUS_H_
+ 
+ /* Get status of spp_nfv or spp_vm as JSON format. */
+-void get_sec_stats_json(char *str, uint16_t client_id,
++void get_sec_stats_json(char *str, int client_id,
+ 		const char *running_stat,
+ 		uint8_t lcore_id_used[RTE_MAX_LCORE],
+ 		struct port *ports_fwd_array,
+diff --git a/src/nfv/params.h b/src/nfv/params.h
+index aa9c720..9ddf79d 100644
+--- a/src/nfv/params.h
++++ b/src/nfv/params.h
+@@ -23,8 +23,6 @@ struct porttype_map portmap[] = {
+ 
+ static struct port ports_fwd_array[RTE_MAX_ETHPORTS];
+ 
+-static uint16_t client_id;
+-
+ /* the port details */
+ struct port_info *ports;
+ 
+-- 
+2.17.1
+
+

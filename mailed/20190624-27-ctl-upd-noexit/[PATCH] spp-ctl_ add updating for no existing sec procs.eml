@@ -1,0 +1,96 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b89172cb72ee69
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id v13sm11502011pfe.105.2019.06.24.03.45.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 03:45:25 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp-ctl: add updating for no existing sec procs
+Date: Mon, 24 Jun 2019 19:45:22 +0900
+Message-Id: <20190624104522.25087-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+If secondary process is died, spp-ctl cannot find the event and does
+not update list of secondary processes. As the result, spp-ctl returns
+an invalid message for inquiring status.
+
+This update is to add a method _update_proc() for updating the list run
+before making the result message. In the method, spp-ctl tries to
+retrieve status of all processes and remove entries of the list if it
+is failed.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/spp-ctl/spp_ctl.py | 37 +++++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index ce1a2e2..93b87dd 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -118,13 +118,17 @@ class Controller(object):
+ 
+     @staticmethod
+     def _send_command(conn, command):
+-        conn.sendall(command.encode())
+-        data = conn.recv(MSG_SIZE)
+-        if data and len(data) == MSG_SIZE:
+-            # could not receive data at once. recieve remining data.
+-            data += self._continue_recv(conn)
+-        if data:
+-            data = data.decode()
++        data = None
++        try:
++            conn.sendall(command.encode())
++            data = conn.recv(MSG_SIZE)
++            if data and len(data) == MSG_SIZE:
++                # could not receive data at once. recieve remining data.
++                data += self._continue_recv(conn)
++            if data:
++                data = data.decode()
++        except Exception as e:
++            LOG.info("Error: {}".format(e))
+         return data
+ 
+     def _get_proc(self, conn):
+@@ -137,9 +141,26 @@ class Controller(object):
+             if sec_id is not None:
+                 return proc(sec_id, conn)
+ 
++    def _update_procs(self):
++        """Remove no existing processes from `self.procs`."""
++        removed_ids = []
++        for idx, proc in self.procs.items():
++            if proc.id != spp_proc.ID_PRIMARY:
++                try:
++                    # Check the process can be accessed. If not, go
++                    # to except block.
++                    proc.get_status()
++                except Exception as e:
++                    LOG.error(e)
++                    removed_ids.append(idx)
++        for idx in removed_ids:
++            LOG.info("Remove no existing {}:{}.".format(
++                self.procs[idx].type, self.procs[idx].id))
++            del self.procs[idx]
++
+     def get_processes(self):
+         procs = []
+-        LOG.info('get_proesses: {}'.format(self.procs.values()))
++        self._update_procs()
+         for proc in self.procs.values():
+             p = {"type": proc.type}
+             if proc.id != spp_proc.ID_PRIMARY:
+-- 
+2.17.1
+
+
