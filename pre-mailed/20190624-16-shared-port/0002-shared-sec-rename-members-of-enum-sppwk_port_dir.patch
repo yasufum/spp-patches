@@ -1,0 +1,246 @@
+From d05ab48fbbb8505da3d1fbd8af9ce35feab50f54 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 16 Jun 2019 13:26:22 +0900
+Subject: [PATCH 2/3] shared/sec: rename members of enum sppwk_port_dir
+
+This update is to rename members of enum `sppwk_port_dir` such as
+`SPP_PORT_RXTX_RX` to `SPPWK_PORT_DIR_RX` or so.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c                   |  4 ++--
+ .../secondary/spp_worker_th/cmd_parser.c      |  4 ++--
+ .../spp_worker_th/cmd_res_formatter.c         |  4 ++--
+ .../secondary/spp_worker_th/cmd_utils.c       | 12 +++++------
+ .../secondary/spp_worker_th/cmd_utils.h       |  8 ++++----
+ src/shared/secondary/spp_worker_th/spp_port.c | 20 +++++++++----------
+ src/vf/vf_cmd_runner.c                        |  6 +++---
+ 7 files changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index eda4d1a..312ded5 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -111,7 +111,7 @@ check_mir_port_count(enum sppwk_port_dir dir, int nof_rx, int nof_tx)
+ {
+ 	RTE_LOG(INFO, MIR_CMD_RUNNER, "port count, port_type=%d,"
+ 				" rx=%d, tx=%d\n", dir, nof_rx, nof_tx);
+-	if (dir == SPP_PORT_RXTX_RX)
++	if (dir == SPPWK_PORT_DIR_RX)
+ 		nof_rx++;
+ 	else
+ 		nof_tx++;
+@@ -155,7 +155,7 @@ update_port(enum sppwk_action wk_action,
+ 			&comp_info_base, NULL, NULL, &change_component, NULL);
+ 	comp_info = (comp_info_base + comp_lcore_id);
+ 	port_info = get_sppwk_port(port->iface_type, port->iface_no);
+-	if (dir == SPP_PORT_RXTX_RX) {
++	if (dir == SPPWK_PORT_DIR_RX) {
+ 		nof_ports = &comp_info->nof_rx;
+ 		ports = comp_info->rx_ports;
+ 	} else {
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index c1b311c..10d46d8 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -462,10 +462,10 @@ parse_port(void *output, const char *arg_val, int allow_override)
+ 		if ((port->wk_action == SPPWK_ACT_ADD) &&
+ 				(spp_check_used_port(tmp_port.iface_type,
+ 						tmp_port.iface_no,
+-						SPP_PORT_RXTX_RX) >= 0) &&
++						SPPWK_PORT_DIR_RX) >= 0) &&
+ 				(spp_check_used_port(tmp_port.iface_type,
+ 						tmp_port.iface_no,
+-						SPP_PORT_RXTX_TX) >= 0)) {
++						SPPWK_PORT_DIR_TX) >= 0)) {
+ 			RTE_LOG(ERR, WK_CMD_PARSER,
+ 				"Port `%s` is already used.\n",
+ 				arg_val);
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index a174890..3c2c3a6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -345,12 +345,12 @@ append_core_element_value(
+ 
+ 	if (unuse_flg) {
+ 		ret = append_port_array("rx_port", &tmp_buff,
+-				num_rx, rx_ports, SPP_PORT_RXTX_RX);
++				num_rx, rx_ports, SPPWK_PORT_DIR_RX);
+ 		if (unlikely(ret < 0))
+ 			return ret;
+ 
+ 		ret = append_port_array("tx_port", &tmp_buff,
+-				num_tx, tx_ports, SPP_PORT_RXTX_TX);
++				num_tx, tx_ports, SPPWK_PORT_DIR_TX);
+ 		if (unlikely(ret < SPP_RET_OK))
+ 			return ret;
+ 	}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 4f80b2e..d21c23a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -678,10 +678,10 @@ spp_check_used_port(
+ 		if (component->wk_type == SPPWK_TYPE_NONE)
+ 			continue;
+ 
+-		if (dir == SPP_PORT_RXTX_RX) {
++		if (dir == SPPWK_PORT_DIR_RX) {
+ 			max = component->nof_rx;
+ 			port_array = component->rx_ports;
+-		} else if (dir == SPP_PORT_RXTX_TX) {
++		} else if (dir == SPPWK_PORT_DIR_TX) {
+ 			max = component->nof_tx;
+ 			port_array = component->tx_ports;
+ 		}
+@@ -700,16 +700,16 @@ set_component_change_port(struct sppwk_port_info *port,
+ 		enum sppwk_port_dir dir)
+ {
+ 	int ret = 0;
+-	if ((dir == SPP_PORT_RXTX_RX) || (dir == SPP_PORT_RXTX_ALL)) {
++	if ((dir == SPPWK_PORT_DIR_RX) || (dir == SPPWK_PORT_DIR_BOTH)) {
+ 		ret = spp_check_used_port(port->iface_type, port->iface_no,
+-				SPP_PORT_RXTX_RX);
++				SPPWK_PORT_DIR_RX);
+ 		if (ret >= 0)
+ 			*(g_mng_data.p_change_component + ret) = 1;
+ 	}
+ 
+-	if ((dir == SPP_PORT_RXTX_TX) || (dir == SPP_PORT_RXTX_ALL)) {
++	if ((dir == SPPWK_PORT_DIR_TX) || (dir == SPPWK_PORT_DIR_BOTH)) {
+ 		ret = spp_check_used_port(port->iface_type, port->iface_no,
+-				SPP_PORT_RXTX_TX);
++				SPPWK_PORT_DIR_TX);
+ 		if (ret >= 0)
+ 			*(g_mng_data.p_change_component + ret) = 1;
+ 	}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index e08e4fb..b15b40a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -97,10 +97,10 @@ enum spp_classifier_type {
+ 
+ /* Direction of RX or TX on a port. */
+ enum sppwk_port_dir {
+-	SPP_PORT_RXTX_NONE, /**< none */
+-	SPP_PORT_RXTX_RX,   /**< rx port */
+-	SPP_PORT_RXTX_TX,   /**< tx port */
+-	SPP_PORT_RXTX_ALL,  /**< rx/tx port */
++	SPPWK_PORT_DIR_NONE,  /**< None */
++	SPPWK_PORT_DIR_RX,    /**< RX port */
++	SPPWK_PORT_DIR_TX,    /**< TX port */
++	SPPWK_PORT_DIR_BOTH,  /**< Both of RX and TX */
+ };
+ 
+ /**
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+index 7ac6858..b0a29f7 100644
+--- a/src/shared/secondary/spp_worker_th/spp_port.c
++++ b/src/shared/secondary/spp_worker_th/spp_port.c
+@@ -66,10 +66,10 @@ spp_port_ability_get_info(
+ 	struct port_ability_mng_info *mng = NULL;
+ 
+ 	switch (dir) {
+-	case SPP_PORT_RXTX_RX:
++	case SPPWK_PORT_DIR_RX:
+ 		mng = &g_port_mng_info[port_id].rx;
+ 		break;
+-	case SPP_PORT_RXTX_TX:
++	case SPPWK_PORT_DIR_TX:
+ 		mng = &g_port_mng_info[port_id].tx;
+ 		break;
+ 	default:
+@@ -213,12 +213,12 @@ spp_port_ability_change_index(
+ 
+ 	if (type == PORT_ABILITY_CHG_INDEX_UPD) {
+ 		switch (dir) {
+-		case SPP_PORT_RXTX_RX:
++		case SPPWK_PORT_DIR_RX:
+ 			mng = &g_port_mng_info[port_id].rx;
+ 			mng->upd_index = mng->ref_index;
+ 			rx_list[num_rx++] = port_id;
+ 			break;
+-		case SPP_PORT_RXTX_TX:
++		case SPPWK_PORT_DIR_TX:
+ 			mng = &g_port_mng_info[port_id].tx;
+ 			mng->upd_index = mng->ref_index;
+ 			tx_list[num_tx++] = port_id;
+@@ -264,10 +264,10 @@ port_ability_set_ability(
+ 	port_mng->iface_no   = port->iface_no;
+ 
+ 	switch (dir) {
+-	case SPP_PORT_RXTX_RX:
++	case SPPWK_PORT_DIR_RX:
+ 		mng = &port_mng->rx;
+ 		break;
+-	case SPP_PORT_RXTX_TX:
++	case SPPWK_PORT_DIR_TX:
+ 		mng = &port_mng->tx;
+ 		break;
+ 	default:
+@@ -312,12 +312,12 @@ spp_port_ability_update(const struct sppwk_comp_info *component)
+ 	struct sppwk_port_info *port = NULL;
+ 	for (cnt = 0; cnt < component->nof_rx; cnt++) {
+ 		port = component->rx_ports[cnt];
+-		port_ability_set_ability(port, SPP_PORT_RXTX_RX);
++		port_ability_set_ability(port, SPPWK_PORT_DIR_RX);
+ 	}
+ 
+ 	for (cnt = 0; cnt < component->nof_tx; cnt++) {
+ 		port = component->tx_ports[cnt];
+-		port_ability_set_ability(port, SPP_PORT_RXTX_TX);
++		port_ability_set_ability(port, SPPWK_PORT_DIR_TX);
+ 	}
+ }
+ 
+@@ -384,7 +384,7 @@ spp_eth_rx_burst(
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ 	return port_ability_each_operation(port_id, rx_pkts, nb_rx,
+-			SPP_PORT_RXTX_RX);
++			SPPWK_PORT_DIR_RX);
+ }
+ 
+ /* Wrapper function for rte_eth_tx_burst(). */
+@@ -395,7 +395,7 @@ spp_eth_tx_burst(
+ {
+ 	uint16_t nb_tx = 0;
+ 	nb_tx = port_ability_each_operation(port_id, tx_pkts, nb_pkts,
+-			SPP_PORT_RXTX_TX);
++			SPPWK_PORT_DIR_TX);
+ 	if (unlikely(nb_tx == 0))
+ 		return SPP_RET_OK;
+ 
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index 89cf12f..4a78ab2 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -107,7 +107,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 		strcpy(port_info->cls_attrs.mac_addr_str, mac_str);
+ 	}
+ 
+-	set_component_change_port(port_info, SPP_PORT_RXTX_TX);
++	set_component_change_port(port_info, SPPWK_PORT_DIR_TX);
+ 	return SPP_RET_OK;
+ }
+ 
+@@ -214,7 +214,7 @@ check_vf_port_count(int component_type, enum sppwk_port_dir dir,
+ {
+ 	RTE_LOG(INFO, VF_CMD_RUNNER, "port count, port_type=%d,"
+ 				" rx=%d, tx=%d\n", dir, nof_rx, nof_tx);
+-	if (dir == SPP_PORT_RXTX_RX)
++	if (dir == SPPWK_PORT_DIR_RX)
+ 		nof_rx++;
+ 	else
+ 		nof_tx++;
+@@ -276,7 +276,7 @@ update_port(enum sppwk_action wk_action,
+ 			&comp_info_base, NULL, NULL, &change_component, NULL);
+ 	comp_info = (comp_info_base + comp_lcore_id);
+ 	port_info = get_sppwk_port(port->iface_type, port->iface_no);
+-	if (dir == SPP_PORT_RXTX_RX) {
++	if (dir == SPPWK_PORT_DIR_RX) {
+ 		nof_ports = &comp_info->nof_rx;
+ 		ports = comp_info->rx_ports;
+ 	} else {
+-- 
+2.17.1
+
