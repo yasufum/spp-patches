@@ -1,0 +1,48 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88258f53ba1ca
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id u20sm9832860pfm.145.2019.06.23.23.21.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 23:21:31 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: fix comment of order of port ability
+Date: Mon, 24 Jun 2019 15:21:22 +0900
+Message-Id: <20190624062122.22399-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+The order of members of enum `sppwk_port_abl_ops` should be the same as
+`PORT_ABILITY_STAT_LIST` and it is described as comment, but the name of
+enum is different. This update is to correct the name to
+`sppwk_port_abl_ops`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_res_formatter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index 21024b9..9c0c873 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -35,7 +35,7 @@ const char *SPPWK_PROC_TYPE_LIST[] = {
+ 
+ /**
+  * List of port abilities. The order of items should be same as the order of
+- * enum `spp_port_ability_type` in spp_vf.h.
++ * enum `sppwk_port_abl_ops` in spp_vf.h.
+  */
+ const char *PORT_ABILITY_STAT_LIST[] = {
+ 	"none",
+-- 
+2.17.1
+
+
