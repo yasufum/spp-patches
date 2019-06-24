@@ -1,0 +1,245 @@
+From 50168ffcdce9e3f65126e66b40b8fef13bc01d37 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 4 Jun 2019 20:22:06 +0900
+Subject: [PATCH 4/5] shared/sec: rename defines for length of str
+
+This update is to rename `SPP_MIN_STR_LEN` to `STR_LEN_SHORT` because it
+is used not for the minimum length but for just comparably short length
+of strings. It also renames `SPP_NAME_STR_LEN` to `STR_LEN_NAME` used
+for size of names of component or interfaces.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                         |  4 ++--
+ src/shared/secondary/spp_worker_th/cmd_runner.c |  7 +++----
+ src/shared/secondary/spp_worker_th/cmd_utils.c  |  8 ++++----
+ src/shared/secondary/spp_worker_th/cmd_utils.h  | 17 ++++++-----------
+ src/shared/secondary/spp_worker_th/vf_deps.h    | 15 ++++-----------
+ src/vf/classifier_mac.c                         |  6 +++---
+ src/vf/spp_forward.c                            |  4 ++--
+ 7 files changed, 24 insertions(+), 37 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index d5abf7b..b68eccc 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -35,7 +35,7 @@ struct mirror_rxtx {
+ 
+ /* Information on the path used for mirror. */
+ struct mirror_path {
+-	char name[SPP_NAME_STR_LEN];  /* component name */
++	char name[STR_LEN_NAME];  /* component name */
+ 	volatile enum sppwk_worker_type wk_type;
+ 	int nof_rx;  /* number of receive ports */
+ 	int nof_tx;  /* number of mirror ports */
+@@ -310,7 +310,7 @@ spp_mirror_update(struct sppwk_comp_info *component)
+ 			component->name,
+ 			component->wk_type);
+ 
+-	memcpy(&path->name, component->name, SPP_NAME_STR_LEN);
++	memcpy(&path->name, component->name, STR_LEN_NAME);
+ 	path->wk_type = component->wk_type;
+ 	path->nof_rx = component->nof_rx;
+ 	path->nof_tx = component->nof_tx;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 1d1ec49..9235857 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -174,8 +174,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 		/* Initialize deleted attributes again. */
+ 		port_info->cls_attrs.vlantag.vid = ETH_VLAN_ID_MAX;
+ 		port_info->cls_attrs.mac_addr = 0;
+-		memset(port_info->cls_attrs.mac_addr_str, 0x00,
+-							SPP_MIN_STR_LEN);
++		memset(port_info->cls_attrs.mac_addr_str, 0x00, STR_LEN_SHORT);
+ 	} else if (wk_action == SPPWK_ACT_ADD) {
+ 		if (unlikely(port_info->cls_attrs.vlantag.vid !=
+ 				ETH_VLAN_ID_MAX)) {
+@@ -1236,7 +1235,7 @@ append_classifier_element_value(
+ 	int ret = SPP_RET_NG;
+ 	char *buff, *tmp_buff;
+ 	char port_str[CMD_TAG_APPEND_SIZE];
+-	char value_str[SPP_MIN_STR_LEN];
++	char value_str[STR_LEN_SHORT];
+ 	buff = params->output;
+ 	tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+@@ -1253,7 +1252,7 @@ append_classifier_element_value(
+ 	if (unlikely(ret < SPP_RET_OK))
+ 		return ret;
+ 
+-	memset(value_str, 0x00, SPP_MIN_STR_LEN);
++	memset(value_str, 0x00, STR_LEN_SHORT);
+ 	switch (type) {
+ 	case SPP_CLASSIFIER_TYPE_MAC:
+ 		sprintf(value_str, "%s", mac);
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index c519624..ae6be1a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -282,7 +282,7 @@ get_sppwk_port(enum port_type iface_type, int iface_no)
+ void
+ log_core_info(const struct core_mng_info *core_info)
+ {
+-	char str[SPP_NAME_STR_LEN];
++	char str[STR_LEN_NAME];
+ 	const struct core_mng_info *info = NULL;
+ 	unsigned int lcore_id = 0;
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+@@ -291,7 +291,7 @@ log_core_info(const struct core_mng_info *core_info)
+ 				lcore_id, info->status,
+ 				info->ref_index, info->upd_index);
+ 
+-		memset(str, 0x00, SPP_NAME_STR_LEN);
++		memset(str, 0x00, STR_LEN_NAME);
+ 		log_hexdumped(str, info->core[0].id,
+ 				sizeof(int)*info->core[0].num);
+ 
+@@ -305,7 +305,7 @@ log_core_info(const struct core_mng_info *core_info)
+ void
+ log_component_info(const struct sppwk_comp_info *comp_info)
+ {
+-	char str[SPP_NAME_STR_LEN];
++	char str[STR_LEN_NAME];
+ 	const struct sppwk_comp_info *tmp_ci = NULL;
+ 	int cnt = 0;
+ 	for (cnt = 0; cnt < RTE_MAX_LCORE; cnt++) {
+@@ -945,7 +945,7 @@ sppwk_convert_mac_str_to_int64(const char *macaddr)
+ 	int64_t ret_mac = 0;
+ 	int64_t token_val = 0;
+ 	int token_cnt = 0;
+-	char tmp_mac[SPP_MIN_STR_LEN];
++	char tmp_mac[STR_LEN_SHORT];
+ 	char *str = tmp_mac;
+ 	char *saveptr = NULL;
+ 	char *endptr = NULL;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index b6c2542..ed46370 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -33,17 +33,12 @@
+ /** Update wait timer (micro sec) */
+ #define SPP_CHANGE_UPDATE_INTERVAL 10
+ 
+-/** The max number of buffer for management */
+-#define SPP_INFO_AREA_MAX 2
++#define SPP_INFO_AREA_MAX 2  /* The max number of buffer for management */
+ 
+-/** The length of shortest character string */
+-#define SPP_MIN_STR_LEN   32
++#define STR_LEN_SHORT 32  /* Size of short string. */
++#define STR_LEN_NAME 128  /* Size of string for names. */
+ 
+-/** The length of NAME string */
+-#define SPP_NAME_STR_LEN  128
+-
+-/** Maximum number of port abilities available */
+-#define SPP_PORT_ABILITY_MAX 4
++#define SPP_PORT_ABILITY_MAX 4  /* Max num of port abilities. */
+ 
+ /** Number of VLAN ID */
+ #define SPP_NUM_VLAN_VID 4096
+@@ -175,7 +170,7 @@ struct spp_port_ability {
+ /* Attributes for classifying. */
+ struct sppwk_cls_attrs {
+ 	uint64_t mac_addr;  /**< Mac address (binary) */
+-	char mac_addr_str[SPP_MIN_STR_LEN];  /**< Mac address (text) */
++	char mac_addr_str[STR_LEN_SHORT];  /**< Mac address (text) */
+ 	struct spp_vlantag_info vlantag;   /**< VLAN tag information */
+ };
+ 
+@@ -199,7 +194,7 @@ struct sppwk_port_info {
+ 
+ /* Attributes of SPP worker thread named as `component`. */
+ struct sppwk_comp_info {
+-	char name[SPP_NAME_STR_LEN];  /**< Component name */
++	char name[STR_LEN_NAME];  /**< Component name */
+ 	enum sppwk_worker_type wk_type;  /**< Type of worker thread */
+ 	unsigned int lcore_id;
+ 	int comp_id;  /**< Component ID */
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 6d857d2..fe03490 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -50,21 +50,14 @@ struct classified_data {
+ 
+ /* classifier component information */
+ struct component_info {
+-	/* component name */
+-	char name[SPP_NAME_STR_LEN];
+-
+-	/* mac address entry flag */
+-	int mac_addr_entry;
++	char name[STR_LEN_NAME];  /* component name */
++	int mac_addr_entry;  /* mac address entry flag */
+ 
+ 	/* mac address classification per vlan-id */
+ 	struct mac_classification *mac_classifications[SPP_NUM_VLAN_VID];
+ 
+-	/* number of transmission ports */
+-	int n_classified_data_tx;
+-
+-	/* receive port handled by classifier */
+-	struct classified_data classified_data_rx;
+-
++	int n_classified_data_tx;  /* number of transmission ports */
++	struct classified_data classified_data_rx;  /* RX handled by cls */
+ 	/* transmission ports handled by classifier */
+ 	struct classified_data classified_data_tx[RTE_MAX_ETHPORTS];
+ };
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index b5260b0..8f9c0f5 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -187,7 +187,7 @@ log_classification(
+ 	struct ether_hdr *eth;
+ 	uint16_t vid;
+ 	char mac_addr_str[2][ETHER_ADDR_STR_BUF_SZ];
+-	char iface_str[SPP_NAME_STR_LEN];
++	char iface_str[STR_LEN_NAME];
+ 
+ 	eth = rte_pktmbuf_mtod(pkt, struct ether_hdr *);
+ 	vid = get_vid(pkt);
+@@ -232,7 +232,7 @@ log_entry(
+ 		const char *func_name,
+ 		int line_num)
+ {
+-	char iface_str[SPP_NAME_STR_LEN];
++	char iface_str[STR_LEN_NAME];
+ 
+ 	if (clsd_idx < 0)
+ 		snprintf(iface_str, sizeof(iface_str), "%ld", clsd_idx);
+@@ -720,7 +720,7 @@ spp_classifier_mac_update(struct sppwk_comp_info *component_info)
+ 				"Cannot update classifier mac. ret=%d\n", ret);
+ 		return ret;
+ 	}
+-	memcpy(cmp_info->name, component_info->name, SPP_NAME_STR_LEN);
++	memcpy(cmp_info->name, component_info->name, STR_LEN_NAME);
+ 
+ 	/* change index of reference side */
+ 	mng_info->upd_index = mng_info->ref_index;
+diff --git a/src/vf/spp_forward.c b/src/vf/spp_forward.c
+index 71859e6..668b31c 100644
+--- a/src/vf/spp_forward.c
++++ b/src/vf/spp_forward.c
+@@ -19,7 +19,7 @@ struct forward_rxtx {
+ 
+ /* Information on the path used for forward. */
+ struct forward_path {
+-	char name[SPP_NAME_STR_LEN];    /* component name          */
++	char name[STR_LEN_NAME];    /* component name */
+ 	volatile enum sppwk_worker_type wk_type;
+ 	int num_rx;                     /* number of receive ports */
+ 	int num_tx;                     /* number of trans ports   */
+@@ -86,7 +86,7 @@ spp_forward_update(struct sppwk_comp_info *component)
+ 			component->name,
+ 			component->wk_type);
+ 
+-	memcpy(&path->name, component->name, SPP_NAME_STR_LEN);
++	memcpy(&path->name, component->name, STR_LEN_NAME);
+ 	path->wk_type = component->wk_type;
+ 	path->num_rx = component->nof_rx;
+ 	path->num_tx = component->nof_tx;
+-- 
+2.17.1
+
