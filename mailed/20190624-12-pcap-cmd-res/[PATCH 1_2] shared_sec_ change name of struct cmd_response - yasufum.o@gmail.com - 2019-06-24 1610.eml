@@ -1,0 +1,122 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b8852d52fe737f
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 3sm10703610pfp.114.2019.06.24.00.10.57
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 00:10:58 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] shared/sec: change name of struct cmd_response
+Date: Mon, 24 Jun 2019 16:10:50 +0900
+Message-Id: <20190624071051.23342-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624071051.23342-1-yasufum.o@gmail.com>
+References: <20190624071051.23342-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to rename struct `cmd_response` to
+`cmd_res_formatter_ops` because it is a set of tag and operation
+function for parsing command.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../secondary/spp_worker_th/cmd_res_formatter.c     | 13 ++++++-------
+ .../secondary/spp_worker_th/cmd_res_formatter.h     | 11 +++++------
+ 2 files changed, 11 insertions(+), 13 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index e4912d6..8d64c21 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -49,7 +49,7 @@ const char *PORT_ABILITY_STAT_LIST[] = {
+ };
+ 
+ /* command response result string list */
+-struct cmd_response response_result_list[] = {
++struct cmd_res_formatter_ops response_result_list[] = {
+ 	{ "result", append_result_value },
+ 	{ "error_details", append_error_details_value },
+ 	{ "", NULL }
+@@ -67,7 +67,7 @@ struct cmd_response response_result_list[] = {
+  *                 "core": 2,
+  *                 ...
+  */
+-struct cmd_response response_info_list[] = {
++struct cmd_res_formatter_ops response_info_list[] = {
+ 	{ "client-id", add_client_id },
+ 	{ "phy", add_interface },
+ 	{ "vhost", add_interface },
+@@ -392,8 +392,8 @@ append_core_element_value(
+ 
+ /* append string of command response list for JSON format */
+ int
+-append_response_list_value(char **output, struct cmd_response *responses,
+-		void *tmp)
++append_response_list_value(char **output,
++		struct cmd_res_formatter_ops *responses, void *tmp)
+ {
+ 	int ret = SPP_RET_NG;
+ 	int i;
+@@ -559,8 +559,8 @@ wk_get_client_id(void)
+ 
+ /**
+  * Operator functions start with prefix `add_` defined in `response_info_list`
+- * of struct `cmd_response` which are for making each of parts of command
+- * response.
++ * of struct `cmd_res_formatter_ops` which are for making each of parts of
++ * command response.
+  */
+ 
+ /* Add entry of client ID such as `"client-id": 1` to a response in JSON. */
+@@ -614,4 +614,3 @@ add_master_lcore(const char *name, char **output,
+ 	ret = append_json_int_value(output, name, rte_get_master_lcore());
+ 	return ret;
+ }
+-
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+index 6ae2c5d..b1de209 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+@@ -26,8 +26,7 @@ struct cmd_result {
+  * Contains command response and operator func for. It is used as an array of
+  * this struct.
+  */
+-/* TODO(yasufum) add comment describes the purpose of this struct is used. */
+-struct cmd_response {
++struct cmd_res_formatter_ops {
+ 	char tag_name[CMD_RES_TAG_LEN];
+ 	int (*func)(const char *name, char **output, void *tmp);
+ };
+@@ -56,8 +55,8 @@ int append_core_element_value(struct spp_iterate_core_params *params,
+ 		const int num_rx, const struct sppwk_port_idx *rx_ports,
+ 		const int num_tx, const struct sppwk_port_idx *tx_ports);
+ 
+-int append_response_list_value(char **output, struct cmd_response *responses,
+-		void *tmp);
++int append_response_list_value(char **output,
++		struct cmd_res_formatter_ops *responses, void *tmp);
+ 
+ int append_command_results_value(const char *name, char **output,
+ 		int num, struct cmd_result *results);
+@@ -66,8 +65,8 @@ int append_info_value(const char *name, char **output);
+ 
+ /**
+  * Operator functions start with prefix `add_` defined in `response_info_list`
+- * of struct `cmd_response` which are for making each of parts of command
+- * response.
++ * of struct `cmd_res_formatter_ops` which are for making each of parts of
++ * command response.
+  */
+ int add_client_id(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)));
+-- 
+2.17.1
+
+
