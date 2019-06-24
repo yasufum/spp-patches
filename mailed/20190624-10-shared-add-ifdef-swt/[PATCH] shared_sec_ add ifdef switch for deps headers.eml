@@ -1,0 +1,143 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b882676f279608
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id j1sm1126788pfa.73.2019.06.23.23.22.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 23:22:30 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: add ifdef switch for deps headers
+Date: Mon, 24 Jun 2019 15:22:25 +0900
+Message-Id: <20190624062225.22666-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to switch `vf_deps.h` and `mirror_deps.h` in shared dir
+for compiling each of worker processes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c    |  8 +++++++-
+ .../secondary/spp_worker_th/cmd_res_formatter.c    |  8 +++++++-
+ src/shared/secondary/spp_worker_th/cmd_runner.c    | 14 ++++++++++----
+ src/shared/secondary/spp_worker_th/cmd_utils.c     | 10 ++++++++--
+ src/shared/secondary/spp_worker_th/vf_deps.h       |  1 +
+ 5 files changed, 33 insertions(+), 8 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index fcec28b..5a2fb82 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -10,9 +10,15 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_parser.h"
++#include "shared/secondary/return_codes.h"
++
++#ifdef SPP_VF_MODULE
+ #include "vf_deps.h"
++#endif
++
++#ifdef SPP_MIRROR_MODULE
+ #include "mirror_deps.h"
+-#include "shared/secondary/return_codes.h"
++#endif
+ 
+ #define RTE_LOGTYPE_WK_CMD_PARSER RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index bfe13e5..f389939 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -4,9 +4,15 @@
+ 
+ #include "cmd_res_formatter.h"
+ #include "cmd_utils.h"
++#include "shared/secondary/json_helper.h"
++
++#ifdef SPP_VF_MODULE
+ #include "vf_deps.h"
++#endif
++
++#ifdef SPP_MIRROR_MODULE
+ #include "mirror_deps.h"
+-#include "shared/secondary/json_helper.h"
++#endif
+ 
+ #define RTE_LOGTYPE_WK_CMD_RES_FMT RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 68436f3..3684a2c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -9,14 +9,20 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_runner.h"
+-#include "vf_deps.h"
+-#include "mirror_deps.h"
+ #include "spp_port.h"
+-#include "shared/secondary/string_buffer.h"
+-#include "shared/secondary/json_helper.h"
+ #include "cmd_res_formatter.h"
+ #include "conn_spp_ctl.h"
+ #include "cmd_parser.h"
++#include "shared/secondary/string_buffer.h"
++#include "shared/secondary/json_helper.h"
++
++#ifdef SPP_VF_MODULE
++#include "vf_deps.h"
++#endif
++
++#ifdef SPP_MIRROR_MODULE
++#include "mirror_deps.h"
++#endif
+ 
+ #define RTE_LOGTYPE_WK_CMD_RUNNER RTE_LOGTYPE_USER1
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 5a089c6..e61f59c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -11,12 +11,18 @@
+ #include <rte_log.h>
+ #include <rte_branch_prediction.h>
+ 
+-#include "vf_deps.h"
+-#include "mirror_deps.h"
+ #include "shared/secondary/return_codes.h"
+ #include "cmd_utils.h"
+ #include "spp_port.h"
+ 
++#ifdef SPP_VF_MODULE
++#include "vf_deps.h"
++#endif
++
++#ifdef SPP_MIRROR_MODULE
++#include "mirror_deps.h"
++#endif
++
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 81fc18f..7d77e87 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -101,4 +101,5 @@ int add_classifier_table_val(
+ int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
+ 
+ enum sppwk_worker_type get_comp_type_from_str(const char *type_str);
++
+ #endif  /* _SPPWK_TH_VF_DEPS_H_ */
+-- 
+2.17.1
+
+
