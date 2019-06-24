@@ -1,0 +1,126 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88b2702989fdf
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 5sm10115646pfh.109.2019.06.24.01.55.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 01:55:24 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: rename enum spp_secondary
+Date: Mon, 24 Jun 2019 17:55:20 +0900
+Message-Id: <20190624085520.23929-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to rename enum `spp_secondary` to `sppwk_proc_type` and
+its members start with `SECONDARY_` to `WK_PROC_`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                              |  4 ++--
+ .../secondary/spp_worker_th/cmd_res_formatter.c      |  4 ++--
+ src/shared/secondary/spp_worker_th/cmd_utils.h       | 12 ++++++------
+ src/vf/spp_vf.c                                      |  4 ++--
+ 4 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 2cae48a..cb76005 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -216,12 +216,12 @@ parse_app_args(int argc, char *argv[])
+ 		usage(progname);
+ 		return SPP_RET_NG;
+ 	}
+-	g_startup_param.secondary_type = SECONDARY_TYPE_MIRROR;
++	g_startup_param.wk_proc_type = WK_PROC_TYPE_MIRROR;
+ 	RTE_LOG(INFO, MIRROR,
+ 			"app opts (client_id=%d,type=%d,"
+ 			"server=%s:%d,vhost_client=%d,)\n",
+ 			g_startup_param.client_id,
+-			g_startup_param.secondary_type,
++			g_startup_param.wk_proc_type,
+ 			g_startup_param.server_ip,
+ 			g_startup_param.server_port,
+ 			g_startup_param.vhost_client);
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index 3c2c3a6..f51157a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -25,7 +25,7 @@ static int append_error_details_value(const char *name, char **output,
+  * List of worker process type. The order of items should be same as the order
+  * of enum `secondary_type` in cmd_utils.h.
+  */
+-/* TODO(yasufum) rename `secondary_type` to `sppwk_proc_type`. */
++/* TODO(yasufum) Add "pcap" after spp_pcap is made to use shared. */
+ const char *SPPWK_PROC_TYPE_LIST[] = {
+ 	"none",
+ 	"vf",
+@@ -128,7 +128,7 @@ get_wk_type(void)
+ {
+ 	struct startup_param *params;
+ 	sppwk_get_mng_data(&params, NULL, NULL, NULL, NULL, NULL, NULL);
+-	return params->secondary_type;
++	return params->wk_proc_type;
+ }
+ 
+ /* append a secondary process type for JSON format */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index b15b40a..4582a82 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -130,11 +130,11 @@ enum copy_mng_flg {
+ };
+ 
+ /* secondary process type used only from spp_vf and spp_mirror */
+-/* TODO(yasufum) rename `secondary_type` to `sppwk_proc_type`. */
+-enum secondary_type {
+-	SECONDARY_TYPE_NONE,
+-	SECONDARY_TYPE_VF,
+-	SECONDARY_TYPE_MIRROR,
++/* TODO(yasufum) Add WK_PROC_TYPE_PCAP. */
++enum sppwk_proc_type {
++	WK_PROC_TYPE_NONE,
++	WK_PROC_TYPE_VF,
++	WK_PROC_TYPE_MIRROR,
+ };
+ 
+ /** VLAN tag information */
+@@ -200,7 +200,7 @@ struct startup_param {
+ 	char server_ip[INET_ADDRSTRLEN];  /* IP address of spp-ctl */
+ 	int server_port;   /* Port Number of spp-ctl */
+ 	int vhost_client;  /* Flag for --vhost-client option */
+-	enum secondary_type secondary_type;
++	enum sppwk_proc_type wk_proc_type;
+ };
+ 
+ /* Manage number of interfaces  and port information as global variable. */
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 7ba894e..5bed735 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -172,12 +172,12 @@ parse_app_args(int argc, char *argv[])
+ 		usage(progname);
+ 		return SPP_RET_NG;
+ 	}
+-	g_startup_param.secondary_type = SECONDARY_TYPE_VF;
++	g_startup_param.wk_proc_type = WK_PROC_TYPE_VF;
+ 	RTE_LOG(INFO, APP,
+ 			"app opts (client_id=%d,type=%d,server=%s:%d,"
+ 			"vhost_client=%d)\n",
+ 			g_startup_param.client_id,
+-			g_startup_param.secondary_type,
++			g_startup_param.wk_proc_type,
+ 			g_startup_param.server_ip,
+ 			g_startup_param.server_port,
+ 			g_startup_param.vhost_client);
+-- 
+2.17.1
+
+
