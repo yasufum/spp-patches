@@ -1,0 +1,260 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b87c5724ad50bc
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id c10sm9005178pjq.14.2019.06.23.21.36.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 21:36:32 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 02/13] shared/sec: rename functions for spp_mirror
+Date: Mon, 24 Jun 2019 13:36:02 +0900
+Message-Id: <20190624043613.19271-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624043613.19271-1-yasufum.o@gmail.com>
+References: <20190624043613.19271-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Rename spp_mirror_get_component_status() to get_mirror_status(), and
+spp_mirror_update() to update_mirror(). This update also revises
+comments for the functions.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                       | 72 ++++++++-----------
+ .../secondary/spp_worker_th/cmd_runner.c      |  6 +-
+ .../secondary/spp_worker_th/cmd_utils.c       |  2 +-
+ .../secondary/spp_worker_th/mirror_deps.h     | 33 ++++-----
+ src/shared/secondary/spp_worker_th/vf_deps.h  |  2 +-
+ 5 files changed, 47 insertions(+), 68 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index f62ae7e..c2ec09d 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -277,50 +277,45 @@ mirror_proc_init(void)
+ 
+ /* Update mirror info */
+ int
+-spp_mirror_update(struct sppwk_comp_info *component)
++update_mirror(struct sppwk_comp_info *wk_comp)
+ {
+ 	int cnt = 0;
+-	int num_rx = component->nof_rx;
+-	int num_tx = component->nof_tx;
+-	struct mirror_info *info = &g_mirror_info[component->comp_id];
++	int nof_rx = wk_comp->nof_rx;
++	int nof_tx = wk_comp->nof_tx;
++	struct mirror_info *info = &g_mirror_info[wk_comp->comp_id];
+ 	struct mirror_path *path = &info->path[info->upd_index];
+ 
+-	/* mirror component allows only one receiving port. */
+-	if (unlikely(num_rx > 1)) {
++	/* Check mirror has just one RX and two TX port. */
++	if (unlikely(nof_rx > 1)) {
+ 		RTE_LOG(ERR, MIRROR,
+-			"Component[%d] Setting error. (type = %d, rx = %d)\n",
+-			component->comp_id, component->wk_type, num_rx);
++			"Invalid num of RX (id=%d, type=%d, nof_rx=%d)\n",
++			wk_comp->comp_id, wk_comp->wk_type, nof_rx);
+ 		return SPP_RET_NG;
+ 	}
+-
+-	/* Component allows only tewo transmit port. */
+-	if (unlikely(num_tx > 2)) {
++	if (unlikely(nof_tx > 2)) {
+ 		RTE_LOG(ERR, MIRROR,
+-			"Component[%d] Setting error. (type = %d, tx = %d)\n",
+-			component->comp_id, component->wk_type, num_tx);
++			"Invalid num of TX (id=%d, type=%d, nof_tx=%d)\n",
++			wk_comp->comp_id, wk_comp->wk_type, nof_tx);
+ 		return SPP_RET_NG;
+ 	}
+ 
+ 	memset(path, 0x00, sizeof(struct mirror_path));
+ 
+ 	RTE_LOG(INFO, MIRROR,
+-			"Component[%d] Start update component. "
+-			"(name = %s, type = %d)\n",
+-			component->comp_id,
+-			component->name,
+-			component->wk_type);
+-
+-	memcpy(&path->name, component->name, STR_LEN_NAME);
+-	path->wk_type = component->wk_type;
+-	path->nof_rx = component->nof_rx;
+-	path->nof_tx = component->nof_tx;
+-	for (cnt = 0; cnt < num_rx; cnt++)
+-		memcpy(&path->ports[cnt].rx, component->rx_ports[cnt],
++			"Start updating mirror (id=%d, name=%s, type=%d)\n",
++			wk_comp->comp_id, wk_comp->name, wk_comp->wk_type);
++
++	memcpy(&path->name, wk_comp->name, STR_LEN_NAME);
++	path->wk_type = wk_comp->wk_type;
++	path->nof_rx = wk_comp->nof_rx;
++	path->nof_tx = wk_comp->nof_tx;
++	for (cnt = 0; cnt < nof_rx; cnt++)
++		memcpy(&path->ports[cnt].rx, wk_comp->rx_ports[cnt],
+ 				sizeof(struct sppwk_port_info));
+ 
+-	/* Transmit port is set according with larger num_rx / num_tx. */
+-	for (cnt = 0; cnt < num_tx; cnt++)
+-		memcpy(&path->ports[cnt].tx, component->tx_ports[cnt],
++	/* Transmit port is set according with larger nof_rx / nof_tx. */
++	for (cnt = 0; cnt < nof_tx; cnt++)
++		memcpy(&path->ports[cnt].tx, wk_comp->tx_ports[cnt],
+ 				sizeof(struct sppwk_port_info));
+ 
+ 	info->upd_index = info->ref_index;
+@@ -328,10 +323,8 @@ spp_mirror_update(struct sppwk_comp_info *component)
+ 		rte_delay_us_block(SPP_CHANGE_UPDATE_INTERVAL);
+ 
+ 	RTE_LOG(INFO, MIRROR,
+-			"Component[%d] Complete update component. "
+-			"(name = %s, type = %d)\n",
+-			component->comp_id, component->name,
+-			component->wk_type);
++			"Done update mirror (id=%d, name=%s, type=%d)\n",
++			wk_comp->comp_id, wk_comp->name, wk_comp->wk_type);
+ 
+ 	return SPP_RET_OK;
+ }
+@@ -465,8 +458,7 @@ mirror_proc(int id)
+ 
+ /* Mirror get component status */
+ int
+-spp_mirror_get_component_status(
+-		unsigned int lcore_id, int id,
++get_mirror_status(unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params)
+ {
+ 	int ret = SPP_RET_NG;
+@@ -479,9 +471,8 @@ spp_mirror_get_component_status(
+ 
+ 	if (unlikely(path->wk_type == SPPWK_TYPE_NONE)) {
+ 		RTE_LOG(ERR, MIRROR,
+-				"Component[%d] Not used. "
+-				"(status)(core = %d, type = %d)\n",
+-				id, lcore_id, path->wk_type);
++			"Mirror is not used. (id=%d, lcore=%d, type=%d)\n",
++			id, lcore_id, path->wk_type);
+ 		return SPP_RET_NG;
+ 	}
+ 
+@@ -500,10 +491,9 @@ spp_mirror_get_component_status(
+ 	}
+ 
+ 	/* Set the information with the function specified by the command. */
+-	ret = (*params->element_proc)(
+-		params, lcore_id,
+-		path->name, component_type,
+-		path->nof_rx, rx_ports, path->nof_tx, tx_ports);
++	ret = (*params->element_proc)(params, lcore_id, path->name,
++			component_type, path->nof_rx, rx_ports, path->nof_tx,
++			tx_ports);
+ 	if (unlikely(ret != 0))
+ 		return SPP_RET_NG;
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index f686209..4c4abd8 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -540,10 +540,8 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 			}
+ #endif /* SPP_VF_MODULE */
+ #ifdef SPP_MIRROR_MODULE
+-			ret = spp_mirror_get_component_status(
+-						lcore_id,
+-						core->id[cnt],
+-						params);
++			ret = get_mirror_status(lcore_id, core->id[cnt],
++					params);
+ #endif /* SPP_MIRROR_MODULE */
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, WK_CMD_RUNNER, "Cannot iterate core "
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 709c3da..79dd2e7 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -897,7 +897,7 @@ update_comp_info(void)
+ #endif /* SPP_VF_MODULE */
+ 
+ #ifdef SPP_MIRROR_MODULE
+-		ret = spp_mirror_update(comp_info);
++		ret = update_mirror(comp_info);
+ #endif /* SPP_MIRROR_MODULE */
+ 
+ 		if (unlikely(ret < 0)) {
+diff --git a/src/shared/secondary/spp_worker_th/mirror_deps.h b/src/shared/secondary/spp_worker_th/mirror_deps.h
+index 83edc1f..bfa715d 100644
+--- a/src/shared/secondary/spp_worker_th/mirror_deps.h
++++ b/src/shared/secondary/spp_worker_th/mirror_deps.h
+@@ -8,33 +8,24 @@
+ #include "cmd_utils.h"
+ 
+ /**
+- * Update Mirror info
++ * Update mirror info.
+  *
+- * @param component
+- *  The pointer to struct sppwk_comp_info.@n
+- *  The data for updating the internal data of mirror.
+- *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @param wk_comp_info Pointer to internal data of mirror.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
+  */
+-int spp_mirror_update(struct sppwk_comp_info *component);
++int update_mirror(struct sppwk_comp_info *wk_comp_info);
+ 
+ /**
+- * Mirror get component status
+- *
+- * @param lcore_id
+- *  The logical core ID for forwarder and merger.
+- * @param id
+- *  The unique component ID.
+- * @param params
+- *  The pointer to struct spp_iterate_core_params.@n
+- *  Detailed data of mirror status.
++ * Get mirror status.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @param lcore_id Lcore ID for forwarder and merger.
++ * @param id Unique component ID.
++ * @param params Pointer to detailed data of mirror status.
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
+  */
+-int spp_mirror_get_component_status(
+-		unsigned int lcore_id, int id,
++int get_mirror_status(unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params);
+ 
+ #endif  /* __SPP_WORKER_TH_MIRROR_DEPS_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index beafc64..73e0f9a 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -56,7 +56,7 @@ free_mac_classifier(struct mac_classifier *mac_clf)
+ /**
+  * Update classifier info.
+  *
+- * @param comp_info Pointer to internal data of classifier.
++ * @param wk_comp_info Pointer to internal data of classifier.
+  * @retval SPP_RET_OK If succeeded.
+  * @retval SPP_RET_NG If failed.
+  */
+-- 
+2.17.1
+
+
