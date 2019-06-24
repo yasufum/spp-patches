@@ -1,0 +1,100 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b885361f49c3ef
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y17sm6357948pfe.148.2019.06.24.00.11.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 00:11:34 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 04/10] controller: move nfv help msg to SppNfv
+Date: Mon, 24 Jun 2019 16:11:18 +0900
+Message-Id: <20190624071124.23451-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624071124.23451-1-yasufum.o@gmail.com>
+References: <20190624071124.23451-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to move comment of `do_nfv` to `SppNfv.help` to reduce
+the number of lines.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/nfv.py | 19 +++++++++++++++++++
+ src/controller/shell.py        | 19 +++++--------------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
+
+diff --git a/src/controller/commands/nfv.py b/src/controller/commands/nfv.py
+index 92d2a3f..0989eba 100644
+--- a/src/controller/commands/nfv.py
++++ b/src/controller/commands/nfv.py
+@@ -442,3 +442,22 @@ class SppNfv(object):
+                 pass
+             else:
+                 print('Error: unknown response.')
++
++    @classmethod
++    def help(cls):
++        msg = """Send a command to spp_nfv specified with ID.
++
++        Spp_nfv is specified with secondary ID and takes sub commands.
++
++          spp > nfv 1; status
++          spp > nfv 1; add ring:0
++          spp > nfv 1; patch phy:0 ring:0
++
++        You can refer all of sub commands by pressing TAB after
++        'nfv 1;'.
++
++          spp > nfv 1;  # press TAB
++          add     del     exit    forward patch   status  stop
++        """
++
++        print(msg)
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index bfe963b..b11dac0 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -302,20 +302,7 @@ class Shell(cmd.Cmd, object):
+                 self.cli_config)
+ 
+     def do_nfv(self, cmd):
+-        """Send a command to spp_nfv specified with ID.
+-
+-        Spp_nfv is specified with secondary ID and takes sub commands.
+-
+-        spp > nfv 1; status
+-        spp > nfv 1; add ring:0
+-        spp > nfv 1; patch phy:0 ring:0
+-
+-        You can refer all of sub commands by pressing TAB after
+-        'nfv 1;'.
+-
+-        spp > nfv 1;  # press TAB
+-        add     del     exit    forward patch   status  stop
+-        """
++        """Send a command to spp_nfv specified with ID."""
+ 
+         # remove unwanted spaces to avoid invalid command error
+         tmparg = self.clean_cmd(cmd)
+@@ -328,6 +315,10 @@ class Shell(cmd.Cmd, object):
+         else:
+             print('Invalid command: %s' % tmparg)
+ 
++    def help_nfv(self):
++        """Print help message of nfv command."""
++        nfv.SppNfv.help()
++
+     def complete_nfv(self, text, line, begidx, endidx):
+         """Completion for nfv command."""
+ 
+-- 
+2.17.1
+
+

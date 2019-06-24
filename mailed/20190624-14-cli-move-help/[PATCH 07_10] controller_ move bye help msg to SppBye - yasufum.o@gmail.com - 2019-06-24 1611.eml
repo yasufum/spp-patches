@@ -1,0 +1,100 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b885370d7a687f
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y17sm6357948pfe.148.2019.06.24.00.11.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 00:11:38 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 07/10] controller: move bye help msg to SppBye
+Date: Mon, 24 Jun 2019 16:11:21 +0900
+Message-Id: <20190624071124.23451-8-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624071124.23451-1-yasufum.o@gmail.com>
+References: <20190624071124.23451-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to move comment of `do_bye` to `SppBye.help` to reduce
+the number of lines.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/bye.py | 19 +++++++++++++++++++
+ src/controller/shell.py        | 19 +++++--------------
+ 2 files changed, 24 insertions(+), 14 deletions(-)
+
+diff --git a/src/controller/commands/bye.py b/src/controller/commands/bye.py
+index cd14961..df06500 100644
+--- a/src/controller/commands/bye.py
++++ b/src/controller/commands/bye.py
+@@ -47,3 +47,22 @@ class SppBye(object):
+         for sec_type, spp_procs in spp_secondaries.items():
+             for sec in spp_procs.values():
+                 sec.run('exit')
++
++    @classmethod
++    def help(cls):
++        msg = """Terminate SPP processes and controller.
++
++        There are three usages for terminating processes.
++        It terminates logging if you activated recording.
++
++        (1) Terminate secondary processes
++            spp > bye sec
++
++        (2) Terminate primary and secondary processes
++            spp > bye all
++
++        (3) Terminate SPP controller (not for primary and secondary)
++            spp > bye
++        """
++
++        print(msg)
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 52fe645..8cb74a0 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -696,20 +696,7 @@ class Shell(cmd.Cmd, object):
+         return common.compl_common(text, line)
+ 
+     def do_bye(self, args):
+-        """Terminate SPP processes and controller.
+-
+-        There are three usages for terminating processes.
+-        It terminates logging if you activated recording.
+-
+-        (1) Terminate secondary processes
+-        spp > bye sec
+-
+-        (2) Terminate primary and secondary processes
+-        spp > bye all
+-
+-        (3) Terminate SPP controller (not for primary and secondary)
+-        spp > bye
+-        """
++        """Terminate SPP processes and controller."""
+ 
+         cmds = args.split(' ')
+         if cmds[0] == '':  # terminate SPP CLI itself
+@@ -719,6 +706,10 @@ class Shell(cmd.Cmd, object):
+             spp_bye = bye.SppBye()
+             spp_bye.run(args, self.primary, self.secondaries)
+ 
++    def help_bye(self):
++        """Print help message of bye command."""
++        bye.SppBye.help()
++
+     def complete_bye(self, text, line, begidx, endidx):
+         """Completion for bye commands"""
+ 
+-- 
+2.17.1
+
+

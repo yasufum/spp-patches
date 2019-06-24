@@ -1,0 +1,134 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88536622f8687
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y17sm6357948pfe.148.2019.06.24.00.11.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 00:11:35 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 05/10] controller: move mirror help msg to SppMirror
+Date: Mon, 24 Jun 2019 16:11:19 +0900
+Message-Id: <20190624071124.23451-6-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624071124.23451-1-yasufum.o@gmail.com>
+References: <20190624071124.23451-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to move comment of `do_mirror` to `SppMirror.help` to
+reduce the number of lines.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/mirror.py | 36 +++++++++++++++++++++++++++++++
+ src/controller/shell.py           | 36 +++++--------------------------
+ 2 files changed, 41 insertions(+), 31 deletions(-)
+
+diff --git a/src/controller/commands/mirror.py b/src/controller/commands/mirror.py
+index d38812d..d7ea4cd 100644
+--- a/src/controller/commands/mirror.py
++++ b/src/controller/commands/mirror.py
+@@ -356,3 +356,39 @@ class SppMirror(object):
+                         if kw.startswith(sub_tokens[4]):
+                             res.append(kw)
+             return res
++
++    @classmethod
++    def help(cls):
++        msg = """Send a command to spp_mirror.
++
++        spp_mirror is a secondary process for duplicating incoming
++        packets to be used as similar to TaaS in OpenStack. This
++        command has four sub commands.
++          * status
++          * component
++          * port
++
++        Each of sub commands other than 'status' takes several parameters
++        for detailed operations. Notice that 'start' for launching a worker
++        is replaced with 'stop' for terminating. 'add' is also replaced with
++        'del' for deleting.
++
++        Examples:
++
++        # (1) show status of worker threads and resources
++        spp > mirror 1; status
++
++        # (2) launch or terminate a worker thread with arbitrary name
++        #   NAME: arbitrary name used as identifier
++        #   CORE_ID: one of unused cores referred from status
++        spp > mirror 1; component start NAME CORE_ID mirror
++        spp > mirror 1; component stop NAME CORE_ID mirror
++
++        # (3) add or delete a port to worker of NAME
++        #   RES_UID: resource UID such as 'ring:0' or 'vhost:1'
++        #   DIR: 'rx' or 'tx'
++        spp > mirror 1; port add RES_UID DIR NAME
++        spp > mirror 1; port del RES_UID DIR NAME
++        """
++
++        print(msg)
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index b11dac0..2682376 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -418,37 +418,7 @@ class Shell(cmd.Cmd, object):
+                         self.get_sec_ids('vf'), text, line, begidx, endidx)
+ 
+     def do_mirror(self, cmd):
+-        """Send a command to spp_mirror.
+-
+-        spp_mirror is a secondary process for duplicating incoming
+-        packets to be used as similar to TaaS in OpenStack. This
+-        command has four sub commands.
+-          * status
+-          * component
+-          * port
+-
+-        Each of sub commands other than 'status' takes several parameters
+-        for detailed operations. Notice that 'start' for launching a worker
+-        is replaced with 'stop' for terminating. 'add' is also replaced with
+-        'del' for deleting.
+-
+-        Examples:
+-
+-        # (1) show status of worker threads and resources
+-        spp > mirror 1; status
+-
+-        # (2) launch or terminate a worker thread with arbitrary name
+-        #   NAME: arbitrary name used as identifier
+-        #   CORE_ID: one of unused cores referred from status
+-        spp > mirror 1; component start NAME CORE_ID mirror
+-        spp > mirror 1; component stop NAME CORE_ID mirror
+-
+-        # (3) add or delete a port to worker of NAME
+-        #   RES_UID: resource UID such as 'ring:0' or 'vhost:1'
+-        #   DIR: 'rx' or 'tx'
+-        spp > mirror 1; port add RES_UID DIR NAME
+-        spp > mirror 1; port del RES_UID DIR NAME
+-        """
++        """Send a command to spp_mirror."""
+ 
+         # remove unwanted spaces to avoid invalid command error
+         tmparg = self.clean_cmd(cmd)
+@@ -461,6 +431,10 @@ class Shell(cmd.Cmd, object):
+         else:
+             print('Invalid command: %s' % tmparg)
+ 
++    def help_mirror(self):
++        """Print help message of mirror command."""
++        mirror.SppMirror.help()
++
+     def complete_mirror(self, text, line, begidx, endidx):
+         """Completion for mirror command."""
+ 
+-- 
+2.17.1
+
+

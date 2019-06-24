@@ -1,0 +1,102 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b88537c33434e9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y17sm6357948pfe.148.2019.06.24.00.11.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 24 Jun 2019 00:11:41 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 09/10] controller: move status cmd help msg to help_msg
+Date: Mon, 24 Jun 2019 16:11:23 +0900
+Message-Id: <20190624071124.23451-10-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190624071124.23451-1-yasufum.o@gmail.com>
+References: <20190624071124.23451-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to move help message of status command to `help_msg`
+module which is for defining a set of command name and message.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/controller/commands/help_msg.py | 10 ++++++++++
+ src/controller/shell.py             | 15 ++++++++-------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
+ create mode 100644 src/controller/commands/help_msg.py
+
+diff --git a/src/controller/commands/help_msg.py b/src/controller/commands/help_msg.py
+new file mode 100644
+index 0000000..9e15123
+--- /dev/null
++++ b/src/controller/commands/help_msg.py
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++commands = {
++        'status':
++        """Display status info of SPP processes.
++
++        spp > status
++        """
++        }
+diff --git a/src/controller/shell.py b/src/controller/shell.py
+index 54376c9..065fb07 100644
+--- a/src/controller/shell.py
++++ b/src/controller/shell.py
+@@ -10,6 +10,7 @@ from .commands import topo
+ from .commands import vf
+ from .commands import mirror
+ from .commands import pcap
++from .commands import help_msg
+ import os
+ import re
+ import readline
+@@ -29,7 +30,7 @@ class Shell(cmd.Cmd, object):
+         config_file = "{}/config/default.yml".format(
+                 os.path.dirname(__file__))
+         cli_config = yaml.load(open(config_file),
+-                Loader=yaml.FullLoader)
++                               Loader=yaml.FullLoader)
+     except IOError as e:
+         print('Error: no config file found!')
+         print(e)
+@@ -205,7 +206,7 @@ class Shell(cmd.Cmd, object):
+                 pt2 = id2.split(delim)[0]
+                 if (pt1 in spp_common.PORT_TYPES) \
+                         and (pt2 in spp_common.PORT_TYPES):
+-                            return True
++                    return True
+         return False
+ 
+     def clean_cmd(self, cmdstr):
+@@ -270,13 +271,13 @@ class Shell(cmd.Cmd, object):
+         return res
+ 
+     def do_status(self, _):
+-        """Display status info of SPP processes
+-
+-        spp > status
+-        """
+-
++        """Display status info of SPP processes."""
+         self.print_status()
+ 
++    def help_status(self):
++        """Print help message of status command."""
++        print(help_msg.commads['status'])
++
+     def do_pri(self, command):
+         """Send a command to primary process."""
+ 
+-- 
+2.17.1
+
+
