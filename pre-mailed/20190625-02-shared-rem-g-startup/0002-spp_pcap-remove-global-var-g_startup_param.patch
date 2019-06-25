@@ -1,0 +1,195 @@
+From 4c193728bb416f07e027b723f3e38df17d5bdddd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 25 Jun 2019 12:42:19 +0900
+Subject: [PATCH 2/2] spp_pcap: remove global var g_startup_param
+
+This update for spp_pcap is the same as previous one for removing global
+`g_startup_param`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_runner.c |  8 +++-----
+ src/pcap/cmd_utils.c  | 13 +++----------
+ src/pcap/cmd_utils.h  | 15 ++-------------
+ src/pcap/spp_pcap.c   | 15 +++------------
+ 4 files changed, 11 insertions(+), 40 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 4c1891e..48e8eba 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -373,7 +373,7 @@ append_capture_status_value(const char *name, char **output,
+ {
+ 	int *capture_status = NULL;
+ 
+-	spp_get_mng_data_addr(NULL, NULL, NULL, NULL, &capture_status);
++	spp_get_mng_data_addr(NULL, NULL, NULL, &capture_status);
+ 
+ 	return append_json_str_value(name, output,
+ 			CAPTURE_STATUS_STRINGS[*capture_status]);
+@@ -797,15 +797,13 @@ send_command_result_response(int *sock,
+ 
+ 	/* pcap start command */
+ 	if (request->is_requested_start) {
+-		spp_get_mng_data_addr(NULL, NULL, NULL,
+-				      &capture_request, NULL);
++		spp_get_mng_data_addr(NULL, NULL, &capture_request, NULL);
+ 		*capture_request = SPP_CAPTURE_RUNNING;
+ 	}
+ 
+ 	/* pcap stop command */
+ 	if (request->is_requested_stop) {
+-		spp_get_mng_data_addr(NULL, NULL, NULL,
+-					&capture_request, NULL);
++		spp_get_mng_data_addr(NULL, NULL, &capture_request, NULL);
+ 		*capture_request = SPP_CAPTURE_IDLE;
+ 	}
+ 
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index d9e09e5..52ca905 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -14,7 +14,6 @@
+ 
+ /* Manage data to addoress */
+ struct mng_data_info {
+-	struct startup_param	  *p_startup_param;
+ 	struct iface_info	  *p_iface_info;
+ 	struct core_mng_info	  *p_core_info;
+ 	int			  *p_capture_request;
+@@ -258,21 +257,18 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ }
+ 
+ /* Set mange data address */
+-int spp_set_mng_data_addr(struct startup_param *startup_param_p,
+-			  struct iface_info *iface_p,
++int spp_set_mng_data_addr(struct iface_info *iface_p,
+ 			  struct core_mng_info *core_mng_p,
+ 			  int *capture_request_p,
+ 			  int *capture_status_p,
+ 			  unsigned int main_lcore_id)
+ {
+-	if (startup_param_p == NULL || iface_p == NULL ||
+-			core_mng_p == NULL ||
++	if (iface_p == NULL || core_mng_p == NULL ||
+ 			capture_request_p == NULL ||
+ 			capture_status_p == NULL ||
+ 			main_lcore_id == 0xffffffff)
+ 		return SPPWK_RET_NG;
+ 
+-	g_mng_data_addr.p_startup_param = startup_param_p;
+ 	g_mng_data_addr.p_iface_info = iface_p;
+ 	g_mng_data_addr.p_core_info = core_mng_p;
+ 	g_mng_data_addr.p_capture_request = capture_request_p;
+@@ -283,15 +279,12 @@ int spp_set_mng_data_addr(struct startup_param *startup_param_p,
+ }
+ 
+ /* Get manage data address */
+-void spp_get_mng_data_addr(struct startup_param **startup_param_p,
+-			   struct iface_info **iface_p,
++void spp_get_mng_data_addr(struct iface_info **iface_p,
+ 			   struct core_mng_info **core_mng_p,
+ 			   int **capture_request_p,
+ 			   int **capture_status_p)
+ {
+ 
+-	if (startup_param_p != NULL)
+-		*startup_param_p = g_mng_data_addr.p_startup_param;
+ 	if (iface_p != NULL)
+ 		*iface_p = g_mng_data_addr.p_iface_info;
+ 	if (core_mng_p != NULL)
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 8281a3b..4fa2ea9 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -155,13 +155,6 @@ struct sppwk_comp_info {
+ 	struct sppwk_port_info *tx_ports[RTE_MAX_ETHPORTS]; /**< tx ports */
+ };
+ 
+-/* Manage given options as global variable */
+-struct startup_param {
+-	//int client_id;  /* Client ID */
+-	char server_ip[INET_ADDRSTRLEN];  /* IP address of spp-ctl */
+-	int server_port;  /* Port Number of spp-ctl */
+-};
+-
+ /* Manage interfaces and port information as global variable */
+ /* TODO(yasufum) confirm why nof_rings is required not used in anywhere. */
+ struct iface_info {
+@@ -327,7 +320,6 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+ /**
+  * Set mange data address
+  *
+- * @param startup_param_p Pointer to g_startup_param address.
+  * @param iface_p Pointer to g_iface_info address.
+  * @param core_mng_p Pointer to g_core_info address.
+  * @param capture_status_p Pointer to status of pcap.
+@@ -336,8 +328,7 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+  * @retval SPP_RET_OK If succeeded.
+  * @retval SPP_RET_NG If failed.
+  */
+-int spp_set_mng_data_addr(struct startup_param *startup_param_p,
+-			  struct iface_info *iface_p,
++int spp_set_mng_data_addr(struct iface_info *iface_p,
+ 			  struct core_mng_info *core_mng_p,
+ 			  int *capture_request_p,
+ 			  int *capture_status_p,
+@@ -346,14 +337,12 @@ int spp_set_mng_data_addr(struct startup_param *startup_param_p,
+ /**
+  * Get mange data address
+  *
+- * @param startup_param_p Pointer to startup params.
+  * @param iface_p Pointer to g_iface_info.
+  * @param core_mng_p Pointer to g_core_mng_info.
+  * @param capture_request_p Pointer to status of pcap.
+  * @param capture_status_p Pointer to req of pcap.
+  */
+-void spp_get_mng_data_addr(struct startup_param **startup_param_p,
+-			   struct iface_info **iface_p,
++void spp_get_mng_data_addr(struct iface_info **iface_p,
+ 			   struct core_mng_info **core_mng_p,
+ 			   int **capture_request_p,
+ 			   int **capture_status_p);
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index b69ffdd..0b846f3 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -132,9 +132,6 @@ struct pcap_status_info {
+ /* Lcore ID of main thread. */
+ static unsigned int g_main_lcore_id = 0xffffffff;
+ 
+-/* Arguments for spp_pcap process. */
+-static struct startup_param g_startup_param;
+-
+ /* Interface management information */
+ static struct iface_info g_iface_info;
+ 
+@@ -273,9 +270,6 @@ parse_app_args(int argc, char *argv[])
+ 	for (cnt = 0; cnt < argcopt; cnt++)
+ 		argvopt[cnt] = argv[cnt];
+ 
+-	/* Clear startup parameters */
+-	memset(&g_startup_param, 0x00, sizeof(g_startup_param));
+-
+ 	/* option parameters init */
+ 	memset(&g_pcap_option, 0x00, sizeof(g_pcap_option));
+ 	strcpy(g_pcap_option.compress_file_path, DEFAULT_OUTPUT_DIR);
+@@ -940,12 +934,9 @@ main(int argc, char *argv[])
+ 		g_main_lcore_id = rte_lcore_id();
+ 
+ 		/* set manage address */
+-		if (spp_set_mng_data_addr(&g_startup_param,
+-					  &g_iface_info,
+-					  g_core_info,
+-					  &g_capture_request,
+-					  &g_capture_status,
+-					  g_main_lcore_id) < 0) {
++		if (spp_set_mng_data_addr(&g_iface_info, g_core_info,
++					&g_capture_request, &g_capture_status,
++					g_main_lcore_id) < 0) {
+ 			RTE_LOG(ERR, SPP_PCAP,
+ 				"manage address set is failed.\n");
+ 			break;
+-- 
+2.17.1
+
