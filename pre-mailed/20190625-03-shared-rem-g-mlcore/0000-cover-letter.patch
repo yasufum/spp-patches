@@ -1,0 +1,25 @@
+From f51248c806cfa27947ed51006ff1a7a89c44badf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 25 Jun 2019 17:27:10 +0900
+Subject: [PATCH 0/2] Remove global variable g_main_lcore_id
+
+Master lcore ID is managed in SPP worker processes, but it can be
+retrieved with rte_get_master_lcore(). This series of update is to
+remove global `g_main_lcore_id` and change to use this function instead.
+
+Yasufumi Ogawa (2):
+  shared/sec: remove global master lcore ID
+  spp_pcap: remove global master lcore ID
+
+ src/mirror/spp_mirror.c                       | 44 ++++++---------
+ src/pcap/cmd_utils.c                          | 13 ++---
+ src/pcap/cmd_utils.h                          |  4 +-
+ src/pcap/spp_pcap.c                           | 51 ++++++++---------
+ .../secondary/spp_worker_th/cmd_utils.c       | 13 ++---
+ .../secondary/spp_worker_th/cmd_utils.h       |  4 +-
+ src/vf/spp_vf.c                               | 55 ++++++++-----------
+ 7 files changed, 80 insertions(+), 104 deletions(-)
+
+-- 
+2.17.1
+
