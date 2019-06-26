@@ -1,0 +1,265 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b924877abffdc9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id a22sm17148188pfn.173.2019.06.25.22.35.49
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 25 Jun 2019 22:35:50 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: add shared lib for getting vhost cli
+Date: Wed, 26 Jun 2019 14:35:44 +0900
+Message-Id: <20190626053544.39794-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+To remove global variable `g_enable_vhost_cli`, add functions for
+getting and setting vhost clinet mode and change to use them instead of
+the global variable.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                       |  9 ++++---
+ src/nfv/main.c                                |  7 +++--
+ src/shared/secondary/add_port.c               |  4 +--
+ src/shared/secondary/add_port.h               |  3 ---
+ .../secondary/spp_worker_th/cmd_utils.c       |  2 +-
+ src/shared/secondary/utils.c                  | 21 +++++++++++++++
+ src/shared/secondary/utils.h                  | 27 +++++++++++++++++++
+ src/vf/spp_vf.c                               |  7 +++--
+ 8 files changed, 66 insertions(+), 14 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 305e977..32489ed 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -137,6 +137,9 @@ parse_app_args(int argc, char *argv[])
+ 	/* Clear startup parameters */
+ 	memset(&g_startup_param, 0x00, sizeof(g_startup_param));
+ 
++	/* vhost_cli is disabled as default. */
++	set_vhost_cli_mode(0);
++
+ 	/* Check options of application */
+ 	optind = 0;
+ 	opterr = 0;
+@@ -153,7 +156,7 @@ parse_app_args(int argc, char *argv[])
+ 			proc_flg = 1;
+ 			break;
+ 		case SPP_LONGOPT_RETVAL_VHOST_CLIENT:
+-			g_enable_vhost_cli = 1;
++			set_vhost_cli_mode(1);
+ 			break;
+ 		case 's':
+ 			ret = parse_server(&ctl_ip, &ctl_port, optarg);
+@@ -178,8 +181,8 @@ parse_app_args(int argc, char *argv[])
+ 	}
+ 	RTE_LOG(INFO, MIRROR,
+ 			"Parsed app args (client_id=%d, server=%s:%d, "
+-			"vhost_client=%d,)\n",
+-			cli_id, ctl_ip, ctl_port, g_enable_vhost_cli);
++			"vhost_client=%d)\n",
++			cli_id, ctl_ip, ctl_port, get_vhost_cli_mode());
+ 	return SPP_RET_OK;
+ }
+ 
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 9cfe49a..9117d9b 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -69,11 +69,14 @@ parse_app_args(int argc, char *argv[])
+ 	int ctl_port;  /* Port num to connect spp_ctl. */
+ 	int ret;
+ 
++	/* vhost_cli is disabled as default. */
++	set_vhost_cli_mode(0);
++
+ 	while ((opt = getopt_long(argc, argvopt, "n:s:", lgopts,
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
+ 		case CMD_OPT_ENABLE_VHOST_CLI:
+-			g_enable_vhost_cli = 1;
++			set_vhost_cli_mode(1);
+ 			break;
+ 		case 'n':
+ 			if (parse_client_id(&cli_id, optarg) != 0) {
+@@ -203,7 +206,7 @@ main(int argc, char *argv[])
+ 	if (parse_app_args(argc, argv) < 0)
+ 		rte_exit(EXIT_FAILURE, "Invalid command-line arguments\n");
+ 
+-	if (g_enable_vhost_cli == 1)
++	if (get_vhost_cli_mode() == 1)
+ 		RTE_LOG(INFO, SPP_NFV, "vhost client mode is enabled.\n");
+ 
+ 	/* initialize port forward array*/
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index e0de36f..2981085 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -12,8 +12,6 @@
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+-int g_enable_vhost_cli;
+-
+ char *
+ get_vhost_backend_name(unsigned int id)
+ {
+@@ -164,7 +162,7 @@ add_vhost_pmd(int index)
+ 	iface = get_vhost_iface_name(index);
+ 
+ 	sprintf(devargs, "%s,iface=%s,queues=%d,client=%d",
+-			name, iface, nr_queues, g_enable_vhost_cli);
++			name, iface, nr_queues, get_vhost_cli_mode());
+ 	RTE_LOG(DEBUG, SHARED, "Devargs for vhost: '%s'.\n", devargs);
+ 	ret = dev_attach_by_devargs(devargs, &vhost_port_id);
+ 	if (ret < 0) {
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index 943d0d6..cfae1af 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -20,9 +20,6 @@
+ 
+ #define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
+ 
+-/* TODO(yasufum) remove it after --vhost-client is retrieved from a func. */
+-extern int g_enable_vhost_cli;
+-
+ /**
+  * Get unique name used to reserve vhost interface.
+  *
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index f24d1a6..8a40d92 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -488,7 +488,7 @@ del_vhost_sockfile(struct sppwk_port_info *vhost)
+ 	int cnt;
+ 
+ 	/* Do not remove for if it is running in vhost-client mode. */
+-	if (g_enable_vhost_cli != 0)
++	if (get_vhost_cli_mode() != 0)
+ 		return;
+ 
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+diff --git a/src/shared/secondary/utils.c b/src/shared/secondary/utils.c
+index 73800d3..c80a478 100644
+--- a/src/shared/secondary/utils.c
++++ b/src/shared/secondary/utils.c
+@@ -9,6 +9,7 @@
+ #define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
+ 
+ int client_id;
++int vhost_cli;
+ 
+ int set_client_id(int cid)
+ {
+@@ -25,6 +26,26 @@ int get_client_id(void)
+ 	return client_id;
+ }
+ 
++int set_vhost_cli_mode(int mode)
++{
++	if (mode == 0 || mode == 1)
++		vhost_cli = mode;
++	else {
++		RTE_LOG(ERR, SHARED, "Invalid value of vhost client\n");
++		return -1;
++	}
++	return 0;
++}
++
++int get_vhost_cli_mode(void)
++{
++	if (vhost_cli < 0) {
++		RTE_LOG(ERR, SHARED, "Vhost client is not initialized.\n");
++		return -1;
++	}
++	return vhost_cli;
++}
++
+ /* Parse client ID from given value of string. */
+ int
+ parse_client_id(int *cli_id, const char *cli_id_str)
+diff --git a/src/shared/secondary/utils.h b/src/shared/secondary/utils.h
+index 74531b0..eba221f 100644
+--- a/src/shared/secondary/utils.h
++++ b/src/shared/secondary/utils.h
+@@ -9,9 +9,36 @@ int parse_resource_uid(char *str, char **port_type, int *port_id);
+ 
+ int spp_atoi(const char *str, int *val);
+ 
++/**
++ * Set client ID from given command argment.
++ *
++ * @params[in] cid Client ID.
++ * @return 0 if succeeded, or -1 if failed.
++ */
+ int set_client_id(int cid);
++
++/**
++ * Get client ID.
++ *
++ * @return int value of client ID if succeeded, or -1 if failed.
++ */
+ int get_client_id(void);
+ 
++/**
++ * Set vhost client mode from given command argument.
++ *
++ * @params[in] vhost_cli Enabled if 1, or disabled if 0.
++ * @return 0 if succeeded, or -1 if failed.
++ */
++int set_vhost_cli_mode(int vhost_cli);
++
++/**
++ * Get vhost client mode.
++ *
++ * @return 1 if vhost client is enabled, or 0 if disabled.
++ */
++int get_vhost_cli_mode(void);
++
+ /**
+  * Parse client ID from given value of string.
+  *
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index d8098f2..25997db 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -93,6 +93,9 @@ parse_app_args(int argc, char *argv[])
+ 	/* Clear startup parameters */
+ 	memset(&g_startup_param, 0x00, sizeof(g_startup_param));
+ 
++	/* vhost_cli is disabled as default. */
++	set_vhost_cli_mode(0);
++
+ 	/* Check options of application */
+ 	optind = 0;
+ 	opterr = 0;
+@@ -109,7 +112,7 @@ parse_app_args(int argc, char *argv[])
+ 			proc_flg = 1;
+ 			break;
+ 		case SPP_LONGOPT_RETVAL_VHOST_CLIENT:
+-			g_enable_vhost_cli = 1;
++			set_vhost_cli_mode(1);
+ 			break;
+ 		case 's':
+ 			ret = parse_server(&ctl_ip, &ctl_port, optarg);
+@@ -135,7 +138,7 @@ parse_app_args(int argc, char *argv[])
+ 	RTE_LOG(INFO, APP,
+ 			"Parsed app args (client_id=%d,server=%s:%d,"
+ 			"vhost_client=%d)\n",
+-			cli_id, ctl_ip, ctl_port, g_enable_vhost_cli);
++			cli_id, ctl_ip, ctl_port, get_vhost_cli_mode());
+ 	return SPP_RET_OK;
+ }
+ 
+-- 
+2.17.1
+
+
