@@ -1,0 +1,185 @@
+From 1ad7a477040bd4df2cf5c7cd05d60c69d9badebf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 27 Jun 2019 12:09:32 +0900
+Subject: [PATCH] recipes: reorganize direcories
+
+Recipe scripts are provided for some usecases in SPP documents, but
+directory structure is messed up. This update is to reorganize them as
+following in order to be easy to find each of recipes.
+
+  recipes/
+     |-- usecases/
+             |-- spp_nfv/
+             |       |-- dual_bidir.rcps
+             |       |-- dual_loopback.rcps
+             |       |-- ...
+             |-- spp_vf/
+             |       |-- ssh_login/
+             |       |        |-- setup/
+             |       |        |      |-- 1-start_components.rcps
+             |       |        |      |-- 2-add_ports_path1.rcps
+             |       |        |      |-- ...
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../{sppc/samples/l2fwd.rcp => usecases/spp_container/l2fwd.rcps} | 0
+ .../{sppc/samples/lb_pg.rcp => usecases/spp_container/lb_pg.rcps} | 0
+ .../spp_container/load_balancer.rcps}                             | 0
+ .../samples/pg_l2fwd.rcp => usecases/spp_container/pg_l2fwd.rcps} | 0
+ .../spp_container/pg_l2fwd_less.rcps}                             | 0
+ .../test_ring.rcp => usecases/spp_container/test_ring.rcps}       | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/dual_bidir.rcps        | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/dual_loopback.rcps     | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/ring_dual_bidir.rcps   | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/ring_dual_unidir.rcps  | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/single_bidir.rcps      | 0
+ recipes/{spp/usecases => usecases/spp_nfv}/vhost_unidir.rcps      | 0
+ .../spp_vf/ssh_login}/setup/1-start_components.rcps               | 0
+ .../spp_vf/ssh_login}/setup/2-add_ports_path1.rcps                | 0
+ .../spp_vf/ssh_login}/setup/3-reg_mac_path1.rcps                  | 0
+ .../spp_vf/ssh_login}/setup/4-start_components.rcps               | 0
+ .../spp_vf/ssh_login}/setup/5-add_ports_path2.rcps                | 0
+ .../spp_vf/ssh_login}/setup/6-reg_mac_path2.rcps                  | 0
+ .../usecase1 => usecases/spp_vf/ssh_login}/setup/7-flush.rcps     | 0
+ .../spp_vf/ssh_login}/shutdown/1-del_mac_path1.rcps               | 0
+ .../spp_vf/ssh_login}/shutdown/2-del_ports_path1.rcps             | 0
+ .../spp_vf/ssh_login}/shutdown/3-stop_components.rcps             | 0
+ .../spp_vf/ssh_login}/shutdown/4-del_mac_path2.rcps               | 0
+ .../spp_vf/ssh_login}/shutdown/5-del_ports_path2.rcps             | 0
+ .../spp_vf/ssh_login}/shutdown/6-stop_components.rcps             | 0
+ .../usecase1 => usecases/spp_vf/ssh_login}/shutdown/7-flush.rcps  | 0
+ 26 files changed, 0 insertions(+), 0 deletions(-)
+ rename recipes/{sppc/samples/l2fwd.rcp => usecases/spp_container/l2fwd.rcps} (100%)
+ rename recipes/{sppc/samples/lb_pg.rcp => usecases/spp_container/lb_pg.rcps} (100%)
+ rename recipes/{sppc/samples/load_balancer.rcp => usecases/spp_container/load_balancer.rcps} (100%)
+ rename recipes/{sppc/samples/pg_l2fwd.rcp => usecases/spp_container/pg_l2fwd.rcps} (100%)
+ rename recipes/{sppc/samples/pg_l2fwd_less.rcp => usecases/spp_container/pg_l2fwd_less.rcps} (100%)
+ rename recipes/{sppc/samples/test_ring.rcp => usecases/spp_container/test_ring.rcps} (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/dual_bidir.rcps (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/dual_loopback.rcps (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/ring_dual_bidir.rcps (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/ring_dual_unidir.rcps (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/single_bidir.rcps (100%)
+ rename recipes/{spp/usecases => usecases/spp_nfv}/vhost_unidir.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/1-start_components.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/2-add_ports_path1.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/3-reg_mac_path1.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/4-start_components.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/5-add_ports_path2.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/6-reg_mac_path2.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/setup/7-flush.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/1-del_mac_path1.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/2-del_ports_path1.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/3-stop_components.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/4-del_mac_path2.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/5-del_ports_path2.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/6-stop_components.rcps (100%)
+ rename recipes/{spp_vf/usecase1 => usecases/spp_vf/ssh_login}/shutdown/7-flush.rcps (100%)
+
+diff --git a/recipes/sppc/samples/l2fwd.rcp b/recipes/usecases/spp_container/l2fwd.rcps
+similarity index 100%
+rename from recipes/sppc/samples/l2fwd.rcp
+rename to recipes/usecases/spp_container/l2fwd.rcps
+diff --git a/recipes/sppc/samples/lb_pg.rcp b/recipes/usecases/spp_container/lb_pg.rcps
+similarity index 100%
+rename from recipes/sppc/samples/lb_pg.rcp
+rename to recipes/usecases/spp_container/lb_pg.rcps
+diff --git a/recipes/sppc/samples/load_balancer.rcp b/recipes/usecases/spp_container/load_balancer.rcps
+similarity index 100%
+rename from recipes/sppc/samples/load_balancer.rcp
+rename to recipes/usecases/spp_container/load_balancer.rcps
+diff --git a/recipes/sppc/samples/pg_l2fwd.rcp b/recipes/usecases/spp_container/pg_l2fwd.rcps
+similarity index 100%
+rename from recipes/sppc/samples/pg_l2fwd.rcp
+rename to recipes/usecases/spp_container/pg_l2fwd.rcps
+diff --git a/recipes/sppc/samples/pg_l2fwd_less.rcp b/recipes/usecases/spp_container/pg_l2fwd_less.rcps
+similarity index 100%
+rename from recipes/sppc/samples/pg_l2fwd_less.rcp
+rename to recipes/usecases/spp_container/pg_l2fwd_less.rcps
+diff --git a/recipes/sppc/samples/test_ring.rcp b/recipes/usecases/spp_container/test_ring.rcps
+similarity index 100%
+rename from recipes/sppc/samples/test_ring.rcp
+rename to recipes/usecases/spp_container/test_ring.rcps
+diff --git a/recipes/spp/usecases/dual_bidir.rcps b/recipes/usecases/spp_nfv/dual_bidir.rcps
+similarity index 100%
+rename from recipes/spp/usecases/dual_bidir.rcps
+rename to recipes/usecases/spp_nfv/dual_bidir.rcps
+diff --git a/recipes/spp/usecases/dual_loopback.rcps b/recipes/usecases/spp_nfv/dual_loopback.rcps
+similarity index 100%
+rename from recipes/spp/usecases/dual_loopback.rcps
+rename to recipes/usecases/spp_nfv/dual_loopback.rcps
+diff --git a/recipes/spp/usecases/ring_dual_bidir.rcps b/recipes/usecases/spp_nfv/ring_dual_bidir.rcps
+similarity index 100%
+rename from recipes/spp/usecases/ring_dual_bidir.rcps
+rename to recipes/usecases/spp_nfv/ring_dual_bidir.rcps
+diff --git a/recipes/spp/usecases/ring_dual_unidir.rcps b/recipes/usecases/spp_nfv/ring_dual_unidir.rcps
+similarity index 100%
+rename from recipes/spp/usecases/ring_dual_unidir.rcps
+rename to recipes/usecases/spp_nfv/ring_dual_unidir.rcps
+diff --git a/recipes/spp/usecases/single_bidir.rcps b/recipes/usecases/spp_nfv/single_bidir.rcps
+similarity index 100%
+rename from recipes/spp/usecases/single_bidir.rcps
+rename to recipes/usecases/spp_nfv/single_bidir.rcps
+diff --git a/recipes/spp/usecases/vhost_unidir.rcps b/recipes/usecases/spp_nfv/vhost_unidir.rcps
+similarity index 100%
+rename from recipes/spp/usecases/vhost_unidir.rcps
+rename to recipes/usecases/spp_nfv/vhost_unidir.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/1-start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/1-start_components.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/2-add_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/2-add_ports_path1.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/3-reg_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/3-reg_mac_path1.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/4-start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/4-start_components.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/5-add_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/5-add_ports_path2.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/6-reg_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/6-reg_mac_path2.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
+diff --git a/recipes/spp_vf/usecase1/setup/7-flush.rcps b/recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/setup/7-flush.rcps
+rename to recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/1-del_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/1-del_mac_path1.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/2-del_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/2-del_ports_path1.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/3-stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/3-stop_components.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/4-del_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/4-del_mac_path2.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/5-del_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/5-del_ports_path2.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/6-stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/6-stop_components.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps
+diff --git a/recipes/spp_vf/usecase1/shutdown/7-flush.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps
+similarity index 100%
+rename from recipes/spp_vf/usecase1/shutdown/7-flush.rcps
+rename to recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps
+-- 
+2.17.1
+
