@@ -1,0 +1,28 @@
+From 953abb494a63436d2651dc6007bc41eaadf26126 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 27 Jun 2019 13:11:39 +0900
+Subject: [PATCH 1/2] docs: fix typo of command example of spp_mirror
+
+This update is to correct option for vhost client mode.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 21633d9..c6023ee 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -409,7 +409,7 @@ and options are same as ``spp_vf``.
+       -- \
+       --client-id 1 \
+       -s 192.168.1.100:6666 \
+-      -vhost-client
++      --vhost-client
+ 
+ EAL options are the same as primary process. Here is a list of application
+ options of ``spp_mirror``.
+-- 
+2.17.1
+
