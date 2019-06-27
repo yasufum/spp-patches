@@ -1,0 +1,47 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b973d3ee22b48a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id w197sm1161728pfd.41.2019.06.26.21.41.41
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 26 Jun 2019 21:41:42 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] docs: fix typo of command example of spp_mirror
+Date: Thu, 27 Jun 2019 13:41:36 +0900
+Message-Id: <20190627044137.15165-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190627044137.15165-1-yasufum.o@gmail.com>
+References: <20190627044137.15165-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to correct option for vhost client mode.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 21633d9..c6023ee 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -409,7 +409,7 @@ and options are same as ``spp_vf``.
+       -- \
+       --client-id 1 \
+       -s 192.168.1.100:6666 \
+-      -vhost-client
++      --vhost-client
+ 
+ EAL options are the same as primary process. Here is a list of application
+ options of ``spp_mirror``.
+-- 
+2.17.1
+
+

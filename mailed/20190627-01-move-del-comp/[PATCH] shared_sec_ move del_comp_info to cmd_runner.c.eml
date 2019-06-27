@@ -1,0 +1,186 @@
+X-Account-Key: account5
+X-UIDL: GmailId16b973bda5074eb0
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id j14sm935835pfe.10.2019.06.26.21.40.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 26 Jun 2019 21:40:10 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: move del_comp_info to cmd_runner.c
+Date: Thu, 27 Jun 2019 13:39:53 +0900
+Message-Id: <20190627043953.14876-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Function del_comp_info() is called for `stop` command by which running
+worker thread is terminated. It should be included in `cmd_runner.c` for
+considering this behavior. This update is to move this function from
+`cmd_utils.c` to `cmd_runner.c`, and also its header files.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../secondary/spp_worker_th/cmd_runner.c      | 26 ++++++++++++++++
+ .../secondary/spp_worker_th/cmd_runner.h      | 13 ++++++++
+ .../secondary/spp_worker_th/cmd_utils.c       | 30 -------------------
+ .../secondary/spp_worker_th/cmd_utils.h       | 26 ++--------------
+ 4 files changed, 42 insertions(+), 53 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 3ab69f9..4e43fe6 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -405,3 +405,29 @@ sppwk_run_cmd(void)
+ 
+ 	return ret;
+ }
++
++/* Delete component information */
++int
++del_comp_info(int lcore_id, int nof_comps, int *comp_ary)
++{
++	int idx = 0;  /* The index of comp_ary to be deleted. */
++	int cnt;
++
++	/* Find the index. */
++	for (cnt = 0; cnt < nof_comps; cnt++) {
++		if (lcore_id == comp_ary[cnt])
++			idx = cnt;
++	}
++	if (idx < 0)
++		return SPP_RET_NG;
++
++	/* Overwrite the deleted entry, and shift the remained. */
++	nof_comps--;
++	for (cnt = idx; cnt < nof_comps; cnt++)
++		comp_ary[cnt] = comp_ary[cnt + 1];
++
++	/* Clean the unused last entry. */
++	comp_ary[cnt] = 0;
++
++	return SPP_RET_OK;
++}
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.h b/src/shared/secondary/spp_worker_th/cmd_runner.h
+index 3a71e3e..e13e936 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.h
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.h
+@@ -43,4 +43,17 @@ sppwk_cmd_runner_conn(const char *ctl_ipaddr, int ctl_port);
+ int
+ sppwk_run_cmd(void);
+ 
++/**
++ *  Delete component information.
++ *
++ * @param[in] lcore_id The lcore ID of deleted comp.
++ * @param[in] nof_comps The num of elements in comp_ary.
++ * @param[in] *comp_ary Set of comps from which an comp is deleted.
++ *
++ * @retval SPP_RET_OK If succeeded.
++ * @retval SPP_RET_NG If failed.
++ */
++int
++del_comp_info(int lcore_id, int nof_comps, int *comp_ary);
++
+ #endif  /* _SPPWK_CMD_RUNNER_H_ */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 6072186..894f559 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -628,36 +628,6 @@ sppwk_get_lcore_id(const char *comp_name)
+ 	return SPP_RET_NG;
+ }
+ 
+-/* Delete component information */
+-/**
+- * TODO(yasufum) consider to move to cmd_runner because this func is only
+- * used in.
+- */
+-int
+-del_comp_info(int lcore_id, int nof_comps, int *comp_ary)
+-{
+-	int idx = 0;  /* The index of comp_ary to be deleted. */
+-	int cnt;
+-
+-	/* Find the index. */
+-	for (cnt = 0; cnt < nof_comps; cnt++) {
+-		if (lcore_id == comp_ary[cnt])
+-			idx = cnt;
+-	}
+-	if (idx < 0)
+-		return SPP_RET_NG;
+-
+-	/* Overwrite the deleted entry, and shift the remained. */
+-	nof_comps--;
+-	for (cnt = idx; cnt < nof_comps; cnt++)
+-		comp_ary[cnt] = comp_ary[cnt + 1];
+-
+-	/* Clean the unused last entry. */
+-	comp_ary[cnt] = 0;
+-
+-	return SPP_RET_OK;
+-}
+-
+ /**
+  * Get index of given entry in given port info array. It returns the index,
+  * or NG code if the entry is not found.
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index ff363f5..7e5cda3 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -384,7 +384,7 @@ void print_ring_latency_stats(void);
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ /* Remove sock file if spp is not running */
+-void  del_vhost_sockfile(struct sppwk_port_info *vhost);
++void del_vhost_sockfile(struct sppwk_port_info *vhost);
+ 
+ /**
+  * Get core ID of target component
+@@ -423,11 +423,8 @@ int spp_check_used_port(
+ /**
+  * Set component update flag for given port.
+  *
+- * @param port
+- *  sppwk_port_info address
+- * @param rxtx
+- *  enum spp_port_rxtx
+- *
++ * @param port Pointer of sppwk_port_info.
++ * @param rxtx Enum spp_port_rxtx.
+  */
+ void
+ set_component_change_port(struct sppwk_port_info *port,
+@@ -450,23 +447,6 @@ int get_free_lcore_id(void);
+  */
+ int sppwk_get_lcore_id(const char *comp_name);
+ 
+-/**
+- *  Delete component information.
+- *
+- * @param[in] lcore_id The lcore ID of deleted comp.
+- * @param[in] nof_comps The num of elements in comp_ary.
+- * @param[in] *comp_ary Set of comps from which an comp is deleted.
+- *
+- * @retval SPP_RET_OK If succeeded.
+- * @retval SPP_RET_NG If failed.
+- */
+-/**
+- * TODO(yasufum) consider to move to cmd_runner because this func is only
+- * used in.
+- */
+-int
+-del_comp_info(int lcore_id, int nof_comps, int *comp_ary);
+-
+ /**
+  * Get index of given entry in given port info array. It returns the index,
+  * or NG code if the entry is not found.
+-- 
+2.17.1
+
+
