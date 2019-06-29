@@ -1,0 +1,27 @@
+From 053b93b67171b8a194a2639e7a399772dc3ec6c3 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 29 Jun 2019 12:57:30 +0900
+Subject: [PATCH 0/2] Refactor port capability
+
+This series of patches is to refactor functions or variables defined in
+`port_capability.c` and `port_capability.h`.
+
+Yasufumi Ogawa (2):
+  shared/sec: refactor public funcs of capability
+  shared/sec: refactor port capability funcs
+
+ src/mirror/mir_cmd_runner.c                   |   2 +-
+ src/mirror/spp_mirror.c                       |   4 +-
+ src/pcap/spp_pcap.c                           |   2 +-
+ .../spp_worker_th/cmd_res_formatter.c         |   2 +-
+ .../secondary/spp_worker_th/port_capability.c | 141 ++++++++++--------
+ .../secondary/spp_worker_th/port_capability.h |  43 +++---
+ src/vf/classifier_mac.c                       |   3 +-
+ src/vf/forwarder.c                            |   3 +-
+ src/vf/spp_vf.c                               |   2 +-
+ src/vf/vf_cmd_runner.c                        |   2 +-
+ 10 files changed, 108 insertions(+), 96 deletions(-)
+
+-- 
+2.17.1
+

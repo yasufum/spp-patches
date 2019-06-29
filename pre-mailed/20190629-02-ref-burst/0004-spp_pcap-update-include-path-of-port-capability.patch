@@ -1,0 +1,51 @@
+From 83435c447569d4b8bf472d961e3687c72c659a75 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 28 Jun 2019 12:26:13 +0900
+Subject: [PATCH 4/4] spp_pcap: update include path of port capability
+
+Spp_pcap uses struct sppwk_port_info without VLAN features, and still
+need to include header `port_capability.h`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/Makefile   | 1 +
+ src/pcap/spp_pcap.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+index 784ee1b..640c0d3 100644
+--- a/src/pcap/Makefile
++++ b/src/pcap/Makefile
+@@ -23,6 +23,7 @@ SRCS-y += $(SPP_SEC_DIR)/utils.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
++SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 80e6aad..e32c360 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -19,6 +19,7 @@
+ #include "cmd_parser.h"
+ #include "shared/secondary/utils.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
++#include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_SPP_PCAP RTE_LOGTYPE_USER2
+@@ -749,7 +750,8 @@ static int pcap_proc_receive(int lcore_id)
+ 
+ 	/* Receive packets */
+ 	rx = &g_pcap_option.port_cap;
+-	nb_rx = spp_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PCAP_BURST);
++	nb_rx = sppwk_eth_rx_burst(rx->ethdev_port_id, 0, bufs,
++			MAX_PCAP_BURST);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPPWK_RET_OK;
+ 
+-- 
+2.17.1
+

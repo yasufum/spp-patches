@@ -1,0 +1,42 @@
+From 83435c447569d4b8bf472d961e3687c72c659a75 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 29 Jun 2019 12:55:33 +0900
+Subject: [PATCH 0/4] Add specific RX and TX burst functions
+
+In SPP worker processes, customized version of rte_eth_rx_burst() and
+rte_eth_tx_burst() are defined to add features of VLAN or ring lantency
+statistics. However, these features are not required from all of
+processes.
+
+This series of patches is to add burst functions used for VLAN,
+statistics or both.
+
+Yasufumi Ogawa (4):
+  shared/sec: Add RX and TX burst without VLAN
+  spp_vf: change to use burst funcs with VLAN
+  spp_mirror: change to use burst funcs with VLAN
+  spp_pcap: update include path of port capability
+
+ src/mirror/Makefile                           |   1 +
+ src/mirror/mir_cmd_runner.c                   |   1 +
+ src/mirror/spp_mirror.c                       |   7 +-
+ src/pcap/Makefile                             |   1 +
+ src/pcap/spp_pcap.c                           |   4 +-
+ .../spp_worker_th/cmd_res_formatter.c         |   2 +
+ .../spp_worker_th/cmd_res_formatter.h         |   1 -
+ .../secondary/spp_worker_th/port_capability.c | 409 ++++++++++++++++++
+ .../secondary/spp_worker_th/port_capability.h |  84 ++++
+ src/shared/secondary/spp_worker_th/spp_port.c | 373 +---------------
+ src/shared/secondary/spp_worker_th/spp_port.h | 100 +----
+ src/vf/Makefile                               |   2 +-
+ src/vf/classifier_mac.c                       |   8 +-
+ src/vf/forwarder.c                            |   5 +-
+ src/vf/spp_vf.c                               |   1 +
+ src/vf/vf_cmd_runner.c                        |   1 +
+ 16 files changed, 546 insertions(+), 454 deletions(-)
+ create mode 100644 src/shared/secondary/spp_worker_th/port_capability.c
+ create mode 100644 src/shared/secondary/spp_worker_th/port_capability.h
+
+-- 
+2.17.1
+

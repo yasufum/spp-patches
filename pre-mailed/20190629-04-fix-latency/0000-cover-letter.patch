@@ -1,0 +1,38 @@
+From dea38ee02440f1b488b349d72220fe09286ada69 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 29 Jun 2019 12:58:05 +0900
+Subject: [PATCH 0/2] Fix compile errors of ring latency stats
+
+For adding burst functions and changing dir structure, it causes compile
+errors if CFLAG DSPP_RINGLATENCYSTATS_ENABLE is activated in each of
+Makefiles. This update is to fix this issue.
+
+Yasufumi Ogawa (2):
+  shared/sec: fix compile error of ringlatencystats
+  shared/sec: remove source and header of spp_port
+
+ src/mirror/Makefile                           |  1 -
+ src/mirror/spp_mirror.c                       | 37 +++++++--
+ src/pcap/Makefile                             |  1 -
+ src/pcap/spp_pcap.c                           | 13 ++-
+ .../spp_worker_th/cmd_res_formatter.c         |  1 -
+ .../secondary/spp_worker_th/cmd_runner.c      |  1 -
+ .../secondary/spp_worker_th/cmd_utils.c       | 41 ----------
+ .../secondary/spp_worker_th/cmd_utils.h       |  5 --
+ .../secondary/spp_worker_th/port_capability.c | 60 ++++++++++----
+ .../secondary/spp_worker_th/port_capability.h |  4 +-
+ .../spp_worker_th/ringlatencystats.c          | 81 +++++++++++++++++++
+ .../spp_worker_th/ringlatencystats.h          | 65 +++++++++++++++
+ src/shared/secondary/spp_worker_th/spp_port.c | 57 -------------
+ src/shared/secondary/spp_worker_th/spp_port.h | 34 --------
+ src/vf/Makefile                               |  2 +-
+ src/vf/classifier_mac.c                       | 16 ++++
+ src/vf/forwarder.c                            | 18 ++++-
+ src/vf/spp_vf.c                               |  9 ++-
+ 18 files changed, 272 insertions(+), 174 deletions(-)
+ delete mode 100644 src/shared/secondary/spp_worker_th/spp_port.c
+ delete mode 100644 src/shared/secondary/spp_worker_th/spp_port.h
+
+-- 
+2.17.1
+
