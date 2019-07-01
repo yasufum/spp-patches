@@ -1,0 +1,52 @@
+From ff0d14b823fc92acc5dfcfad0dcb4c3482de98bd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 1 Jul 2019 13:04:38 +0900
+Subject: [PATCH 0/2] Update recipe scripts
+
+Recipe scripts for spp_nfv and spp_vf are not maintained and failed to
+run because command syntax is too old. This series of patches is to
+update them to the latest syntax as described in documents.
+
+Yasufumi Ogawa (2):
+  recipes: update old rcps for spp_nfv
+  recipes: update old rcps for spp_vf
+
+ recipes/usecases/spp_nfv/dual_bidir.rcps      | 10 ++++-----
+ recipes/usecases/spp_nfv/dual_loopback.rcps   |  9 ++++----
+ recipes/usecases/spp_nfv/ring_dual_bidir.rcps | 22 +++++++++----------
+ .../usecases/spp_nfv/ring_dual_unidir.rcps    | 16 ++++++--------
+ recipes/usecases/spp_nfv/single_bidir.rcps    |  8 +++----
+ recipes/usecases/spp_nfv/single_loopback.rcps |  4 ++++
+ recipes/usecases/spp_nfv/vhost_unidir.rcps    | 11 +++++-----
+ .../ssh_login/setup/1-start_components.rcps   |  7 ------
+ .../ssh_login/setup/1_start_components.rcps   |  7 ++++++
+ .../ssh_login/setup/2-add_ports_path1.rcps    | 20 -----------------
+ .../ssh_login/setup/2_add_ports_path1.rcps    | 18 +++++++++++++++
+ .../ssh_login/setup/3-reg_mac_path1.rcps      |  3 ---
+ .../ssh_login/setup/3_reg_mac_path1.rcps      |  3 +++
+ .../ssh_login/setup/4-start_components.rcps   |  7 ------
+ .../ssh_login/setup/4_start_components.rcps   |  7 ++++++
+ .../ssh_login/setup/5-add_ports_path2.rcps    | 20 -----------------
+ .../ssh_login/setup/5_add_ports_path2.rcps    | 19 ++++++++++++++++
+ .../ssh_login/setup/6-reg_mac_path2.rcps      |  3 ---
+ .../ssh_login/setup/6_reg_mac_path2.rcps      |  3 +++
+ .../spp_vf/ssh_login/setup/7-flush.rcps       |  1 -
+ 20 files changed, 97 insertions(+), 101 deletions(-)
+ create mode 100644 recipes/usecases/spp_nfv/single_loopback.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/2_add_ports_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/3_reg_mac_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/5_add_ports_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/6_reg_mac_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
+
+-- 
+2.17.1
+
