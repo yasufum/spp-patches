@@ -1,0 +1,161 @@
+X-Account-Key: account5
+X-UIDL: GmailId16babbc47d5df1a0
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id cx22sm9305604pjb.25.2019.06.30.21.12.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 21:12:51 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] recipes: update old rcps for spp_nfv
+Date: Mon,  1 Jul 2019 13:12:43 +0900
+Message-Id: <20190701041244.34176-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190701041244.34176-1-yasufum.o@gmail.com>
+References: <20190701041244.34176-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Recipe scripts for spp_nfv are not maintained and failed to run because
+command syntax is too old. This patch is to update them to the latest
+syntax as described in documents.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ recipes/usecases/spp_nfv/dual_bidir.rcps      | 10 ++++-----
+ recipes/usecases/spp_nfv/dual_loopback.rcps   |  9 ++++----
+ recipes/usecases/spp_nfv/ring_dual_bidir.rcps | 22 +++++++++----------
+ .../usecases/spp_nfv/ring_dual_unidir.rcps    | 16 ++++++--------
+ recipes/usecases/spp_nfv/single_bidir.rcps    |  8 +++----
+ recipes/usecases/spp_nfv/single_loopback.rcps |  4 ++++
+ recipes/usecases/spp_nfv/vhost_unidir.rcps    | 11 +++++-----
+ 7 files changed, 40 insertions(+), 40 deletions(-)
+ create mode 100644 recipes/usecases/spp_nfv/single_loopback.rcps
+
+diff --git a/recipes/usecases/spp_nfv/dual_bidir.rcps b/recipes/usecases/spp_nfv/dual_bidir.rcps
+index f3d186b..ae60beb 100644
+--- a/recipes/usecases/spp_nfv/dual_bidir.rcps
++++ b/recipes/usecases/spp_nfv/dual_bidir.rcps
+@@ -1,5 +1,5 @@
+-# Patch port 0 and 1 as bi-directioonal
+-sec 1;patch phy:0 phy:1
+-sec 2;patch phy:1 phy:0
+-sec 1;forward
+-sec 2;forward
++# Configure Two spp_nfv as L2fwd
++nfv 1; patch phy:0 phy:1
++nfv 2; patch phy:1 phy:0
++nfv 1; forward
++nfv 2; forward
+diff --git a/recipes/usecases/spp_nfv/dual_loopback.rcps b/recipes/usecases/spp_nfv/dual_loopback.rcps
+index 8d3350d..5b00de7 100644
+--- a/recipes/usecases/spp_nfv/dual_loopback.rcps
++++ b/recipes/usecases/spp_nfv/dual_loopback.rcps
+@@ -1,4 +1,5 @@
+-sec 1;patch phy:0 phy:0
+-sec 2;patch phy:1 phy:1
+-sec 1;forward
+-sec 2;forward
++#Configure two spp_nfv for Loopback
++nfv 1; patch phy:0 phy:0
++nfv 2; patch phy:1 phy:1
++nfv 1; forward
++nfv 2; forward
+diff --git a/recipes/usecases/spp_nfv/ring_dual_bidir.rcps b/recipes/usecases/spp_nfv/ring_dual_bidir.rcps
+index 167c90f..2fff7b3 100644
+--- a/recipes/usecases/spp_nfv/ring_dual_bidir.rcps
++++ b/recipes/usecases/spp_nfv/ring_dual_bidir.rcps
+@@ -1,14 +1,12 @@
+ # Bi-directional with two rings
++nfv 1; add ring:0
++nfv 1; add ring:1
++nfv 2; add ring:0
++nfv 2; add ring:1
+ 
+-sec 1;add ring 0
+-sec 1;add ring 1
+-sec 2;add ring 0
+-sec 2;add ring 1
+-
+-sec 1;patch phy:0 ring:0
+-sec 1;patch ring:1 phy:0
+-sec 2;patch phy:1 ring:1
+-sec 2;patch ring:0 phy:1
+-
+-sec 1;forward
+-sec 2;forward
++nfv 1; patch phy:0 ring:0
++nfv 1; patch ring:1 phy:0
++nfv 2; patch phy:1 ring:1
++nfv 2; patch ring:0 phy:1
++nfv 1; forward
++nfv 2; forward
+diff --git a/recipes/usecases/spp_nfv/ring_dual_unidir.rcps b/recipes/usecases/spp_nfv/ring_dual_unidir.rcps
+index eb6377e..a9fd883 100644
+--- a/recipes/usecases/spp_nfv/ring_dual_unidir.rcps
++++ b/recipes/usecases/spp_nfv/ring_dual_unidir.rcps
+@@ -1,9 +1,7 @@
+-# Uni-directional with ring
+-sec 1;add ring 0
+-sec 2;add ring 0
+-
+-sec 1;patch phy:0 ring:0
+-sec 2;patch ring:0 phy:1
+-
+-sec 1;forward
+-sec 2;forward
++# Uni-Directional L2fwd with ring
++nfv 1; add ring:0
++nfv 2; add ring:0
++nfv 1; patch phy:0 ring:0
++nfv 2; patch ring:0 phy:1
++nfv 1; forward
++nfv 2; forward
+diff --git a/recipes/usecases/spp_nfv/single_bidir.rcps b/recipes/usecases/spp_nfv/single_bidir.rcps
+index e56e29e..22905a7 100644
+--- a/recipes/usecases/spp_nfv/single_bidir.rcps
++++ b/recipes/usecases/spp_nfv/single_bidir.rcps
+@@ -1,4 +1,4 @@
+-# Patch ports as bi-directional
+-sec 1;patch phy:0 phy:1
+-sec 1;patch phy:1 phy:0
+-sec 1;forward
++# Configure spp_nfv as L2fwd
++nfv 1; patch phy:0 phy:1
++nfv 1; patch phy:1 phy:0
++nfv 1; forward
+diff --git a/recipes/usecases/spp_nfv/single_loopback.rcps b/recipes/usecases/spp_nfv/single_loopback.rcps
+new file mode 100644
+index 0000000..7c70b23
+--- /dev/null
++++ b/recipes/usecases/spp_nfv/single_loopback.rcps
+@@ -0,0 +1,4 @@
++# Configure spp_nfv for Loopback
++nfv 1; patch phy:0 phy:0
++nfv 1; patch phy:1 phy:1
++nfv 1; forward
+diff --git a/recipes/usecases/spp_nfv/vhost_unidir.rcps b/recipes/usecases/spp_nfv/vhost_unidir.rcps
+index d835719..eaca4e9 100644
+--- a/recipes/usecases/spp_nfv/vhost_unidir.rcps
++++ b/recipes/usecases/spp_nfv/vhost_unidir.rcps
+@@ -1,6 +1,5 @@
+-# Uni-directional with vhost
+-sec 1;patch phy:0 vhost:0
+-sec 1;patch vhost:0 phy:1
+-sec 2;patch phy:0 phy:0
+-sec 1;forward
+-sec 2;forward
++# Single spp_nfv with Vhost PMD
++nfv 1; add vhost:0
++nfv 1; patch phy:0 vhost:0
++nfv 1; patch vhost:1 phy:1
++nfv 1; forward
+-- 
+2.17.1
+
+

@@ -1,0 +1,256 @@
+X-Account-Key: account5
+X-UIDL: GmailId16babbc4c1e68503
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id cx22sm9305604pjb.25.2019.06.30.21.12.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 21:12:52 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] recipes: update old rcps for spp_vf
+Date: Mon,  1 Jul 2019 13:12:44 +0900
+Message-Id: <20190701041244.34176-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190701041244.34176-1-yasufum.o@gmail.com>
+References: <20190701041244.34176-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to update rcps for spp_vf for the latest documents as
+previous patch.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../ssh_login/setup/1-start_components.rcps   |  7 -------
+ .../ssh_login/setup/1_start_components.rcps   |  7 +++++++
+ .../ssh_login/setup/2-add_ports_path1.rcps    | 20 -------------------
+ .../ssh_login/setup/2_add_ports_path1.rcps    | 18 +++++++++++++++++
+ .../ssh_login/setup/3-reg_mac_path1.rcps      |  3 ---
+ .../ssh_login/setup/3_reg_mac_path1.rcps      |  3 +++
+ .../ssh_login/setup/4-start_components.rcps   |  7 -------
+ .../ssh_login/setup/4_start_components.rcps   |  7 +++++++
+ .../ssh_login/setup/5-add_ports_path2.rcps    | 20 -------------------
+ .../ssh_login/setup/5_add_ports_path2.rcps    | 19 ++++++++++++++++++
+ .../ssh_login/setup/6-reg_mac_path2.rcps      |  3 ---
+ .../ssh_login/setup/6_reg_mac_path2.rcps      |  3 +++
+ .../spp_vf/ssh_login/setup/7-flush.rcps       |  1 -
+ 13 files changed, 57 insertions(+), 61 deletions(-)
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/2_add_ports_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/3_reg_mac_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/5_add_ports_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/setup/6_reg_mac_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
+
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
+deleted file mode 100644
+index 52e2bba..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/1-start_components.rcps
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# Start component for path1
+-sec 1;component start classifier1 2 classifier_mac
+-sec 1;component start forwarder1 3 forward
+-sec 1;component start forwarder2 4 forward
+-sec 1;component start forwarder3 5 forward
+-sec 1;component start forwarder4 6 forward
+-sec 1;component start merger1 7 merge
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+new file mode 100644
+index 0000000..e864628
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+@@ -0,0 +1,7 @@
++# Start component for path1
++vf 1; component start cls1 2 classifier_mac
++vf 1; component start fwd1 3 forward
++vf 1; component start fwd2 4 forward
++vf 1; component start fwd3 5 forward
++vf 1; component start fwd4 6 forward
++vf 1; component start mgr1 7 merge
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
+deleted file mode 100644
+index bfb59ba..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/2-add_ports_path1.rcps
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# classifier1
+-sec 1;port add phy:0 rx classifier1
+-sec 1;port add ring:0 tx classifier1
+-sec 1;port add ring:1 tx classifier1
+-# forwarder1
+-sec 1;port add ring:0 rx forwarder1
+-sec 1;port add vhost:0 tx forwarder1
+-# forwarder2
+-sec 1;port add ring:1 rx forwarder2
+-sec 1;port add vhost:2 tx forwarder2
+-# forwarder3
+-sec 1;port add vhost:0 rx forwarder3
+-sec 1;port add ring:2 tx forwarder3
+-# forwarder4
+-sec 1;port add vhost:2 rx forwarder4
+-sec 1;port add ring:3 tx forwarder4
+-# merger1
+-sec 1;port add ring:2 rx merger1
+-sec 1;port add ring:3 rx merger1
+-sec 1;port add phy:0 tx merger1
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/2_add_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/2_add_ports_path1.rcps
+new file mode 100644
+index 0000000..8c116c9
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/2_add_ports_path1.rcps
+@@ -0,0 +1,18 @@
++# Add ports of path1
++# classifier1
++vf 1; port add phy:0 rx cls1
++vf 1; port add ring:0 tx cls1
++vf 1; port add ring:1 tx cls1
++# forwarders
++vf 1; port add ring:0 rx fwd1
++vf 1; port add vhost:0 tx fwd1
++vf 1; port add ring:1 rx fwd2
++vf 1; port add vhost:2 tx fwd2
++vf 1; port add vhost:0 rx fwd3
++vf 1; port add ring:2 tx fwd3
++vf 1; port add vhost:2 rx fwd4
++vf 1; port add ring:3 tx fwd4
++# merger
++vf 1; port add ring:2 rx mgr1
++vf 1; port add ring:3 rx mgr1
++vf 1; port add phy:0 tx mgr1
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
+deleted file mode 100644
+index 3365291..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/3-reg_mac_path1.rcps
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Register MAC address to classifier
+-sec 1;classifier_table add mac 52:54:00:12:34:56 ring:0
+-sec 1;classifier_table add mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/3_reg_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/setup/3_reg_mac_path1.rcps
+new file mode 100644
+index 0000000..f98f1bd
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/3_reg_mac_path1.rcps
+@@ -0,0 +1,3 @@
++# Register MAC addresses to mgr1
++vf 1; classifier_table add mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table add mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
+deleted file mode 100644
+index 2adc721..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/4-start_components.rcps
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# Start component for path2
+-sec 1;component start classifier2 8 classifier_mac
+-sec 1;component start forwarder5 9 forward
+-sec 1;component start forwarder6 10 forward
+-sec 1;component start forwarder7 11 forward
+-sec 1;component start forwarder8 12 forward
+-sec 1;component start merger2 13 merge
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+new file mode 100644
+index 0000000..7ce2c0d
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+@@ -0,0 +1,7 @@
++# Start component for path2
++vf 1; component start cls2 8 classifier_mac
++vf 1; component start fwd5 9 forward
++vf 1; component start fwd6 10 forward
++vf 1; component start fwd7 11 forward
++vf 1; component start fwd8 12 forward
++vf 1; component start mgr2 13 merge
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
+deleted file mode 100644
+index d5334a5..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/5-add_ports_path2.rcps
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# classifier2
+-sec 1;port add phy:1 rx classifier2
+-sec 1;port add ring:4 tx classifier2
+-sec 1;port add ring:5 tx classifier2
+-# forwarder5
+-sec 1;port add ring:4 rx forwarder5
+-sec 1;port add vhost:1 tx forwarder5
+-# forwarder6
+-sec 1;port add ring:5 rx forwarder6
+-sec 1;port add vhost:3 tx forwarder6
+-# forwarder7
+-sec 1;port add vhost:1 rx forwarder7
+-sec 1;port add ring:6 tx forwarder7
+-# forwarder8
+-sec 1;port add vhost:3 rx forwarder8
+-sec 1;port add ring:7 tx forwarder8
+-# merger2
+-sec 1;port add ring:6 rx merger2
+-sec 1;port add ring:7 rx merger2
+-sec 1;port add phy:1 tx merger2
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/5_add_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/5_add_ports_path2.rcps
+new file mode 100644
+index 0000000..581bf72
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/5_add_ports_path2.rcps
+@@ -0,0 +1,19 @@
++# classifier
++vf 1; port add phy:1 rx cls2
++vf 1; port add ring:4 tx cls2
++vf 1; port add ring:5 tx cls2
++
++# forwarders
++vf 1; port add ring:4 rx fwd5
++vf 1; port add vhost:1 tx fwd5
++vf 1; port add ring:5 rx fwd6
++vf 1; port add vhost:3 tx fwd6
++vf 1; port add vhost:1 rx fwd7
++vf 1; port add ring:6 tx fwd7
++vf 1; port add vhost:3 rx fwd8
++vf 1; port add ring:7 tx fwd8
++
++# merger
++vf 1; port add ring:6 rx mgr2
++vf 1; port add ring:7 rx mgr2
++vf 1; port add phy:1 tx mgr2
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
+deleted file mode 100644
+index 9cab6b4..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/6-reg_mac_path2.rcps
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Register MAC address to classifier
+-sec 1;classifier_table add mac 52:54:00:12:34:57 ring:4
+-sec 1;classifier_table add mac 52:54:00:12:34:59 ring:5
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/6_reg_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/setup/6_reg_mac_path2.rcps
+new file mode 100644
+index 0000000..e812b79
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/setup/6_reg_mac_path2.rcps
+@@ -0,0 +1,3 @@
++# Register MAC address to classifier
++spp > vf 1; classifier_table add mac 52:54:00:12:34:57 ring:4
++spp > vf 1; classifier_table add mac 52:54:00:12:34:59 ring:5
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps b/recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
+deleted file mode 100644
+index 9ea2237..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/setup/7-flush.rcps
++++ /dev/null
+@@ -1 +0,0 @@
+-sec 1;flush
+-- 
+2.17.1
+
+
