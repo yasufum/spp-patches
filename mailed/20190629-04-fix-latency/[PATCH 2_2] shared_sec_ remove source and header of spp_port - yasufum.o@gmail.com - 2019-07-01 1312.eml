@@ -1,0 +1,216 @@
+X-Account-Key: account5
+X-UIDL: GmailId16babbbc60b9f4fc
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id j21sm9531126pfh.86.2019.06.30.21.12.17
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 21:12:18 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] shared/sec: remove source and header of spp_port
+Date: Mon,  1 Jul 2019 13:12:11 +0900
+Message-Id: <20190701041211.34060-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190701041211.34060-1-yasufum.o@gmail.com>
+References: <20190701041211.34060-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to remove `spp_port.c` and `spp_port.h` because burst
+functions define in these files are moved to others and no needed
+anymore.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/Makefile                                  |  1 -
+ src/mirror/spp_mirror.c                              |  1 -
+ src/pcap/Makefile                                    |  1 -
+ src/pcap/spp_pcap.c                                  |  1 -
+ .../secondary/spp_worker_th/cmd_res_formatter.c      |  1 -
+ src/shared/secondary/spp_worker_th/cmd_runner.c      |  1 -
+ src/shared/secondary/spp_worker_th/cmd_utils.c       |  1 -
+ src/shared/secondary/spp_worker_th/spp_port.c        | 12 ------------
+ src/shared/secondary/spp_worker_th/spp_port.h        | 10 ----------
+ src/vf/Makefile                                      |  1 -
+ src/vf/classifier_mac.c                              |  1 -
+ src/vf/forwarder.c                                   |  1 -
+ src/vf/spp_vf.c                                      |  1 -
+ 13 files changed, 33 deletions(-)
+ delete mode 100644 src/shared/secondary/spp_worker_th/spp_port.c
+ delete mode 100644 src/shared/secondary/spp_worker_th/spp_port.h
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index 69ff91e..af9667e 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -21,7 +21,6 @@ SRCS-y += $(SPP_SEC_DIR)/utils.c $(SPP_SEC_DIR)/add_port.c
+ SRCS-y += $(SPP_SEC_DIR)/json_helper.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_utils.c
+-SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index aefb4f5..e6352cf 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -18,7 +18,6 @@
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/cmd_utils.h"
+-#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+index 640c0d3..6273b41 100644
+--- a/src/pcap/Makefile
++++ b/src/pcap/Makefile
+@@ -22,7 +22,6 @@ SRCS-y += ../shared/common.c
+ SRCS-y += $(SPP_SEC_DIR)/utils.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+-SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 909787d..79d155c 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -18,7 +18,6 @@
+ #include "cmd_runner.h"
+ #include "cmd_parser.h"
+ #include "shared/secondary/utils.h"
+-#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index 1485533..00d9466 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -3,7 +3,6 @@
+  */
+ 
+ #include "cmd_res_formatter.h"
+-#include "spp_port.h"
+ #include "port_capability.h"
+ #include "cmd_utils.h"
+ #include "shared/secondary/json_helper.h"
+diff --git a/src/shared/secondary/spp_worker_th/cmd_runner.c b/src/shared/secondary/spp_worker_th/cmd_runner.c
+index 4e43fe6..d11dfc9 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_runner.c
++++ b/src/shared/secondary/spp_worker_th/cmd_runner.c
+@@ -9,7 +9,6 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_runner.h"
+-#include "spp_port.h"
+ #include "cmd_res_formatter.h"
+ #include "conn_spp_ctl.h"
+ #include "cmd_parser.h"
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 338054f..e77dbe7 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -12,7 +12,6 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_utils.h"
+-#include "spp_port.h"
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/return_codes.h"
+ 
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.c b/src/shared/secondary/spp_worker_th/spp_port.c
+deleted file mode 100644
+index 66f73df..0000000
+--- a/src/shared/secondary/spp_worker_th/spp_port.c
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+- */
+-
+-#include <rte_ether.h>
+-#include <rte_ip.h>
+-#include <rte_udp.h>
+-#include <rte_tcp.h>
+-#include <rte_net_crc.h>
+-
+-#include "spp_port.h"
+-#include "shared/secondary/return_codes.h"
+diff --git a/src/shared/secondary/spp_worker_th/spp_port.h b/src/shared/secondary/spp_worker_th/spp_port.h
+deleted file mode 100644
+index 9b6132b..0000000
+--- a/src/shared/secondary/spp_worker_th/spp_port.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+- */
+-
+-#ifndef __WK_SPP_PORT_H__
+-#define __WK_SPP_PORT_H__
+-
+-#include "cmd_utils.h"
+-
+-#endif /*  __WK_SPP_PORT_H__ */
+diff --git a/src/vf/Makefile b/src/vf/Makefile
+index 07870ac..92d2854 100644
+--- a/src/vf/Makefile
++++ b/src/vf/Makefile
+@@ -19,7 +19,6 @@ SRCS-y := spp_vf.c classifier_mac.c forwarder.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_SEC_DIR)/json_helper.c
+ SRCS-y += $(SPP_SEC_DIR)/utils.c $(SPP_SEC_DIR)/add_port.c
+-SRCS-y += $(SPP_WKT_DIR)/spp_port.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 893f01d..8273726 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -28,7 +28,6 @@
+ #include "shared/secondary/json_helper.h"
+ #include "shared/secondary/spp_worker_th/cmd_res_formatter.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+-#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+diff --git a/src/vf/forwarder.c b/src/vf/forwarder.c
+index 5a061ad..ba93df5 100644
+--- a/src/vf/forwarder.c
++++ b/src/vf/forwarder.c
+@@ -8,7 +8,6 @@
+ #include "spp_vf.h"
+ #include "shared/secondary/return_codes.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+-#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 1ef8e4f..d7dd5d0 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -15,7 +15,6 @@
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+-#include "shared/secondary/spp_worker_th/spp_port.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+-- 
+2.17.1
+
+

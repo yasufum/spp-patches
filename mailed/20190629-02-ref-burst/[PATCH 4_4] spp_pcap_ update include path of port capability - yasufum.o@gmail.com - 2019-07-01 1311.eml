@@ -1,0 +1,70 @@
+X-Account-Key: account5
+X-UIDL: GmailId16babbb24b403192
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id o128sm12190907pfb.42.2019.06.30.21.11.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 21:11:37 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/4] spp_pcap: update include path of port capability
+Date: Mon,  1 Jul 2019 13:11:26 +0900
+Message-Id: <20190701041126.33947-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190701041126.33947-1-yasufum.o@gmail.com>
+References: <20190701041126.33947-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Spp_pcap uses struct sppwk_port_info without VLAN features, and still
+need to include header `port_capability.h`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/Makefile   | 1 +
+ src/pcap/spp_pcap.c | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/pcap/Makefile b/src/pcap/Makefile
+index 784ee1b..640c0d3 100644
+--- a/src/pcap/Makefile
++++ b/src/pcap/Makefile
+@@ -23,6 +23,7 @@ SRCS-y += $(SPP_SEC_DIR)/utils.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
++SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/ringlatencystats.c
+ 
+ CFLAGS += -DALLOW_EXPERIMENTAL_API
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 80e6aad..e32c360 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -19,6 +19,7 @@
+ #include "cmd_parser.h"
+ #include "shared/secondary/utils.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
++#include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_SPP_PCAP RTE_LOGTYPE_USER2
+@@ -749,7 +750,8 @@ static int pcap_proc_receive(int lcore_id)
+ 
+ 	/* Receive packets */
+ 	rx = &g_pcap_option.port_cap;
+-	nb_rx = spp_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PCAP_BURST);
++	nb_rx = sppwk_eth_rx_burst(rx->ethdev_port_id, 0, bufs,
++			MAX_PCAP_BURST);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPPWK_RET_OK;
+ 
+-- 
+2.17.1
+
+

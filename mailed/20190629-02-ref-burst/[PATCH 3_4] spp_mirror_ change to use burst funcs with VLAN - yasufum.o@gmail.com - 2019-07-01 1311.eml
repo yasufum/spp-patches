@@ -1,0 +1,99 @@
+X-Account-Key: account5
+X-UIDL: GmailId16babbb1e148692b
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id o128sm12190907pfb.42.2019.06.30.21.11.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 21:11:35 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 3/4] spp_mirror: change to use burst funcs with VLAN
+Date: Mon,  1 Jul 2019 13:11:25 +0900
+Message-Id: <20190701041126.33947-4-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190701041126.33947-1-yasufum.o@gmail.com>
+References: <20190701041126.33947-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to change to use RX and TX burst functions which were
+added in previous patch.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/Makefile         | 1 +
+ src/mirror/mir_cmd_runner.c | 1 +
+ src/mirror/spp_mirror.c     | 7 ++++---
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/src/mirror/Makefile b/src/mirror/Makefile
+index f584fd1..69ff91e 100644
+--- a/src/mirror/Makefile
++++ b/src/mirror/Makefile
+@@ -22,6 +22,7 @@ SRCS-y += $(SPP_SEC_DIR)/json_helper.c
+ SRCS-y += $(SPP_SEC_DIR)/string_buffer.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_utils.c
+ SRCS-y += $(SPP_WKT_DIR)/spp_port.c
++SRCS-y += $(SPP_WKT_DIR)/port_capability.c
+ SRCS-y += $(SPP_WKT_DIR)/conn_spp_ctl.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_parser.c
+ SRCS-y += $(SPP_WKT_DIR)/cmd_runner.c
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 2f63f77..7c9a240 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -9,6 +9,7 @@
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/cmd_runner.h"
+ #include "shared/secondary/spp_worker_th/cmd_res_formatter.h"
++#include "shared/secondary/spp_worker_th/port_capability.h"
+ #include "shared/secondary/spp_worker_th/mirror_deps.h"
+ 
+ #define RTE_LOGTYPE_MIR_CMD_RUNNER RTE_LOGTYPE_USER1
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 695f3ac..4c2b90c 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -19,6 +19,7 @@
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/cmd_utils.h"
+ #include "shared/secondary/spp_worker_th/spp_port.h"
++#include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_MIRROR RTE_LOGTYPE_USER1
+@@ -323,7 +324,7 @@ mirror_proc(int id)
+ 
+ 	rx = &path->ports[0].rx;
+ 	/* Receive packets */
+-	nb_rx = spp_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PKT_BURST);
++	nb_rx = sppwk_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PKT_BURST);
+ 	if (unlikely(nb_rx == 0))
+ 		return SPP_RET_OK;
+ 
+@@ -378,14 +379,14 @@ mirror_proc(int id)
+ #endif /* SPP_MIRROR_SHALLOWCOPY */
+ 		}
+ 		if (cnt != 0)
+-			nb_tx2 = spp_eth_tx_burst(
++			nb_tx2 = sppwk_eth_tx_burst(
+ 					tx->ethdev_port_id, 0, copybufs, cnt);
+ 	}
+ 
+ 	/* orginal */
+ 	tx = &path->ports[0].tx;
+ 	if (tx->ethdev_port_id >= 0)
+-		nb_tx1 = spp_eth_tx_burst(tx->ethdev_port_id, 0, bufs, nb_rx);
++		nb_tx1 = sppwk_eth_tx_burst(tx->ethdev_port_id, 0, bufs, nb_rx);
+ 	nb_tx = nb_tx1;
+ 
+ 	if (nb_tx1 != nb_tx2)
+-- 
+2.17.1
+
+
