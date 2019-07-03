@@ -1,0 +1,143 @@
+From 5f62abc4961cfe0d9959e04b24a4364ee401fc5d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 3 Jul 2019 12:58:59 +0900
+Subject: [PATCH] docs: update status msg in usecases
+
+List of lcores is added to the result of `status` command, but examples
+in usecases chapter are still old. This patch is to update the examples.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/usecases/spp_mirror.rst |  3 +++
+ docs/guides/usecases/spp_nfv.rst    | 18 ++++++++++++++++++
+ docs/guides/usecases/spp_pcap.rst   | 10 ++++++++++
+ docs/guides/usecases/spp_vf.rst     |  3 +++
+ 4 files changed, 34 insertions(+)
+
+diff --git a/docs/guides/usecases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+index 5846bd1..1fcd8b0 100644
+--- a/docs/guides/usecases/spp_mirror.rst
++++ b/docs/guides/usecases/spp_mirror.rst
+@@ -168,6 +168,9 @@ Next, stop components.
+    Basic Information:
+      - client-id: 1
+      - ports: [phy:0, phy:1]
++     - lcore_ids:
++       - master: 0
++       - slave: 2
+    Components:
+      - core:2 '' (type: unuse)
+ 
+diff --git a/docs/guides/usecases/spp_nfv.rst b/docs/guides/usecases/spp_nfv.rst
+index 3c493fb..cc18b08 100644
+--- a/docs/guides/usecases/spp_nfv.rst
++++ b/docs/guides/usecases/spp_nfv.rst
+@@ -30,6 +30,9 @@ First of all, Check the status of ``spp_nfv`` from SPP CLI.
+ 
+     spp > nfv 1; status
+     - status: idling
++    - lcore_ids:
++      - master: 1
++      - slave: 2
+     - ports:
+       - phy:0
+       - phy:1
+@@ -61,6 +64,9 @@ patches as you defined.
+ 
+     spp > nfv 1; status
+     - status: running
++    - lcore_ids:
++      - master: 1
++      - slave: 2
+     - ports:
+       - phy:0 -> phy:1
+       - phy:1 -> phy:0
+@@ -192,6 +198,9 @@ All of ring PMDs is showed with ``status`` subcommand.
+     Add ring:0.
+     spp > nfv 1; status
+     - status: idling
++    - lcore_ids:
++      - master: 1
++      - slave: 2
+     - ports:
+       - phy:0
+       - phy:1
+@@ -207,6 +216,9 @@ use it anymore.
+     Delete ring:0.
+     spp > nfv 1; status
+     - status: idling
++    - lcore_ids:
++      - master: 1
++      - slave: 2
+     - ports:
+       - phy:0
+       - phy:1
+@@ -260,6 +272,9 @@ First, add ``ring:0`` and ``ring:1`` to ``nfv 1``.
+     Add ring:1.
+     spp > nfv 1; status
+     - status: idling
++    - lcore_ids:
++      - master: 1
++      - slave: 2
+     - ports:
+       - phy:0
+       - phy:1
+@@ -276,6 +291,9 @@ Then, add ``ring:0`` and ``ring:1`` to ``nfv 2``.
+     Add ring:1.
+     spp > nfv 2; status
+     - status: idling
++    - lcore_ids:
++      - master: 1
++      - slave: 3
+     - ports:
+       - phy:0
+       - phy:1
+diff --git a/docs/guides/usecases/spp_pcap.rst b/docs/guides/usecases/spp_pcap.rst
+index c6ec14b..9149a43 100644
+--- a/docs/guides/usecases/spp_pcap.rst
++++ b/docs/guides/usecases/spp_pcap.rst
+@@ -86,8 +86,13 @@ You can confirm lcores and worker threads running on from ``status`` command.
+ 
+     # terminal 2
+     spp > pcap 1; status
++    Basic Information:
+       - client-id: 1
+       - status: idle
++      - lcore_ids:
++        - master: 1
++        - slaves: [2, 3, 4, 5, 6]
++    Components:
+       - core:2 receive
+         - rx: phy:0
+       - core:3 write
+@@ -121,8 +126,13 @@ As you run ``start`` command, PCAP files are generated for each of
+ 
+     # terminal 2
+     spp > pcap 1; status
++    Basic Information:
+       - client-id: 1
+       - status: running
++      - lcore_ids:
++        - master: 1
++        - slaves: [2, 3, 4, 5, 6]
++    Components:
+       - core:2 receive
+         - rx: phy:0
+       - core:3 write
+diff --git a/docs/guides/usecases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+index 4810317..7365fca 100644
+--- a/docs/guides/usecases/spp_vf.rst
++++ b/docs/guides/usecases/spp_vf.rst
+@@ -221,6 +221,9 @@ You can confirm that worker threads are cleaned from ``status``.
+     Basic Information:
+       - client-id: 1
+       - ports: [phy:0, phy:1]
++      - lcore_ids:
++        - master: 2
++        - slaves: [3, 4, 5, 6]
+     Classifier Table:
+       No entries.
+     Components:
+-- 
+2.17.1
+
