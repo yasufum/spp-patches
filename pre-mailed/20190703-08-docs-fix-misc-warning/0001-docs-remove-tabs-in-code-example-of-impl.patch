@@ -1,0 +1,112 @@
+From 8ac305731ae99667c73b9f9acbbcb97b6e7fce94 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 3 Jul 2019 17:57:51 +0900
+Subject: [PATCH] docs: remove tabs in code example of impl
+
+In code examples of `Implementation` section, there are some TAB
+characters remained. It is not a problem actually, but does not apply
+with coding rules and warn by some checkers.
+
+This update is to replace TABs with spaces to avoid warnings.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/design/impl/spp_mirror.rst | 18 +++++++++---------
+ docs/guides/design/impl/spp_pcap.rst   |  6 +++---
+ docs/guides/design/impl/spp_vf.rst     | 10 +++++-----
+ 3 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/docs/guides/design/impl/spp_mirror.rst b/docs/guides/design/impl/spp_mirror.rst
+index 6233de9..7f9d16a 100644
+--- a/docs/guides/design/impl/spp_mirror.rst
++++ b/docs/guides/design/impl/spp_mirror.rst
+@@ -19,12 +19,12 @@ for duplicating packets is ``mirror_proc()`` on each of lcores.
+ 
+ .. code-block:: c
+ 
+-		for (cnt = 0; cnt < core->num; cnt++) {
++    for (cnt = 0; cnt < core->num; cnt++) {
+ 
+-			ret = mirror_proc(core->id[cnt]);
+-			if (unlikely(ret != 0))
+-				break;
+-		}
++        ret = mirror_proc(core->id[cnt]);
++        if (unlikely(ret != 0))
++            break;
++    }
+ 
+ 
+ Mirroring Packets
+@@ -58,7 +58,7 @@ packet if in deep copy mode.
+                         rte_prefetch0(rte_pktmbuf_mtod(org_mbuf, void *));
+    #ifdef SPP_MIRROR_SHALLOWCOPY
+                         /* Shallow Copy */
+-			copybufs[cnt] = rte_pktmbuf_clone(org_mbuf,
++            copybufs[cnt] = rte_pktmbuf_clone(org_mbuf,
+                                                         g_mirror_pool);
+ 
+    #else
+@@ -87,10 +87,10 @@ packet if in deep copy mode.
+                                 *mirror_mbufs = copy_mbuf;
+                                 mirror_mbufs = &copy_mbuf->next;
+                         } while ((org_mbuf = org_mbuf->next) != NULL);
+-			copybufs[cnt] = mirror_mbuf;
++            copybufs[cnt] = mirror_mbuf;
+ 
+    #endif /* SPP_MIRROR_SHALLOWCOPY */
+                 }
+-		if (cnt != 0)
++        if (cnt != 0)
+                         nb_tx2 = spp_eth_tx_burst(tx->dpdk_port, 0,
+-								copybufs, cnt);
++                                copybufs, cnt);
+diff --git a/docs/guides/design/impl/spp_pcap.rst b/docs/guides/design/impl/spp_pcap.rst
+index 1f93d41..7777fca 100644
+--- a/docs/guides/design/impl/spp_pcap.rst
++++ b/docs/guides/design/impl/spp_pcap.rst
+@@ -41,10 +41,10 @@ and sending the packets to the writer thread via ring memory by using
+     /* spp_pcap.c */
+ 
+     rx = &g_pcap_option.port_cap;
+-	nb_rx = rte_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PCAP_BURST);
++    nb_rx = rte_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PCAP_BURST);
+ 
+-	/* Forward to ring for writer thread */
+-	nb_tx = rte_ring_enqueue_burst(write_ring, (void *)bufs, nb_rx, NULL);
++    /* Forward to ring for writer thread */
++    nb_tx = rte_ring_enqueue_burst(write_ring, (void *)bufs, nb_rx, NULL);
+ 
+ 
+ Writing Packet
+diff --git a/docs/guides/design/impl/spp_vf.rst b/docs/guides/design/impl/spp_vf.rst
+index ed5dc27..65e8d06 100644
+--- a/docs/guides/design/impl/spp_vf.rst
++++ b/docs/guides/design/impl/spp_vf.rst
+@@ -58,8 +58,8 @@ or simply forwards packets.
+ 
+     while ((status = spp_get_core_status(lcore_id)) !=
+         SPPWK_LCORE_REQ_STOP) {
+-    	if (status != SPPWK_LCORE_RUNNING)
+-    	    continue;
++        if (status != SPPWK_LCORE_RUNNING)
++            continue;
+ 
+         // skipping lines ...
+ 
+@@ -68,9 +68,9 @@ or simply forwards packets.
+         /* Component classification to call a function. */
+         if (spp_get_component_type(core->id[cnt]) ==
+             SPPWK_TYPE_CLS) {
+-           	/* Component type for classifier. */
+-           	ret = spp_classifier_mac_do(core->id[cnt]);
+-           	if (unlikely(ret != 0))
++            /* Component type for classifier. */
++            ret = spp_classifier_mac_do(core->id[cnt]);
++            if (unlikely(ret != 0))
+             break;
+         } else {
+             /* Component type for forward or merge. */
+-- 
+2.17.1
+
