@@ -1,0 +1,64 @@
+From ef2e31465b1e034d164fce33fa84a1b2edef84ff Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 3 Jul 2019 13:15:30 +0900
+Subject: [PATCH] docs: update status msg in commands
+
+This patch is to update examples of the result of `status` command as
+previous patch.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/commands/secondary/spp_mirror.rst | 3 +++
+ docs/guides/commands/secondary/spp_pcap.rst   | 5 +++++
+ docs/guides/commands/secondary/spp_vf.rst     | 3 +++
+ 3 files changed, 11 insertions(+)
+
+diff --git a/docs/guides/commands/secondary/spp_mirror.rst b/docs/guides/commands/secondary/spp_mirror.rst
+index e92967a..791e22e 100644
+--- a/docs/guides/commands/secondary/spp_mirror.rst
++++ b/docs/guides/commands/secondary/spp_mirror.rst
+@@ -110,6 +110,9 @@ consists of three parts.
+     Basic Information:
+       - client-id: 3
+       - ports: [phy:0, phy:1, ring:0, ring:1, ring:2, ring:3, ring:4]
++     - lcore_ids:
++       - master: 1
++       - slaves: [2, 3, 4]
+     Components:
+       - core:5 'mr1' (type: mirror)
+         - rx: ring:0
+diff --git a/docs/guides/commands/secondary/spp_pcap.rst b/docs/guides/commands/secondary/spp_pcap.rst
+index b7f04de..5b213d3 100644
+--- a/docs/guides/commands/secondary/spp_pcap.rst
++++ b/docs/guides/commands/secondary/spp_pcap.rst
+@@ -89,8 +89,13 @@ and its resources.
+ .. code-block:: none
+ 
+     spp > pcap 1; status
++    Basic Information:
+       - client-id: 1
+       - status: idling
++      - lcore_ids:
++        - master: 1
++        - slaves: [2, 3, 4, 5, 6]
++    Components:
+       - core:2 receive
+         - rx: phy:0
+       - core:3 write
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index 7d63111..e6281ee 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -111,6 +111,9 @@ consists of three parts.
+     Basic Information:
+       - client-id: 3
+       - ports: [phy:0, phy:1, ring:0, ring:1, ring:2, ring:3, ring:4]
++      - lcore_ids:
++        - master: 2
++        - slaves: [3, 4, 5, 6]
+     Classifier Table:
+       - C0:8E:CD:38:EA:A8, ring:4
+       - C0:8E:CD:38:BC:E6, ring:3
+-- 
+2.17.1
+
