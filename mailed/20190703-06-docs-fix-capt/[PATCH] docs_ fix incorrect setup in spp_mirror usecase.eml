@@ -1,0 +1,100 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bb67410955b48a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id g9sm878094pgs.78.2019.07.02.23.09.47
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 02 Jul 2019 23:09:48 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] docs: fix incorrect setup in spp_mirror usecase
+Date: Wed,  3 Jul 2019 15:09:40 +0900
+Message-Id: <20190703060940.35517-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to move a step of capturing with tcpdump to after the end
+of network configuration.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/usecases/spp_mirror.rst | 42 ++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 25 deletions(-)
+
+diff --git a/docs/guides/usecases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+index 1fcd8b0..b867adf 100644
+--- a/docs/guides/usecases/spp_mirror.rst
++++ b/docs/guides/usecases/spp_mirror.rst
+@@ -316,24 +316,6 @@ Add classifier table entries.
+    spp > vf 1; classifier_table add mac 52:54:00:12:34:58 ring:1
+ 
+ 
+-To capture incoming packets on ``VM1``, use tcpdump for the interface,
+-``ens4`` in this case.
+-
+-.. code-block:: console
+-
+-    # terminal 5
+-    # capture on ens4 of VM1
+-    $ tcpdump -i ens4
+-
+-You send packets from the remote ``host1`` and confirm packets are received.
+-IP address is the same as :ref:`Usecase of spp_vf<spp_usecases_vf>`.
+-
+-.. code-block:: console
+-
+-    # Send packets from host1
+-    $ ping 192.168.140.21
+-
+-
+ Launch spp_mirror
+ ~~~~~~~~~~~~~~~~~
+ 
+@@ -370,20 +352,30 @@ Add ``ring:0`` as rx port, ``ring:4`` and ``ring:5`` as tx ports.
+ Receive Packet on VM3
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+-You can capture incoming packets on ``VM3``.
+-If you capture packet on ``VM1``, the same packet would be captured.
++You can capture incoming packets on ``VM3`` and compare it with on ``VM1``.
++To capture incoming packets , use tcpdump for the interface,
++``ens4`` in this case.
+ 
+ .. code-block:: console
+ 
+-   # capture on ens4 fo VM1 and VM3
+-   $ tcpdump -i ens4
++    # terminal 5
++    # capture on ens4 of VM1
++    $ tcpdump -i ens4
+ 
+-Now, you can send packet from the remote host1.
++.. code-block:: console
++
++    # terminal 7
++    # capture on ens4 of VM3
++    $ tcpdump -i ens4
++
++You send packets from the remote ``host1`` and confirm packets are received.
++IP address is the same as :ref:`Usecase of spp_vf<spp_usecases_vf>`.
+ 
+ .. code-block:: console
+ 
+-   # spp-vm1 via NIC0 from host1
+-   $ ping 192.168.140.21
++    # Send packets from host1
++    $ ping 192.168.140.21
++
+ 
+ 
+ Stop Mirroring
+-- 
+2.17.1
+
+

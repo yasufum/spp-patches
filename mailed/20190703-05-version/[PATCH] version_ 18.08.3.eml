@@ -1,0 +1,62 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bb6382ebc3340a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id g14sm881976pgn.8.2019.07.02.22.04.22
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 02 Jul 2019 22:04:23 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] version: 18.08.3
+Date: Wed,  3 Jul 2019 14:04:19 +0900
+Message-Id: <20190703050419.32896-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to update SPP to v18.08.3.
+
+* Add start up script and change permission of `spp.py` to be not
+  executable.
+
+* Add REST APIs for getting CPU layout and CPU usage in spp-ctl.
+
+* Improve suggestion of CPUs for `pri; launch` command to consider CPU
+  layout and usage. Lcores which are not used yet and on the same socket
+  are suggested by using REST APIs.
+
+* Replace original version of burst function in spp_mirror and spp_pcap
+  with DPDK's rte_eth_rx_burst() and rte_eth_tx_burst()  because no need
+  to use original one. By this update, performance is slightly improved.
+
+* Many refactoring for spp_vf, spp_mirror and spp_pcap.
+
+* Update documents for the changes listed bellow.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 4fa7740..09e638f 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.2
++VERSION := 18.08.3
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.17.1
+
+
