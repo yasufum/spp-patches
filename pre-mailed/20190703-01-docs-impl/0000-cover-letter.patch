@@ -1,0 +1,24 @@
+From 610996b00bb1d54ca393d4de18836c8c6509f77c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 3 Jul 2019 11:18:23 +0900
+Subject: [PATCH 0/3] Update docs of implementation of SPP secondaries
+
+For refactoring of SPP worker processes in previous patches, source
+code examples in implementation section should also be updated.
+This series of patches is for updating the examples and revising
+descriptions for topics.
+
+Yasufumi Ogawa (3):
+  docs: update implementation of spp_vf
+  docs: update implementation of spp_mirror
+  docs: update implementation of spp_pcap
+
+ docs/guides/api_ref/proc_independ.rst  |  11 +-
+ docs/guides/design/impl/spp_mirror.rst |  85 ++---
+ docs/guides/design/impl/spp_pcap.rst   | 156 +++------
+ docs/guides/design/impl/spp_vf.rst     | 438 ++++++++-----------------
+ 4 files changed, 212 insertions(+), 478 deletions(-)
+
+-- 
+2.17.1
+
