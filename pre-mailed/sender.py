@@ -74,9 +74,11 @@ def main():
     # Check patch format, it should include cover letter if it is dir
     if os.path.isdir(args.patch):
         files = glob.glob('{}/*'.format(args.patch))
-        if len(files) > 1:
+        if len(files) > 0:
+
             # Check if cover letter is included
-            flg = False
+            flg_cl = False
+            
             for f in files:
                 f = f.split('/')[-1]
 
@@ -90,18 +92,23 @@ def main():
                     f = '-'.join(f.split('-')[1:])
 
                 # Check format of cover letter name
-                if f.startswith('0000') and f.endswith('.patch'):
-                    flg = True
-                    break
+                if len(files) == 1:
+                    flg_cl = True
+                else:
+                    if f.startswith('0000') and f.endswith('.patch'):
+                        flg_cl = True
+                        break
 
-            if flg is not True:
+            if flg_cl is not True:
                 error_exit("No cover letter is included!")
 
             if args.in_reply_to is not None:
                 CMD.append('--in-reply-to')
                 CMD.append(args.in_reply_to)
 
-            CMD.append('--annotate')
+            if flg_cl is True:
+                CMD.append('--annotate')
+
     else:
         if not args.patch.endswith('.patch'):
             error_exit("invalid patch, not have extension '.patch'")
