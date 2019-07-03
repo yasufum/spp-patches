@@ -1,0 +1,45 @@
+From 16309e1095af1de82181636b3adc7a67af49e1eb Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 3 Jul 2019 13:47:47 +0900
+Subject: [PATCH] version: 18.08.3
+
+This patch is to update SPP to v18.08.3.
+
+* Add start up script and change permission of `spp.py` to be not
+  executable.
+
+* Add REST APIs for getting CPU layout and CPU usage in spp-ctl.
+
+* Improve suggestion of CPUs for `pri; launch` command to consider CPU
+  layout and usage. Lcores which are not used yet and on the same socket
+  are suggested by using REST APIs.
+
+* Replace original version of burst function in spp_mirror and spp_pcap
+  with DPDK's rte_eth_rx_burst() and rte_eth_tx_burst()  because no need
+  to use original one. By this update, performance is slightly improved.
+
+* Many refactoring for spp_vf, spp_mirror and spp_pcap.
+
+* Update documents for the changes listed bellow.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 4fa7740..09e638f 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.2
++VERSION := 18.08.3
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.17.1
+
