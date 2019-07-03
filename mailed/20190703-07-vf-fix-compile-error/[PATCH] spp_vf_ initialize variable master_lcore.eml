@@ -1,0 +1,112 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bb6fbbfccae1ae
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id w4sm1445825pfw.97.2019.07.03.01.37.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Jul 2019 01:38:00 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_vf: initialize variable master_lcore
+Date: Wed,  3 Jul 2019 17:37:56 +0900
+Message-Id: <20190703083756.1503-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Compilation of spp_vf is failed because of uninitialization of
+`master_lcore` variable if using optimize option. This patch is to fix
+the issue not only spp_vf but also spp_mirror and spp_pcap.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c | 8 ++++++--
+ src/pcap/spp_pcap.c     | 7 ++++++-
+ src/vf/spp_vf.c         | 7 ++++++-
+ 3 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index e6352cf..b57dd57 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -505,6 +505,12 @@ main(int argc, char *argv[])
+ 	signal(SIGTERM, stop_process);
+ 	signal(SIGINT,  stop_process);
+ 
++	/**
++	 * It should be initialized outside of while loop, or failed to
++	 * compile because it is referred when finalize `g_core_info`.
++	 */
++	master_lcore = rte_get_master_lcore();
++
+ 	while (1) {
+ 		int ret_dpdk = rte_eal_init(argc, argv);
+ 		if (unlikely(ret_dpdk < 0))
+@@ -518,8 +524,6 @@ main(int argc, char *argv[])
+ 		if (unlikely(ret_parse != 0))
+ 			break;
+ 
+-		master_lcore = rte_get_master_lcore();
+-
+ 		if (sppwk_set_mng_data(&g_iface_info, g_component_info,
+ 					g_core_info, g_change_core,
+ 					g_change_component,
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 79d155c..e8b2724 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -927,6 +927,12 @@ main(int argc, char *argv[])
+ 	signal(SIGTERM, stop_process);
+ 	signal(SIGINT,  stop_process);
+ 
++	/**
++	 * It should be initialized outside of while loop, or failed to
++	 * compile because it is referred when finalize `g_core_info`.
++	 */
++	master_lcore = rte_get_master_lcore();
++
+ 	while (1) {
+ 		int ret_eal = rte_eal_init(argc, argv);
+ 		if (unlikely(ret_eal < 0))
+@@ -1032,7 +1038,6 @@ main(int argc, char *argv[])
+ 		}
+ 
+ 		/* Set the status of main thread to idle */
+-		master_lcore = rte_get_master_lcore();
+ 		g_core_info[master_lcore].status = SPPWK_LCORE_IDLING;
+ 		int ret_wait = check_core_status_wait(SPPWK_LCORE_IDLING);
+ 		if (unlikely(ret_wait != 0))
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index d7dd5d0..415d790 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -220,6 +220,12 @@ main(int argc, char *argv[])
+ 	signal(SIGTERM, stop_process);
+ 	signal(SIGINT,  stop_process);
+ 
++	/**
++	 * It should be initialized outside of while loop, or failed to
++	 * compile because it is referred when finalize `g_core_info`.
++	 */
++	master_lcore = rte_get_master_lcore();
++
+ 	while (1) {
+ 		int ret_dpdk = rte_eal_init(argc, argv);
+ 		if (unlikely(ret_dpdk < 0))
+@@ -274,7 +280,6 @@ main(int argc, char *argv[])
+ 		}
+ 
+ 		/* Set the status of main thread to idle */
+-		master_lcore = rte_get_master_lcore();
+ 		g_core_info[master_lcore].status = SPPWK_LCORE_IDLING;
+ 		int ret_wait = check_core_status_wait(SPPWK_LCORE_IDLING);
+ 		if (unlikely(ret_wait != SPP_RET_OK))
+-- 
+2.17.1
+
+
