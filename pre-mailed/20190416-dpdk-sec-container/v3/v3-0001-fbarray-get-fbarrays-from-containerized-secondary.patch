@@ -1,0 +1,68 @@
+From ac12bc692e0178f996b4df3bfc0f54c9e3f6fd27 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Mon, 15 Apr 2019 22:55:27 +0900
+Subject: [PATCH v3 1/1] fbarray: get fbarrays from containerized secondary
+
+In secondary_msl_create_walk(), it creates a file for fbarrays with its
+PID for reserving unique name among secondary processes. However, it
+does not work if secondary is run as app container because each of
+containerized secondary has PID 1. To reserve unique name, use hostname
+instead of PID because hostname is assigned as a short form of 64
+digits full container ID in docker.
+
+Cc: stable@dpdk.org
+
+Signed-off-by: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+---
+ lib/librte_eal/linux/eal/eal_memalloc.c | 28 +++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+diff --git a/lib/librte_eal/linux/eal/eal_memalloc.c b/lib/librte_eal/linux/eal/eal_memalloc.c
+index 1f6a7c18f..7cbc80718 100644
+--- a/lib/librte_eal/linux/eal/eal_memalloc.c
++++ b/lib/librte_eal/linux/eal/eal_memalloc.c
+@@ -1366,6 +1366,7 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	struct rte_memseg_list *primary_msl, *local_msl;
+ 	char name[PATH_MAX];
+ 	int msl_idx, ret;
++	char proc_id[16];
+ 
+ 	if (msl->external)
+ 		return 0;
+@@ -1375,8 +1376,31 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	local_msl = &local_memsegs[msl_idx];
+ 
+ 	/* create distinct fbarrays for each secondary */
+-	snprintf(name, RTE_FBARRAY_NAME_LEN, "%s_%i",
+-		primary_msl->memseg_arr.name, getpid());
++	/* If run secondary in a container, the name of fbarray file should
++	 * not be decided with pid because getpid() always returns 1.
++	 * In docker, hostname is assigned as a short form of full container
++	 * ID. So use hostname as unique ID among containers instead.
++	 */
++	if (getpid() == 1) {
++		FILE *hn_fp;
++		hn_fp = fopen("/etc/hostname", "r");
++		if (hn_fp == NULL) {
++			RTE_LOG(ERR, EAL,
++				"Cannot open '/etc/hostname' for secondary\n");
++			return -1;
++		}
++
++		/* with docker, /etc/hostname just has one entry of hostname */
++		if (fscanf(hn_fp, "%s", proc_id) == EOF) {
++			fclose(hn_fp);
++			return -1;
++		}
++		fclose(hn_fp);
++	} else
++		sprintf(proc_id, "%d", (int)getpid());
++
++	snprintf(name, RTE_FBARRAY_NAME_LEN, "%s_%s",
++			primary_msl->memseg_arr.name, proc_id);
+ 
+ 	ret = rte_fbarray_init(&local_msl->memseg_arr, name,
+ 		primary_msl->memseg_arr.len,
+-- 
+2.17.1
+
