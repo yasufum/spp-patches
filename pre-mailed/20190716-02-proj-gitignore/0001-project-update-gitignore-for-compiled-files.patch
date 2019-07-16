@@ -1,0 +1,48 @@
+From 44d4fd0d13f8d3154fc5a43bab5d08d2841965d6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 13 Jul 2019 23:50:32 +0900
+Subject: [PATCH] project: update gitignore for compiled files
+
+Add entries in `.gitignore` for compiled files.
+
+  * src/*/shared/
+  * src/*/x86_64-native-linuxapp-gcc/
+  * src/*/x86_64-native-linuxapp-icc/
+  * src/*/i686-native-linuxapp-gcc/
+  * src/*/i686-native-linuxapp-icc/
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .gitignore | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 34c2ea8..154c284 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,9 +1,19 @@
+ *.swp
+ *.pyc
+ *.log
++.spp_history
++
+ bin/config.sh
+-docs/guides/_build/*
+-docs/guides/images/**/*.pdf
++
++src/*/shared/
++src/*/x86_64-native-linuxapp-gcc/
++src/*/x86_64-native-linuxapp-icc/
++src/*/i686-native-linuxapp-gcc/
++src/*/i686-native-linuxapp-icc/
++
+ src/controller/3rd_party/*
++
+ tools/sppc/build/*/*/env.sh
+-.spp_history
++
++docs/guides/_build/*
++docs/guides/images/**/*.pdf
+-- 
+2.17.1
+

@@ -1,0 +1,106 @@
+From 91df9ded88969147077c4c631a65851a3016c2fa Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 14 Jul 2019 23:41:03 +0900
+Subject: [PATCH] bin: add interfaces of spp_primary for start.sh
+
+Startup script `start.sh` supports using vdevs, but only for vhost. This
+update is to add `ring` and `tap` types for the interface.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh |  2 ++
+ bin/spp_pri.sh       | 30 ++++++++++++++++++++++++++----
+ bin/start.sh         |  4 +++-
+ 3 files changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 915c093..9bdee41 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -12,6 +12,8 @@ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+ #PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
++#PRI_RING_IDS=(1 2)  # you use if you have no phy ports.
++#PRI_TAP_IDS=(1 2)  # you use if you have no phy ports.
+ 
+ # You do not need to change usually.
+ # Log files created in 'spp/log/'.
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index 2f45b83..62a6075 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -5,22 +5,42 @@
+ #set -x
+ 
+ SPP_PRI_VHOST=""
++SPP_PRI_RING=""
++SPP_PRI_TAP=""
+ 
+ function clean_sock_files() {
+     # clean /tmp/sock*
+     sudo rm -f /tmp/sock*
+ }
+ 
+-# Add vdevs if no physical ports.
+-function setup_vdevs() {
+-    if [ ${PRI_VHOST_IDS} ]; then
+-        for id in ${PRI_VHOST_IDS[@]}; do
++# Add vhost vdevs.
++function setup_vhost_vdevs() {
++    if [ ${PRI_VHOST_VDEVS} ]; then
++        for id in ${PRI_VHOST_VDEVS[@]}; do
+             SPP_SOCK="/tmp/sock${id}"
+             SPP_PRI_VHOST="${SPP_PRI_VHOST} --vdev eth_vhost${id},iface=${SPP_SOCK}"
+         done
+     fi
+ }
+ 
++# Add ring vdevs.
++function setup_ring_vdevs() {
++    if [ ${PRI_RING_VDEVS} ]; then
++        for id in ${PRI_RING_VDEVS[@]}; do
++            SPP_PRI_RING="${SPP_PRI_RING} --vdev net_ring${id}"
++        done
++    fi
++}
++
++# Add tap vdevs.
++function setup_tap_vdevs() {
++    if [ ${PRI_TAP_VDEVS} ]; then
++        for id in ${PRI_TAP_VDEVS[@]}; do
++            SPP_PRI_TAP="${SPP_PRI_TAP} --vdev net_tap${id},iface=vtap${id}"
++        done
++    fi
++}
++
+ # Launch spp_primary.
+ function spp_pri() {
+     SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
+@@ -33,6 +53,8 @@ function spp_pri() {
+         --base-virtaddr 0x100000000 \
+         --log-level ${LOGLEVEL} \
+         ${SPP_PRI_VHOST} \
++        ${SPP_PRI_RING} \
++        ${SPP_PRI_TAP} \
+         -- \
+         -p ${PRI_PORTMASK} \
+         -n ${NUM_RINGS} \
+diff --git a/bin/start.sh b/bin/start.sh
+index 9bc1ff0..bf57d4e 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -31,7 +31,9 @@ python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
+ echo "Start spp_primary"
+ . ${SPP_DIR}/bin/spp_pri.sh
+ clean_sock_files  # remove /tmp/sock* as initialization
+-setup_vdevs  # you use vdevs if you have no phy ports
++setup_vhost_vdevs  # you use vdevs if you have no phy ports
++setup_ring_vdevs  # you use vdevs if you have no phy ports
++setup_tap_vdevs  # you use vdevs if you have no phy ports
+ spp_pri  # launch spp_primary
+ 
+ echo "Waiting for spp-ctl is ready ..."
+-- 
+2.17.1
+

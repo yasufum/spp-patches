@@ -1,0 +1,28 @@
+From eb876d71c3be2d906d36931e5d0aa217e44e2afd Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 16 Jul 2019 16:15:17 +0900
+Subject: [PATCH 0/2] Add REST APIs for add or del port to spp_primary
+
+Spp_primary is designed to only have physical ports and initialize them
+at the process is started. It is because development of spp_primary was
+started before vdev is introduced.
+
+However, Spp_primary can support adding or deleting port dynamically by
+using hotplug features currently as same as secondary processes. This
+update is to add the features for spp_primary, and add REST API for.
+SPP CLI does not support to add or delete for spp_primary yet.
+
+Yasufumi Ogawa (2):
+  spp_primary: add commands to add and del port
+  spp-ctl: add port add and del APIs for spp_primary
+
+ src/nfv/commands.h        |   2 +-
+ src/primary/Makefile      |   6 ++
+ src/primary/main.c        | 179 ++++++++++++++++++++++++++++++++++++--
+ src/spp-ctl/spp_proc.py   |   8 ++
+ src/spp-ctl/spp_webapi.py |  20 +++++
+ 5 files changed, 209 insertions(+), 6 deletions(-)
+
+-- 
+2.17.1
+
