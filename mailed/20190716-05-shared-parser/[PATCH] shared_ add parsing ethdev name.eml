@@ -1,0 +1,158 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bfac6322598e4d
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id y22sm25342688pfo.39.2019.07.16.05.33.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 16 Jul 2019 05:33:41 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared: add parsing ethdev name
+Date: Tue, 16 Jul 2019 21:33:35 +0900
+Message-Id: <20190716123335.40985-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to add parser parse_dev_name() for the name of ethdev,
+such as `eth_vhost1` or `net_ring1`. By using this function,
+port type `VHOST` and ID `1` can be extracted from `eth_vhost1`.
+
+This parser is intended to be used in initialization of ports in
+secondary process in which all shared ports managed by spp_primary are
+initialized as PHY incorrectly even if it is not PHY type. It is
+because secondary expects the type of ports in spp_primary is always
+PHY. However, port type might be other than PHY if spp_primary is
+launched with `--vdev` option.
+
+By using this parser, port type and ID can be inspected in secondary.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c | 66 +++++++++++++++++++++++++++++++++++++++++++++
+ src/shared/common.h | 17 ++++++++++++
+ 2 files changed, 83 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 55c53c0..6655f17 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -163,3 +163,69 @@ int set_spp_ctl_port(int s_port)
+ 	spp_ctl_port = s_port;
+ 	return 0;
+ }
++
++/**
++ * Get port type and port ID from ethdev name, such as `eth_vhost1` which
++ * can be retrieved with rte_eth_dev_get_name_by_port().
++ * In this case of `eth_vhost1`, port type is `VHOST` and port ID is `1`.
++ */
++int parse_dev_name(char *dev_name, int *port_type, int *port_id)
++{
++	char pid_str[12] = { 0 };
++	int pid_len;
++	int dev_name_len = strlen(dev_name);
++	int dev_str_len;
++
++	if (strncmp(dev_name, VDEV_PREFIX_RING,
++			strlen(VDEV_PREFIX_RING)) == 0) {
++		dev_str_len = strlen(VDEV_PREFIX_RING);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_RING),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = RING;
++
++	} else if (strncmp(dev_name, VDEV_PREFIX_VHOST,
++			strlen(VDEV_PREFIX_VHOST)) == 0) {
++		dev_str_len = strlen(VDEV_PREFIX_VHOST);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_VHOST),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = VHOST;
++
++	} else if (strncmp(dev_name, VDEV_PREFIX_PCAP,
++			strlen(VDEV_PREFIX_PCAP)) == 0) {
++		dev_str_len = strlen(VDEV_PREFIX_PCAP);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_PCAP),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = PCAP;
++
++	} else if (strncmp(dev_name, VDEV_PREFIX_TAP,
++			strlen(VDEV_PREFIX_TAP)) == 0) {
++		dev_str_len = strlen(VDEV_PREFIX_TAP);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_TAP),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = TAP;
++
++	} else if (strncmp(dev_name, VDEV_PREFIX_NULL,
++			strlen(VDEV_PREFIX_NULL)) == 0) {
++		dev_str_len = strlen(VDEV_PREFIX_NULL);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_NULL),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = PCAP;
++
++	/* TODO(yasufum) add checking invalid port type and return -1 */
++	} else {
++		*port_id = 0;
++		*port_type = PHY;
++	}
++
++	return 0;
++}
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 78d2520..d51d6df 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -43,6 +43,13 @@
+ #define RTE_MP_RX_DESC_DEFAULT 512
+ #define RTE_MP_TX_DESC_DEFAULT 512
+ 
++#define VDEV_PREFIX_RING  "net_ring"
++#define VDEV_PREFIX_VHOST "eth_vhost"
++#define VDEV_PREFIX_PCAP  "net_pcap"
++#define VDEV_PREFIX_TAP   "net_tap"
++#define VDEV_PREFIX_NULL  "eth_null"
++
++
+ /* Command. */
+ enum cmd_type {
+ 	STOP,
+@@ -82,6 +89,7 @@ enum port_type {
+ 	VHOST,
+ 	PCAP,
+ 	NULLPMD,
++	TAP,
+ 	UNDEF,
+ };
+ 
+@@ -172,4 +180,13 @@ int get_spp_ctl_port(void);
+  */
+ int set_spp_ctl_port(int s_port);
+ 
++/**
++ * Get port type and port ID from ethdev name, such as `eth_vhost1` which
++ * can be retrieved with rte_eth_dev_get_name_by_port().
++ * In this case of `eth_vhost1`, port type is `VHOST` and port ID is `1`.
++ *
++ * @return 0 if succeeded, or -1 if failed.
++ */
++int parse_dev_name(char *dev_name, int *port_type, int *port_id);
++
+ #endif
+-- 
+2.17.1
+
+

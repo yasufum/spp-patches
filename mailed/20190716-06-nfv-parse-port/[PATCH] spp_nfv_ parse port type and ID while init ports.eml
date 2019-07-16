@@ -1,0 +1,139 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bfac65c786aa9c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 2sm35796712pgm.39.2019.07.16.05.33.51
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 16 Jul 2019 05:33:52 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_nfv: parse port type and ID while init ports
+Date: Tue, 16 Jul 2019 21:33:48 +0900
+Message-Id: <20190716123348.41041-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Spp_nfv initialize shared ports managed by spp_primary as PHY type.
+However, it might be other types if spp_primary is launched with
+`--vdev` option, and it should be initialized with correct port type
+and ID.
+
+This update is to fix the issue by using parse_dev_name() which is added
+in the previous patch.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/commands.h   |  2 +-
+ src/nfv/main.c       | 24 +++++++++++++++++++++---
+ src/nfv/nfv_status.c | 16 ++++++++++++++++
+ 3 files changed, 38 insertions(+), 4 deletions(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 7bdbdff..06159ad 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -151,7 +151,7 @@ static int
+ parse_command(char *str)
+ {
+ 	uint16_t dev_id;
+-	char dev_name[RTE_DEV_NAME_MAX_LEN];
++	char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
+ 
+ 	char *token_list[MAX_PARAMETER] = {NULL};
+ 	int cli_id;
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 9117d9b..eb25d13 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -194,7 +194,10 @@ main(int argc, char *argv[])
+ 	unsigned int i;
+ 	int flg_exit;  // used as res of parse_command() to exit if -1
+ 	int ret;
+-	char log_msg[1024] = {'\0'};  /* temporary log message */
++	char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
++	int port_type;
++	int nof_phy_port = 0;
++	char log_msg[1024] = { 0 };  /* temporary log message */
+ 
+ 	ret = rte_eal_init(argc, argv);
+ 	if (ret < 0)
+@@ -246,11 +249,26 @@ main(int argc, char *argv[])
+ 		if (!rte_eth_dev_is_valid_port(i))
+ 			continue;
+ 
++		int port_id;
++		rte_eth_dev_get_name_by_port(i, dev_name);
++		ret = parse_dev_name(dev_name, &port_type, &port_id);
++		if (ret < 0)
++			RTE_LOG(ERR, SPP_NFV, "Failed to parse dev_name.");
++		if (port_type == PHY) {
++			port_id = nof_phy_port;
++			nof_phy_port++;
++		}
++
+ 		/* Update ports_fwd_array with phy port. */
+ 		ports_fwd_array[i].in_port_id = i;
+-		port_map[i].port_type = PHY;
+-		port_map[i].id = i;
++		port_map[i].port_type = port_type;
++		port_map[i].id = port_id;
+ 		port_map[i].stats = &ports->port_stats[i];
++
++		/* TODO(yasufum) convert from int of port_type to char */
++		RTE_LOG(DEBUG, SPP_NFV, "Add port, type: %d, id: %d\n",
++				port_type, port_id);
++
+ 	}
+ 
+ 	/* Inspect lcores in use. */
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index c40d0b4..a092fac 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -111,6 +111,10 @@ append_port_info_json(char *str,
+ 			sprintf(str + strlen(str), "\"nullpmd:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case TAP:
++			sprintf(str + strlen(str), "\"tap:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+ 			sprintf(str + strlen(str), "\"udf\",");
+@@ -191,6 +195,12 @@ append_patch_info_json(char *str,
+ 					"\"nullpmd:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case TAP:
++			RTE_LOG(INFO, SHARED, "Type: TAP\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"tap:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			RTE_LOG(INFO, SHARED, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+@@ -241,6 +251,12 @@ append_patch_info_json(char *str,
+ 						"\"nullpmd:%u\"",
+ 						port_map[j].id);
+ 				break;
++			case TAP:
++				RTE_LOG(INFO, SHARED, "Type: TAP\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"tap:%u\"",
++						port_map[j].id);
++				break;
+ 			case UNDEF:
+ 				RTE_LOG(INFO, SHARED, "Type: UDF\n");
+ 				/*
+-- 
+2.17.1
+
+
