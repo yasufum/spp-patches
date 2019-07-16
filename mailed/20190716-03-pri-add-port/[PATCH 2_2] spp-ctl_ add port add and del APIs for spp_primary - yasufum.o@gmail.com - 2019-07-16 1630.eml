@@ -1,0 +1,97 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bf9b127bcba8e8
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 185sm20086849pfd.125.2019.07.16.00.31.04
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 16 Jul 2019 00:31:05 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] spp-ctl: add port add and del APIs for spp_primary
+Date: Tue, 16 Jul 2019 16:30:57 +0900
+Message-Id: <20190716073057.18821-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190716073057.18821-1-yasufum.o@gmail.com>
+References: <20190716073057.18821-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to add REST APIs for adding ro deleting to spp_primary.
+Here is an example for adding `vhost:1`.
+
+    $ curl -X PUT -H 'application/json' -d \
+      '{"action": "add", "port": "vhost:1"}' \
+      http://127.0.0.1:7777/v1/primary/ports
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/spp-ctl/spp_proc.py   |  8 ++++++++
+ src/spp-ctl/spp_webapi.py | 20 ++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index fe7ecea..2bc14e6 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -292,6 +292,14 @@ class PrimaryProc(SppProc):
+     def clear(self):
+         return "clear"
+ 
++    @exec_command
++    def port_add(self, port):
++        return "add {port}".format(**locals())
++
++    @exec_command
++    def port_del(self, port):
++        return "del {port}".format(**locals())
++
+     @exec_command
+     def do_launch_sec_proc(self, args):
+         proc_name = args['proc_name']
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 7f2baad..89b188a 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -452,6 +452,8 @@ class V1PrimaryHandler(BaseHandler):
+     def set_route(self):
+         self.route('/status', 'GET', callback=self.get_status)
+         self.route('/status', 'DELETE', callback=self.clear_status)
++        self.route('/ports', 'PUT',
++                   callback=self.primary_port)
+         self.route('/launch', 'PUT',
+                    callback=self.launch_sec_proc)
+         self.route('/', 'DELETE', callback=self.pri_exit)
+@@ -478,6 +480,24 @@ class V1PrimaryHandler(BaseHandler):
+         proc = self._get_proc()
+         proc.clear()
+ 
++    # TODO(yasufum) change name and make it to shared method
++    def _validate_nfv_port(self, body):
++        for key in ['action', 'port']:
++            if key not in body:
++                raise KeyRequired(key)
++        if body['action'] not in ["add", "del"]:
++            raise KeyInvalid('action', body['action'])
++        self._validate_port(body['port'])
++
++    def primary_port(self, body):
++        self._validate_nfv_port(body)
++        proc = self._get_proc()
++
++        if body['action'] == "add":
++            proc.port_add(body['port'])
++        else:
++            proc.port_del(body['port'])
++
+     def launch_sec_proc(self, body):  # the arg should be "body"
+         for key in ['client_id', 'proc_name', 'eal', 'app']:
+             if key not in body:
+-- 
+2.17.1
+
+

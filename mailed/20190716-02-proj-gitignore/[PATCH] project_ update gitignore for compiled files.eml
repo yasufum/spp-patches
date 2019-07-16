@@ -1,0 +1,65 @@
+X-Account-Key: account5
+X-UIDL: GmailId16bf9b0e2d38f2cb
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id l1sm25059809pfl.9.2019.07.16.00.30.46
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 16 Jul 2019 00:30:47 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] project: update gitignore for compiled files
+Date: Tue, 16 Jul 2019 16:30:43 +0900
+Message-Id: <20190716073043.18765-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Add entries in `.gitignore` for compiled files.
+
+  * src/*/shared/
+  * src/*/x86_64-native-linuxapp-gcc/
+  * src/*/x86_64-native-linuxapp-icc/
+  * src/*/i686-native-linuxapp-gcc/
+  * src/*/i686-native-linuxapp-icc/
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .gitignore | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 34c2ea8..154c284 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,9 +1,19 @@
+ *.swp
+ *.pyc
+ *.log
++.spp_history
++
+ bin/config.sh
+-docs/guides/_build/*
+-docs/guides/images/**/*.pdf
++
++src/*/shared/
++src/*/x86_64-native-linuxapp-gcc/
++src/*/x86_64-native-linuxapp-icc/
++src/*/i686-native-linuxapp-gcc/
++src/*/i686-native-linuxapp-icc/
++
+ src/controller/3rd_party/*
++
+ tools/sppc/build/*/*/env.sh
+-.spp_history
++
++docs/guides/_build/*
++docs/guides/images/**/*.pdf
+-- 
+2.17.1
+
+
