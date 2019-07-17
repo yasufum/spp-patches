@@ -1,0 +1,112 @@
+From 8ee174495179e828aae81301d258bb78294a5689 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 17 Jul 2019 16:49:15 +0900
+Subject: [PATCH] shared/sec: remove nof_rings from iface_info
+
+Struct `iface_info` is for containing the number of ports and port info
+itself for each of port types. However, members of the number of ports
+are scarcely used, only for initializing ring latency feature.
+
+As the result, three of `nof_phys`, `nof_vhosts` and `nof_rings` are not
+required. Former two are not referred from anywhere, and `nof_rings` can
+be counted with RTE libs. This patch is to remove it.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                        | 13 ++++++++++++-
+ src/shared/secondary/spp_worker_th/cmd_utils.c |  4 ----
+ src/shared/secondary/spp_worker_th/cmd_utils.h |  6 ------
+ src/vf/spp_vf.c                                | 13 ++++++++++++-
+ 4 files changed, 24 insertions(+), 12 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index b57dd57..5cee655 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -556,9 +556,20 @@ main(int argc, char *argv[])
+ 			break;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
++		int port_type, port_id;
++		char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
++		int nof_rings = 0;
++		for (int i = 0; i < RTE_MAX_ETHPORTS; i++) {
++			if (!rte_eth_dev_is_valid_port(i))
++				continue;
++			rte_eth_dev_get_name_by_port(i, dev_name);
++			ret = parse_dev_name(dev_name, &port_type, &port_id);
++			if (port_type == RING)
++				nof_rings++;
++		}
+ 		int ret_ringlatency = spp_ringlatencystats_init(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+-				g_iface_info.nof_rings);
++				nof_rings);
+ 		if (unlikely(ret_ringlatency != SPP_RET_OK))
+ 			break;
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 7797a71..9180169 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -226,10 +226,6 @@ log_interface_info(const struct iface_info *iface_info)
+ {
+ 	const struct sppwk_port_info *port = NULL;
+ 	int cnt = 0;
+-	RTE_LOG(DEBUG, APP, "interface phy=%d, vhost=%d, ring=%d\n",
+-			iface_info->nof_phys,
+-			iface_info->nof_vhosts,
+-			iface_info->nof_rings);
+ 	for (cnt = 0; cnt < RTE_MAX_ETHPORTS; cnt++) {
+ 		port = &iface_info->phy[cnt];
+ 		if (port->iface_type == UNDEF)
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index e1775b2..2d7c389 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -194,16 +194,10 @@ struct sppwk_comp_info {
+ 
+ /* Manage number of interfaces  and port information as global variable. */
+ /**
+- * TODO(yasufum) confirm why nof_phys, nof_vhosts and nof_rings are required
+- * not used in anywhere.
+- *
+  * TODO(yasufum) confirm why having arrays of types. it seems OK having
+  * just one array.
+  */
+ struct iface_info {
+-	int nof_phys;    /* Number of phy ports */
+-	int nof_vhosts;  /* Number of vhost ports */
+-	int nof_rings;   /* Number of ring ports */
+ 	struct sppwk_port_info phy[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_info vhost[RTE_MAX_ETHPORTS];
+ 	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 415d790..e2711d1 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -267,9 +267,20 @@ main(int argc, char *argv[])
+ 			break;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
++		int port_type, port_id;
++		char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
++		int nof_rings = 0;
++		for (int i = 0; i < RTE_MAX_ETHPORTS; i++) {
++			if (!rte_eth_dev_is_valid_port(i))
++				continue;
++			rte_eth_dev_get_name_by_port(i, dev_name);
++			ret = parse_dev_name(dev_name, &port_type, &port_id);
++			if (port_type == RING)
++				nof_rings++;
++		}
+ 		int ret_ringlatency = spp_ringlatencystats_init(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+-				g_iface_info.nof_rings);
++				nof_rings);
+ 		if (unlikely(ret_ringlatency != SPP_RET_OK))
+ 			break;
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+-- 
+2.17.1
+
