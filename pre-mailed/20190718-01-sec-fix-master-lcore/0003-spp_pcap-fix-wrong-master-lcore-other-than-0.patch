@@ -1,0 +1,63 @@
+From 2d3cfd39448da264f867e32414a478521442cbce Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 18 Jul 2019 12:19:17 +0900
+Subject: [PATCH 3/3] spp_pcap: fix wrong master lcore other than 0
+
+As previous patch, fix assigning wrong master lcore by moving
+rte_eal_init() before rte_get_master_lcore().
+
+Fixes: 310c51b918e9 ("spp_vf: initialize variable master_lcore")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/spp_pcap.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index e8b2724..39667d8 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -905,7 +905,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ int
+ main(int argc, char *argv[])
+ {
+-	int ret = SPPWK_RET_NG;
++	int ret;
+ 	char ctl_ip[IPADDR_LEN] = { 0 };
+ 	int ctl_port;
+ 	int ret_cmd_init;
+@@ -927,20 +927,24 @@ main(int argc, char *argv[])
+ 	signal(SIGTERM, stop_process);
+ 	signal(SIGINT,  stop_process);
+ 
++	ret = rte_eal_init(argc, argv);
++	if (unlikely(ret < 0))
++		rte_exit(EXIT_FAILURE, "Invalid EAL arguments.\n");
++
++	argc -= ret;
++	argv += ret;
++
+ 	/**
+ 	 * It should be initialized outside of while loop, or failed to
+ 	 * compile because it is referred when finalize `g_core_info`.
+ 	 */
+ 	master_lcore = rte_get_master_lcore();
+ 
++	/**
++	 * If any failure is occured in the while block, break to go the end
++	 * of the block to finalize.
++	 */
+ 	while (1) {
+-		int ret_eal = rte_eal_init(argc, argv);
+-		if (unlikely(ret_eal < 0))
+-			break;
+-
+-		argc -= ret_eal;
+-		argv += ret_eal;
+-
+ 		/* Parse spp_pcap specific parameters */
+ 		int ret_parse = parse_app_args(argc, argv);
+ 		if (unlikely(ret_parse != 0))
+-- 
+2.17.1
+

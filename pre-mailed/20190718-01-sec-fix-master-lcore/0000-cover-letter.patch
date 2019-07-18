@@ -1,0 +1,25 @@
+From 2d3cfd39448da264f867e32414a478521442cbce Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 18 Jul 2019 13:52:17 +0900
+Subject: [PATCH 0/3] Fix assigning wrong master lcore
+
+In spp_vf, spp_mirror and spp_pcap, master lcore is always set as 0 and
+cannot to others. It is because rte_get_master_lcore() returns 0 if it
+is called before rte_eal_init().
+
+This series of patches is to fix the issue for each of processes by
+moving rte_eal_init() before rte_get_master_lcore().
+
+Yasufumi Ogawa (3):
+  spp_vf: fix wrong master lcore other than 0
+  spp_mirror: fix wrong master lcore other than 0
+  spp_pcap: fix wrong master lcore other than 0
+
+ src/mirror/spp_mirror.c | 20 ++++++++++++--------
+ src/pcap/spp_pcap.c     | 20 ++++++++++++--------
+ src/vf/spp_vf.c         | 20 ++++++++++++--------
+ 3 files changed, 36 insertions(+), 24 deletions(-)
+
+-- 
+2.17.1
+

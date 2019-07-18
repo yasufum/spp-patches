@@ -1,0 +1,64 @@
+From 648cfc39e19a4f413f2a7230496aebe26f9942b8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 18 Jul 2019 11:56:42 +0900
+Subject: [PATCH 1/3] spp_vf: fix wrong master lcore other than 0
+
+Master lcore of spp_vf is always set as 0 and cannot to others. It is
+because rte_get_master_lcore() returns 0 if it is called before
+rte_eal_init(). This update is to move rte_eal_init() before.
+
+Fixes: 310c51b918e9 ("spp_vf: initialize variable master_lcore")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/spp_vf.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index e2711d1..bc2a403 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -199,7 +199,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ int
+ main(int argc, char *argv[])
+ {
+-	int ret = SPP_RET_NG;
++	int ret;
+ 	char ctl_ip[IPADDR_LEN] = { 0 };
+ 	int ctl_port;
+ 	int ret_cmd_init;
+@@ -220,20 +220,24 @@ main(int argc, char *argv[])
+ 	signal(SIGTERM, stop_process);
+ 	signal(SIGINT,  stop_process);
+ 
++	ret = rte_eal_init(argc, argv);
++	if (unlikely(ret < 0))
++		rte_exit(EXIT_FAILURE, "Invalid EAL arguments.\n");
++
++	argc -= ret;
++	argv += ret;
++
+ 	/**
+ 	 * It should be initialized outside of while loop, or failed to
+ 	 * compile because it is referred when finalize `g_core_info`.
+ 	 */
+ 	master_lcore = rte_get_master_lcore();
+ 
++	/**
++	 * If any failure is occured in the while block, break to go the end
++	 * of the block to finalize.
++	 */
+ 	while (1) {
+-		int ret_dpdk = rte_eal_init(argc, argv);
+-		if (unlikely(ret_dpdk < 0))
+-			break;
+-
+-		argc -= ret_dpdk;
+-		argv += ret_dpdk;
+-
+ 		/* Parse spp_vf specific parameters */
+ 		int ret_parse = parse_app_args(argc, argv);
+ 		if (unlikely(ret_parse != SPP_RET_OK))
+-- 
+2.17.1
+
