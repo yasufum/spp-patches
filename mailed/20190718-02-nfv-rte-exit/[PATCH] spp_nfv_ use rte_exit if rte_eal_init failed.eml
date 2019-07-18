@@ -1,0 +1,45 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c03750ce2b04f2
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 143sm39774879pgc.6.2019.07.17.22.01.37
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 17 Jul 2019 22:01:38 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_nfv: use rte_exit if rte_eal_init failed
+Date: Thu, 18 Jul 2019 14:01:34 +0900
+Message-Id: <20190718050134.6878-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to change to use rte_exit() if rte_eal_init() is failed.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index c0126a4..70a6aab 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -201,7 +201,7 @@ main(int argc, char *argv[])
+ 
+ 	ret = rte_eal_init(argc, argv);
+ 	if (ret < 0)
+-		return -1;
++		rte_exit(EXIT_FAILURE, "Invalid EAL arguments\n");
+ 
+ 	argc -= ret;
+ 	argv += ret;
+-- 
+2.17.1
+
+
