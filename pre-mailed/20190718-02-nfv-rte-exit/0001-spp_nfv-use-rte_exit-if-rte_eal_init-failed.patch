@@ -1,0 +1,28 @@
+From 8a48309625bc752912dcc18fb89252ca5a2a4da0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 18 Jul 2019 13:14:40 +0900
+Subject: [PATCH] spp_nfv: use rte_exit if rte_eal_init failed
+
+This update is to change to use rte_exit() if rte_eal_init() is failed.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index c0126a4..70a6aab 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -201,7 +201,7 @@ main(int argc, char *argv[])
+ 
+ 	ret = rte_eal_init(argc, argv);
+ 	if (ret < 0)
+-		return -1;
++		rte_exit(EXIT_FAILURE, "Invalid EAL arguments\n");
+ 
+ 	argc -= ret;
+ 	argv += ret;
+-- 
+2.17.1
+
