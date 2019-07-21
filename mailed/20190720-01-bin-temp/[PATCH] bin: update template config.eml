@@ -1,0 +1,48 @@
+X-Account-Key: account1
+X-UIDL: GmailId16c130d03085024a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:7c52:b2aa:1952:8806])
+        by smtp.gmail.com with ESMTPSA id z4sm54771041pfg.166.2019.07.20.22.41.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sat, 20 Jul 2019 22:41:55 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] bin: update template config
+Date: Sun, 21 Jul 2019 14:41:50 +0900
+Message-Id: <20190721054150.22569-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+As startup script was updated for supporting ring and tap interfaces,
+add params for the interfaces in template config file.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 9bdee41..c7ad672 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -11,9 +11,9 @@ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+-#PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
+-#PRI_RING_IDS=(1 2)  # you use if you have no phy ports.
+-#PRI_TAP_IDS=(1 2)  # you use if you have no phy ports.
++#PRI_VHOST_VDEVS=(11 12)  # you use if you have no phy ports.
++#PRI_RING_VDEVS=(1 2)  # you use if you have no phy ports.
++#PRI_TAP_VDEVS=(1 2)  # you use if you have no phy ports.
+ 
+ # You do not need to change usually.
+ # Log files created in 'spp/log/'.
+-- 
+2.17.1
+
+
