@@ -1,0 +1,35 @@
+From 54d8485fe634c5ed848c01804a54b5e75eeb0723 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 22 Jul 2019 02:32:03 +0900
+Subject: [PATCH 0/4] Update to unify return codes
+
+This series of patches is to unify return codes to
+  * SPPWK_RET_OK
+  * SPPWK_RET_NG
+
+Yasufumi Ogawa (4):
+  spp_vf: unify return codes
+  spp_mirror: unify return codes
+  spp_pcap: unify return codes
+  docs: unify return codes
+
+ docs/guides/design/impl/spp_pcap.rst |  4 +-
+ docs/guides/design/impl/spp_vf.rst   |  2 +-
+ src/mirror/mir_cmd_runner.c          | 64 +++++++++----------
+ src/mirror/spp_mirror.c              | 58 +++++++++---------
+ src/mirror/spp_mirror.h              |  4 +-
+ src/pcap/cmd_runner.c                |  7 ++-
+ src/pcap/cmd_runner.h                |  2 +-
+ src/pcap/cmd_utils.h                 |  8 +--
+ src/pcap/spp_pcap.c                  |  2 +-
+ src/vf/classifier_mac.c              | 46 +++++++-------
+ src/vf/classifier_mac.h              | 16 ++---
+ src/vf/forwarder.c                   | 22 +++----
+ src/vf/forwarder.h                   |  8 +--
+ src/vf/spp_vf.c                      | 42 ++++++-------
+ src/vf/vf_cmd_runner.c               | 92 ++++++++++++++--------------
+ 15 files changed, 189 insertions(+), 188 deletions(-)
+
+-- 
+2.17.1
+
