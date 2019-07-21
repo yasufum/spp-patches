@@ -1,0 +1,33 @@
+From 7db69889157cc9ce2a67ed83430c549966be059c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 20 Jul 2019 17:41:34 +0900
+Subject: [PATCH] bin: update template config
+
+As startup script was updated for supporting ring and tap interfaces,
+add params for the interfaces in template config file.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 9bdee41..c7ad672 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -11,9 +11,9 @@ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+-#PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
+-#PRI_RING_IDS=(1 2)  # you use if you have no phy ports.
+-#PRI_TAP_IDS=(1 2)  # you use if you have no phy ports.
++#PRI_VHOST_VDEVS=(11 12)  # you use if you have no phy ports.
++#PRI_RING_VDEVS=(1 2)  # you use if you have no phy ports.
++#PRI_TAP_VDEVS=(1 2)  # you use if you have no phy ports.
+ 
+ # You do not need to change usually.
+ # Log files created in 'spp/log/'.
+-- 
+2.17.1
+
