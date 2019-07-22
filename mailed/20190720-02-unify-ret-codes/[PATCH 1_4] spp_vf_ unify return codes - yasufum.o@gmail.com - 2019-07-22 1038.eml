@@ -1,0 +1,899 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c1754e4e0a7bd1
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id m31sm44509793pjb.6.2019.07.21.18.38.54
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 21 Jul 2019 18:38:55 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/4] spp_vf: unify return codes
+Date: Mon, 22 Jul 2019 10:38:43 +0900
+Message-Id: <20190722013846.18618-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190722013846.18618-1-yasufum.o@gmail.com>
+References: <20190722013846.18618-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Change return codes of SPP_RET_OK and SPP_RET_NG to SPPWK_RET_OK and
+SPPWK_RET_NG to unify the return codes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/classifier_mac.c | 46 ++++++++++-----------
+ src/vf/classifier_mac.h | 16 +++----
+ src/vf/forwarder.c      | 22 +++++-----
+ src/vf/forwarder.h      |  8 ++--
+ src/vf/spp_vf.c         | 42 +++++++++----------
+ src/vf/vf_cmd_runner.c  | 92 ++++++++++++++++++++---------------------
+ 6 files changed, 113 insertions(+), 113 deletions(-)
+
+diff --git a/src/vf/classifier_mac.c b/src/vf/classifier_mac.c
+index 8273726..f3be5b6 100644
+--- a/src/vf/classifier_mac.c
++++ b/src/vf/classifier_mac.c
+@@ -337,7 +337,7 @@ static int
+ init_component_info(struct cls_comp_info *cmp_info,
+ 		const struct sppwk_comp_info *wk_comp_info)
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	int i;
+ 	struct mac_classifier *mac_cls;
+ 	struct ether_addr eth_addr;
+@@ -391,7 +391,7 @@ init_component_info(struct cls_comp_info *cmp_info,
+ 			cmp_info->mac_clfs[vid] =
+ 					create_mac_classification();
+ 			if (unlikely(cmp_info->mac_clfs[vid] == NULL))
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 		}
+ 		mac_cls = cmp_info->mac_clfs[vid];
+ 
+@@ -429,7 +429,7 @@ init_component_info(struct cls_comp_info *cmp_info,
+ 					"table. ret=%d, vid=%hu, "
+ 					"mac_addr=%s\n",
+ 					ret, vid, mac_addr_str);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+@@ -443,7 +443,7 @@ init_component_info(struct cls_comp_info *cmp_info,
+ 				tx_port->ethdev_port_id);
+ 	}
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* uninitialize classifier information. */
+@@ -537,7 +537,7 @@ get_general_default_classified_index(struct cls_comp_info *cmp_info)
+ 	if (unlikely(mac_cls == NULL)) {
+ 		LOG_DBG(cmp_info->name, "Untagged's default is not set. "
+ 				"vid=%d\n", (int)VLAN_UNTAGGED_VID);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	return mac_cls->default_cls_idx;
+@@ -726,7 +726,7 @@ update_classifier(struct sppwk_comp_info *wk_comp_info)
+ 
+ 	/* initialize update side classifier information */
+ 	ret = init_component_info(cls_info, wk_comp_info);
+-	if (unlikely(ret != SPP_RET_OK)) {
++	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+ 				"Cannot update classifier, ret=%d.\n", ret);
+ 		return ret;
+@@ -748,7 +748,7 @@ update_classifier(struct sppwk_comp_info *wk_comp_info)
+ 	RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+ 			"Done update classifier, id=%u.\n", wk_id);
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* classifier(mac address) thread function. */
+@@ -783,7 +783,7 @@ spp_classifier_mac_do(int id)
+ 	if (!(clsd_data_rx->iface_type != UNDEF &&
+ 			cmp_info->nof_tx_ports >= 1 &&
+ 			cmp_info->mac_addr_entry == 1))
+-		return SPP_RET_OK;
++		return SPPWK_RET_OK;
+ 
+ 	/* drain tx packets, if buffer is not filled for interval */
+ 	cur_tsc = rte_rdtsc();
+@@ -803,7 +803,7 @@ spp_classifier_mac_do(int id)
+ 	}
+ 
+ 	if (clsd_data_rx->iface_type == UNDEF)
+-		return SPP_RET_OK;
++		return SPPWK_RET_OK;
+ 
+ 	/* retrieve packets */
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+@@ -815,12 +815,12 @@ spp_classifier_mac_do(int id)
+ 			rx_pkts, MAX_PKT_BURST);
+ #endif
+ 	if (unlikely(n_rx == 0))
+-		return SPP_RET_OK;
++		return SPPWK_RET_OK;
+ 
+ 	/* classify and interval that transmit burst packet */
+ 	classify_packet(rx_pkts, n_rx, cmp_info, clsd_data_tx);
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* classifier iterate component information */
+@@ -828,7 +828,7 @@ int
+ get_classifier_status(unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params)
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	int i;
+ 	int nof_tx, nof_rx = 0;  /* Num of RX and TX ports. */
+ 	struct management_info *mng_info;
+@@ -843,7 +843,7 @@ get_classifier_status(unsigned int lcore_id, int id,
+ 				"Classifier is not used "
+ 				"(comp_id=%d, lcore_id=%d, type=%d).\n",
+ 				id, lcore_id, SPPWK_TYPE_CLS);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	cmp_info = mng_info->cmp_infos + mng_info->ref_index;
+@@ -868,10 +868,10 @@ get_classifier_status(unsigned int lcore_id, int id,
+ 	ret = (*params->element_proc)(
+ 		params, lcore_id, cmp_info->name, SPPWK_TYPE_CLS_STR,
+ 		nof_rx, rx_ports, nof_tx, tx_ports);
+-	if (unlikely(ret != SPP_RET_OK))
+-		return SPP_RET_NG;
++	if (unlikely(ret != SPPWK_RET_OK))
++		return SPPWK_RET_NG;
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /**
+@@ -973,7 +973,7 @@ add_classifier_table_val(
+ 		}
+ 	}
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Iterate classifier_table to create response to status command */
+@@ -987,10 +987,10 @@ _add_classifier_table(
+ 	if (unlikely(ret != 0)) {
+ 		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+ 				"Cannot iterate classifier_mac_table.\n");
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /**
+@@ -1005,7 +1005,7 @@ int
+ add_classifier_table(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	struct spp_iterate_classifier_table_params itr_params;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+@@ -1013,16 +1013,16 @@ add_classifier_table(const char *name, char **output,
+ 				/* TODO(yasufum) refactor no meaning err msg */
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	itr_params.output = tmp_buff;
+ 	itr_params.element_proc = append_classifier_element_value;
+ 
+ 	ret = _add_classifier_table(&itr_params);
+-	if (unlikely(ret != SPP_RET_OK)) {
++	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(itr_params.output);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(output, name, itr_params.output);
+diff --git a/src/vf/classifier_mac.h b/src/vf/classifier_mac.h
+index 521e1d6..ca8d8da 100644
+--- a/src/vf/classifier_mac.h
++++ b/src/vf/classifier_mac.h
+@@ -22,8 +22,8 @@ struct spp_iterate_classifier_table_params;
+ /**
+  * classifier(mac address) initialize globals.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @retval SPPWK_RET_OK succeeded.
++ * @retval SPPWK_RET_NG failed.
+  */
+ int spp_classifier_mac_init(void);
+ 
+@@ -43,8 +43,8 @@ void init_classifier_info(int component_id);
+  * @param id
+  *  The unique component ID.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @retval SPPWK_RET_OK succeeded.
++ * @retval SPPWK_RET_NG failed.
+  */
+ int spp_classifier_mac_do(int id);
+ 
+@@ -55,8 +55,8 @@ int spp_classifier_mac_do(int id);
+  *  Point to struct spp_iterate_classifier_table_params.@n
+  *  Detailed data of classifier table.
+  *
+- * @retval SPP_RET_OK succeeded.
+- * @retval SPP_RET_NG failed.
++ * @retval SPPWK_RET_OK succeeded.
++ * @retval SPPWK_RET_NG failed.
+  */
+ int add_classifier_table_val(
+ 		struct spp_iterate_classifier_table_params *params);
+@@ -67,8 +67,8 @@ int add_classifier_table_val(
+  * @param[in] lcore_id Lcore ID for classifier.
+  * @param[in] id Unique component ID.
+  * @param[in,out] params Pointer to detailed data of classifier status.
+- * @retval SPP_RET_OK If succeeded.
+- * @retval SPP_RET_NG If failed.
++ * @retval SPPWK_RET_OK If succeeded.
++ * @retval SPPWK_RET_NG If failed.
+  */
+ /**
+  * TODO(yasufum) Consider to move this function to `vf_cmd_runner.c`.
+diff --git a/src/vf/forwarder.c b/src/vf/forwarder.c
+index ba93df5..4a05ed2 100644
+--- a/src/vf/forwarder.c
++++ b/src/vf/forwarder.c
+@@ -58,7 +58,7 @@ int
+ get_forwarder_status(unsigned int lcore_id, int id,
+ 		struct spp_iterate_core_params *params)
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	int cnt;
+ 	const char *component_type = NULL;
+ 	struct forward_info *fwd_info = &g_forward_info[id];
+@@ -71,7 +71,7 @@ get_forwarder_status(unsigned int lcore_id, int id,
+ 				"Forwarder is not used. "
+ 				"(id=%d, lcore=%d, type=%d).\n",
+ 				id, lcore_id, fwd_path->wk_type);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	if (fwd_path->wk_type == SPPWK_TYPE_MRG)
+@@ -96,10 +96,10 @@ get_forwarder_status(unsigned int lcore_id, int id,
+ 		params, lcore_id,
+ 		fwd_path->name, component_type,
+ 		fwd_path->nof_rx, rx_ports, fwd_path->nof_tx, tx_ports);
+-	if (unlikely(ret != SPP_RET_OK))
+-		return SPP_RET_NG;
++	if (unlikely(ret != SPPWK_RET_OK))
++		return SPPWK_RET_NG;
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Update forward info */
+@@ -124,14 +124,14 @@ update_forwarder(struct sppwk_comp_info *comp_info)
+ 			"Invalid forwarder type or num of RX ports "
+ 			"(id=%d, type=%d, nof_rx=%d).\n",
+ 			comp_info->comp_id, comp_info->wk_type, nof_rx);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 	if (unlikely(nof_tx != 0) && unlikely(nof_tx != 1)) {
+ 		RTE_LOG(ERR, FORWARD,
+ 			"Invalid forwarder type or num of TX ports "
+ 			"(id=%d, type=%d, nof_tx=%d).\n",
+ 			comp_info->comp_id, comp_info->wk_type, nof_tx);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	memset(fwd_path, 0x00, sizeof(struct forward_path));
+@@ -163,7 +163,7 @@ update_forwarder(struct sppwk_comp_info *comp_info)
+ 			comp_info->comp_id, comp_info->name,
+ 			comp_info->wk_type);
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Change index of forward info */
+@@ -203,11 +203,11 @@ forward_packets(int id)
+ 	if (path->wk_type == SPPWK_TYPE_MRG) {
+ 		/* merger */
+ 		if (!(path->nof_tx == 1 && path->nof_rx >= 1))
+-			return SPP_RET_OK;
++			return SPPWK_RET_OK;
+ 	} else {
+ 		/* forwarder */
+ 		if (!(path->nof_tx == 1 && path->nof_rx == 1))
+-			return SPP_RET_OK;
++			return SPPWK_RET_OK;
+ 	}
+ 
+ 	for (cnt = 0; cnt < path->nof_rx; cnt++) {
+@@ -242,5 +242,5 @@ forward_packets(int id)
+ 				rte_pktmbuf_free(bufs[buf]);
+ 		}
+ 	}
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+diff --git a/src/vf/forwarder.h b/src/vf/forwarder.h
+index 54a204b..606e5da 100644
+--- a/src/vf/forwarder.h
++++ b/src/vf/forwarder.h
+@@ -33,8 +33,8 @@ void init_forwarder(void);
+  * as an argument of void and typecasted to spp_config_info.
+  *
+  * @param[in] id Unique component ID.
+- * @retval SPP_RET_OK If succeeded.
+- * @retval SPP_RET_NG If failed.
++ * @retval SPPWK_RET_OK If succeeded.
++ * @retval SPPWK_RET_NG If failed.
+  */
+ int forward_packets(int id);
+ 
+@@ -44,8 +44,8 @@ int forward_packets(int id);
+  * @param lcore_id Lcore ID for forwarder and merger.
+  * @param id Unique component ID.
+  * @param params Pointer detailed data of forwarder and merger status.
+- * @retval SPP_RET_OK If succeeded.
+- * @retval SPP_RET_NG If failed.
++ * @retval SPPWK_RET_OK If succeeded.
++ * @retval SPPWK_RET_NG If failed.
+  */
+ /**
+  * TODO(yasufum) Consider to move this function to `vf_cmd_runner.c`.
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index bc2a403..c05ba5e 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -98,9 +98,9 @@ parse_app_args(int argc, char *argv[])
+ 			&option_index)) != EOF) {
+ 		switch (opt) {
+ 		case SPP_LONGOPT_RETVAL_CLIENT_ID:
+-			if (parse_client_id(&cli_id, optarg) != SPP_RET_OK) {
++			if (parse_client_id(&cli_id, optarg) != SPPWK_RET_OK) {
+ 				usage(progname);
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 			}
+ 			set_client_id(cli_id);
+ 
+@@ -113,28 +113,28 @@ parse_app_args(int argc, char *argv[])
+ 			ret = parse_server(&ctl_ip, &ctl_port, optarg);
+ 			set_spp_ctl_ip(ctl_ip);
+ 			set_spp_ctl_port(ctl_port);
+-			if (ret != SPP_RET_OK) {
++			if (ret != SPPWK_RET_OK) {
+ 				usage(progname);
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 			}
+ 			server_flg = 1;
+ 			break;
+ 		default:
+ 			usage(progname);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 	}
+ 
+ 	/* Check mandatory parameters */
+ 	if ((proc_flg == 0) || (server_flg == 0)) {
+ 		usage(progname);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 	RTE_LOG(INFO, APP,
+ 			"Parsed app args (client_id=%d,server=%s:%d,"
+ 			"vhost_client=%d)\n",
+ 			cli_id, ctl_ip, ctl_port, get_vhost_cli_mode());
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Main process of slave core */
+@@ -156,7 +156,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 		if (status != SPPWK_LCORE_RUNNING)
+ 			continue;
+ 
+-		if (spp_check_core_update(lcore_id) == SPP_RET_OK) {
++		if (spp_check_core_update(lcore_id) == SPPWK_RET_OK) {
+ 			/* Setting with the flush command trigger. */
+ 			info->ref_index = (info->upd_index+1) % TWO_SIDES;
+ 			core = get_core_info(lcore_id);
+@@ -194,7 +194,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ /**
+  * Main function
+  *
+- * Return SPP_RET_NG explicitly if error is occurred.
++ * Return SPPWK_RET_NG explicitly if error is occurred.
+  */
+ int
+ main(int argc, char *argv[])
+@@ -240,24 +240,24 @@ main(int argc, char *argv[])
+ 	while (1) {
+ 		/* Parse spp_vf specific parameters */
+ 		int ret_parse = parse_app_args(argc, argv);
+-		if (unlikely(ret_parse != SPP_RET_OK))
++		if (unlikely(ret_parse != SPPWK_RET_OK))
+ 			break;
+ 
+ 		if (sppwk_set_mng_data(&g_iface_info, g_component_info,
+ 					g_core_info, g_change_core,
+ 					g_change_component,
+-					&g_backup_info) < SPP_RET_OK) {
++					&g_backup_info) < SPPWK_RET_OK) {
+ 			RTE_LOG(ERR, APP,
+ 				"Failed to set management data.\n");
+ 			break;
+ 		}
+ 
+ 		int ret_mng = init_mng_data();
+-		if (unlikely(ret_mng != SPP_RET_OK))
++		if (unlikely(ret_mng != SPPWK_RET_OK))
+ 			break;
+ 
+ 		int ret_classifier_mac_init = spp_classifier_mac_init();
+-		if (unlikely(ret_classifier_mac_init != SPP_RET_OK))
++		if (unlikely(ret_classifier_mac_init != SPPWK_RET_OK))
+ 			break;
+ 
+ 		init_forwarder();
+@@ -267,7 +267,7 @@ main(int argc, char *argv[])
+ 		get_spp_ctl_ip(ctl_ip);
+ 		ctl_port = get_spp_ctl_port();
+ 		ret_cmd_init = sppwk_cmd_runner_conn(ctl_ip, ctl_port);
+-		if (unlikely(ret_cmd_init != SPP_RET_OK))
++		if (unlikely(ret_cmd_init != SPPWK_RET_OK))
+ 			break;
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+@@ -285,7 +285,7 @@ main(int argc, char *argv[])
+ 		int ret_ringlatency = spp_ringlatencystats_init(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+ 				nof_rings);
+-		if (unlikely(ret_ringlatency != SPP_RET_OK))
++		if (unlikely(ret_ringlatency != SPPWK_RET_OK))
+ 			break;
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+@@ -297,7 +297,7 @@ main(int argc, char *argv[])
+ 		/* Set the status of main thread to idle */
+ 		g_core_info[master_lcore].status = SPPWK_LCORE_IDLING;
+ 		int ret_wait = check_core_status_wait(SPPWK_LCORE_IDLING);
+-		if (unlikely(ret_wait != SPP_RET_OK))
++		if (unlikely(ret_wait != SPPWK_RET_OK))
+ 			break;
+ 
+ 		/* Start forwarding */
+@@ -309,7 +309,7 @@ main(int argc, char *argv[])
+ 		backup_mng_info(&g_backup_info);
+ 
+ 		/* Enter loop for accepting commands */
+-		int ret_do = SPP_RET_OK;
++		int ret_do = SPPWK_RET_OK;
+ #ifndef USE_UT_SPP_VF
+ 		while (likely(g_core_info[master_lcore].status !=
+ 				SPPWK_LCORE_REQ_STOP)) {
+@@ -318,7 +318,7 @@ main(int argc, char *argv[])
+ #endif
+ 			/* Receive command */
+ 			ret_do = sppwk_run_cmd();
+-			if (unlikely(ret_do != SPP_RET_OK))
++			if (unlikely(ret_do != SPPWK_RET_OK))
+ 				break;
+ 
+ 		       /*
+@@ -331,19 +331,19 @@ main(int argc, char *argv[])
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 		}
+ 
+-		if (unlikely(ret_do != SPP_RET_OK)) {
++		if (unlikely(ret_do != SPPWK_RET_OK)) {
+ 			set_all_core_status(SPPWK_LCORE_REQ_STOP);
+ 			break;
+ 		}
+ 
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		break;
+ 	}
+ 
+ 	/* Finalize to exit */
+ 	g_core_info[master_lcore].status = SPPWK_LCORE_STOPPED;
+ 	int ret_core_end = check_core_status_wait(SPPWK_LCORE_STOPPED);
+-	if (unlikely(ret_core_end != SPP_RET_OK))
++	if (unlikely(ret_core_end != SPPWK_RET_OK))
+ 		RTE_LOG(ERR, APP, "Failed to terminate master thread.\n");
+ 
+ 	/*
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index 520398b..aa698c2 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -50,7 +50,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 	if (unlikely(mac_int64 == -1)) {
+ 		RTE_LOG(ERR, VF_CMD_RUNNER, "Invalid MAC address `%s`.\n",
+ 				mac_str);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 	mac_uint64 = (uint64_t)mac_int64;
+ 
+@@ -58,12 +58,12 @@ update_cls_table(enum sppwk_action wk_action,
+ 	if (unlikely(port_info == NULL)) {
+ 		RTE_LOG(ERR, VF_CMD_RUNNER, "Failed to get port %d:%d.\n",
+ 				port->iface_type, port->iface_no);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 	if (unlikely(port_info->iface_type == UNDEF)) {
+ 		RTE_LOG(ERR, VF_CMD_RUNNER, "Port %d:%d doesn't exist.\n",
+ 				port->iface_type, port->iface_no);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	if (wk_action == SPPWK_ACT_DEL) {
+@@ -71,13 +71,13 @@ update_cls_table(enum sppwk_action wk_action,
+ 				port_info->cls_attrs.vlantag.vid != vid) {
+ 			RTE_LOG(ERR, VF_CMD_RUNNER,
+ 					"Unexpected VLAN ID `%d`.\n", vid);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 		if ((port_info->cls_attrs.mac_addr != 0) &&
+ 				port_info->cls_attrs.mac_addr != mac_uint64) {
+ 			RTE_LOG(ERR, VF_CMD_RUNNER, "Unexpected MAC %s.\n",
+ 					mac_str);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		/* Initialize deleted attributes again. */
+@@ -91,7 +91,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 			RTE_LOG(ERR, VF_CMD_RUNNER, "Used port %d:%d, vid %d != %d.\n",
+ 					port->iface_type, port->iface_no,
+ 					port_info->cls_attrs.vlantag.vid, vid);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 		if (unlikely(port_info->cls_attrs.mac_addr != 0)) {
+ 			/* TODO(yasufum) why two macs are required in msg ? */
+@@ -99,7 +99,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 					port->iface_type, port->iface_no,
+ 					port_info->cls_attrs.mac_addr_str,
+ 					mac_str);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		/* Update attrs with validated params. */
+@@ -109,7 +109,7 @@ update_cls_table(enum sppwk_action wk_action,
+ 	}
+ 
+ 	set_component_change_port(port_info, SPPWK_PORT_DIR_TX);
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Assign worker thread or remove on specified lcore. */
+@@ -142,21 +142,21 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 			RTE_LOG(ERR, VF_CMD_RUNNER,
+ 					"Not available lcore %d for %s.\n",
+ 					lcore_id, "SPPWK_LCORE_UNUSED");
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		comp_lcore_id = sppwk_get_lcore_id(name);
+ 		if (comp_lcore_id >= 0) {
+ 			RTE_LOG(ERR, VF_CMD_RUNNER, "Component name '%s' is already "
+ 				"used.\n", name);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		comp_lcore_id = get_free_lcore_id();
+ 		if (comp_lcore_id < 0) {
+ 			RTE_LOG(ERR, VF_CMD_RUNNER, "Cannot assign component over the "
+ 				"maximum number.\n");
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		core = &info->core[info->upd_index];
+@@ -170,7 +170,7 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 
+ 		core->id[core->num] = comp_lcore_id;
+ 		core->num++;
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		tmp_lcore_id = lcore_id;
+ 		*(change_component + comp_lcore_id) = 1;
+ 		break;
+@@ -178,7 +178,7 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 	case SPPWK_ACT_STOP:
+ 		comp_lcore_id = sppwk_get_lcore_id(name);
+ 		if (comp_lcore_id < 0)
+-			return SPP_RET_OK;
++			return SPPWK_RET_OK;
+ 
+ 		comp_info = (comp_info_base + comp_lcore_id);
+ 		tmp_lcore_id = comp_info->lcore_id;
+@@ -196,12 +196,12 @@ update_comp(enum sppwk_action wk_action, const char *name,
+ 		if (ret_del >= 0)
+ 			core->num--;
+ 
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		*(change_component + comp_lcore_id) = 0;
+ 		break;
+ 
+ 	default:  /* Unexpected case. */
+-		ret = SPP_RET_NG;
++		ret = SPPWK_RET_NG;
+ 		break;
+ 	}
+ 
+@@ -227,25 +227,25 @@ check_vf_port_count(int component_type, enum sppwk_port_dir dir,
+ 	switch (component_type) {
+ 	case SPPWK_TYPE_FWD:
+ 		if (nof_rx > 1 || nof_tx > 1)
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		break;
+ 
+ 	case SPPWK_TYPE_MRG:
+ 		if (nof_tx > 1)
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		break;
+ 
+ 	case SPPWK_TYPE_CLS:
+ 		if (nof_rx > 1)
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		break;
+ 
+ 	default:
+ 		/* Illegal component type. */
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Port add or del to execute it */
+@@ -256,7 +256,7 @@ update_port(enum sppwk_action wk_action,
+ 		const char *name,
+ 		const struct sppwk_port_attrs *port_attrs)
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	int port_idx;
+ 	int ret_del = -1;
+ 	int comp_lcore_id = 0;
+@@ -272,7 +272,7 @@ update_port(enum sppwk_action wk_action,
+ 	if (comp_lcore_id < 0) {
+ 		RTE_LOG(ERR, VF_CMD_RUNNER, "Unknown component by port command. "
+ 				"(component = %s)\n", name);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 	sppwk_get_mng_data(NULL, &comp_info_base, NULL, NULL,
+ 			&change_component, NULL);
+@@ -291,12 +291,12 @@ update_port(enum sppwk_action wk_action,
+ 		/* Check if over the maximum num of ports of component. */
+ 		if (check_vf_port_count(comp_info->wk_type, dir,
+ 				comp_info->nof_rx,
+-				comp_info->nof_tx) != SPP_RET_OK)
+-			return SPP_RET_NG;
++				comp_info->nof_tx) != SPPWK_RET_OK)
++			return SPPWK_RET_NG;
+ 
+ 		/* Check if the port_info is included in array `ports`. */
+ 		port_idx = get_idx_port_info(port_info, *nof_ports, ports);
+-		if (port_idx >= SPP_RET_OK) {
++		if (port_idx >= SPPWK_RET_OK) {
+ 			/* registered */
+ 			if (port_attrs->ops == SPPWK_PORT_OPS_ADD_VLAN) {
+ 				while ((cnt < PORT_ABL_MAX) &&
+@@ -306,21 +306,21 @@ update_port(enum sppwk_action wk_action,
+ 				if (cnt >= PORT_ABL_MAX) {
+ 					RTE_LOG(ERR, VF_CMD_RUNNER, "update VLAN tag "
+ 						"Non-registratio\n");
+-					return SPP_RET_NG;
++					return SPPWK_RET_NG;
+ 				}
+ 				memcpy(&port_info->port_attrs[cnt], port_attrs,
+ 					sizeof(struct sppwk_port_attrs));
+ 
+-				ret = SPP_RET_OK;
++				ret = SPPWK_RET_OK;
+ 				break;
+ 			}
+-			return SPP_RET_OK;
++			return SPPWK_RET_OK;
+ 		}
+ 
+ 		if (*nof_ports >= RTE_MAX_ETHPORTS) {
+ 			RTE_LOG(ERR, VF_CMD_RUNNER, "Cannot assign port over the "
+ 				"maximum number.\n");
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 
+ 		if (port_attrs->ops != SPPWK_PORT_OPS_NONE) {
+@@ -332,7 +332,7 @@ update_port(enum sppwk_action wk_action,
+ 			if (cnt >= PORT_ABL_MAX) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+ 						"No space of port ability.\n");
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 			}
+ 			memcpy(&port_info->port_attrs[cnt], port_attrs,
+ 					sizeof(struct sppwk_port_attrs));
+@@ -342,7 +342,7 @@ update_port(enum sppwk_action wk_action,
+ 		ports[*nof_ports] = port_info;
+ 		(*nof_ports)++;
+ 
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		break;
+ 
+ 	case SPPWK_ACT_DEL:
+@@ -360,11 +360,11 @@ update_port(enum sppwk_action wk_action,
+ 		if (ret_del == 0)
+ 			(*nof_ports)--; /* If deleted, decrement number. */
+ 
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		break;
+ 
+ 	default:  /* This case cannot be happend without invlid wk_action. */
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	*(change_component + comp_lcore_id) = 1;
+@@ -421,7 +421,7 @@ exec_one_cmd(const struct sppwk_cmd_attrs *cmd)
+ 
+ 	default:
+ 		/* Do nothing. */
+-		ret = SPP_RET_OK;
++		ret = SPPWK_RET_OK;
+ 		break;
+ 	}
+ 
+@@ -454,7 +454,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 						"information. "
+ 						"(core = %d, type = %d)\n",
+ 						lcore_id, SPPWK_TYPE_NONE);
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 			}
+ 			continue;
+ 		}
+@@ -478,12 +478,12 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 						"information. "
+ 						"(core = %d, type = %d)\n",
+ 						lcore_id, comp_info->wk_type);
+-				return SPP_RET_NG;
++				return SPPWK_RET_NG;
+ 			}
+ 		}
+ 	}
+ 
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /* Add entry of core info of worker to a response in JSON such as "core:0". */
+@@ -491,7 +491,7 @@ int
+ add_core(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	struct spp_iterate_core_params itr_params;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
+ 	if (unlikely(tmp_buff == NULL)) {
+@@ -499,16 +499,16 @@ add_core(const char *name, char **output,
+ 				/* TODO(yasufum) refactor no meaning err msg */
+ 				"allocate error. (name = %s)\n",
+ 				name);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	itr_params.output = tmp_buff;
+ 	itr_params.element_proc = append_core_element_value;
+ 
+ 	ret = spp_iterate_core_info(&itr_params);
+-	if (unlikely(ret != SPP_RET_OK)) {
++	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(itr_params.output);
+-		return SPP_RET_NG;
++		return SPPWK_RET_NG;
+ 	}
+ 
+ 	ret = append_json_array_brackets(output, name, itr_params.output);
+@@ -544,10 +544,10 @@ update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
+ 					"( component = %s, type = %d)\n",
+ 					comp_info->name,
+ 					comp_info->wk_type);
+-			return SPP_RET_NG;
++			return SPPWK_RET_NG;
+ 		}
+ 	}
+-	return SPP_RET_OK;
++	return SPPWK_RET_OK;
+ }
+ 
+ /**
+@@ -561,7 +561,7 @@ append_classifier_element_value(
+ 		int vid, const char *mac,
+ 		const struct sppwk_port_idx *port)
+ {
+-	int ret = SPP_RET_NG;
++	int ret = SPPWK_RET_NG;
+ 	char *buff, *tmp_buff;
+ 	char port_str[CMD_TAG_APPEND_SIZE];
+ 	char value_str[STR_LEN_SHORT];
+@@ -577,7 +577,7 @@ append_classifier_element_value(
+ 
+ 	ret = append_json_str_value(&tmp_buff, "type",
+ 			CLS_TYPE_A_LIST[cls_type]);
+-	if (unlikely(ret < SPP_RET_OK))
++	if (unlikely(ret < SPPWK_RET_OK))
+ 		return ret;
+ 
+ 	memset(value_str, 0x00, STR_LEN_SHORT);
+@@ -598,7 +598,7 @@ append_classifier_element_value(
+ 		return ret;
+ 
+ 	ret = append_json_str_value(&tmp_buff, "port", port_str);
+-	if (unlikely(ret < SPP_RET_OK))
++	if (unlikely(ret < SPPWK_RET_OK))
+ 		return ret;
+ 
+ 	ret = append_json_block_brackets(&buff, "", tmp_buff);
+-- 
+2.17.1
+
+

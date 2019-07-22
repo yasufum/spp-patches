@@ -1,0 +1,66 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c1754f48a2ec5f
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id m31sm44509793pjb.6.2019.07.21.18.38.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 21 Jul 2019 18:38:59 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/4] docs: unify return codes
+Date: Mon, 22 Jul 2019 10:38:46 +0900
+Message-Id: <20190722013846.18618-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190722013846.18618-1-yasufum.o@gmail.com>
+References: <20190722013846.18618-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Change return codes of SPP_RET_OK and SPP_RET_NG to SPPWK_RET_OK and
+SPPWK_RET_NG to unify the return codes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/design/impl/spp_pcap.rst | 4 ++--
+ docs/guides/design/impl/spp_vf.rst   | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/design/impl/spp_pcap.rst b/docs/guides/design/impl/spp_pcap.rst
+index 7777fca..117eda9 100644
+--- a/docs/guides/design/impl/spp_pcap.rst
++++ b/docs/guides/design/impl/spp_pcap.rst
+@@ -65,10 +65,10 @@ speed > 500 MB/s per core.
+             mbuf = bufs[buf];
+             rte_prefetch0(rte_pktmbuf_mtod(mbuf, void *));
+             if (compress_file_packet(&g_pcap_info[lcore_id], mbuf)
+-                                                    != SPP_RET_OK) {
++                                                    != SPPWK_RET_OK) {
+                     RTE_LOG(ERR, PCAP, "capture file write error: "
+                             "%d (%s)\n", errno, strerror(errno));
+-                    ret = SPP_RET_NG;
++                    ret = SPPWK_RET_NG;
+                     info->status = SPP_CAPTURE_IDLE;
+                     compress_file_operation(info, CLOSE_MODE);
+                     break;
+diff --git a/docs/guides/design/impl/spp_vf.rst b/docs/guides/design/impl/spp_vf.rst
+index 65e8d06..389f1ba 100644
+--- a/docs/guides/design/impl/spp_vf.rst
++++ b/docs/guides/design/impl/spp_vf.rst
+@@ -273,7 +273,7 @@ Status info is referred from forwarding process after the update is completed.
+                 &backup_info);
+ 
+         ret = update_port_info();
+-        if (ret < SPP_RET_OK)
++        if (ret < SPPWK_RET_OK)
+             return ret;
+ 
+         update_lcore_info();
+-- 
+2.17.1
+
+
