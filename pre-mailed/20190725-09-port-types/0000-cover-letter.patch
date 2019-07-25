@@ -1,0 +1,23 @@
+From 6460affe7974002d03fcdb3036358f66eafd10d0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 25 Jul 2019 21:09:06 +0900
+Subject: [PATCH 0/2] Change spp_pcap to use common port types
+
+Spp_pcap defines string of port types, "phy" and "ring". However, these
+are also defined in shared lib. This series of pathces is to change
+spp_pcap to use shared.
+
+Yasufumi Ogawa (2):
+  shared/sec: move defines of port types
+  spp_pcap: change to use common port types
+
+ src/pcap/cmd_utils.c                          |  4 ++--
+ src/pcap/cmd_utils.h                          | 10 +---------
+ src/pcap/spp_pcap.c                           | 20 +++++++++----------
+ .../secondary/spp_worker_th/cmd_utils.h       |  5 -----
+ .../secondary/spp_worker_th/data_types.h      |  5 +++++
+ 5 files changed, 18 insertions(+), 26 deletions(-)
+
+-- 
+2.17.1
+
