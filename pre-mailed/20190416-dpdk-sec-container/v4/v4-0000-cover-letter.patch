@@ -1,0 +1,31 @@
+From c5750503647a271f9970da188714f34a852449ab Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 24 Jul 2019 17:02:37 +0900
+Subject: [PATCH v4 0/1] fbarray: get fbarrays from containerized secondary
+
+In secondary_msl_create_walk(), it creates a file for fbarrays with its
+PID for reserving unique name among secondary processes. However, it
+does not work if secondary is run as app container because each of
+containerized secondary has PID 1. To reserve unique name, use hostname
+instead of PID because hostname is assigned as a short form of 64
+digits full container ID in docker.
+
+---
+v2:
+  * fix typo in commit message
+v3:
+  * add fclose() after if getting hostname with fscan() is failed
+v4:
+  * Increase the size of proc_id to 33 and add boundary in calling
+    fscan()
+---
+
+Yasufumi Ogawa (1):
+  fbarray: get fbarrays from containerized secondary
+
+ lib/librte_eal/linux/eal/eal_memalloc.c | 28 +++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+-- 
+2.17.1
+
