@@ -1,0 +1,47 @@
+From 4cac2578111a39390dd70a8a32f29d0deda14147 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 25 Jul 2019 12:41:16 +0900
+Subject: [PATCH] shared/sec: remove log_all_mng_info from header
+
+log_all_mng_info() is for logging internal status and called only from
+backup_mng_info(). It is no need to be defined in `cmd_utils.h`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 6 ------
+ 2 files changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index c879e9c..7f692e3 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -268,7 +268,7 @@ log_interface_info(const struct iface_info *iface_info)
+ }
+ 
+ /* Dump of all management information */
+-void
++static void
+ log_all_mng_info(
+ 		const struct core_mng_info *core,
+ 		const struct sppwk_comp_info *component,
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 0e67357..56f11ac 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -211,12 +211,6 @@ void log_component_info(const struct sppwk_comp_info *component_info);
+ /* Output log message for interface information */
+ void log_interface_info(const struct iface_info *iface_info);
+ 
+-/* Output log message for all management information */
+-void log_all_mng_info(
+-		const struct core_mng_info *core,
+-		const struct sppwk_comp_info *component,
+-		const struct iface_info *interface);
+-
+ /* Copy management information */
+ void copy_mng_info(
+ 		struct core_mng_info *dst_core,
+-- 
+2.17.1
+

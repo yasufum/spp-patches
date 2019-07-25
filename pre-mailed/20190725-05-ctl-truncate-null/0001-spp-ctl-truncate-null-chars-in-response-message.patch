@@ -1,0 +1,29 @@
+From c6666d8b1e33e1ee58a408bd8e0ce27ec9f12a5b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 25 Jul 2019 17:32:51 +0900
+Subject: [PATCH] spp-ctl: truncate null chars in response message
+
+Spp-ctl uses response message from SPP process as debug message. This
+update is to truncate nouse null in the response.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/spp-ctl/spp_proc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 2bc14e6..33bde43 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -110,7 +110,7 @@ def exec_command(func):
+             if data is None:
+                 raise RuntimeError("%s(%d): %s: no-data returned" %
+                                    (self.type, self.id, command))
+-            LOG.debug("reply: %s", data)
++            LOG.debug("reply: %s", data.replace('\0', ''))
+             return self._decode_reply(data)
+     return wrapper
+ 
+-- 
+2.17.1
+

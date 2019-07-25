@@ -1,0 +1,923 @@
+From 23f34782efdb9a5b92f704427a3c5fe69bcc5850 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 25 Jul 2019 12:22:50 +0900
+Subject: [PATCH] shared/sec: move data types from cmd_utils
+
+In `cmd_utils.h`, the rest of enums, structs or functions which are not
+included in other specific groups, such as parser or formatter, are
+defined temporarily. The term `utils` means as same as `others`.
+
+This update is to move enums and structs roughly grouped in
+`cmd_utils.h` to `data_types.h`. This file is to define common data
+types among SPP worker processes, but specific data for spp_vf are
+still remained actually. Specific data types are moved to outside of
+shared directory in future patches.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c                   |  10 +-
+ src/mirror/spp_mirror.c                       |   9 +
+ src/pcap/cmd_utils.c                          |  17 +-
+ src/pcap/cmd_utils.h                          | 173 +-----------------
+ src/pcap/data_types.h                         |  22 +++
+ src/pcap/spp_pcap.c                           |  16 +-
+ .../spp_worker_th/cmd_res_formatter.c         |   6 +-
+ .../secondary/spp_worker_th/cmd_utils.h       | 154 +---------------
+ .../secondary/spp_worker_th/data_types.h      | 150 +++++++++++++++
+ .../secondary/spp_worker_th/port_capability.c |  10 +-
+ src/vf/spp_vf.c                               |   9 +
+ src/vf/vf_cmd_runner.c                        |  10 +-
+ 12 files changed, 240 insertions(+), 346 deletions(-)
+ create mode 100644 src/pcap/data_types.h
+ create mode 100644 src/shared/secondary/spp_worker_th/data_types.h
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 572fb43..4e6708b 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -178,11 +178,11 @@ update_port(enum sppwk_action wk_action,
+ 			/* registered */
+ 			/* TODO(yasufum) confirm it is needed for spp_mirror. */
+ 			if (port_attrs->ops == SPPWK_PORT_OPS_ADD_VLAN) {
+-				while ((cnt < PORT_ABL_MAX) &&
++				while ((cnt < PORT_CAPABL_MAX) &&
+ 					    (port_info->port_attrs[cnt].ops !=
+ 					    SPPWK_PORT_OPS_ADD_VLAN))
+ 					cnt++;
+-				if (cnt >= PORT_ABL_MAX) {
++				if (cnt >= PORT_CAPABL_MAX) {
+ 					RTE_LOG(ERR, MIR_CMD_RUNNER, "update VLAN tag "
+ 						"Non-registratio\n");
+ 					return SPPWK_RET_NG;
+@@ -203,12 +203,12 @@ update_port(enum sppwk_action wk_action,
+ 		}
+ 
+ 		if (port_attrs->ops != SPPWK_PORT_OPS_NONE) {
+-			while ((cnt < PORT_ABL_MAX) &&
++			while ((cnt < PORT_CAPABL_MAX) &&
+ 					(port_info->port_attrs[cnt].ops !=
+ 					SPPWK_PORT_OPS_NONE)) {
+ 				cnt++;
+ 			}
+-			if (cnt >= PORT_ABL_MAX) {
++			if (cnt >= PORT_CAPABL_MAX) {
+ 				RTE_LOG(ERR, MIR_CMD_RUNNER,
+ 						"No space of port port_attrs.\n");
+ 				return SPPWK_RET_NG;
+@@ -225,7 +225,7 @@ update_port(enum sppwk_action wk_action,
+ 		break;
+ 
+ 	case SPPWK_ACT_DEL:
+-		for (cnt = 0; cnt < PORT_ABL_MAX; cnt++) {
++		for (cnt = 0; cnt < PORT_CAPABL_MAX; cnt++) {
+ 			if (port_info->port_attrs[cnt].ops ==
+ 					SPPWK_PORT_OPS_NONE)
+ 				continue;
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index f5cdefb..c7f00e6 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -34,6 +34,15 @@
+ #define MIR_RX_DESC_DEFAULT 1024
+ #define MIR_TX_DESC_DEFAULT 1024
+ 
++/* getopt_long return value for long option */
++enum SPP_LONGOPT_RETVAL {
++	SPP_LONGOPT_RETVAL__ = 127,
++
++	/* Return value definition for getopt_long(). Only for long option. */
++	SPP_LONGOPT_RETVAL_CLIENT_ID,    /* For `--client-id` */
++	SPP_LONGOPT_RETVAL_VHOST_CLIENT  /* For `--vhost-client` */
++};
++
+ /* A set of port info of rx and tx */
+ struct mirror_rxtx {
+ 	struct sppwk_port_info rx; /* rx port */
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 3cfc609..88514c8 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -15,10 +15,10 @@
+ 
+ /* Manage data to addoress */
+ struct mng_data_info {
+-	struct iface_info	  *p_iface_info;
+-	struct core_mng_info	  *p_core_info;
+-	int			  *p_capture_request;
+-	int			  *p_capture_status;
++	struct iface_info *p_iface_info;
++	struct spp_pcap_core_mng_info *p_core_info;
++	int *p_capture_request;
++	int *p_capture_status;
+ };
+ 
+ /* Declare global variables */
+@@ -192,9 +192,10 @@ init_iface_info(void)
+ static void
+ init_core_info(void)
+ {
+-	struct core_mng_info *p_core_info = g_mng_data_addr.p_core_info;
++	struct spp_pcap_core_mng_info *p_core_info =
++		g_mng_data_addr.p_core_info;
+ 	memset(p_core_info, 0x00,
+-			sizeof(struct core_mng_info)*RTE_MAX_LCORE);
++		sizeof(struct spp_pcap_core_mng_info)*RTE_MAX_LCORE);
+ 	set_all_core_status(SPPWK_LCORE_STOPPED);
+ 	*g_mng_data_addr.p_capture_request = SPP_CAPTURE_IDLE;
+ 	*g_mng_data_addr.p_capture_status = SPP_CAPTURE_IDLE;
+@@ -284,7 +285,7 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ 
+ /* Set mange data address */
+ int spp_set_mng_data_addr(struct iface_info *iface_p,
+-			  struct core_mng_info *core_mng_p,
++			  struct spp_pcap_core_mng_info *core_mng_p,
+ 			  int *capture_request_p,
+ 			  int *capture_status_p)
+ {
+@@ -303,7 +304,7 @@ int spp_set_mng_data_addr(struct iface_info *iface_p,
+ 
+ /* Get manage data address */
+ void spp_get_mng_data_addr(struct iface_info **iface_p,
+-			   struct core_mng_info **core_mng_p,
++			   struct spp_pcap_core_mng_info **core_mng_p,
+ 			   int **capture_request_p,
+ 			   int **capture_status_p)
+ {
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index d7ad57f..1fb8d14 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -11,6 +11,8 @@
+ #ifndef _SPPWK_CMD_UTILS_H_
+ #define _SPPWK_CMD_UTILS_H_
+ 
++#include "data_types.h"
++
+ /**
+  * @file cmd_utils.h
+  *
+@@ -32,161 +34,6 @@
+ /* Max number of core status check */
+ #define SPP_CORE_STATUS_CHECK_MAX 5
+ 
+-/* TODO(yasufum) merge it to the same definition in shared/.../cmd_utils.h */
+-/* Status of a component on lcore. */
+-enum sppwk_lcore_status {
+-	SPPWK_LCORE_UNUSED,
+-	SPPWK_LCORE_STOPPED,
+-	SPPWK_LCORE_IDLING,
+-	SPPWK_LCORE_RUNNING,
+-	SPPWK_LCORE_REQ_STOP  /**< Request for stopping. */
+-};
+-
+-/* State on capture */
+-enum sppwk_capture_status {
+-	SPP_CAPTURE_IDLE,      /* Idling */
+-	SPP_CAPTURE_RUNNING     /* Running */
+-};
+-
+-/* Direction of RX or TX on a port. */
+-enum sppwk_port_dir {
+-	SPPWK_PORT_DIR_NONE,  /**< None */
+-	SPPWK_PORT_DIR_RX,    /**< RX port */
+-	SPPWK_PORT_DIR_TX,    /**< TX port */
+-	SPPWK_PORT_DIR_BOTH,  /**< Both of RX and TX */
+-};
+-
+-/* TODO(yasufum) merge it to the same definition in shared/.../cmd_utils.h */
+-/* Type of SPP worker thread. */
+-enum sppwk_worker_type {
+-	SPPWK_TYPE_NONE,  /**< Not used */
+-	SPPWK_TYPE_CLS,  /**< Classifier_mac */
+-	SPPWK_TYPE_MRG,  /**< Merger */
+-	SPPWK_TYPE_FWD,  /**< Forwarder */
+-	SPPWK_TYPE_MIR,  /**< Mirror */
+-};
+-
+-/**
+- * Port ability operation which indicates vlan tag operation on the port
+- * (e.g. add vlan tag or delete vlan tag)
+- */
+-enum sppwk_port_ops {
+-	SPPWK_PORT_OPS_NONE,
+-	SPPWK_PORT_OPS_ADD_VLAN,  /* Add vlan tag. */
+-	SPPWK_PORT_OPS_DEL_VLAN,  /* Delete vlan tag. */
+-};
+-
+-/* getopt_long return value for long option */
+-enum SPP_LONGOPT_RETVAL {
+-	SPP_LONGOPT_RETVAL__ = 127,
+-
+-	/*
+-	 * Return value definition for getopt_long()
+-	 * Only for long option
+-	 */
+-	SPP_LONGOPT_RETVAL_CLIENT_ID,  /* --client-id */
+-	SPP_LONGOPT_RETVAL_OUT_DIR,    /* --out-dir */
+-	SPP_LONGOPT_RETVAL_FILE_SIZE   /* --fsize */
+-};
+-
+-/** VLAN tag information */
+-struct sppwk_vlan_tag {
+-	int vid; /**< VLAN ID */
+-	int pcp; /**< Priority Code Point */
+-	int tci; /**< Tag Control Information */
+-};
+-
+-/* Ability for vlantag for a port. */
+-union sppwk_port_capability {
+-	/** VLAN tag information */
+-	struct sppwk_vlan_tag vlantag;
+-};
+-
+-/* Port attributes of SPP worker processes. */
+-struct sppwk_port_attrs {
+-	enum sppwk_port_ops ops;  /**< Port capability Operations */
+-	enum sppwk_port_dir dir;  /**< Direction of RX, TX or both */
+-	union sppwk_port_capability capability;   /**< Port capability */
+-};
+-
+-/* TODO(yasufum) confirm why vlantag is required for spp_pcap. */
+-/* Attributes for classifying . */
+-struct sppwk_cls_attrs {
+-	uint64_t mac_addr;  /**< Mac address (binary) */
+-	char mac_addr_str[STR_LEN_SHORT];  /**< Mac address (text) */
+-	struct sppwk_vlan_tag vlantag;   /**< VLAN tag information */
+-};
+-
+-/* Interface information structure */
+-struct sppwk_port_idx {
+-	enum port_type iface_type;  /**< phy, vhost or ring. */
+-	int iface_no;
+-};
+-
+-/* Define detailed port params in addition to `sppwk_port_idx`. */
+-struct sppwk_port_info {
+-	enum port_type iface_type;  /**< phy, vhost or ring */
+-	int iface_no;
+-	int ethdev_port_id;  /**< Consistent ID of ethdev */
+-	struct sppwk_cls_attrs cls_attrs;
+-	struct sppwk_port_attrs port_attrs[PORT_ABL_MAX];
+-};
+-
+-/* TODO(yasufum) merge it to the same definition in shared/.../cmd_utils.h */
+-/* Attributes of SPP worker thread named as `component`. */
+-struct sppwk_comp_info {
+-	char name[STR_LEN_NAME];  /**< Component name */
+-	enum sppwk_worker_type wk_type;  /**< Type of worker thread */
+-	unsigned int lcore_id;
+-	int comp_id;  /**< Component ID */
+-	int nof_rx;  /**< The number of rx ports */
+-	int nof_tx;  /**< The number of tx ports */
+-	struct sppwk_port_info *rx_ports[RTE_MAX_ETHPORTS]; /**< rx ports */
+-	struct sppwk_port_info *tx_ports[RTE_MAX_ETHPORTS]; /**< tx ports */
+-};
+-
+-/* Manage interfaces and port information as global variable */
+-struct iface_info {
+-	struct sppwk_port_info phy[RTE_MAX_ETHPORTS];
+-	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
+-};
+-
+-/* Manage core status and component information as global variable */
+-struct core_mng_info {
+-	/* Status of cpu core */
+-	volatile enum sppwk_lcore_status status;
+-};
+-
+-/* TODO(yasufum) refactor name of func and vars, and comments. */
+-/* TODO(yasufum) confirm this var is used in spp_pcap. */
+-/* TODO(yasufum) if so, consider to merge to shared. */
+-struct spp_iterate_core_params;
+-/**
+- * Define func to iterate lcore to list core information for showing status
+- * or so, as a member of struct `spp_iterate_core_params`.
+- */
+-typedef int (*spp_iterate_core_element_proc)(
+-		struct spp_iterate_core_params *params,
+-		const unsigned int lcore_id,
+-		const char *wk_name,
+-		const char *wk_type,
+-		const int nof_rx,
+-		const struct sppwk_port_idx *rx_ports,
+-		const int nof_tx,
+-		const struct sppwk_port_idx *tx_ports);
+-
+-/**
+- * iterate core table parameters used to list content of lcore table for.
+- * showing status or so.
+- */
+-/* TODO(yasufum) consider to merge to shared. */
+-/* TODO(yasufum) refactor name of func and vars, and comments. */
+-struct spp_iterate_core_params {
+-	char *output;  /* Buffer used for output */
+-	/** The function for creating core information */
+-	spp_iterate_core_element_proc element_proc;
+-};
+-
+ /**
+  * Add ring pmd for owned proccess or thread.
+  *
+@@ -260,18 +107,6 @@ get_iface_info(enum port_type iface_type, int iface_no);
+  */
+ int init_mng_data(void);
+ 
+-/**
+- * Get component type of target core
+- *
+- * @param lcore_id
+- *  Logical core ID.
+- *
+- * @return
+- *  Type of component executed on specified logical core
+- */
+-enum spp_component_type
+-spp_get_component_type(unsigned int lcore_id);
+-
+ /* Get core information which is in use */
+ struct core_info *get_core_info(unsigned int lcore_id);
+ 
+@@ -315,7 +150,7 @@ spp_format_port_string(char *port, enum port_type iface_type, int iface_no);
+  * @retval SPPWK_RET_NG If failed.
+  */
+ int spp_set_mng_data_addr(struct iface_info *iface_p,
+-			  struct core_mng_info *core_mng_p,
++			  struct spp_pcap_core_mng_info *core_mng_p,
+ 			  int *capture_request_p,
+ 			  int *capture_status_p);
+ 
+@@ -328,7 +163,7 @@ int spp_set_mng_data_addr(struct iface_info *iface_p,
+  * @param capture_status_p Pointer to req of pcap.
+  */
+ void spp_get_mng_data_addr(struct iface_info **iface_p,
+-			   struct core_mng_info **core_mng_p,
++			   struct spp_pcap_core_mng_info **core_mng_p,
+ 			   int **capture_request_p,
+ 			   int **capture_status_p);
+ 
+diff --git a/src/pcap/data_types.h b/src/pcap/data_types.h
+new file mode 100644
+index 0000000..5555a8d
+--- /dev/null
++++ b/src/pcap/data_types.h
+@@ -0,0 +1,22 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef __SPP_PCAP_DATA_TYPES_H__
++#define __SPP_PCAP_DATA_TYPES_H__
++
++#include "shared/secondary/spp_worker_th/data_types.h"
++
++/* State on capture */
++enum sppwk_capture_status {
++	SPP_CAPTURE_IDLE,     /* Idling */
++	SPP_CAPTURE_RUNNING   /* Running */
++};
++
++/* Manage core status and component information as global variable */
++struct spp_pcap_core_mng_info {
++	/* Status of cpu core */
++	volatile enum sppwk_lcore_status status;
++};
++
++#endif  /* __SPP_PCAP_DATA_TYPES_H__ */
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 9170d35..e6ae01a 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -13,6 +13,7 @@
+ #include <lz4frame.h>
+ 
+ #include "shared/common.h"
++#include "data_types.h"
+ #include "cmd_utils.h"
+ #include "spp_pcap.h"
+ #include "cmd_runner.h"
+@@ -53,6 +54,19 @@
+ /* Ensure snaplen not to be over the maximum size */
+ #define TRANCATE_SNAPLEN(a, b) (((a) < (b))?(a):(b))
+ 
++/* getopt_long return value for long option */
++enum SPP_LONGOPT_RETVAL {
++	SPP_LONGOPT_RETVAL__ = 127,
++
++	/*
++	 * Return value definition for getopt_long()
++	 * Only for long option
++	 */
++	SPP_LONGOPT_RETVAL_CLIENT_ID,  /* --client-id */
++	SPP_LONGOPT_RETVAL_OUT_DIR,    /* --out-dir */
++	SPP_LONGOPT_RETVAL_FILE_SIZE   /* --fsize */
++};
++
+ /* capture thread type */
+ enum worker_thread_type {
+ 	PCAP_UNUSE,  /* Not used */
+@@ -138,7 +152,7 @@ struct pcap_status_info {
+ static struct iface_info g_iface_info;
+ 
+ /* Core management information */
+-static struct core_mng_info g_core_info[RTE_MAX_LCORE];
++static struct spp_pcap_core_mng_info g_core_info[RTE_MAX_LCORE];
+ 
+ /* Packet capture request information */
+ static int g_capture_request;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+index eb04241..c6a9e3c 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.c
+@@ -156,7 +156,7 @@ append_vlan_block(const char *name, char **output,
+ 	}
+ 
+ 	sppwk_get_port_attrs(&port_attrs, port_id, dir);
+-	for (i = 0; i < PORT_ABL_MAX; i++) {
++	for (i = 0; i < PORT_CAPABL_MAX; i++) {
+ 		switch (port_attrs[i].ops) {
+ 		case SPPWK_PORT_OPS_ADD_VLAN:
+ 		case SPPWK_PORT_OPS_DEL_VLAN:
+@@ -171,14 +171,14 @@ append_vlan_block(const char *name, char **output,
+ 			 * An if statement after loop termination is false
+ 			 * by "maximum+1 ".
+ 			 */
+-			i = PORT_ABL_MAX + 1;
++			i = PORT_CAPABL_MAX + 1;
+ 			break;
+ 		default:
+ 			/* not used */
+ 			break;
+ 		}
+ 	}
+-	if (i == PORT_ABL_MAX) {
++	if (i == PORT_CAPABL_MAX) {
+ 		ret = append_vlan_value(&tmp_buff, SPPWK_PORT_OPS_NONE,
+ 				0, 0);
+ 		if (unlikely(ret < SPPWK_RET_OK))
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 6e9695c..0e67357 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -2,8 +2,8 @@
+  * Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+  */
+ 
+-#ifndef _SPPWK_CMD_UTILS_H_
+-#define _SPPWK_CMD_UTILS_H_
++#ifndef __SPPWK_CMD_UTILS_H__
++#define __SPPWK_CMD_UTILS_H__
+ 
+ /**
+  * @file cmd_utils.h
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include <netinet/in.h>
++#include "data_types.h"
+ #include "shared/common.h"
+ 
+ /**
+@@ -40,12 +41,6 @@
+  */
+ #define TWO_SIDES 2
+ 
+-#define STR_LEN_SHORT 32  /* Size of short string. */
+-#define STR_LEN_NAME 128  /* Size of string for names. */
+-
+-/* TODO(yasufum) confirm usage of this value and why it is 4. */
+-#define PORT_ABL_MAX 4  /* Max num of port abilities. */
+-
+ /** Maximum VLAN PCP, used only for spp_vf. */
+ #define SPP_VLAN_PCP_MAX 7
+ 
+@@ -74,25 +69,6 @@
+ #define CORE_TYPE_FORWARD_STR	     "forward"
+ #define CORE_TYPE_MIRROR_STR	     "mirror"
+ 
+-/* Status of a component on lcore. */
+-enum sppwk_lcore_status {
+-	SPPWK_LCORE_UNUSED,
+-	SPPWK_LCORE_STOPPED,
+-	SPPWK_LCORE_IDLING,
+-	SPPWK_LCORE_RUNNING,
+-	SPPWK_LCORE_REQ_STOP  /**< Request for stopping. */
+-};
+-
+-/* Type of SPP worker thread. */
+-/* TODO(yasufum) it should be separated into each process. */
+-enum sppwk_worker_type {
+-	SPPWK_TYPE_NONE,  /**< Not used */
+-	SPPWK_TYPE_CLS,  /**< Classifier_mac */
+-	SPPWK_TYPE_MRG,  /**< Merger */
+-	SPPWK_TYPE_FWD,  /**< Forwarder */
+-	SPPWK_TYPE_MIR,  /**< Mirror */
+-};
+-
+ /* Classifier Type */
+ enum sppwk_cls_type {
+ 	SPPWK_CLS_TYPE_NONE,
+@@ -100,33 +76,6 @@ enum sppwk_cls_type {
+ 	SPPWK_CLS_TYPE_VLAN
+ };
+ 
+-/* Direction of RX or TX on a port. */
+-enum sppwk_port_dir {
+-	SPPWK_PORT_DIR_NONE,  /**< None */
+-	SPPWK_PORT_DIR_RX,    /**< RX port */
+-	SPPWK_PORT_DIR_TX,    /**< TX port */
+-	SPPWK_PORT_DIR_BOTH,  /**< Both of RX and TX */
+-};
+-
+-/**
+- * Port ability operation which indicates vlan tag operation on the port
+- * (e.g. add vlan tag or delete vlan tag)
+- */
+-enum sppwk_port_ops {
+-	SPPWK_PORT_OPS_NONE,
+-	SPPWK_PORT_OPS_ADD_VLAN,  /* Add vlan tag. */
+-	SPPWK_PORT_OPS_DEL_VLAN,  /* Delete vlan tag. */
+-};
+-
+-/* getopt_long return value for long option */
+-enum SPP_LONGOPT_RETVAL {
+-	SPP_LONGOPT_RETVAL__ = 127,
+-
+-	/* Return value definition for getopt_long(). Only for long option. */
+-	SPP_LONGOPT_RETVAL_CLIENT_ID,    /* For `--client-id` */
+-	SPP_LONGOPT_RETVAL_VHOST_CLIENT  /* For `--vhost-client` */
+-};
+-
+ /* Flag of processing type to copy management information */
+ /* TODO(yasufum) add comments for each of members. */
+ enum copy_mng_flg {
+@@ -135,74 +84,6 @@ enum copy_mng_flg {
+ 	COPY_MNG_FLG_ALLCOPY,
+ };
+ 
+-/** VLAN tag information */
+-struct sppwk_vlan_tag {
+-	int vid; /**< VLAN ID */
+-	int pcp; /**< Priority Code Point */
+-	int tci; /**< Tag Control Information */
+-};
+-
+-/* Ability for vlantag for a port. */
+-union sppwk_port_capability {
+-	/** VLAN tag information */
+-	struct sppwk_vlan_tag vlantag;
+-};
+-
+-/* Port attributes of SPP worker processes. */
+-struct sppwk_port_attrs {
+-	enum sppwk_port_ops ops;  /**< Port capability Operations */
+-	enum sppwk_port_dir dir;  /**< Direction of RX, TX or both */
+-	union sppwk_port_capability capability;   /**< Port capability */
+-};
+-
+-/* Attributes for classifying. */
+-struct sppwk_cls_attrs {
+-	uint64_t mac_addr;  /**< Mac address (binary) */
+-	char mac_addr_str[STR_LEN_SHORT];  /**< Mac address (text) */
+-	struct sppwk_vlan_tag vlantag;   /**< VLAN tag information */
+-};
+-
+-/**
+- * Simply define type and index of resource UID such as phy:0. For detailed
+- * attributions, use `sppwk_port_info` which has additional port params.
+- */
+-struct sppwk_port_idx {
+-	enum port_type iface_type;  /**< phy, vhost or ring. */
+-	int iface_no;
+-};
+-
+-/* Define detailed port params in addition to `sppwk_port_idx`. */
+-struct sppwk_port_info {
+-	enum port_type iface_type;  /**< phy, vhost or ring */
+-	int iface_no;
+-	int ethdev_port_id;  /**< Consistent ID of ethdev */
+-	struct sppwk_cls_attrs cls_attrs;
+-	struct sppwk_port_attrs port_attrs[PORT_ABL_MAX];
+-};
+-
+-/* Attributes of SPP worker thread named as `component`. */
+-struct sppwk_comp_info {
+-	char name[STR_LEN_NAME];  /**< Component name */
+-	enum sppwk_worker_type wk_type;  /**< Type of worker thread */
+-	unsigned int lcore_id;
+-	int comp_id;  /**< Component ID */
+-	int nof_rx;  /**< The number of rx ports */
+-	int nof_tx;  /**< The number of tx ports */
+-	struct sppwk_port_info *rx_ports[RTE_MAX_ETHPORTS]; /**< rx ports */
+-	struct sppwk_port_info *tx_ports[RTE_MAX_ETHPORTS]; /**< tx ports */
+-};
+-
+-/* Manage number of interfaces  and port information as global variable. */
+-/**
+- * TODO(yasufum) confirm why having arrays of types. it seems OK having
+- * just one array.
+- */
+-struct iface_info {
+-	struct sppwk_port_info phy[RTE_MAX_ETHPORTS];
+-	struct sppwk_port_info vhost[RTE_MAX_ETHPORTS];
+-	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
+-};
+-
+ /* Manage component running in core as global variable. */
+ struct core_info {
+ 	int num;  /* Number of IDs below */
+@@ -227,33 +108,6 @@ struct cancel_backup_info {
+ 	struct iface_info interface;
+ };
+ 
+-/* TODO(yasufum) revise using term `iterate`, or comments. */
+-struct spp_iterate_core_params;
+-/**
+- * Define func to iterate lcore to list core information for showing status
+- * or so, as a member of struct `spp_iterate_core_params`.
+- */
+-typedef int (*spp_iterate_core_element_proc)(
+-		struct spp_iterate_core_params *params,
+-		const unsigned int lcore_id,
+-		const char *wk_name,  /* Name of worker named as component. */
+-		const char *wk_type,  /* Type of worker named as component. */
+-		const int nof_rx,  /* Number of RX ports */
+-		const struct sppwk_port_idx *rx_ports,
+-		const int nof_tx,  /* Number of TX ports */
+-		const struct sppwk_port_idx *tx_ports);
+-
+-/**
+- * iterate core table parameters used to list content of lcore table for.
+- * showing status or so.
+- */
+-/* TODO(yasufum) refactor name of func and vars, and comments. */
+-struct spp_iterate_core_params {
+-	char *output;  /* Buffer used for output */
+-	/** The function for creating core information */
+-	spp_iterate_core_element_proc element_proc;
+-};
+-
+ struct spp_iterate_classifier_table_params;
+ /**
+  * Define func to iterate classifier for showing status or so, as a member
+@@ -535,4 +389,4 @@ void sppwk_get_mng_data(struct iface_info **iface_p,
+ 		int **change_component_p,
+ 		struct cancel_backup_info **backup_info_p);
+ 
+-#endif /* _SPPWK_CMD_UTILS_H_ */
++#endif /* __SPPWK_CMD_UTILS_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/data_types.h b/src/shared/secondary/spp_worker_th/data_types.h
+new file mode 100644
+index 0000000..7b24df3
+--- /dev/null
++++ b/src/shared/secondary/spp_worker_th/data_types.h
+@@ -0,0 +1,150 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef __SPPWK_DATA_TYPES_H__
++#define __SPPWK_DATA_TYPES_H__
++
++#include "shared/common.h"
++
++#define STR_LEN_SHORT 32  /* Size of short string. */
++#define STR_LEN_NAME 128  /* Size of string for names. */
++
++/* TODO(yasufum) confirm usage of this value and why it is 4. */
++#define PORT_CAPABL_MAX 4  /* Max num of port abilities. */
++
++/* Status of a component on lcore. */
++enum sppwk_lcore_status {
++	SPPWK_LCORE_UNUSED,
++	SPPWK_LCORE_STOPPED,
++	SPPWK_LCORE_IDLING,
++	SPPWK_LCORE_RUNNING,
++	SPPWK_LCORE_REQ_STOP  /**< Request for stopping. */
++};
++
++/* Direction of RX or TX on a port. */
++enum sppwk_port_dir {
++	SPPWK_PORT_DIR_NONE,  /**< None */
++	SPPWK_PORT_DIR_RX,    /**< RX port */
++	SPPWK_PORT_DIR_TX,    /**< TX port */
++	SPPWK_PORT_DIR_BOTH,  /**< Both of RX and TX */
++};
++
++/**
++ * Port ability operation which indicates vlan tag operation on the port
++ * (e.g. add vlan tag or delete vlan tag)
++ */
++enum sppwk_port_ops {
++	SPPWK_PORT_OPS_NONE,
++	SPPWK_PORT_OPS_ADD_VLAN,  /* Add vlan tag. */
++	SPPWK_PORT_OPS_DEL_VLAN,  /* Delete vlan tag. */
++};
++
++/** VLAN tag information */
++struct sppwk_vlan_tag {
++	int vid; /**< VLAN ID */
++	int pcp; /**< Priority Code Point */
++	int tci; /**< Tag Control Information */
++};
++
++/* Ability for vlantag for a port. */
++union sppwk_port_capability {
++	/** VLAN tag information */
++	struct sppwk_vlan_tag vlantag;
++};
++
++/* Port attributes of SPP worker processes. */
++struct sppwk_port_attrs {
++	enum sppwk_port_ops ops;  /**< Port capability Operations */
++	enum sppwk_port_dir dir;  /**< Direction of RX, TX or both */
++	union sppwk_port_capability capability;   /**< Port capability */
++};
++
++/* Type of SPP worker thread. */
++/* TODO(yasufum) it should be separated into each process. */
++enum sppwk_worker_type {
++	SPPWK_TYPE_NONE,  /**< Not used */
++	SPPWK_TYPE_CLS,  /**< Classifier_mac */
++	SPPWK_TYPE_MRG,  /**< Merger */
++	SPPWK_TYPE_FWD,  /**< Forwarder */
++	SPPWK_TYPE_MIR,  /**< Mirror */
++};
++
++/* Attributes for classifying. */
++struct sppwk_cls_attrs {
++	uint64_t mac_addr;  /**< Mac address (binary) */
++	char mac_addr_str[STR_LEN_SHORT];  /**< Mac address (text) */
++	struct sppwk_vlan_tag vlantag;   /**< VLAN tag information */
++};
++
++/**
++ * Simply define type and index of resource UID such as phy:0. For detailed
++ * attributions, use `sppwk_port_info` which has additional port params.
++ */
++struct sppwk_port_idx {
++	enum port_type iface_type;  /**< phy, vhost or ring. */
++	int iface_no;
++};
++
++/* Define detailed port params in addition to `sppwk_port_idx`. */
++struct sppwk_port_info {
++	enum port_type iface_type;  /**< phy, vhost or ring */
++	int iface_no;
++	int ethdev_port_id;  /**< Consistent ID of ethdev */
++	struct sppwk_cls_attrs cls_attrs;
++	struct sppwk_port_attrs port_attrs[PORT_CAPABL_MAX];
++};
++
++/* Attributes of SPP worker thread named as `component`. */
++struct sppwk_comp_info {
++	char name[STR_LEN_NAME];  /**< Component name */
++	enum sppwk_worker_type wk_type;  /**< Type of worker thread */
++	unsigned int lcore_id;
++	int comp_id;  /**< Component ID */
++	int nof_rx;  /**< The number of rx ports */
++	int nof_tx;  /**< The number of tx ports */
++	struct sppwk_port_info *rx_ports[RTE_MAX_ETHPORTS]; /**< rx ports */
++	struct sppwk_port_info *tx_ports[RTE_MAX_ETHPORTS]; /**< tx ports */
++};
++
++/* Manage number of interfaces  and port information as global variable. */
++/**
++ * TODO(yasufum) confirm why having arrays of types. it seems OK having
++ * just one array.
++ * TODO(yasufum) spp_pcap does not support vhost currently, consider support
++ * or not.
++ */
++struct iface_info {
++	struct sppwk_port_info phy[RTE_MAX_ETHPORTS];
++	struct sppwk_port_info vhost[RTE_MAX_ETHPORTS];
++	struct sppwk_port_info ring[RTE_MAX_ETHPORTS];
++};
++
++/* TODO(yasufum) revise using term `iterate`, or comments. */
++struct spp_iterate_core_params;
++/**
++ * Define func to iterate lcore to list core information for showing status
++ * or so, as a member of struct `spp_iterate_core_params`.
++ */
++typedef int (*spp_iterate_core_element_proc)(
++		struct spp_iterate_core_params *params,
++		const unsigned int lcore_id,
++		const char *wk_name,  /* Name of worker named as component. */
++		const char *wk_type,  /* Type of worker named as component. */
++		const int nof_rx,  /* Number of RX ports */
++		const struct sppwk_port_idx *rx_ports,
++		const int nof_tx,  /* Number of TX ports */
++		const struct sppwk_port_idx *tx_ports);
++
++/**
++ * iterate core table parameters used to list content of lcore table for.
++ * showing status or so.
++ */
++/* TODO(yasufum) refactor name of func and vars, and comments. */
++struct spp_iterate_core_params {
++	char *output;  /* Buffer used for output */
++	/** The function for creating core information */
++	spp_iterate_core_element_proc element_proc;
++};
++
++#endif  /* __SPPWK_DATA_TYPES_H__ */
+diff --git a/src/shared/secondary/spp_worker_th/port_capability.c b/src/shared/secondary/spp_worker_th/port_capability.c
+index 43dda54..d4276f1 100644
+--- a/src/shared/secondary/spp_worker_th/port_capability.c
++++ b/src/shared/secondary/spp_worker_th/port_capability.c
+@@ -34,8 +34,8 @@ struct port_capabl_mng_info {
+ 	volatile int upd_index; /* Flag to indicate using update side. */
+ 
+ 	/* A set of attrs including sppwk_port_capability. */
+-	/* TODO(yasufum) confirm why using PORT_ABL_MAX. */
+-	struct sppwk_port_attrs port_attrs[TWO_SIDES][PORT_ABL_MAX];
++	/* TODO(yasufum) confirm why using PORT_CAPABL_MAX. */
++	struct sppwk_port_attrs port_attrs[TWO_SIDES][PORT_CAPABL_MAX];
+ };
+ 
+ /* Port ability port information */
+@@ -284,8 +284,8 @@ update_port_attrs(struct sppwk_port_info *port,
+ 
+ 	port_attrs_out = mng->port_attrs[mng->upd_index];
+ 	memset(port_attrs_out, 0x00, sizeof(struct sppwk_port_attrs)
+-			* PORT_ABL_MAX);
+-	for (in_cnt = 0; in_cnt < PORT_ABL_MAX; in_cnt++) {
++			* PORT_CAPABL_MAX);
++	for (in_cnt = 0; in_cnt < PORT_CAPABL_MAX; in_cnt++) {
+ 		if (port_attrs_in[in_cnt].dir != dir)
+ 			continue;
+ 
+@@ -356,7 +356,7 @@ vlan_operation(uint16_t port_id, struct rte_mbuf **pkts, const uint16_t nb_pkts,
+ 	if (unlikely(port_attrs[0].ops == SPPWK_PORT_OPS_NONE))
+ 		return nb_pkts;
+ 
+-	for (cnt = 0; cnt < PORT_ABL_MAX; cnt++) {
++	for (cnt = 0; cnt < PORT_CAPABL_MAX; cnt++) {
+ 		/* Do nothing if the port is assigned no VLAN feature. */
+ 		if (port_attrs[cnt].ops == SPPWK_PORT_OPS_NONE)
+ 			break;
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index c05ba5e..caf4678 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -21,6 +21,15 @@
+ #include "shared/secondary/spp_worker_th/ringlatencystats.h"
+ #endif
+ 
++/* getopt_long return value for long option */
++enum SPP_LONGOPT_RETVAL {
++	SPP_LONGOPT_RETVAL__ = 127,
++
++	/* Return value definition for getopt_long(). Only for long option. */
++	SPP_LONGOPT_RETVAL_CLIENT_ID,    /* For `--client-id` */
++	SPP_LONGOPT_RETVAL_VHOST_CLIENT  /* For `--vhost-client` */
++};
++
+ /* Declare global variables */
+ /* Interface management information */
+ static struct iface_info g_iface_info;
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index aa698c2..16328f4 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -299,11 +299,11 @@ update_port(enum sppwk_action wk_action,
+ 		if (port_idx >= SPPWK_RET_OK) {
+ 			/* registered */
+ 			if (port_attrs->ops == SPPWK_PORT_OPS_ADD_VLAN) {
+-				while ((cnt < PORT_ABL_MAX) &&
++				while ((cnt < PORT_CAPABL_MAX) &&
+ 					    (port_info->port_attrs[cnt].ops !=
+ 					    SPPWK_PORT_OPS_ADD_VLAN))
+ 					cnt++;
+-				if (cnt >= PORT_ABL_MAX) {
++				if (cnt >= PORT_CAPABL_MAX) {
+ 					RTE_LOG(ERR, VF_CMD_RUNNER, "update VLAN tag "
+ 						"Non-registratio\n");
+ 					return SPPWK_RET_NG;
+@@ -324,12 +324,12 @@ update_port(enum sppwk_action wk_action,
+ 		}
+ 
+ 		if (port_attrs->ops != SPPWK_PORT_OPS_NONE) {
+-			while ((cnt < PORT_ABL_MAX) &&
++			while ((cnt < PORT_CAPABL_MAX) &&
+ 					(port_info->port_attrs[cnt].ops !=
+ 					SPPWK_PORT_OPS_NONE)) {
+ 				cnt++;
+ 			}
+-			if (cnt >= PORT_ABL_MAX) {
++			if (cnt >= PORT_CAPABL_MAX) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+ 						"No space of port ability.\n");
+ 				return SPPWK_RET_NG;
+@@ -346,7 +346,7 @@ update_port(enum sppwk_action wk_action,
+ 		break;
+ 
+ 	case SPPWK_ACT_DEL:
+-		for (cnt = 0; cnt < PORT_ABL_MAX; cnt++) {
++		for (cnt = 0; cnt < PORT_CAPABL_MAX; cnt++) {
+ 			if (port_info->port_attrs[cnt].ops ==
+ 					SPPWK_PORT_OPS_NONE)
+ 				continue;
+-- 
+2.17.1
+
