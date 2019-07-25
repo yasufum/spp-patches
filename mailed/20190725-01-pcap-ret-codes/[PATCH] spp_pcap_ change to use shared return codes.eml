@@ -1,0 +1,114 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c28e052be233d3
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id a16sm53910106pfd.68.2019.07.25.04.24.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Jul 2019 04:24:45 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_pcap: change to use shared return codes
+Date: Thu, 25 Jul 2019 20:24:38 +0900
+Message-Id: <20190725112438.27149-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This patch is to change spp_pcap to use shared ruturn codes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_parser.c               | 1 +
+ src/pcap/cmd_runner.c               | 1 +
+ src/pcap/cmd_utils.c                | 1 +
+ src/pcap/cmd_utils.h                | 5 -----
+ src/pcap/spp_pcap.c                 | 1 +
+ src/shared/secondary/return_codes.h | 2 +-
+ 6 files changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/src/pcap/cmd_parser.c b/src/pcap/cmd_parser.c
+index c6f3387..9b72706 100644
+--- a/src/pcap/cmd_parser.c
++++ b/src/pcap/cmd_parser.c
+@@ -10,6 +10,7 @@
+ #include <rte_branch_prediction.h>
+ 
+ #include "cmd_parser.h"
++#include "shared/secondary/return_codes.h"
+ 
+ #define RTE_LOGTYPE_PCAP_PARSER RTE_LOGTYPE_USER2
+ 
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 21de3f9..10e72bb 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -10,6 +10,7 @@
+ #include "cmd_parser.h"
+ #include "cmd_runner.h"
+ #include "spp_pcap.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/utils.h"
+ #include "shared/secondary/string_buffer.h"
+ #include "shared/secondary/spp_worker_th/conn_spp_ctl.h"
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 31f4922..3cfc609 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -9,6 +9,7 @@
+ #include <rte_log.h>
+ 
+ #include "cmd_utils.h"
++#include "shared/secondary/return_codes.h"
+ 
+ #define RTE_LOGTYPE_PCAP_UTILS RTE_LOGTYPE_USER2
+ 
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 31e4aeb..d7ad57f 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -48,11 +48,6 @@ enum sppwk_capture_status {
+ 	SPP_CAPTURE_RUNNING     /* Running */
+ };
+ 
+-enum sppwk_return_val {
+-	SPPWK_RET_OK = 0,  /**< succeeded */
+-	SPPWK_RET_NG = -1, /**< failed */
+-};
+-
+ /* Direction of RX or TX on a port. */
+ enum sppwk_port_dir {
+ 	SPPWK_PORT_DIR_NONE,  /**< None */
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 7459ba9..9170d35 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -17,6 +17,7 @@
+ #include "spp_pcap.h"
+ #include "cmd_runner.h"
+ #include "cmd_parser.h"
++#include "shared/secondary/return_codes.h"
+ #include "shared/secondary/utils.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+diff --git a/src/shared/secondary/return_codes.h b/src/shared/secondary/return_codes.h
+index 4ab6ef8..1863379 100644
+--- a/src/shared/secondary/return_codes.h
++++ b/src/shared/secondary/return_codes.h
+@@ -5,7 +5,7 @@
+ #ifndef _SPP_SEC_RETURN_CODES_H_
+ #define _SPP_SEC_RETURN_CODES_H_
+ 
+-enum spp_return_val {
++enum sppwk_return_val {
+ 	SPPWK_RET_OK = 0,  /**< succeeded */
+ 	SPPWK_RET_NG = -1, /**< failed */
+ };
+-- 
+2.17.1
+
+

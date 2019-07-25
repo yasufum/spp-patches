@@ -1,0 +1,191 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c28e1f3aee3c88
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id v63sm51381064pfv.174.2019.07.25.04.26.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 25 Jul 2019 04:26:32 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] cli: change dirname controller to cli
+Date: Thu, 25 Jul 2019 20:26:28 +0900
+Message-Id: <20190725112628.27552-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+SPP controller have divided into spp-ctl and SPP CLI, but the name of
+directory of SPP CLI is remained as `controller`. This patch is to
+update the name to `cli`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/{controller => cli}/__init__.py                    | 0
+ src/{controller => cli}/commands/__init__.py           | 0
+ src/{controller => cli}/commands/bye.py                | 0
+ src/{controller => cli}/commands/help_msg.py           | 0
+ src/{controller => cli}/commands/mirror.py             | 0
+ src/{controller => cli}/commands/nfv.py                | 0
+ src/{controller => cli}/commands/pcap.py               | 0
+ src/{controller => cli}/commands/pri.py                | 0
+ src/{controller => cli}/commands/server.py             | 0
+ src/{controller => cli}/commands/topo.py               | 0
+ src/{controller => cli}/commands/vf.py                 | 0
+ src/{controller => cli}/config/default.yml             | 0
+ src/{controller => cli}/plugins/__init__.py            | 0
+ src/{controller => cli}/plugins/hello.py               | 0
+ src/{controller => cli}/shell.py                       | 0
+ src/{controller => cli}/shell_lib/__init__.py          | 0
+ src/{controller => cli}/shell_lib/common.py            | 0
+ src/{controller => cli}/spp.py                         | 0
+ src/{controller => cli}/spp_common.py                  | 0
+ src/{controller => cli}/spp_ctl_client.py              | 0
+ src/{controller => cli}/websocket/spp_ws.py            | 0
+ src/{controller => cli}/websocket/static/main.css      | 0
+ src/{controller => cli}/websocket/static/spp_ws.js     | 0
+ src/{controller => cli}/websocket/templates/index.html | 0
+ src/spp.py                                             | 2 +-
+ 25 files changed, 1 insertion(+), 1 deletion(-)
+ rename src/{controller => cli}/__init__.py (100%)
+ rename src/{controller => cli}/commands/__init__.py (100%)
+ rename src/{controller => cli}/commands/bye.py (100%)
+ rename src/{controller => cli}/commands/help_msg.py (100%)
+ rename src/{controller => cli}/commands/mirror.py (100%)
+ rename src/{controller => cli}/commands/nfv.py (100%)
+ rename src/{controller => cli}/commands/pcap.py (100%)
+ rename src/{controller => cli}/commands/pri.py (100%)
+ rename src/{controller => cli}/commands/server.py (100%)
+ rename src/{controller => cli}/commands/topo.py (100%)
+ rename src/{controller => cli}/commands/vf.py (100%)
+ rename src/{controller => cli}/config/default.yml (100%)
+ rename src/{controller => cli}/plugins/__init__.py (100%)
+ rename src/{controller => cli}/plugins/hello.py (100%)
+ rename src/{controller => cli}/shell.py (100%)
+ rename src/{controller => cli}/shell_lib/__init__.py (100%)
+ rename src/{controller => cli}/shell_lib/common.py (100%)
+ rename src/{controller => cli}/spp.py (100%)
+ rename src/{controller => cli}/spp_common.py (100%)
+ rename src/{controller => cli}/spp_ctl_client.py (100%)
+ rename src/{controller => cli}/websocket/spp_ws.py (100%)
+ rename src/{controller => cli}/websocket/static/main.css (100%)
+ rename src/{controller => cli}/websocket/static/spp_ws.js (100%)
+ rename src/{controller => cli}/websocket/templates/index.html (100%)
+
+diff --git a/src/controller/__init__.py b/src/cli/__init__.py
+similarity index 100%
+rename from src/controller/__init__.py
+rename to src/cli/__init__.py
+diff --git a/src/controller/commands/__init__.py b/src/cli/commands/__init__.py
+similarity index 100%
+rename from src/controller/commands/__init__.py
+rename to src/cli/commands/__init__.py
+diff --git a/src/controller/commands/bye.py b/src/cli/commands/bye.py
+similarity index 100%
+rename from src/controller/commands/bye.py
+rename to src/cli/commands/bye.py
+diff --git a/src/controller/commands/help_msg.py b/src/cli/commands/help_msg.py
+similarity index 100%
+rename from src/controller/commands/help_msg.py
+rename to src/cli/commands/help_msg.py
+diff --git a/src/controller/commands/mirror.py b/src/cli/commands/mirror.py
+similarity index 100%
+rename from src/controller/commands/mirror.py
+rename to src/cli/commands/mirror.py
+diff --git a/src/controller/commands/nfv.py b/src/cli/commands/nfv.py
+similarity index 100%
+rename from src/controller/commands/nfv.py
+rename to src/cli/commands/nfv.py
+diff --git a/src/controller/commands/pcap.py b/src/cli/commands/pcap.py
+similarity index 100%
+rename from src/controller/commands/pcap.py
+rename to src/cli/commands/pcap.py
+diff --git a/src/controller/commands/pri.py b/src/cli/commands/pri.py
+similarity index 100%
+rename from src/controller/commands/pri.py
+rename to src/cli/commands/pri.py
+diff --git a/src/controller/commands/server.py b/src/cli/commands/server.py
+similarity index 100%
+rename from src/controller/commands/server.py
+rename to src/cli/commands/server.py
+diff --git a/src/controller/commands/topo.py b/src/cli/commands/topo.py
+similarity index 100%
+rename from src/controller/commands/topo.py
+rename to src/cli/commands/topo.py
+diff --git a/src/controller/commands/vf.py b/src/cli/commands/vf.py
+similarity index 100%
+rename from src/controller/commands/vf.py
+rename to src/cli/commands/vf.py
+diff --git a/src/controller/config/default.yml b/src/cli/config/default.yml
+similarity index 100%
+rename from src/controller/config/default.yml
+rename to src/cli/config/default.yml
+diff --git a/src/controller/plugins/__init__.py b/src/cli/plugins/__init__.py
+similarity index 100%
+rename from src/controller/plugins/__init__.py
+rename to src/cli/plugins/__init__.py
+diff --git a/src/controller/plugins/hello.py b/src/cli/plugins/hello.py
+similarity index 100%
+rename from src/controller/plugins/hello.py
+rename to src/cli/plugins/hello.py
+diff --git a/src/controller/shell.py b/src/cli/shell.py
+similarity index 100%
+rename from src/controller/shell.py
+rename to src/cli/shell.py
+diff --git a/src/controller/shell_lib/__init__.py b/src/cli/shell_lib/__init__.py
+similarity index 100%
+rename from src/controller/shell_lib/__init__.py
+rename to src/cli/shell_lib/__init__.py
+diff --git a/src/controller/shell_lib/common.py b/src/cli/shell_lib/common.py
+similarity index 100%
+rename from src/controller/shell_lib/common.py
+rename to src/cli/shell_lib/common.py
+diff --git a/src/controller/spp.py b/src/cli/spp.py
+similarity index 100%
+rename from src/controller/spp.py
+rename to src/cli/spp.py
+diff --git a/src/controller/spp_common.py b/src/cli/spp_common.py
+similarity index 100%
+rename from src/controller/spp_common.py
+rename to src/cli/spp_common.py
+diff --git a/src/controller/spp_ctl_client.py b/src/cli/spp_ctl_client.py
+similarity index 100%
+rename from src/controller/spp_ctl_client.py
+rename to src/cli/spp_ctl_client.py
+diff --git a/src/controller/websocket/spp_ws.py b/src/cli/websocket/spp_ws.py
+similarity index 100%
+rename from src/controller/websocket/spp_ws.py
+rename to src/cli/websocket/spp_ws.py
+diff --git a/src/controller/websocket/static/main.css b/src/cli/websocket/static/main.css
+similarity index 100%
+rename from src/controller/websocket/static/main.css
+rename to src/cli/websocket/static/main.css
+diff --git a/src/controller/websocket/static/spp_ws.js b/src/cli/websocket/static/spp_ws.js
+similarity index 100%
+rename from src/controller/websocket/static/spp_ws.js
+rename to src/cli/websocket/static/spp_ws.js
+diff --git a/src/controller/websocket/templates/index.html b/src/cli/websocket/templates/index.html
+similarity index 100%
+rename from src/controller/websocket/templates/index.html
+rename to src/cli/websocket/templates/index.html
+diff --git a/src/spp.py b/src/spp.py
+index 498fd2e..f3a163b 100644
+--- a/src/spp.py
++++ b/src/spp.py
+@@ -2,7 +2,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2015-2016 Intel Corporation
+ 
+-from controller import spp
++from cli import spp
+ import sys
+ 
+ if __name__ == "__main__":
+-- 
+2.17.1
+
+
