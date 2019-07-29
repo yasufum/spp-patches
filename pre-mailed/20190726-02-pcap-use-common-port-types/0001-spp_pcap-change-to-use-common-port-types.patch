@@ -1,0 +1,114 @@
+From 6460affe7974002d03fcdb3036358f66eafd10d0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 25 Jul 2019 21:06:12 +0900
+Subject: [PATCH] spp_pcap: change to use common port types
+
+This update is to change to use port types "phy" and "ring" defined
+in shared dir.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_utils.c |  4 ++--
+ src/pcap/cmd_utils.h | 10 +---------
+ src/pcap/spp_pcap.c  | 20 ++++++++++----------
+ 3 files changed, 13 insertions(+), 21 deletions(-)
+
+diff --git a/src/pcap/cmd_utils.c b/src/pcap/cmd_utils.c
+index 88514c8..3c71b2e 100644
+--- a/src/pcap/cmd_utils.c
++++ b/src/pcap/cmd_utils.c
+@@ -269,10 +269,10 @@ int spp_format_port_string(char *port, enum port_type iface_type, int iface_no)
+ 
+ 	switch (iface_type) {
+ 	case PHY:
+-		iface_type_str = SPP_IFTYPE_NIC_STR;
++		iface_type_str = SPPWK_PHY_STR;
+ 		break;
+ 	case RING:
+-		iface_type_str = SPP_IFTYPE_RING_STR;
++		iface_type_str = SPPWK_RING_STR;
+ 		break;
+ 	default:
+ 		return SPPWK_RET_NG;
+diff --git a/src/pcap/cmd_utils.h b/src/pcap/cmd_utils.h
+index 1fb8d14..2e78c69 100644
+--- a/src/pcap/cmd_utils.h
++++ b/src/pcap/cmd_utils.h
+@@ -22,15 +22,6 @@
+ #include <netinet/in.h>
+ #include "shared/common.h"
+ 
+-/** Identifier string for each interface */
+-#define SPP_IFTYPE_NIC_STR   "phy"
+-#define SPP_IFTYPE_RING_STR  "ring"
+-
+-#define STR_LEN_SHORT 32  /* Size of short string. */
+-#define STR_LEN_NAME 128  /* Size of string for names. */
+-
+-#define PORT_ABL_MAX 4  /* Max num of port abilities. */
+-
+ /* Max number of core status check */
+ #define SPP_CORE_STATUS_CHECK_MAX 5
+ 
+@@ -59,6 +50,7 @@ enum sppwk_lcore_status sppwk_get_lcore_status(unsigned int lcore_id);
+  * @retval 0  If succeeded.
+  * @retval -1 If failed.
+  */
++/* TODO(yasufum) remove it and use in shared because it is same. */
+ int check_core_status_wait(enum sppwk_lcore_status status);
+ 
+ /**
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index e6ae01a..58a2c52 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -216,16 +216,16 @@ parse_captured_port(const char *port_str, enum port_type *iface_type,
+ 	char *endptr = NULL;
+ 
+ 	/* Find out which type of interface from resource UID */
+-	if (strncmp(port_str, SPP_IFTYPE_NIC_STR ":",
+-			strlen(SPP_IFTYPE_NIC_STR)+1) == 0) {
++	if (strncmp(port_str, SPPWK_PHY_STR ":",
++			strlen(SPPWK_PHY_STR)+1) == 0) {
+ 		/* NIC */
+ 		type = PHY;
+-		no_str = &port_str[strlen(SPP_IFTYPE_NIC_STR)+1];
+-	} else if (strncmp(port_str, SPP_IFTYPE_RING_STR ":",
+-			strlen(SPP_IFTYPE_RING_STR)+1) == 0) {
++		no_str = &port_str[strlen(SPPWK_PHY_STR)+1];
++	} else if (strncmp(port_str, SPPWK_RING_STR ":",
++			strlen(SPPWK_RING_STR)+1) == 0) {
+ 		/* RING */
+ 		type = RING;
+-		no_str = &port_str[strlen(SPP_IFTYPE_RING_STR)+1];
++		no_str = &port_str[strlen(SPPWK_RING_STR)+1];
+ 	} else {
+ 		/* OTHER */
+ 		RTE_LOG(ERR, SPP_PCAP, "The interface that does not suppor. "
+@@ -468,9 +468,9 @@ static int file_compression_operation(struct pcap_mng_info *info,
+ 		info->file_size = 0;
+ 		info->file_no = 1;
+ 		if (g_pcap_option.port_cap.iface_type == PHY)
+-			iface_type_str = SPP_IFTYPE_NIC_STR;
++			iface_type_str = SPPWK_PHY_STR;
+ 		else
+-			iface_type_str = SPP_IFTYPE_RING_STR;
++			iface_type_str = SPPWK_RING_STR;
+ 		snprintf(info->compress_file_name,
+ 					PCAP_FNAME_STRLEN - 1,
+ 					"spp_pcap.%s.%s%d.%u.%u.pcap.lz4",
+@@ -523,9 +523,9 @@ static int file_compression_operation(struct pcap_mng_info *info,
+ 		info->file_size = 0;
+ 		info->file_no++;
+ 		if (g_pcap_option.port_cap.iface_type == PHY)
+-			iface_type_str = SPP_IFTYPE_NIC_STR;
++			iface_type_str = SPPWK_PHY_STR;
+ 		else
+-			iface_type_str = SPP_IFTYPE_RING_STR;
++			iface_type_str = SPPWK_RING_STR;
+ 		snprintf(info->compress_file_name,
+ 					PCAP_FNAME_STRLEN - 1,
+ 					"spp_pcap.%s.%s%d.%u.%u.pcap.lz4",
+-- 
+2.17.1
+
