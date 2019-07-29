@@ -1,0 +1,204 @@
+From b9474270bc203b46cb150449dab7f924c39b92f0 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 29 Jul 2019 15:17:59 +0900
+Subject: [PATCH] bin: add features for testing
+
+For testing behaviours of spp_primary, enable to add arbitrary vdevs
+and add `--dry-run` option. These features are mainly for developers.
+
+Dry run is for showing commands without running them actually.
+
+    $ bin/start.sh --dry-run
+
+Any of vdevs and its options can be listed in `PRI_VDEVS` as following
+in config file.
+    PRI_VDEVS=(
+    eth_vhost11,iface=/tmp/sock11,queues=1
+    eth_vhost12,iface=/tmp/sock12,queues=1
+    )
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 15 +++++++++----
+ bin/spp_pri.sh       | 29 +++++++++++++++++++-----
+ bin/start.sh         | 52 ++++++++++++++++++++++++++++++++++----------
+ 3 files changed, 74 insertions(+), 22 deletions(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index c7ad672..69215d1 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -11,11 +11,18 @@ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+-#PRI_VHOST_VDEVS=(11 12)  # you use if you have no phy ports.
+-#PRI_RING_VDEVS=(1 2)  # you use if you have no phy ports.
+-#PRI_TAP_VDEVS=(1 2)  # you use if you have no phy ports.
++
++# Vdevs of spp_primary
++#PRI_VHOST_VDEVS=(11 12)  # IDs of `eth_vhost`
++#PRI_RING_VDEVS=(1 2)  # IDs of `net_ring`
++#PRI_TAP_VDEVS=(1 2)  # IDs of `net_tap`
++# You can give whole of vdev options here.
++#PRI_VDEVS=(
++#eth_vhost11,iface=/tmp/sock13,queues=1
++#eth_vhost12,iface=/tmp/sock14,queues=1
++#)
+ 
+ # You do not need to change usually.
+-# Log files created in 'spp/log/'.
++# Log files are created in 'spp/log/'.
+ SPP_CTL_LOG=spp_ctl.log
+ PRI_LOG=spp_primary.log
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index 62a6075..f08a178 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -7,13 +7,14 @@
+ SPP_PRI_VHOST=""
+ SPP_PRI_RING=""
+ SPP_PRI_TAP=""
++SPP_PRI_VDEVS=""
+ 
+ function clean_sock_files() {
+     # clean /tmp/sock*
+     sudo rm -f /tmp/sock*
+ }
+ 
+-# Add vhost vdevs.
++# Add vhost vdevs named as such as `eth_vhost0`.
+ function setup_vhost_vdevs() {
+     if [ ${PRI_VHOST_VDEVS} ]; then
+         for id in ${PRI_VHOST_VDEVS[@]}; do
+@@ -23,7 +24,7 @@ function setup_vhost_vdevs() {
+     fi
+ }
+ 
+-# Add ring vdevs.
++# Add ring vdevs named as such as `net_ring0`.
+ function setup_ring_vdevs() {
+     if [ ${PRI_RING_VDEVS} ]; then
+         for id in ${PRI_RING_VDEVS[@]}; do
+@@ -32,7 +33,7 @@ function setup_ring_vdevs() {
+     fi
+ }
+ 
+-# Add tap vdevs.
++# Add tap vdevs named as such as `net_tap0`.
+ function setup_tap_vdevs() {
+     if [ ${PRI_TAP_VDEVS} ]; then
+         for id in ${PRI_TAP_VDEVS[@]}; do
+@@ -41,10 +42,20 @@ function setup_tap_vdevs() {
+     fi
+ }
+ 
++# Add any of vdevs.
++function setup_vdevs() {
++    if [ ${PRI_VDEVS} ]; then
++        for vdev in ${PRI_VDEVS[@]}; do
++            SPP_PRI_VDEVS="${SPP_PRI_VDEVS} --vdev ${vdev}"
++        done
++    fi
++}
++
+ # Launch spp_primary.
+ function spp_pri() {
+     SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
+-    sudo ${SPP_PRI_BIN} \
++
++    cmd="sudo ${SPP_PRI_BIN} \
+         -l ${PRI_CORE_LIST} \
+         -n ${PRI_MEMCHAN} \
+         --socket-mem ${PRI_MEM} \
+@@ -55,9 +66,15 @@ function spp_pri() {
+         ${SPP_PRI_VHOST} \
+         ${SPP_PRI_RING} \
+         ${SPP_PRI_TAP} \
++        ${SPP_PRI_VDEVS} \
+         -- \
+         -p ${PRI_PORTMASK} \
+         -n ${NUM_RINGS} \
+-        -s ${SPP_HOST_IP}:5555 \
+-        > ${SPP_DIR}/log/${PRI_LOG} 2>&1 &
++        -s ${SPP_HOST_IP}:5555"
++
++    if [ ${DRY_RUN} ]; then
++        echo ${cmd}
++    else
++        ${cmd} > ${SPP_DIR}/log/${PRI_LOG} 2>&1 &
++    fi
+ }
+diff --git a/bin/start.sh b/bin/start.sh
+index bf57d4e..f39d5f6 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -13,6 +13,39 @@ SPP_DIR=${WORK_DIR}/..
+ 
+ DEFAULT_CONFIG=${WORK_DIR}/sample/config.sh
+ CONFIG=${WORK_DIR}/config.sh
++DRY_RUN=
++
++while getopts ":-:" OPT
++do
++    case ${OPT} in
++        "-")
++            case ${OPTARG} in
++                dry-run)
++                    DRY_RUN=true
++                    ;;
++            esac
++            ;;
++    esac
++done
++
++function start_spp_ctl() {
++    cmd="python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP}"
++    if [ ${DRY_RUN} ]; then
++        echo ${cmd}
++    else
++        ${cmd} > ${SPP_DIR}/log/${SPP_CTL_LOG} 2>&1 &
++    fi
++}
++
++function start_spp_pri() {
++    . ${SPP_DIR}/bin/spp_pri.sh
++    clean_sock_files  # remove /tmp/sock* as initialization
++    setup_vhost_vdevs  # setup vdevs of eth_vhost
++    setup_ring_vdevs  # setup vdevs of net_ring
++    setup_tap_vdevs  # setup vdevs of net_tap
++    setup_vdevs  # setup any of vdevs
++    spp_pri  # launch spp_primary
++}
+ 
+ if [ ! -f ${CONFIG} ]; then
+     echo "Creating config file ..."
+@@ -25,18 +58,13 @@ fi
+ . ${CONFIG}
+ 
+ echo "Start spp-ctl"
+-python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP} \
+-    > ${SPP_DIR}/log/${SPP_CTL_LOG} 2>&1 &
++start_spp_ctl
+ 
+ echo "Start spp_primary"
+-. ${SPP_DIR}/bin/spp_pri.sh
+-clean_sock_files  # remove /tmp/sock* as initialization
+-setup_vhost_vdevs  # you use vdevs if you have no phy ports
+-setup_ring_vdevs  # you use vdevs if you have no phy ports
+-setup_tap_vdevs  # you use vdevs if you have no phy ports
+-spp_pri  # launch spp_primary
++start_spp_pri
+ 
+-echo "Waiting for spp-ctl is ready ..."
+-sleep 1
+-
+-python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP}
++if [ ! ${DRY_RUN} ]; then
++    echo "Waiting for spp-ctl is ready ..."
++    sleep 1
++    python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP}
++fi
+-- 
+2.17.1
+
