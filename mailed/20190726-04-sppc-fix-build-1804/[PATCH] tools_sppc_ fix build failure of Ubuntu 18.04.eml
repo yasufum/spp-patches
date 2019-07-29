@@ -1,0 +1,116 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c3d1797cc98221
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id j12sm52724646pff.4.2019.07.29.02.37.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jul 2019 02:37:31 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: fix build failure of Ubuntu 18.04
+Date: Mon, 29 Jul 2019 18:37:28 +0900
+Message-Id: <20190729093728.28735-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Building container image is stopped while installing tzdata because it
+requires user's input and no way to do that. This update is to fix the
+issue by adding ENV variable to run `docker build` as non-interactive
+mode.
+
+    ENV DEBIAN_FRONTEND noninteractive
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04    | 2 +-
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.latest   | 2 +-
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 1 +
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 1 +
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04     | 1 +
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest    | 1 +
+ 6 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04 b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+index 16fcf39..5880709 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+@@ -12,7 +12,7 @@ ENV https_proxy $https_proxy
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+-
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+index 832b0e2..425b3f8 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+@@ -12,7 +12,7 @@ ENV https_proxy $https_proxy
+ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+-
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 1103cdc..9862e4d 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -18,6 +18,7 @@ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
+ ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index 5ff3e64..1f48c19 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -18,6 +18,7 @@ ENV RTE_TARGET ${rte_target}
+ ENV PKTGEN_DIR ${pktgen_dir}
+ ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index f2afa74..afd33f9 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -20,6 +20,7 @@ ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index 246ceb8..380eb18 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -20,6 +20,7 @@ ENV PATH ${home_dir}/${spp_dir}/src/primary/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
+ 
+ RUN apt-get update && apt-get install -y \
+     git \
+-- 
+2.17.1
+
+
