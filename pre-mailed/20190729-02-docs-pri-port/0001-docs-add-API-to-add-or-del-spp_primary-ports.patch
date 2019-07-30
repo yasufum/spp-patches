@@ -1,0 +1,75 @@
+From 9fdd9ef1addff6941f93d33c8685fbdc8d8c4141 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 30 Jul 2019 12:02:37 +0900
+Subject: [PATCH] docs: add API to add or del spp_primary ports
+
+This update is to add REST API for spp_primary for adding or deleting
+ports.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/api_ref/spp_primary.rst | 48 +++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index 276c7e9..1345a46 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -136,6 +136,54 @@ Response example
+     }
+ 
+ 
++PUT /v1/primary/ports
++---------------------
++
++Add or delete port.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++
++Request (body)
++~~~~~~~~~~~~~~
++
++.. _table_spp_ctl_spp_primary_ports_get_body:
++
++.. table:: Request body params of ports of ``spp_primary``.
++
++    +--------+--------+--------------------------------------------------+
++    | Name   | Type   | Description                                      |
++    |        |        |                                                  |
++    +========+========+==================================================+
++    | action | string | ``add`` or ``del``.                              |
++    +--------+--------+--------------------------------------------------+
++    | port   | string | Resource UID of {port_type}:{port_id}.           |
++    +--------+--------+--------------------------------------------------+
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X PUT -H 'application/json' \
++      -d '{"action": "add", "port": "ring:0"}' \
++      http://127.0.0.1:7777/v1/primary/ports
++
++
++Response
++~~~~~~~~
++
++There is no body content for the response of a successful ``PUT`` request.
++
++
++Equivalent CLI command
++~~~~~~~~~~~~~~~~~~~~~~
++
++Not supported in SPP CLI.
++
++
+ DELETE /v1/primary/status
+ -------------------------
+ 
+-- 
+2.17.1
+
