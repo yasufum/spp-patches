@@ -1,0 +1,92 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c41c9284acdf90
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id s185sm96082933pgs.67.2019.07.30.00.29.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jul 2019 00:29:57 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] docs: add API to add or del spp_primary ports
+Date: Tue, 30 Jul 2019 16:29:53 +0900
+Message-Id: <20190730072953.9258-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to add REST API for spp_primary for adding or deleting
+ports.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/api_ref/spp_primary.rst | 48 +++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index 276c7e9..1345a46 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -136,6 +136,54 @@ Response example
+     }
+ 
+ 
++PUT /v1/primary/ports
++---------------------
++
++Add or delete port.
++
++* Normal response codes: 204
++* Error response codes: 400, 404
++
++
++Request (body)
++~~~~~~~~~~~~~~
++
++.. _table_spp_ctl_spp_primary_ports_get_body:
++
++.. table:: Request body params of ports of ``spp_primary``.
++
++    +--------+--------+--------------------------------------------------+
++    | Name   | Type   | Description                                      |
++    |        |        |                                                  |
++    +========+========+==================================================+
++    | action | string | ``add`` or ``del``.                              |
++    +--------+--------+--------------------------------------------------+
++    | port   | string | Resource UID of {port_type}:{port_id}.           |
++    +--------+--------+--------------------------------------------------+
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X PUT -H 'application/json' \
++      -d '{"action": "add", "port": "ring:0"}' \
++      http://127.0.0.1:7777/v1/primary/ports
++
++
++Response
++~~~~~~~~
++
++There is no body content for the response of a successful ``PUT`` request.
++
++
++Equivalent CLI command
++~~~~~~~~~~~~~~~~~~~~~~
++
++Not supported in SPP CLI.
++
++
+ DELETE /v1/primary/status
+ -------------------------
+ 
+-- 
+2.17.1
+
+

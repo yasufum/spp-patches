@@ -1,0 +1,137 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c41c884311eb11
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 131sm79145985pfx.57.2019.07.30.00.29.14
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jul 2019 00:29:15 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared: support old desc of vdev tyep
+Date: Tue, 30 Jul 2019 16:29:07 +0900
+Message-Id: <20190730072907.3849-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+In DPDK, vdev was described with prefix `eth` such as `eth_vhost0`,
+but is changed to use `net` instead of `eth`. Because both of
+prefixes are supported currently, SPP should also accept both.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c | 46 +++++++++++++++++++++++++--------------------
+ src/shared/common.h | 13 ++++++++-----
+ 2 files changed, 34 insertions(+), 25 deletions(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 6655f17..aa1486a 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -176,47 +176,53 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 	int dev_name_len = strlen(dev_name);
+ 	int dev_str_len;
+ 
+-	if (strncmp(dev_name, VDEV_PREFIX_RING,
+-			strlen(VDEV_PREFIX_RING)) == 0) {
+-		dev_str_len = strlen(VDEV_PREFIX_RING);
++	if (strncmp(dev_name, VDEV_ETH_RING,
++				strlen(VDEV_ETH_RING)) == 0 ||
++			strncmp(dev_name, VDEV_NET_RING,
++				strlen(VDEV_NET_RING)) == 0) {
++		dev_str_len = strlen(VDEV_NET_RING);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_RING),
++		strncpy(pid_str, dev_name + strlen(VDEV_NET_RING),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = RING;
+ 
+-	} else if (strncmp(dev_name, VDEV_PREFIX_VHOST,
+-			strlen(VDEV_PREFIX_VHOST)) == 0) {
+-		dev_str_len = strlen(VDEV_PREFIX_VHOST);
++	} else if (strncmp(dev_name, VDEV_ETH_VHOST,
++				strlen(VDEV_ETH_VHOST)) == 0 ||
++			strncmp(dev_name, VDEV_NET_VHOST,
++				strlen(VDEV_NET_VHOST)) == 0) {
++		dev_str_len = strlen(VDEV_NET_VHOST);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_VHOST),
++		strncpy(pid_str, dev_name + strlen(VDEV_NET_VHOST),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = VHOST;
+ 
+-	} else if (strncmp(dev_name, VDEV_PREFIX_PCAP,
+-			strlen(VDEV_PREFIX_PCAP)) == 0) {
+-		dev_str_len = strlen(VDEV_PREFIX_PCAP);
++	} else if (strncmp(dev_name, VDEV_PCAP,
++			strlen(VDEV_PCAP)) == 0) {
++		dev_str_len = strlen(VDEV_PCAP);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_PCAP),
++		strncpy(pid_str, dev_name + strlen(VDEV_PCAP),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = PCAP;
+ 
+-	} else if (strncmp(dev_name, VDEV_PREFIX_TAP,
+-			strlen(VDEV_PREFIX_TAP)) == 0) {
+-		dev_str_len = strlen(VDEV_PREFIX_TAP);
++	} else if (strncmp(dev_name, VDEV_ETH_TAP,
++				strlen(VDEV_ETH_TAP)) == 0 ||
++			strncmp(dev_name, VDEV_NET_TAP,
++				strlen(VDEV_NET_TAP)) == 0) {
++		dev_str_len = strlen(VDEV_NET_TAP);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_TAP),
++		strncpy(pid_str, dev_name + strlen(VDEV_NET_TAP),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = TAP;
+ 
+-	} else if (strncmp(dev_name, VDEV_PREFIX_NULL,
+-			strlen(VDEV_PREFIX_NULL)) == 0) {
+-		dev_str_len = strlen(VDEV_PREFIX_NULL);
++	} else if (strncmp(dev_name, VDEV_NULL,
++			strlen(VDEV_NULL)) == 0) {
++		dev_str_len = strlen(VDEV_NULL);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PREFIX_NULL),
++		strncpy(pid_str, dev_name + strlen(VDEV_NULL),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = PCAP;
+diff --git a/src/shared/common.h b/src/shared/common.h
+index d51d6df..4d0dbe8 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -43,11 +43,14 @@
+ #define RTE_MP_RX_DESC_DEFAULT 512
+ #define RTE_MP_TX_DESC_DEFAULT 512
+ 
+-#define VDEV_PREFIX_RING  "net_ring"
+-#define VDEV_PREFIX_VHOST "eth_vhost"
+-#define VDEV_PREFIX_PCAP  "net_pcap"
+-#define VDEV_PREFIX_TAP   "net_tap"
+-#define VDEV_PREFIX_NULL  "eth_null"
++#define VDEV_ETH_RING "eth_ring"
++#define VDEV_NET_RING "net_ring"
++#define VDEV_ETH_VHOST "eth_vhost"
++#define VDEV_NET_VHOST "net_vhost"
++#define VDEV_PCAP "net_pcap"
++#define VDEV_ETH_TAP "eth_tap"
++#define VDEV_NET_TAP "net_tap"
++#define VDEV_NULL "eth_null"
+ 
+ 
+ /* Command. */
+-- 
+2.17.1
+
+
