@@ -1,0 +1,75 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c4671f8d1a899c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id g4sm81625738pfo.93.2019.07.30.22.12.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 30 Jul 2019 22:12:50 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: fix compile error of spp_pcap
+Date: Wed, 31 Jul 2019 14:12:45 +0900
+Message-Id: <20190731051245.37226-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Compiling spp_pcap requires `iblz4-dev` and `liblz4-tool`, but not
+including in Dockerfiles of SPP and failed to compile. This patch is
+to fix the issue.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04  | 2 ++
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04  | 2 ++
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+index 27311ea..a928ac4 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+@@ -32,6 +32,8 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
+     pkg-config \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index afd33f9..7a7c06b 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -33,6 +33,8 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
+     pkg-config \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index 380eb18..6f87cd1 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -33,6 +33,8 @@ RUN apt-get update && apt-get install -y \
+     libarchive-dev \
+     linux-headers-$(uname -r) \
+     libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
+     pkg-config \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/*
+-- 
+2.17.1
+
+
