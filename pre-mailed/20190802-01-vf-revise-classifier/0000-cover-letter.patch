@@ -1,0 +1,28 @@
+From 19a89fd63a1d9a97edddf81486fea55f9708c553 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 2 Aug 2019 14:48:10 +0900
+Subject: [PATCH 0/6] Refactor classifier of spp_vf
+
+This series of patch is to refactor classifier of spp_vf by removing
+nouse functions, revise names or so.
+
+Yasufumi Ogawa (6):
+  spp_vf: rename file classifier_mac
+  spp_vf: rename func spp_classifier_mac_init
+  spp_vf: remove no meaning int variables
+  spp_vf: rename management_info to cls_mng_info
+  spp_vf: refactor variables in classifier.c
+  spp_vf: rename spp_classifier_mac_do
+
+ src/vf/Makefile                           |   2 +-
+ src/vf/{classifier_mac.c => classifier.c} | 114 +++++++++-------------
+ src/vf/{classifier_mac.h => classifier.h} |  12 +--
+ src/vf/spp_vf.c                           |  48 +++++----
+ src/vf/vf_cmd_runner.c                    |   2 +-
+ 5 files changed, 76 insertions(+), 102 deletions(-)
+ rename src/vf/{classifier_mac.c => classifier.c} (91%)
+ rename src/vf/{classifier_mac.h => classifier.h} (90%)
+
+-- 
+2.17.1
+

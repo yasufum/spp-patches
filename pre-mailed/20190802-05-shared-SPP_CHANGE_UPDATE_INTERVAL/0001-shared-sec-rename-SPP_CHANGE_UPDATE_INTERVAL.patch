@@ -1,0 +1,95 @@
+From 2901263e62c79ce6f48be0da0ecddd30acea9e93 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 2 Aug 2019 11:08:42 +0900
+Subject: [PATCH] shared/sec: rename SPP_CHANGE_UPDATE_INTERVAL
+
+This update is to rename define SPP_CHANGE_UPDATE_INTERVAL to
+SPPWK_UPDATE_INTERVAL.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                        | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 2 +-
+ src/vf/classifier.c                            | 5 +----
+ src/vf/forwarder.c                             | 2 +-
+ 5 files changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 0050a51..6cf7b93 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -284,7 +284,7 @@ update_mirror(struct sppwk_comp_info *wk_comp)
+ 
+ 	info->upd_index = info->ref_index;
+ 	while (likely(info->ref_index == info->upd_index))
+-		rte_delay_us_block(SPP_CHANGE_UPDATE_INTERVAL);
++		rte_delay_us_block(SPPWK_UPDATE_INTERVAL);
+ 
+ 	RTE_LOG(INFO, MIRROR,
+ 			"Done update mirror (id=%d, name=%s, type=%d)\n",
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index a2b0300..de472cc 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -705,7 +705,7 @@ update_lcore_info(void)
+ 		if (*(p_change_core + cnt) != 0) {
+ 			info = (p_core_info + cnt);
+ 			while (likely(info->ref_index == info->upd_index))
+-				rte_delay_us_block(SPP_CHANGE_UPDATE_INTERVAL);
++				rte_delay_us_block(SPPWK_UPDATE_INTERVAL);
+ 
+ 			memcpy(&info->core[info->upd_index],
+ 					&info->core[info->ref_index],
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 4ae6956..be49a3d 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -28,7 +28,7 @@
+ #define SPPWK_TYPE_NONE_STR "unuse"
+ 
+ /** Waiting time for checking update (not used for spp_pcap). */
+-#define SPP_CHANGE_UPDATE_INTERVAL 10  /* micro sec */
++#define SPPWK_UPDATE_INTERVAL 10  /* micro sec */
+ 
+ /**
+  * Used for index of arrary of management data which has two sides. It is not
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index e7991c6..4fbe0ad 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -47,9 +47,6 @@
+ /* number of classifier mac table entry */
+ #define NOF_CLS_TABLE_ENTRIES 128
+ 
+-/* interval that wait until change update index (micro second) */
+-#define CHANGE_UPDATE_INDEX_WAIT_INTERVAL SPP_CHANGE_UPDATE_INTERVAL
+-
+ /*
+  *  interval that transmit burst packet,
+  *  if buffer is not filled (nano second)
+@@ -724,7 +721,7 @@ update_classifier(struct sppwk_comp_info *wk_comp_info)
+ 	/* wait until no longer access the new update side */
+ 	while (likely(mng_info->ref_index ==
+ 			mng_info->upd_index))
+-		rte_delay_us_block(CHANGE_UPDATE_INDEX_WAIT_INTERVAL);
++		rte_delay_us_block(SPPWK_UPDATE_INTERVAL);
+ 
+ 	/* uninitialize old */
+ 	uninit_component_info(mng_info->cmp_infos + mng_info->upd_index);
+diff --git a/src/vf/forwarder.c b/src/vf/forwarder.c
+index 4a05ed2..b019d6c 100644
+--- a/src/vf/forwarder.c
++++ b/src/vf/forwarder.c
+@@ -156,7 +156,7 @@ update_forwarder(struct sppwk_comp_info *comp_info)
+ 
+ 	fwd_info->upd_index = fwd_info->ref_index;
+ 	while (likely(fwd_info->ref_index == fwd_info->upd_index))
+-		rte_delay_us_block(SPP_CHANGE_UPDATE_INTERVAL);
++		rte_delay_us_block(SPPWK_UPDATE_INTERVAL);
+ 
+ 	RTE_LOG(INFO, FORWARD,
+ 			"Done update forwarder. (id=%d, name=%s, type=%d)\n",
+-- 
+2.17.1
+

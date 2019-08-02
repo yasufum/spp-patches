@@ -1,0 +1,58 @@
+From ff17b37f464bb60a2ebefa4511ab1a27d7a875df Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 31 Jul 2019 16:33:57 +0900
+Subject: [PATCH 2/6] spp_vf: rename func spp_classifier_mac_init
+
+This update is to rename spp_classifier_mac_init() to
+init_cls_mng_info() because this function is just to initialize
+management info with memset().
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/classifier.c | 2 +-
+ src/vf/classifier.h | 2 +-
+ src/vf/spp_vf.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index 49c7d01..be50916 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -703,7 +703,7 @@ change_classifier_index(struct management_info *mng_info, int id)
+ 
+ /* classifier(mac address) initialize globals. */
+ int
+-spp_classifier_mac_init(void)
++init_cls_mng_info(void)
+ {
+ 	memset(g_mng_infos, 0, sizeof(g_mng_infos));
+ 	return 0;
+diff --git a/src/vf/classifier.h b/src/vf/classifier.h
+index ca8d8da..69cbb88 100644
+--- a/src/vf/classifier.h
++++ b/src/vf/classifier.h
+@@ -25,7 +25,7 @@ struct spp_iterate_classifier_table_params;
+  * @retval SPPWK_RET_OK succeeded.
+  * @retval SPPWK_RET_NG failed.
+  */
+-int spp_classifier_mac_init(void);
++int init_cls_mng_info(void);
+ 
+ /**
+  * initialize classifier information.
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 2091023..e10ae71 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -265,7 +265,7 @@ main(int argc, char *argv[])
+ 		if (unlikely(ret_mng != SPPWK_RET_OK))
+ 			break;
+ 
+-		int ret_classifier_mac_init = spp_classifier_mac_init();
++		int ret_classifier_mac_init = init_cls_mng_info();
+ 		if (unlikely(ret_classifier_mac_init != SPPWK_RET_OK))
+ 			break;
+ 
+-- 
+2.17.1
+
