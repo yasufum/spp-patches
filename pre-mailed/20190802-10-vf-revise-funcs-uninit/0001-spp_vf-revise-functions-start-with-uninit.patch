@@ -1,0 +1,104 @@
+From 70a7a5a31b544a08a8ba355516c0c83097693f16 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 2 Aug 2019 17:40:03 +0900
+Subject: [PATCH] spp_vf: revise functions start with uninit
+
+Functions have prefix `uninit_` are defined to set a structs with 0 to
+clear, and different meaning to uninitialization. This update is to
+correct the meaning.
+
+This update also is to remove uninit_component_info() from shared lib
+because it was changed to be called only from `classifier.c`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/vf_deps.h |  2 --
+ src/vf/classifier.c                          | 30 ++++++++++----------
+ 2 files changed, 15 insertions(+), 17 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 35fb356..a73329b 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -85,8 +85,6 @@ int update_forwarder(struct sppwk_comp_info *wk_comp_info);
+ 
+ void init_classifier_info(int component_id);
+ 
+-void uninit_component_info(struct cls_comp_info *cmp_info);
+-
+ /**
+  * Activate temporarily stored component info while flushing.
+  *
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index cadd03e..efaecb9 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -69,16 +69,26 @@ struct cls_mng_info {
+ /* classifier information per lcore */
+ struct cls_mng_info cls_mng_info_list[RTE_MAX_LCORE];
+ 
++/* uninitialize classifier information. */
++static void
++clean_component_info(struct cls_comp_info *comp_info)
++{
++	int i;
++	for (i = 0; i < NOF_VLAN; ++i)
++		free_mac_classifier(comp_info->mac_clfs[i]);
++	memset(comp_info, 0, sizeof(struct cls_comp_info));
++}
++
+ /* uninitialize classifier. */
+ static void
+-uninit_classifier(struct cls_mng_info *mng_info)
++clean_classifier(struct cls_mng_info *mng_info)
+ {
+ 	int i;
+ 
+ 	mng_info->is_used = 0;
+ 
+ 	for (i = 0; i < TWO_SIDES; ++i)
+-		uninit_component_info(mng_info->cmp_infos + (long)i);
++		clean_component_info(mng_info->cmp_infos + (long)i);
+ 
+ 	memset(mng_info, 0, sizeof(struct cls_mng_info));
+ }
+@@ -90,7 +100,7 @@ init_classifier_info(int comp_id)
+ 	struct cls_mng_info *mng_info = NULL;
+ 
+ 	mng_info = cls_mng_info_list + comp_id;
+-	uninit_classifier(mng_info);
++	clean_classifier(mng_info);
+ }
+ 
+ /**
+@@ -429,16 +439,6 @@ init_component_info(struct cls_comp_info *cmp_info,
+ 	return SPPWK_RET_OK;
+ }
+ 
+-/* uninitialize classifier information. */
+-void
+-uninit_component_info(struct cls_comp_info *comp_info)
+-{
+-	int i;
+-	for (i = 0; i < NOF_VLAN; ++i)
+-		free_mac_classifier(comp_info->mac_clfs[i]);
+-	memset(comp_info, 0, sizeof(struct cls_comp_info));
+-}
+-
+ /* transmit packet to one destination. */
+ static inline void
+ transmit_packets(struct cls_port_info *clsd_data)
+@@ -722,8 +722,8 @@ update_classifier(struct sppwk_comp_info *wk_comp_info)
+ 			mng_info->upd_index))
+ 		rte_delay_us_block(SPPWK_UPDATE_INTERVAL);
+ 
+-	/* uninitialize old */
+-	uninit_component_info(mng_info->cmp_infos + mng_info->upd_index);
++	/* Clean old one. */
++	clean_component_info(mng_info->cmp_infos + mng_info->upd_index);
+ 
+ 	RTE_LOG(INFO, SPP_CLASSIFIER_MAC,
+ 			"Done update classifier, id=%u.\n", wk_id);
+-- 
+2.17.1
+

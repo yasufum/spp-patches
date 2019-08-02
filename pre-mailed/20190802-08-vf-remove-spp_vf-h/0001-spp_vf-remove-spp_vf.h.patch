@@ -1,0 +1,91 @@
+From aae2ecf5163dfaca56bb0f5befad096092a3964f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 2 Aug 2019 16:52:49 +0900
+Subject: [PATCH] spp_vf: remove spp_vf.h
+
+There are no contents other than RTE_LOGTYPE in `spp_vf.h`. This update
+is remove this file. RTE_LOGTYPE is moved to each of source files.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/classifier.c |  1 -
+ src/vf/forwarder.c  |  1 -
+ src/vf/spp_vf.c     |  3 ++-
+ src/vf/spp_vf.h     | 20 --------------------
+ 4 files changed, 2 insertions(+), 23 deletions(-)
+ delete mode 100644 src/vf/spp_vf.h
+
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index 622c102..cadd03e 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -22,7 +22,6 @@
+ #include <netinet/in.h>
+ 
+ #include "classifier.h"
+-#include "spp_vf.h"
+ #include "shared/secondary/return_codes.h"
+ #include "shared/secondary/string_buffer.h"
+ #include "shared/secondary/json_helper.h"
+diff --git a/src/vf/forwarder.c b/src/vf/forwarder.c
+index 20c2084..3e98526 100644
+--- a/src/vf/forwarder.c
++++ b/src/vf/forwarder.c
+@@ -5,7 +5,6 @@
+ #include <rte_cycles.h>
+ 
+ #include "forwarder.h"
+-#include "spp_vf.h"
+ #include "shared/secondary/return_codes.h"
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 7584c5c..aabddd3 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -6,7 +6,6 @@
+ #include <arpa/inet.h>
+ #include <getopt.h>
+ 
+-#include "spp_vf.h"
+ #include "classifier.h"
+ #include "forwarder.h"
+ #include "shared/secondary/utils.h"
+@@ -17,6 +16,8 @@
+ #include "shared/secondary/spp_worker_th/cmd_parser.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
++#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
++
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+ #include "shared/secondary/spp_worker_th/ringlatencystats.h"
+ #endif
+diff --git a/src/vf/spp_vf.h b/src/vf/spp_vf.h
+deleted file mode 100644
+index 8465f1b..0000000
+--- a/src/vf/spp_vf.h
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+- */
+-
+-#ifndef __SPP_VF_H__
+-#define __SPP_VF_H__
+-
+-/**
+- * @file
+- * SPP_VF main
+- *
+- * Main function of spp_vf.
+- * This provides the function for initializing and starting the threads.
+- */
+-
+-#include "shared/common.h"
+-
+-#define RTE_LOGTYPE_APP RTE_LOGTYPE_USER1
+-
+-#endif /* __SPP_VF_H__ */
+-- 
+2.17.1
+
