@@ -1,0 +1,185 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c51aea4b2a8c4b
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9c1a:eba9:3129:63d2])
+        by smtp.gmail.com with ESMTPSA id a3sm74211649pfc.70.2019.08.02.02.34.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 02 Aug 2019 02:34:55 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: move funcs for cls table to spp_vf
+Date: Fri,  2 Aug 2019 18:34:52 +0900
+Message-Id: <20190802093452.13814-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+Functions only used from classifier, such as add_classifier_table(),
+add_classifier_table_val() or so, are still remained in shared lib
+and should be in spp_vf.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../spp_worker_th/cmd_res_formatter.h         |  3 --
+ .../secondary/spp_worker_th/cmd_utils.h       | 21 --------
+ src/shared/secondary/spp_worker_th/vf_deps.h  | 18 -------
+ src/vf/classifier.h                           | 50 ++++++++++++++-----
+ 4 files changed, 37 insertions(+), 55 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+index 1e52c0e..ed6fe36 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+@@ -70,9 +70,6 @@ int append_info_value(const char *name, char **output);
+ int add_client_id(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)));
+ 
+-int add_classifier_table(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)));
+-
+ int add_interface(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)));
+ 
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index f3bd87a..4ae6956 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -103,27 +103,6 @@ struct cancel_backup_info {
+ 	struct iface_info interface;
+ };
+ 
+-struct spp_iterate_classifier_table_params;
+-/**
+- * Define func to iterate classifier for showing status or so, as a member
+- * member of struct `spp_iterate_classifier_table_params`.
+- */
+-typedef int (*spp_iterate_classifier_element_proc)(
+-		struct spp_iterate_classifier_table_params *params,
+-		enum sppwk_cls_type cls_type,
+-		int vid, const char *mac,
+-		const struct sppwk_port_idx *port);
+-
+-/**
+- * iterate classifier table parameters which is used when listing classifier
+- * table content for status command or so.
+- */
+-struct spp_iterate_classifier_table_params {
+-	void *output;  /* Buffer used for output */
+-	/* The function for creating classifier table information */
+-	spp_iterate_classifier_element_proc element_proc;
+-};
+-
+ /**
+  * Hexdump `addr` for logging, used for core_info or component info.
+  *
+diff --git a/src/shared/secondary/spp_worker_th/vf_deps.h b/src/shared/secondary/spp_worker_th/vf_deps.h
+index 35ac201..35fb356 100644
+--- a/src/shared/secondary/spp_worker_th/vf_deps.h
++++ b/src/shared/secondary/spp_worker_th/vf_deps.h
+@@ -87,15 +87,6 @@ void init_classifier_info(int component_id);
+ 
+ void uninit_component_info(struct cls_comp_info *cmp_info);
+ 
+-/**
+- * Setup data of classifier table and call iterator function for getting
+- * each of entries.
+- *
+- * @params[in] params Object which has pointer of operator func and attrs.
+- */
+-int add_classifier_table_val(
+-		struct spp_iterate_classifier_table_params *params);
+-
+ /**
+  * Activate temporarily stored component info while flushing.
+  *
+@@ -106,15 +97,6 @@ int add_classifier_table_val(
+  */
+ int update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp);
+ 
+-int append_classifier_element_value(
+-		struct spp_iterate_classifier_table_params *params,
+-		enum sppwk_cls_type cls_type,
+-		int vid, const char *mac,
+-		const struct sppwk_port_idx *port);
+-
+-int add_classifier_table(const char *name, char **output,
+-		void *tmp __attribute__ ((unused)));
+-
+ enum sppwk_worker_type get_comp_type_from_str(const char *type_str);
+ 
+ int get_status_ops(struct cmd_res_formatter_ops *ops_list);
+diff --git a/src/vf/classifier.h b/src/vf/classifier.h
+index 0f28a51..7b937ff 100644
+--- a/src/vf/classifier.h
++++ b/src/vf/classifier.h
+@@ -18,6 +18,43 @@
+  */
+ 
+ struct spp_iterate_classifier_table_params;
++/**
++ * Define func to iterate classifier for showing status or so, as a member
++ * member of struct `spp_iterate_classifier_table_params`.
++ */
++typedef int (*spp_iterate_classifier_element_proc)(
++		struct spp_iterate_classifier_table_params *params,
++		enum sppwk_cls_type cls_type,
++		int vid, const char *mac,
++		const struct sppwk_port_idx *port);
++
++/**
++ * iterate classifier table parameters which is used when listing classifier
++ * table content for status command or so.
++ */
++struct spp_iterate_classifier_table_params {
++	void *output;  /* Buffer used for output */
++	/* The function for creating classifier table information */
++	spp_iterate_classifier_element_proc element_proc;
++};
++
++int append_classifier_element_value(
++		struct spp_iterate_classifier_table_params *params,
++		enum sppwk_cls_type cls_type,
++		int vid, const char *mac,
++		const struct sppwk_port_idx *port);
++
++/**
++ * Setup data of classifier table and call iterator function for getting
++ * each of entries.
++ *
++ * @params[in] params Object which has pointer of operator func and attrs.
++ */
++int add_classifier_table_val(
++		struct spp_iterate_classifier_table_params *params);
++
++int add_classifier_table(const char *name, char **output,
++		void *tmp __attribute__ ((unused)));
+ 
+ /**
+  * classifier(mac address) initialize globals.
+@@ -46,19 +83,6 @@ void init_classifier_info(int comp_id);
+  */
+ int classify_packets(int comp_id);
+ 
+-/**
+- * classifier(mac address) iterate classifier table.
+- *
+- * @param params
+- *  Point to struct spp_iterate_classifier_table_params.@n
+- *  Detailed data of classifier table.
+- *
+- * @retval SPPWK_RET_OK succeeded.
+- * @retval SPPWK_RET_NG failed.
+- */
+-int add_classifier_table_val(
+-		struct spp_iterate_classifier_table_params *params);
+-
+ /**
+  * Get classifier status.
+  *
+-- 
+2.17.1
+
+

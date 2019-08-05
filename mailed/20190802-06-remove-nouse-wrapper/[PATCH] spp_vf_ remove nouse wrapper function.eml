@@ -1,0 +1,236 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c51af6bbfdb650
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9c1a:eba9:3129:63d2])
+        by smtp.gmail.com with ESMTPSA id m6sm74914490pfb.151.2019.08.02.02.35.45
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 02 Aug 2019 02:35:46 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_vf: remove nouse wrapper function
+Date: Fri,  2 Aug 2019 18:35:42 +0900
+Message-Id: <20190802093542.13994-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+add_classifier_table() is called for adding contents of classifier table
+to the result of `status` command. This function calls several functions
+as following.
+
+    add_classifier_table()
+      -> _add_classifier_table()  /* Wrapper doesn't almost nothing. */
+        -> add_classifier_table_val()
+          -> iterate_adding_mac_entries()
+
+However, this wrapper function does not anything actually, and the names
+of functions are not appropriate considering its behaviours. This update
+is to remove nouse wrapper function.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../spp_worker_th/cmd_res_formatter.h         |  2 +-
+ src/vf/classifier.c                           | 75 +++++--------------
+ src/vf/classifier.h                           |  3 +-
+ src/vf/vf_cmd_runner.c                        |  4 +-
+ 4 files changed, 25 insertions(+), 59 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+index ed6fe36..34491d4 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
++++ b/src/shared/secondary/spp_worker_th/cmd_res_formatter.h
+@@ -63,7 +63,7 @@ int append_command_results_value(const char *name, char **output,
+ int append_info_value(const char *name, char **output);
+ 
+ /**
+- * Operator functions start with prefix `add_` defined in `response_info_list`
++ * Operation functions start with prefix `add_` defined in `response_info_list`
+  * of struct `cmd_res_formatter_ops` which are for making each of parts of
+  * command response.
+  */
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index 4fbe0ad..5743051 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -849,13 +849,9 @@ get_classifier_status(unsigned int lcore_id, int id,
+ 	return SPPWK_RET_OK;
+ }
+ 
+-/**
+- * For setting up a response for `status` command, iterate adding each of
+- * entries in MAC address table to the result message.
+- */
++/* Add MAC addresses in classifier table for `status` command. */
+ static void
+-iterate_adding_mac_entry(
+-		struct classifier_table_params *params,
++add_mac_entry(struct classifier_table_params *params,
+ 		uint16_t vid,
+ 		struct mac_classifier *mac_cls,
+ 		__rte_unused struct cls_comp_info *cmp_info,
+@@ -879,7 +875,6 @@ iterate_adding_mac_entry(
+ 		port.iface_no = (port_info +
+ 				mac_cls->default_cls_idx)->iface_no_global;
+ 
+-		/* Logging DEBUG message. */
+ 		LOG_ENT((long)mac_cls->default_cls_idx, vid,
+ 				SPPWK_TERM_DEFAULT, cmp_info, port_info);
+ 		/**
+@@ -909,18 +904,14 @@ iterate_adding_mac_entry(
+ 		 * Append each entry of MAC address. `tbl_proc` is function
+ 		 * pointer to append_classifier_element_value().
+ 		 */
+-		(*params->tbl_proc)(params, cls_type, vid,
+-				mac_addr_str, &port);
++		(*params->tbl_proc)(params, cls_type, vid, mac_addr_str,
++				&port);
+ 	}
+ }
+ 
+-/**
+- * Setup data of classifier table and call iterator function for getting
+- * each of entries.
+- */
+-int
+-add_classifier_table_val(
+-		struct classifier_table_params *params)
++/* Add entries of classifier table. */
++static int
++_add_classifier_table(struct classifier_table_params *params)
+ {
+ 	int i, vlan_id;
+ 	struct cls_mng_info *mng_info;
+@@ -936,13 +927,13 @@ add_classifier_table_val(
+ 		port_info = cmp_info->tx_ports_i;
+ 
+ 		RTE_LOG(DEBUG, SPP_CLASSIFIER_MAC,
+-			"Start iterate classifier table on lcore %u.\n", i);
++			"Parse MAC entries for status on lcore %u.\n", i);
+ 
+ 		for (vlan_id = 0; vlan_id < NOF_VLAN; ++vlan_id) {
+ 			if (cmp_info->mac_clfs[vlan_id] == NULL)
+ 				continue;
+ 
+-			iterate_adding_mac_entry(params, (uint16_t) vlan_id,
++			add_mac_entry(params, (uint16_t) vlan_id,
+ 					cmp_info->mac_clfs[vlan_id], cmp_info,
+ 					port_info);
+ 		}
+@@ -951,56 +942,30 @@ add_classifier_table_val(
+ 	return SPPWK_RET_OK;
+ }
+ 
+-/* Iterate classifier_table to create response to status command */
+-static int
+-_add_classifier_table(
+-		struct classifier_table_params *params)
+-{
+-	int ret;
+-
+-	ret = add_classifier_table_val(params);
+-	if (unlikely(ret != 0)) {
+-		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+-				"Cannot iterate classifier_mac_table.\n");
+-		return SPPWK_RET_NG;
+-	}
+-
+-	return SPPWK_RET_OK;
+-}
+-
+-/**
+- * Add entries of classifier table in JSON. Before iterating the entries,
+- * this function calls several nested functions.
+- *   add_classifier_table()  // This function.
+- *     -> _add_classifier_table()  // Wrapper and doesn't almost nothing.
+- *       -> add_classifier_table_val()  // Setup data and call iterator.
+- *         -> iterate_adding_mac_entry()
+- */
++/* Add entries of classifier table in JSON. */
+ int
+ add_classifier_table(const char *name, char **output,
+ 		void *tmp __attribute__ ((unused)))
+ {
+-	int ret = SPPWK_RET_NG;
+-	struct classifier_table_params itr_params;
++	int ret;
++	struct classifier_table_params tbl_params;
+ 	char *tmp_buff = spp_strbuf_allocate(CMD_RES_BUF_INIT_SIZE);
++
+ 	if (unlikely(tmp_buff == NULL)) {
+-		RTE_LOG(ERR, SPP_CLASSIFIER_MAC,
+-				/* TODO(yasufum) refactor no meaning err msg */
+-				"allocate error. (name = %s)\n",
+-				name);
++		RTE_LOG(ERR, SPP_CLASSIFIER_MAC, "Failed to alloc buff.\n");
+ 		return SPPWK_RET_NG;
+ 	}
+ 
+-	itr_params.output = tmp_buff;
+-	itr_params.tbl_proc = append_classifier_element_value;
++	tbl_params.output = tmp_buff;
++	tbl_params.tbl_proc = append_classifier_element_value;
+ 
+-	ret = _add_classifier_table(&itr_params);
++	ret = _add_classifier_table(&tbl_params);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+-		spp_strbuf_free(itr_params.output);
++		spp_strbuf_free(tbl_params.output);
+ 		return SPPWK_RET_NG;
+ 	}
+ 
+-	ret = append_json_array_brackets(output, name, itr_params.output);
+-	spp_strbuf_free(itr_params.output);
++	ret = append_json_array_brackets(output, name, tbl_params.output);
++	spp_strbuf_free(tbl_params.output);
+ 	return ret;
+ }
+diff --git a/src/vf/classifier.h b/src/vf/classifier.h
+index 4f7786f..27bbe9a 100644
+--- a/src/vf/classifier.h
++++ b/src/vf/classifier.h
+@@ -32,6 +32,7 @@ typedef int (*classifier_table_proc)(
+  * iterate classifier table parameters which is used when listing classifier
+  * table content for status command or so.
+  */
++/* TODO(yasufum) remove it because no need to have `output` as a member */
+ struct classifier_table_params {
+ 	void *output;  /* Buffer used for output */
+ 	/* The function for creating classifier table information */
+@@ -48,7 +49,7 @@ int append_classifier_element_value(
+  * Setup data of classifier table and call iterator function for getting
+  * each of entries.
+  *
+- * @params[in] params Object which has pointer of operator func and attrs.
++ * @params[in] params Object which has pointer of operation func and attrs.
+  */
+ int add_classifier_table_val(
+ 		struct classifier_table_params *params);
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index 0151f6e..7d3db66 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -551,7 +551,7 @@ update_comp_info(struct sppwk_comp_info *p_comp_info, int *p_change_comp)
+ }
+ 
+ /**
+- * Operator function called in iterator for getting each of entries of
++ * Operation function called in iterator for getting each of entries of
+  * classifier table named as iterate_adding_mac_entry().
+  */
+ int
+@@ -629,7 +629,7 @@ get_comp_type_from_str(const char *type_str)
+ }
+ 
+ /**
+- * List of combination of tag and operator function. It is used to assemble
++ * List of combination of tag and operation function. It is used to assemble
+  * a result of command in JSON like as following.
+  *
+  *     {
+-- 
+2.17.1
+
+

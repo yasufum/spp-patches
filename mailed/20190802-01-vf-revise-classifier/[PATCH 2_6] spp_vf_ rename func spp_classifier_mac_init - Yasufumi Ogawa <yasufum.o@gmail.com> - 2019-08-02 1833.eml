@@ -1,0 +1,75 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c51ade55fb657d
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9c1a:eba9:3129:63d2])
+        by smtp.gmail.com with ESMTPSA id n10sm1458509pgv.67.2019.08.02.02.34.05
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 02 Aug 2019 02:34:06 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/6] spp_vf: rename func spp_classifier_mac_init
+Date: Fri,  2 Aug 2019 18:33:54 +0900
+Message-Id: <20190802093358.13696-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190802093358.13696-1-yasufum.o@gmail.com>
+References: <20190802093358.13696-1-yasufum.o@gmail.com>
+
+This update is to rename spp_classifier_mac_init() to
+init_cls_mng_info() because this function is just to initialize
+management info with memset().
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/classifier.c | 2 +-
+ src/vf/classifier.h | 2 +-
+ src/vf/spp_vf.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index 49c7d01..be50916 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -703,7 +703,7 @@ change_classifier_index(struct management_info *mng_info, int id)
+ 
+ /* classifier(mac address) initialize globals. */
+ int
+-spp_classifier_mac_init(void)
++init_cls_mng_info(void)
+ {
+ 	memset(g_mng_infos, 0, sizeof(g_mng_infos));
+ 	return 0;
+diff --git a/src/vf/classifier.h b/src/vf/classifier.h
+index ca8d8da..69cbb88 100644
+--- a/src/vf/classifier.h
++++ b/src/vf/classifier.h
+@@ -25,7 +25,7 @@ struct spp_iterate_classifier_table_params;
+  * @retval SPPWK_RET_OK succeeded.
+  * @retval SPPWK_RET_NG failed.
+  */
+-int spp_classifier_mac_init(void);
++int init_cls_mng_info(void);
+ 
+ /**
+  * initialize classifier information.
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index 2091023..e10ae71 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -265,7 +265,7 @@ main(int argc, char *argv[])
+ 		if (unlikely(ret_mng != SPPWK_RET_OK))
+ 			break;
+ 
+-		int ret_classifier_mac_init = spp_classifier_mac_init();
++		int ret_classifier_mac_init = init_cls_mng_info();
+ 		if (unlikely(ret_classifier_mac_init != SPPWK_RET_OK))
+ 			break;
+ 
+-- 
+2.17.1
+
+

@@ -1,0 +1,120 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c51ae4f1ce5ec5
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9c1a:eba9:3129:63d2])
+        by smtp.gmail.com with ESMTPSA id o14sm154291830pfh.153.2019.08.02.02.34.32
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 02 Aug 2019 02:34:33 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: rename function spp_get_core_status
+Date: Fri,  2 Aug 2019 18:34:29 +0900
+Message-Id: <20190802093429.13756-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+This update is to rename spp_get_core_status() to
+sppwk_get_lcore_status() to be more specific.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c                    | 2 +-
+ src/mirror/spp_mirror.c                        | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 4 ++--
+ src/vf/spp_vf.c                                | 2 +-
+ src/vf/vf_cmd_runner.c                         | 2 +-
+ 6 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 4e6708b..846ac4a 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -305,7 +305,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 	struct sppwk_comp_info *comp_info = NULL;
+ 
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		if (spp_get_core_status(lcore_id) == SPPWK_LCORE_UNUSED)
++		if (sppwk_get_lcore_status(lcore_id) == SPPWK_LCORE_UNUSED)
+ 			continue;
+ 
+ 		core = get_core_info(lcore_id);
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index c7f00e6..0050a51 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -452,7 +452,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 	RTE_LOG(INFO, MIRROR, "Slave started on lcore %d.\n", lcore_id);
+ 	set_core_status(lcore_id, SPPWK_LCORE_IDLING);
+ 
+-	while ((status = spp_get_core_status(lcore_id)) !=
++	while ((status = sppwk_get_lcore_status(lcore_id)) !=
+ 			SPPWK_LCORE_REQ_STOP) {
+ 		if (status != SPPWK_LCORE_RUNNING)
+ 			continue;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 7f692e3..a2b0300 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -70,7 +70,7 @@ log_hexdumped(const char *obj_name, const void *obj_addr, const size_t size)
+ 
+ /* Get status of lcore of given ID. */
+ enum sppwk_lcore_status
+-spp_get_core_status(unsigned int lcore_id)
++sppwk_get_lcore_status(unsigned int lcore_id)
+ {
+ 	return (g_mng_data.p_core_info + lcore_id)->status;
+ }
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index ecc1141..f3bd87a 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -144,12 +144,12 @@ void log_hexdumped(const char *obj_name, const void *obj_addr,
+ int spp_vf_add_vhost_pmd(int index, int client);
+ 
+ /**
+- * Get core status
++ * Get lcore status.
+  *
+  * @param[in] lcore_id Logical core ID.
+  * @return Status of specified logical core.
+  */
+-enum sppwk_lcore_status spp_get_core_status(unsigned int lcore_id);
++enum sppwk_lcore_status sppwk_get_lcore_status(unsigned int lcore_id);
+ 
+ /**
+  * Get component type of target component_info
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index a86acec..7584c5c 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -160,7 +160,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 	RTE_LOG(INFO, APP, "Slave started on lcore %d.\n", lcore_id);
+ 	set_core_status(lcore_id, SPPWK_LCORE_IDLING);
+ 
+-	while ((status = spp_get_core_status(lcore_id)) !=
++	while ((status = sppwk_get_lcore_status(lcore_id)) !=
+ 			SPPWK_LCORE_REQ_STOP) {
+ 		if (status != SPPWK_LCORE_RUNNING)
+ 			continue;
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index 9536a80..8aaed67 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -439,7 +439,7 @@ spp_iterate_core_info(struct spp_iterate_core_params *params)
+ 	struct sppwk_comp_info *comp_info = NULL;
+ 
+ 	RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-		if (spp_get_core_status(lcore_id) == SPPWK_LCORE_UNUSED)
++		if (sppwk_get_lcore_status(lcore_id) == SPPWK_LCORE_UNUSED)
+ 			continue;
+ 
+ 		core = get_core_info(lcore_id);
+-- 
+2.17.1
+
+
