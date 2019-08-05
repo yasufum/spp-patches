@@ -1,0 +1,53 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c6099938a6ae23
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:cd92:ac7b:868d:7d45])
+        by smtp.gmail.com with ESMTPSA id i9sm93979309pgg.38.2019.08.05.00.06.12
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 00:06:13 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] cli: rename classifier_mac to classifier
+Date: Mon,  5 Aug 2019 16:06:07 +0900
+Message-Id: <20190805070607.21498-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+As renamed classifier_mac in spp_vf, this update is to rename it in SPP
+CLI.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/vf.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/cli/commands/vf.py b/src/cli/commands/vf.py
+index c6192e0..5b361d1 100644
+--- a/src/cli/commands/vf.py
++++ b/src/cli/commands/vf.py
+@@ -20,7 +20,7 @@ class SppVf(object):
+             'port': ['add', 'del'],
+             'classifier_table': ['add', 'del']}
+ 
+-    WORKER_TYPES = ['forward', 'merge', 'classifier_mac']
++    WORKER_TYPES = ['forward', 'merge', 'classifier']
+ 
+     def __init__(self, spp_ctl_cli, sec_id, use_cache=False):
+         self.spp_ctl_cli = spp_ctl_cli
+@@ -526,7 +526,7 @@ class SppVf(object):
+         # (2) launch or terminate a worker thread with arbitrary name
+         #   NAME: arbitrary name used as identifier
+         #   CORE_ID: one of unused cores referred from status
+-        #   ROLE: role of workers, 'forward', 'merge' or 'classifier_mac'
++        #   ROLE: role of workers, 'forward', 'merge' or 'classifier'
+         spp > vf 1; component start NAME CORE_ID ROLE
+         spp > vf 1; component stop NAME CORE_ID ROLE
+ 
+-- 
+2.17.1
+
+

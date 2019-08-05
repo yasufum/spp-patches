@@ -1,0 +1,322 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c609a2515cf1f9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:cd92:ac7b:868d:7d45])
+        by smtp.gmail.com with ESMTPSA id r12sm63608529pgb.73.2019.08.05.00.06.48
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 00:06:49 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] docs: replace classifier_mac with classifier
+Date: Mon,  5 Aug 2019 16:06:45 +0900
+Message-Id: <20190805070645.21609-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+As changed in spp_vf, this update is to replace classifier_mac with
+classifier.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/api_ref/spp_vf.rst            |  4 +-
+ docs/guides/commands/secondary/spp_vf.rst | 12 ++--
+ docs/guides/design/impl/spp_vf.rst        | 76 +++++++++--------------
+ docs/guides/design/spp_secondary.rst      |  2 +-
+ docs/guides/usecases/spp_mirror.rst       |  2 +-
+ docs/guides/usecases/spp_vf.rst           |  6 +-
+ 6 files changed, 43 insertions(+), 59 deletions(-)
+
+diff --git a/docs/guides/api_ref/spp_vf.rst b/docs/guides/api_ref/spp_vf.rst
+index 173adc4..d9d3719 100644
+--- a/docs/guides/api_ref/spp_vf.rst
++++ b/docs/guides/api_ref/spp_vf.rst
+@@ -187,7 +187,7 @@ Response example
+         {
+           "core": 6,
+           "name": "cls",
+-          "type": "classifier_mac",
++          "type": "classifier",
+           "rx_port": [
+             {
+               "port": "phy:0",
+@@ -273,7 +273,7 @@ Request (path)
+ Request (body)
+ ~~~~~~~~~~~~~~
+ 
+-``type`` param is oen of ``forward``, ``merge`` or ``classifier_mac``.
++``type`` param is oen of ``forward``, ``merge`` or ``classifier``.
+ 
+ .. _table_spp_ctl_spp_vf_components_res:
+ 
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index e6281ee..1bbd7bf 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -122,7 +122,7 @@ consists of three parts.
+         - rx: ring:0
+         - tx: ring:1
+       - core:6 'mg' (type: merge)
+-      - core:7 'cls' (type: classifier_mac)
++      - core:7 'cls' (type: classifier)
+         - rx: ring:2
+         - tx: ring:3
+         - tx: ring:4
+@@ -132,7 +132,7 @@ consists of three parts.
+ ``client-id`` is a secondary ID of the process and ``ports`` is a list of
+ all of ports owned the process.
+ 
+-``Classifier Table`` is a list of entries of ``classifier_mac`` worker thread.
++``Classifier Table`` is a list of entries of ``classifier`` worker thread.
+ Each of entry is a combination of MAC address and destination port which is
+ assigned to this thread.
+ 
+@@ -150,11 +150,11 @@ component
+ Assign or release a role of forwarding to worker threads running on each of
+ cores which are reserved with ``-c`` or ``-l`` option while launching
+ ``spp_vf``. The role of the worker is chosen from ``forward``, ``merge`` or
+-``classifier_mac``.
++``classifier``.
+ 
+ ``forward`` role is for simply forwarding from source port to destination port.
+ On the other hands, ``merge`` role is for receiving packets from multiple ports
+-as N:1 communication, or ``classifier_mac`` role is for sending packet to
++as N:1 communication, or ``classifier`` role is for sending packet to
+ multiple ports by referring MAC address as 1:N communication.
+ 
+ You are required to give an arbitrary name with as an ID for specifying the role.
+@@ -178,8 +178,8 @@ Here are some examples of assigning roles with ``component`` command.
+     # assign 'merge' role with name 'mgr1' on core 3
+     spp > vf 2; component start mgr1 3 merge
+ 
+-    # assign 'classifier_mac' role with name 'cls1' on core 4
+-    spp > vf 2; component start cls1 4 classifier_mac
++    # assign 'classifier' role with name 'cls1' on core 4
++    spp > vf 2; component start cls1 4 classifier
+ 
+ In the above examples, each different ``CORE-ID`` is specified to each role.
+ You can assign several components on the same core, but performance might be
+diff --git a/docs/guides/design/impl/spp_vf.rst b/docs/guides/design/impl/spp_vf.rst
+index 389f1ba..6ac42e0 100644
+--- a/docs/guides/design/impl/spp_vf.rst
++++ b/docs/guides/design/impl/spp_vf.rst
+@@ -27,18 +27,15 @@ on assigned lcores..
+ 
+     /* spp_vf.c */
+ 
+-    int ret_dpdk = rte_eal_init(argc, argv);
++    ret = rte_eal_init(argc, argv);
+ 
+-    int ret_classifier_mac_init = spp_classifier_mac_init();
+-
+-    init_forwarder();
+-    sppwk_port_capability_init();
++    /* skipping lines ... */
+ 
+     /* Start worker threads of classifier and forwarder */
+-    unsigned int lcore_id = 0;
+-    RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+-            rte_eal_remote_launch(slave_main, NULL, lcore_id);
+-    }
++   unsigned int lcore_id = 0;
++   RTE_LCORE_FOREACH_SLAVE(lcore_id) {
++           rte_eal_remote_launch(slave_main, NULL, lcore_id);
++   }
+ 
+ 
+ Slave Main
+@@ -61,17 +58,17 @@ or simply forwards packets.
+         if (status != SPPWK_LCORE_RUNNING)
+             continue;
+ 
+-        // skipping lines ...
++        /* skipping lines ... */
+ 
+         /* It is for processing multiple components. */
+         for (cnt = 0; cnt < core->num; cnt++) {
+         /* Component classification to call a function. */
+         if (spp_get_component_type(core->id[cnt]) ==
+-            SPPWK_TYPE_CLS) {
++                    SPPWK_TYPE_CLS) {
+             /* Component type for classifier. */
+-            ret = spp_classifier_mac_do(core->id[cnt]);
++            ret = classify_packets(core->id[cnt]);
+             if (unlikely(ret != 0))
+-            break;
++                    break;
+         } else {
+             /* Component type for forward or merge. */
+                 ret = forward_packets(core->id[cnt]);
+@@ -138,19 +135,19 @@ Classifying the packet
+ ----------------------
+ 
+ If component type is ``SPPWK_TYPE_CLS``, worker thread behaves as a classifier,
+-so component calls ``spp_classifier_mac_do()``. In this function, packets
++so component calls ``classify_packets()``. In this function, packets
+ from RX port are received with ``sppwk_eth_vlan_rx_burst()`` which is derived
+ from ``rte_eth_rx_burst()`` for adding or deleting VLAN tags.
+ Received packets are classified with ``classify_packet()``.
+ 
+ .. code-block:: c
+ 
+-    /* classifier_mac.c */
++    /* classifier.c */
+ 
+     n_rx = sppwk_eth_vlan_rx_burst(clsd_data_rx->ethdev_port_id, 0,
+         rx_pkts, MAX_PKT_BURST);
+ 
+-    // skipping lines ...
++    /* skipping lines ... */
+ 
+     classify_packet(rx_pkts, n_rx, cmp_info, clsd_data_tx);
+ 
+@@ -163,14 +160,13 @@ tables ``forward_rxtx``, ``forward_path`` and ``forward_info``.
+ The ``forward_rxtx`` has two member variables for expressing the port
+ to be sent(tx) and to be receive(rx),
+ ``forward_path`` has member variables for expressing the data path.
+-Like ``classifier_mac_info``, ``forward_info`` has two tables,
++Like as ``mac_classifier``, ``forward_info`` has two tables,
+ one is for updating by commands, the other is for looking up to process
+ packets.
+ 
+-
+ .. code-block:: c
+ 
+-    /* spp_forward.c */
++    /* forwarder.c */
+     /* A set of port info of rx and tx */
+     struct forward_rxtx {
+             struct spp_port_info rx; /* rx port */
+@@ -179,12 +175,11 @@ packets.
+ 
+     /* Information on the path used for forward. */
+     struct forward_path {
+-            char name[SPP_NAME_STR_LEN];    /* component name */
+-            volatile enum spp_component_type type;
+-                                            /* component type */
+-            int num;  /* number of receive ports */
+-            struct forward_rxtx ports[RTE_MAX_ETHPORTS];
+-                                            /* port used for transfer */
++            char name[STR_LEN_NAME];  /* Component name */
++            volatile enum sppwk_worker_type wk_type;
++            int nof_rx;  /* Number of RX ports */
++            int nof_tx;  /* Number of TX ports */
++            struct forward_rxtx ports[RTE_MAX_ETHPORTS];  /* Set of RX and TX */
+     };
+ 
+     /* Information for forward. */
+@@ -205,7 +200,7 @@ It is implemented as ``handle_l2multicast_packet()`` and called from
+ 
+ .. code-block:: c
+ 
+-    /* classify_packet() in classifier_mac.c */
++    /* classify_packet() in classifier.c */
+ 
+     /* L2 multicast(include broadcast) ? */
+     if (unlikely(is_multicast_ether_addr(&eth->d_addr))) {
+@@ -222,32 +217,21 @@ multicast packets.
+ 
+ .. code-block:: c
+ 
+-    /* classifier_mac.c */
++    /* classifier.c */
+ 
+-    /* handle L2 multicast(include broadcast) packet */
+-    static inline void
+     handle_l2multicast_packet(struct rte_mbuf *pkt,
+-                    struct classifier_mac_info *classifier_info,
+-                    struct classified_data *classified_data)
++            struct cls_comp_info *cmp_info,
++            struct cls_port_info *clsd_data)
+     {
+             int i;
++            struct mac_classifier *mac_cls;
++            uint16_t vid = get_vid(pkt);
++            int gen_def_clsd_idx = get_general_default_classified_index(cmp_info);
++            int n_act_clsd;
+ 
+-            if (unlikely(classifier_info->num_active_classified == 0)) {
+-                    RTE_LOG(ERR,
+-                            SPP_CLASSIFIER_MAC,
+-                            "No mac address.(l2 multicast packet)\n");
+-                    rte_pktmbuf_free(pkt);
+-                    return;
+-            }
+-
+-            rte_mbuf_refcnt_update(pkt,
+-                    (classifier_info->num_active_classified - 1));
++            /* skipping lines... */
+ 
+-            for (i = 0; i < classifier_info->num_active_classified; i++) {
+-                    push_packet(pkt, classified_data +
+-                            (long)classifier_info->active_classifieds[i]);
+-            }
+-    }
++            rte_mbuf_refcnt_update(pkt, (int16_t)(n_act_clsd - 1));
+ 
+ 
+ Two phase update for forwarding
+diff --git a/docs/guides/design/spp_secondary.rst b/docs/guides/design/spp_secondary.rst
+index 8a4a739..b89d8b4 100644
+--- a/docs/guides/design/spp_secondary.rst
++++ b/docs/guides/design/spp_secondary.rst
+@@ -107,7 +107,7 @@ There are three types of components, ``forwarder``,
+ ``merger`` and ``classifier``.
+ 
+ This is an example of network configuration, in which one
+-``classifier_mac``,
++``classifier``,
+ one merger and four forwarders are running in ``spp_vf`` process
+ for two destinations of vhost interface.
+ Incoming packets from rx on host1 are sent to each of vhosts of VM
+diff --git a/docs/guides/usecases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+index b867adf..3830820 100644
+--- a/docs/guides/usecases/spp_mirror.rst
++++ b/docs/guides/usecases/spp_mirror.rst
+@@ -270,7 +270,7 @@ Start components in ``spp_vf``.
+ .. code-block:: none
+ 
+    # terminal 2
+-   spp > vf 1; component start cls 2 classifier_mac
++   spp > vf 1; component start cls 2 classifier
+    spp > vf 1; component start mgr 3 merge
+    spp > vf 1; component start fwd1 4 forward
+    spp > vf 1; component start fwd2 5 forward
+diff --git a/docs/guides/usecases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+index 7365fca..f17c0dc 100644
+--- a/docs/guides/usecases/spp_vf.rst
++++ b/docs/guides/usecases/spp_vf.rst
+@@ -83,7 +83,7 @@ and other options on local host ``host2``.
+ .. code-block:: none
+ 
+     # terminal 2
+-    spp > vf 1; component start cls 3 classifier_mac
++    spp > vf 1; component start cls 3 classifier
+     spp > vf 1; component start fwd1 4 forward
+     spp > vf 1; component start fwd2 5 forward
+     spp > vf 1; component start mgr 6 merge
+@@ -333,7 +333,7 @@ First of all, start components with names such as ``cls1``, ``fwd1`` or so.
+ .. code-block:: none
+ 
+     # terminal 2
+-    spp > vf 1; component start cls1 2 classifier_mac
++    spp > vf 1; component start cls1 2 classifier
+     spp > vf 1; component start fwd1 3 forward
+     spp > vf 1; component start fwd2 4 forward
+     spp > vf 1; component start fwd3 5 forward
+@@ -384,7 +384,7 @@ Configuration for the second login path is almost the same as the first path.
+ .. code-block:: none
+ 
+     # terminal 2
+-    spp > vf 1; component start cls2 8 classifier_mac
++    spp > vf 1; component start cls2 8 classifier
+     spp > vf 1; component start fwd5 9 forward
+     spp > vf 1; component start fwd6 10 forward
+     spp > vf 1; component start fwd7 11 forward
+-- 
+2.17.1
+
+

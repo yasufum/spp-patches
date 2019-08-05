@@ -1,0 +1,81 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c60995c667328a
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:cd92:ac7b:868d:7d45])
+        by smtp.gmail.com with ESMTPSA id p20sm124129806pgj.47.2019.08.05.00.05.58
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 00:05:59 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared/sec: rename classifier_mac to classifier
+Date: Mon,  5 Aug 2019 16:05:55 +0900
+Message-Id: <20190805070555.21443-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+In spp_vf, `mac` in `classifier_mac` is redundant because spp_vf only
+supports MAC address. `classifier` is enough.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.h  | 4 ++--
+ src/vf/classifier.h                             | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index 9c24407..1acda07 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -63,7 +63,7 @@ sppwk_cmd_type_str(enum sppwk_cmd_type ctype)
+ 	switch (ctype) {
+ 	case SPPWK_CMDTYPE_CLS_MAC:
+ 	case SPPWK_CMDTYPE_CLS_VLAN:
+-		return "classifier_mac";
++		return "classifier";
+ 	case SPPWK_CMDTYPE_CLIENT_ID:
+ 		return "_get_client_id";
+ 	case SPPWK_CMDTYPE_STATUS:
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index be49a3d..c778151 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -20,7 +20,7 @@
+  *  "merge" -> "merger", "forward" -> "forwarder".
+  */
+ /** Identifier string for each component (status command) */
+-#define SPPWK_TYPE_CLS_STR "classifier_mac"
++#define SPPWK_TYPE_CLS_STR "classifier"
+ #define SPPWK_TYPE_MRG_STR "merge"
+ #define SPPWK_TYPE_FWD_STR "forward"
+ #define SPPWK_TYPE_MIR_STR "mirror"
+@@ -59,7 +59,7 @@
+  *  "merge" -> "merger", "forward" -> "forwarder".
+  */
+ /* Name string for each component */
+-#define CORE_TYPE_CLASSIFIER_MAC_STR "classifier_mac"
++#define CORE_TYPE_CLASSIFIER_MAC_STR "classifier"
+ #define CORE_TYPE_MERGE_STR	     "merge"
+ #define CORE_TYPE_FORWARD_STR	     "forward"
+ #define CORE_TYPE_MIRROR_STR	     "mirror"
+diff --git a/src/vf/classifier.h b/src/vf/classifier.h
+index ce77d70..a20cb1d 100644
+--- a/src/vf/classifier.h
++++ b/src/vf/classifier.h
+@@ -96,7 +96,7 @@ int classify_packets(int comp_id);
+ /**
+  * TODO(yasufum) Consider to move this function to `vf_cmd_runner.c`.
+  * This function is called only from `vf_cmd_runner.c`, but
+- * must be defined in `classifier_mac.c` because it refers g_mng_info defined
++ * must be defined in `classifier.c` because it refers g_mng_info defined
+  * in this file. It is bad dependency for the global variable.
+  */
+ int get_classifier_status(unsigned int lcore_id, int id,
+-- 
+2.17.1
+
+

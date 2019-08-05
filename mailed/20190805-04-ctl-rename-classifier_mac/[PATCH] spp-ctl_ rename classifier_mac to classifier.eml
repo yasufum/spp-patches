@@ -1,0 +1,44 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c6099f4690226c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:cd92:ac7b:868d:7d45])
+        by smtp.gmail.com with ESMTPSA id a3sm91240354pfl.145.2019.08.05.00.06.37
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 00:06:38 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp-ctl: rename classifier_mac to classifier
+Date: Mon,  5 Aug 2019 16:06:33 +0900
+Message-Id: <20190805070633.21554-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+As renamed classifier_mac in spp_vf, this update is to rename in
+spp-ctl.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/spp-ctl/spp_webapi.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 25b2e6f..8451711 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -243,7 +243,7 @@ class V1VFHandler(BaseHandler, V1VFCommon):
+         return self.convert_info(proc.get_status())
+ 
+     def vf_comp_start(self, proc, body):
+-        self.validate_comp_start(body, ["forward", "merge", "classifier_mac"])
++        self.validate_comp_start(body, ["forward", "merge", "classifier"])
+         proc.start_component(body['name'], body['core'], body['type'])
+ 
+     def vf_comp_stop(self, proc, name):
+-- 
+2.17.1
+
+
