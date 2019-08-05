@@ -1,0 +1,38 @@
+From 03a4f3dc69cea1cab0463b4cfe3fb9bc5f388624 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 3 Aug 2019 18:26:46 +0900
+Subject: [PATCH] cli: rename classifier_mac to classifier
+
+As renamed classifier_mac in spp_vf, this update is to rename it in SPP
+CLI.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/vf.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/cli/commands/vf.py b/src/cli/commands/vf.py
+index c6192e0..5b361d1 100644
+--- a/src/cli/commands/vf.py
++++ b/src/cli/commands/vf.py
+@@ -20,7 +20,7 @@ class SppVf(object):
+             'port': ['add', 'del'],
+             'classifier_table': ['add', 'del']}
+ 
+-    WORKER_TYPES = ['forward', 'merge', 'classifier_mac']
++    WORKER_TYPES = ['forward', 'merge', 'classifier']
+ 
+     def __init__(self, spp_ctl_cli, sec_id, use_cache=False):
+         self.spp_ctl_cli = spp_ctl_cli
+@@ -526,7 +526,7 @@ class SppVf(object):
+         # (2) launch or terminate a worker thread with arbitrary name
+         #   NAME: arbitrary name used as identifier
+         #   CORE_ID: one of unused cores referred from status
+-        #   ROLE: role of workers, 'forward', 'merge' or 'classifier_mac'
++        #   ROLE: role of workers, 'forward', 'merge' or 'classifier'
+         spp > vf 1; component start NAME CORE_ID ROLE
+         spp > vf 1; component stop NAME CORE_ID ROLE
+ 
+-- 
+2.17.1
+
