@@ -1,0 +1,192 @@
+From 09fff61cb9d777021bba9a97f3f8d314444de46b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 6 Aug 2019 08:34:02 +0900
+Subject: [PATCH] shared: move primary specific functions
+
+Move functions for primary from `shared/common.c` to `primary/main.c`.
+
+  * parse_num_clients()
+  * get_sec_dir()
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/args.c  | 23 +++++++++++++++++++-
+ src/primary/main.c  | 26 +++++++++++++++++++++++
+ src/shared/common.c | 51 ---------------------------------------------
+ src/shared/common.h | 11 ----------
+ 4 files changed, 48 insertions(+), 63 deletions(-)
+
+diff --git a/src/primary/args.c b/src/primary/args.c
+index 020e731..7df5557 100644
+--- a/src/primary/args.c
++++ b/src/primary/args.c
+@@ -71,6 +71,27 @@ parse_portmask(struct port_info *ports, uint16_t max_ports,
+ 	return 0;
+ }
+ 
++/**
++ * Take the number of clients passed with `-n` option and convert to
++ * to a number to store in the num_clients variable.
++ */
++static int
++parse_nof_rings(uint16_t *num_clients, const char *clients)
++{
++	char *end = NULL;
++	unsigned long temp;
++
++	if (clients == NULL || *clients == '\0')
++		return -1;
++
++	temp = strtoul(clients, &end, 10);
++	if (end == NULL || *end != '\0' || temp == 0)
++		return -1;
++
++	*num_clients = (uint16_t)temp;
++	return 0;
++}
++
+ /**
+  * The application specific arguments follow the DPDK-specific
+  * arguments which are stripped by the DPDK init. This function
+@@ -97,7 +118,7 @@ parse_app_args(uint16_t max_ports, int argc, char *argv[])
+ 			}
+ 			break;
+ 		case 'n':
+-			if (parse_num_clients(&num_rings, optarg) != 0) {
++			if (parse_nof_rings(&num_rings, optarg) != 0) {
+ 				usage();
+ 				return -1;
+ 			}
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 55bb532..afa26c4 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -192,6 +192,32 @@ do_send(int *connected, int *sock, char *str)
+ 	return 0;
+ }
+ 
++/* Get directory name of given proc_name */
++static int get_sec_dir(char *proc_name, char *dir_name)
++{
++	if (!strcmp(proc_name, "spp_nfv")) {
++		sprintf(dir_name, "%s", "nfv");
++		RTE_LOG(DEBUG, PRIMARY, "Found dir 'nfv' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_vf")) {
++		sprintf(dir_name, "%s", "vf");
++		RTE_LOG(DEBUG, PRIMARY, "Found dir 'vf' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_mirror")) {
++		sprintf(dir_name, "%s", "mirror");
++		RTE_LOG(DEBUG, PRIMARY, "Found dir 'mirror' for '%s'.\n",
++				proc_name);
++	} else if (!strcmp(proc_name, "spp_pcap")) {
++		sprintf(dir_name, "%s", "pcap");
++		RTE_LOG(DEBUG, PRIMARY, "Found dir 'pcap' for '%s'.\n",
++				proc_name);
++	} else {
++		RTE_LOG(DEBUG, PRIMARY, "No dir found for '%s'.\n",
++				proc_name);
++	}
++	return 0;
++}
++
+ /**
+  * Launch secondary process of given name and ID.
+  *
+diff --git a/src/shared/common.c b/src/shared/common.c
+index afdc774..3145617 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -43,31 +43,6 @@ set_user_log_debug(int num_user_log)
+ 	return 0;
+ }
+ 
+-/**
+- * Take the number of clients passed with `-n` option and convert to
+- * to a number to store in the num_clients variable.
+- *
+- * TODO(yasufum): Revise the usage of this function for spp_primary because
+- * it does not use for the number of ring ports, but clients. The name of
+- * function is inadequte.
+- */
+-int
+-parse_num_clients(uint16_t *num_clients, const char *clients)
+-{
+-	char *end = NULL;
+-	unsigned long temp;
+-
+-	if (clients == NULL || *clients == '\0')
+-		return -1;
+-
+-	temp = strtoul(clients, &end, 10);
+-	if (end == NULL || *end != '\0' || temp == 0)
+-		return -1;
+-
+-	*num_clients = (uint16_t)temp;
+-	return 0;
+-}
+-
+ int
+ parse_server(char **server_ip, int *server_port, char *server_addr)
+ {
+@@ -90,32 +65,6 @@ parse_server(char **server_ip, int *server_port, char *server_addr)
+ 	return 0;
+ }
+ 
+-/* Get directory name of given proc_name */
+-int get_sec_dir(char *proc_name, char *dir_name)
+-{
+-	if (!strcmp(proc_name, "spp_nfv")) {
+-		sprintf(dir_name, "%s", "nfv");
+-		RTE_LOG(DEBUG, SHARED, "Found dir 'nfv' for '%s'.\n",
+-				proc_name);
+-	} else if (!strcmp(proc_name, "spp_vf")) {
+-		sprintf(dir_name, "%s", "vf");
+-		RTE_LOG(DEBUG, SHARED, "Found dir 'vf' for '%s'.\n",
+-				proc_name);
+-	} else if (!strcmp(proc_name, "spp_mirror")) {
+-		sprintf(dir_name, "%s", "mirror");
+-		RTE_LOG(DEBUG, SHARED, "Found dir 'mirror' for '%s'.\n",
+-				proc_name);
+-	} else if (!strcmp(proc_name, "spp_pcap")) {
+-		sprintf(dir_name, "%s", "pcap");
+-		RTE_LOG(DEBUG, SHARED, "Found dir 'pcap' for '%s'.\n",
+-				proc_name);
+-	} else {
+-		RTE_LOG(DEBUG, SHARED, "No dir found for '%s'.\n",
+-				proc_name);
+-	}
+-	return 0;
+-}
+-
+ /**
+  * Get port type and port ID from ethdev name, such as `eth_vhost1` which
+  * can be retrieved with rte_eth_dev_get_name_by_port().
+diff --git a/src/shared/common.h b/src/shared/common.h
+index e414522..cbd1bcf 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -123,19 +123,8 @@ int set_user_log_level(int num_user_log, uint32_t log_level);
+ /* Set log level of type RTE_LOGTYPE_USER* to RTE_LOG_DEBUG. */
+ int set_user_log_debug(int num_user_log);
+ 
+-int parse_num_clients(uint16_t *num_clients, const char *clients);
+-
+ int parse_server(char **server_ip, int *server_port, char *server_addr);
+ 
+-/**
+- * Get directory name of given proc_name.
+- *
+- * @param[in] proc_name Name of sec process such as spp_nfv.
+- * @param[out] dir_name Directory name.
+- * @return 0
+- */
+-int get_sec_dir(char *proc_name, char *dir_name);
+-
+ extern uint8_t lcore_id_used[RTE_MAX_LCORE];
+ 
+ /**
+-- 
+2.17.1
+
