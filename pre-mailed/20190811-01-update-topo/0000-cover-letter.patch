@@ -1,0 +1,40 @@
+From 8a7d7ab53edba2832a1a87823d5c7d3587993472 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 11 Aug 2019 23:22:49 +0900
+Subject: [PATCH 0/9] Update topo to support other than spp_nfv
+
+Topo command is to output a network diagram graphically and useful for
+users to understand the network configuration. However, it is still
+experimental and the feature is very limited. It only supports spp_nfv,
+and three types of ports.
+
+This series of update is to add supported types of secondaries and
+ports. Now all of secondaries and almost of ports are supprted in topo.
+
+This update is also fix a problem in which graph cannot be resized if
+config param `topo_size` is changed. For this fix, `topo_resize`
+command is removed because it is not required anymore.
+
+Yasufumi Ogawa (9):
+  cli: remove topo_resize command
+  cli: revise composing dot script
+  cli: move style params for dot to config
+  cli: add method get_sec_ids to SppCtlClient
+  cli: add method get_sec_procs to SppCtlClient
+  cli: support other than spp_nfv in topo command
+  cli: add port types for topo command
+  cli: add checking JSON objs in topo
+  cli: revise description for imgcat
+
+ docs/guides/commands/experimental.rst |  15 +-
+ src/cli/commands/topo.py              | 630 +++++++++++++++++---------
+ src/cli/config/default.yml            |   8 +-
+ src/cli/config/topo.yml               |   8 +
+ src/cli/shell.py                      |  61 +--
+ src/cli/spp_ctl_client.py             |  42 ++
+ 6 files changed, 498 insertions(+), 266 deletions(-)
+ create mode 100644 src/cli/config/topo.yml
+
+-- 
+2.17.1
+

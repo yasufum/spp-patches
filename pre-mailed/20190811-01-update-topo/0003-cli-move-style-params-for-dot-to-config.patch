@@ -1,0 +1,177 @@
+From 80bc511dd890904af67a526c4652927682216b5d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 7 Aug 2019 18:02:17 +0900
+Subject: [PATCH 3/9] cli: move style params for dot to config
+
+This update is to move style parameters defined in `topo.py` , such as
+node colors or link colors, to `topo.yml`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/topo.py   | 44 ++++++++++++++++----------------------
+ src/cli/config/default.yml |  8 ++++---
+ src/cli/config/topo.yml    |  8 +++++++
+ src/cli/shell.py           |  2 +-
+ 4 files changed, 33 insertions(+), 29 deletions(-)
+ create mode 100644 src/cli/config/topo.yml
+
+diff --git a/src/cli/commands/topo.py b/src/cli/commands/topo.py
+index 567774b..664606e 100644
+--- a/src/cli/commands/topo.py
++++ b/src/cli/commands/topo.py
+@@ -22,12 +22,21 @@ class SppTopo(object):
+ 
+     delim_node = '_'
+ 
+-    def __init__(self, spp_ctl_cli, subgraphs, size):
++    def __init__(self, spp_ctl_cli, subgraphs, cli_config):
+         self.spp_ctl_cli = spp_ctl_cli
+         self.subgraphs = subgraphs
+         self.graph_size = None
+ 
+-        if self.resize(size) is not True:
++        # Graphviz params
++        topo_file = '{dir}/../config/topo.yml'.format(dir=os.path.dirname(__file__))
++        topo_conf = yaml.load(open(topo_file), Loader=yaml.FullLoader)
++        self.SEC_COLORS = topo_conf['topo_sec_colors']['val']
++        self.PORT_COLORS = topo_conf['topo_port_colors']['val']
++        self.LINE_STYLE = {"running": "solid", "idling": "dashed"}
++        self.GRAPH_TYPE = "digraph"
++        self.LINK_TYPE = "->"
++
++        if self.resize(cli_config['topo_size']['val']) is not True:
+             print('Config "topo_size" is invalid value.')
+             exit()
+ 
+@@ -126,21 +135,6 @@ class SppTopo(object):
+     def to_dot(self, sec_list, output_fname):
+         """Output dot script."""
+ 
+-        # Graphviz params
+-        # TODO(yasufum) consider to move gviz params to config file.
+-        SEC_COLORS = [
+-            "blue", "green", "orange", "chocolate", "black",
+-            "cyan3", "green3", "indianred", "lawngreen", "limegreen"]
+-        PORT_COLORS = {
+-            "phy": "white",
+-            "ring": "yellow",
+-            "vhost": "limegreen"}
+-        LINE_STYLE = {
+-            "running": "solid",
+-            "idling": "dashed"}
+-        GRAPH_TYPE = "digraph"
+-        LINK_TYPE = "->"
+-
+         node_attrs = 'node[shape="rectangle", style="filled"];'
+ 
+         node_template = '{}' + self.delim_node + '{}'
+@@ -176,12 +170,12 @@ class SppTopo(object):
+ 
+             for patch in sec['patches']:
+                 if sec['status'] == 'running':
+-                    l_style = LINE_STYLE["running"]
++                    l_style = self.LINE_STYLE["running"]
+                 else:
+-                    l_style = LINE_STYLE["idling"]
++                    l_style = self.LINE_STYLE["idling"]
+                 attrs = '[label="%s", color="%s", style="%s"]' % (
+                     "sec%d" % sec["client-id"],
+-                    SEC_COLORS[sec["client-id"]],
++                    self.SEC_COLORS[sec["client-id"]],
+                     l_style
+                 )
+                 link_style = node_template + ' {} ' + node_template + '{};'
+@@ -191,11 +185,11 @@ class SppTopo(object):
+                 if self._is_valid_port(patch['dst']):
+                     dst_type, dst_id = patch['dst'].split(':')
+ 
+-                tmp = link_style.format(src_type, src_id, LINK_TYPE,
++                tmp = link_style.format(src_type, src_id, self.LINK_TYPE,
+                                     dst_type, dst_id, attrs)
+                 links.append(tmp)
+ 
+-        output = ["{} spp{{".format(GRAPH_TYPE)]
++        output = ["{} spp{{".format(self.GRAPH_TYPE)]
+         output.append("newrank=true;")
+         output.append(node_attrs)
+ 
+@@ -209,7 +203,7 @@ class SppTopo(object):
+             label = re.sub(r'{}'.format(self.delim_node), ':', node)
+             output.append(
+                 '{n}[label="{l}", fillcolor="{c}"];'.format(
+-                    n=node, l=label, c=PORT_COLORS["phy"]))
++                    n=node, l=label, c=self.PORT_COLORS["phy"]))
+ 
+         ring_nodes = []
+         for node in rings:
+@@ -220,7 +214,7 @@ class SppTopo(object):
+             label = re.sub(r'{}'.format(self.delim_node), ':', node)
+             output.append(
+                 '{n}[label="{l}", fillcolor="{c}"];'.format(
+-                    n=node, l=label, c=PORT_COLORS["ring"]))
++                    n=node, l=label, c=self.PORT_COLORS["ring"]))
+ 
+         vhost_nodes = []
+         for node in vhosts:
+@@ -231,7 +225,7 @@ class SppTopo(object):
+             label = re.sub(r'{}'.format(self.delim_node), ':', node)
+             output.append(
+                 '{n}[label="{l}", fillcolor="{c}"];'.format(
+-                    n=node, l=label, c=PORT_COLORS["vhost"]))
++                    n=node, l=label, c=self.PORT_COLORS["vhost"]))
+ 
+         # Align the same type of nodes with rank attribute
+         output.append(
+diff --git a/src/cli/config/default.yml b/src/cli/config/default.yml
+index a746c9a..60aaef7 100644
+--- a/src/cli/config/default.yml
++++ b/src/cli/config/default.yml
+@@ -5,9 +5,6 @@ max_secondary:
+ prompt:
+     val: "spp > "
+     desc: Command prompt
+-topo_size:
+-    val: 60%
+-    desc: Percentage or ratio of topo
+ 
+ # Secondary common config
+ sec_mem:
+@@ -45,3 +42,8 @@ sec_pcap_nof_lcores:
+ sec_pcap_port:
+     val: "phy:0"
+     desc: Default captured port
++
++# topo
++topo_size:
++    val: 60%
++    desc: Percentage or ratio of topo
+diff --git a/src/cli/config/topo.yml b/src/cli/config/topo.yml
+new file mode 100644
+index 0000000..fa5497e
+--- /dev/null
++++ b/src/cli/config/topo.yml
+@@ -0,0 +1,8 @@
++topo_sec_colors:
++    val: ["blue", "green", "orange", "chocolate", "black", "cyan3",
++          "green3", "indianred", "lawngreen", "limegreen"]
++    desc: Line colors for secondary processes
++topo_port_colors:
++    val: {"phy": "white", "ring": "yellow", "vhost": "azure",
++          "tap": "cornsilk", "nullpmd": "cyan"}
++    desc: Port colors
+diff --git a/src/cli/shell.py b/src/cli/shell.py
+index d98cc8b..8eae982 100644
+--- a/src/cli/shell.py
++++ b/src/cli/shell.py
+@@ -73,7 +73,7 @@ class Shell(cmd.Cmd, object):
+         self.use_cache = use_cache
+         self.init_spp_procs()
+         self.spp_topo = topo.SppTopo(
+-                self.spp_ctl_cli, {}, self.cli_config['topo_size']['val'])
++                self.spp_ctl_cli, {}, self.cli_config)
+ 
+         common.set_current_server_addr(
+                 self.spp_ctl_cli.ip_addr, self.spp_ctl_cli.port)
+-- 
+2.17.1
+
