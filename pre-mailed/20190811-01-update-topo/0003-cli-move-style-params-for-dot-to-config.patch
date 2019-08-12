@@ -1,7 +1,7 @@
-From 80bc511dd890904af67a526c4652927682216b5d Mon Sep 17 00:00:00 2001
+From b97a83d3fa16e3620f0115098f70aa532dcfb667 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Wed, 7 Aug 2019 18:02:17 +0900
-Subject: [PATCH 3/9] cli: move style params for dot to config
+Subject: [PATCH 3/8] cli: move style params for dot to config
 
 This update is to move style parameters defined in `topo.py` , such as
 node colors or link colors, to `topo.yml`.
@@ -16,7 +16,7 @@ Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
  create mode 100644 src/cli/config/topo.yml
 
 diff --git a/src/cli/commands/topo.py b/src/cli/commands/topo.py
-index 567774b..664606e 100644
+index 0d613cb..86495c8 100644
 --- a/src/cli/commands/topo.py
 +++ b/src/cli/commands/topo.py
 @@ -22,12 +22,21 @@ class SppTopo(object):

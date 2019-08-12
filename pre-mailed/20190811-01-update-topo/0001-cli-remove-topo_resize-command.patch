@@ -1,7 +1,7 @@
-From 0bc1328d4941205289623a99620384fa33b62556 Mon Sep 17 00:00:00 2001
+From 3341e68fa0f3b10692d0882c65e62e2ba48b5eff Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Wed, 7 Aug 2019 12:11:41 +0900
-Subject: [PATCH 1/9] cli: remove topo_resize command
+Subject: [PATCH 1/8] cli: remove topo_resize command
 
 As `topo_size` is introduced in config and `topo_resize` command is not
 required anymore, remove this command.
@@ -13,7 +13,7 @@ Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
  2 files changed, 33 insertions(+), 36 deletions(-)
 
 diff --git a/src/cli/commands/topo.py b/src/cli/commands/topo.py
-index 21ef1ec..a8fe740 100644
+index 21ef1ec..58c59d1 100644
 --- a/src/cli/commands/topo.py
 +++ b/src/cli/commands/topo.py
 @@ -25,7 +25,11 @@ class SppTopo(object):
@@ -45,7 +45,7 @@ index 21ef1ec..a8fe740 100644
 +        if matched:  # percentage
 +            i = int(matched.group(1))
 +            if i > 0 and  i <= 100:
-+                self.graph_size = size 
++                self.graph_size = size
 +                return True
 +            else:
 +                return False

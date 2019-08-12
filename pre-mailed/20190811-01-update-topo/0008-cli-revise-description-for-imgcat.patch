@@ -1,7 +1,7 @@
-From 8a7d7ab53edba2832a1a87823d5c7d3587993472 Mon Sep 17 00:00:00 2001
+From 53d39b2fde83d4914b7cb6023c676bc0faafcd40 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Sun, 11 Aug 2019 18:13:09 +0900
-Subject: [PATCH 9/9] cli: revise description for imgcat
+Subject: [PATCH 8/8] cli: revise description for imgcat
 
 This update is to revise how to setup 3rd party tool `imgcat` for
 iTerm2 on MacOS.

@@ -1,7 +1,7 @@
-From 9f021e706e1e37400b1f26b39705f5906192b538 Mon Sep 17 00:00:00 2001
+From 6a11d36d349ddb315d217bfd00c5dee8c24dd645 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Wed, 7 Aug 2019 15:31:55 +0900
-Subject: [PATCH 2/9] cli: revise composing dot script
+Subject: [PATCH 2/8] cli: revise composing dot script
 
 SppTopo uses old style formatter, such as '"%s %s" % (foo, var)', for
 composing dot script. It could be complex if several placeholders are
@@ -17,7 +17,7 @@ Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
  1 file changed, 50 insertions(+), 43 deletions(-)
 
 diff --git a/src/cli/commands/topo.py b/src/cli/commands/topo.py
-index a8fe740..567774b 100644
+index 58c59d1..0d613cb 100644
 --- a/src/cli/commands/topo.py
 +++ b/src/cli/commands/topo.py
 @@ -77,7 +77,7 @@ class SppTopo(object):
