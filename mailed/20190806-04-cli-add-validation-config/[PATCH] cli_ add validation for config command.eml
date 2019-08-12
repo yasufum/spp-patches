@@ -1,0 +1,167 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c65d5415913f7c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id o35sm79202886pgm.29.2019.08.06.00.29.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Aug 2019 00:29:30 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] cli: add validation for config command
+Date: Tue,  6 Aug 2019 16:29:26 +0900
+Message-Id: <20190806072926.11698-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+SPP CLI accepts any of config parameters, so user can set invalid value
+for config and unexpected error might be happened.
+
+This update is to add method validate_config_val() to check if the
+given config value is valid or not.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/shell.py            | 15 +++++---
+ src/cli/shell_lib/common.py | 70 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+), 5 deletions(-)
+
+diff --git a/src/cli/shell.py b/src/cli/shell.py
+index 989f071..c822fc9 100644
+--- a/src/cli/shell.py
++++ b/src/cli/shell.py
+@@ -36,7 +36,7 @@ class Shell(cmd.Cmd, object):
+                         os.path.dirname(__file__))
+ 
+             self.cli_config = yaml.load(open(config_path),
+-                Loader=yaml.FullLoader)
++                                        Loader=yaml.FullLoader)
+         except IOError as e:
+             print('Error: No config file found!')
+             print(e)
+@@ -50,7 +50,8 @@ class Shell(cmd.Cmd, object):
+ 
+         # Shell settings which are reserved vars of Cmd class.
+         # `intro` is to be shown as a welcome message.
+-        self.intro = 'Welcome to the SPP CLI. Type `help` or `?` to list commands.\n'
++        self.intro = 'Welcome to the SPP CLI. ' + \
++                     'Type `help` or `?` to list commands.\n'
+         self.prompt = self.cli_config['prompt']['val']  # command prompt
+ 
+         # Recipe file to be recorded with `record` command
+@@ -611,9 +612,13 @@ class Shell(cmd.Cmd, object):
+                 for s in ['"', "'"]:
+                     args = args.replace(s, '')
+ 
+-                # TODO(yasufum) add validation for given value
+-                self.cli_config[key]['val'] = args[(len(key) + 1):]
+-                print('Set {}: "{}"'.format(key, self.cli_config[key]['val']))
++                val = args[(len(key) + 1):]
++                if common.validate_config_val(key, val):
++                    self.cli_config[key]['val'] = val
++                    print('Set {k}: "{v}"'.format(k=key, v=val))
++                else:
++                    print('Invalid value "{v}" for "{k}"'.format(
++                        k=key, v=val))
+ 
+                 # Command prompt should be updated immediately
+                 if key == 'prompt':
+diff --git a/src/cli/shell_lib/common.py b/src/cli/shell_lib/common.py
+index 4941bba..ad34e56 100644
+--- a/src/cli/shell_lib/common.py
++++ b/src/cli/shell_lib/common.py
+@@ -3,6 +3,7 @@
+ # Copyright(c) 2017-2018 Nippon Telegraph and Telephone Corporation
+ 
+ import os
++import re
+ from .. import spp_common
+ 
+ CHAR_EXCEPT = '-'
+@@ -207,8 +208,77 @@ def is_valid_port(port_num):
+ 
+     return True
+ 
++
+ def current_server_addr():
+     return spp_common.cur_server_addr
+ 
++
+ def set_current_server_addr(ipaddr, port):
+     spp_common.cur_server_addr = '{}:{}'.format(ipaddr, port)
++
++
++def validate_config_val(key, val):
++    """Check if given value is valid for config."""
++
++    # Check int value
++    should_be_int_vals = [
++            'max_secondary', 'sec_m_lcore', 'sec_nfv_nof_lcores',
++            'sec_vf_nof_lcores', 'sec_mirror_nof_lcores',
++            'sec_pcap_nof_lcores']
++    if key in should_be_int_vals:
++        if re.match(r'\d+$', val) is not None:
++            return True
++        else:
++            return False
++
++    # topo_size should be percentage or ratio.
++    if key == 'topo_size':
++        matched = re.match(r'(\d+)%$', val)
++        if matched is not None:
++            percentage = int(matched.group(1))
++            if percentage > 0 and percentage <= 100:
++                return True
++            else:
++                return False
++
++        matched = re.match(r'([0-1]\.\d+)$', val)
++        if (matched is not None) or (val == '1'):
++            if val == '1':
++                ratio = 1.0
++            else:
++                ratio = float(matched.group(1))
++            if ratio > 0 and ratio <= 1:
++                return True
++            else:
++                return False
++        else:
++            return False
++
++    # Check pcap port.
++    # TODO(yasufum) confirm cap_ports is correct
++    cap_ports = ['phy', 'ring']
++    if key == 'sec_pcap_port':
++        matched = re.match(r'(\w+):(\d+)$', val)
++        if matched is not None:
++            if matched.group(1) in cap_ports:
++                return True
++            return False
++        else:
++            return False
++
++    # Check memory option
++    if key == 'sec_mem':
++        # Match '-m 512' or so.
++        matched = re.match(r'-m\s+\d+$', val)
++        if matched is not None:
++            return True
++
++        # Match '--socket-mem 512', '--socket-mem 512,512' or so.
++        matched = re.match(r'--socket-mem\s+([1-9,]+\d+)$', val)
++        if matched is not None:
++            return True
++        else:
++            return False
++
++    # No need to check others.
++    return True
+-- 
+2.17.1
+
+

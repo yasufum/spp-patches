@@ -1,0 +1,102 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c66d3740e71440
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id d8sm80733890pgh.45.2019.08.06.05.07.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Aug 2019 05:07:09 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] cli: fix TODOs in pri command
+Date: Tue,  6 Aug 2019 21:07:05 +0900
+Message-Id: <20190806120705.13265-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to fix following TODOs in `commands/pri.py`. For second
+one, add util method print_compl_warinig().
+
+* Not accept if given sec ID is already used.
+
+* Warn if enough number of empty lcores cannot be assinged.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/pri.py     | 16 +++++++++-------
+ src/cli/shell_lib/common.py | 11 +++++++++++
+ 2 files changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index eb4d7d4..da5eca6 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -238,9 +238,6 @@ class SppPrimary(object):
+             if (tokens[2] in spp_common.SEC_TYPES) and \
+                     (int(tokens[3])-1 in range(max_secondary)):
+                 ptype = tokens[2]
+-
+-                # TODO(yasufum) Not accept if given sec ID is already
+-                # used.
+                 sid = tokens[3]
+ 
+                 # Option of secondary ID is different between spp_nfv
+@@ -290,21 +287,26 @@ class SppPrimary(object):
+                 empty_lcores = self._get_empty_lcores()
+                 empty_lcores = sum(empty_lcores, [])
+ 
++                # Check if enough number of lcores available.
++                if len(empty_lcores) < nof_slaves:
++                    common.print_compl_warinig(
++                        'No available lcores remained!')
++                    return []
++
+                 if 'sec_m_lcore' in cli_config.keys():
+                     master_lcore = cli_config['sec_m_lcore']['val']
+                 else:
+                     logger.error('Config "sec_m_lcore" is not defined!')
+                     has_invalid_param = True
+ 
+-                # Decide lcore option based on configured number of
+-                # lcores.
++                # Decide lcore option based on configured number of lcores.
+                 slave_lcores = []
+                 for l in empty_lcores:
+                     # Master lcore ID should be smaller than slaves.
+                     if l > int(master_lcore):
+                         slave_lcores.append(str(l))
+-                    # TODO(yasufum) warn if enough number of empty
+-                    # lcores cannot be assinged.
++
++                    # Check if required number of lcores are found.
+                     if len(slave_lcores) > (nof_slaves - 1):
+                         break
+ 
+diff --git a/src/cli/shell_lib/common.py b/src/cli/shell_lib/common.py
+index ad34e56..b936348 100644
+--- a/src/cli/shell_lib/common.py
++++ b/src/cli/shell_lib/common.py
+@@ -282,3 +282,14 @@ def validate_config_val(key, val):
+ 
+     # No need to check others.
+     return True
++
++
++def print_compl_warinig(msg):
++    """Print warning message for completion.
++
++    Printing message while complition disturbs user's input, but it should be
++    printed in some error cases. This method is just for printing warning
++    message simply.
++    """
++
++    print('// WARN: {msg}'.format(msg=msg))
+-- 
+2.17.1
+
+
