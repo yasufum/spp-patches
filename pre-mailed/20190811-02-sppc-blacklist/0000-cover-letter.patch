@@ -1,0 +1,30 @@
+From f82045ba2a37e9f245632508766ab3db37d945ed Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 12 Aug 2019 14:49:28 +0900
+Subject: [PATCH 0/3] Add blacklist EAL option for SPP container
+
+SPP container is expected to be used on a host which has no ports on
+host for simplicity. However, it might have some port in a realistic
+situation actually.
+
+In such a case, ports on host should be excluded with blacklist option
+to avoid confliction using the same ports from SPP on host and app
+containers. Without this option, system causes unexpected behavior.
+
+This series of update is to add blacklist option ``-b`` and
+``--pci-blacklist`` to app container tools and descriptions of usage
+for the option in documentation.
+
+Yasufumi Ogawa (3):
+  tools/sppc: add blacklist and whitelist options
+  docs: add two optiosn to examples of sppc
+  docs: add usage of blacklist for SPP container
+
+ docs/guides/tools/sppc/app_launcher.rst    | 29 +++++++++++---
+ docs/guides/tools/sppc/getting_started.rst | 45 +++++++++++++++++++++-
+ tools/sppc/lib/app_helper.py               | 17 ++++++++
+ 3 files changed, 85 insertions(+), 6 deletions(-)
+
+-- 
+2.17.1
+
