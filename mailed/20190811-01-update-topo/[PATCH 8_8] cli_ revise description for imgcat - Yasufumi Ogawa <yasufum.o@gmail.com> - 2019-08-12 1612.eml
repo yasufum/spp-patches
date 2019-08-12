@@ -1,0 +1,80 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c84ac46c4377f9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:8000:cb51:dfcb:76c])
+        by smtp.gmail.com with ESMTPSA id h9sm94675326pgh.51.2019.08.12.00.12.57
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 12 Aug 2019 00:12:58 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 8/8] cli: revise description for imgcat
+Date: Mon, 12 Aug 2019 16:12:42 +0900
+Message-Id: <20190812071242.18934-9-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190812071242.18934-1-yasufum.o@gmail.com>
+References: <20190812071242.18934-1-yasufum.o@gmail.com>
+
+This update is to revise how to setup 3rd party tool `imgcat` for
+iTerm2 on MacOS.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/commands/experimental.rst | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index 576d11e..c328c73 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -27,7 +27,7 @@ Support four types of output.
+ 
+ This command uses `graphviz
+ <https://www.graphviz.org/>`_
+-gfor generating topology file.
++for generating topology file.
+ You can also generate a dot formatted file or image files supported by
+ graphviz.
+ 
+@@ -40,8 +40,9 @@ to output in a terminal.
+       imagemagick \
+       libsixel-bin
+ 
+-MacOS is also supported optionally for using SPP CLI runs on a remote host.
+-In this case, iTerm2 and imgcat are required.
++MacOS is also supported optionally for using topo runs on a remote host.
++In this case, iTerm2 and imgcat are required as described in the next
++section.
+ 
+ To output in browser with ``topo http`` command, install required packages
+ by using ``requirements.txt`` as described in
+@@ -62,16 +63,18 @@ Output an image of network configuration in terminal.
+ 
+     spp > topo term
+ 
+-There are few terminal applications to output image with ``topo``.
++There are few terminal applications supporting to output image with ``topo``.
+ You can use mlterm, xterm or other terminals supported by `img2sixel
+ <https://github.com/saitoha/libsixel>`_.
+ You can also use `iTerm2
+ <https://iterm2.com/index.html>`_ on MacOS.
+-If you use iTerm2, you have to get a shell script
++If you use iTerm2, you need to downloada a shell script
+ ``imgcat`` from `iTerm2's displaying support site
+ <https://iterm2.com/documentation-images.html>`_
+ and save this script as
+-``spp/src/controller/3rd_party/imgcat``.
++``src/controller/3rd_party/imgcat`` with permission ``775``.
++``topo`` command tries to ``img2sixel`` first, then ``imgcat``
++in the ``3rd_party`` directory.
+ 
+ .. _figure_topo_term_exp:
+ 
+-- 
+2.17.1
+
+

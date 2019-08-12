@@ -1,0 +1,129 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c84ac93a5befd2
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:8000:cb51:dfcb:76c])
+        by smtp.gmail.com with ESMTPSA id v22sm102073794pgk.69.2019.08.12.00.13.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Aug 2019 00:13:17 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/3] docs: add two optiosn to examples of sppc
+Date: Mon, 12 Aug 2019 16:13:08 +0900
+Message-Id: <20190812071309.18991-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190812071309.18991-1-yasufum.o@gmail.com>
+References: <20190812071309.18991-1-yasufum.o@gmail.com>
+
+This update is to add examples of `blacklist` and `whitelist` to
+examples of SPP container tools.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst | 29 ++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index 2525740..80dc262 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -142,11 +142,13 @@ On the other hand, application specific options are different each other.
+     $ python app/spp-primary.py -h
+     usage: spp-primary.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                           [--socket-mem SOCKET_MEM]
+-                          [--nof-memchan NOF_MEMCHAN]
+-                          [-n NOF_RING] [-p PORT_MASK] [-dv DEV_VHOST_IDS]
+-                          [-dt DEV_TAP_IDS] [-ip CTRL_IP]
+-                          [--ctrl-port CTRL_PORT]
+-                          [--dist-name DIST_NAME] [--dist-ver DIST_VER]
++                          [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                          [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
++                          [--nof-memchan NOF_MEMCHAN] [-n NOF_RING]
++                          [-p PORT_MASK]
++                          [-dv DEV_VHOST_IDS] [-dt DEV_TAP_IDS] [-ip CTRL_IP]
++                          [--ctrl-port CTRL_PORT] [--dist-name DIST_NAME]
++                          [--dist-ver DIST_VER] [--workdir WORKDIR]
+                           [-ci CONTAINER_IMAGE] [-fg] [--dry-run]
+ 
+     Launcher for spp-primary application container
+@@ -160,6 +162,10 @@ On the other hand, application specific options are different each other.
+       -m MEM, --mem MEM     Memory size (default is 1024)
+       --socket-mem SOCKET_MEM
+                             Memory size
++      -b [PCI_BLACKLIST [PCI_BLACKLIST ...]], --pci-blacklist [PCI_BLACKLIST..
++                            PCI blacklist for excluding devices
++      -w [PCI_WHITELIST [PCI_WHITELIST ...]], --pci-whitelist [PCI_WHITELIST..
++                            PCI whitelist for including devices
+       --nof-memchan NOF_MEMCHAN
+                             Number of memory channels (default is 4)
+       -n NOF_RING, --nof-ring NOF_RING
+@@ -177,6 +183,7 @@ On the other hand, application specific options are different each other.
+       --dist-name DIST_NAME
+                             Name of Linux distribution
+       --dist-ver DIST_VER   Version of Linux distribution
++      --workdir WORKDIR     Path of directory in which the command is launched
+       -ci CONTAINER_IMAGE, --container-image CONTAINER_IMAGE
+                             Name of container image
+       -fg, --foreground     Run container as foreground mode
+@@ -209,6 +216,8 @@ It shows only application specific options for simplicity.
+     $ python app/spp-nfv.py -h
+     usage: spp-nfv.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                       [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
++                      [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                      [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                       [-i SEC_ID] [-ip CTRL_IP] [--ctrl-port CTRL_PORT]
+                       [--dist-name DIST_NAME] [--dist-ver DIST_VER]
+                       [-ci CONTAINER_IMAGE] [-fg] [--dry-run]
+@@ -258,6 +267,8 @@ It shows options without of EAL and container for simplicity.
+     $ python app/l2fwd.py -h
+     usage: l2fwd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                     [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
++                    [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                    [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                     [-d DEV_IDS] [-nq NOF_QUEUES] [--no-privileged]
+                     [-p PORT_MASK]
+                     [--dist-name DIST_NAME] [--dist-ver DIST_VER]
+@@ -373,6 +384,8 @@ It shows options without of EAL and container for simplicity.
+     $ python app/l3fwd.py -h
+     usage: l3fwd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                     [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
++                    [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                    [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                     [-d DEV_IDS] [-nq NOF_QUEUES] [--no-privileged]
+                     [-p PORT_MASK] [--config CONFIG] [-P] [-E] [-L]
+                     [-dst [ETH_DEST [ETH_DEST ...]]] [--enable-jumbo]
+@@ -470,6 +483,8 @@ It shows options without of EAL and container.
+     $ python app/testpmd.py -h
+     usage: testpmd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                       [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
++                      [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                      [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                       [-d DEV_IDS] [-nq NOF_QUEUES] [--no-privileged]
+                       [--pci] [-i] [-a] [--tx-first]
+                       [--stats-period STATS_PERIOD]
+@@ -753,6 +768,8 @@ It shows options without of EAL and container for simplicity.
+     $ python app/pktgen.py -h
+     usage: pktgen.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                      [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
++                     [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                     [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                      [-d DEV_IDS] [-nq NOF_QUEUES] [--no-privileged]
+                      [--matrix MATRIX] [--log-level LOG_LEVEL]
+                      [--dist-name DIST_NAME] [--dist-ver DIST_VER]
+@@ -959,6 +976,8 @@ Refer options and usages by ``load-balancer.py -h``.
+     $ python app/load-balancer.py -h
+     usage: load-balancer.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                             [--socket-mem SOCKET_MEM]
++                            [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
++                            [-w [PCI_WHITELIST [PCI_WHITELIST ...]]]
+                             [--nof-memchan NOF_MEMCHAN]
+                             [-d DEV_IDS] [-nq NOF_QUEUES] [--no-privileged]
+                             [-rx RX_PORTS] [-tx TX_PORTS] [-w WORKER_LCORES]
+-- 
+2.17.1
+
+
