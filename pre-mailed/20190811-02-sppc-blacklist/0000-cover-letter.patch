@@ -1,9 +1,9 @@
-From f82045ba2a37e9f245632508766ab3db37d945ed Mon Sep 17 00:00:00 2001
+From 285538e07a6dcf5a8d6bf52028e2747b6c482657 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
-Date: Mon, 12 Aug 2019 14:49:28 +0900
+Date: Mon, 12 Aug 2019 16:06:48 +0900
 Subject: [PATCH 0/3] Add blacklist EAL option for SPP container
 
-SPP container is expected to be used on a host which has no ports on
+PP container is expected to be used on a host which has no ports on
 host for simplicity. However, it might have some port in a realistic
 situation actually.
 

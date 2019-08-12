@@ -1,4 +1,4 @@
-From bc678cc4a137324521bc1e35d2e5ceac451b6a33 Mon Sep 17 00:00:00 2001
+From 439d745f3229e9797e9d558c750d0143ef632268 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Sun, 11 Aug 2019 19:58:59 +0900
 Subject: [PATCH 2/3] docs: add two optiosn to examples of sppc
