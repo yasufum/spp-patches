@@ -1,0 +1,19 @@
+From 510dd8708acd5d855d88f70eebc7f40fad73feb5 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 15 Aug 2019 16:58:05 +0900
+Subject: [PATCH 0/2] Add --single-file-segments option to SPP container
+
+This series of patches is to add EAL option --single-file-segments to
+app contianer of sppc, and updating documentation.
+
+Yasufumi Ogawa (2):
+  tools/sppc: add single file segments EAL option
+  docs: add single file segments EAL option for sppc
+
+ docs/guides/tools/sppc/app_launcher.rst | 10 ++++++++++
+ tools/sppc/lib/app_helper.py            |  7 +++++++
+ 2 files changed, 17 insertions(+)
+
+-- 
+2.17.1
+

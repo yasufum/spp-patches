@@ -1,0 +1,41 @@
+From a4eb15ca073a3d064b6fa6c2226dd742ed8e1909 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 15 Aug 2019 16:40:30 +0900
+Subject: [PATCH 1/2] tools/sppc: add single file segments EAL option
+
+This update is to add an EAL option `--single-file-segments` for app
+containers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index 17b98b3..310d9e2 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -37,6 +37,10 @@ def add_eal_args(parser, mem_size=1024, mem_channel=4):
+         '-w', '--pci-whitelist',
+         nargs='*', type=str,
+         help='PCI whitelist for including devices')
++    parser.add_argument(
++        '--single-file-segments',
++        action='store_true',
++        help='Create fewer files in hugetlbfs (non-legacy mode only).')
+     parser.add_argument(
+         '--nof-memchan',
+         type=int,
+@@ -100,6 +104,9 @@ def setup_eal_opts(args, file_prefix, proc_type='auto', hugedir=None):
+         for wd in args.pci_whitelist:
+             eal_opts += ['-w', wd, '\\']
+ 
++    if args.single_file_segments is not None:
++        eal_opts += ['--single-file-segments', '\\']
++
+     eal_opts += [
+         '--file-prefix', file_prefix, '\\',
+         '--', '\\']
+-- 
+2.17.1
+
