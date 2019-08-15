@@ -1,0 +1,58 @@
+X-Account-Key: account5
+X-UIDL: GmailId16c944dd6a13b0b8
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:5b7:b40:5587:b5cd])
+        by smtp.gmail.com with ESMTPSA id h129sm1889644pfb.110.2019.08.15.01.03.43
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 15 Aug 2019 01:03:44 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] tools/sppc: add single file segments EAL option
+Date: Thu, 15 Aug 2019 17:03:38 +0900
+Message-Id: <20190815080339.27914-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190815080339.27914-1-yasufum.o@gmail.com>
+References: <20190815080339.27914-1-yasufum.o@gmail.com>
+
+This update is to add an EAL option `--single-file-segments` for app
+containers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index 17b98b3..310d9e2 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -37,6 +37,10 @@ def add_eal_args(parser, mem_size=1024, mem_channel=4):
+         '-w', '--pci-whitelist',
+         nargs='*', type=str,
+         help='PCI whitelist for including devices')
++    parser.add_argument(
++        '--single-file-segments',
++        action='store_true',
++        help='Create fewer files in hugetlbfs (non-legacy mode only).')
+     parser.add_argument(
+         '--nof-memchan',
+         type=int,
+@@ -100,6 +104,9 @@ def setup_eal_opts(args, file_prefix, proc_type='auto', hugedir=None):
+         for wd in args.pci_whitelist:
+             eal_opts += ['-w', wd, '\\']
+ 
++    if args.single_file_segments is not None:
++        eal_opts += ['--single-file-segments', '\\']
++
+     eal_opts += [
+         '--file-prefix', file_prefix, '\\',
+         '--', '\\']
+-- 
+2.17.1
+
+
