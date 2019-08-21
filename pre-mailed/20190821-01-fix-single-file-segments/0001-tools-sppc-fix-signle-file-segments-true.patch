@@ -1,0 +1,29 @@
+From a7dd6142461c2c942f2c685e821921bdec326130 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 21 Aug 2019 14:36:38 +0900
+Subject: [PATCH] tools/sppc: fix --signle-file-segments true
+
+This update is to fix a bug for which --single-file-segments option is
+always activated even if it is not given.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index 310d9e2..6e25074 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -104,7 +104,7 @@ def setup_eal_opts(args, file_prefix, proc_type='auto', hugedir=None):
+         for wd in args.pci_whitelist:
+             eal_opts += ['-w', wd, '\\']
+ 
+-    if args.single_file_segments is not None:
++    if args.single_file_segments is True:
+         eal_opts += ['--single-file-segments', '\\']
+ 
+     eal_opts += [
+-- 
+2.17.1
+
