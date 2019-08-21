@@ -1,0 +1,46 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cb2b3862690e37
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id s5sm2041498pjo.26.2019.08.20.22.43.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Aug 2019 22:43:25 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: fix --signle-file-segments true
+Date: Wed, 21 Aug 2019 14:43:17 +0900
+Message-Id: <20190821054317.11129-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to fix a bug for which --single-file-segments option is
+always activated even if it is not given.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index 310d9e2..6e25074 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -104,7 +104,7 @@ def setup_eal_opts(args, file_prefix, proc_type='auto', hugedir=None):
+         for wd in args.pci_whitelist:
+             eal_opts += ['-w', wd, '\\']
+ 
+-    if args.single_file_segments is not None:
++    if args.single_file_segments is True:
+         eal_opts += ['--single-file-segments', '\\']
+ 
+     eal_opts += [
+-- 
+2.17.1
+
+
