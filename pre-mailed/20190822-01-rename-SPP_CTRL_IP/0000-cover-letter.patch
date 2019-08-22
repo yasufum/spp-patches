@@ -1,0 +1,26 @@
+From 7bcf6b28961f5567b9787e4e7c6d4bf689b340ac Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 22 Aug 2019 15:12:24 +0900
+Subject: [PATCH 0/2] Rename env variable SPP_CTRL_IP
+
+For using SPP processes as app containers, environmental variable
+`SPP_CTRL_IP` should be defined to communicate the processes with
+spp-ctl. However, the name `SPP_CTRL_IP` is better to be `SPP_CTL_IP` 
+considering the usage.
+
+This series of update is to rename it described in sources and
+documents.
+
+Yasufumi Ogawa (2):
+  tools/sppc: change env var SPP_CTRL_IP
+  docs: rename SPP_CTRL_IP for sppc
+
+ docs/guides/tools/sppc/app_launcher.rst    |  4 ++--
+ docs/guides/tools/sppc/getting_started.rst |  6 ++---
+ tools/sppc/app/spp-nfv.py                  | 19 +++++++--------
+ tools/sppc/app/spp-primary.py              | 27 +++++++++++-----------
+ 4 files changed, 29 insertions(+), 27 deletions(-)
+
+-- 
+2.17.1
+
