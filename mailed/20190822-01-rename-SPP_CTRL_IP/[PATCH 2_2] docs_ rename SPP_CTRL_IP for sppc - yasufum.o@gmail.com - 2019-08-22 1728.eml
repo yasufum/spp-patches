@@ -1,0 +1,84 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cb870c79583ab1
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id g3sm34795361pfm.179.2019.08.22.01.28.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 22 Aug 2019 01:28:14 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] docs: rename SPP_CTRL_IP for sppc
+Date: Thu, 22 Aug 2019 17:28:06 +0900
+Message-Id: <20190822082806.20327-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190822082806.20327-1-yasufum.o@gmail.com>
+References: <20190822082806.20327-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+As `SPP_CTRL_IP` is renamed in app container scripts, this update is to
+rename it in documentation.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst    | 4 ++--
+ docs/guides/tools/sppc/getting_started.rst | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index 233553a..ae960c2 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -45,11 +45,11 @@ inside a container.
+ Setup
+ -----
+ 
+-You should define ``SPP_CTRL_IP`` environment variable to SPP controller
++You should define ``SPP_CTL_IP`` environment variable to SPP controller
+ be accessed from other SPP processes inside containers.
+ SPP controller is a CLI tool for accepting user's commands.
+ 
+-You cannot use ``127.0.0.1`` or ``localhost`` for ``SPP_CTRL_IP``
++You cannot use ``127.0.0.1`` or ``localhost`` for ``SPP_CTL_IP``
+ because SPP processes try to find SPP controller inside each of
+ containers and fail to.
+ From inside of the container, SPP processes should be known IP address
+diff --git a/docs/guides/tools/sppc/getting_started.rst b/docs/guides/tools/sppc/getting_started.rst
+index 4834cc0..e088661 100644
+--- a/docs/guides/tools/sppc/getting_started.rst
++++ b/docs/guides/tools/sppc/getting_started.rst
+@@ -135,14 +135,14 @@ Launch SPP and App Containers
+ -----------------------------
+ 
+ Before launch containers, you should set IP address of host machine
+-as ``SPP_CTRL_IP`` environment variable
++as ``SPP_CTL_IP`` environment variable
+ for controller to be accessed from inside containers.
+ It is better to define this variable in ``$HOME/.bashrc``.
+ 
+ .. code-block:: console
+ 
+     # Set your host IP address
+-    export SPP_CTRL_IP=HOST_IPADDR
++    export SPP_CTL_IP=HOST_IPADDR
+ 
+ 
+ SPP Controller
+@@ -180,7 +180,7 @@ processes.
+ SPP Primary Container
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+-As ``SPP_CTRL_IP`` is activated, you are enalbed to run
++As ``SPP_CTL_IP`` is activated, you are enalbed to run
+ ``app/spp-primary.py`` with options of EAL and SPP primary
+ in terminal 3.
+ In this case, launch spp-primary in background mode using one core
+-- 
+2.17.1
+
+
