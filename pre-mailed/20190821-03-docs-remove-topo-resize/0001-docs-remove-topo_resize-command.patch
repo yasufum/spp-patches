@@ -1,0 +1,71 @@
+From 9c28a38337cd6cbfbd7718b01837edbd8320934e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 22 Aug 2019 11:06:49 +0900
+Subject: [PATCH] docs: remove topo_resize command
+
+As topo_resize command is removed from SPP CLI, remove it from
+documentation.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/commands/experimental.rst | 44 ---------------------------
+ 1 file changed, 44 deletions(-)
+
+diff --git a/docs/guides/commands/experimental.rst b/docs/guides/commands/experimental.rst
+index c328c73..16c16ba 100644
+--- a/docs/guides/commands/experimental.rst
++++ b/docs/guides/commands/experimental.rst
+@@ -230,50 +230,6 @@ delete subgraph ``guest_vm``.
+     spp > topo_subgraph del guest_vm
+ 
+ 
+-.. _commands_experimental_topo_resize:
+-
+-topo_resize
+------------
+-
+-.. note::
+-
+-    This command will be removed because the size of image is configurable
+-    with :ref:`config<commands_common_config>` command. You can resize images by changing the value of
+-    ``topo_size``.
+-
+-``topo_resize`` is a supplemental command for changing the size of
+-images displayed on the terminal with ``topo``.
+-
+-``topo`` displays an image generated from graphviz with default size.
+-However, it is too small or large for some environments because it
+-depends on the resolution actually.
+-
+-To check default size, run ``topo_resize`` with no arguments.
+-It shows current size of the image.
+-
+-.. code-block:: console
+-
+-    # shows current size
+-    spp > topo_resize
+-    60%
+-
+-You can resize it with percentage
+-
+-.. code-block:: console
+-
+-    # resize with percentage
+-    spp > topo_resize 80%
+-    80%
+-
+-or ratio.
+-
+-.. code-block:: console
+-
+-    # resize with ratio
+-    spp > topo_resize 0.8
+-    80%
+-
+-
+ .. _commands_experimental_load_cmd:
+ 
+ load_cmd
+-- 
+2.17.1
+
