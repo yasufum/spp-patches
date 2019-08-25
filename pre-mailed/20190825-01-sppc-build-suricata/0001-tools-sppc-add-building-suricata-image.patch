@@ -1,0 +1,252 @@
+From 5589a1d1994acd22e9e596918121b666a41ac550 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 25 Aug 2019 17:46:30 +0900
+Subject: [PATCH] tools/sppc: add building suricata image
+
+Suricata is a sophisticated IDS/IPS application supprting DPDK
+optionally[1]. This patch is to add suricata support to SPP container
+build script.
+
+[1] https://suricata-ids.org/
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/main.py                      |  37 +++++-
+ .../build/ubuntu/suricata/Dockerfile.latest   | 108 ++++++++++++++++++
+ tools/sppc/conf/env.py                        |   4 +-
+ 3 files changed, 146 insertions(+), 3 deletions(-)
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+
+diff --git a/tools/sppc/build/main.py b/tools/sppc/build/main.py
+index dcde412..578bc42 100755
+--- a/tools/sppc/build/main.py
++++ b/tools/sppc/build/main.py
+@@ -20,7 +20,7 @@ def parse_args():
+     parser.add_argument(
+         '-t', '--target',
+         type=str,
+-        help="Build target ('dpdk', 'pktgen' or 'spp')")
++        help="Build target ('dpdk', 'pktgen', 'spp' or 'suricata')")
+     parser.add_argument(
+         '-ci', '--container-image',
+         type=str,
+@@ -62,6 +62,18 @@ def parse_args():
+         '--spp-branch',
+         type=str,
+         help="Specific version or branch of SPP")
++
++    # Supporting suricata is experimental
++    parser.add_argument(
++        '--suricata-repo',
++        type=str,
++        default="https://github.com/vipinpv85/DPDK_SURICATA-4_1_1.git",
++        help="Git URL of DPDK-Suricata")
++    parser.add_argument(
++        '--suricata-branch',
++        type=str,
++        help="Specific version or branch of DPDK-Suricata")
++
+     parser.add_argument(
+         '--only-envsh',
+         action='store_true',
+@@ -85,6 +97,8 @@ def create_env_sh(dst_dir, rte_sdk, target, target_dir):
+         contents += "export PKTGEN_DIR=%s" % target_dir
+     elif target == 'spp':
+         contents += "export SPP_DIR=%s" % target_dir
++    elif target == 'suricata':
++        contents += "export SURICATA_DIR=%s" % target_dir
+ 
+     try:
+         f = open('%s/env.sh' % dst_dir, 'w')
+@@ -106,7 +120,7 @@ def main():
+             args.dist_name,
+             args.dist_ver)
+     else:
+-        print("Error: Target '-t [dpdk|pktgen|spp]' is required!")
++        print("Error: Target, such as '-t dpdk' or '-t spp' is required!")
+         exit()
+ 
+     # Decide which of Dockerfile with given base image version
+@@ -132,6 +146,11 @@ def main():
+     else:
+         spp_branch = ''
+ 
++    if args.suricata_branch is not None:
++        suricata_branch = "-b %s" % args.suricata_branch
++    else:
++        suricata_branch = ''
++
+     # Setup project directory by extracting from any of git URL.
+     # If DPDK is hosted on 'https://github.com/user/custom-dpdk.git',
+     # the directory is 'custom-dpdk'.
+@@ -139,6 +158,11 @@ def main():
+     pktgen_dir = args.pktgen_repo.split('/')[-1].split('.')[0]
+     spp_dir = args.spp_repo.split('/')[-1].split('.')[0]
+ 
++    # NOTE: Suricata has sub-directory as project root.
++    suricata_ver = '4.1.4'
++    suricata_dir = '{}/suricata-{}'.format(
++            args.suricata_repo.split('/')[-1].split('.')[0], suricata_ver)
++
+     # RTE_SDK is decided with DPDK's dir.
+     rte_sdk = '%s/%s' % (env.HOMEDIR, dpdk_dir)
+ 
+@@ -149,6 +173,8 @@ def main():
+                 create_env_sh(dockerfile_dir, rte_sdk, args.target, pktgen_dir)
+             elif args.target == 'spp':
+                 create_env_sh(dockerfile_dir, rte_sdk, args.target, spp_dir)
++            elif args.target == 'suricata':
++                create_env_sh(dockerfile_dir, rte_sdk, args.target, suricata_dir)
+             elif args.target == 'dpdk':
+                 create_env_sh(dockerfile_dir, rte_sdk, args.target, dpdk_dir)
+             print("Info: '%s/env.sh' created." % dockerfile_dir)
+@@ -162,6 +188,8 @@ def main():
+             create_env_sh(dockerfile_dir, rte_sdk, args.target, pktgen_dir)
+         elif args.target == 'spp':
+             create_env_sh(dockerfile_dir, rte_sdk, args.target, spp_dir)
++        elif args.target == 'suricata':
++            create_env_sh(dockerfile_dir, rte_sdk, args.target, suricata_dir)
+         elif args.target == 'dpdk':
+             create_env_sh(dockerfile_dir, rte_sdk, args.target, dpdk_dir)
+ 
+@@ -196,6 +224,11 @@ def main():
+             '--build-arg', 'spp_repo=%s' % args.spp_repo, '\\',
+             '--build-arg', 'spp_branch=%s' % spp_branch, '\\',
+             '--build-arg', 'spp_dir=%s' % spp_dir, '\\']
++    elif args.target == 'suricata':
++        docker_cmd += [
++            '--build-arg', 'suricata_repo=%s' % args.suricata_repo, '\\',
++            '--build-arg', 'suricata_branch=%s' % suricata_branch, '\\',
++            '--build-arg', 'suricata_dir=%s' % suricata_dir, '\\']
+ 
+     docker_cmd += [
+         '-f', '%s' % dockerfile, '\\',
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+new file mode 100644
+index 0000000..fec71a5
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+@@ -0,0 +1,108 @@
++FROM ubuntu:latest
++
++ARG rte_sdk
++ARG rte_target
++ARG home_dir
++ARG dpdk_repo
++ARG dpdk_branch
++ARG suricata_repo
++ARG suricata_branch
++ARG suricata_dir
++
++ENV http_proxy ${http_proxy}
++ENV https_proxy $https_proxy
++ENV no_proxy ${no_proxy}
++ENV RTE_SDK ${rte_sdk}
++ENV RTE_TARGET ${rte_target}
++ENV INSTALL_SURICATA_SH install_suricata.sh
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${suricata_dir}/src:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
++
++# NOTE: There two ways for compiling suricata with DPDK. One is using sources
++# of tar ball, and another one is from github. If building suricata container
++# image, second case is failed because `source-dpdk.c` is not excluding from
++# Makefile for a reason I do not know why. However, you can compile it after
++# launching the container, but you have to compile everytime you launch the
++# container.
++# Tow of cases labeled as `Case 1` and `Case 2` in sections below and this
++# Dockerfile support both of compilation, and default is first one. If you
++# use `Case 2`, you comment out `Case 1` and activate `Case 2` by yourself.
++ENV SURICATA_SRCDIR suricata-4.1.4
++ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
++ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
++
++WORKDIR $home_dir
++RUN git clone ${dpdk_branch} ${dpdk_repo}
++
++# Compile DPDK
++WORKDIR ${rte_sdk}
++RUN make config T=${rte_target} O=${rte_target}
++WORKDIR ${rte_sdk}/${rte_target}
++RUN make -j 4
++
++# NOTE: Case 1
++WORKDIR ${home_dir}
++RUN wget ${SURICATA_DOWNLOAD}
++RUN tar zxvf ${SURICATA_TGZ}
++WORKDIR ${home_dir}/${SURICATA_SRCDIR}
++RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++RUN make -j 10
++
++# NOTE: Case 2
++# Compiling suricata with Dockerfile is failed if clone suricata
++# while building this image. So, do it after app container is launched.
++# Create suricata install script.
++#WORKDIR ${home_dir}
++#RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
++
++# NOTE: Compiling suricata with Dockerfile does not work
++# Compile suricata
++#RUN git clone ${suricata_branch} ${suricata_repo}
++#WORKDIR ${home_dir}/${suricata_dir}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++
++# Set working directory when container is launched
++WORKDIR ${home_dir}
++ADD env.sh ${home_dir}/env.sh
++RUN echo "source ${home_dir}/env.sh" >> ${home_dir}/.bashrc
+diff --git a/tools/sppc/conf/env.py b/tools/sppc/conf/env.py
+index f6df15a..3fb0c2d 100644
+--- a/tools/sppc/conf/env.py
++++ b/tools/sppc/conf/env.py
+@@ -10,4 +10,6 @@ RTE_TARGET = 'x86_64-native-linuxapp-gcc'
+ CONTAINER_IMG_NAME = {
+     'dpdk': 'sppc/dpdk',
+     'pktgen': 'sppc/pktgen',
+-    'spp': 'sppc/spp'}
++    'spp': 'sppc/spp',
++    'suricata': 'sppc/suricata',
++    }
+-- 
+2.17.1
+
