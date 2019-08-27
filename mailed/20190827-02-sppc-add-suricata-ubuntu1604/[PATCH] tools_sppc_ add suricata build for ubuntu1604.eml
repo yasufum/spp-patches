@@ -1,0 +1,337 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cd22a54c54c95c
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id q10sm20933195pfl.8.2019.08.27.01.21.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Aug 2019 01:21:25 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: add suricata build for ubuntu1604
+Date: Tue, 27 Aug 2019 17:21:19 +0900
+Message-Id: <20190827082119.6053-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Script for building an image of suricata-4.1.4 on Ubuntu 18.04 was
+released as previous patch. This update is to add support for Ubuntu
+16.04.
+
+Building suricata-4.1.4 on Ubuntu 16.04 image has some problems and you
+cannot complete to compile suricata while docker building. So, you need
+to compile suricata by yourself after launched a container of the build
+image which is named as `sppc/suricata-ubuntu:16.04` by default.
+
+  $ ./main.py -t suricata --dpdk-branch v18.11 --dist-ver 16.04
+  $ docker images
+  ...
+  sppc/suricata-ubuntu  16.04 ...
+  $ docker run -it sppc/suricata-ubuntu:16.04 /bin/bash
+  # ./install_suricata.sh
+  ...
+
+After compilation is successfully done, logout and create a new docker
+image on which suricata is already built with `docker commit` command
+and image's container ID.
+In this example, new image is named as `sppc/suricata-ubuntu2:16.04`.
+
+  # exit
+  $ docker ps -a
+  CONTAINER_ID  sppc/suricata-ubuntu:16.04  "/bin/bash"  3 minutes ...
+  $ docker commit CONTAINER_ID sppc/suricata-ubuntu2:16.04
+
+Finally, you can run suricata with the new image.
+
+  $ docker run -it sppc/suricata-ubuntu:16.04 /bin/bash
+  # suricata --build-info
+
+These steps are described in documents in the next patches.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/ubuntu/suricata/Dockerfile.16.04  | 114 +++++++++++++++++++++
+ tools/sppc/build/ubuntu/suricata/Dockerfile.18.04  | 112 ++++++++++++++++++++
+ tools/sppc/build/ubuntu/suricata/Dockerfile.latest |   6 +-
+ 3 files changed, 231 insertions(+), 1 deletion(-)
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04 b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
+new file mode 100644
+index 0000000..ae06d6c
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
+@@ -0,0 +1,114 @@
++FROM ubuntu:16.04
++
++ARG rte_sdk
++ARG rte_target
++ARG home_dir
++ARG dpdk_repo
++ARG dpdk_branch
++ARG suricata_repo
++ARG suricata_branch
++ARG suricata_dir
++
++ENV http_proxy ${http_proxy}
++ENV https_proxy $https_proxy
++ENV no_proxy ${no_proxy}
++ENV RTE_SDK ${rte_sdk}
++ENV RTE_TARGET ${rte_target}
++ENV INSTALL_SURICATA_SH install_suricata.sh
++ENV DEBIAN_FRONTEND noninteractive
++
++# NOTE: There two ways for compiling suricata with DPDK. One is using sources
++# of tar ball, and another one is from github. If building suricata container
++# image, second case is failed because `source-dpdk.c` is not excluding from
++# Makefile for a reason I do not know why. However, you can compile it after
++# launching the container, but you have to compile everytime you launch the
++# container.
++# Tow of cases labeled as `Case 1` and `Case 2` in sections below and this
++# Dockerfile support both of compilation, and default is first one. If you
++# use `Case 2`, you comment out `Case 1` and activate `Case 2` by yourself.
++
++# NOTE: You can another case `Case 3`, but it does not work currently.
++
++ENV SURICATA_SRCDIR suricata-4.1.4
++ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
++ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    autoconf \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
++
++WORKDIR $home_dir
++RUN git clone ${dpdk_branch} ${dpdk_repo}
++
++# Compile DPDK
++WORKDIR ${rte_sdk}
++RUN make config T=${rte_target} O=${rte_target}
++WORKDIR ${rte_sdk}/${rte_target}
++RUN make -j 4
++
++## NOTE: Case 1
++#WORKDIR ${home_dir}
++#RUN wget ${SURICATA_DOWNLOAD}
++#RUN tar zxvf ${SURICATA_TGZ}
++#WORKDIR ${home_dir}/${SURICATA_SRCDIR}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++#ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
++
++# NOTE: Case 2
++# Compiling suricata with Dockerfile is failed if clone suricata
++# while building this image. So, do it after app container is launched.
++# Create suricata install script.
++WORKDIR ${home_dir}
++RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
++ENV PATH ${home_dir}/${suricata_dir}/src:${PATH}
++
++# NOTE: Case 3 Compiling suricata with Dockerfile does not work
++# Compile suricata
++#WORKDIR ${home_dir}
++#RUN git clone ${suricata_branch} ${suricata_repo}
++#WORKDIR ${home_dir}/${suricata_dir}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++#ENV PATH ${home_dir}/${suricata_dir}/src:${PATH}
++
++# Set working directory when container is launched
++WORKDIR ${home_dir}
++ADD env.sh ${home_dir}/env.sh
++RUN echo "source ${home_dir}/env.sh" >> ${home_dir}/.bashrc
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04 b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+new file mode 100644
+index 0000000..e48d873
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+@@ -0,0 +1,112 @@
++FROM ubuntu:18.04
++
++ARG rte_sdk
++ARG rte_target
++ARG home_dir
++ARG dpdk_repo
++ARG dpdk_branch
++ARG suricata_repo
++ARG suricata_branch
++ARG suricata_dir
++
++ENV http_proxy ${http_proxy}
++ENV https_proxy $https_proxy
++ENV no_proxy ${no_proxy}
++ENV RTE_SDK ${rte_sdk}
++ENV RTE_TARGET ${rte_target}
++ENV INSTALL_SURICATA_SH install_suricata.sh
++ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
++ENV PATH ${home_dir}/${suricata_dir}/src:${PATH}
++ENV DEBIAN_FRONTEND noninteractive
++
++# NOTE: There two ways for compiling suricata with DPDK. One is using sources
++# of tar ball, and another one is from github. If building suricata container
++# image, second case is failed because `source-dpdk.c` is not excluding from
++# Makefile for a reason I do not know why. However, you can compile it after
++# launching the container, but you have to compile everytime you launch the
++# container.
++# Tow of cases labeled as `Case 1` and `Case 2` in sections below and this
++# Dockerfile support both of compilation, and default is first one. If you
++# use `Case 2`, you comment out `Case 1` and activate `Case 2` by yourself.
++
++# NOTE: You can another case `Case 3`, but it does not work currently.
++
++ENV SURICATA_SRCDIR suricata-4.1.4
++ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
++ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
++
++WORKDIR $home_dir
++RUN git clone ${dpdk_branch} ${dpdk_repo}
++
++# Compile DPDK
++WORKDIR ${rte_sdk}
++RUN make config T=${rte_target} O=${rte_target}
++WORKDIR ${rte_sdk}/${rte_target}
++RUN make -j 4
++
++# NOTE: Case 1
++WORKDIR ${home_dir}
++RUN wget ${SURICATA_DOWNLOAD}
++RUN tar zxvf ${SURICATA_TGZ}
++WORKDIR ${home_dir}/${SURICATA_SRCDIR}
++RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++RUN make -j 10
++ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
++
++# NOTE: Case 2
++# Compiling suricata with Dockerfile is failed if clone suricata
++# while building this image. So, do it after app container is launched.
++# Create suricata install script.
++#WORKDIR ${home_dir}
++#RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
++#RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
++
++# NOTE: Case 3 Compiling suricata with Dockerfile does not work
++# Compile suricata
++#RUN git clone ${suricata_branch} ${suricata_repo}
++#WORKDIR ${home_dir}/${suricata_dir}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++
++# Set working directory when container is launched
++WORKDIR ${home_dir}
++ADD env.sh ${home_dir}/env.sh
++RUN echo "source ${home_dir}/env.sh" >> ${home_dir}/.bashrc
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+index fec71a5..c3928a0 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+@@ -28,6 +28,9 @@ ENV DEBIAN_FRONTEND noninteractive
+ # Tow of cases labeled as `Case 1` and `Case 2` in sections below and this
+ # Dockerfile support both of compilation, and default is first one. If you
+ # use `Case 2`, you comment out `Case 1` and activate `Case 2` by yourself.
++
++# NOTE: You can another case `Case 3`, but it does not work currently.
++
+ ENV SURICATA_SRCDIR suricata-4.1.4
+ ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
+ ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
+@@ -78,6 +81,7 @@ WORKDIR ${home_dir}/${SURICATA_SRCDIR}
+ RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
+ RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
+ RUN make -j 10
++ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
+ 
+ # NOTE: Case 2
+ # Compiling suricata with Dockerfile is failed if clone suricata
+@@ -94,7 +98,7 @@ RUN make -j 10
+ #RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
+ #RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
+ 
+-# NOTE: Compiling suricata with Dockerfile does not work
++# NOTE: Case 3 Compiling suricata with Dockerfile does not work
+ # Compile suricata
+ #RUN git clone ${suricata_branch} ${suricata_repo}
+ #WORKDIR ${home_dir}/${suricata_dir}
+-- 
+2.7.4
+
+
