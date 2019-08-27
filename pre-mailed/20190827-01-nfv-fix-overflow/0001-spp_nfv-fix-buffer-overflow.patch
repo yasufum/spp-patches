@@ -1,0 +1,34 @@
+From d39fb7f870f56dd76b46864ae12eab5793d2c466 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 27 Aug 2019 12:34:46 +0900
+Subject: [PATCH] spp_nfv: fix buffer overflow
+
+String `port_set` is used for containing a set of src and dst ports for
+returned message. It is formatted as 39 chars as following, although its
+buffer size is 32.
+  "{\"src\":\"%s:%d\",\"dst\":\"%s:%d\"}"  // 39 chars
+
+This update is to fix the bug by increasing buffer size to 128 which is
+enough for the usage.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/commands.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 6eda72f..499bdd4 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -141,7 +141,7 @@ parse_command(char *str)
+ 	int max_token = 0;
+ 	int ret = 0;
+ 	char result[16] = { 0 };  /* succeeded or failed. */
+-	char port_set[32] = { 0 };
++	char port_set[128] = { 0 };
+ 	char *p_type;
+ 	int p_id;
+ 
+-- 
+2.17.1
+
