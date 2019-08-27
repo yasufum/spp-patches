@@ -1,0 +1,144 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cd2c45bb4ea587
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id i14sm16011738pfq.77.2019.08.27.04.09.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Aug 2019 04:09:39 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: remove spp_vm launcher
+Date: Tue, 27 Aug 2019 20:09:32 +0900
+Message-Id: <20190827110932.27866-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+As spp_vm was deprecated from SPP secondary, this update is to remove
+spp_vm launcher script.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-vm.py | 104 ---------------------------------------
+ 1 file changed, 104 deletions(-)
+ delete mode 100755 tools/sppc/app/spp-vm.py
+
+diff --git a/tools/sppc/app/spp-vm.py b/tools/sppc/app/spp-vm.py
+deleted file mode 100755
+index d590253..0000000
+--- a/tools/sppc/app/spp-vm.py
++++ /dev/null
+@@ -1,104 +0,0 @@
+-#!/usr/bin/env python
+-# SPDX-License-Identifier: BSD-3-Clause
+-# Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+-
+-import argparse
+-import os
+-import subprocess
+-import sys
+-
+-work_dir = os.path.dirname(__file__)
+-sys.path.append(work_dir + '/..')
+-from conf import env
+-from lib import app_helper
+-from lib import common
+-
+-target_name = 'spp'
+-
+-
+-def parse_args():
+-    parser = argparse.ArgumentParser(
+-        description="Launcher for spp-vm application container")
+-
+-    parser = app_helper.add_eal_args(parser)
+-    parser = app_helper.add_appc_args(parser)
+-
+-    # Application specific arguments
+-    parser.add_argument(
+-        '-i', '--sec-id',
+-        type=int,
+-        help='Secondary ID')
+-    parser.add_argument(
+-        '-ip', '--ctrl-ip',
+-        type=str,
+-        help="IP address of SPP controller")
+-    parser.add_argument(
+-        '--ctrl-port',
+-        type=int,
+-        default=6666,
+-        help="Port of SPP controller")
+-    parser.add_argument(
+-        '-p', '--port-mask',
+-        type=str,
+-        help="Port mask")
+-
+-    parser = app_helper.add_sppc_args(parser)
+-
+-    return parser.parse_args()
+-
+-
+-def main():
+-    args = parse_args()
+-
+-    # Check for other mandatory opitons.
+-    if args.sec_id is None:
+-        common.error_exit('--sec-id')
+-
+-    if args.dev_ids is None:
+-        common.error_exit('--dev-ids')
+-
+-    if args.port_mask is None:
+-        common.error_exit('--port-mask')
+-
+-    # Setup for vhost devices with given device IDs.
+-    dev_ids_list = app_helper.dev_ids_to_list(args.dev_ids)
+-    sock_files = app_helper.sock_files(dev_ids_list)
+-
+-    # Setup docker command.
+-    docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, target_name, sock_files)
+-
+-    # IP address of SPP controller.
+-    ctrl_ip = os.getenv('SPP_CTRL_IP', args.ctrl_ip)
+-    if ctrl_ip is None:
+-        common.error_exit('SPP_CTRL_IP')
+-
+-    # Setup spp_vm command.
+-    spp_cmd = ['spp_vm', '\\']
+-
+-    file_prefix = 'spp-l2fwd-container%d' % dev_ids_list[0]
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
+-
+-    spp_opts = [
+-        '-n', str(args.sec_id), '\\',
+-        '-p', args.port_mask, '\\',
+-        '-s', '%s:%d' % (ctrl_ip, args.ctrl_port)
+-    ]
+-
+-    cmds = docker_cmd + docker_opts + spp_cmd + eal_opts + spp_opts
+-    if cmds[-1] == '\\':
+-        cmds.pop()
+-    common.print_pretty_commands(cmds)
+-
+-    if args.dry_run is True:
+-        exit()
+-
+-    # Remove delimiters for print_pretty_commands().
+-    while '\\' in cmds:
+-        cmds.remove('\\')
+-    subprocess.call(cmds)
+-
+-
+-if __name__ == '__main__':
+-    main()
+-- 
+2.17.1
+
+
