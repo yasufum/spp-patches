@@ -1,0 +1,139 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cd27cf04bda971
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id a6sm17326967pfa.162.2019.08.27.02.51.38
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Aug 2019 02:51:39 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: change suricata ubuntu latest
+Date: Tue, 27 Aug 2019 18:51:32 +0900
+Message-Id: <20190827095132.27414-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Sometimes, building suricata on Ubuntu 18.04 is failed even if using
+tar.gz file, and it is more stable to build as 16.04 even though steps
+for building is increased.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../build/ubuntu/suricata/Dockerfile.18.04    | 36 +++++++++----------
+ .../build/ubuntu/suricata/Dockerfile.latest   | 36 +++++++++----------
+ 2 files changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04 b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+index e48d873..7648736 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+@@ -74,29 +74,29 @@ WORKDIR ${rte_sdk}/${rte_target}
+ RUN make -j 4
+ 
+ # NOTE: Case 1
+-WORKDIR ${home_dir}
+-RUN wget ${SURICATA_DOWNLOAD}
+-RUN tar zxvf ${SURICATA_TGZ}
+-WORKDIR ${home_dir}/${SURICATA_SRCDIR}
+-RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
+-RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
+-RUN make -j 10
+-ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
++#WORKDIR ${home_dir}
++#RUN wget ${SURICATA_DOWNLOAD}
++#RUN tar zxvf ${SURICATA_TGZ}
++#WORKDIR ${home_dir}/${SURICATA_SRCDIR}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++#ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
+ 
+ # NOTE: Case 2
+ # Compiling suricata with Dockerfile is failed if clone suricata
+ # while building this image. So, do it after app container is launched.
+ # Create suricata install script.
+-#WORKDIR ${home_dir}
+-#RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
++WORKDIR ${home_dir}
++RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
+ 
+ # NOTE: Case 3 Compiling suricata with Dockerfile does not work
+ # Compile suricata
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+index c3928a0..67e3380 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+@@ -74,29 +74,29 @@ WORKDIR ${rte_sdk}/${rte_target}
+ RUN make -j 4
+ 
+ # NOTE: Case 1
+-WORKDIR ${home_dir}
+-RUN wget ${SURICATA_DOWNLOAD}
+-RUN tar zxvf ${SURICATA_TGZ}
+-WORKDIR ${home_dir}/${SURICATA_SRCDIR}
+-RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
+-RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
+-RUN make -j 10
+-ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
++#WORKDIR ${home_dir}
++#RUN wget ${SURICATA_DOWNLOAD}
++#RUN tar zxvf ${SURICATA_TGZ}
++#WORKDIR ${home_dir}/${SURICATA_SRCDIR}
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} autoconf
++#RUN RTE_SDK=${rte_sdk} RTE_TARGET=${rte_target} sh configure --enable-dpdk
++#RUN make -j 10
++#ENV PATH ${SURICATA_SRCDIR}/src:${PATH}
+ 
+ # NOTE: Case 2
+ # Compiling suricata with Dockerfile is failed if clone suricata
+ # while building this image. So, do it after app container is launched.
+ # Create suricata install script.
+-#WORKDIR ${home_dir}
+-#RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
+-#RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
++WORKDIR ${home_dir}
++RUN echo "#!/bin/bash" > ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "git clone ${suricata_repo}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "cd ${suricata_dir}" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "autoconf" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "./configure --enable-dpdk" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make -j 10" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN echo "make install" >> ${home_dir}/${INSTALL_SURICATA_SH}
++RUN chmod 775 ${home_dir}/${INSTALL_SURICATA_SH}
+ 
+ # NOTE: Case 3 Compiling suricata with Dockerfile does not work
+ # Compile suricata
+-- 
+2.17.1
+
+
