@@ -1,0 +1,51 @@
+X-Account-Key: account5
+X-UIDL: GmailId16cd12dd4d7ca6a9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id ev3sm1558167pjb.3.2019.08.26.20.45.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 26 Aug 2019 20:45:37 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_nfv: fix buffer overflow
+Date: Tue, 27 Aug 2019 12:45:28 +0900
+Message-Id: <20190827034528.5366-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+String `port_set` is used for containing a set of src and dst ports for
+returned message. It is formatted as 39 chars as following, although its
+buffer size is 32.
+  "{\"src\":\"%s:%d\",\"dst\":\"%s:%d\"}"  // 39 chars
+
+This update is to fix the bug by increasing buffer size to 128 which is
+enough for the usage.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/commands.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 6eda72f..499bdd4 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -141,7 +141,7 @@ parse_command(char *str)
+ 	int max_token = 0;
+ 	int ret = 0;
+ 	char result[16] = { 0 };  /* succeeded or failed. */
+-	char port_set[32] = { 0 };
++	char port_set[128] = { 0 };
+ 	char *p_type;
+ 	int p_id;
+ 
+-- 
+2.17.1
+
+
