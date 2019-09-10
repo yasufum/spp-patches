@@ -1,0 +1,20 @@
+From 094c27f6beb8f098f8b2ab1f4d67b03cd26ae352 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 10 Sep 2019 20:17:00 +0900
+Subject: [PATCH 0/2] Remove unit test
+
+Spp_vf and spp_mirror support unit test which was used before release
+these features. However, this unit test is not used anymore and should
+be removed.
+
+Yasufumi Ogawa (2):
+  spp_mirror: remove unit test section
+  spp_vf: remove unit test section
+
+ src/mirror/spp_mirror.c | 5 -----
+ src/vf/spp_vf.c         | 5 -----
+ 2 files changed, 10 deletions(-)
+
+-- 
+2.17.1
+

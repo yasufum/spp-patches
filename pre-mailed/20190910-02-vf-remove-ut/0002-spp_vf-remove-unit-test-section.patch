@@ -1,0 +1,32 @@
+From 094c27f6beb8f098f8b2ab1f4d67b03cd26ae352 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 10 Sep 2019 20:14:02 +0900
+Subject: [PATCH 2/2] spp_vf: remove unit test section
+
+As spp_mirror, spp_vf supports unit test but nouse anymore.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/spp_vf.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index e56545f..d6e6309 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -319,12 +319,7 @@ main(int argc, char *argv[])
+ 		backup_mng_info(&g_backup_info);
+ 
+ 		/* Enter loop for accepting commands */
+-#ifndef USE_UT_SPP_VF
+-		while (likely(g_core_info[master_lcore].status !=
+-				SPPWK_LCORE_REQ_STOP)) {
+-#else
+ 		{
+-#endif
+ 			/* Receive command */
+ 			ret = sppwk_run_cmd();
+ 			if (unlikely(ret != SPPWK_RET_OK))
+-- 
+2.17.1
+
