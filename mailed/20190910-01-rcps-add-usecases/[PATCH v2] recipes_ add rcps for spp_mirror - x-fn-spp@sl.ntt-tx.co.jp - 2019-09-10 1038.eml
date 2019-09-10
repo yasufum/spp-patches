@@ -1,0 +1,110 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d18d4d87ee6fe7
+X-Mozilla-Status: 0003
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8181:0:0:0:0:0 with SMTP id c1csp5315757oog;
+        Mon, 9 Sep 2019 18:41:05 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwQAQ6ViGltLVtG9X6jYTFqt5+zUaU3Y2nHT8ZdC2OOAwK9dBYLWe5JKCUyi52KSyeURhVP
+X-Received: by 2002:a62:d406:: with SMTP id a6mr124514pfh.213.1568079665263;
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1568079665; cv=none;
+        d=google.com; s=arc-20160816;
+        b=fEKPpApLw+Zo0/bBQTfjpfnF1gy0k4QwB7Nk4ivolH0nEhi096zFbMCO+gPxrkmcv8
+         1HGXZHNiF4CUwz0WgMNagu/X+VONwyO6axGmNVdAkPw5mDBdcvFSOZJld4bqF6S0ubE7
+         qH5N0CauL4geTZppygOKsKyggHcd2UiTbfh/qolBwmGARESTCUj64Whp2TidGSb/TAFt
+         AjmoBMSjChf53G62AKXPspF/4NvXXZEz2uFmN2xXYB5mwbX20zH6TKX0ePmR+TNudDVm
+         3eJceF3e5xX59xbslDX3G7QBCgSTjfmtv4o1s08VqPwiTHnCh1bmGzALUdmO81zZJ2Z7
+         mZ1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=oa/+98Qp6qyMxCh+vDU3qh4YkQgDc/3A2HHd6XJo/Lk=;
+        b=U5cpCkkURqSR+5v9eloBqyPp+U2BEfgWxaa2+Jz26n7CUZg+vpTBQR4rOnd51I0hWi
+         DnQM6eeRC2bsmSfbt/w4O0MxrPxo97MAFg4y4tOTQicbfpPkKTpfWFYyYcXm3O9gFvlE
+         DrkeSHOWBCPcOfNDu2mmfztdv5SbkZvZUTp6XwbnFQulh+nyj0OOotn84Q0b+lvlNjMv
+         ZVM1CCO7vEy3B6ehKH/lMmFPBeWkZgXIfBE7ZSzluIWTeFDBMgDSx1x0DyeCw9vJNxTn
+         XvM+Njn3iAHj3Ut/ke48ax4wYGYRyQVASqhw4SS0N6vqSqR1pcJFrM0rNeHaYqJxY2If
+         ehag==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id p9si1596407pfe.92.2019.09.09.18.41.04
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x8A1f2wP015489;
+	Tue, 10 Sep 2019 10:41:02 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x8A1f1Cw025540;
+	Tue, 10 Sep 2019 10:41:01 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA24167;
+	 Tue, 10 Sep 2019 10:38:10 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1cAd4004808; Tue, 10 Sep 2019 10:38:10 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1cAex004805; Tue, 10 Sep 2019 10:38:10 +0900
+Message-Id: <201909100138.x8A1cAex004805@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id x8A1cAwS031946 ; Tue, 10 Sep 2019 10:38:10 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH v2] recipes: add rcps for spp_mirror
+Date: Tue, 10 Sep 2019 10:38:10 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <201909050214.x852EY8j009881@imss04.silk.ntt-tx.co.jp>
+References: <201909050214.x852EY8j009881@imss04.silk.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to provide rcps for specific usecase "Duplicate Packets"
+of spp_mirror.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ recipes/usecases/spp_mirror/duplicate/1_start_dup.rcps |  7 +++++++
+ recipes/usecases/spp_mirror/duplicate/2_stop_dup.rcps  | 10 ++++++++++
+ 2 files changed, 17 insertions(+)
+ create mode 100644 recipes/usecases/spp_mirror/duplicate/1_start_dup.rcps
+ create mode 100644 recipes/usecases/spp_mirror/duplicate/2_stop_dup.rcps
+
+diff --git a/recipes/usecases/spp_mirror/duplicate/1_start_dup.rcps b/recipes/usecases/spp_mirror/duplicate/1_start_dup.rcps
+new file mode 100644
+index 0000000..5549dd3
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/duplicate/1_start_dup.rcps
+@@ -0,0 +1,7 @@
++# Start component
++mirror 1; component start mir 2 mirror
++
++# Add ports
++mirror 1; port add phy:0 rx mir
++mirror 1; port add phy:1 tx mir
++mirror 1; port add phy:2 tx mir
+diff --git a/recipes/usecases/spp_mirror/duplicate/2_stop_dup.rcps b/recipes/usecases/spp_mirror/duplicate/2_stop_dup.rcps
+new file mode 100644
+index 0000000..d13085c
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/duplicate/2_stop_dup.rcps
+@@ -0,0 +1,10 @@
++# Delete ports
++mirror 1; port del phy:0 rx mir
++mirror 1; port del phy:1 tx mir
++mirror 1; port del phy:2 tx mir
++
++# Stop component
++mirror 1; component stop mir
++
++# Exit spp_mirror
++mirror 1; exit
+-- 
+2.17.1
+
+

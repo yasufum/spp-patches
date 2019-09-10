@@ -1,0 +1,172 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d18d4d87c4f82d
+X-Mozilla-Status: 0003
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8181:0:0:0:0:0 with SMTP id c1csp5315761oog;
+        Mon, 9 Sep 2019 18:41:05 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwSvf+yjrBHxW03oDOQ4KCyc8LwwtwEtAUcGqYP1Y4ZVDOUwDKxJMPkGsGfxRutYEdA2BsP
+X-Received: by 2002:a17:902:aa02:: with SMTP id be2mr28334557plb.172.1568079665342;
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1568079665; cv=none;
+        d=google.com; s=arc-20160816;
+        b=HuLGj2O3jbmFTqOU7R+VJ8Iog8BOSi0grshWA5Bw6wa8hrT2qXFuj/cq27hZIjbW+3
+         Q0oMHscevPJLmsYzeafZTEv7z695L9pIK22N7b14st2Fz1JHt4vbIh3KJwwWrVJRWrBX
+         UnF/cbGpoiPHvaUUEEMDRW9aASF4Umn0ImXW4P1Gp3HS24r3eB218uS50YREwJQVs0OM
+         zJJHSaT/i8xt+oFAJQZhe/F4/fCSjZcbEzdAhbYhewERv2XmQQanxdCahf2R4ZiFzfHT
+         7F+T2R9/MDypTvZpJ9VE7c593Ne5qhwCaBPRe6YNPTVlkHZ9VhGPD5iIsK42eSckxrDE
+         3pVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=date:subject:cc:to:from:message-id;
+        bh=m8aOduR51DQgUxkV+mzuNLzbNd6KFSp8Fqv2ElT7iY8=;
+        b=otbagPGV4sbHGpwJJWkmnZQn22sTcfa396wBQteeVzeYj0Iu/nlRmetiDDMpJ3R+iL
+         ZffDTMi6zuTo4QErE/5+QNE5PNyeHJmygPKkz8N5ABLgITJQPT2VMUvpSbcLjc/QjmJQ
+         JGHr39XIMDz76yI4cOjdv5HgMjUXgI0+NBkPBqm0ZzpP3BNTVqzQf02/FeurfEXBwCWT
+         bGnV/AQtwOirM3IsuDcnHiMjQC5E0tTEj/DPV/IEG8cZhIMvytK8Ox2rvS4HQ+JQ2aeX
+         /FHoEN3oVyBc10ixBepT8mwLsVQaL8HV5gY0cUdFxjQoCmz9S81NGXwq9vBsFdMFqfUf
+         Wa+Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id v10si13887955plo.384.2019.09.09.18.41.04
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x8A1f0t4015463;
+	Tue, 10 Sep 2019 10:41:00 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x8A1f09B025491;
+	Tue, 10 Sep 2019 10:41:00 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA21671;
+	 Tue, 10 Sep 2019 10:32:29 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1WRaZ003036; Tue, 10 Sep 2019 10:32:27 +0900
+Received: from mgate01.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1WR2A003033; Tue, 10 Sep 2019 10:32:27 +0900
+Message-Id: <201909100132.x8A1WR2A003033@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate01.silk.ntt-tx.co.jp (unknown)
+	id x8A1WSuu023420 ; Tue, 10 Sep 2019 10:32:29 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH] recipes: add rcps for spp_vf
+Date: Tue, 10 Sep 2019 10:32:28 +0900
+X-Mailer: git-send-email 2.18.0
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to provide rcps for specific usecase
+"Classify ICMP Packets" of spp_vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ .../spp_vf/classify_icmp/1_start_comp.rcps        |  5 +++++
+ .../spp_vf/classify_icmp/2_add_ports.rcps         | 15 +++++++++++++++
+ .../usecases/spp_vf/classify_icmp/3_reg_mac.rcps  |  3 +++
+ .../usecases/spp_vf/classify_icmp/4_del_mac.rcps  |  3 +++
+ .../spp_vf/classify_icmp/5_del_ports.rcps         | 15 +++++++++++++++
+ .../spp_vf/classify_icmp/6_stop_comp.rcps         |  8 ++++++++
+ 6 files changed, 49 insertions(+)
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/1_start_comp.rcps
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/2_add_ports.rcps
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/3_reg_mac.rcps
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/4_del_mac.rcps
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/5_del_ports.rcps
+ create mode 100644 recipes/usecases/spp_vf/classify_icmp/6_stop_comp.rcps
+
+diff --git a/recipes/usecases/spp_vf/classify_icmp/1_start_comp.rcps b/recipes/usecases/spp_vf/classify_icmp/1_start_comp.rcps
+new file mode 100644
+index 0000000..273805e
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/1_start_comp.rcps
+@@ -0,0 +1,5 @@
++# Start components
++vf 1; component start cls 3 classifier
++vf 1; component start fwd1 4 forward
++vf 1; component start fwd2 5 forward
++vf 1; component start mgr 6 merge
+diff --git a/recipes/usecases/spp_vf/classify_icmp/2_add_ports.rcps b/recipes/usecases/spp_vf/classify_icmp/2_add_ports.rcps
+new file mode 100644
+index 0000000..e2960f6
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/2_add_ports.rcps
+@@ -0,0 +1,15 @@
++# Configures classifier
++vf 1; port add phy:0 rx cls
++vf 1; port add ring:0 tx cls
++vf 1; port add ring:1 tx cls
++
++# Configures forwarders
++vf 1; port add ring:0 rx fwd1
++vf 1; port add ring:2 tx fwd1
++vf 1; port add ring:1 rx fwd2
++vf 1; port add ring:3 tx fwd2
++
++# Configures merger
++vf 1; port add ring:2 rx mgr
++vf 1; port add ring:3 rx mgr
++vf 1; port add phy:1 tx mgr
+diff --git a/recipes/usecases/spp_vf/classify_icmp/3_reg_mac.rcps b/recipes/usecases/spp_vf/classify_icmp/3_reg_mac.rcps
+new file mode 100644
+index 0000000..6f5de7b
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/3_reg_mac.rcps
+@@ -0,0 +1,3 @@
++# Register MAC address to classifier
++vf 1; classifier_table add mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table add mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/classify_icmp/4_del_mac.rcps b/recipes/usecases/spp_vf/classify_icmp/4_del_mac.rcps
+new file mode 100644
+index 0000000..54c0446
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/4_del_mac.rcps
+@@ -0,0 +1,3 @@
++# Delete MAC addresses from table
++vf 1; classifier_table del mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table del mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/classify_icmp/5_del_ports.rcps b/recipes/usecases/spp_vf/classify_icmp/5_del_ports.rcps
+new file mode 100644
+index 0000000..2f2ff5b
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/5_del_ports.rcps
+@@ -0,0 +1,15 @@
++# Delete ports classifier
++vf 1; port del phy:0 rx cls
++vf 1; port del ring:0 tx cls
++vf 1; port del ring:1 tx cls
++
++# Delete ports forwarders
++vf 1; port del ring:0 rx fwd1
++vf 1; port del ring:2 tx fwd1
++vf 1; port del ring:1 rx fwd2
++vf 1; port del ring:3 tx fwd2
++
++# Delete ports merger
++vf 1; port del ring:2 rx mgr
++vf 1; port del ring:3 rx mgr
++vf 1; port del phy:1 tx mgr
+diff --git a/recipes/usecases/spp_vf/classify_icmp/6_stop_comp.rcps b/recipes/usecases/spp_vf/classify_icmp/6_stop_comp.rcps
+new file mode 100644
+index 0000000..24aae4c
+--- /dev/null
++++ b/recipes/usecases/spp_vf/classify_icmp/6_stop_comp.rcps
+@@ -0,0 +1,8 @@
++# Stop component
++vf 1; component stop cls
++vf 1; component stop fwd1
++vf 1; component stop fwd2
++vf 1; component stop mgr
++
++# exit spp_vf
++vf 1; exit
+-- 
+2.17.1
+
+

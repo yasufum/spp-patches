@@ -1,0 +1,98 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d18d4d94678a0b
+X-Mozilla-Status: 0003
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8181:0:0:0:0:0 with SMTP id c1csp5315762oog;
+        Mon, 9 Sep 2019 18:41:05 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx+iSMkWihpartOL5FTnol9ejIFNuwgungCiSUbCsYMPgj5nD/8eBd1XWIfx9oC6DRbbCHn
+X-Received: by 2002:a63:2887:: with SMTP id o129mr24553448pgo.179.1568079665341;
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1568079665; cv=none;
+        d=google.com; s=arc-20160816;
+        b=LCASNqWWYFVFr3Q79R5kb1smRz2WLcItbQtbHFuw+Gh//rpM2AvOf4fa5gGkDOCj8T
+         +dTrmNuf1X3pOj3NqY5rmQioPXaCgRBuN5oo0PBJMTPU83BKXLvY/lbDdoPWd91Qmo+O
+         qVrpvkUOe4IvR9Ra33swBj+J2LkV2PVl13/yjm7B3w41ijT8QLf0RvR+rfse/T6+WVb2
+         ph72UxpqApmwjJB9hGZLD/Ehb9gWwCVoKxiRTzpq82XMaENKW00EQLoDGb63Zsq+Yyhp
+         U1I1guLj7LZ/VJaZ5dnr1C5mvSamT/he4ASCkk3pgRS6D3wdvIJNQaLcQZj0TpZvCg6c
+         RTGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=NbFpizEtIS5s8JGHJWPGc6mWhwdB1JL8/L9Stpff8zg=;
+        b=u/oS6XoXExdpi9P8a0Rps6kPwshWUE2cyTO7F3b9TQOaWXoNzIcamNxOyCdagFPfn2
+         dUZXYm3nJxWG26PnJKhHAkNWof1iDLffJok4HGLU+9c6SeOkh7TCntUu0GLpQvqXVOuF
+         x6eIBG7VGWkBBimrEXreMhStO1PIg+sv36do4qZlncrdLgh/tdaCKPu54iOqQ9hYsao5
+         z+j+3fwH3/oPu1uGDXCTA67/mh4THMF81osA+bG5WjNBpBzuDKPMjAT2ff/8Knjdl2Zx
+         C5dW3VgzCw8uwNvWBKrh1XZLHdRQvPVpOzecw3KPzvha3qRXeiaYgEJ1e8lUd5MjGiS9
+         WdEA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id w14si13529886ply.48.2019.09.09.18.41.04
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x8A1f1xQ015481;
+	Tue, 10 Sep 2019 10:41:01 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x8A1f1wb025526;
+	Tue, 10 Sep 2019 10:41:01 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA23776;
+	 Tue, 10 Sep 2019 10:37:21 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1bL7C004239; Tue, 10 Sep 2019 10:37:21 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1bLWw004236; Tue, 10 Sep 2019 10:37:21 +0900
+Message-Id: <201909100137.x8A1bLWw004236@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id x8A1bKS2031745 ; Tue, 10 Sep 2019 10:37:21 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH v2] recipes: add rcps for multiple nodes usecase
+Date: Tue, 10 Sep 2019 10:37:20 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <201909050214.x852Ehml009954@imss04.silk.ntt-tx.co.jp>
+References: <201909050214.x852Ehml009954@imss04.silk.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to provide rcps for usecase of Multiple Nodes.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ recipes/usecases/multiple_nodes/1_add_server.rcps   | 4 ++++
+ recipes/usecases/multiple_nodes/2_switch_check.rcps | 2 ++
+ 2 files changed, 6 insertions(+)
+ create mode 100644 recipes/usecases/multiple_nodes/1_add_server.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/2_switch_check.rcps
+
+diff --git a/recipes/usecases/multiple_nodes/1_add_server.rcps b/recipes/usecases/multiple_nodes/1_add_server.rcps
+new file mode 100644
+index 0000000..fee7324
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/1_add_server.rcps
+@@ -0,0 +1,4 @@
++# Add server
++server add 192.168.11.102
++server add 192.168.11.103
++server add 192.168.11.104
+diff --git a/recipes/usecases/multiple_nodes/2_switch_check.rcps b/recipes/usecases/multiple_nodes/2_switch_check.rcps
+new file mode 100644
+index 0000000..80480af
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/2_switch_check.rcps
+@@ -0,0 +1,2 @@
++# Switch to server 3
++server 3
+-- 
+2.17.1
+
+

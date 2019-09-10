@@ -1,0 +1,102 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d18d4d87207140
+X-Mozilla-Status: 0003
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8181:0:0:0:0:0 with SMTP id c1csp5315758oog;
+        Mon, 9 Sep 2019 18:41:05 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqw5Dnaa/HuNw2p05KZMA5TRrN2DMnOjzg1vTHqi3OkU9NKuff/exgSBnroyQCAr8ayo/4MB
+X-Received: by 2002:a17:902:7c14:: with SMTP id x20mr27607357pll.289.1568079665307;
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1568079665; cv=none;
+        d=google.com; s=arc-20160816;
+        b=XbkWa87tXHV6kcK2OBbbYFLMASzQ4tvMjpxRYeie7L/tnQvoLNIgqJVqR0nxsnM3Jo
+         apK8GwFpDk2U4c1RaK1vLm+r9YviNquwuyX7OCTil2xRasDoWhYwLkkqnwJpzGCOC4VW
+         wUIExI8p30/8Sls3vymj+fCJ20EVTzB1vCXdBX+hSDwercIJLL8J8zwpCSW8YCgLsMkR
+         Z9bL4M0ln7cUGISyeQ06+r9kSszsm526rS1QGezN6eNPbQUtl+fjQ9A+Dv19v47WL8QI
+         qj7bxILjF+YlkEoLIO5YHc/8x3niGAFFMYkhj2eanNvElzvvU/F1vKhj3bdtkLCjaPoz
+         HGBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=ouNUOr0z0bLERV28paS6J762OmAoEIwZjhkYy356WUM=;
+        b=G7En+UcGHyy2iWG/x0GADYoQBhL+0tjiRLpZBOItWA4c23CtCYF1IeBa/lBnhPjWXN
+         y7g2vSBspoUy/bVq+FgwtHcrSfCZgzyonj95nukv/jPhqphQgK2AXG92sT3Jk7pXCs0f
+         evsvSMoReLJ4C1d0gBdrknJguxYj/Pdms+whlMWa9/UUG9V8gAJIvqApdVjgdYQypETu
+         tNX8jVBQECDvnIBItEwIZ2FmimTUKlSMhlyynyyHvNFAOVvCxZF3125YTlX5n2Yhr9pS
+         QQLI5nvbxcBJlbBajxfRZ4xF1E5BYckDtuf726ju02u1Me6SdFDxZswDr3Sc5+D20eMH
+         vQ5Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id n25si14981086pgf.42.2019.09.09.18.41.04
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 09 Sep 2019 18:41:05 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id x8A1f1qr015473;
+	Tue, 10 Sep 2019 10:41:01 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id x8A1f1FZ025512;
+	Tue, 10 Sep 2019 10:41:01 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id LAA23372;
+	 Tue, 10 Sep 2019 10:36:16 +0900
+Received: from imss03.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1aG3k003910; Tue, 10 Sep 2019 10:36:16 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss03.silk.ntt-tx.co.jp (unknown) with ESMTP id x8A1aGbT003907; Tue, 10 Sep 2019 10:36:16 +0900
+Message-Id: <201909100136.x8A1aGbT003907@imss03.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id x8A1aGZS031625 ; Tue, 10 Sep 2019 10:36:16 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH v2] recipes: add rcps for spp_pcap
+Date: Tue, 10 Sep 2019 10:36:15 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <201909050214.x852EdDX009910@imss04.silk.ntt-tx.co.jp>
+References: <201909050214.x852EdDX009910@imss04.silk.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch is to provide rcps for usecase of spp_pcap.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ recipes/usecases/spp_pcap/capture/1_start_capture.rcps | 5 +++++
+ recipes/usecases/spp_pcap/capture/2_stop_capture.rcps  | 5 +++++
+ 2 files changed, 10 insertions(+)
+ create mode 100644 recipes/usecases/spp_pcap/capture/1_start_capture.rcps
+ create mode 100644 recipes/usecases/spp_pcap/capture/2_stop_capture.rcps
+
+diff --git a/recipes/usecases/spp_pcap/capture/1_start_capture.rcps b/recipes/usecases/spp_pcap/capture/1_start_capture.rcps
+new file mode 100644
+index 0000000..1ebea35
+--- /dev/null
++++ b/recipes/usecases/spp_pcap/capture/1_start_capture.rcps
+@@ -0,0 +1,5 @@
++# Pre status check
++pcap 1; status
++
++# Start capture
++pcap 1; start
+diff --git a/recipes/usecases/spp_pcap/capture/2_stop_capture.rcps b/recipes/usecases/spp_pcap/capture/2_stop_capture.rcps
+new file mode 100644
+index 0000000..285b1df
+--- /dev/null
++++ b/recipes/usecases/spp_pcap/capture/2_stop_capture.rcps
+@@ -0,0 +1,5 @@
++# Stop capture
++pcap 1; stop
++
++# Exit spp_pcap
++pcap 1; exit
+-- 
+2.17.1
+
+
