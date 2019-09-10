@@ -1,0 +1,52 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d1ae7896327eea
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id n9sm19223093pfa.154.2019.09.10.04.20.43
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Sep 2019 04:20:44 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] spp_mirror: remove unit test section
+Date: Tue, 10 Sep 2019 20:20:37 +0900
+Message-Id: <20190910112038.699-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190910112038.699-1-yasufum.o@gmail.com>
+References: <20190910112038.699-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Spp_mirror supports unit test which was used before released, but nouse
+anymore. This update is to remove the feature.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 835c760..0ace09c 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -615,12 +615,7 @@ main(int argc, char *argv[])
+ 
+ 		/* Enter loop for accepting commands */
+ 		int ret_do = 0;
+-#ifndef USE_UT_SPP_VF
+-		while (likely(g_core_info[master_lcore].status !=
+-				SPPWK_LCORE_REQ_STOP)) {
+-#else
+ 		{
+-#endif
+ 			/* Receive command */
+ 			ret_do = sppwk_run_cmd();
+ 			if (unlikely(ret_do != SPPWK_RET_OK))
+-- 
+2.17.1
+
+

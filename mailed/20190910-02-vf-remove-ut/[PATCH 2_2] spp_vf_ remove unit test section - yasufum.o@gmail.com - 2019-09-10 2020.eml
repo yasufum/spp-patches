@@ -1,0 +1,51 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d1ae78f6f70ff9
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id n9sm19223093pfa.154.2019.09.10.04.20.45
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 10 Sep 2019 04:20:46 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] spp_vf: remove unit test section
+Date: Tue, 10 Sep 2019 20:20:38 +0900
+Message-Id: <20190910112038.699-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190910112038.699-1-yasufum.o@gmail.com>
+References: <20190910112038.699-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+As spp_mirror, spp_vf supports unit test but nouse anymore.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/spp_vf.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index e56545f..d6e6309 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -319,12 +319,7 @@ main(int argc, char *argv[])
+ 		backup_mng_info(&g_backup_info);
+ 
+ 		/* Enter loop for accepting commands */
+-#ifndef USE_UT_SPP_VF
+-		while (likely(g_core_info[master_lcore].status !=
+-				SPPWK_LCORE_REQ_STOP)) {
+-#else
+ 		{
+-#endif
+ 			/* Receive command */
+ 			ret = sppwk_run_cmd();
+ 			if (unlikely(ret != SPPWK_RET_OK))
+-- 
+2.17.1
+
+
