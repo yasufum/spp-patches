@@ -1,0 +1,75 @@
+From a718b3f0d4666a78e78e5d08f1305577ee83be62 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 18:00:39 +0900
+Subject: [PATCH 6/9] spp_vf: revise util func for status command
+
+Util function spp_iterate_core_info() is for gettng each of lcore info
+for composing response of status command. This update is to rename it
+to iterate_lcore_info() and add comments as refactoring.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/vf_cmd_runner.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index c94288a..305c4a2 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -428,9 +428,9 @@ exec_one_cmd(const struct sppwk_cmd_attrs *cmd)
+ 	return ret;
+ }
+ 
+-/* Iterate core information to create response to status command */
++/* Iterate core info to create response of spp_vf status */
+ static int
+-spp_iterate_core_info(struct sppwk_lcore_params *params)
++iterate_lcore_info(struct sppwk_lcore_params *params)
+ {
+ 	int ret;
+ 	int lcore_id, cnt;
+@@ -444,16 +444,12 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 		core = get_core_info(lcore_id);
+ 		if (core->num == 0) {
+-			ret = (*params->lcore_proc)(
+-				params, lcore_id,
+-				"", SPPWK_TYPE_NONE_STR,
+-				0, NULL, 0, NULL);
++			ret = (*params->lcore_proc)(params, lcore_id, "",
++				SPPWK_TYPE_NONE_STR, 0, NULL, 0, NULL);
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
+-						lcore_id, SPPWK_TYPE_NONE);
++						"Failed to proc on lcore %d\n",
++						lcore_id);
+ 				return SPPWK_RET_NG;
+ 			}
+ 			continue;
+@@ -474,9 +470,8 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
++						"Failed to get on lcore %d ,"
++						"type %d\n",
+ 						lcore_id, comp_info->wk_type);
+ 				return SPPWK_RET_NG;
+ 			}
+@@ -502,7 +497,7 @@ add_core(const char *name, char **output,
+ 	lcore_params.output = tmp_buff;
+ 	lcore_params.lcore_proc = append_core_element_value;
+ 
+-	ret = spp_iterate_core_info(&lcore_params);
++	ret = iterate_lcore_info(&lcore_params);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(lcore_params.output);
+ 		return SPPWK_RET_NG;
+-- 
+2.17.1
+

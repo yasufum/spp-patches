@@ -1,0 +1,54 @@
+From 006187b1abcb593189c1d041870ddcfad08e64a6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 18:06:56 +0900
+Subject: [PATCH 8/9] spp_pcap: revise util func for status command
+
+As previous patch for spp_vf, this update is to rename it to
+iterate_lcore_info() and add comments as refactoring.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/pcap/cmd_runner.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/src/pcap/cmd_runner.c b/src/pcap/cmd_runner.c
+index 63658a5..ac5181d 100644
+--- a/src/pcap/cmd_runner.c
++++ b/src/pcap/cmd_runner.c
+@@ -61,12 +61,9 @@ const char *CAPTURE_STATUS_STRINGS[] = {
+ 	"", /* termination */
+ };
+ 
+-/**
+- * Iterate core information for number of available cores to
+- * append response for status command.
+- */
++/* Iterate core info to create response of spp_pcap status */
+ static int
+-spp_iterate_core_info(struct sppwk_lcore_params *params)
++iterate_lcore_info(struct sppwk_lcore_params *params)
+ {
+ 	int ret;
+ 	int lcore_id;
+@@ -78,8 +75,7 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 		ret = spp_pcap_get_core_status(lcore_id, params);
+ 		if (unlikely(ret != 0)) {
+ 			RTE_LOG(ERR, PCAP_RUNNER,
+-					"Cannot iterate core information. "
+-						"(core = %d)\n", lcore_id);
++					"Failed to get lcore %d\n", lcore_id);
+ 			return SPPWK_RET_NG;
+ 		}
+ 	}
+@@ -524,7 +520,7 @@ append_core_value(const char *name, char **output,
+ 	lcore_params.output = tmp_buff;
+ 	lcore_params.lcore_proc = append_pcap_core_element_value;
+ 
+-	ret = spp_iterate_core_info(&lcore_params);
++	ret = iterate_lcore_info(&lcore_params);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(lcore_params.output);
+ 		return SPPWK_RET_NG;
+-- 
+2.17.1
+

@@ -1,0 +1,74 @@
+From 8ad6b899f373be01e3a2317a5175d116a002fd0b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 18:05:06 +0900
+Subject: [PATCH 7/9] spp_mirror: revise util func for status command
+
+As previous patch for spp_vf, this update is to rename it to
+iterate_lcore_info() and add comments as refactoring.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index 730d75f..fb1695f 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -294,9 +294,9 @@ exec_one_cmd(const struct sppwk_cmd_attrs *cmd)
+ 	return ret;
+ }
+ 
+-/* Iterate core information to create response to status command */
++/* Iterate core info to create response of spp_mirror status */
+ static int
+-spp_iterate_core_info(struct sppwk_lcore_params *params)
++iterate_lcore_info(struct sppwk_lcore_params *params)
+ {
+ 	int ret;
+ 	int lcore_id, cnt;
+@@ -310,16 +310,12 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 		core = get_core_info(lcore_id);
+ 		if (core->num == 0) {
+-			ret = (*params->lcore_proc)(
+-				params, lcore_id,
+-				"", SPPWK_TYPE_NONE_STR,
+-				0, NULL, 0, NULL);
++			ret = (*params->lcore_proc)(params, lcore_id, "",
++					SPPWK_TYPE_NONE_STR, 0, NULL, 0, NULL);
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, MIR_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
+-						lcore_id, SPPWK_TYPE_NONE);
++						"Failed to proc on lcore %d\n",
++						lcore_id);
+ 				return SPPWK_RET_NG;
+ 			}
+ 			continue;
+@@ -334,9 +330,8 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, MIR_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
++						"Failed to get on lcore %d ,"
++						"type %d\n",
+ 						lcore_id, comp_info->wk_type);
+ 				return SPPWK_RET_NG;
+ 			}
+@@ -365,7 +360,7 @@ add_core(const char *name, char **output,
+ 	lcore_params.output = tmp_buff;
+ 	lcore_params.lcore_proc = append_core_element_value;
+ 
+-	ret = spp_iterate_core_info(&lcore_params);
++	ret = iterate_lcore_info(&lcore_params);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(lcore_params.output);
+ 		return SPPWK_RET_NG;
+-- 
+2.17.1
+
