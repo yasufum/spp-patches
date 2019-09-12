@@ -1,0 +1,144 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d2516cfd218df4
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id t3sm26034930pfe.7.2019.09.12.03.48.33
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Sep 2019 03:48:34 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/9] shared: rename func for init latency stats
+Date: Thu, 12 Sep 2019 19:48:19 +0900
+Message-Id: <20190912104824.21519-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190912104824.21519-1-yasufum.o@gmail.com>
+References: <20190912104824.21519-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to revise name of func spp_ringlatencystats_init() to
+sppwk_ring_latency_stats(), and also spp_ringlatencystats_uninit()
+to sppwk_clean_ring_latency_stats() to be more specific.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                            |  4 ++--
+ src/shared/secondary/spp_worker_th/latency_stats.c |  4 ++--
+ src/shared/secondary/spp_worker_th/latency_stats.h | 13 +++++--------
+ src/vf/spp_vf.c                                    |  4 ++--
+ 4 files changed, 11 insertions(+), 14 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index 40fbc6f..a6bad3a 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -580,7 +580,7 @@ main(int argc, char *argv[])
+ 			if (port_type == RING)
+ 				nof_rings++;
+ 		}
+-		int ret_ringlatency = spp_ringlatencystats_init(
++		int ret_ringlatency = sppwk_init_ring_latency_stats(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+ 				nof_rings);
+ 		if (unlikely(ret_ringlatency != SPPWK_RET_OK))
+@@ -650,7 +650,7 @@ main(int argc, char *argv[])
+ 	del_vhost_sockfile(g_iface_info.vhost);
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	spp_ringlatencystats_uninit();
++	sppwk_clean_ring_latency_stats();
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ 	RTE_LOG(INFO, MIRROR, "Exit spp_mirror.\n");
+diff --git a/src/shared/secondary/spp_worker_th/latency_stats.c b/src/shared/secondary/spp_worker_th/latency_stats.c
+index 0a5e5a7..e1dde2c 100644
+--- a/src/shared/secondary/spp_worker_th/latency_stats.c
++++ b/src/shared/secondary/spp_worker_th/latency_stats.c
+@@ -49,7 +49,7 @@ cycles_per_ns(void)
+ }
+ 
+ int
+-spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count)
++sppwk_init_ring_latency_stats(uint64_t samp_intvl, uint16_t stats_count)
+ {
+ 	/* allocate memory for ring latency statistics information */
+ 	g_stats_info = rte_zmalloc(
+@@ -76,7 +76,7 @@ spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count)
+ }
+ 
+ void
+-spp_ringlatencystats_uninit(void)
++sppwk_clean_ring_latency_stats(void)
+ {
+ 	/* free memory for ring latency statistics information */
+ 	if (likely(g_stats_info != NULL)) {
+diff --git a/src/shared/secondary/spp_worker_th/latency_stats.h b/src/shared/secondary/spp_worker_th/latency_stats.h
+index de9ee5d..8016233 100644
+--- a/src/shared/secondary/spp_worker_th/latency_stats.h
++++ b/src/shared/secondary/spp_worker_th/latency_stats.h
+@@ -43,12 +43,9 @@ struct ring_latency_stats_t {
+  * @retval SPPWK_RET_OK: succeeded.
+  * @retval SPPWK_RET_NG: failed.
+  */
+-int spp_ringlatencystats_init(uint64_t samp_intvl, uint16_t stats_count);
++int sppwk_init_ring_latency_stats(uint64_t samp_intvl, uint16_t stats_count);
+ 
+-/**
+- *uninitialize ring latency statistics.
+- */
+-void spp_ringlatencystats_uninit(void);
++void sppwk_clean_ring_latency_stats(void);
+ 
+ /**
+  * add time-stamp to mbuf's member.
+@@ -81,7 +78,7 @@ void sppwk_calc_ring_latency(int ring_id,
+ /**
+  * get number of ring latency statistics.
+  *
+- * @return spp_ringlatencystats_init's parameter "stats_count"
++ * @return sppwk_init_ring_latency_stats's parameter "stats_count"
+  */
+ int spp_ringlatencystats_get_count(void);
+ 
+@@ -157,8 +154,8 @@ uint16_t sppwk_eth_vlan_ring_stats_tx_burst(uint16_t port_id,
+ 
+ #else
+ 
+-#define spp_ringlatencystats_init(arg1, arg2) 0
+-#define spp_ringlatencystats_uninit()
++#define sppwk_init_ring_latency_stats(arg1, arg2) 0
++#define sppwk_clean_ring_latency_stats()
+ #define spp_ringlatencystats_add_time_stamp(arg1, arg2, arg3)
+ #define sppwk_calc_ring_latency(arg1, arg2, arg3)
+ #define spp_ringlatencystats_get_count() 0
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index f843332..bf4cdbe 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -292,7 +292,7 @@ main(int argc, char *argv[])
+ 			if (port_type == RING)
+ 				nof_rings++;
+ 		}
+-		ret = spp_ringlatencystats_init(
++		ret = sppwk_init_ring_latency_stats(
+ 				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+ 				nof_rings);
+ 		if (unlikely(ret != SPPWK_RET_OK))
+@@ -357,7 +357,7 @@ main(int argc, char *argv[])
+ 	del_vhost_sockfile(g_iface_info.vhost);
+ 
+ #ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	spp_ringlatencystats_uninit();
++	sppwk_clean_ring_latency_stats();
+ #endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ 	RTE_LOG(INFO, SPP_VF, "Exit spp_vf.\n");
+-- 
+2.17.1
+
+

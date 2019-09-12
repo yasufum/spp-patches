@@ -1,0 +1,94 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d2516da1673174
+X-Mozilla-Status: 0000
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id t3sm26034930pfe.7.2019.09.12.03.48.36
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Sep 2019 03:48:37 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 6/9] spp_vf: revise util func for status command
+Date: Thu, 12 Sep 2019 19:48:21 +0900
+Message-Id: <20190912104824.21519-7-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190912104824.21519-1-yasufum.o@gmail.com>
+References: <20190912104824.21519-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Util function spp_iterate_core_info() is for gettng each of lcore info
+for composing response of status command. This update is to rename it
+to iterate_lcore_info() and add comments as refactoring.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/vf/vf_cmd_runner.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/src/vf/vf_cmd_runner.c b/src/vf/vf_cmd_runner.c
+index c94288a..305c4a2 100644
+--- a/src/vf/vf_cmd_runner.c
++++ b/src/vf/vf_cmd_runner.c
+@@ -428,9 +428,9 @@ exec_one_cmd(const struct sppwk_cmd_attrs *cmd)
+ 	return ret;
+ }
+ 
+-/* Iterate core information to create response to status command */
++/* Iterate core info to create response of spp_vf status */
+ static int
+-spp_iterate_core_info(struct sppwk_lcore_params *params)
++iterate_lcore_info(struct sppwk_lcore_params *params)
+ {
+ 	int ret;
+ 	int lcore_id, cnt;
+@@ -444,16 +444,12 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 		core = get_core_info(lcore_id);
+ 		if (core->num == 0) {
+-			ret = (*params->lcore_proc)(
+-				params, lcore_id,
+-				"", SPPWK_TYPE_NONE_STR,
+-				0, NULL, 0, NULL);
++			ret = (*params->lcore_proc)(params, lcore_id, "",
++				SPPWK_TYPE_NONE_STR, 0, NULL, 0, NULL);
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
+-						lcore_id, SPPWK_TYPE_NONE);
++						"Failed to proc on lcore %d\n",
++						lcore_id);
+ 				return SPPWK_RET_NG;
+ 			}
+ 			continue;
+@@ -474,9 +470,8 @@ spp_iterate_core_info(struct sppwk_lcore_params *params)
+ 
+ 			if (unlikely(ret != 0)) {
+ 				RTE_LOG(ERR, VF_CMD_RUNNER,
+-						"Cannot iterate core "
+-						"information. "
+-						"(core = %d, type = %d)\n",
++						"Failed to get on lcore %d ,"
++						"type %d\n",
+ 						lcore_id, comp_info->wk_type);
+ 				return SPPWK_RET_NG;
+ 			}
+@@ -502,7 +497,7 @@ add_core(const char *name, char **output,
+ 	lcore_params.output = tmp_buff;
+ 	lcore_params.lcore_proc = append_core_element_value;
+ 
+-	ret = spp_iterate_core_info(&lcore_params);
++	ret = iterate_lcore_info(&lcore_params);
+ 	if (unlikely(ret != SPPWK_RET_OK)) {
+ 		spp_strbuf_free(lcore_params.output);
+ 		return SPPWK_RET_NG;
+-- 
+2.17.1
+
+
