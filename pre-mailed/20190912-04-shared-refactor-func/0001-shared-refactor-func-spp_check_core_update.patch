@@ -1,0 +1,82 @@
+From 0c370fbbd8d5e4ddde111a496606f0a2280e6c2d Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 20:20:19 +0900
+Subject: [PATCH] shared: refactor func spp_check_core_update
+
+spp_check_core_update() is used for inspecting lcore information of
+given ID is updated or not. If it is not updated, it returns SPP_RET_NG.
+However, it is not appropriate NG for the case just made no changed.
+
+This update is to change to return 0 if info is not changed, or 1. Name
+of function is also changed to sppwk_is_lcore_updated() to be more
+specific for the usage.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/mirror/spp_mirror.c                        | 2 +-
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 8 ++++----
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 8 ++++----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index a6bad3a..440c780 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -457,7 +457,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 		if (status != SPPWK_LCORE_RUNNING)
+ 			continue;
+ 
+-		if (spp_check_core_update(lcore_id) == SPPWK_RET_OK) {
++		if (sppwk_is_lcore_updated(lcore_id) == 1) {
+ 			/* Setting with the flush command trigger. */
+ 			info->ref_index = (info->upd_index+1) % TWO_SIDES;
+ 			core = get_core_info(lcore_id);
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 58db631..1606d4f 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -506,15 +506,15 @@ get_core_info(unsigned int lcore_id)
+ 	return &(info->core[info->ref_index]);
+ }
+ 
+-/* Check core index change */
++/* Check lcore info of given ID is updated */
+ int
+-spp_check_core_update(unsigned int lcore_id)
++sppwk_is_lcore_updated(unsigned int lcore_id)
+ {
+ 	struct core_mng_info *info = (g_mng_data.p_core_info + lcore_id);
+ 	if (info->ref_index == info->upd_index)
+-		return SPPWK_RET_OK;
++		return 1;
+ 	else
+-		return SPPWK_RET_NG;
++		return 0;
+ }
+ 
+ /* Check if component is using port. */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index 4e2f888..db12e75 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -208,13 +208,13 @@ void del_vhost_sockfile(struct sppwk_port_info *vhost);
+ struct core_info *get_core_info(unsigned int lcore_id);
+ 
+ /**
+- * Check core index change
++ * Check lcore info of given ID is updated.
+  *
+  * @param lcore_id Lcore ID.
+- * @retval SPPWK_RET_OK If index is updated.
+- * @retval SPPWK_RET_NG If index is not updated.
++ * @retval 1 If it is updated.
++ * @retval 0 If it is not updated.
+  */
+-int spp_check_core_update(unsigned int lcore_id);
++int sppwk_is_lcore_updated(unsigned int lcore_id);
+ 
+ /**
+  * Check if component is using port.
+-- 
+2.17.1
+

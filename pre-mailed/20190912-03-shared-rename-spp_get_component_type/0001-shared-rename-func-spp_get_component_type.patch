@@ -1,0 +1,72 @@
+From 15619818c443d56dd162e2210befa2619c10e913 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 20:07:26 +0900
+Subject: [PATCH] shared: rename func spp_get_component_type
+
+This update is to rename spp_get_component_type() to
+sppwk_get_comp_type() for conventions.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 7 +++----
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 2 +-
+ src/vf/spp_vf.c                                | 4 ++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 15ceb6f..58db631 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -492,11 +492,10 @@ del_vhost_sockfile(struct sppwk_port_info *vhost)
+ 
+ /* Get component type of target component_info */
+ enum sppwk_worker_type
+-spp_get_component_type(int id)
++sppwk_get_comp_type(int id)
+ {
+-	struct sppwk_comp_info *component_info =
+-				(g_mng_data.p_component_info + id);
+-	return component_info->wk_type;
++	struct sppwk_comp_info *ci = (g_mng_data.p_component_info + id);
++	return ci->wk_type;
+ }
+ 
+ /* Get core information which is in use */
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index fb68905..4e2f888 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -136,7 +136,7 @@ enum sppwk_lcore_status sppwk_get_lcore_status(unsigned int lcore_id);
+  * @param id Component ID.
+  * @return Type of component executed
+  */
+-enum sppwk_worker_type spp_get_component_type(int id);
++enum sppwk_worker_type sppwk_get_comp_type(int id);
+ 
+ /* TODO(yasufum) revise the name of func. */
+ /**
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index bf4cdbe..6c0c938 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -167,7 +167,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 		if (status != SPPWK_LCORE_RUNNING)
+ 			continue;
+ 
+-		if (spp_check_core_update(lcore_id) == SPPWK_RET_OK) {
++		if (sppwk_is_lcore_updated(lcore_id) == 1) {
+ 			/* Setting with the flush command trigger. */
+ 			info->ref_index = (info->upd_index+1) % TWO_SIDES;
+ 			core = get_core_info(lcore_id);
+@@ -176,7 +176,7 @@ slave_main(void *arg __attribute__ ((unused)))
+ 		/* It is for processing multiple components. */
+ 		for (cnt = 0; cnt < core->num; cnt++) {
+ 			/* Component classification to call a function. */
+-			if (spp_get_component_type(core->id[cnt]) ==
++			if (sppwk_get_comp_type(core->id[cnt]) ==
+ 					SPPWK_TYPE_CLS) {
+ 				/* Component type for classifier. */
+ 				ret = classify_packets(core->id[cnt]);
+-- 
+2.17.1
+

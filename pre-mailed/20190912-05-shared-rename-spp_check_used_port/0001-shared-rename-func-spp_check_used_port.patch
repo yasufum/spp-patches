@@ -1,0 +1,87 @@
+From 1b9e97770200af13c5b0c997fa389a0930d96ef8 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 12 Sep 2019 20:30:33 +0900
+Subject: [PATCH] shared: rename func spp_check_used_port
+
+This update is to rename spp_check_used_port() to
+sppwk_check_used_port() for conventions.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_parser.c | 6 +++---
+ src/shared/secondary/spp_worker_th/cmd_utils.c  | 6 +++---
+ src/shared/secondary/spp_worker_th/cmd_utils.h  | 2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_parser.c b/src/shared/secondary/spp_worker_th/cmd_parser.c
+index a136b84..3f947f5 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_parser.c
++++ b/src/shared/secondary/spp_worker_th/cmd_parser.c
+@@ -463,10 +463,10 @@ parse_port(void *output, const char *arg_val, int allow_override)
+ 	/* If action is `add`, check the port is already used for rx and tx. */
+ 	if (allow_override == 0) {
+ 		if ((port->wk_action == SPPWK_ACT_ADD) &&
+-				(spp_check_used_port(tmp_port.iface_type,
++				(sppwk_check_used_port(tmp_port.iface_type,
+ 						tmp_port.iface_no,
+ 						SPPWK_PORT_DIR_RX) >= 0) &&
+-				(spp_check_used_port(tmp_port.iface_type,
++				(sppwk_check_used_port(tmp_port.iface_type,
+ 						tmp_port.iface_no,
+ 						SPPWK_PORT_DIR_TX) >= 0)) {
+ 			RTE_LOG(ERR, WK_CMD_PARSER,
+@@ -498,7 +498,7 @@ parse_port_direction(void *output, const char *arg_val, int allow_override)
+ 	/* add vlantag command check */
+ 	if (allow_override == 0) {
+ 		if ((port->wk_action == SPPWK_ACT_ADD) &&
+-				(spp_check_used_port(port->port.iface_type,
++				(sppwk_check_used_port(port->port.iface_type,
+ 					port->port.iface_no, ret) >= 0)) {
+ 			RTE_LOG(ERR, WK_CMD_PARSER,
+ 				"Port in used. (port command) val=%s\n",
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 1606d4f..f3d5de8 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -519,7 +519,7 @@ sppwk_is_lcore_updated(unsigned int lcore_id)
+ 
+ /* Check if component is using port. */
+ int
+-spp_check_used_port(
++sppwk_check_used_port(
+ 		enum port_type iface_type,
+ 		int iface_no,
+ 		enum sppwk_port_dir dir)
+@@ -562,14 +562,14 @@ set_component_change_port(struct sppwk_port_info *port,
+ {
+ 	int ret = 0;
+ 	if ((dir == SPPWK_PORT_DIR_RX) || (dir == SPPWK_PORT_DIR_BOTH)) {
+-		ret = spp_check_used_port(port->iface_type, port->iface_no,
++		ret = sppwk_check_used_port(port->iface_type, port->iface_no,
+ 				SPPWK_PORT_DIR_RX);
+ 		if (ret >= 0)
+ 			*(g_mng_data.p_change_component + ret) = 1;
+ 	}
+ 
+ 	if ((dir == SPPWK_PORT_DIR_TX) || (dir == SPPWK_PORT_DIR_BOTH)) {
+-		ret = spp_check_used_port(port->iface_type, port->iface_no,
++		ret = sppwk_check_used_port(port->iface_type, port->iface_no,
+ 				SPPWK_PORT_DIR_TX);
+ 		if (ret >= 0)
+ 			*(g_mng_data.p_change_component + ret) = 1;
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index db12e75..df1b0dc 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -225,7 +225,7 @@ int sppwk_is_lcore_updated(unsigned int lcore_id);
+  * @retval 0~127      If match component ID
+  * @retval SPPWK_RET_NG If failed.
+  */
+-int spp_check_used_port(
++int sppwk_check_used_port(
+ 		enum port_type iface_type,
+ 		int iface_no,
+ 		enum sppwk_port_dir dir);
+-- 
+2.17.1
+
