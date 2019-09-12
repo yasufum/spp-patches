@@ -1,0 +1,73 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d25460a1e9ec7d
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id 69sm32435141pfb.145.2019.09.12.04.40.09
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 12 Sep 2019 04:40:10 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] shared: remove unused spp_get_component_core
+Date: Thu, 12 Sep 2019 20:40:05 +0900
+Message-Id: <20190912114005.12416-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+spp_get_component_core() is used for getting information of given lcore
+ID, but not used from anywhere.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 9 ---------
+ src/shared/secondary/spp_worker_th/cmd_utils.h | 8 --------
+ 2 files changed, 17 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 2c50dcd..15ceb6f 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -499,15 +499,6 @@ spp_get_component_type(int id)
+ 	return component_info->wk_type;
+ }
+ 
+-/* Get core ID of target component */
+-unsigned int
+-spp_get_component_core(int component_id)
+-{
+-	struct sppwk_comp_info *info =
+-			(g_mng_data.p_component_info + component_id);
+-	return info->lcore_id;
+-}
+-
+ /* Get core information which is in use */
+ struct core_info *
+ get_core_info(unsigned int lcore_id)
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.h b/src/shared/secondary/spp_worker_th/cmd_utils.h
+index c778151..fb68905 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.h
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.h
+@@ -204,14 +204,6 @@ int init_mng_data(void);
+ /* Remove sock file if spp is not running */
+ void del_vhost_sockfile(struct sppwk_port_info *vhost);
+ 
+-/**
+- * Get core ID of target component
+- *
+- * @param component_id Unique component ID.
+- * @return Logical core id of specified component.
+- */
+-unsigned int spp_get_component_core(int component_id);
+-
+ /* Get core information which is in use */
+ struct core_info *get_core_info(unsigned int lcore_id);
+ 
+-- 
+2.17.1
+
+
