@@ -1,0 +1,22 @@
+From eb0d708bf51bc869791fe56633b65215949e282e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 17 Sep 2019 21:15:55 +0900
+Subject: [PATCH 0/2] Revise GSG chapter
+
+As CentOS support was added to SPP, documentation was updated to
+describe both of installations of Ubuntu and CentOS. However, there are
+still some ambiguous descriptions and not clear for which cases, or
+remained old descriptions in `Getting Started Guide`. This series of
+patches is to revise them.
+
+Yasufumi Ogawa (2):
+  docs: revise misc in setup section
+  docs: update install section
+
+ docs/guides/gsg/install.rst | 38 ++++++++++++++++++---------------
+ docs/guides/gsg/setup.rst   | 42 ++++++++++++++++++++++---------------
+ 2 files changed, 46 insertions(+), 34 deletions(-)
+
+-- 
+2.17.1
+
