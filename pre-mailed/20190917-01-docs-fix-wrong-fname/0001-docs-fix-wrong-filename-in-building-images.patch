@@ -1,0 +1,35 @@
+From 609df5c6ca1dcfb179595dea5e61511edb55396a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 17 Sep 2019 11:26:20 +0900
+Subject: [PATCH] docs: fix wrong filename in building images
+
+Fix old `build/build.py` to the latest `build/main.py`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/build_img.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/build_img.rst b/docs/guides/tools/sppc/build_img.rst
+index 9f74ac7..21046a1 100644
+--- a/docs/guides/tools/sppc/build_img.rst
++++ b/docs/guides/tools/sppc/build_img.rst
+@@ -19,7 +19,7 @@ with DPDK 18.11 as following.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python build/build.py --dpdk-branch v18.11 \
++    $ python build/main.py --dpdk-branch v18.11 \
+       --spp-repo https://github.com/your/spp.git
+ 
+ Refer all of options running with ``-h`` option.
+@@ -240,5 +240,5 @@ This script refers ``ubuntu/dpdk/env.sh`` for Ubuntu image  to include
+ environment variables.
+ So, it is failed to ``build/run.sh`` if this config file
+ does not exist.
+-You can create it from ``build/build.py`` with ``--only-envsh`` option
++You can create it from ``build/main.py`` with ``--only-envsh`` option
+ if you removed it accidentally.
+-- 
+2.17.1
+
