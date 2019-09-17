@@ -1,0 +1,52 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d3d28cd5f421ef
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id c8sm478135pgw.37.2019.09.16.19.59.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Sep 2019 19:59:06 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] docs: fix wrong filename in building images
+Date: Tue, 17 Sep 2019 11:59:01 +0900
+Message-Id: <20190917025901.17673-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Fix old `build/build.py` to the latest `build/main.py`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/build_img.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/build_img.rst b/docs/guides/tools/sppc/build_img.rst
+index 9f74ac7..21046a1 100644
+--- a/docs/guides/tools/sppc/build_img.rst
++++ b/docs/guides/tools/sppc/build_img.rst
+@@ -19,7 +19,7 @@ with DPDK 18.11 as following.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python build/build.py --dpdk-branch v18.11 \
++    $ python build/main.py --dpdk-branch v18.11 \
+       --spp-repo https://github.com/your/spp.git
+ 
+ Refer all of options running with ``-h`` option.
+@@ -240,5 +240,5 @@ This script refers ``ubuntu/dpdk/env.sh`` for Ubuntu image  to include
+ environment variables.
+ So, it is failed to ``build/run.sh`` if this config file
+ does not exist.
+-You can create it from ``build/build.py`` with ``--only-envsh`` option
++You can create it from ``build/main.py`` with ``--only-envsh`` option
+ if you removed it accidentally.
+-- 
+2.17.1
+
+

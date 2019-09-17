@@ -1,0 +1,194 @@
+X-Account-Key: account5
+X-UIDL: GmailId16d3d2917d226034
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id d10sm582303pfn.50.2019.09.16.19.59.25
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Sep 2019 19:59:26 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] tools/sppc: make compiling faster in build images
+Date: Tue, 17 Sep 2019 11:59:19 +0900
+Message-Id: <20190917025919.17734-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Add `-j` option to each of make commands to compile programs in
+parallel.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04    | 6 +++---
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04    | 6 +++---
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.latest   | 6 +++---
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04  | 4 ++--
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04  | 4 ++--
+ tools/sppc/build/ubuntu/pktgen/Dockerfile.latest | 4 ++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04     | 4 ++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04     | 4 ++--
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest    | 4 ++--
+ 9 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04 b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
+index b4b3681..80e15e1 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
+@@ -34,9 +34,9 @@ RUN git clone $dpdk_branch $dpdk_repo
+ 
+ # Compile DPDK
+ WORKDIR $rte_sdk
+-RUN make install T=$rte_target
+-RUN make app T=$rte_target
+-RUN make examples T=$rte_target
++RUN make -j install T=$rte_target
++RUN make -j app T=$rte_target
++RUN make -j examples T=$rte_target
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04 b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+index 5880709..348b71c 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+@@ -34,9 +34,9 @@ RUN git clone $dpdk_branch $dpdk_repo
+ 
+ # Compile DPDK
+ WORKDIR $rte_sdk
+-RUN make install T=$rte_target
+-RUN make app T=$rte_target
+-RUN make examples T=$rte_target
++RUN make -j install T=$rte_target
++RUN make -j app T=$rte_target
++RUN make -j examples T=$rte_target
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+index 425b3f8..0bf028e 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+@@ -34,9 +34,9 @@ RUN git clone $dpdk_branch $dpdk_repo
+ 
+ # Compile DPDK
+ WORKDIR $rte_sdk
+-RUN make install T=$rte_target
+-RUN make app T=$rte_target
+-RUN make examples T=$rte_target
++RUN make -j install T=$rte_target
++RUN make -j app T=$rte_target
++RUN make -j examples T=$rte_target
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+index 4c4ae49..7f9a879 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+@@ -42,10 +42,10 @@ RUN git clone ${pktgen_branch} ${pktgen_repo}
+ 
+ # Compile DPDK and pktgen
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${pktgen_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 9862e4d..5ade823 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -43,10 +43,10 @@ RUN git clone ${pktgen_branch} ${pktgen_repo}
+ 
+ # Compile DPDK and pktgen
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${pktgen_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index 1f48c19..5b360ed 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -43,10 +43,10 @@ RUN git clone ${pktgen_branch} ${pktgen_repo}
+ 
+ # Compile DPDK and pktgen
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${pktgen_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+index a928ac4..e43a20b 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+@@ -44,10 +44,10 @@ RUN git clone ${spp_branch} ${spp_repo}
+ 
+ # Compile DPDK and SPP
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${spp_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index 7a7c06b..2257747 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -45,10 +45,10 @@ RUN git clone ${spp_branch} ${spp_repo}
+ 
+ # Compile DPDK and SPP
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${spp_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index 6f87cd1..dcacab2 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -45,10 +45,10 @@ RUN git clone ${spp_branch} ${spp_repo}
+ 
+ # Compile DPDK and SPP
+ WORKDIR ${rte_sdk}
+-RUN make install T=${rte_target}
++RUN make -j install T=${rte_target}
+ 
+ WORKDIR ${home_dir}/${spp_dir}
+-RUN make
++RUN make -j
+ 
+ # Set working directory when container is launched
+ WORKDIR ${home_dir}
+-- 
+2.17.1
+
+
