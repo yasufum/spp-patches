@@ -1,0 +1,32 @@
+From b51396d0f7f8a21b043415806d8e9d50591b9914 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 27 Sep 2019 20:22:01 +0900
+Subject: [PATCH 0/3] Update to v19.08
+
+Some structs and functions have renamed in DPDK v19.08, SPP should also
+change for the changes. This series of patches is to rename them as
+following.
+
+  * ether_hdr to rte_ether_hdr
+  * ether_addr to rte_ether_addr
+  * vlan_hdr to rte_vlan_hdr
+  * ETHER_ADDR_LEN to RTE_ETHER_ADDR_LEN
+  * ETHER_TYPE_VLAN to RTE_ETHER_TYPE_VLAN
+  * ether_format_addr() to rte_ether_format_addr()
+  * is_multicast_ether_addr() to rte_is_multicast_ether_addr()
+
+Yasufumi Ogawa (3):
+  shared: add rte prefix for DPDK v19.08
+  spp_primary: add rte prefix for DPDK v19.08
+  spp_vf: add rte prefix for DPDK v19.08
+
+ src/primary/main.c                            |  2 +-
+ src/shared/secondary/add_port.c               |  6 +--
+ .../secondary/spp_worker_th/cmd_utils.c       |  2 +-
+ .../secondary/spp_worker_th/port_capability.c | 30 +++++++--------
+ src/vf/classifier.c                           | 38 +++++++++----------
+ 5 files changed, 39 insertions(+), 39 deletions(-)
+
+-- 
+2.17.1
+
