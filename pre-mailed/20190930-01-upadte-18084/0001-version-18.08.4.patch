@@ -1,0 +1,91 @@
+From b038558bd2083ec3821f640822ca226fc8a45b26 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 1 Oct 2019 01:49:59 +0900
+Subject: [PATCH] version: 18.08.4
+
+This patch is to update SPP to v18.08.4.
+
+* Fix bug for deleting vhost PMD in spp_nfv.
+
+* Add REST APIs for adding and deleting ports from primary process.
+
+* Add `bin/startup.sh` to start spp-ctl, CLI and spp_primary for quick
+  start. Options for processes are defined in `bin/config.sh`.
+
+* Update managing devices given with `--vdev` because mechanism of
+  sharing vdevs between primary and secondary is changed in DPDK.
+
+* Fix assigning wrong master lcore in which it is always  assigned 0
+  if it is given other than 0.
+
+* Fix wrong finalization if rte_eal_init() is failed.
+
+* Change SPP_RET_OK and SPP_RET_NG to SPPWK_RET_OK and SPPWK_RET_NG
+  because it is only used in secondary worker processes.
+
+* Disable to launch secondary processes with the same IDs wrongly.
+
+* Rename directory `controller` to `cli`, and label name in git log,
+  because it should be distinguished from spp-ctl.
+
+* For testing behaviours of spp_primary, enable to add arbitrary vdevs
+  and add `--dry-run` option.
+    $ bin/start.sh --dry-run
+
+* Fix compile error of spp_pcap in SPP container.
+
+* Refactor spp_vf, spp_mirror and spp_pcap to reduce duplicated
+  definitions and files.
+
+* Add config option for SPP CLI to specify any of config file.
+    $ python3 src/spp.py --config /path/to/your/config.yml
+
+* Add validation for config command to check given value.
+
+* Update `topo` command.
+  - Add supported types of secondary processes other than spp_nfv.
+  - Add supported port types for spp_pcap.
+  - remove `topo_resize` because it is changed to be set from `config`
+    command.
+  - Revise placeholder for styles.
+  - Several bug fixes.
+
+* Add blacklist and whitelist options for SPP container.
+
+* Add app containers for `l3fwd-acl` and `suricata`[1]. For suricata,
+  it is also added a build script for.
+  - [1] https://github.com/vipinpv85/DPDK_SURICATA-4_1_1
+
+* Add recipes for testing usecases described in docs.
+
+* Revise ringlatencystats, but still remained some problems for
+  compiling in some environments. It is a TODO should be fixed in
+  a future.
+
+* Fix many TODOs.
+
+* And many misc updates for improving usability and maintainability.
+
+* Update documentation for above changes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 09e638f..e262c87 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.3
++VERSION := 18.08.4
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.17.1
+
