@@ -1,0 +1,44 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:95be:3968:b0c2:6ad])
+        by smtp.gmail.com with ESMTPSA id m12sm9069435pff.66.2019.09.28.19.41.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Sep 2019 19:41:47 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: Tetsuya Mukawa <mtetsuyah@gmail.com>
+Cc: dev@dpdk.org,
+	Yasufumi Ogawa <yasufum.o@gmail.com>
+Subject: [PATCH] net/null: fix multi-process rx and tx
+Date: Sun, 29 Sep 2019 11:41:41 +0900
+Message-Id: <20190929024141.30443-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+Packet processing in secondary process cannot work because rx_pkt_burst
+and tx_pkt_burst in eth_dev are not initialized while probing device.
+This patch is to the initialization.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ drivers/net/null/rte_eth_null.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/null/rte_eth_null.c b/drivers/net/null/rte_eth_null.c
+index 0c60d241a..5a2010e3e 100644
+--- a/drivers/net/null/rte_eth_null.c
++++ b/drivers/net/null/rte_eth_null.c
+@@ -586,6 +586,13 @@ rte_pmd_null_probe(struct rte_vdev_device *dev)
+ 		/* TODO: request info from primary to set up Rx and Tx */
+ 		eth_dev->dev_ops = &ops;
+ 		eth_dev->device = &dev->device;
++		if (packet_copy) {
++			eth_dev->rx_pkt_burst = eth_null_copy_rx;
++			eth_dev->tx_pkt_burst = eth_null_copy_tx;
++		} else {
++			eth_dev->rx_pkt_burst = eth_null_rx;
++			eth_dev->tx_pkt_burst = eth_null_tx;
++		}
+ 		rte_eth_dev_probing_finish(eth_dev);
+ 		return 0;
+ 	}
+-- 
+2.17.1
+
