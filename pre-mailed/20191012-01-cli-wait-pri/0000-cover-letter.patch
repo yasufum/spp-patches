@@ -1,0 +1,17 @@
+From 2b5f8cc30d49bca68011136f5d614c5d8dc162b6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 12 Oct 2019 18:54:36 +0900
+Subject: [PATCH 0/1] Add checking for spp_primary is launched
+
+This patch is to add checking if spp_primary is ready for use in SPP
+CLI. It is applied to both of the latest and stable-v18.08 repositories.
+
+Yasufumi Ogawa (1):
+  cli: wait for spp_primary is launched
+
+ src/cli/shell.py | 55 ++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 42 insertions(+), 13 deletions(-)
+
+-- 
+2.17.1
+
