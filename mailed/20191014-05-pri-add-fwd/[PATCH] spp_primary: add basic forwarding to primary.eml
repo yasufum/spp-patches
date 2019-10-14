@@ -1,0 +1,271 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9046:90d6:77b7:3115])
+        by smtp.gmail.com with ESMTPSA id 18sm19850268pfp.100.2019.10.14.11.45.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2019 11:45:52 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] spp_primary: add basic forwarding to primary
+Date: Tue, 15 Oct 2019 03:45:48 +0900
+Message-Id: <20191014184548.27208-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+As vdev has changed to be managed by primary and shared among
+secondaries, and this change is not completed yet, creating vdev
+from secondary does not work for several devices.
+
+In SPP, primary is a resource manager and secondary is a worker for
+creating devices and doing specific tasks using the devices. However,
+creating devs from secondary is not doable for above change. So, most
+useful vhost cannot be used for the reason.
+
+To remedy the issue, add tasks of creating vdevs and forwarding packets
+to primary. Implementation of accepting commands is done in the next
+patches.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/init.h       | 10 ----------
+ src/nfv/main.c       |  1 -
+ src/primary/Makefile |  6 +++---
+ src/primary/args.c   | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ src/primary/args.h   | 15 +++++++++++++++
+ src/primary/init.c   |  5 ++++-
+ src/primary/main.c   | 39 +++++++++++++++++++++++++++++++++++++--
+ 7 files changed, 101 insertions(+), 18 deletions(-)
+ delete mode 100644 src/nfv/init.h
+
+diff --git a/src/nfv/init.h b/src/nfv/init.h
+deleted file mode 100644
+index 7d28755..0000000
+--- a/src/nfv/init.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/* SPDX-License-Identifier: BSD-3-Clause
+- * Copyright(c) 2015-2016 Intel Corporation
+- * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+- */
+-
+-#ifndef _NFV_INIT_H_
+-#define _NFV_INIT_H_
+-
+-
+-#endif
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 047d4c1..513a98d 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -19,7 +19,6 @@
+ #include "shared/basic_forwarder.h"
+ 
+ #include "params.h"
+-#include "init.h"
+ #include "nfv_status.h"
+ #include "shared/port_manager.h"
+ #include "commands.h"
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index e524ef1..14d8f30 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -18,12 +18,12 @@ endif
+ # binary name
+ APP = spp_primary
+ 
+-# TODO: move add_port.c and parse_resource uid() in utils.c to shared
+-#       dir and remove it.
++# TODO: revise to not use functions in secondary's.
+ SPP_SEC_DIR = ../shared/secondary
+ 
+ # all source are stored in SRCS-y
+-SRCS-y := main.c init.c args.c ../shared/common.c
++SRCS-y := main.c init.c args.c
++SRCS-y += ../shared/common.c ../shared/basic_forwarder.c ../shared/port_manager.c
+ SRCS-y += $(SPP_SEC_DIR)/add_port.c
+ SRCS-y += $(SPP_SEC_DIR)/utils.c
+ 
+diff --git a/src/primary/args.c b/src/primary/args.c
+index 7df5557..346bcbf 100644
+--- a/src/primary/args.c
++++ b/src/primary/args.c
+@@ -17,6 +17,25 @@ uint16_t num_rings;
+ char *server_ip;
+ int server_port;
+ 
++/* Flag for deciding to forward */
++int do_forwarding;
++
++/*
++ * Long options mapped to a short option.
++ *
++ * First long only option value must be >= 256, so that we won't
++ * conflict with short options.
++ */
++enum {
++	CMD_LINE_OPT_MIN_NUM = 256,
++	CMD_OPT_DISP_STATS,
++};
++
++struct option lgopts[] = {
++	{"disp-stats", no_argument, NULL, CMD_OPT_DISP_STATS},
++	{0}
++};
++
+ static const char *progname;
+ 
+ /**
+@@ -32,6 +51,26 @@ usage(void)
+ 	    , progname);
+ }
+ 
++int set_forwarding_flg(int flg)
++{
++	if (flg == 0 || flg == 1)
++		do_forwarding = flg;
++	else {
++		RTE_LOG(ERR, PRIMARY, "Invalid value for forwarding flg.\n");
++		return -1;
++	}
++	return 0;
++}
++
++int get_forwarding_flg(void)
++{
++	if (do_forwarding < 0) {
++		RTE_LOG(ERR, PRIMARY, "Forwarding flg is not initialized.\n");
++		return -1;
++	}
++	return do_forwarding;
++}
++
+ /**
+  * The ports to be used by the application are passed in
+  * the form of a bitmask. This function parses the bitmask
+@@ -103,7 +142,6 @@ parse_app_args(uint16_t max_ports, int argc, char *argv[])
+ {
+ 	int option_index, opt;
+ 	char **argvopt = argv;
+-	struct option lgopts[] = { {0} };
+ 	int ret;
+ 
+ 	progname = argv[0];
+@@ -111,6 +149,9 @@ parse_app_args(uint16_t max_ports, int argc, char *argv[])
+ 	while ((opt = getopt_long(argc, argvopt, "n:p:s:", lgopts,
+ 		&option_index)) != EOF) {
+ 		switch (opt) {
++		case CMD_OPT_DISP_STATS:
++			set_forwarding_flg(0);
++			break;
+ 		case 'p':
+ 			if (parse_portmask(ports, max_ports, optarg) != 0) {
+ 				usage();
+diff --git a/src/primary/args.h b/src/primary/args.h
+index 29bca0d..644cd56 100644
+--- a/src/primary/args.h
++++ b/src/primary/args.h
+@@ -13,6 +13,21 @@ extern uint16_t num_rings;
+ extern char *server_ip;
+ extern int server_port;
+ 
++/**
++ * Set flg from given argument.
++ *
++ * @params[in] flg Enabled if 1, or disabled if 0.
++ * @return 0 if succeeded, or -1 if failed.
++ */
++int set_forwarding_flg(int flg);
++
++/**
++ * Get forwarding flag.
++ *
++ * @return 1 if doing forwarding, or 0 if disabled.
++ */
++int get_forwarding_flg(void);
++
+ int parse_portmask(struct port_info *ports, uint16_t max_ports,
+ 		const char *portmask);
+ int parse_app_args(uint16_t max_ports, int argc, char *argv[]);
+diff --git a/src/primary/init.c b/src/primary/init.c
+index 60e5c47..3aec7f0 100644
+--- a/src/primary/init.c
++++ b/src/primary/init.c
+@@ -141,7 +141,10 @@ init(int argc, char *argv[])
+ 		ports = mz->addr;
+ 	}
+ 
+-	/* parse additional, application arguments */
++	/* Primary does forwarding without option `disp-stats` as default. */
++	set_forwarding_flg(1);
++
++	/* Parse additional, application arguments */
+ 	retval = parse_app_args(total_ports, argc, argv);
+ 	if (retval != 0)
+ 		return -1;
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 74fb33c..004491f 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -17,6 +17,7 @@
+ #include "init.h"
+ #include "primary.h"
+ 
++#include "shared/port_manager.h"
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/utils.h"
+ 
+@@ -164,6 +165,32 @@ sleep_lcore(void *dummy __rte_unused)
+ 	return 0;
+ }
+ 
++/* main processing loop for forwarding. */
++static void
++forward_loop(void)
++{
++	unsigned int lcore_id = rte_lcore_id();
++
++	RTE_LOG(INFO, PRIMARY, "entering main loop on lcore %u\n", lcore_id);
++
++	while (1) {
++		if (unlikely(cmd == STOP)) {
++			sleep(1);
++			continue;
++		} else if (cmd == FORWARD) {
++			forward();
++		}
++	}
++}
++
++/* leading to forward loop. */
++static int
++main_loop(void *dummy __rte_unused)
++{
++	forward_loop();
++	return 0;
++}
++
+ /*
+  * Function to set all the client statistic values to zero.
+  * Called at program startup.
+@@ -825,8 +852,16 @@ main(int argc, char *argv[])
+ 		}
+ 	}
+ 
+-	/* put all other cores to sleep bar master */
+-	rte_eal_mp_remote_launch(sleep_lcore, NULL, SKIP_MASTER);
++	if (get_forwarding_flg() == 1) {
++		/* initialize port forward array*/
++		forward_array_init();
++		port_map_init();
++
++		/* do forwarding */
++		rte_eal_mp_remote_launch(main_loop, NULL, SKIP_MASTER);
++	} else
++		/* put all other cores to sleep bar master */
++		rte_eal_mp_remote_launch(sleep_lcore, NULL, SKIP_MASTER);
+ 
+ 	while (on) {
+ 		ret = do_connection(&connected, &sock);
+-- 
+2.17.1
+

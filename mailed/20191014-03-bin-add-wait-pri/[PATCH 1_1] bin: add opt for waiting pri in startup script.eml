@@ -1,0 +1,40 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:9046:90d6:77b7:3115])
+        by smtp.gmail.com with ESMTPSA id t21sm19419728pgi.87.2019.10.14.11.45.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2019 11:45:20 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/1] bin: add opt for waiting pri in startup script
+Date: Tue, 15 Oct 2019 03:45:14 +0900
+Message-Id: <20191014184514.26795-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191014184514.26795-1-yasufum.o@gmail.com>
+References: <20191014184514.26795-1-yasufum.o@gmail.com>
+
+This update is to add option `--wait-pri` for `bin/start.sh`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/start.sh | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/bin/start.sh b/bin/start.sh
+index f39d5f6..2f4e31a 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -64,7 +64,6 @@ echo "Start spp_primary"
+ start_spp_pri
+ 
+ if [ ! ${DRY_RUN} ]; then
+-    echo "Waiting for spp-ctl is ready ..."
+-    sleep 1
+-    python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP}
++    sleep 1  # wait for spp-ctl is ready
++    python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP} --wait-pri
+ fi
+-- 
+2.17.1
+
