@@ -1,0 +1,17 @@
+From 59e1d963525ab9f624852ce8a0a5683b398c485b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 15 Oct 2019 03:02:43 +0900
+Subject: [PATCH 0/1] Add option for waiting pri in startup script
+
+This update is to add option `--wait-pri` for `bin/start.sh`. It is
+applied to both of the latest and stable-v18.08 repositories.
+
+Yasufumi Ogawa (1):
+  bin: add opt for waiting pri in startup script
+
+ bin/start.sh | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+-- 
+2.17.1
+

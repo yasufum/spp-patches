@@ -1,0 +1,29 @@
+From 36a3076c551386747373e8114d9642f403e7b336 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 13 Oct 2019 12:44:21 +0900
+Subject: [PATCH 1/2] cli: output time to start spp_primary
+
+This is a tiny update for displaying a time cost for launching
+spp_primary.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/shell.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cli/shell.py b/src/cli/shell.py
+index 7fda64d..2a28aa3 100644
+--- a/src/cli/shell.py
++++ b/src/cli/shell.py
+@@ -105,7 +105,7 @@ class Shell(cmd.Cmd, object):
+             time.sleep(self.WAIT_PRI_INTERVAL)
+             print('.', end='', flush=True)
+             cnt += 1
+-        print(' OK!')
++        print(' OK! ({}[sec])'.format(cnt * self.WAIT_PRI_INTERVAL))
+ 
+     def init_spp_procs(self):
+         """Initialize delegators of SPP processes.
+-- 
+2.17.1
+

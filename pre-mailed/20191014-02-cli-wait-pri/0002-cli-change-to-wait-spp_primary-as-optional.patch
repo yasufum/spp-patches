@@ -1,0 +1,132 @@
+From c407864c0f05d042bf0c9f718a23a98081d6fd43 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 14 Oct 2019 19:13:00 +0900
+Subject: [PATCH 2/2] cli: change to wait spp_primary as optional
+
+For SPP CLI, waiting spp_primary launched is useful, but no need if it
+is already launched. This update is to change the feature as optional.
+SPP CLI waits primary if `--wait-pri` is given.
+
+  $ python3 src/spp.py --wait-pri
+
+In terms of implementation, behaviour of waiting primary is moved from
+__init__() to _wait_pri_launched().
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/shell.py | 62 +++++++++++++++++++++++++++++-------------------
+ src/cli/spp.py   |  4 +++-
+ 2 files changed, 40 insertions(+), 26 deletions(-)
+
+diff --git a/src/cli/shell.py b/src/cli/shell.py
+index 2a28aa3..0de6176 100644
+--- a/src/cli/shell.py
++++ b/src/cli/shell.py
+@@ -28,7 +28,7 @@ class Shell(cmd.Cmd, object):
+     WAIT_PRI_INTERVAL = 0.5  # sec
+     WAIT_PRI_TIMEOUT = 20    # sec
+ 
+-    def __init__(self, spp_cli_objs, config, use_cache=False):
++    def __init__(self, spp_cli_objs, config, wait_pri=False, use_cache=False):
+ 
+         # Load default config, can be changed via `config` command
+         try:
+@@ -82,30 +82,8 @@ class Shell(cmd.Cmd, object):
+         common.set_current_server_addr(
+                 self.spp_ctl_cli.ip_addr, self.spp_ctl_cli.port)
+ 
+-        # Wait for launching spp_primary.
+-        print('Waiting for spp_primary is ready .', end='', flush=True)
+-        wait_cnt = self.WAIT_PRI_TIMEOUT / self.WAIT_PRI_INTERVAL
+-        cnt = 0
+-        is_pri_ready = False
+-        while(is_pri_ready is False) and (cnt < wait_cnt):
+-            res = self.spp_ctl_cli.get('processes')
+-            if res is not None:
+-                if res.status_code == 200:
+-                    pri_obj = None
+-                    try:
+-                        proc_objs = res.json()
+-                        for proc_obj in proc_objs:
+-                            if proc_obj['type'] == 'primary':
+-                                pri_obj = proc_obj
+-                    except KeyError as e:
+-                        print('Error: {} is not defined!'.format(e))
+-
+-                    if pri_obj is not None:
+-                        is_pri_ready = True
+-            time.sleep(self.WAIT_PRI_INTERVAL)
+-            print('.', end='', flush=True)
+-            cnt += 1
+-        print(' OK! ({}[sec])'.format(cnt * self.WAIT_PRI_INTERVAL))
++        if wait_pri is True:
++            self._wait_pri_launched()
+ 
+     def init_spp_procs(self):
+         """Initialize delegators of SPP processes.
+@@ -138,6 +116,40 @@ class Shell(cmd.Cmd, object):
+             self.secondaries['pcap'][sec_id] = pcap.SppPcap(
+                     self.spp_ctl_cli, sec_id)
+ 
++    def _wait_pri_launched(self):
++        """Wait for launching spp_primary."""
++
++        print('Waiting for spp_primary is ready ...',
++                end='', flush=True)
++        wait_cnt = self.WAIT_PRI_TIMEOUT / self.WAIT_PRI_INTERVAL
++        cnt = 0
++        is_pri_ready = False
++        while cnt < wait_cnt:
++            res = self.spp_ctl_cli.get('processes')
++            if res is not None:
++                if res.status_code == 200:
++                    pri_obj = None
++                    try:
++                        proc_objs = res.json()
++                        for proc_obj in proc_objs:
++                            if proc_obj['type'] == 'primary':
++                                pri_obj = proc_obj
++                    except KeyError as e:
++                        print('Error: {} is not defined!'.format(e))
++
++                    if pri_obj is not None:
++                        is_pri_ready = True
++                        break
++            time.sleep(self.WAIT_PRI_INTERVAL)
++            print('.', end='', flush=True)
++            cnt += 1
++
++        t = cnt * self.WAIT_PRI_INTERVAL
++        if is_pri_ready is True:
++            print(' OK! ({}[sec])'.format(t))
++        else:
++            print(' Timeout! ({}[sec])'.format(t))
++
+     # Called everytime after running command. `stop` is returned from `do_*`
+     # method and SPP CLI is terminated if it is True. It means that only
+     # `do_bye` and  `do_exit` return True.
+diff --git a/src/cli/spp.py b/src/cli/spp.py
+index 8cf31eb..991218d 100644
+--- a/src/cli/spp.py
++++ b/src/cli/spp.py
+@@ -21,6 +21,8 @@ def main(argv):
+     parser.add_argument('-b', '--bind-addr', action='append',
+                         default=['%s:%s' % (api_ipaddr, api_port)],
+                         help='bind address, default=127.0.0.1:7777')
++    parser.add_argument('--wait-pri', action='store_true',
++                        help='Wait for spp_primary is launched')
+     parser.add_argument('--config', type=str,
+                         help='Config file path')
+     args = parser.parse_args()
+@@ -51,7 +53,7 @@ def main(argv):
+ 
+         spp_cli_objs.append(spp_ctl_cli)
+ 
+-    shell = Shell(spp_cli_objs, args.config)
++    shell = Shell(spp_cli_objs, args.config, args.wait_pri)
+     shell.cmdloop()
+     shell = None
+ 
+-- 
+2.17.1
+

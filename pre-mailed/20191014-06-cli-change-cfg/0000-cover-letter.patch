@@ -1,0 +1,18 @@
+From 9a732e96212e9cab96123d6883baf8963448bcd6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 15 Oct 2019 03:09:24 +0900
+Subject: [PATCH 0/1] Change default shared lcore in config
+
+As primary is changed to do forwarding and require two lcores for,
+change shared lcore among secondaries from 1 to 2. It is applied to both
+of the latest and stable-v18.08 repositories.
+
+Yasufumi Ogawa (1):
+  cli: change default shared lcore in config
+
+ src/cli/config/default.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.17.1
+

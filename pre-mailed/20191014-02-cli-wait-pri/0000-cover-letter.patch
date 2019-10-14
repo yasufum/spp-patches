@@ -1,0 +1,25 @@
+From c407864c0f05d042bf0c9f718a23a98081d6fd43 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 15 Oct 2019 02:58:51 +0900
+Subject: [PATCH 0/2] Revise CLI for waiting spp_primary launched
+
+For SPP CLI, waiting spp_primary launched is useful, but no need if it
+is already launched. This update is to change the feature as optional.
+SPP CLI waits primary if `--wait-pri` is given.
+
+  $ python3 src/spp.py --wait-pri
+
+This series of update is to update SPP CLI to do that, and revise output
+messages.
+
+Yasufumi Ogawa (2):
+  cli: output time to start spp_primary
+  cli: change to wait spp_primary as optional
+
+ src/cli/shell.py | 62 +++++++++++++++++++++++++++++-------------------
+ src/cli/spp.py   |  4 +++-
+ 2 files changed, 40 insertions(+), 26 deletions(-)
+
+-- 
+2.17.1
+

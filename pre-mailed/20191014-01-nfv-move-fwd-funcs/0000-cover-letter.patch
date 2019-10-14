@@ -1,0 +1,29 @@
+From f90b86e90d9cf6ced12e8b90093cfadfdf23c9a2 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 15 Oct 2019 02:55:14 +0900
+Subject: [PATCH 0/2] Move forward functions for ports to shared
+
+This series of patches is to move forward() and other util functions
+to shared dir to enable it to be used from other processes including
+spp_primary.
+
+Yasufumi Ogawa (2):
+  spp_nfv: move forward func to be shared
+  spp_nfv: move util funcs for ports to shared
+
+ src/nfv/Makefile                              |  2 +-
+ src/nfv/main.c                                | 51 +----------------
+ src/nfv/params.h                              |  4 --
+ src/shared/basic_forwarder.c                  | 55 +++++++++++++++++++
+ src/shared/basic_forwarder.h                  | 13 +++++
+ src/shared/common.h                           |  3 +
+ .../nfv_utils.h => shared/port_manager.h}     | 20 ++++---
+ src/shared/secondary/common.h                 |  2 -
+ 8 files changed, 85 insertions(+), 65 deletions(-)
+ create mode 100644 src/shared/basic_forwarder.c
+ create mode 100644 src/shared/basic_forwarder.h
+ rename src/{nfv/nfv_utils.h => shared/port_manager.h} (83%)
+
+-- 
+2.17.1
+

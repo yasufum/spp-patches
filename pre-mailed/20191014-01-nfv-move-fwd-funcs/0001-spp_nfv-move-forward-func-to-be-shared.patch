@@ -1,0 +1,230 @@
+From 43ed000a8e89cdb3a6effdccdaf8e497bc64d1bb Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 12 Oct 2019 16:34:13 +0900
+Subject: [PATCH 1/2] spp_nfv: move forward func to be shared
+
+This update is to move forward() and some data structs used by this
+function to shared dir to enable it to be used from other processes
+including spp_primary.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/Makefile              |  2 +-
+ src/nfv/main.c                | 49 +------------------------------
+ src/nfv/params.h              |  4 ---
+ src/shared/basic_forwarder.c  | 55 +++++++++++++++++++++++++++++++++++
+ src/shared/basic_forwarder.h  | 13 +++++++++
+ src/shared/common.h           |  3 ++
+ src/shared/secondary/common.h |  2 --
+ 7 files changed, 73 insertions(+), 55 deletions(-)
+ create mode 100644 src/shared/basic_forwarder.c
+ create mode 100644 src/shared/basic_forwarder.h
+
+diff --git a/src/nfv/Makefile b/src/nfv/Makefile
+index 1328f61..a8b5629 100644
+--- a/src/nfv/Makefile
++++ b/src/nfv/Makefile
+@@ -14,7 +14,7 @@ APP = spp_nfv
+ 
+ # all source are stored in SRCS-y
+ SRCS-y := main.c nfv_status.c
+-SRCS-y += ../shared/common.c
++SRCS-y += ../shared/common.c ../shared/basic_forwarder.c
+ SRCS-y += ../shared/secondary/common.c
+ SRCS-y += ../shared/secondary/utils.c ../shared/secondary/add_port.c
+ 
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 89e7714..dbefba4 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -16,6 +16,7 @@
+ #include "shared/secondary/add_port.h"
+ #include "shared/secondary/common.h"
+ #include "shared/common.h"
++#include "shared/basic_forwarder.h"
+ 
+ #include "params.h"
+ #include "init.h"
+@@ -105,54 +106,6 @@ parse_app_args(int argc, char *argv[])
+ 	return 0;
+ }
+ 
+-static void
+-forward(void)
+-{
+-	uint16_t nb_rx;
+-	uint16_t nb_tx;
+-	int in_port;
+-	int out_port;
+-	uint16_t buf;
+-	int i;
+-
+-	/* Go through every possible port numbers*/
+-	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
+-		struct rte_mbuf *bufs[MAX_PKT_BURST];
+-
+-		if (ports_fwd_array[i].in_port_id == PORT_RESET)
+-			continue;
+-
+-		if (ports_fwd_array[i].out_port_id == PORT_RESET)
+-			continue;
+-
+-		/* if status active, i count is in port*/
+-		in_port = i;
+-		out_port = ports_fwd_array[i].out_port_id;
+-
+-		/* Get burst of RX packets, from first port of pair. */
+-		/*first port rx, second port tx*/
+-		nb_rx = ports_fwd_array[in_port].rx_func(in_port, 0, bufs,
+-			MAX_PKT_BURST);
+-		if (unlikely(nb_rx == 0))
+-			continue;
+-
+-		port_map[in_port].stats->rx += nb_rx;
+-
+-		/* Send burst of TX packets, to second port of pair. */
+-		nb_tx = ports_fwd_array[out_port].tx_func(out_port, 0, bufs,
+-			nb_rx);
+-
+-		port_map[out_port].stats->tx += nb_tx;
+-
+-		/* Free any unsent packets. */
+-		if (unlikely(nb_tx < nb_rx)) {
+-			port_map[out_port].stats->tx_drop += nb_rx - nb_tx;
+-			for (buf = nb_tx; buf < nb_rx; buf++)
+-				rte_pktmbuf_free(bufs[buf]);
+-		}
+-	}
+-}
+-
+ /* main processing loop */
+ static void
+ nfv_loop(void)
+diff --git a/src/nfv/params.h b/src/nfv/params.h
+index 5850791..7197baf 100644
+--- a/src/nfv/params.h
++++ b/src/nfv/params.h
+@@ -22,13 +22,9 @@ struct porttype_map portmap[] = {
+ 	{ .port_name = NULL,    .port_type = UNDEF, },
+ };
+ 
+-static struct port ports_fwd_array[RTE_MAX_ETHPORTS];
+-
+ /* the port details */
+ struct port_info *ports;
+ 
+ static enum cmd_type cmd;
+ 
+-static struct port_map port_map[RTE_MAX_ETHPORTS];
+-
+ #endif // _NFV_PARAMS_H_
+diff --git a/src/shared/basic_forwarder.c b/src/shared/basic_forwarder.c
+new file mode 100644
+index 0000000..7aefaaa
+--- /dev/null
++++ b/src/shared/basic_forwarder.c
+@@ -0,0 +1,55 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <stdint.h>
++#include "shared/common.h"
++#include "shared/basic_forwarder.h"
++
++void
++forward(void)
++{
++	uint16_t nb_rx;
++	uint16_t nb_tx;
++	int in_port;
++	int out_port;
++	uint16_t buf;
++	int i;
++
++	/* Go through every possible port numbers*/
++	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
++		struct rte_mbuf *bufs[MAX_PKT_BURST];
++
++		if (ports_fwd_array[i].in_port_id == PORT_RESET)
++			continue;
++
++		if (ports_fwd_array[i].out_port_id == PORT_RESET)
++			continue;
++
++		/* if status active, i count is in port*/
++		in_port = i;
++		out_port = ports_fwd_array[i].out_port_id;
++
++		/* Get burst of RX packets, from first port of pair. */
++		/*first port rx, second port tx*/
++		nb_rx = ports_fwd_array[in_port].rx_func(in_port, 0, bufs,
++			MAX_PKT_BURST);
++		if (unlikely(nb_rx == 0))
++			continue;
++
++		port_map[in_port].stats->rx += nb_rx;
++
++		/* Send burst of TX packets, to second port of pair. */
++		nb_tx = ports_fwd_array[out_port].tx_func(out_port, 0, bufs,
++			nb_rx);
++
++		port_map[out_port].stats->tx += nb_tx;
++
++		/* Free any unsent packets. */
++		if (unlikely(nb_tx < nb_rx)) {
++			port_map[out_port].stats->tx_drop += nb_rx - nb_tx;
++			for (buf = nb_tx; buf < nb_rx; buf++)
++				rte_pktmbuf_free(bufs[buf]);
++		}
++	}
++}
+diff --git a/src/shared/basic_forwarder.h b/src/shared/basic_forwarder.h
+new file mode 100644
+index 0000000..173cab3
+--- /dev/null
++++ b/src/shared/basic_forwarder.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef __SHARED_FORWARDER_H__
++#define __SHARED_FORWARDER_H__
++
++struct port_map port_map[RTE_MAX_ETHPORTS];
++struct port ports_fwd_array[RTE_MAX_ETHPORTS];
++
++void forward(void);
++
++#endif
+diff --git a/src/shared/common.h b/src/shared/common.h
+index cbd1bcf..9c46a64 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -29,6 +29,9 @@
+ #define RTE_MP_RX_DESC_DEFAULT 512
+ #define RTE_MP_TX_DESC_DEFAULT 512
+ 
++/* Packets are read in a burst of size MAX_PKT_BURST from RX queue. */
++#define MAX_PKT_BURST 32
++
+ #define VDEV_ETH_RING "eth_ring"
+ #define VDEV_NET_RING "net_ring"
+ #define VDEV_ETH_VHOST "eth_vhost"
+diff --git a/src/shared/secondary/common.h b/src/shared/secondary/common.h
+index 44c1b8b..4b70708 100644
+--- a/src/shared/secondary/common.h
++++ b/src/shared/secondary/common.h
+@@ -5,8 +5,6 @@
+ #ifndef __SHARED_SECONDARY_COMMON_H__
+ #define __SHARED_SECONDARY_COMMON_H__
+ 
+-#define MAX_PKT_BURST 32
+-
+ #define IPADDR_LEN 16  /* Length of IP address in string. */
+ 
+ /**
+-- 
+2.17.1
+
