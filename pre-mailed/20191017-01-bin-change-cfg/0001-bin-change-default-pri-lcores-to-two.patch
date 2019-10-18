@@ -1,0 +1,29 @@
+From 7271a1aef47fa98b245857b6767ed8158596aa7c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 16 Oct 2019 17:47:51 +0900
+Subject: [PATCH] bin: change default pri lcores to two
+
+This update is to change number of lcores for assigning spp_primary
+from one to two for running slave forwarding thread as default.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 69215d1..6dfd89d 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -6,7 +6,7 @@ SPP_HUGEPAGES=/dev/hugepages
+ 
+ # spp_primary options
+ LOGLEVEL=7  # change to 8 if you refer debug messages.
+-PRI_CORE_LIST=0  # required one lcore usually.
++PRI_CORE_LIST=0,1  # required one lcore usually.
+ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+-- 
+2.17.1
+

@@ -1,0 +1,34 @@
+From 8559174d5076f49c688fd65145fa2ea897204f59 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 17 Oct 2019 21:38:08 +0900
+Subject: [PATCH 0/2] Update status command for forwarder thread
+
+This update is to add status messages for forwarder thread in
+spp_primary which.
+
+If spp_primary is launched with two or more lcores for activating
+forwarding, status of this thread is displayed in status as following.
+
+  "master-lcore": 0,
+  "lcores": [0,1],
+  "forwarder": {  // here
+      "status": "idling",
+      "ports": ["phy:0", "phy:1"],
+      "patches": ["src": "phy:0", "dst": "phy:1"]
+  },
+  "ring_ports": [
+  ...
+
+Yasufumi Ogawa (2):
+  spp_primary: add status for forwarder thread
+  spp_primary: fix bug of add and del port
+
+ src/cli/commands/pri.py |  40 +--
+ src/nfv/commands.h      |   4 +
+ src/primary/init.c      |   5 +-
+ src/primary/main.c      | 587 ++++++++++++++++++++++++++++++++++------
+ 4 files changed, 531 insertions(+), 105 deletions(-)
+
+-- 
+2.17.1
+

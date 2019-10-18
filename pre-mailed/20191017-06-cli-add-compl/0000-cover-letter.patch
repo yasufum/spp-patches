@@ -1,0 +1,19 @@
+From 4c9f3b2e7b1b6c4de34f87c79f11463ac83090c4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 17 Oct 2019 21:38:35 +0900
+Subject: [PATCH 0/2] Add completion for forwarder in primary
+
+This update is to add completion for command for forwarding thread in
+spp_primary.
+
+Yasufumi Ogawa (2):
+  cli: add compl for new commands in spp_primary
+  cli: fix bug of completion in del command
+
+ src/cli/commands/nfv.py |  38 +++----
+ src/cli/commands/pri.py | 221 ++++++++++++++++++++++++++++++----------
+ 2 files changed, 187 insertions(+), 72 deletions(-)
+
+-- 
+2.17.1
+
