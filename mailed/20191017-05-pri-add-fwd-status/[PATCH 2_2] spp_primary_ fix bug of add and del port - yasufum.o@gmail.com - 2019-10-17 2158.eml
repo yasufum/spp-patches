@@ -1,0 +1,250 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id x9sm6107822pje.27.2019.10.17.05.58.28
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 17 Oct 2019 05:58:29 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] spp_primary: fix bug of add and del port
+Date: Thu, 17 Oct 2019 21:58:22 +0900
+Message-Id: <20191017125822.29309-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191017125822.29309-1-yasufum.o@gmail.com>
+References: <20191017125822.29309-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Added port cannot be referred because `port_fwd_array` is updated
+appropriately, and same issue for deleted port. This patch is to fix
+this issue by updating `port_fwd_array` in add_port() and del_port().
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/pri.py | 40 ++++++++++++++++++++--------------------
+ src/nfv/commands.h      |  4 ++++
+ src/primary/main.c      | 13 +++++++++++++
+ 3 files changed, 37 insertions(+), 20 deletions(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index 021f322..32c632c 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -61,7 +61,7 @@ class SppPrimary(object):
+                     # Print default error message
+                     pass
+                 else:
+-                    print('Error: unknown response.')
++                    print('Error: unknown response from status.')
+ 
+         elif subcmd == 'add':
+             self._run_add(params)
+@@ -87,7 +87,7 @@ class SppPrimary(object):
+                 elif res.status_code in common_err_codes:
+                     pass
+                 else:
+-                    print('Error: unknown response.')
++                    print('Error: unknown response for clear.')
+ 
+         else:
+             print('Invalid pri command!')
+@@ -102,7 +102,7 @@ class SppPrimary(object):
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for exit.')
+ 
+     def print_status(self, json_obj):
+         """Parse SPP primary's status and print.
+@@ -219,15 +219,15 @@ class SppPrimary(object):
+     def _get_ports(self):
+         """Get all of ports as a list."""
+ 
+-        res = self.spp_ctl_cli.get('primary')
++        res = self.spp_ctl_cli.get('primary/status')
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 200:
+-                return res.json()['ports']
++                return res.json()['forwarder']['ports']
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for get_ports.')
+ 
+     def _get_patches(self):
+         """Get all of patched ports as a list of dicts.
+@@ -237,15 +237,15 @@ class SppPrimary(object):
+            {'src': 'ring:1', 'dst':'vhost:1'}, ...]
+         """
+ 
+-        res = self.spp_ctl_cli.get('primary')
++        res = self.spp_ctl_cli.get('primary/status')
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 200:
+-                return res.json()['patches']
++                return res.json()['forwarder']['patches']
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for get_patches.')
+ 
+     def _get_ports_and_patches(self):
+         """Get all of ports and patchs at once.
+@@ -256,17 +256,17 @@ class SppPrimary(object):
+           ports, patches = _get_ports_and_patches()
+         """
+ 
+-        res = self.spp_ctl_cli.get('primary')
++        res = self.spp_ctl_cli.get('primary/status')
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 200:
+-                ports = res.json()['ports']
+-                patches = res.json()['patches']
++                ports = res.json()['forwarder']['ports']
++                patches = res.json()['forwarder']['patches']
+                 return ports, patches
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response 3.')
+ 
+     def _get_patched_ports(self):
+         """Get all of patched ports as a list.
+@@ -547,7 +547,7 @@ class SppPrimary(object):
+                 # Print default error message
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for _get_sec_ids.')
+         return sec_ids
+ 
+     def _setup_opts_dict(self, opts_list):
+@@ -590,7 +590,7 @@ class SppPrimary(object):
+                 elif res.status_code in error_codes:
+                     pass
+                 else:
+-                    print('Error: unknown response.')
++                    print('Error: unknown response for add.')
+ 
+     def _run_del(self, params):
+         """Run `del` command."""
+@@ -617,7 +617,7 @@ class SppPrimary(object):
+                     elif res.status_code in error_codes:
+                         pass
+                     else:
+-                        print('Error: unknown response.')
++                        print('Error: unknown response for del.')
+ 
+     def _run_forward_or_stop(self, cmd):
+         """Run `forward` or `stop` command."""
+@@ -641,7 +641,7 @@ class SppPrimary(object):
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for forward/stop.')
+ 
+     def _run_patch(self, params):
+         """Run `patch` command."""
+@@ -657,7 +657,7 @@ class SppPrimary(object):
+                 elif res.status_code in error_codes:
+                     pass
+                 else:
+-                    print('Error: unknown response.')
++                    print('Error: unknown response for patch.')
+         else:
+             if len(params) < 2:
+                 print('Dst port is required!')
+@@ -673,7 +673,7 @@ class SppPrimary(object):
+                     elif res.status_code in error_codes:
+                         pass
+                     else:
+-                        print('Error: unknown response.')
++                        print('Error: unknown response for patch.')
+ 
+     def _run_launch(self, params, wait_time):
+         """Launch secondary process.
+@@ -787,7 +787,7 @@ class SppPrimary(object):
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response.')
++                print('Error: unknown response for launch.')
+ 
+     @classmethod
+     def help(cls):
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 499bdd4..4a6a170 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -12,6 +12,10 @@
+ 
+ #define RTE_LOGTYPE_SPP_NFV RTE_LOGTYPE_USER1
+ 
++/* TODO(yasufum): consider to rename find_port_id() to find_ethdev_id()
++ * defined in shared/port_manager.c
++ */
++
+ static int
+ do_del(char *p_type, int p_id)
+ {
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 9d216a0..dbae424 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -785,10 +785,12 @@ get_status_json(char *str)
+  * Add a port to spp_primary. Port is given as a resource UID which is a
+  * combination of port type and ID like as 'ring:0'.
+  */
++/* TODO(yasufum) consider to merge do_add in nfv/commands.h */
+ static int
+ add_port(char *p_type, int p_id)
+ {
+ 	uint16_t dev_id;
++	uint16_t port_id;
+ 	int res = 0;
+ 	uint16_t cnt = 0;
+ 
+@@ -822,6 +824,13 @@ add_port(char *p_type, int p_id)
+ 	if (res < 0)
+ 		return -1;
+ 
++	port_id = (uint16_t) res;
++	port_map[port_id].id = p_id;
++	port_map[port_id].port_type = port_id_list[cnt].type;
++	port_map[port_id].stats = &ports->client_stats[p_id];
++
++	/* Update ports_fwd_array with port id */
++	ports_fwd_array[port_id].in_port_id = port_id;
+ 	return 0;
+ }
+ 
+@@ -850,6 +859,7 @@ find_ethdev_id(int p_id, enum port_type ptype)
+ }
+ 
+ /* Delete port. */
++/* TODO(yasufum) consider to merge do_del in nfv/commands.h */
+ static int
+ del_port(char *p_type, int p_id)
+ {
+@@ -884,6 +894,9 @@ del_port(char *p_type, int p_id)
+ 	port_id_list[dev_id].port_id = PORT_RESET;
+ 	port_id_list[dev_id].type = UNDEF;
+ 
++	forward_array_remove(dev_id);
++	port_map_init_one(dev_id);
++
+ 	return 0;
+ }
+ 
+-- 
+2.17.1
+

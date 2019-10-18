@@ -1,0 +1,40 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id c1sm4379495pfb.135.2019.10.17.05.57.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 17 Oct 2019 05:57:43 -0700 (PDT)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] bin: change default pri lcores to two
+Date: Thu, 17 Oct 2019 21:57:39 +0900
+Message-Id: <20191017125739.29085-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+This update is to change number of lcores for assigning spp_primary
+from one to two for running slave forwarding thread as default.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 69215d1..6dfd89d 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -6,7 +6,7 @@ SPP_HUGEPAGES=/dev/hugepages
+ 
+ # spp_primary options
+ LOGLEVEL=7  # change to 8 if you refer debug messages.
+-PRI_CORE_LIST=0  # required one lcore usually.
++PRI_CORE_LIST=0,1  # required one lcore usually.
+ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+-- 
+2.17.1
+
