@@ -1,0 +1,104 @@
+From ea07a3e6ab1eb6d8787f5df885d72e46c7a836e6 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sat, 19 Oct 2019 17:02:11 +0900
+Subject: [PATCH 3/5] docs: add intro in usecases
+
+To explain overview of usecases, and why spp_primary is not described in
+this chapter, add an introduction in the top of the chapter.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/api_ref/index.rst     |  2 ++
+ docs/guides/commands/index.rst    |  2 ++
+ docs/guides/design/impl/index.rst |  2 ++
+ docs/guides/design/index.rst      |  2 ++
+ docs/guides/usecases/index.rst    | 18 ++++++++++++++++++
+ 5 files changed, 26 insertions(+)
+
+diff --git a/docs/guides/api_ref/index.rst b/docs/guides/api_ref/index.rst
+index 490ec15..5619147 100644
+--- a/docs/guides/api_ref/index.rst
++++ b/docs/guides/api_ref/index.rst
+@@ -1,6 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+ 
++.. _spp_api_ref_index:
++
+ API Reference
+ =============
+ 
+diff --git a/docs/guides/commands/index.rst b/docs/guides/commands/index.rst
+index ce67f4b..faaf50a 100644
+--- a/docs/guides/commands/index.rst
++++ b/docs/guides/commands/index.rst
+@@ -1,6 +1,8 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2010-2014 Intel Corporation
+ 
++.. _spp_commands_index:
++
+ SPP Commands
+ ============
+ 
+diff --git a/docs/guides/design/impl/index.rst b/docs/guides/design/impl/index.rst
+index 53f1c6c..5e6aa1b 100644
+--- a/docs/guides/design/impl/index.rst
++++ b/docs/guides/design/impl/index.rst
+@@ -2,6 +2,8 @@
+     Copyright(c) 2010-2014 Intel Corporation
+ 
+ 
++.. _spp_design_impl_index:
++
+ Implementation
+ ==============
+ 
+diff --git a/docs/guides/design/index.rst b/docs/guides/design/index.rst
+index f8d982d..3bf2c1d 100644
+--- a/docs/guides/design/index.rst
++++ b/docs/guides/design/index.rst
+@@ -2,6 +2,8 @@
+     Copyright(c) 2010-2014 Intel Corporation
+     Copyright(c) 2018-2019 Nippon Telegraph and Telephone Corporation
+ 
++.. _spp_design_index:
++
+ Design
+ ======
+ 
+diff --git a/docs/guides/usecases/index.rst b/docs/guides/usecases/index.rst
+index f67ea5d..538db87 100644
+--- a/docs/guides/usecases/index.rst
++++ b/docs/guides/usecases/index.rst
+@@ -1,9 +1,27 @@
+ ..  SPDX-License-Identifier: BSD-3-Clause
+     Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
++.. _spp_usecases_index:
++
+ Use Cases
+ =========
+ 
++As described in :ref:`Design<spp_design_index>`,
++SPP has several kinds of secondary process for
++usecases such as simple forwarding to network entities, capturing or
++mirroring packets for monitoring, or connecting VMs or containers for
++Service Function Chaining in NFV.
++
++This chapter is focusing on explaining about each of secondary
++processes with simple usecases.
++Usecase of ``spp_primary`` is not covered here because it is almost
++similar to ``spp_nfv`` and no need to explain both.
++
++Details of usages of each process is not covered in this chapter.
++You can refer the details of SPP processes via CLI from
++:ref:`SPP Commands<spp_commands_index>`,
++or via REST API from :ref:`API Reference<spp_api_ref_index>`.
++
+ .. toctree::
+    :maxdepth: 1
+    :numbered:
+-- 
+2.17.1
+

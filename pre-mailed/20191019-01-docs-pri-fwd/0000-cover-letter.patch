@@ -1,0 +1,34 @@
+From 43bae4e5d74c1ca6fb817ee5b3f2f37082aad233 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 20 Oct 2019 00:07:49 +0900
+Subject: [PATCH 0/5] Add descriptions for forwarder commands in spp_primary
+
+As forwarder thread is added to spp_primary, this series of patches is
+to add descriptions for commands for forwarder.
+
+Yasufumi Ogawa (5):
+  docs: add pri APIs for forwarder
+  docs: add desc for primary design
+  docs: add intro in usecases
+  docs: add desc for using worker thread of pri
+  docs: add pri commands for forwarder
+
+ docs/guides/api_ref/index.rst              |   2 +
+ docs/guides/api_ref/spp_mirror.rst         |   4 +-
+ docs/guides/api_ref/spp_nfv.rst            |   4 +-
+ docs/guides/api_ref/spp_pcap.rst           |   4 +-
+ docs/guides/api_ref/spp_primary.rst        | 132 +++++++++++++++--
+ docs/guides/api_ref/spp_vf.rst             |   4 +-
+ docs/guides/commands/index.rst             |   2 +
+ docs/guides/commands/primary.rst           | 160 +++++++++++++++++++--
+ docs/guides/commands/secondary/spp_nfv.rst |   8 +-
+ docs/guides/design/impl/index.rst          |   2 +
+ docs/guides/design/index.rst               |   2 +
+ docs/guides/design/spp_primary.rst         |  55 ++++++-
+ docs/guides/gsg/howto_use.rst              |  41 ++++--
+ docs/guides/usecases/index.rst             |  18 +++
+ 14 files changed, 385 insertions(+), 53 deletions(-)
+
+-- 
+2.17.1
+
