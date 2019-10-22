@@ -1,0 +1,89 @@
+From 94b17d3c9ad632f88bdac5a83077594e40447363 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 22 Oct 2019 16:52:30 +0900
+Subject: [PATCH] spp_primary: fix buf overflow in result of patch
+
+As `patch` command is added to spp_primary, it returns the result of
+the command. It is contained in variable `char port_set[32]` for
+containing a port formatted as "\"%s:%d\"", but the size is not enough
+for the result of patch "{\"src\":\"%s:%d\",\"dst\":\"%s:%d\"}". The
+name of `port_set` is not appropriate for the purpose.
+
+This update is to fix the issue by changing `port_set` to `port_uid` and
+add another one for patch with enough size 64byte as
+`char patch_set[64]`.
+
+Fixes: f511dd01fa4b ("spp_primary: add status for forwarder thread")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/main.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index dbae424..fbc47c3 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -910,8 +910,9 @@ parse_command(char *str)
+ 	int max_token = 0;
+ 	uint16_t dev_id;
+ 	char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
+-	char result[16] = { 0 };  /* succeeded or failed. */
+-	char port_set[32] = { 0 };
++	char result[16] = { 0 };  /* "succeeded" or "failed". */
++	char port_uid[20] = { 0 };  /* "\"%s:%d\"" */
++	char patch_set[64] = { 0 };  /* "{\"src\":\"%s:%d\",\"dst\":...}" */
+ 	char *p_type;
+ 	int p_id;
+ 
+@@ -994,12 +995,12 @@ parse_command(char *str)
+ 		} else
+ 			sprintf(result, "%s", "\"succeeded\"");
+ 
+-		sprintf(port_set, "\"%s:%d\"", p_type, p_id);
++		sprintf(port_uid, "\"%s:%d\"", p_type, p_id);
+ 		memset(str, '\0', MSG_SIZE);
+ 		sprintf(str, "{%s:%s,%s:%s,%s:%s}",
+ 				"\"result\"", result,
+ 				"\"command\"", "\"add\"",
+-				"\"port\"", port_set);
++				"\"port\"", port_uid);
+ 
+ 	} else if (!strcmp(token_list[0], "del")) {
+ 		RTE_LOG(DEBUG, PRIMARY, "Received del command\n");
+@@ -1016,12 +1017,12 @@ parse_command(char *str)
+ 		} else
+ 			sprintf(result, "%s", "\"succeeded\"");
+ 
+-		sprintf(port_set, "\"%s:%d\"", p_type, p_id);
++		sprintf(port_uid, "\"%s:%d\"", p_type, p_id);
+ 		memset(str, '\0', MSG_SIZE);
+ 		sprintf(str, "{%s:%s,%s:%s,%s:%s}",
+ 				"\"result\"", result,
+ 				"\"command\"", "\"del\"",
+-				"\"port\"", port_set);
++				"\"port\"", port_uid);
+ 
+ 	} else if (!strcmp(token_list[0], "patch")) {
+ 		RTE_LOG(DEBUG, PRIMARY, "patch\n");
+@@ -1088,7 +1089,7 @@ parse_command(char *str)
+ 				sprintf(result, "%s", "\"failed\"");
+ 			}
+ 
+-			sprintf(port_set,
++			sprintf(patch_set,
+ 				"{\"src\":\"%s:%d\",\"dst\":\"%s:%d\"}",
+ 				in_p_type, in_p_id, out_p_type, out_p_id);
+ 
+@@ -1096,7 +1097,7 @@ parse_command(char *str)
+ 			sprintf(str, "{%s:%s,%s:%s,%s:%s}",
+ 					"\"result\"", result,
+ 					"\"command\"", "\"patch\"",
+-					"\"ports\"", port_set);
++					"\"ports\"", patch_set);
+ 
+ 			ret = 0;
+ 		}
+-- 
+2.17.1
+
