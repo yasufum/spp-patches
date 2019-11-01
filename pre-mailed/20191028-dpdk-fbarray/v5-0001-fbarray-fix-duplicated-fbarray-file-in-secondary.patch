@@ -1,0 +1,55 @@
+From 072b27eb448e9ca2e0c233baee4c671eb01bb9f9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Date: Wed, 24 Jul 2019 17:20:31 +0900
+Subject: [PATCH v5 1/1] fbarray: fix duplicated fbarray file in secondary
+
+In secondary_msl_create_walk(), it creates a file for fbarrays with its
+PID for reserving unique name among secondary processes. However, it
+does not work if several secondaries run as app containers because each
+of containerized secondary has PID 1, and failed to reserve unique name
+other than first one. To reserve unique name in each of containers, use
+hostname instead of PID only if PID is 1.
+
+Cc: stable@dpdk.org
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ lib/librte_eal/linux/eal/eal_memalloc.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/lib/librte_eal/linux/eal/eal_memalloc.c b/lib/librte_eal/linux/eal/eal_memalloc.c
+index af6d0d023..699079791 100644
+--- a/lib/librte_eal/linux/eal/eal_memalloc.c
++++ b/lib/librte_eal/linux/eal/eal_memalloc.c
+@@ -1365,6 +1365,7 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	struct rte_memseg_list *primary_msl, *local_msl;
+ 	char name[PATH_MAX];
+ 	int msl_idx, ret;
++	char proc_id[HOST_NAME_MAX] = { 0 };
+ 
+ 	if (msl->external)
+ 		return 0;
+@@ -1374,8 +1375,18 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	local_msl = &local_memsegs[msl_idx];
+ 
+ 	/* create distinct fbarrays for each secondary */
+-	snprintf(name, RTE_FBARRAY_NAME_LEN, "%s_%i",
+-		primary_msl->memseg_arr.name, getpid());
++	/* If run secondary in a container, the name of fbarray file should
++	 * not be decided with pid because getpid() always returns 1.
++	 * In docker, hostname is assigned as a short form of full container
++	 * ID. So use hostname as unique ID among containers instead.
++	 */
++	if (getpid() == 1)
++		gethostname(proc_id, HOST_NAME_MAX);
++	else
++		sprintf(proc_id, "%d", (int)getpid());
++
++	snprintf(name, RTE_FBARRAY_NAME_LEN, "%s_%s",
++			primary_msl->memseg_arr.name, proc_id);
+ 
+ 	ret = rte_fbarray_init(&local_msl->memseg_arr, name,
+ 		primary_msl->memseg_arr.len,
+-- 
+2.17.1
+
