@@ -1,0 +1,836 @@
+From 0348e3d4212103df2e3361d496d8a7647ddfc82c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 1 Nov 2019 16:07:21 +0900
+Subject: [PATCH] tools/sppc: separate building container image
+
+Building container image takes a long time for retrieving several
+packages and compile them. This update is to divide each Dockerfile
+into installing with apt install and building DPDK and its apps.
+In the second step, it uses the image created in the first step.
+
+Files named as `Dockerfile.*.base` are for installing packages, and no
+need to run them basically because this built image is uploaded to
+docker hub. You just run Dockerfiles which do not have `base` in the
+name. You only need to run `Dockerfile.*.base` if you make some changes
+in the file, or in offline.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04 | 18 +---------
+ .../build/ubuntu/dpdk/Dockerfile.16.04.base   | 16 +++++++++
+ tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04 | 17 +---------
+ .../build/ubuntu/dpdk/Dockerfile.18.04.base   | 18 ++++++++++
+ .../sppc/build/ubuntu/dpdk/Dockerfile.latest  | 17 +---------
+ .../build/ubuntu/dpdk/Dockerfile.latest.base  | 18 ++++++++++
+ .../sppc/build/ubuntu/pktgen/Dockerfile.16.04 | 19 +----------
+ .../build/ubuntu/pktgen/Dockerfile.16.04.base | 18 ++++++++++
+ .../sppc/build/ubuntu/pktgen/Dockerfile.18.04 | 19 +----------
+ .../build/ubuntu/pktgen/Dockerfile.18.04.base | 20 +++++++++++
+ .../build/ubuntu/pktgen/Dockerfile.latest     | 19 +----------
+ .../ubuntu/pktgen/Dockerfile.latest.base      | 20 +++++++++++
+ tools/sppc/build/ubuntu/spp/Dockerfile.16.04  | 19 +----------
+ .../build/ubuntu/spp/Dockerfile.16.04.base    | 18 ++++++++++
+ tools/sppc/build/ubuntu/spp/Dockerfile.18.04  | 19 +----------
+ .../build/ubuntu/spp/Dockerfile.18.04.base    | 20 +++++++++++
+ tools/sppc/build/ubuntu/spp/Dockerfile.latest | 19 +----------
+ .../build/ubuntu/spp/Dockerfile.latest.base   | 20 +++++++++++
+ .../build/ubuntu/suricata/Dockerfile.16.04    | 32 +-----------------
+ .../ubuntu/suricata/Dockerfile.16.04.base     | 33 +++++++++++++++++++
+ .../build/ubuntu/suricata/Dockerfile.18.04    | 31 +----------------
+ .../ubuntu/suricata/Dockerfile.18.04.base     | 32 ++++++++++++++++++
+ .../build/ubuntu/suricata/Dockerfile.latest   | 31 +----------------
+ .../ubuntu/suricata/Dockerfile.latest.base    | 32 ++++++++++++++++++
+ 24 files changed, 277 insertions(+), 248 deletions(-)
+ create mode 100644 tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04.base
+ create mode 100644 tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04.base
+ create mode 100644 tools/sppc/build/ubuntu/dpdk/Dockerfile.latest.base
+ create mode 100644 tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04.base
+ create mode 100644 tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04.base
+ create mode 100644 tools/sppc/build/ubuntu/pktgen/Dockerfile.latest.base
+ create mode 100644 tools/sppc/build/ubuntu/spp/Dockerfile.16.04.base
+ create mode 100644 tools/sppc/build/ubuntu/spp/Dockerfile.18.04.base
+ create mode 100644 tools/sppc/build/ubuntu/spp/Dockerfile.latest.base
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.16.04.base
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.18.04.base
+ create mode 100644 tools/sppc/build/ubuntu/suricata/Dockerfile.latest.base
+
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04 b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
+index 80e15e1..536e2c9 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:16.04
++FROM yasufum/dpdk-base:16.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -13,22 +13,6 @@ ENV no_proxy ${no_proxy}
+ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ 
+-
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone $dpdk_branch $dpdk_repo
+ 
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04.base b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04.base
+new file mode 100644
+index 0000000..4c6f4e1
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.16.04.base
+@@ -0,0 +1,16 @@
++FROM ubuntu:16.04
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04 b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+index 348b71c..de191e7 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:18.04
++FROM yasufum/dpdk-base:18.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -14,21 +14,6 @@ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone $dpdk_branch $dpdk_repo
+ 
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04.base b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04.base
+new file mode 100644
+index 0000000..886586e
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.18.04.base
+@@ -0,0 +1,18 @@
++FROM ubuntu:18.04
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+index 0bf028e..ef29e92 100644
+--- a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest
+@@ -1,4 +1,4 @@
+-FROM ubuntu:latest
++FROM yasufum/dpdk-base:latest
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -14,21 +14,6 @@ ENV RTE_SDK ${rte_sdk}
+ ENV RTE_TARGET ${rte_target}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone $dpdk_branch $dpdk_repo
+ 
+diff --git a/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest.base b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest.base
+new file mode 100644
+index 0000000..cb27c02
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/dpdk/Dockerfile.latest.base
+@@ -0,0 +1,18 @@
++FROM ubuntu:latest
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+index 7f9a879..cd9843f 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:16.04
++FROM yasufum/pktgen-base:16.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -19,23 +19,6 @@ ENV PKTGEN_DIR ${pktgen_dir}
+ ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblua5*-dev \
+-    pkg-config \
+-    wget \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${pktgen_branch} ${pktgen_repo}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04.base b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04.base
+new file mode 100644
+index 0000000..f7434f6
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.16.04.base
+@@ -0,0 +1,18 @@
++FROM ubuntu:16.04
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblua5*-dev \
++    pkg-config \
++    wget \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04 b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+index 5ade823..3c6c247 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:18.04
++FROM yasufum/pktgen-base:18.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -20,23 +20,6 @@ ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblua5*-dev \
+-    pkg-config \
+-    wget \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${pktgen_branch} ${pktgen_repo}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04.base b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04.base
+new file mode 100644
+index 0000000..c2ea430
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.18.04.base
+@@ -0,0 +1,20 @@
++FROM ubuntu:18.04
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblua5*-dev \
++    pkg-config \
++    wget \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+index 5b360ed..762bdd5 100644
+--- a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest
+@@ -1,4 +1,4 @@
+-FROM ubuntu:latest
++FROM yasufum/pktgen-base:latest
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -20,23 +20,6 @@ ENV PATH ${rte_sdk}/${rte_target}/app:${PATH}
+ ENV PATH ${home_dir}/${pktgen_dir}/app/${rte_target}/:${PATH}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblua5*-dev \
+-    pkg-config \
+-    wget \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${pktgen_branch} ${pktgen_repo}
+diff --git a/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest.base b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest.base
+new file mode 100644
+index 0000000..c7698d4
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/pktgen/Dockerfile.latest.base
+@@ -0,0 +1,20 @@
++FROM ubuntu:latest
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblua5*-dev \
++    pkg-config \
++    wget \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+index e43a20b..3e060df 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:16.04
++FROM yasufum/spp-base:16.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -21,23 +21,6 @@ ENV PATH ${home_dir}/${spp_dir}/src/nfv/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblz4-dev \
+-    liblz4-tool \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${spp_branch} ${spp_repo}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.16.04.base b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04.base
+new file mode 100644
+index 0000000..dee1b73
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.16.04.base
+@@ -0,0 +1,18 @@
++FROM ubuntu:16.04
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04 b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+index 2257747..e35fbc2 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:18.04
++FROM yasufum/spp-base:18.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -22,23 +22,6 @@ ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblz4-dev \
+-    liblz4-tool \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${spp_branch} ${spp_repo}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.18.04.base b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04.base
+new file mode 100644
+index 0000000..7973b86
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.18.04.base
+@@ -0,0 +1,20 @@
++FROM ubuntu:18.04
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+index dcacab2..a1ffc80 100644
+--- a/tools/sppc/build/ubuntu/spp/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest
+@@ -1,4 +1,4 @@
+-FROM ubuntu:latest
++FROM yasufum/spp-base:latest
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -22,23 +22,6 @@ ENV PATH ${home_dir}/${spp_dir}/src/vf/${rte_target}/:${PATH}
+ ENV PATH ${home_dir}/${spp_dir}/src/vm/${rte_target}/:${PATH}
+ ENV DEBIAN_FRONTEND noninteractive
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    liblz4-dev \
+-    liblz4-tool \
+-    pkg-config \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ RUN git clone ${spp_branch} ${spp_repo}
+diff --git a/tools/sppc/build/ubuntu/spp/Dockerfile.latest.base b/tools/sppc/build/ubuntu/spp/Dockerfile.latest.base
+new file mode 100644
+index 0000000..849f755
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/spp/Dockerfile.latest.base
+@@ -0,0 +1,20 @@
++FROM ubuntu:latest
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    liblz4-dev \
++    liblz4-tool \
++    pkg-config \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04 b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
+index ae06d6c..ad80366 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:16.04
++FROM yasufum/suricata-base:16.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -33,36 +33,6 @@ ENV SURICATA_SRCDIR suricata-4.1.4
+ ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
+ ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    vim \
+-    curl \
+-    wget \
+-    automake \
+-    autoconf \
+-    liblz4-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    python-yaml rustc cargo \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ 
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04.base b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04.base
+new file mode 100644
+index 0000000..eabed95
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.16.04.base
+@@ -0,0 +1,33 @@
++FROM ubuntu:16.04
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    autoconf \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04 b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+index 7648736..6ef7b73 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04
+@@ -1,4 +1,4 @@
+-FROM ubuntu:18.04
++FROM yasufum/suricata-base:18.04
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -35,35 +35,6 @@ ENV SURICATA_SRCDIR suricata-4.1.4
+ ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
+ ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    vim \
+-    curl \
+-    wget \
+-    automake \
+-    liblz4-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    python-yaml rustc cargo \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ 
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04.base b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04.base
+new file mode 100644
+index 0000000..81889d2
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.18.04.base
+@@ -0,0 +1,32 @@
++FROM ubuntu:18.04
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+index 67e3380..46219d8 100644
+--- a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest
+@@ -1,4 +1,4 @@
+-FROM ubuntu:latest
++FROM yasufum/suricata-base:latest
+ 
+ ARG rte_sdk
+ ARG rte_target
+@@ -35,35 +35,6 @@ ENV SURICATA_SRCDIR suricata-4.1.4
+ ENV SURICATA_TGZ ${SURICATA_SRCDIR}.tar.gz
+ ENV SURICATA_DOWNLOAD https://www.openinfosecfoundation.org/download/${SURICATA_TGZ}
+ 
+-RUN apt-get update && apt-get install -y \
+-    git \
+-    gcc \
+-    python \
+-    pciutils \
+-    make \
+-    libnuma-dev \
+-    gcc-multilib \
+-    libarchive-dev \
+-    linux-headers-$(uname -r) \
+-    libpcap-dev \
+-    pkg-config \
+-    vim \
+-    curl \
+-    wget \
+-    automake \
+-    liblz4-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
+-    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
+-    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
+-    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
+-    python-yaml rustc cargo \
+-    && apt-get clean \
+-    && rm -rf /var/lib/apt/lists/*
+-
+ WORKDIR $home_dir
+ RUN git clone ${dpdk_branch} ${dpdk_repo}
+ 
+diff --git a/tools/sppc/build/ubuntu/suricata/Dockerfile.latest.base b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest.base
+new file mode 100644
+index 0000000..c3213c2
+--- /dev/null
++++ b/tools/sppc/build/ubuntu/suricata/Dockerfile.latest.base
+@@ -0,0 +1,32 @@
++FROM ubuntu:latest
++
++ENV DEBIAN_FRONTEND noninteractive
++
++RUN apt-get update && apt-get install -y \
++    git \
++    gcc \
++    python \
++    pciutils \
++    make \
++    libnuma-dev \
++    gcc-multilib \
++    libarchive-dev \
++    linux-headers-$(uname -r) \
++    libpcap-dev \
++    pkg-config \
++    vim \
++    curl \
++    wget \
++    automake \
++    liblz4-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    libpcre3 libpcre3-dbg libpcre3-dev build-essential libpcap-dev \
++    libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev \
++    libcap-ng-dev libcap-ng0 make libmagic-dev libjansson-dev \
++    libnss3-dev libgeoip-dev liblua5.1-dev libhiredis-dev libevent-dev \
++    python-yaml rustc cargo \
++    && apt-get clean \
++    && rm -rf /var/lib/apt/lists/*
+-- 
+2.17.1
+
