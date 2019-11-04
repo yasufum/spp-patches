@@ -1,0 +1,58 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:b56f:8078:5747:1f8b])
+        by smtp.gmail.com with ESMTPSA id p7sm19193174pjp.4.2019.11.04.06.18.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Nov 2019 06:18:52 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH] version: 19.08
+Date: Mon,  4 Nov 2019 23:18:48 +0900
+Message-Id: <20191104141848.30916-1-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+
+This patch is to update SPP to v19.08.
+
+* Add forwarder thread in spp_primary because vhost PMD cannot be used
+  from secondary from DPDK v19.11 or later. Vhost is added to
+  spp_primary instead of secondary. VM or container can be connected
+  with secondary via primary.
+
+* Change SPP CLI to wait spp_primary is ready. You do not need to type
+  `status` until primary is ready anymore.
+
+* Update config params to launch spp_primary with two lcores for running
+  forwarder thread as default.
+
+* To make building container image is done in a short time, separate
+  building steps into two Dockerfiles, one is for installing packages
+  with apt and another one is for compiling DPDP apps from source.
+  First one is not required to run each time building image if the built
+  image can be retrieved from Docker Hub. So, the second Dockerfile uses
+  the image on Docker Hub without running first one. If you are in
+  offline, you need to run first one to have the base image locally.
+
+* Update docs.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index e262c87..274f709 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.4
++VERSION := 19.08
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.13.1
+
