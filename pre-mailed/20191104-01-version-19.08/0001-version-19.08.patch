@@ -1,0 +1,49 @@
+From fe3200ef4a767a70d4afe0bb82e7d2c82c8aa74b Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 4 Nov 2019 22:48:04 +0900
+Subject: [PATCH] version: 19.08
+
+This patch is to update SPP to v19.08.
+
+* Add forwarder thread in spp_primary because vhost PMD cannot be used
+  from secondary from DPDK v19.11 or later. Vhost is added to
+  spp_primary instead of secondary. VM or container can be connected
+  with secondary via primary.
+
+* Change SPP CLI to wait spp_primary is ready. You do not need to type
+  `status` until primary is ready anymore.
+
+* Update config params to launch spp_primary with two lcores for running
+  forwarder thread as default.
+
+* To make building container image is done in a short time, separate
+  building steps into two Dockerfiles, one is for installing packages
+  with apt and another one is for compiling DPDP apps from source.
+  First one is not required to run each time building image if the built
+  image can be retrieved from Docker Hub. So, the second Dockerfile uses
+  the image on Docker Hub without running first one. If you are in
+  offline, you need to run first one to have the base image locally.
+
+* Update docs.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index e262c87..274f709 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-VERSION := 18.08.4
++VERSION := 19.08
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-- 
+2.13.1
+
