@@ -1,0 +1,74 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id r68sm3789538pfr.78.2019.11.13.13.43.56
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 13 Nov 2019 13:43:57 -0800 (PST)
+From: yasufum.o@gmail.com
+To: anatoly.burakov@intel.com,
+	david.marchand@redhat.com,
+	konstantin.ananyev@intel.com
+Cc: dev@dpdk.org,
+	stable@dpdk.org,
+	yasufum.o@gmail.com,
+	Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+Subject: [PATCH v7 1/1] fbarray: fix duplicated fbarray file in secondary
+Date: Thu, 14 Nov 2019 06:43:46 +0900
+Message-Id: <20191113214346.33749-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191113214346.33749-1-yasufum.o@gmail.com>
+References: <20190724082031.45546-1-yasufum.o@gmail.com>
+ <20191113214346.33749-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+
+In secondary_msl_create_walk(), it creates a file for fbarrays with its
+PID for reserving unique name among secondary processes. However, it
+does not work if several secondaries run as app containers because each
+of containerized secondary has PID 1, and failed to reserve unique name
+other than first one. To reserve unique name in each of containers, use
+hostname in addition to PID.
+
+Cc: stable@dpdk.org
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ lib/librte_eal/linux/eal/eal_memalloc.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/lib/librte_eal/linux/eal/eal_memalloc.c b/lib/librte_eal/linux/eal/eal_memalloc.c
+index af6d0d023..11de6d4d6 100644
+--- a/lib/librte_eal/linux/eal/eal_memalloc.c
++++ b/lib/librte_eal/linux/eal/eal_memalloc.c
+@@ -1365,6 +1365,12 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	struct rte_memseg_list *primary_msl, *local_msl;
+ 	char name[PATH_MAX];
+ 	int msl_idx, ret;
++	char hostname[HOST_NAME_MAX+1] = { 0 };
++	/* filename of secondary's fbarray is defined such as
++	 * "fbarray_memseg-1048576k-0-0_PID_HOSTNAME" and length of PID
++	 * can be 7 digits maximumly.
++	 */
++	int fbarray_sec_name_len = 32 + 7 + 1 + HOST_NAME_MAX + 1;
+ 
+ 	if (msl->external)
+ 		return 0;
+@@ -1373,9 +1379,13 @@ secondary_msl_create_walk(const struct rte_memseg_list *msl,
+ 	primary_msl = &mcfg->memsegs[msl_idx];
+ 	local_msl = &local_memsegs[msl_idx];
+ 
+-	/* create distinct fbarrays for each secondary */
+-	snprintf(name, RTE_FBARRAY_NAME_LEN, "%s_%i",
+-		primary_msl->memseg_arr.name, getpid());
++	/* Create distinct fbarrays for each secondary by using PID and
++	 * hostname. The reason why using hostname is because PID could be
++	 * duplicated among secondaries if it is launched in a container.
++	 */
++	gethostname(hostname, sizeof(hostname));
++	snprintf(name, fbarray_sec_name_len, "%s_%d_%s",
++			primary_msl->memseg_arr.name, (int)getpid(), hostname);
+ 
+ 	ret = rte_fbarray_init(&local_msl->memseg_arr, name,
+ 		primary_msl->memseg_arr.len,
+-- 
+2.17.1
+
