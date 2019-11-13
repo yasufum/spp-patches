@@ -1,0 +1,46 @@
+From d2afa5c083b71c604de33ab58253e385cfba8019 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 14 Nov 2019 06:25:08 +0900
+Subject: [PATCH v7 0/1] fbarray: fix duplicated fbarray file in secondary
+
+In secondary_msl_create_walk(), it creates a file for fbarrays with its
+PID for reserving unique name among secondary processes. However, it
+does not work if several secondaries run as app containers because each
+of containerized secondary has PID 1, and failed to reserve unique name
+other than first one. To reserve unique name in each of containers, use
+hostname in addition to PID.
+
+---
+v2:
+  * fix typo in commit message
+v3:
+  * add fclose() after if getting hostname with fscan() is failed
+v4:
+  * Increase the size of proc_id to 33 and add boundary in calling
+    fscan()
+v5:
+  * revise title to reflect the issue
+  * use gethostname() instead of getting from `etc/hostname`
+  * use HOST_NAME_MAX for size of string for hostname
+v6:
+  * change to use hostname and pid to cover both of host and container
+    cases
+  * change RTE_FBARRAY_NAME_LEN to NAME_MAX to reserve enough size for
+    filename
+v7:
+  * discard changing RTE_FBARRAY_NAME_LEN to NAME_MAX to avoid breaking
+    ABI
+  * introduce int fbarray_sec_name_len instead of RTE_FBARRAY_NAME_LEN
+    to define long filename only for secondary process
+  * replace the order of postfixes of pid and hostname
+---
+
+Yasufumi Ogawa (1):
+  fbarray: fix duplicated fbarray file in secondary
+
+ lib/librte_eal/linux/eal/eal_memalloc.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+-- 
+2.17.1
+
