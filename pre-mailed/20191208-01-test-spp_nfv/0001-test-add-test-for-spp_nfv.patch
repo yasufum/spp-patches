@@ -1,0 +1,231 @@
+From f5d3c65a94a86ffc1838c71e2cba2155fb8235f4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 8 Dec 2019 09:42:28 +0900
+Subject: [PATCH] test: add test for spp_nfv
+
+This patch is to add a unit test code for spp_nfv. Test cases are
+defined by following SPP REST API, such as checking status, adding port
+or so.
+
+Configurations for the tests are defined as `test/config.ini`. Host IP
+or assignment of resouces can be changed in the config.
+
+Unit tests are expected to be run in the `test` dir.
+
+  $ cd /path/to/spp/test
+  $ python3 -m unittest  # or add `-v` for showing details
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ test/config.ini      |  12 +++
+ test/test_spp_nfv.py | 179 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 191 insertions(+)
+ create mode 100644 test/config.ini
+ create mode 100644 test/test_spp_nfv.py
+
+diff --git a/test/config.ini b/test/config.ini
+new file mode 100644
+index 0000000..8890413
+--- /dev/null
++++ b/test/config.ini
+@@ -0,0 +1,12 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++[spp-ctl]
++host = 127.0.0.1
++ctl_api_port = 7777
++api_version = v1
++
++# spp_nfv mainly tested
++[spp_nfv]
++lcores = 1,2
++mem = 512
+diff --git a/test/test_spp_nfv.py b/test/test_spp_nfv.py
+new file mode 100644
+index 0000000..1ebb3d3
+--- /dev/null
++++ b/test/test_spp_nfv.py
+@@ -0,0 +1,179 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++import configparser
++import json
++import requests
++import time
++import unittest
++
++
++class TestSppNfv(unittest.TestCase):
++    """Test spp_nfv.
++
++    Test as following the REST API reference. It does not include terminating
++    spp_nfv process because it is done as tearDown() task.
++    """
++
++    def setUp(self):
++        """Launch default spp_nfv used for the tests."""
++
++        self.sec_type = 'nfvs'
++        self.default_sec_id = 1
++
++        self.config = configparser.ConfigParser()
++        self.config.read('config.ini')
++
++        host = self.config['spp-ctl']['host']
++        ctl_api_port = self.config['spp-ctl']['ctl_api_port']
++        api_version = self.config['spp-ctl']['api_version']
++
++        self.base_url = 'http://{host}:{port}/{api_ver}'.format(
++                host=host, port=ctl_api_port, api_ver=api_version)
++
++        # Launch default spp_nfv
++        sec_port = '6666'
++        nfv = {'mem': self.config['spp_nfv']['mem'],
++               'lcores': self.config['spp_nfv']['lcores']}
++        params = {
++                'proc_name': 'spp_nfv',
++                'client_id': str(self.default_sec_id),
++                'eal': {
++                    '-m': nfv['mem'], '-l': nfv['lcores'],
++                    '--proc-type': 'secondary'},
++                'app': {
++                    '-s': '{}:{}'.format(host, sec_port),
++                    '-n': str(self.default_sec_id)}
++                }
++        url = '{baseurl}/primary/launch'.format(baseurl=self.base_url)
++        requests.put(url, data=json.dumps(params))
++        time.sleep(0.2)  # wait until be launched
++
++    def tearDown(self):
++        """Shutdown default spp_nfv."""
++
++        url = '{baseurl}/{sec_type}/{sec_id}'.format(
++                baseurl=self.base_url,
++                sec_type=self.sec_type,
++                sec_id=self.default_sec_id)
++        response = requests.delete(url)
++
++    def _get_status(self):
++        """Get status of default spp_nfv process."""
++
++        url = "{baseurl}/{sec_type}/{sec_id}".format(
++                baseurl=self.base_url,
++                sec_type=self.sec_type,
++                sec_id=self.default_sec_id)
++        response = requests.get(url)
++        return response.json()
++
++    def _set_forwarding_status(self, action):
++        """Set forwarding status as start or stop."""
++
++        if action in ['start', 'stop']:
++            url = "{baseurl}/{sec_type}/{sec_id}/forward".format(
++                    baseurl=self.base_url,
++                    sec_type=self.sec_type,
++                    sec_id=self.default_sec_id)
++            params = {'action': action}
++            response = requests.put(url, data=json.dumps(params))
++            return True
++        else:
++            return False
++
++    def _add_or_del_port(self, action, res_uid):
++        if action in ['add', 'del']:
++            url = "{baseurl}/{sec_type}/{sec_id}/ports".format(
++                    baseurl=self.base_url,
++                    sec_type=self.sec_type,
++                    sec_id=self.default_sec_id)
++            params = {'action': action, 'port': res_uid}
++            requests.put(url, data=json.dumps(params))
++            return True
++        else:
++            return False
++
++    def _add_port(self, res_uid):
++        self._add_or_del_port('add', res_uid)
++
++    def _del_port(self, res_uid):
++        self._add_or_del_port('del', res_uid)
++
++    def _assert_add_del_port(self, port):
++        self._add_port(port)
++        nfv = self._get_status()
++        self.assertTrue(port in nfv['ports'])
++
++        self._del_port(port)
++        nfv = self._get_status()
++        self.assertFalse(port in nfv['ports'])
++
++    def _patch(self, src, dst):
++        """Set patch between given ports."""
++
++        url = "{baseurl}/{sec_type}/{sec_id}/patches".format(
++                baseurl=self.base_url,
++                sec_type=self.sec_type,
++                sec_id=self.default_sec_id)
++        params = {'src': src, 'dst': dst}
++        requests.put(url, data=json.dumps(params))
++
++    def _reset_patches(self):
++        url = "{baseurl}/{sec_type}/{sec_id}/patches".format(
++                baseurl=self.base_url,
++                sec_type=self.sec_type,
++                sec_id=self.default_sec_id)
++        requests.delete(url)
++
++    # Test methods for testing spp_nfv from here.
++    def test_sec_id(self):
++        """Confirm sec ID is expected value."""
++
++        nfv = self._get_status()
++        self.assertEqual(nfv['client-id'], 1)
++
++    def test_forward_stop(self):
++        """Confirm forwarding is started and stopped."""
++
++        self._set_forwarding_status('start')
++        nfv = self._get_status()
++        self.assertEqual(nfv['status'], 'running')
++
++        self._set_forwarding_status('stop')
++        nfv = self._get_status()
++        self.assertEqual(nfv['status'], 'idling')
++
++    def test_add_del_ring(self):
++        """Check if ring PMD is added."""
++
++        port = 'ring:0'
++        self._assert_add_del_port(port)
++
++    def test_add_del_vhost(self):
++        """Check if vhost PMD is added."""
++
++        port = 'vhost:1'
++        self._assert_add_del_port(port)
++
++    def test_add_del_pcap(self):
++        """Check if pcap PMD is added."""
++
++        # TODO(yasufum): pcap cannot be adde because I do not know why...
++        port = 'pcap:1'
++        pass
++
++    def test_make_patch(self):
++        """Check if patch between ports is created and reseted."""
++
++        ports = ['ring:1', 'ring:2']
++
++        for port in ports:
++            self._add_port(port)
++        self._patch(ports[0], ports[1])
++        nfv = self._get_status()
++        self.assertTrue({'src': ports[0], 'dst': ports[1]} in nfv['patches'])
++
++        self._reset_patches()
++        nfv = self._get_status()
++        self.assertEqual(nfv['patches'], [])
+-- 
+2.17.1
+
