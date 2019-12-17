@@ -1,0 +1,213 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1039448oog;
+        Wed, 11 Dec 2019 08:39:11 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyZ+eYfTQvC7bkqSABsB0MlAr2hOny0JpXkySlyG+fg7qrd2JoRG2ZSDQlxDnxQ/MRHpue8
+X-Received: by 2002:a62:b615:: with SMTP id j21mr4688067pff.247.1576082350877;
+        Wed, 11 Dec 2019 08:39:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1576082350; cv=none;
+        d=google.com; s=arc-20160816;
+        b=UczAZp7GvWjUmV06tdh8YhTHr0rOkoVIQB5dLsqgnI1Oe7DPHY0CP2yWkpk+n6pz6/
+         ZW1MsQG2Q75RgnQno9bLPjsv4OJj5kn1FFCMxcXXOqOLdmiAREQrq0h9qusXaX70xGvL
+         84On459+d5kztL87R2LkWdlZoo5hCj8WQQ/jIQaENkYX0nkm+bzvPZwZQUhscumxDNmC
+         6pvAT+0AVaHKweNcb19NDuOChH3DDbir01HYhyKAxa6TGoiaPoonXCrbMjGA+ALDqZi5
+         r1GiAuZRvNqqnea1DXG8Op1bnqlnZEi5d4hmV0SK53s2LMlAjhoS4QacrhWMC88qEVeE
+         xgbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=x4tCaMfEr2lrin0+8EXwSrG49pmtOF7EfYmOJZGSGjU=;
+        b=AcLOexFT+TJkWPw+FflcCHenRjmRGjP/SuDCay9SDG8lbDpGLvcxsyzo+gC5PbcT13
+         hLICyuXjSqRWQ4xbpD3MyLtmuGK75sU7Z+F4piUBWF1QAfm2LgGuZG2+e4Ux5O20wA8k
+         1QwlEBcUsRgPykISf+ZQRrc+Y6sQiF/q04j9vVEOgXCjXj5/4KQZF9oWx4l8nWhWR7Q7
+         QduNKRcsl6SbHaBec1ae75RJuV1I42dDsrX8Xh+9Q2Dg5Y7OF3jBt2egS/gNw3gVFG6Q
+         XbsvKRx9oGQXdDcjRCTVkcREPyUpR9EVQ8oMxmUcYNlvpGv9sJUhRKPFW3m7SFMpUlWw
+         rC8A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of abdul.halim@intel.com designates 134.134.136.24 as permitted sender) smtp.mailfrom=abdul.halim@intel.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=intel.com
+Return-Path: <abdul.halim@intel.com>
+Received: from mga09.intel.com (mga09.intel.com. [134.134.136.24])
+        by mx.google.com with ESMTPS id j23si2488445pfe.174.2019.12.11.08.39.10
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Dec 2019 08:39:10 -0800 (PST)
+Received-SPF: pass (google.com: domain of abdul.halim@intel.com designates 134.134.136.24 as permitted sender) client-ip=134.134.136.24;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of abdul.halim@intel.com designates 134.134.136.24 as permitted sender) smtp.mailfrom=abdul.halim@intel.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=intel.com
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Dec 2019 08:39:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,301,1571727600"; 
+   d="scan'208";a="207748869"
+Received: from silpixa00399119.ir.intel.com (HELO silpixa00399119.ger.corp.intel.com) ([10.237.222.73])
+  by orsmga008.jf.intel.com with ESMTP; 11 Dec 2019 08:39:07 -0800
+From: Abdul Halim <abdul.halim@intel.com>
+To: dev@dpdk.org
+Cc: ray.kinsella@intel.com,
+	yasufum.o@gmail.com,
+	Ruifeng.Wang@arm.com,
+	Abdul Halim <abdul.halim@intel.com>
+Subject: [PATCH v6] build: add dockerfile for building docker image
+Date: Wed, 11 Dec 2019 16:39:04 +0000
+Message-Id: <1576082344-277755-1-git-send-email-abdul.halim@intel.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1566924290-451677-1-git-send-email-abdul.halim@intel.com>
+References: <1566924290-451677-1-git-send-email-abdul.halim@intel.com>
+
+Adding a Dockerfile with Ubuntu bionic base image to build dpdk as shared
+library. This docker image could be used as base image to build and run
+dpdk applications in containers.
+
+Signed-off-by: Abdul Halim <abdul.halim@intel.com>
+
+---
+
+v2:
+  * renamed Dockerfile name from Dockerfile.ubuntu to Dockerfile.bionic
+  * added call to ldconfig to update cache of libraries to include newly
+    installed DPDK libs
+
+---
+
+v3:
+  * added example use-case of dpdk dockerfile in extras/README.md
+
+---
+v4:
+  * changed meson build to use tmp dir in docker build
+  * changed sample app dockerfile to add only helloworld source code
+
+---
+v5:
+  * fix whitespace error
+
+---
+v6:
+  * clean up temp build directory
+---
+ extras/Dockerfile.bionic | 40 +++++++++++++++++++++++++++++++++++++
+ extras/README.md         | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+ create mode 100644 extras/Dockerfile.bionic
+ create mode 100644 extras/README.md
+
+diff --git a/extras/Dockerfile.bionic b/extras/Dockerfile.bionic
+new file mode 100644
+index 0000000..08b4c60
+--- /dev/null
++++ b/extras/Dockerfile.bionic
+@@ -0,0 +1,40 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Intel Corporation
++FROM ubuntu:bionic
++
++# install requirements for getting and building DPDK
++# including dependencies for DPDK features
++RUN apt-get update && apt-get install -y \
++    build-essential \
++    pkg-config \
++    python3 \
++    python3-pip \
++    ninja-build \
++    libjansson-dev \
++    libbsd-dev \
++    libnuma-dev \
++    libssl-dev \
++    zlib1g-dev \
++    libpcap-dev \
++    libibverbs-dev \
++        && pip3 install meson \
++        && apt-get clean && rm -rf /var/lib/apt/lists/*
++
++ADD . /tmp/dpdk
++
++WORKDIR /tmp/dpdk
++
++RUN meson /tmp/dpdk-build \
++    -Ddefault_library=shared \
++    -Dmachine=default \
++    -Dper_library_versions=false \
++        && ninja -C /tmp/dpdk-build install \
++        && ldconfig \
++        && cd /; rm -rf /tmp/dpdk /tmp/dpdk-build
++
++WORKDIR /
++
++# Installed DPDK Shared library location:
++# lib dir : /usr/local/lib/
++# include : /usr/local/include/
++# pkgconfig file: /usr/local/lib/x86_64-linux-gnu/pkgconfig/libdpdk.pc
+diff --git a/extras/README.md b/extras/README.md
+new file mode 100644
+index 0000000..8001012
+--- /dev/null
++++ b/extras/README.md
+@@ -0,0 +1,51 @@
++# Build DPDK Docker image
++
++To build a docker image run the following command from dpdk root directory.
++
++```
++DOCKER_TAG="dpdk"
++docker build -t ${DOCKER_TAG} -f extras/Dockerfile.bionic .
++```
++
++# Example of how to use this dpdk library image
++
++The following steps shows how to use the dpdk shared library container to build
++and run a dpdk application without having to build dpdk library for each
++application.
++
++## Create a dpdk sample app docker file with 'dpdk' as the base image
++
++Create a docker file to build the helloworld application from example/helloworld
++source files in dpdk root directory.
++
++```
++cat << EOF > Dockerfile.dpdkSampleApp
++FROM dpdk
++
++ADD examples/helloworld /opt/examples/helloworld
++
++WORKDIR /opt/examples/helloworld
++RUN make && cp build/helloworld-shared /usr/local/bin/helloworld
++EOF
++```
++
++## Build sample app docker image
++
++```
++DOCKERAPP_TAG="dpdk-helloworld"
++docker build -t ${DOCKERAPP_TAG} -f Dockerfile.dpdkSampleApp .
++```
++
++This sample app now can be run like any other applicaiton in a docker container.
++
++```
++$ docker run --rm --privileged -it  -v /dev/hugepages:/dev/hugepages dpdk-helloworld
++```
++
++## Running the sample app
++Once inside the container run helloword binary
++
++```
++$ root@11233ed2e69c # helloworld
++```
++
+-- 
+1.8.3.1
+
+--------------------------------------------------------------
+Intel Research and Development Ireland Limited
+Registered in Ireland
+Registered Office: Collinstown Industrial Park, Leixlip, County Kildare
+Registered Number: 308263
+
+
+This e-mail and any attachments may contain confidential material for the sole
+use of the intended recipient(s). Any review or distribution by others is
+strictly prohibited. If you are not the intended recipient, please contact the
+sender and delete all copies.
+
