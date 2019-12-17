@@ -1,0 +1,307 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp4066384oog;
+        Mon, 16 Dec 2019 01:32:55 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzTjFMCUNffbA8HwgzMfsJcUxaghWNWVX9z3oi5QiqhvGnYozXc1YpqpROBES9AkI4WbUnN
+X-Received: by 2002:a63:fa50:: with SMTP id g16mr10398805pgk.202.1576488774899;
+        Mon, 16 Dec 2019 01:32:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1576488774; cv=none;
+        d=google.com; s=arc-20160816;
+        b=X9cTuSUq2nxSfxEnDtH8W/E6ROMKG5Z3zzkh9l/XN7jq2YNMxCpfncVxZFDxuvXUDt
+         bFfzJ82u8ar4Fin7QkVn9hR9DtqgGJZFNoxi1kBK6DejVFIgpSYWYbuuPq0ILRyQ9OQV
+         gCatcB/dDXsafx/+yOnW9wLgrmyof8z2cJUwtkhKRKHpqkT8WoOdM5w7UfLK1+0QCvjJ
+         kJe3TXshGW5E8Jtwwzo0XmAJ7k4c+Qcygd2daLU2QqjSo/UzFvohPLfcRQGIQPhbtKlv
+         r8IKvW/478YWLc4kjTq2thB1bHVidL6QpY9m586jJpD7YdqAeKRL7hr7YxW2/WrfRnu3
+         2L4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=uTDA0/bIdAxWHlM2yGVJNAIImi0MP+/C1PI/NHBFspQ=;
+        b=cZ1LiKd07slq34onnzIG5IVpiEyQZ6ucNSq3KrSru9nodQX66oDk1edKSpt2hWUv5i
+         ifu716zGUctzK96F/cezfzzsuCUFXDEYKikp22iOWljjqo8xxPY5LI2r24oJiyVkNLZ/
+         V5DrFaQovC6aNFNWvNCtqucnMhucnQm2jYaj3R/7p7Ir46vzbAuVfkrryR6t/BH1c+vO
+         5XGL5ChDpkB5qShTE6fn04Dc9pEDYpB5FmH74eGxMKF1jRT11d1AOu+7pM0aprGwmNoW
+         4mAZAkFdHhuKWMLOg3aVf3D2O4DA4ToHuoKBjq/9SiWVbn3k8WpA8edZl5sfr/fAGvT6
+         ADug==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id 2si16794238plc.109.2019.12.16.01.32.54
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Dec 2019 01:32:54 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id xBG9Woi0030516;
+	Mon, 16 Dec 2019 18:32:50 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id xBG9Wolo014525;
+	Mon, 16 Dec 2019 18:32:50 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA13598;
+	 Mon, 16 Dec 2019 18:17:19 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id xBG9HHkf022918; Mon, 16 Dec 2019 18:17:17 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id xBG9HHFK022915; Mon, 16 Dec 2019 18:17:17 +0900
+Message-Id: <201912160917.xBG9HHFK022915@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id xBG9HIIx005181 ; Mon, 16 Dec 2019 18:17:18 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 2/2] docs: introduce RPM package support
+Date: Mon, 16 Dec 2019 18:17:18 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20191216091718.27178-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20191216091718.27178-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This update is to add RPM SPEC files for CentOS distro. RPM packages of
+DPDK and SPP are built from the spec files in `spp/rpmbuild/SPECS`
+directory. Because of dependencies, DPDK should be installed with
+this package before SPP.
+
+RPM file is built after installing required packages as following.
+
+  $ rpmbuild -ba --define="_topdir /path/to/spp" SPECS/dpdk.spec
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ rpmbuild/SPECS/spp.spec | 222 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 222 insertions(+)
+ create mode 100644 rpmbuild/SPECS/spp.spec
+
+diff --git a/rpmbuild/SPECS/spp.spec b/rpmbuild/SPECS/spp.spec
+new file mode 100644
+index 0000000..05570dc
+--- /dev/null
++++ b/rpmbuild/SPECS/spp.spec
+@@ -0,0 +1,222 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++##################################################
++# Basic information
++##################################################
++Summary: Soft Patch Panel (SPP) is a DPDK app for Service Function Chaining in NFV
++Name: spp
++Version: 18.08.4
++Release: 1
++License: BSD-3-Clause
++URL: http://git.dpdk.org/apps/spp/
++Source: http://git.dpdk.org/apps/spp/snapshot/%{name}-%{version}.tar.gz
++Group: Applications/File
++Prefix: %{_prefix}
++
++##################################################
++# Requires
++##################################################
++BuildRequires: python36 python36-pip python-devel python-six libpcap-devel lz4-devel wireshark-devel
++BuildRequires: inkscape texlive-latex latexmk
++BuildRequires: dpdk-devel
++
++Requires: lz4 libpcap wireshark python36 python36-pip
++Requires: lz4-devel libpcap-devel wireshark-devel libX11-devel
++Requires: dpdk
++
++##################################################
++# Description
++##################################################
++%description
++Soft Patch Panel (SPP) is a DPDK application for providing
++switching functionality for Service Function Chaining in NFV
++(Network Function Virtualization).
++
++##################################################
++# Define
++##################################################
++# Points to the DPDK installation and target env directory
++%define RTE_SDK                 /usr/share/dpdk
++%define RTE_TARGET              x86_64-native-linuxapp-gcc
++
++# Installation path
++%define INS                     /opt/spp
++%define INS_DOC                 /usr/share/doc/spp
++%define INS_LINK                /usr/bin
++
++# Source directory
++%define SRC                     src
++
++# SPP tools directory
++%define TOOLS                   tools
++%define HELPS                   %{TOOLS}/helpers
++
++# Document path
++%define DOC_TREE                docs/guides/_build/doctrees
++%define DOC_HTML                docs/guides/_build/html
++%define DOC_LATEX               docs/guides/_build/latex
++
++# SPP's licence directory
++%define LICENSE                 license
++
++# `%{buildroot}` is expanded into `rpmbuild/BUILDROOT` as default.
++
++# Binary path
++%define CLI                     cli
++%define CTL                     spp-ctl
++%define PRI                     primary/%{RTE_TARGET}
++%define VF_PATH                 vf/%{RTE_TARGET}
++%define NFV                     nfv/%{RTE_TARGET}
++%define MIR                     mirror/%{RTE_TARGET}
++%define PCAP                    pcap/%{RTE_TARGET}
++
++# Python path
++%define PYTHON /usr/lib64/python3.6:/usr/lib64/python3.6/lib-dynload:/usr/local/lib64/python3.6/site-packages:/usr/local/lib/python3.6/site-packages:/usr/lib64/python3.6/site-packages:/usr/lib/python3.6/site-packages
++
++##################################################
++# prep section
++##################################################
++%prep
++%setup -q
++
++##################################################
++# build section
++##################################################
++%build
++export RTE_SDK=%{RTE_SDK}
++export RTE_RTE_TARGET=%{RTE_TARGET}
++export PYTHONPATH=%{PYTHON}
++make
++make doc-all
++
++##################################################
++# install section
++##################################################
++%install
++# Clearn up
++rm -rf %{buildroot}
++
++# Make install directory
++mkdir -p %{buildroot}%{INS}
++mkdir -p %{buildroot}%{INS}/%{LICENSE}
++mkdir -p %{buildroot}%{INS}/%{HELPS}
++mkdir -p %{buildroot}%{INS}/bin
++mkdir -p %{buildroot}%{INS}/bin/%{PRI}
++mkdir -p %{buildroot}%{INS}/bin/%{VF_PATH}
++mkdir -p %{buildroot}%{INS}/bin/%{NFV}
++mkdir -p %{buildroot}%{INS}/bin/%{MIR}
++mkdir -p %{buildroot}%{INS}/bin/%{PCAP}
++mkdir -p %{buildroot}%{INS_DOC}
++mkdir -p %{buildroot}%{INS_LINK}
++
++# File copy
++cp README.md                                %{buildroot}%{INS}
++cp requirements.txt                         %{buildroot}%{INS}
++cp CONTRIBUTING.txt                         %{buildroot}%{INS}
++
++# License copy
++cp %{LICENSE}/*                             %{buildroot}%{INS}/%{LICENSE}/
++
++# Execute file copy
++cp -r %{SRC}/%{CLI}                         %{buildroot}%{INS}/bin
++cp -r %{SRC}/%{CTL}                         %{buildroot}%{INS}/bin
++cp %{SRC}/spp.py                            %{buildroot}%{INS}/bin
++cp %{SRC}/%{PRI}/app/spp_primary            %{buildroot}%{INS}/bin/%{PRI}
++cp %{SRC}/%{VF_PATH}/app/spp_vf             %{buildroot}%{INS}/bin/%{VF_PATH}
++cp %{SRC}/%{NFV}/app/spp_nfv                %{buildroot}%{INS}/bin/%{NFV}
++cp %{SRC}/%{MIR}/app/spp_mirror             %{buildroot}%{INS}/bin/%{MIR}
++cp %{SRC}/%{PCAP}/app/spp_pcap              %{buildroot}%{INS}/bin/%{PCAP}
++cp %{HELPS}/sec_launcher.py                 %{buildroot}%{INS}/%{HELPS}
++
++# Document file copy
++cp -r %{DOC_TREE}                           %{buildroot}%{INS_DOC}
++cp -r %{DOC_HTML}                           %{buildroot}%{INS_DOC}
++cp -r %{DOC_LATEX}                          %{buildroot}%{INS_DOC}
++
++# Create symbolic link
++ln -sf %{INS}/bin/spp.py                    %{buildroot}%{INS_LINK}/spp
++ln -sf %{INS}/bin/%{CTL}/spp-ctl            %{buildroot}%{INS_LINK}/spp-ctl
++ln -sf %{INS}/bin/%{PRI}/spp_primary        %{buildroot}%{INS_LINK}/spp_primary
++ln -sf %{INS}/bin/%{VF_PATH}/spp_vf         %{buildroot}%{INS_LINK}/spp_vf
++ln -sf %{INS}/bin/%{NFV}/spp_nfv            %{buildroot}%{INS_LINK}/spp_nfv
++ln -sf %{INS}/bin/%{MIR}/spp_mirror         %{buildroot}%{INS_LINK}/spp_mirror
++ln -sf %{INS}/bin/%{PCAP}/spp_pcap          %{buildroot}%{INS_LINK}/spp_pcap
++
++
++##################################################
++# post section
++##################################################
++%post
++# python package install
++pip3 install -r %{INS}/requirements.txt
++
++##################################################
++# clean section
++##################################################
++%clean
++rm -rf %{buildroot}
++
++##################################################
++# files section
++##################################################
++%files
++# Executable files
++%dir %{INS}
++%dir %{INS}/bin
++%dir %attr(777,root,root) %{INS}/bin/%{CLI}
++%dir %{INS}/bin/%{CTL}
++%dir %{INS}/bin/primary
++%dir %{INS}/bin/primary/%{RTE_TARGET}
++%dir %{INS}/bin/vf
++%dir %{INS}/bin/vf/%{RTE_TARGET}
++%dir %{INS}/bin/nfv
++%dir %{INS}/bin/nfv/%{RTE_TARGET}
++%dir %{INS}/bin/mirror
++%dir %{INS}/bin/mirror/%{RTE_TARGET}
++%dir %{INS}/bin/pcap
++%dir %{INS}/bin/pcap/%{RTE_TARGET}
++%attr(755,root,root) %{INS}/bin/spp.py
++%attr(755,root,root) %{INS}/bin/%{CTL}/spp-ctl
++%attr(744,root,root) %{INS}/bin/%{PRI}/spp_primary
++%attr(744,root,root) %{INS}/bin/%{VF_PATH}/spp_vf
++%attr(744,root,root) %{INS}/bin/%{NFV}/spp_nfv
++%attr(744,root,root) %{INS}/bin/%{MIR}/spp_mirror
++%attr(744,root,root) %{INS}/bin/%{PCAP}/spp_pcap
++%{INS}/bin/%{CLI}/*
++%{INS}/bin/%{CTL}/*.py
++%{INS}/%{TOOLS}
++%{INS}/%{HELPS}
++%{INS}/%{LICENSE}
++
++#Symbolic link files
++%{INS_LINK}/spp
++%{INS_LINK}/spp-ctl
++%{INS_LINK}/spp_primary
++%{INS_LINK}/spp_vf
++%{INS_LINK}/spp_nfv
++%{INS_LINK}/spp_mirror
++%{INS_LINK}/spp_pcap
++
++# Doc files
++%doc %{INS}/README.md
++%doc %{INS}/requirements.txt
++%doc %{INS}/CONTRIBUTING.txt
++%doc %{INS_DOC}
++
++##################################################
++# preun section
++##################################################
++%preun
++if [ -e %{INS} ]; then
++    # delete log file
++    find %{INS} -name "*.log" | xargs --no-run-if-empty rm
++
++    if [ -d %{INS}/bin/%{CLI}/log/ ]; then
++        rmdir %{INS}/bin/%{CLI}/log/
++    fi
++
++    # delete python cache
++    find %{INS} -name "*.pyc" | xargs --no-run-if-empty rm
++    find %{INS} -name "__pycache__" | xargs --no-run-if-empty rmdir
++fi
+-- 
+2.17.1
+

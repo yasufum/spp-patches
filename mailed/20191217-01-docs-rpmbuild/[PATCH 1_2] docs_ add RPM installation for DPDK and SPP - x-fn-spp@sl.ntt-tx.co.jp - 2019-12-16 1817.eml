@@ -1,0 +1,433 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp4066382oog;
+        Mon, 16 Dec 2019 01:32:54 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwRi8CvVaZ+Ewj0LTuiBw1jrdifAjzK/pURVRIxPMthdfKBbb4USJYDnaHlbKSyQCFbL+Jh
+X-Received: by 2002:a17:90a:a386:: with SMTP id x6mr17164165pjp.116.1576488774886;
+        Mon, 16 Dec 2019 01:32:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1576488774; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Cms5MoqNfVehSbDmYyDPAFG+iPSfYpsztr23O1XihAsX5jZsb1B2n7h38eIXIKZIkp
+         egYlzcpVogQOal2eZ4YGCHCzz4DmMYjm+bhfZ59HzfaeoI0pkV/aSB9Wbw1C6oZ++XaK
+         wNHGLerg81cR4uNkpad/7fA5ulI/LMr2boqNUdnXhRs0SrwRi/4VXbKfyZ9WOTY/skXX
+         pFvK+qJJwbJqPDwvM5mvdbwEkn9YoRN79v2iGAgda5IKtMbsMWZzHvxtW2NV4bmBjOkP
+         JrFktxjom5nzDH0Y0VRW6zAo5D33qkQD+aIJRmgMW6Pj5ZsbOuEAgm3r4NQG4SzQqxol
+         seBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=l9nz9QOC+Q0fFfbLb/iGA4HIdONTVKnTgk2lnQxOqfM=;
+        b=Wid41WPc1S1oNSstSl6f6qoITE+NtUWobm8zDzHugAwF9RIpnodx9aIoZMNsVG1eb4
+         FZ7V5VqkgrJgpUDRj2IfojJnz/sz/h6zdGK9eFsO+v8LB28x96SpQ0/EVohSKP6xG2uP
+         zmV8xm4zJ6VSz8UYtReXWrtReTeaAPuV386tkF58zScqvHdZboS4D19+Ecuc13vbdOJO
+         +wF+34EHw0Ns0E7b8+qbkUDwTXTi18etgLD8QAB8X/aSKbKXFSV7JTIei9O6h9SJl70f
+         WIGfaenmmFvNmrOlhdLTvmMkU9goThERhkl1TePY8/jhI6TA23FE2WbgkrZVMMESZAou
+         YcUQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id j2si15444666pjz.59.2019.12.16.01.32.54
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 16 Dec 2019 01:32:54 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id xBG9WoQ7030512;
+	Mon, 16 Dec 2019 18:32:50 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id xBG9Wnoi014515;
+	Mon, 16 Dec 2019 18:32:49 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id UAA13596;
+	 Mon, 16 Dec 2019 18:17:19 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id xBG9HHqn022914; Mon, 16 Dec 2019 18:17:17 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id xBG9HHbM022908; Mon, 16 Dec 2019 18:17:17 +0900
+Message-Id: <201912160917.xBG9HHbM022908@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id xBG9HIIw005181 ; Mon, 16 Dec 2019 18:17:18 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 1/2] docs: add RPM installation for DPDK and SPP
+Date: Mon, 16 Dec 2019 18:17:17 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20191216091718.27178-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20191216091718.27178-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+For CentOS, RPM installation is supported for DPDK and SPP. this update
+is to add how to build RPM packages from source and installation with
+the RPMs.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/gsg/install.rst | 307 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 299 insertions(+), 8 deletions(-)
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 335a151..90c4c8c 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -14,7 +14,6 @@ Refer to `DPDK documentation
+ For Linux, see `Getting Started Guide for Linux
+ <http://www.dpdk.org/doc/guides/linux_gsg/index.html>`_ .
+ 
+-
+ .. _setup_install_packages:
+ 
+ Required Packages
+@@ -23,6 +22,10 @@ Required Packages
+ Installing packages for DPDK and SPP is almost the on Ubunu and CentOS,
+ but names are different for some packages.
+ 
++For CentOS, you can install packages with RPM instead of using ``yum``
++command as described in
++:ref:`Build RPM Packages<setup_install_rpm_dpdk_spp>`.
++
+ 
+ Ubuntu
+ ~~~~~~
+@@ -360,6 +363,8 @@ Refer to `L2 Forwarding Sample Application
+ for more details.
+ 
+ 
++.. _setup_install_build_document:
++
+ Build Documentation
+ -------------------
+ 
+@@ -374,7 +379,9 @@ For HTML documentation, install sphinx and additional theme.
+     $ pip3 install sphinx \
+       sphinx-rtd-theme
+ 
+-For PDF, inkscape and latex packages are required.
++For PDF, install inkscape and latex packages. Some of package names are
++a little bit different between Ubuntu and CentOS. Here is an example on
++Ubuntu.
+ 
+ .. code-block:: console
+ 
+@@ -383,19 +390,63 @@ For PDF, inkscape and latex packages are required.
+       texlive-latex-extra \
+       texlive-latex-recommended
+ 
++You might also need to install ``latexmk`` in addition to if you use
++Ubuntu 18.04 LTS.
++
++.. code-block:: console
++
++    $ sudo apt install latexmk
++
++
++This is an example of package installation on CentOS.
++
+ .. code-block:: console
+ 
+     # CentOS
+     $ sudo yum install inkscape \
+-      texlive-latex
++      latexmk  \
++      texlive-latex \
++      texlive-*.noarch
+ 
+-You might also need to install ``latexmk`` in addition to if you use
+-Ubuntu 18.04 LTS.
++On CentOS, you are required to install additional style files,
++``tabulary``, ``capt-of`` and ``needspace``, without using ``yum`` command.
++It should be added to ``texlive``'s directory by yourself.
++
++First, download style file packages from CTAN and unzip the files in any
++directory.
+ 
+ .. code-block:: console
+ 
+-    $ sudo apt install latexmk
++    $ cd /path/to/any
++    $ CTAN_PKG_URL=http://mirrors.ctan.org/macros/latex/contrib
++    $ wget ${CTAN_PKG_URL}/{tabulary,capt-of,needspace}.zip
++    $ unzip '*.zip'
++
++Then, generate sty files by running installer scripts in each of
++directories.
++
++.. code-block:: console
++
++    $ for pkg in tabulary capt-of needspace
++      do cd ${pkg}; latex ${pkg}.ins; cd ..
++      done
++
++You can find sty files if installer is finished successfully.
++
++.. code-block:: console
+ 
++    $ ls ./*/*.sty
++      ./capt-of/capt-of.sty  ./needspace/needspace.sty  ./tabulary/tabulary.sty
++
++Finally, move them to ``texlive``'s directory and run ``texhash``.
++
++.. code-block:: console
++
++    $ sudo mv tabulary capt-of needspace \
++      /usr/share/texlive/texmf-dist/tex/latex/
++    $ sudo texhash
++
++After package installation,
+ HTML documentation is compiled by running make with ``doc-html``. This
+ command launch sphinx for compiling HTML documents.
+ Compiled HTML files are created in ``docs/guides/_build/html/`` and
+@@ -421,6 +472,246 @@ You can also compile both of HTML and PDF documentations with ``doc`` or
+     # or
+     $ make doc-all
+ 
+-.. note::
+ 
+-    For CentOS, compilation PDF document is not supported.
++.. _setup_install_rpm_dpdk_spp:
++
++Build RPM Packages
++------------------
++
++This section describes how to build RPMs of DPDK and SPP from spec files.
++
++
++Required Packages
++~~~~~~~~~~~~~~~~~
++
++First of all, install dev tools.
++
++.. code-block:: console
++
++    $ sudo yum groupinstall "Development Tools"
++    $ sudo yum install rpm-build rpmdevtools
++
++Install EPEL (Extra Packages for Enterprise Linux) and required packages.
++
++.. code-block:: console
++
++    $ sudo rpm -ivh \
++      https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
++
++.. code-block:: console
++
++    $ sudo yum install python-pip \
++      kernel-devel \
++      kernel-headers \
++      libpcap-devel \
++      doxygen \
++      python-sphinx \
++      inkscape \
++      numactl-devel \
++      kernel-devel-$(uname -r) \
++      wireshark
++
++    $ sudo yum install texlive \
++      texlive-latex \
++      texlive-xetex \
++      texlive-collection-xetex \
++      texlive-*.noarch \
++      latexmk
++
++Then, install ``sphinx`` and its theme with ``pip``.
++
++.. code-block:: console
++
++        $ sudo pip install sphinx==1.3.1 sphinx_rtd_theme
++
++
++.. _setup_install_rpm_dpdk:
++
++DPDK
++~~~~
++
++Instead of creating spec file from scratch, you get it provided
++as a part of ``dpdk-stable`` release.
++However, the version of DPDK in this spec file is just bit old from our
++targeting version ``v18.08.1``. So we need to make some updates for the
++spec file before running build task.
++
++Considering working directory for building RPMs, although you can build it
++in any directory, it is already provided as ``spp/rpmbuild`` for conciseness.
++Download spec file and source in the directory as following.
++
++.. code-block:: console
++
++    $ wget -P rpmbuild/SPECS \
++      http://git.dpdk.org/dpdk-stable/plain/pkg/dpdk.spec
++    $ wget -P rpmbuild/SOURCES \
++      https://fast.dpdk.org/rel/dpdk-18.08.1.tar.xz
++
++Edit this spec file by following example of diff styled
++(``diff -u`` exactly) below.
++``+`` means a newly added line, and ``-`` means a deleted line.
++
++.. code-block:: none
++
++    Name: dpdk
++    -Version: 18.11.5
++    +Version: 18.08.1
++     Release: 1
++     Packager: packaging@6wind.com
++     URL: http://dpdk.org
++    -Source: http://dpdk.org/browse/dpdk/snapshot/dpdk-%{version}.tar.gz
++    +Source: https://fast.dpdk.org/rel/dpdk-%{version}.tar.xz
++    ...
++
++Remove entries of no needed architectures, in this case, other than
++x86_64.
++
++.. code-block:: none
++
++    ...
++    -ExclusiveArch: i686 x86_64 aarch64
++    -%ifarch aarch64
++    -%global machine armv8a
++    -%global target arm64-%{machine}-linuxapp-gcc
++    -%global config arm64-%{machine}-linuxapp-gcc
++    -%else
++    -%global machine default
++    +ExclusiveArch: x86_64
++    +%global machine native
++     %global target %{_arch}-%{machine}-linuxapp-gcc
++     %global config %{_arch}-native-linuxapp-gcc
++    -%endif
++    ...
++
++Update ``BuildRequires`` for additional required packages.
++
++.. code-block:: none
++
++    ...
++     BuildRequires: doxygen, python-sphinx, inkscape
++    -BuildRequires: texlive-collection-latexextra
++    +BuildRequires: numactl-devel wireshark texlive texlive-latex
++    +BuildRequires: texlive-xetex texlive-collection-xetex latexmk
++    ...
++
++Add ``-n`` option in ``%prep`` section.
++
++.. code-block:: none
++
++    ...
++     %prep
++    -%setup -q
++    +%setup -q -n %{name}-stable-%{version}
++    ...
++
++Add modifications of config params in ``%build`` section.
++
++.. code-block:: none
++
++    ...
++     %build
++    ...
++     sed -ri 's,(LIBRTE_PMD_PCAP=).*,\1y,'      %{target}/.config
++    +sed -ri 's,(CONFIG_RTE_LIBRTE_PMD_PCAP=).*,\1y,' %{target}/.config
++    +sed -ri 's,(CONFIG_RTE_PORT_PCAP=).*,\1y,'       %{target}/.config
++    +sed -ri 's,(CONFIG_RTE_EAL_PMD_PATH=).*,\1\"%{_libdir}/dpdk\",' %{target}/.config
++     make O=%{target} %{?_smp_mflags}
++    ...
++
++The rest of things is to change to move some libraries in
++``%install`` section.
++
++.. code-block:: none
++
++    ...
++     %install
++     rm -rf %{buildroot}
++     make install O=%{target} DESTDIR=%{buildroot} \
++           prefix=%{_prefix} bindir=%{_bindir} sbindir=%{_sbindir} \
++           includedir=%{_includedir}/dpdk libdir=%{_libdir} \
++           datadir=%{_datadir}/dpdk docdir=%{_docdir}/dpdk
++    +mkdir %{buildroot}%{_libdir}/dpdk
++    +mv %{buildroot}%{_libdir}/librte_pmd_* %{buildroot}%{_libdir}/dpdk
++    +mv %{buildroot}%{_libdir}/dpdk/librte_pmd_ring* %{buildroot}%{_libdir}/
++    +mv %{buildroot}%{_libdir}/dpdk/librte_pmd_vhost* %{buildroot}%{_libdir}/
++    ...
++
++Finally, build RPM with updated spec file.
++
++.. code-block:: console
++
++    $ rpmbuild -ba --define="_topdir /path/to/spp/rpmbuild" SPECS/dpdk.spec
++
++You can find three RPMs after build tasks are done in succeed.
++
++.. code-block:: console
++
++    $ ls rpmbuild/RPMS/x86_64/
++    dpdk-18.08.1-1.x86_64.rpm
++    dpdk-debuginfo-18.08.1-1.x86_64.rpm
++    dpdk-devel-18.08.1-1.x86_64.rpm
++
++
++Now, you can install DPDK with ``yum localinstall``,
++or remove with ``yum erase``.
++
++.. code-block:: console
++
++    # Install DPDK
++    $ sudo yum localinstall rpmbuild/RPMS/x86_64/dpdk-18.08.1-1.x86_64.rpm
++
++    # remove
++    $ sudo yum erase dpdk
++
++
++.. _setup_install_rpm_spp:
++
++SPP
++~~~
++
++For SPP, spec file is provided as ``spp/rpmbuild/SPECS/spp.spec``.
++You download SPP v18.08.4, or update  ``Version`` entry in the spec file
++if you use other version.
++
++.. code-block:: console
++
++    $ wget -P rpmbuild/SOURCES \
++      http://git.dpdk.org/apps/spp/snapshot/spp-18.08.4.tar.gz
++
++Installing DPDK with RPMs created in the previous section is required
++for building SPP's RPM pakcage.
++
++.. code-block:: console
++
++    $ cd rpmbuild/RPMS/x86_64/
++    $ sudo yum localinstall dpdk-18.08.1-1.x86_64.rpm \
++      dpdk-devel-18.08.1-1.x86_64.rpm \
++
++Packages for building SPP should also be installed as described in
++:ref:`Required Packages<setup_install_packages>` and
++:ref:`Build Documentation<setup_install_build_document>`.
++
++Return to the project root and start building SPP RPM.
++
++.. code-block:: console
++
++    $ cd /path/to/spp
++    $ rpmbuild -ba --define="_topdir /path/to/spp/rpmbuild" SPECS/spp.spec
++
++Confirm that two RPMs are generated in ``RPM/x86_64`` directory.
++
++.. code-block:: console
++
++    $ ls rpmbuild/RPMS/x86_64/
++    spp-18.08.3-1.x86_64.rpm
++    spp-debuginfo-18.08.3-1.x86_64.rpm
++
++You can install SPP with ``yum localinstall``, or remove with ``yum erase``.
++
++.. code-block:: console
++
++    # install SPP
++    $ sudo yum localinstall rpmbuild/RPMS/x86_64/spp-18.08.3-1.x86_64.rpm
++
++    # remove SPP
++    $ sudo yum erase spp
+-- 
+2.17.1
+
