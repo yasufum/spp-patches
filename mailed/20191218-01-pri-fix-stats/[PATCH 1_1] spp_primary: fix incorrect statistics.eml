@@ -1,0 +1,114 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp422311oog;
+        Tue, 17 Dec 2019 21:02:06 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxMSIsAxd+1hpGrjZ0P0/0ouV/ueYcnQOxszeqEbi7AZhIxhU/Nkbdjg+DN6C48fY0VEgPn
+X-Received: by 2002:a17:90a:8001:: with SMTP id b1mr467203pjn.39.1576645326506;
+        Tue, 17 Dec 2019 21:02:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1576645326; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Bh+XdWcfvCu2xhaLcpswdFCtIhp+RL86BEOpg/2nHb7VEX+uA4duN6zOMAwO1fvIN2
+         p3j6K4boxa5mgJmj1YOz4s84Ik5wvCxISzRVZbYaYgLNcd/znLWDzKynlX8j+rRvHnRS
+         jREiUfltwx39DHRd6MCxFLtxxo8D6EtYHNlFvppX5jwCKA+kkn/1hkVdrUib9qQJdvM3
+         idCC4OiZ6XmmJboKnWi3xRUNEjnx1rvA7ZKTIxVH0FbHPn7pCQaQjcJEZDmNqg9bKJ4Z
+         TA46j0MC2CNQu0DHIej/tFZotDAGy6qZ3Ehu6X0kpUXKMW4bRqiNgN3ReFwcNpQUG4K1
+         yuuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=jH9bu5HZxK6I040cOy7u+YaXJZX4JhkUq78m/lYqJhM=;
+        b=Ljgny1XRUX9D8Y5ols2ZeQdVaRpuP1/ugthuoDL9dwV3TnBWSYaYeY9YXo52mCO8fJ
+         1DjzecAm5T7KiwOeUv6lK2IkKBopPBcGV+x+vYCSEiBiYqwghKkQyJjarAkFKzt1nj6T
+         mwL/RCe3uUoLf/bizpSjbaFpWEJ7A3oZ5+9LPZStnxes+QGcvJQW+G5eqEyE/jZCKJ1y
+         TXvwuMFf9noZ1AT9l3/NAMBNELyZT5Q+S2Hc2LMqGjkDB84kdec+4yXBt8fztmX//C+9
+         n8RdVtRudbq0MB1SIw7bTM4Ks0TacOr3RPKVHT1iorHWAU0GORQy8JPqvzxszBrHbDdP
+         H6HA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id n4si1221776plp.36.2019.12.17.21.02.05
+        for <yasufum.o@gmail.com>;
+        Tue, 17 Dec 2019 21:02:06 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 18F4D24035F; Wed, 18 Dec 2019 14:02:04 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/1] spp_primary: fix incorrect statistics
+Date: Wed, 18 Dec 2019 14:02:03 +0900
+Message-Id: <20191218050203.2898-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191218050203.2898-1-oda@valinux.co.jp>
+References: <20191218050203.2898-1-oda@valinux.co.jp>
+
+When showing primary's stat, tx_drops of physical ports
+indicates tx_drops of the ring which has same ID mistakenly.
+Also stats of ring ports includes other type of ports (ex. vhost)
+which has same ID mistakenly. This patch fiexes these mistakes.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/nfv/commands.h |  7 ++++++-
+ src/primary/main.c | 11 ++++++++---
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index 4a6a170..f6c2305 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -88,7 +88,12 @@ do_add(char *p_type, int p_id)
+ 	port_id = (uint16_t) res;
+ 	port_map[port_id].id = p_id;
+ 	port_map[port_id].port_type = type;
+-	port_map[port_id].stats = &ports->client_stats[p_id];
++	if (type == RING)
++		port_map[port_id].stats = &ports->client_stats[p_id];
++	/* NOTE: port_map[].stats points to &port_map[].default_stats
++	 * other than RING. There is no support to show/clear this stats
++	 * at the moment.
++	 */
+ 
+ 	/* Update ports_fwd_array with port id */
+ 	ports_fwd_array[port_id].in_port_id = port_id;
+diff --git a/src/primary/main.c b/src/primary/main.c
+index fbc47c3..26e9c42 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -118,7 +118,7 @@ do_stats_display(void)
+ 			" tx_drop: %9"PRIu64"\n",
+ 			ports->id[i], ports->port_stats[i].rx,
+ 			ports->port_stats[i].tx,
+-			ports->client_stats[i].tx_drop);
++			ports->port_stats[i].tx_drop);
+ 	}
+ 
+ 	printf("\nCLIENTS\n");
+@@ -644,7 +644,7 @@ phy_port_stats_json(char *str)
+ 				get_printable_mac_addr(ports->id[i]),
+ 				ports->port_stats[i].rx,
+ 				ports->port_stats[i].tx,
+-				ports->client_stats[i].tx_drop);
++				ports->port_stats[i].tx_drop);
+ 
+ 		int cur_buf_size = (int)strlen(buf_phy_ports) +
+ 			(int)strlen(phy_port);
+@@ -827,7 +827,12 @@ add_port(char *p_type, int p_id)
+ 	port_id = (uint16_t) res;
+ 	port_map[port_id].id = p_id;
+ 	port_map[port_id].port_type = port_id_list[cnt].type;
+-	port_map[port_id].stats = &ports->client_stats[p_id];
++	if (port_map[port_id].port_type == RING)
++		port_map[port_id].stats = &ports->client_stats[p_id];
++	/* NOTE: port_map[].stats points to &port_map[].default_stats
++	 * other than RING. There is no support to show/clear this stats
++	 * at the moment.
++	 */
+ 
+ 	/* Update ports_fwd_array with port id */
+ 	ports_fwd_array[port_id].in_port_id = port_id;
+-- 
+2.17.1
+
