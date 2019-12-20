@@ -1,0 +1,79 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id i3sm9641378pfo.72.2019.12.19.23.41.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2019 23:41:10 -0800 (PST)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/6] cli: add env command
+Date: Fri, 20 Dec 2019 16:40:58 +0900
+Message-Id: <20191220074103.14065-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191220074103.14065-1-yasufum.o@gmail.com>
+References: <20191220074103.14065-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+Add `env` command for displaying environmental variables. It displays
+env variables starts with given keyword, or all variables if it is not
+given. It is mainly used for finding variables related to SPP.
+
+  # show variables starts with `SPP`
+  spp > env SPP
+  SPP_CTL_IP: 127.0.0.1
+  SPP_FILE_PREFIX: spp
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/help_msg.py | 10 ++++++++++
+ src/cli/shell.py             | 11 +++++++++++
+ 2 files changed, 21 insertions(+)
+
+diff --git a/src/cli/commands/help_msg.py b/src/cli/commands/help_msg.py
+index f303547..4cf2a1f 100644
+--- a/src/cli/commands/help_msg.py
++++ b/src/cli/commands/help_msg.py
+@@ -8,6 +8,16 @@ cmds = {
+         spp > status
+         """,
+ 
++        'env':
++        """Show environmental variables.
++
++        # show all env varibles.
++        spp > env
++
++        # show env varibles starts with `SPP`.
++        spp > env SPP
++        """,
++
+         'record':
+         """Save commands as a recipe file.
+ 
+diff --git a/src/cli/shell.py b/src/cli/shell.py
+index 0de6176..cfc343c 100644
+--- a/src/cli/shell.py
++++ b/src/cli/shell.py
+@@ -317,6 +317,17 @@ class Shell(cmd.Cmd, object):
+         """Print help message of status command."""
+         print(help_msg.cmds['status'])
+ 
++    def do_env(self, key):
++        """Display environmental variables."""
++
++        for k, v in sorted(os.environ.items()):
++            if k.startswith(key):
++                print("{}: {}".format(k, v))
++
++    def help_env(self):
++        """Print help message of env command."""
++        print(help_msg.cmds['env'])
++
+     def do_pri(self, command):
+         """Send a command to primary process."""
+ 
+-- 
+2.17.1
+

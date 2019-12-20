@@ -1,0 +1,65 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id i3sm9641378pfo.72.2019.12.19.23.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2019 23:41:14 -0800 (PST)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/6] readme: update example of config.sh
+Date: Fri, 20 Dec 2019 16:41:01 +0900
+Message-Id: <20191220074103.14065-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191220074103.14065-1-yasufum.o@gmail.com>
+References: <20191220074103.14065-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+As file prefix option is supprted in startup scripts, update example of
+params in config.sh.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ README.md | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/README.md b/README.md
+index e1085e0..51e89ee 100644
+--- a/README.md
++++ b/README.md
+@@ -145,17 +145,28 @@ If you do not have physical NICs on your server, activate
+ physical.
+ 
+ ```sh
+-SPP_HOST_IP=127.0.0.1
++SPP_CTL_IP=127.0.0.1
++SPP_FILE_PREFIX=spp  # used for --file-prefix option
++
+ SPP_HUGEPAGES=/dev/hugepages
+ 
+ # spp_primary options
+ LOGLEVEL=7  # change to 8 if you refer debug messages.
+-PRI_CORE_LIST=0  # required one lcore usually.
++PRI_CORE_LIST=0,1  # required one lcore usually.
+ PRI_MEM=1024
+ PRI_MEMCHAN=4  # change for your memory channels.
+ NUM_RINGS=8
+ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+-#PRI_VHOST_IDS=(11 12)  # you use if you have no phy ports.
++
++# Vdevs of spp_primary
++#PRI_VHOST_VDEVS=(11 12)  # IDs of `eth_vhost`
++#PRI_RING_VDEVS=(1 2)  # IDs of `net_ring`
++#PRI_TAP_VDEVS=(1 2)  # IDs of `net_tap`
++# You can give whole of vdev options here.
++#PRI_VDEVS=(
++#eth_vhost11,iface=/tmp/sock13,queues=1
++#eth_vhost12,iface=/tmp/sock14,queues=1
++#)
+ ```
+ 
+ After you edit configuration, you can launch `spp-ctl`,
+-- 
+2.17.1
+
