@@ -1,0 +1,41 @@
+From 1eb612d7b8339df7bbe5c41ec3876623a7c1cc13 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 20 Dec 2019 16:14:30 +0900
+Subject: [PATCH 0/6] Run SPP with --file-prefix option
+
+As more virtual network interfaces, such as memif or af_xdp, which have
+good performance are supported in DPDK, or considering container
+usecase, it has got been common usecases using several DPDK apps on the
+same host. It means that using `--file-prefix`  is more general than
+before.
+
+This series of patches is to add file prefix in startup scripts. It also
+make a change to `launch` command in SPP CLI to launch secondary
+processes with the option. SPP CLI expects that the option is defined as
+an environmental `SPP_FILE_PREFIX`.
+
+Yasufumi Ogawa (6):
+  cli: add env command
+  cli: add file prefix opt for launch cmd
+  bin: add SPP_FILE_PREFIX env variable
+  readme: update example of config.sh
+  docs: add desc for env command
+  docs: add file prefix option in usecases
+
+ README.md                           | 17 ++++--
+ bin/sample/config.sh                |  4 +-
+ bin/spp_pri.sh                      |  7 ++-
+ bin/start.sh                        |  6 ++-
+ docs/guides/commands/common.rst     | 17 ++++++
+ docs/guides/gsg/howto_use.rst       | 84 ++++++++++++++++++++---------
+ docs/guides/usecases/spp_mirror.rst |  5 ++
+ docs/guides/usecases/spp_pcap.rst   |  5 ++
+ docs/guides/usecases/spp_vf.rst     |  5 ++
+ src/cli/commands/help_msg.py        | 10 ++++
+ src/cli/commands/pri.py             | 21 ++++++--
+ src/cli/shell.py                    | 11 ++++
+ 12 files changed, 154 insertions(+), 38 deletions(-)
+
+-- 
+2.17.1
+

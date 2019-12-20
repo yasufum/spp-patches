@@ -1,0 +1,87 @@
+From bb3203ba753149939730186d1107beaea1f578bf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 20 Dec 2019 14:50:47 +0900
+Subject: [PATCH 3/6] bin: add SPP_FILE_PREFIX env variable
+
+Add environmental variable SPP_FILE_PREFIX in startup scripts for
+launching all of SPP processes with the same file prefix.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/sample/config.sh | 4 +++-
+ bin/spp_pri.sh       | 7 ++++++-
+ bin/start.sh         | 6 ++++--
+ 3 files changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index 6dfd89d..e797956 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -1,7 +1,9 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+-SPP_HOST_IP=127.0.0.1
++SPP_CTL_IP=127.0.0.1
++SPP_FILE_PREFIX=spp  # used for --file-prefix option
++
+ SPP_HUGEPAGES=/dev/hugepages
+ 
+ # spp_primary options
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index f08a178..5e21572 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -55,6 +55,10 @@ function setup_vdevs() {
+ function spp_pri() {
+     SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
+ 
++    if [ ${SPP_FILE_PREFIX} ]; then
++        FILE_PREFIX_OPT="--file-prefix ${SPP_FILE_PREFIX}"
++    fi
++
+     cmd="sudo ${SPP_PRI_BIN} \
+         -l ${PRI_CORE_LIST} \
+         -n ${PRI_MEMCHAN} \
+@@ -62,6 +66,7 @@ function spp_pri() {
+         --huge-dir ${SPP_HUGEPAGES} \
+         --proc-type primary \
+         --base-virtaddr 0x100000000 \
++        ${FILE_PREFIX_OPT} \
+         --log-level ${LOGLEVEL} \
+         ${SPP_PRI_VHOST} \
+         ${SPP_PRI_RING} \
+@@ -70,7 +75,7 @@ function spp_pri() {
+         -- \
+         -p ${PRI_PORTMASK} \
+         -n ${NUM_RINGS} \
+-        -s ${SPP_HOST_IP}:5555"
++        -s ${SPP_CTL_IP}:5555"
+ 
+     if [ ${DRY_RUN} ]; then
+         echo ${cmd}
+diff --git a/bin/start.sh b/bin/start.sh
+index 2f4e31a..ce3ce26 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -29,7 +29,7 @@ do
+ done
+ 
+ function start_spp_ctl() {
+-    cmd="python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_HOST_IP}"
++    cmd="python3 ${SPP_DIR}/src/spp-ctl/spp-ctl -b ${SPP_CTL_IP}"
+     if [ ${DRY_RUN} ]; then
+         echo ${cmd}
+     else
+@@ -65,5 +65,7 @@ start_spp_pri
+ 
+ if [ ! ${DRY_RUN} ]; then
+     sleep 1  # wait for spp-ctl is ready
+-    python3 ${SPP_DIR}/src/spp.py -b ${SPP_HOST_IP} --wait-pri
++    SPP_CTL_IP=${SPP_CTL_IP} \
++    SPP_FILE_PREFIX=${SPP_FILE_PREFIX} \
++    python3 ${SPP_DIR}/src/spp.py -b ${SPP_CTL_IP} --wait-pri
+ fi
+-- 
+2.17.1
+
