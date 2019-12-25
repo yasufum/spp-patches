@@ -1,0 +1,32 @@
+From 4bc32f435556f8b2f1ec2f0b49902e75e27b07da Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 25 Dec 2019 12:00:16 +0900
+Subject: [PATCH 2/3] shared: fix wrong port_type in parsing dev name
+
+Correct parse_dev_name() which returns port_type PCAP for eth_null
+wrongly because of a typo. This patch is to fix to return NULLPMD
+correctly.
+
+Fixes: 146516c139c2 ("shared: add parsing ethdev name")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index a098aed..85e2f06 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -126,7 +126,7 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		strncpy(pid_str, dev_name + strlen(VDEV_ETH_NULL),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+-		*port_type = PCAP;
++		*port_type = NULLPMD;
+ 
+ 	/* TODO(yasufum) add checking invalid port type and return -1 */
+ 	} else {
+-- 
+2.17.1
+
