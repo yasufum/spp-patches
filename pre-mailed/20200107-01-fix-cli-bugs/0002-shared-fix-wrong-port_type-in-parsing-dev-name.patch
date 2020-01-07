@@ -1,7 +1,7 @@
 From 4bc32f435556f8b2f1ec2f0b49902e75e27b07da Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Wed, 25 Dec 2019 12:00:16 +0900
-Subject: [PATCH 2/3] shared: fix wrong port_type in parsing dev name
+Subject: [PATCH 2/7] shared: fix wrong port_type in parsing dev name
 
 Correct parse_dev_name() which returns port_type PCAP for eth_null
 wrongly because of a typo. This patch is to fix to return NULLPMD

@@ -1,7 +1,7 @@
 From 5f2cf55d53e433513b863e38931a8dec54ced80e Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Thu, 26 Dec 2019 03:57:24 +0900
-Subject: [PATCH 3/3] cli: add filter for running pri commands
+Subject: [PATCH 3/7] cli: add filter for running pri commands
 
 For spp_primary, some of methods such as _run_add(), _run_del() or so,
 should not be executed if forwarder thread is not running. This update

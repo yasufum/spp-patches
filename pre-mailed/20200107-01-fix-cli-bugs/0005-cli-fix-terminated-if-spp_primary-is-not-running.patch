@@ -1,0 +1,39 @@
+From 421e3798d1e551670f8254ac74542985e8aeb819 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 26 Dec 2019 13:57:00 +0900
+Subject: [PATCH 5/7] cli: fix terminated if spp_primary is not running
+
+If there is no spp_primary is running, SPP CLI is terminated when it
+requests something to spp-ctl. This update is to fix the issue.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/pri.py | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index ae1be69..b355dc7 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -69,7 +69,17 @@ class SppPrimary(object):
+         # Get status here for inspecting if forwarder exists. Do not run
+         # command such as `add` or `del` if forwarder does not exist.
+         res = self.spp_ctl_cli.get('primary/status')
+-        status = res.json()
++
++        # Check if spp_primary is running.
++        error_codes = self.spp_ctl_cli.rest_common_error_codes
++        if res.status_code in error_codes:
++            if res.status_code == 404:
++                print('No spp_primary is running.')
++            else:
++                print('Error: spp_primary is not running normaly.')
++            return None
++        else:
++            status = res.json()
+ 
+         if subcmd == 'status':
+             if res is not None:
+-- 
+2.17.1
+
