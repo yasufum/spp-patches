@@ -1,4 +1,4 @@
-From 4d7f1f29abef6e929a8fc6373082d42e267b2d50 Mon Sep 17 00:00:00 2001
+From 3bcf1c3a9dee1ff8652a9f7bb035c22bfd517d62 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Tue, 7 Jan 2020 17:07:04 +0900
 Subject: [PATCH 6/7] cli: move logfile to under project log dir

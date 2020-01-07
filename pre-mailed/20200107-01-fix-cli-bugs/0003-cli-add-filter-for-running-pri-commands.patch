@@ -1,6 +1,6 @@
-From 5f2cf55d53e433513b863e38931a8dec54ced80e Mon Sep 17 00:00:00 2001
+From 17c6d451fa60a9a6c8017238db565ff433aaf2fb Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
-Date: Thu, 26 Dec 2019 03:57:24 +0900
+Date: Tue, 7 Jan 2020 18:36:12 +0900
 Subject: [PATCH 3/7] cli: add filter for running pri commands
 
 For spp_primary, some of methods such as _run_add(), _run_del() or so,
@@ -10,14 +10,14 @@ refuse required operation if the forwarder is not running.
 
 Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
 ---
- src/cli/commands/pri.py | 67 +++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 16 deletions(-)
+ src/cli/commands/pri.py | 59 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 13 deletions(-)
 
 diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
-index bee0d81..b44041c 100644
+index 9212897..1443e9e 100644
 --- a/src/cli/commands/pri.py
 +++ b/src/cli/commands/pri.py
-@@ -38,6 +38,20 @@ class SppPrimary(object):
+@@ -46,6 +46,20 @@ class SppPrimary(object):
          temp = temp + "{vhost_cli}"
          self.launch_template = temp
  
@@ -38,7 +38,7 @@ index bee0d81..b44041c 100644
      def run(self, cmd, cli_config):
          """Called from do_pri() to Send command to primary process."""
  
-@@ -52,11 +66,15 @@ class SppPrimary(object):
+@@ -60,11 +74,15 @@ class SppPrimary(object):
          # use short name
          common_err_codes = self.spp_ctl_cli.rest_common_error_codes
  
@@ -56,7 +56,7 @@ index bee0d81..b44041c 100644
                  elif res.status_code in common_err_codes:
                      # Print default error message
                      pass
-@@ -64,16 +82,17 @@ class SppPrimary(object):
+@@ -72,16 +90,17 @@ class SppPrimary(object):
                      print('Error: unknown response from status.')
  
          elif subcmd == 'add':
@@ -78,33 +78,11 @@ index bee0d81..b44041c 100644
  
          elif subcmd == 'launch':
              wait_time = float(cli_config['sec_wait_launch']['val'])
-@@ -166,7 +185,7 @@ class SppPrimary(object):
-                         print('  - slave: {}'.format(json_obj['lcores'][1]))
-                     else:
-                         lcores = ', '.join([str(i)
--                            for i in json_obj['lcores'][1:]])
-+                                            for i in json_obj['lcores'][1:]])
-                         print('  - slaves: [{}]'.format(lcores))
- 
-             sep = ' '
-@@ -197,8 +216,10 @@ class SppPrimary(object):
-                 temp = '{s6}{portid:2}  {rx:10}  {tx:10}  {tx_d:10}  {eth}'
-                 for pports in json_obj['phy_ports']:
-                     print(temp.format(s6=sep*6,
--                        portid=pports['id'], rx=pports['rx'], tx=pports['tx'],
--                        tx_d=pports['tx_drop'], eth=pports['eth']))
-+                                      portid=pports['id'],
-+                                      rx=pports['rx'], tx=pports['tx'],
-+                                      tx_d=pports['tx_drop'],
-+                                      eth=pports['eth']))
- 
-             if 'ring_ports' in json_obj:
-                 print('  - ring ports:')
-@@ -207,8 +228,10 @@ class SppPrimary(object):
+@@ -217,8 +236,10 @@ class SppPrimary(object):
                  temp = '{s6}{rid:2}  {rx:10}  {tx:10}  {rx_d:10}  {tx_d:10}'
                  for rports in json_obj['ring_ports']:
                      print(temp.format(s6=sep*6,
--                        rid=rports['id'], rx=rports['rx'], tx=rports['tx'],
+-                          rid=rports['id'], rx=rports['rx'], tx=rports['tx'],
 -                        rx_d=rports['rx_drop'], tx_d=rports['tx_drop']))
 +                                      rid=rports['id'],
 +                                      rx=rports['rx'], tx=rports['tx'],
@@ -113,7 +91,7 @@ index bee0d81..b44041c 100644
  
          except KeyError as e:
              logger.error('{} is not defined!'.format(e))
-@@ -223,7 +246,11 @@ class SppPrimary(object):
+@@ -233,7 +254,11 @@ class SppPrimary(object):
          if res is not None:
              error_codes = self.spp_ctl_cli.rest_common_error_codes
              if res.status_code == 200:
@@ -126,7 +104,7 @@ index bee0d81..b44041c 100644
              elif res.status_code in error_codes:
                  pass
              else:
-@@ -241,7 +268,11 @@ class SppPrimary(object):
+@@ -251,7 +276,11 @@ class SppPrimary(object):
          if res is not None:
              error_codes = self.spp_ctl_cli.rest_common_error_codes
              if res.status_code == 200:
@@ -139,7 +117,7 @@ index bee0d81..b44041c 100644
              elif res.status_code in error_codes:
                  pass
              else:
-@@ -260,9 +291,13 @@ class SppPrimary(object):
+@@ -270,9 +299,13 @@ class SppPrimary(object):
          if res is not None:
              error_codes = self.spp_ctl_cli.rest_common_error_codes
              if res.status_code == 200:

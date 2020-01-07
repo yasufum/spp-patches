@@ -1,6 +1,6 @@
-From 8181c9a1587d32582819077ed7a9d4820c3ee7ec Mon Sep 17 00:00:00 2001
+From 76f27217eb30f8d749ba5f8892571c7fc34d61cb Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
-Date: Tue, 7 Jan 2020 17:45:03 +0900
+Date: Tue, 7 Jan 2020 18:50:05 +0900
 Subject: [PATCH 0/7] Update for fixing errors for CLI
 
 There are some errors are occured if CLI reqests spp_primary for adding
@@ -20,12 +20,12 @@ Yasufumi Ogawa (7):
   cli: move logfile to under project log dir
   cli: fix parsing forward and stop commands
 
- src/cli/commands/pri.py   | 117 ++++++++++++++++++++++++++++++--------
+ src/cli/commands/pri.py   | 109 ++++++++++++++++++++++++++++++--------
  src/cli/spp_common.py     |  19 ++++---
- src/cli/spp_ctl_client.py |  15 ++---
- src/shared/common.c       |  18 +++---
+ src/cli/spp_ctl_client.py |  15 +++---
+ src/shared/common.c       |  18 +++----
  src/shared/common.h       |   4 +-
- 5 files changed, 123 insertions(+), 50 deletions(-)
+ 5 files changed, 118 insertions(+), 47 deletions(-)
 
 -- 
 2.17.1

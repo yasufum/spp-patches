@@ -1,4 +1,4 @@
-From 8181c9a1587d32582819077ed7a9d4820c3ee7ec Mon Sep 17 00:00:00 2001
+From 76f27217eb30f8d749ba5f8892571c7fc34d61cb Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Tue, 7 Jan 2020 17:38:13 +0900
 Subject: [PATCH 7/7] cli: fix parsing forward and stop commands
@@ -6,7 +6,7 @@ Subject: [PATCH 7/7] cli: fix parsing forward and stop commands
 This update is to fix a bug in which _run_forward_or_stop() expects a
 str type argument, but passed a list.
 
-Fixes: 5f2cf55d53e4 ("cli: add filter for running pri commands")
+Fixes: 17c6d451fa60 ("cli: add filter for running pri commands")
 
 Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
 ---
@@ -15,10 +15,10 @@ Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
-index b355dc7..8209c5d 100644
+index b39f911..a13137d 100644
 --- a/src/cli/commands/pri.py
 +++ b/src/cli/commands/pri.py
-@@ -97,9 +97,9 @@ class SppPrimary(object):
+@@ -105,9 +105,9 @@ class SppPrimary(object):
          elif subcmd == 'del':
              self._do_if_forwarder_exists(status, self._run_del, params)
  
@@ -30,7 +30,7 @@ index b355dc7..8209c5d 100644
  
          elif subcmd == 'patch':
              self._do_if_forwarder_exists(status, self._run_patch, params)
-@@ -809,7 +809,7 @@ class SppPrimary(object):
+@@ -818,7 +818,7 @@ class SppPrimary(object):
          elif cmd == 'stop':
              req_params = {'action': 'stop'}
          else:
