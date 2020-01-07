@@ -1,0 +1,79 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp9143997oog;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyPXmvqFq18DQtEt0H31MMvgM989C7SqeGlh9l2uC4CaVmjkIvI6tJby5ZVeDE7gorJWuno
+X-Received: by 2002:a62:be12:: with SMTP id l18mr22111578pff.226.1577249398013;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1577249398; cv=none;
+        d=google.com; s=arc-20160816;
+        b=kjNkiAnI5yBVcf2duVKE46kXN5rcHThUQO4/yfjFf0yGKZLWO1YX3WD/3j5HA4SU5y
+         tLXs6kidDL3lU6wyCHSW6vY/4ud6/665PNy16scbhSRkhv/5xjHK1tLHgkI1jSOz1o0d
+         8jwzklXBnQrx0CTc8ItgTNF+0kFEWgtWtM3znaEtFy9Os14BVbP975hns1TXbsYelwbA
+         vMqKw4q9Wxkgke4lx45dHw/ZoGRop9/OfF6cP5l5re3lu++KHOEqHFfu+jjU/uUGh7UV
+         YpjSq52pN7Z4bzN0ToX8AqIM9f7J6zpk3zHwyN/BUWPHBTzx62eNPComMwIyN9vmTwwp
+         rPaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=OanCtmBpPdqUA2BPlrXh79yMPKm3/4zpwTspAatWJfw=;
+        b=Mx9Z3F6WCFirFZQkES1j7RlLenNJSi/LLQIQGJFI89IZnHfT6mpMvX/2w/8+tbNIAT
+         YgLaKWQdhMxMz/A0oSjUoE85hBOfUZ+i+j/Hu8kUiWy1Fg315YCEoSbC6LkXQNqTUePw
+         TxNX+iIExjN9etzB53m3v6Fr+t4lJ4N18fHEXsdwiYzNOt6ad4LW7IG/TnlI/Stv3pIq
+         ofyOIkurSqlX9ptNO8o+8cJOcFd7/CsYq9oatM0QfVvYTTNQcpf3hguI3NVqmB6pgxWh
+         zNJa810Zk0V6gQvgOxapTg/TaxaxhJAfKRSZCNpV46nJqmaDXDrAtxz8k0yoAutGaZvv
+         k6XA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id l15si23201304pgt.395.2019.12.24.20.49.57
+        for <yasufum.o@gmail.com>;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 94809240D0D; Wed, 25 Dec 2019 13:49:56 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 12/12] spp_vf,spp_mirror: exclude vhosts at process initialization
+Date: Wed, 25 Dec 2019 13:49:54 +0900
+Message-Id: <20191225044954.3600-13-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191225044954.3600-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20191225044954.3600-1-oda@valinux.co.jp>
+
+A vhost device is shared among the primary process and secondary
+processes. When a secodary process starts it recognizes vhost
+devices if they are used by processes already started. It is not
+appropriate to include to port information as PHY devices.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/shared/secondary/spp_worker_th/cmd_utils.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 010a4b6..69d7222 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -437,8 +437,12 @@ init_host_port_info(void)
+ 			p_iface_info->phy[port_id].ethdev_port_id = port_id;
+ 			break;
+ 		case VHOST:
+-			p_iface_info->vhost[port_id].iface_type = port_type;
+-			p_iface_info->vhost[port_id].ethdev_port_id = port_id;
++			/* NOTE: a vhost can be used by one process.
++			 * even if it exists, it is necessary to do
++			 * add_vhost_pmd to setup the device.
++			 * note that it is user responsibility to prevent
++			 * multipul processes use a vhost at the same time.
++			 */
+ 			break;
+ 		case RING:
+ 			p_iface_info->ring[port_id].iface_type = port_type;
+-- 
+2.17.1
+

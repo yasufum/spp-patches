@@ -1,0 +1,78 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp9143998oog;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxty/7Y2JuMU9eSDrcCVUYW1UdyOU6igDbGqAnwaJ+8Ei5abIjSg8lZ4SbBrA1S6ulCaIGn
+X-Received: by 2002:a17:90a:8584:: with SMTP id m4mr10653481pjn.123.1577249398157;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1577249398; cv=none;
+        d=google.com; s=arc-20160816;
+        b=tPhmsaxE+2G8wAYDPzOm2V+YMTAEMzskpsuV9jPK04a3MVfiatTWUOhAMMARv+wDBW
+         IwE+zcrGtm3dEZIS3/C8DdkMCB1+kghDppzRBdF5KJlnPQwkzesO3kg6p6zLdMKaQtmR
+         kpoEDkBU3siMQ6wrcfuh4CjcCTVX8kj+ZB3Qbw/QYmbCxkGBPSbQLap6DX/cGPTz/YWB
+         C4vucBkCH4TkZZAGcAIjG1dwKpdgzL/pKfas7DpovJP+D+6ZnhS9IwwXatk4Agt3t7kO
+         J0anrrzOLugH53s3iTu/nWt7Ojq5eqY+s+u0HfKQk1TOhCJiYlElYvNCtGP9lTTlxciK
+         aV2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=bcYUqXWJgDq4fX+8o3H9i5wh11r5vbBdGfbnKUyu//s=;
+        b=bUS0JHU/uhCHWHAP69QAXDd2cnrkM0irtNCDOYcBGJ+xg/xj1y8prWnpJQwqS3s1Mr
+         Mqq0iL7N3f7MFuPL7eFShZj8ql+0Th31/WGuSH1sHyIA9cOpr9XSsnOiyF8u+bKVqgjE
+         F8Z1xgZJ2qz/w80AFhn8ocfcA/V90q1PyAaMbdGxNe3LW24ffDT03XzxehLemYeWt7le
+         zPOy4ekCtm2t3gK3NQ+N8ulaKPYEBd0qZybssP3K3zFSn1WPntvftRIWmcPTdOXEfeH+
+         E4OA0Ah8APAZ9mW8cPEZ70ta/11y0SyPxb3k+Z/CJlmoL5D42mP78I5UBV6+gkQgQFyp
+         /lmw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id w26si22333772pfn.90.2019.12.24.20.49.57
+        for <yasufum.o@gmail.com>;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 76115240D08; Wed, 25 Dec 2019 13:49:56 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 11/12] spp_nfv: exclude vhosts at process initialization
+Date: Wed, 25 Dec 2019 13:49:53 +0900
+Message-Id: <20191225044954.3600-12-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191225044954.3600-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20191225044954.3600-1-oda@valinux.co.jp>
+
+A vhost device is shared among the primary process and secondary
+processes. When a secodary process starts it recognizes vhost
+devices if they are used by processes already started. It is not
+appropriate to include to port information as PHY devices.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/nfv/main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 513a98d..f2c6bfc 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -211,7 +211,12 @@ main(int argc, char *argv[])
+ 		if (port_type == PHY) {
+ 			port_id = nof_phy_port;
+ 			nof_phy_port++;
+-		}
++		} else if (port_type == VHOST)
++			continue;
++		/* NOTE: vhost may be used another process. even if no
++		 * process uses, it is necessary to "add vhost" explicitly.
++		 * not display to avoid confusion.
++		 */
+ 
+ 		/* Update ports_fwd_array with phy port. */
+ 		ports_fwd_array[i].in_port_id = i;
+-- 
+2.17.1
+

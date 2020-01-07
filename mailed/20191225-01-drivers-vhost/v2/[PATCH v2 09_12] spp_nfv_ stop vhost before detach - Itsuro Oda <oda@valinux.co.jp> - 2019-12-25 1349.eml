@@ -1,0 +1,69 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp9143996oog;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzPdFKRqdqpCKpIcwOKayN4rbgNdpErVnmRbdsg8Yeazw1R4bc678lA8bvtAXebKShwDo5/
+X-Received: by 2002:a17:902:7d84:: with SMTP id a4mr37941301plm.97.1577249397989;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1577249397; cv=none;
+        d=google.com; s=arc-20160816;
+        b=q0ytjCKTNyUBPjfOh6WBsQHihpbwQZnteRuisjo4nAhl/mzTyk0NOlg+/bKedNb4ig
+         2TE+UeAhW4u6Zz215E/4BUqvF2rOGEfAHijTY3qw8W+8rSfedwiQ1CV1DjQuKhkEKGPS
+         x68POw3kUOsHaiO16MNbvMMw3/4laxBNzXP9XjaFFrFki9b3vy8BIuq6CH58eb6lwjsO
+         O9hN2iNAu7tTapF4YqixWtB3wtrfVNrq5U84XnUbL10hWvyF0Ywje7Q+RtiJmDE2OJpO
+         ScscIxTM8qDpdghOA8n65zuKyeil0X+Um9/AhBr1z0GN1Oo/5NKT6bRCymnoyFIYgquk
+         1QHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=CyY4ocv2aa7T7OMu8tcEpB2Wofpqa1w8Ee0dgpom1Rc=;
+        b=LvlE869gGd+dIgfElo2ntQw9GpwCSVVAxu7WPTd/OB5gWXuGIKkbX9KWNFncKQTR3s
+         GLlAbsiNj8dcZo6fV5Ncv0NIAdPWtMB34YTLVpZY8uSVfIW4Z+USNCImWAFZ1+s5FDQi
+         iYV8wR7SOYBIoBJZVISZbp5BkqyG5wRfGQ+OULngz+x/3XidLJ0wemZrtA+a+YpGgAFk
+         yThyRBH0ZeO1+9ifCqg+2+CFcyjum2yBP8uS2aCVwbUXW0MN4dmw1hzsqx0vwLJcRJHy
+         Ug9tZKICycWRN6z4QFszgUXs/XFPU2xwMlFpN500PmbO0PAw94MdiZl1IvvTaryqx4bC
+         wJMg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id p24si22670469pgb.166.2019.12.24.20.49.57
+        for <yasufum.o@gmail.com>;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 37FC7240D07; Wed, 25 Dec 2019 13:49:56 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 09/12] spp_nfv: stop vhost before detach
+Date: Wed, 25 Dec 2019 13:49:51 +0900
+Message-Id: <20191225044954.3600-10-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191225044954.3600-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20191225044954.3600-1-oda@valinux.co.jp>
+
+Make sure to free resources of vhost before detach.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/nfv/commands.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/nfv/commands.h b/src/nfv/commands.h
+index f6c2305..7e50c8c 100644
+--- a/src/nfv/commands.h
++++ b/src/nfv/commands.h
+@@ -25,6 +25,7 @@ do_del(char *p_type, int p_id)
+ 		port_id = find_port_id(p_id, VHOST);
+ 		if (port_id == PORT_RESET)
+ 			return -1;
++		rte_eth_dev_stop(port_id);
+ 		dev_detach_by_port_id(port_id);
+ 
+ 	} else if (!strcmp(p_type, "ring")) {
+-- 
+2.17.1
+

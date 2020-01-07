@@ -1,0 +1,80 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp9143994oog;
+        Tue, 24 Dec 2019 20:49:58 -0800 (PST)
+X-Google-Smtp-Source: APXvYqz5ncXB2yRNCvWav+ti2WSHqOeQ8yHxRf3A41uiS5oxQISRnFYkRozZ5/IzCu4i7PhbLcXm
+X-Received: by 2002:a17:90a:da01:: with SMTP id e1mr10835232pjv.29.1577249397998;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1577249397; cv=none;
+        d=google.com; s=arc-20160816;
+        b=NGsTBc2Ocmlg1eaPZiuf/+D935STDXh3KAznw96tH7DKjNQmuRvF2NOdfJL3CT+Fba
+         jGVtEe3e/G+xiU7WlmyKcQAkO1n7E8kJaizxsFXh8opUOxBbzWJnPF4h/bdgePAwcf3l
+         lGBULs5GTzEaAjCfEw0wJgVjKbdfZzjsITnNi4FnMwukVAABRYW2MTqRlGhLoV1KqBoQ
+         +zBzx6h7YRy5HkXuSJm5RJDj1J3bIGLBUPjA/yxoGwrqrJiLCAQWAg5fK//An4Co8bqK
+         jdEZM9AMcG1lVFVTGpl9Oo4muI7Be/KZBORFRMnI/C50OLnun6hiHeOCUu80/SCAD2Qa
+         y+mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=4dMgH/wgHgJCfkdnS0p9IBm/d+F5jfrRs+BcLEnGgCE=;
+        b=oZmqvF1rbrnrWrDs3IEn3+xsN6TVUc/FqyX7eIpEQaiZF+lcgdZepvUHwg3amtKGQ9
+         b+RFJ3Xbxh7FjHIthnaRM2LM9UXXolBP7QWpmjEPKS3EUs8uIXgBKW7SwLN4MMdT3Ixj
+         4PXdgXDEmLKesG8d1QVANG/d5lGp00ZWni36LMeIJZBvvN87N6q9gmFjiHS98CUNaWQf
+         imoxwvPRppAWCWb5ldkwa43ey8zHot+mxDrzyUanDS98kCWbY/BsPMnEkWfaC9+a8SaA
+         0C6P7LHOvVIyGOwtPfyK9UHy0IxZm65HT96rVnaIBQT9ARLobcY/VpK1dOMTl769uGkk
+         Sjtw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id t24si22686431pgl.155.2019.12.24.20.49.57
+        for <yasufum.o@gmail.com>;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 58BDA240D0C; Wed, 25 Dec 2019 13:49:56 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 10/12] shared: make sure vhost is stopped before (re)using the vhost
+Date: Wed, 25 Dec 2019 13:49:52 +0900
+Message-Id: <20191225044954.3600-11-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191225044954.3600-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20191225044954.3600-1-oda@valinux.co.jp>
+
+It is for the case a secondary process which used the vhost
+was down without stopping the eth_dev.
+It makes the eth_dev stopped and available to do following
+operations(ex. rte_eth_dev_configure). It is no-op if the
+eth_dev is stopped.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/shared/secondary/add_port.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index b072140..d845250 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -170,6 +170,14 @@ add_vhost_pmd(int index)
+ 		return ret;
+ 	}
+ 
++	/* NOTE: make sure the eth_dev is stopped.
++	 * it is for the case a secondary process which used the vhost
++	 * was down without stopping the device.
++	 * note that it is still user responsibility to prevent multipul
++	 * processes use a vhost at the same time.
++	 */
++	rte_eth_dev_stop(vhost_port_id);
++
+ 	ret = rte_eth_dev_configure(vhost_port_id, nr_queues, nr_queues,
+ 		&port_conf);
+ 	if (ret < 0) {
+-- 
+2.17.1
+

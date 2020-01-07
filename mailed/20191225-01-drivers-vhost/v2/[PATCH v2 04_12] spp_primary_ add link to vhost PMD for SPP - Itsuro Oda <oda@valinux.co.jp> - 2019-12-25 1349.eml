@@ -1,0 +1,69 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp9143969oog;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+X-Google-Smtp-Source: APXvYqylohnwfJZdgmKgo4CICfYK7fIhCAaTNItA6ZlT1NLWvl0gPoSXS19stnFxIN7WjB4POS2I
+X-Received: by 2002:a17:902:8481:: with SMTP id c1mr11593853plo.319.1577249397120;
+        Tue, 24 Dec 2019 20:49:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1577249397; cv=none;
+        d=google.com; s=arc-20160816;
+        b=fwxe/id9t82D/ZMbL6w+sCuElGNMsWFwwdXt1rLwnMdn/kPtENQZKU+mK5iVbZ8oGv
+         eAx5UuX591HpwcCvP2XjBVjIaW4LIqurLrudqTwdppX7uxDcXwkROsmm0kWnLWUQK1P7
+         vzw9s+5Jm3iWwMAhc4CEgVhC6vl865sLuFe1hEUUhRg1WMgZ2iPjBcVmHji3ZREWdnNV
+         dNutbI1fZKbO6yNi69zzq2ZSdXAKPTCY+TMJsaMSxpld0KL+6J42KqA+l5ElKwuSl/+a
+         2WMGOAPtfQTGjl75OmjOkNx5615kr+7gwKAWSe35FMurKG2yXJtI8+GtBjOiN6gD21m2
+         IeEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=jYXs5phae5RotF5WyQI/AcBoffuudeaBcctbE+B3Xs4=;
+        b=AGxa0XMz2cnzDvMabsqLxZBDgBuRZSIOutSkYGIvaDygZcQgHc51CP17c00YeQYoiR
+         5/Stp3dfgyyZoOpXAY3AYyDQVGGcQ/L6TTtXkszkAKslTwIJRsPlGs8UxR9yGAKulDFk
+         GB/UW6YXm4gMdoSW7IKno1teCi3A24iZh0BBDW2UMV0jWVSNUUpStm1yEFCeqJ4xFi/p
+         F8nEI/LQAHFEhgFyppj1j6qDPD27Icpp/XSRb8ws25VlgHl+fvwCv619fNBnGbvxkMLm
+         eQxBPpSSD4WXYSOwfIIOMCYWwkdj8y3Fn+pyfchxqjSjhf1IP8ux8NzF+yL3tdekOwIe
+         7sAw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id b21si21708928pls.145.2019.12.24.20.49.56
+        for <yasufum.o@gmail.com>;
+        Tue, 24 Dec 2019 20:49:56 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 67F80240D01; Wed, 25 Dec 2019 13:49:55 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 04/12] spp_primary: add link to vhost PMD for SPP
+Date: Wed, 25 Dec 2019 13:49:46 +0900
+Message-Id: <20191225044954.3600-5-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20191225044954.3600-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20191225044954.3600-1-oda@valinux.co.jp>
+
+This patch adds link to vhost PMD for SPP.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/primary/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index 14d8f30..ace6228 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -41,4 +41,7 @@ endif
+ # and so the next line can be removed in those cases.
+ EXTRA_CFLAGS += -fno-strict-aliasing
+ 
++SPP_DRIVERS_DIR = $(BASE_OUTPUT)/src/drivers
++EXTRA_LDLIBS = -L$(SPP_DRIVERS_DIR)/vhost --whole-archive -lrte_pmd_spp_vhost --no-whole-archive
++
+ include $(RTE_SDK)/mk/rte.extapp.mk
+-- 
+2.17.1
+
