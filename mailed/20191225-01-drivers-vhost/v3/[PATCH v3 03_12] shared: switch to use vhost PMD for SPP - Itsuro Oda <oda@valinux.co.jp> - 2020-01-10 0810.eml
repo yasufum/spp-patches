@@ -1,0 +1,85 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp73536oog;
+        Thu, 9 Jan 2020 15:10:29 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzx1ua04+6FGh7Fdrm8PvvbJGr20FYg9HPYvnsawaWsSTmTH3qwLuwPXELLvoRxoABqw348
+X-Received: by 2002:a17:902:d70a:: with SMTP id w10mr454158ply.125.1578611428959;
+        Thu, 09 Jan 2020 15:10:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578611428; cv=none;
+        d=google.com; s=arc-20160816;
+        b=BaSY/ihYlBUBl+BryhbZnFBggL4fICCDZabnkjXkcamiz12HZcWIppZx7zovd23JhE
+         A0mHccHa9JetBAjgkH5Y8a8WdOTMx6QQFoKMIzw8/AHmVejAKYOPhatPuIc4Cfv3Bdpc
+         ibrUNb5Ekp9Q4J54Q0mBME8NcFnVU3yLswE62tiNm/G0GnkVhGcouN7koaPmqfKDsjey
+         mR/q0CAaFlP52XzS+Ue9txlPmfT0KsVtFWunMyWLC3PRIw36dOqzrhZZklOnIZ9o0IjT
+         /3souwPplpXwN3DhBOL54up/vdipY9AngQHSmnymracYFxxI6O7VFEV7SYymSzowYN9n
+         G55g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=6m1QZQzAHSYqtg20RAvNLnC8SpkdemO/vBFI6Ks/Zks=;
+        b=Dt6UBP6GEaIKxXS3RQ5xp+O90rWxVuVViBMCpd4EHmr7xgr2wK60Jof3pvbm+Ay5uo
+         bHDq7LTLHRrUfcX4bc969RCwT28CS6zABo9zbmWraeSJiYTFJHSqf434CDL+1ywjkAUB
+         nFeFJROO7rvKqtyEZOmRnDAxFD7ezH8pXFdhc4tFUaqsj18CkAYFfLKKX+XApINoo6p0
+         DL0+cntP9+1WtBf/rM+dkAHvGiVqFVUX8myHBGC2SbGxB1Is7+rDxQPdzoYLWHczIpIx
+         /Iij7l4NktKp1hkhC3uscO7xVFZGt0sm/wTC+Xi0Of4hsC2XPqhcfgMxsGFaKR1gPZLL
+         OdIQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id b9si170127pgs.232.2020.01.09.15.10.28
+        for <yasufum.o@gmail.com>;
+        Thu, 09 Jan 2020 15:10:28 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 3D90224099E; Fri, 10 Jan 2020 08:10:27 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v3 03/12] shared: switch to use vhost PMD for SPP
+Date: Fri, 10 Jan 2020 08:10:17 +0900
+Message-Id: <20200109231026.12115-4-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200109231026.12115-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20200109231026.12115-1-oda@valinux.co.jp>
+
+This patch switches to use vhost PMD for SPP instead of original
+vhost PMD.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/shared/common.h             | 2 +-
+ src/shared/secondary/add_port.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 9c46a64..431ad3e 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -34,7 +34,7 @@
+ 
+ #define VDEV_ETH_RING "eth_ring"
+ #define VDEV_NET_RING "net_ring"
+-#define VDEV_ETH_VHOST "eth_vhost"
++#define VDEV_ETH_VHOST "spp_vhost"
+ #define VDEV_NET_VHOST "net_vhost"
+ #define VDEV_PCAP "net_pcap"
+ #define VDEV_ETH_TAP "eth_tap"
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index cfae1af..a75b28b 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -10,7 +10,7 @@
+ #define NR_DESCS 128
+ 
+ #define VHOST_IFACE_NAME "/tmp/sock%u"
+-#define VHOST_BACKEND_NAME "eth_vhost%u"
++#define VHOST_BACKEND_NAME "spp_vhost%u"
+ 
+ #define PCAP_PMD_DEV_NAME "eth_pcap%u"
+ #define NULL_PMD_DEV_NAME "eth_null%u"
+-- 
+2.17.1
+

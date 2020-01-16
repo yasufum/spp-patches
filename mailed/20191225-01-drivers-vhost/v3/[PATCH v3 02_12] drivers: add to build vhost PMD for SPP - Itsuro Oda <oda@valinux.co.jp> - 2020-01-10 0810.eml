@@ -1,0 +1,92 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp73534oog;
+        Thu, 9 Jan 2020 15:10:29 -0800 (PST)
+X-Google-Smtp-Source: APXvYqx07aQLwMtNOf3JoVaGuMFU2z55DLP3RR/JOHi7zRXXKHjm2V4h0d56On8OM9zDbJhpLcn/
+X-Received: by 2002:a17:90a:8986:: with SMTP id v6mr665724pjn.90.1578611428959;
+        Thu, 09 Jan 2020 15:10:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578611428; cv=none;
+        d=google.com; s=arc-20160816;
+        b=TwDohZ7ChBghKap+KiFeQ6eq3TzHpz70JuLjc15PtdEovwK1VL0Q5knfxhCFOrzySB
+         HtlknPOYQwDUZFIdehMlb4WKxD4Y2IdAJtrFN26uhUhtLtynqgYLxLCGTA9xKvRCVE2O
+         +7FAP4zDKIzbvVKw9oYujkHE/cS0ygDjEHXsYXqDFaxVTC619mp1+Sxld/95SgupOurT
+         j8fZLKb7R94QCzW7kzvP/Gg/Gb9MK3oZB56fGciU2WOzN2GoJOc2+3fteeU4PoAWHoRC
+         bEEQce0tvZ3JOkr9Td4PiMxSTYPTEFVC7fr0oImmQPUKXgh9MBHYLbsc+V/3DvTBaYRl
+         oe8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=NvzA0yO7s0YSDVasRLSU5zhggdWGHb5irw+1ynamuYw=;
+        b=fG8rPS7O8+zfrpM++v0qtnKSKN+kQAy/e7OCdaorXoZw40per8lAOQ3WkRV+e81jSf
+         FAlSbpZRenKQdaQNxdBMuEB0J+cZ2qh1EhwCFVtjp1c+EXB+3zfLHMZlADxON4/zDliq
+         /PFyCheE0zIuoskNlUM+eRJcPoylrCtpVcizHjrQ9jcgmUlA0IFgNNcB/zH4W739njM1
+         yJW5iSqd1eTUANxBu5y2wPeP4vKvKpvwFsaHlWZhUSvXVCCSz30q0I9Xz5y4btjSSzMP
+         SK1S94PcO1ttfF8sXaXWn5xgI/XBH8CRWqGZ3Kf02abahhZBZYikSml6SDnQKJ6qOk1G
+         DYTQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id d29si160196pgm.330.2020.01.09.15.10.28
+        for <yasufum.o@gmail.com>;
+        Thu, 09 Jan 2020 15:10:28 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 06B2C240996; Fri, 10 Jan 2020 08:10:26 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v3 02/12] drivers: add to build vhost PMD for SPP
+Date: Fri, 10 Jan 2020 08:10:16 +0900
+Message-Id: <20200109231026.12115-3-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200109231026.12115-1-oda@valinux.co.jp>
+References: <20191223050036.30765-1-oda@valinux.co.jp>
+ <20200109231026.12115-1-oda@valinux.co.jp>
+
+This patch adds to build vhost PMD for SPP.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/Makefile         |  1 +
+ src/drivers/Makefile | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+)
+ create mode 100644 src/drivers/Makefile
+
+diff --git a/src/Makefile b/src/Makefile
+index cab80db..2f46606 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -38,6 +38,7 @@ RTE_TARGET ?= x86_64-native-linuxapp-gcc
+ 
+ include $(RTE_SDK)/mk/rte.vars.mk
+ 
++DIRS-y += drivers
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += primary
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += nfv
+ DIRS-$(CONFIG_RTE_EXEC_ENV_LINUXAPP) += vf
+diff --git a/src/drivers/Makefile b/src/drivers/Makefile
+new file mode 100644
+index 0000000..f2deba7
+--- /dev/null
++++ b/src/drivers/Makefile
+@@ -0,0 +1,15 @@
++# SPDX-License-Identifier: BSD-3-Clause
++# Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++
++ifeq ($(RTE_SDK),)
++$(error "Please define RTE_SDK environment variable")
++endif
++
++# Default target, can be overriden by command line or environment
++RTE_TARGET ?= x86_64-native-linuxapp-gcc
++
++include $(RTE_SDK)/mk/rte.vars.mk
++
++DIRS-y += vhost
++
++include $(RTE_SDK)/mk/rte.extsubdir.mk
+-- 
+2.17.1
+
