@@ -1,0 +1,105 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1404453oog;
+        Wed, 8 Jan 2020 18:52:51 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzMhK5Dd5IsJDsVROx8OP2y8YDM6aaZ9Qmyq6D68qOzwH+0vBCRcp0icV/i6o9n9eJJs24m
+X-Received: by 2002:a62:382:: with SMTP id 124mr8979656pfd.11.1578538371705;
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578538371; cv=none;
+        d=google.com; s=arc-20160816;
+        b=k/8hYLZxh7zl835944U5Eh56jQeNwoWfuSE0uoMRfS7q4lF9xFgYVeX5e4NqX85Ivm
+         Md7L5OegrLRCWVDgwZvmPaZGBbsKhZSoUWIirRMdpsseYFSSQY3SYwy9pnDoGXZOP4oG
+         pW5/R+UkwU8cbJbymLUbFx21Sqq3AmRiNalPMs411ywm1iDmJLxnDnNfeud/Id494l+I
+         Yg7cCbCpU1UA+fKP9kXXdwZbkVjHO/AZxF2bybBEOIEAGONFt7E2lwCrB8WP/t5G/dT/
+         Kr7z56AIP5vfJglm+uepkVm9QEbcxQllrtnvj5ValR3/zVHeRX40AVx1+ljoWPLYC4ch
+         WPPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=F7YOKo+wO5uQ1JXaAoQkKYRXtnVluQ2+d19aF3v6JJY=;
+        b=pseiXRwQHaPabJbVcm2TaaF+7EqMYRO/POoIzN426c7wiP4HdFdHZBlSZUJY6xkKOF
+         4wr+AzPfma54etQMeNSyJSF0LaYoj86hF0w/3tKujk2zEVG9J2d0dpBHtd5DT0FLxUmY
+         NLnye7r8WWam9L14HOTibNoxGOrOskfhxQ/zpmoM2c7VUjVGF6RmiT/bnV86Pt7GejGS
+         3pTluPN2mcbKJeVSZjg1h2DqTdtDBUnNOSoYX5/qWWNCSH9dnGy6oc6Ckf1UIBCmopuO
+         B0Zeusy4H7A+iZKYxnNNcovQf65fDsHTr9YXNeUcK6Y2Zmv18BPaLvG7DT39dBAWeLNl
+         Bb3g==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id a21si4394128pfo.28.2020.01.08.18.52.50
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id 0092qkVx006511;
+	Thu, 9 Jan 2020 11:52:46 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id 0092qkbq006384;
+	Thu, 9 Jan 2020 11:52:46 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id MAA06239;
+	 Thu, 9 Jan 2020 11:51:13 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDlE027697; Thu, 9 Jan 2020 11:51:13 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDG6027694; Thu, 9 Jan 2020 11:51:13 +0900
+Message-Id: <202001090251.0092pDG6027694@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id 0092pDl4004326 ; Thu, 9 Jan 2020 11:51:13 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 1/7] rcps: add vhost related rcps for spp_nfv
+Date: Thu,  9 Jan 2020 11:51:07 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch set adds vhost related rcps for spp_nfv.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../single_with_vhost/1_vhost_single_unidir.rcps       | 10 ++++++++++
+ .../usecases/spp_nfv/single_with_vhost/2_clean.rcps    |  9 +++++++++
+ 2 files changed, 19 insertions(+)
+ create mode 100644 recipes/usecases/spp_nfv/single_with_vhost/1_vhost_single_unidir.rcps
+ create mode 100644 recipes/usecases/spp_nfv/single_with_vhost/2_clean.rcps
+
+diff --git a/recipes/usecases/spp_nfv/single_with_vhost/1_vhost_single_unidir.rcps b/recipes/usecases/spp_nfv/single_with_vhost/1_vhost_single_unidir.rcps
+new file mode 100644
+index 0000000..86841f2
+--- /dev/null
++++ b/recipes/usecases/spp_nfv/single_with_vhost/1_vhost_single_unidir.rcps
+@@ -0,0 +1,10 @@
++# Add vhost PMDs
++nfv 1; add vhost:0
++nfv 1; add vhost:1
++
++# Patch ports
++nfv 1; patch phy:0 vhost:0
++nfv 1; patch vhost:1 phy:1
++
++# Start forwarding
++nfv 1; forward
+diff --git a/recipes/usecases/spp_nfv/single_with_vhost/2_clean.rcps b/recipes/usecases/spp_nfv/single_with_vhost/2_clean.rcps
+new file mode 100644
+index 0000000..aa05798
+--- /dev/null
++++ b/recipes/usecases/spp_nfv/single_with_vhost/2_clean.rcps
+@@ -0,0 +1,9 @@
++# Stop forwarding
++nfv 1; stop
++
++# Clear all of patches
++nfv 1; patch reset
++
++# Delete vhost PMDs
++nfv 1; del vhost:0
++nfv 1; del vhost:1
+-- 
+2.17.1
+

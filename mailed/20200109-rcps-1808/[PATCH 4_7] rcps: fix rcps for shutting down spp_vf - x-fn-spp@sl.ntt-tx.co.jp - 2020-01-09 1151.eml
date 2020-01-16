@@ -1,0 +1,298 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1404448oog;
+        Wed, 8 Jan 2020 18:52:51 -0800 (PST)
+X-Google-Smtp-Source: APXvYqw3/23Ui78WtRk1UuRGLWXP1AzRvMk7iBvcKmghsBEDOSDy6mBwmLe07FZc79a7Uu/Oz6X9
+X-Received: by 2002:a63:a019:: with SMTP id r25mr8218162pge.400.1578538371526;
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578538371; cv=none;
+        d=google.com; s=arc-20160816;
+        b=vrL5Kmm9AM/+PGKNzpf/ujIsfCUl9KT7lhF7LEi/v8cpzuU4UDAhOyz2QI2StK8A1+
+         jsH6vJAzeWCV3kekACc/zMW/cX4q4XKAYuiGh4ZIqBpdn87CRYntVdQZZYcZIfmwfwiI
+         WBJXGAZSfX3l2fkyi0uaEN6lIETiVIqaY5cMK0AbUXvdoygKFk7S0neFNsQkZot+MXek
+         3XifFggYPtlTeLBmCxhv98sj8sBiTpyA3FSrhOogGkOHSjLKCi081eJuGlY78B0peBSZ
+         joOKz8l28kR/U1xIbKBHNoqwTnPHphIrHnspFlBRVCHQneV4gFtdk8rZs/f5FRGFYuJn
+         VrGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=isg3ceGtxW31YWmlvRlnRaX8gP44w08HFsMYSO+QoAo=;
+        b=nQj3fYvRd/Gb9pwxLIMCO5pD/x06sB3SOx3M1GZA7dk4cOs0CzfeZoc4GLKcwa5Lxy
+         k0BAt2jpeGptzG67eI4DQc9IlViT10jJP7EkjkV+1XEaFiPecQ6IQP9yuGKtm+2Qn/MG
+         YT0wFVsAhFej0k/4EVfQdfXUHF+k+xAtDZ5tyR2vjVHEODLkLBelWMF3tgiQ7tPSDwR1
+         tpNCRgjuivJBJIm2sKy9Dnd6+MNT0TMWgEnVj7rW0ohcp7H+anlo97SwoRD5IktbomPU
+         K2S8Ii81nPS/UYbety/WfzDwpvxVpEAvaHvLT8rOYrtv+6xO+B2In+XmVkYSPThz82Dg
+         yLDg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id i31si4566713pgm.553.2020.01.08.18.52.50
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id 0092qlVc006527;
+	Thu, 9 Jan 2020 11:52:48 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id 0092qld1006424;
+	Thu, 9 Jan 2020 11:52:47 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id MAA06254;
+	 Thu, 9 Jan 2020 11:51:13 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDrj027715; Thu, 9 Jan 2020 11:51:13 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDd0027710; Thu, 9 Jan 2020 11:51:13 +0900
+Message-Id: <202001090251.0092pDd0027710@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id 0092pDl7004326 ; Thu, 9 Jan 2020 11:51:13 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 4/7] rcps: fix rcps for shutting down spp_vf
+Date: Thu,  9 Jan 2020 11:51:10 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch set fixes shutting down configuration of spp_vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../ssh_login/shutdown/1-del_mac_path1.rcps   |  3 ---
+ .../ssh_login/shutdown/1_del_mac_path1.rcps   |  3 +++
+ .../ssh_login/shutdown/2-del_ports_path1.rcps | 20 -------------------
+ .../ssh_login/shutdown/2_del_ports_path1.rcps | 17 ++++++++++++++++
+ .../ssh_login/shutdown/3-stop_components.rcps |  7 -------
+ .../ssh_login/shutdown/3_stop_components.rcps |  7 +++++++
+ .../ssh_login/shutdown/4-del_mac_path2.rcps   |  3 ---
+ .../ssh_login/shutdown/4_del_mac_path2.rcps   |  3 +++
+ .../ssh_login/shutdown/5-del_ports_path2.rcps | 20 -------------------
+ .../ssh_login/shutdown/5_del_ports_path2.rcps | 17 ++++++++++++++++
+ .../ssh_login/shutdown/6-stop_components.rcps |  7 -------
+ .../ssh_login/shutdown/6_stop_components.rcps |  7 +++++++
+ .../spp_vf/ssh_login/shutdown/7-flush.rcps    |  1 -
+ .../spp_vf/ssh_login/shutdown/7_exit.rcps     |  1 +
+ 14 files changed, 55 insertions(+), 61 deletions(-)
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/1_del_mac_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/2_del_ports_path1.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/3_stop_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/4_del_mac_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/5_del_ports_path2.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/6_stop_components.rcps
+ delete mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps
+ create mode 100644 recipes/usecases/spp_vf/ssh_login/shutdown/7_exit.rcps
+
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps
+deleted file mode 100644
+index e642ada..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/1-del_mac_path1.rcps
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Delete MAC address for path1
+-sec 1;classifier_table del mac 51:54:00:12:34:56 ring:0
+-sec 1;classifier_table del mac 51:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/1_del_mac_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/1_del_mac_path1.rcps
+new file mode 100644
+index 0000000..6833798
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/1_del_mac_path1.rcps
+@@ -0,0 +1,3 @@
++# Delete MAC address for path1
++vf 1; classifier_table del mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table del mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps
+deleted file mode 100644
+index eea5b9e..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/2-del_ports_path1.rcps
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# classifier1
+-sec 1;port del phy:0 rx classifier1
+-sec 1;port del ring:0 tx classifier1
+-sec 1;port del ring:1 tx classifier1
+-# forwarder1
+-sec 1;port del ring:0 rx forwarder1
+-sec 1;port del vhost:0 tx forwarder1
+-# forwarder2
+-sec 1;port del ring:1 rx forwarder2
+-sec 1;port del vhost:2 tx forwarder2
+-# forwarder3
+-sec 1;port del vhost:0 rx forwarder3
+-sec 1;port del ring:2 tx forwarder3
+-# forwarder4
+-sec 1;port del vhost:2 rx forwarder4
+-sec 1;port del ring:3 tx forwarder4
+-# merger1
+-sec 1;port del ring:2 rx merger1
+-sec 1;port del ring:3 rx merger1
+-sec 1;port del phy:0 tx merger1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/2_del_ports_path1.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/2_del_ports_path1.rcps
+new file mode 100644
+index 0000000..4112350
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/2_del_ports_path1.rcps
+@@ -0,0 +1,17 @@
++# classifier
++vf 1; port del phy:0 rx cls1
++vf 1; port del ring:0 tx cls1
++vf 1; port del ring:1 tx cls1
++# forwarders
++vf 1; port del ring:0 rx fwd1
++vf 1; port del vhost:0 tx fwd1
++vf 1; port del ring:1 rx fwd2
++vf 1; port del vhost:2 tx fwd2
++vf 1; port del vhost:0 rx fwd3
++vf 1; port del ring:2 tx fwd3
++vf 1; port del vhost:2 rx fwd4
++vf 1; port del ring:3 tx fwd4
++# merger
++vf 1; port del ring:2 rx mgr1
++vf 1; port del ring:3 rx mgr1
++vf 1; port del phy:0 tx mgr1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps
+deleted file mode 100644
+index c29c740..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/3-stop_components.rcps
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# Stop component for path1
+-sec 1;component stop classifier1
+-sec 1;component stop forwarder1
+-sec 1;component stop forwarder2
+-sec 1;component stop forwarder3
+-sec 1;component stop forwarder4
+-sec 1;component stop merger1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/3_stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/3_stop_components.rcps
+new file mode 100644
+index 0000000..a599eb8
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/3_stop_components.rcps
+@@ -0,0 +1,7 @@
++# Stop component for spp_vf
++vf 1; component stop cls1
++vf 1; component stop fwd1
++vf 1; component stop fwd2
++vf 1; component stop fwd3
++vf 1; component stop fwd4
++vf 1; component stop mgr1
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps
+deleted file mode 100644
+index 030a9c7..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/4-del_mac_path2.rcps
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Delete MAC address for path2
+-sec 1;classifier_table del mac 51:54:00:12:34:57 ring:4
+-sec 1;classifier_table del mac 51:54:00:12:34:59 ring:5
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/4_del_mac_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/4_del_mac_path2.rcps
+new file mode 100644
+index 0000000..55ffca3
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/4_del_mac_path2.rcps
+@@ -0,0 +1,3 @@
++# Delete MAC address for path2
++vf 1; classifier_table del mac 52:54:00:12:34:57 ring:4
++vf 1; classifier_table del mac 52:54:00:12:34:59 ring:5
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps
+deleted file mode 100644
+index 0d0a235..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/5-del_ports_path2.rcps
++++ /dev/null
+@@ -1,20 +0,0 @@
+-# classifier2
+-sec 1;port del phy:1 rx classifier2
+-sec 1;port del ring:4 tx classifier2
+-sec 1;port del ring:5 tx classifier2
+-# forwarder5
+-sec 1;port del ring:4 rx forwarder5
+-sec 1;port del vhost:1 tx forwarder5
+-# forwarder6
+-sec 1;port del ring:5 rx forwarder6
+-sec 1;port del vhost:3 tx forwarder6
+-# forwarder7
+-sec 1;port del vhost:1 rx forwarder7
+-sec 1;port del ring:6 tx forwarder7
+-# forwarder8
+-sec 1;port del vhost:3 tx forwarder8
+-sec 1;port del ring:7 rx forwarder8
+-# merger2
+-sec 1;port del ring:6 rx merger2
+-sec 1;port del ring:7 rx merger2
+-sec 1;port del phy:1 tx merger2
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/5_del_ports_path2.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/5_del_ports_path2.rcps
+new file mode 100644
+index 0000000..acf9e19
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/5_del_ports_path2.rcps
+@@ -0,0 +1,17 @@
++# classifier2
++vf 1; port del phy:1 rx cls2
++vf 1; port del ring:4 tx cls2
++vf 1; port del ring:5 tx cls2
++# forwarder
++vf 1; port del ring:4 rx fwd5
++vf 1; port del vhost:1 tx fwd5
++vf 1; port del ring:5 rx fwd6
++vf 1; port del vhost:3 tx fwd6
++vf 1; port del vhost:1 rx fwd7
++vf 1; port del ring:6 tx fwd7
++vf 1; port del vhost:3 rx fwd8
++vf 1; port del ring:7 tx fwd8
++# merger
++vf 1; port del ring:6 rx mgr2
++vf 1; port del ring:7 rx mgr2
++vf 1; port del phy:1 tx mgr2
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps
+deleted file mode 100644
+index 535f02b..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/6-stop_components.rcps
++++ /dev/null
+@@ -1,7 +0,0 @@
+-# Stop component to spp_vf
+-sec 1;component stop classifier2
+-sec 1;component stop forwarder5
+-sec 1;component stop forwarder6
+-sec 1;component stop forwarder7
+-sec 1;component stop forwarder8
+-sec 1;component stop merger2
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/6_stop_components.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/6_stop_components.rcps
+new file mode 100644
+index 0000000..732298c
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/6_stop_components.rcps
+@@ -0,0 +1,7 @@
++# Stop component to spp_vf
++vf 1; component stop cls2
++vf 1; component stop fwd5
++vf 1; component stop fwd6
++vf 1; component stop fwd7
++vf 1; component stop fwd8
++vf 1; component stop mgr2
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps
+deleted file mode 100644
+index 9ea2237..0000000
+--- a/recipes/usecases/spp_vf/ssh_login/shutdown/7-flush.rcps
++++ /dev/null
+@@ -1 +0,0 @@
+-sec 1;flush
+diff --git a/recipes/usecases/spp_vf/ssh_login/shutdown/7_exit.rcps b/recipes/usecases/spp_vf/ssh_login/shutdown/7_exit.rcps
+new file mode 100644
+index 0000000..5a70766
+--- /dev/null
++++ b/recipes/usecases/spp_vf/ssh_login/shutdown/7_exit.rcps
+@@ -0,0 +1 @@
++vf 1; exit
+-- 
+2.17.1
+

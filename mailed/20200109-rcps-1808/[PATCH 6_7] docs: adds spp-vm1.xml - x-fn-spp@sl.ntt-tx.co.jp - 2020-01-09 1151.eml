@@ -1,0 +1,280 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1404459oog;
+        Wed, 8 Jan 2020 18:52:52 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwI/tuAQnQh5nDCsdfVbgVmOYe3DzCGpLIefx5jcElcqmytXtFeWaqUJYg2p5AxU7ZV+7E+
+X-Received: by 2002:a17:90a:fa10:: with SMTP id cm16mr2461843pjb.129.1578538371948;
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578538371; cv=none;
+        d=google.com; s=arc-20160816;
+        b=SK00Nt1VaIBmXayY+9jXGIc7IpufCrg+TI3PIFJEpibP7y+dgel+4wCDE/mHJ5wKNX
+         oM1n7FxBj72hnIvP+yA7NQZ/1SikKPUfYIBYPdpp4I6A99gQLPkzm87IfDy2WgycEvrT
+         iFX8G5DmdW5b8325uLAsqmu57CQk9X5FHOK0FmYDsHlOGmZ/EwlggbWexD2le3tsxAPr
+         5P4nKJKv4xYfQVevf724rUdnxIzr7tiUq+6IfJu4cGPmtxaJa9sd5DJX7T+D5czfgFlg
+         rL2TAqd3zDYYrxHWmt4gwOFeNBq/318uXnmSyuVUhGq199ccCta1TdigRdqsnL03SnK/
+         pwsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=wc1ilIFq8NiiEzpGMPPQFYiotRMNM4YcYeSKimebnfE=;
+        b=XoCrKzgW+ljHxOITSmLc4tiywJmTxF/uBYms3KrnCXbvhl8yVT/gU81RkF7FkCgiY1
+         N+EWp07fBRbsI2/pJJfK12NUJ/AZqE6nN6oVG0mNPEKvGZ3a4MGXzHD1YOdD/7l3A0eh
+         H25rN/qdm+u74uw6aFNC51oi3jRGRadd508XlCD14HZFj4IHYHc66EGHzT6NAD1qz/Wu
+         +9oeyF6T1vW1QhyVlcsNEFVmvLeB1scsIZTYjGVMphH1XXBVXL0E3xCXJyz6opKprvLo
+         SN8NQmexxh0Rz+UNYr32wC1ngkW0xZkJ9OtJT099nSaX3Nm26zl2F/Sx+2p7dDwUqcF2
+         lEag==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id o13si4233668pgp.305.2020.01.08.18.52.51
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id 0092qmdg006535;
+	Thu, 9 Jan 2020 11:52:48 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id 0092qmjQ006445;
+	Thu, 9 Jan 2020 11:52:48 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id MAA06262;
+	 Thu, 9 Jan 2020 11:51:13 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDHA027725; Thu, 9 Jan 2020 11:51:13 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pD1v027720; Thu, 9 Jan 2020 11:51:13 +0900
+Message-Id: <202001090251.0092pD1v027720@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id 0092pDl9004326 ; Thu, 9 Jan 2020 11:51:13 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 6/7] docs: adds spp-vm1.xml
+Date: Thu,  9 Jan 2020 11:51:12 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch set introduce spp-vm1.xml file as sample
+file for vhost use case. To refer the file from RST,
+corresponding document is also fixed.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst | 77 ++++++---------------------------
+ docs/samples/gsg/spp-vm1.xml  | 81 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 94 insertions(+), 64 deletions(-)
+ create mode 100644 docs/samples/gsg/spp-vm1.xml
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 5e461eb..631594b 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -859,6 +859,10 @@ Edit configuration of VM with virsh command. The name of VMs are found from
+ 
+ You need to define namespace ``qemu`` to use tags such as
+ ``<qemu:commandline>``.
++In libvirt, ``<qemu:commandline>`` tag is supported to utilize qemu specific
++features. In this example configuration of hugepage and/or network device is
++done via modifying domain XML file.
++Please see details in https://libvirt.org/drvqemu.html#qemucommand.
+ 
+ .. code-block:: none
+ 
+@@ -880,6 +884,8 @@ registering destinations for classifier's table.
+ 
+ 
+ Here is an example of XML config for using with SPP.
++The complete sample can be found
++``http://git.dpdk.org/apps/spp/tree/docs/samples/spp-vm1.xml``.
+ 
+ .. code-block:: xml
+ 
+@@ -888,85 +894,28 @@ Here is an example of XML config for using with SPP.
+       <uuid>d90f5420-861a-4479-8559-62d7a1545cb9</uuid>
+       <memory unit='KiB'>4194304</memory>
+       <currentMemory unit='KiB'>4194304</currentMemory>
+-      <memoryBacking>
+-        <hugepages/>
+-      </memoryBacking>
+-      <vcpu placement='static'>4</vcpu>
+-      <os>
+-        <type arch='x86_64' machine='pc-i440fx-2.3'>hvm</type>
+-        <boot dev='hd'/>
+-      </os>
+-      <features>
+-        <acpi/>
+-        <apic/>
+-        <pae/>
+-      </features>
+-      <clock offset='utc'/>
+-      <on_poweroff>destroy</on_poweroff>
+-      <on_reboot>restart</on_reboot>
+-      <on_crash>restart</on_crash>
+-      <devices>
+-        <emulator>/usr/local/bin/qemu-system-x86_64</emulator>
+-        <disk type='file' device='disk'>
+-          <driver name='qemu' type='raw'/>
+-          <source file='/var/lib/libvirt/images/spp-vm1.qcow2'/>
+-          <target dev='hda' bus='ide'/>
+-          <address type='drive' controller='0' bus='0' target='0' unit='0'/>
+-        </disk>
+-        <disk type='block' device='cdrom'>
+-          <driver name='qemu' type='raw'/>
+-          <target dev='hdc' bus='ide'/>
+-          <readonly/>
+-          <address type='drive' controller='0' bus='1' target='0' unit='0'/>
+-        </disk>
+-        <controller type='usb' index='0'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x01'
+-          function='0x2'/>
+-        </controller>
+-        <controller type='pci' index='0' model='pci-root'/>
+-        <controller type='ide' index='0'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x01'
+-          function='0x1'/>
+-        </controller>
+-        <interface type='network'>
+-          <mac address='52:54:00:99:aa:7f'/>
+-          <source network='default'/>
+-          <model type='rtl8139'/>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x02'
+-          function='0x0'/>
+-        </interface>
+-        <serial type='pty'>
+-          <target type='isa-serial' port='0'/>
+-        </serial>
+-        <console type='pty'>
+-          <target type='serial' port='0'/>
+-        </console>
+-        <memballoon model='virtio'>
+-          <address type='pci' domain='0x0000' bus='0x00' slot='0x03'
+-          function='0x0'/>
+-        </memballoon>
+-      </devices>
++      "..."
+       <qemu:commandline>
+         <qemu:arg value='-cpu'/>
+         <qemu:arg value='host'/>
+         <qemu:arg value='-object'/>
+-        <qemu:arg
+-        value='memory-backend-file,id=mem,size=4096M,mem-path=/run/hugepages/kvm,share=on'/>
++        <qemu:arg value='memory-backend-file,
++        id=mem,size=4096M,mem-path=/run/hugepages/kvm,share=on'/>
+         <qemu:arg value='-numa'/>
+         <qemu:arg value='node,memdev=mem'/>
+         <qemu:arg value='-mem-prealloc'/>
+         <qemu:arg value='-chardev'/>
+         <qemu:arg value='socket,id=chr0,path=/tmp/sock0,server'/>
+         <qemu:arg value='-device'/>
+-        <qemu:arg
+-        value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>
++        <qemu:arg value='virtio-net-pci,netdev=vhost-net0,
++        mac=52:54:00:12:34:56'/>
+         <qemu:arg value='-netdev'/>
+         <qemu:arg value='vhost-user,id=vhost-net0,chardev=chr0,vhostforce'/>
+         <qemu:arg value='-chardev'/>
+         <qemu:arg value='socket,id=chr1,path=/tmp/sock1,server'/>
+         <qemu:arg value='-device'/>
+-        <qemu:arg
+-        value='virtio-net-pci,netdev=vhost-net1,mac=52:54:00:12:34:57'/>
++        <qemu:arg value='virtio-net-pci,netdev=vhost-net1,
++        mac=52:54:00:12:34:57'/>
+         <qemu:arg value='-netdev'/>
+         <qemu:arg value='vhost-user,id=vhost-net1,chardev=chr1,vhostforce'/>
+       </qemu:commandline>
+diff --git a/docs/samples/gsg/spp-vm1.xml b/docs/samples/gsg/spp-vm1.xml
+new file mode 100644
+index 0000000..0b5e126
+--- /dev/null
++++ b/docs/samples/gsg/spp-vm1.xml
+@@ -0,0 +1,81 @@
++<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
++  <name>spp-vm1</name>
++  <uuid>d90f5420-861a-4479-8559-62d7a1545cb9</uuid>
++  <memory unit='KiB'>4194304</memory>
++  <currentMemory unit='KiB'>4194304</currentMemory>
++  <memoryBacking>
++    <hugepages/>
++  </memoryBacking>
++  <vcpu placement='static'>4</vcpu>
++  <os>
++    <type arch='x86_64' machine='pc-i440fx-2.3'>hvm</type>
++    <boot dev='hd'/>
++  </os>
++  <features>
++    <acpi/>
++    <apic/>
++    <pae/>
++  </features>
++  <clock offset='utc'/>
++  <on_poweroff>destroy</on_poweroff>
++  <on_reboot>restart</on_reboot>
++  <on_crash>restart</on_crash>
++  <devices>
++    <emulator>/usr/local/bin/qemu-system-x86_64</emulator>
++    <disk type='file' device='disk'>
++      <driver name='qemu' type='raw'/>
++      <source file='/var/lib/libvirt/images/spp-vm1.qcow2'/>
++      <target dev='hda' bus='ide'/>
++      <address type='drive' controller='0' bus='0' target='0' unit='0'/>
++    </disk>
++    <disk type='block' device='cdrom'>
++      <driver name='qemu' type='raw'/>
++      <target dev='hdc' bus='ide'/>
++      <readonly/>
++      <address type='drive' controller='0' bus='1' target='0' unit='0'/>
++    </disk>
++    <controller type='usb' index='0'>
++      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x2'/>
++    </controller>
++    <controller type='pci' index='0' model='pci-root'/>
++    <controller type='ide' index='0'>
++      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
++    </controller>
++    <interface type='network'>
++      <mac address='52:54:00:99:aa:7f'/>
++      <source network='default'/>
++      <model type='rtl8139'/>
++      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
++    </interface>
++    <serial type='pty'>
++      <target type='isa-serial' port='0'/>
++    </serial>
++    <console type='pty'>
++      <target type='serial' port='0'/>
++    </console>
++    <memballoon model='virtio'>
++      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
++    </memballoon>
++  </devices>
++  <qemu:commandline>
++    <qemu:arg value='-cpu'/>
++    <qemu:arg value='host'/>
++    <qemu:arg value='-object'/>
++    <qemu:arg value='memory-backend-file,id=mem,size=4096M,mem-path=/run/hugepages/kvm,share=on'/>
++    <qemu:arg value='-numa'/>
++    <qemu:arg value='node,memdev=mem'/>
++    <qemu:arg value='-mem-prealloc'/>
++    <qemu:arg value='-chardev'/>
++    <qemu:arg value='socket,id=chr0,path=/tmp/sock0,server'/>
++    <qemu:arg value='-device'/>
++    <qemu:arg value='virtio-net-pci,netdev=vhost-net0,mac=52:54:00:12:34:56'/>
++    <qemu:arg value='-netdev'/>
++    <qemu:arg value='vhost-user,id=vhost-net0,chardev=chr0,vhostforce'/>
++    <qemu:arg value='-chardev'/>
++    <qemu:arg value='socket,id=chr1,path=/tmp/sock1,server'/>
++    <qemu:arg value='-device'/>
++    <qemu:arg value='virtio-net-pci,netdev=vhost-net1,mac=52:54:00:12:34:57'/>
++    <qemu:arg value='-netdev'/>
++    <qemu:arg value='vhost-user,id=vhost-net1,chardev=chr1,vhostforce'/>
++  </qemu:commandline>
++</domain>
+\ No newline at end of file
+-- 
+2.17.1
+

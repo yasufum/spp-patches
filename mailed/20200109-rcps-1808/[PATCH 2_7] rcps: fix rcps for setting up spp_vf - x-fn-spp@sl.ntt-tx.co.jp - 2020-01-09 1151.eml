@@ -1,0 +1,94 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1404454oog;
+        Wed, 8 Jan 2020 18:52:51 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxwkS6GGgW4DxgbfhLumkwnBIkQdVRG1vPR/NaYkw16LpwJJAU3K2fuRBu0flbivIvq1lq1
+X-Received: by 2002:a17:90a:f84:: with SMTP id 4mr2499657pjz.74.1578538371705;
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1578538371; cv=none;
+        d=google.com; s=arc-20160816;
+        b=WUyd7wHjLopGi/JCN/MiAJB1sDwTO7oCjNxHlrGqbebXIxd5b/3NrJ7Ts+GPsYPchm
+         b5tbXTN8BkyY+Ig24qbR3UVZBDvpbe5VB4iEh4yshaiKJfYElhg9ZGbog1xYN6qqO5aO
+         vPjfrgA/gJZvsExhfCHdLPeYL/rYPrGDs6ci/ohip4iko0HV0FklfbGudKc2334V6Wf5
+         2Cc1TDisc+zLe66nNpGQWF5NDFrZ/B3Vt4DIxnd9dhCGXZStXGoiH4xZWIVpG3iqMRbR
+         9JyGlbAfS7s/hZ1eNWKc6akAS6jbqnBESfg1Lr4sF51Y2yekPlaJvT1QtBb+NhpV67fN
+         j4PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:date:subject:cc:to:from:message-id;
+        bh=Ucubnnbz/4Y0ALOqwzqYmi6yMYFDmPFFLXFzedjgHlk=;
+        b=igiTVluuLQCpW+qArMW1CmIn/EOc1+6Ggk+eCLVwvGevwNnGU8h/0lXYooY6Qe0hm/
+         XhtPuMekFo5Q4rIFytKwb+HBGs9a9d7t4AuYe3Sg7GLM2EpPxalpKJhZ5KWJ1dWnMBkc
+         /PUYSAxgWBdqXVxxWfIZxBYb6jWzhlitxMi1gscA8WYJPfoHX1aNpQ6vQWb+7BhomTiK
+         tsGERk7VTMBAUUpQUpqND/5NlXYaGYlk2m2wG4686/qo78IkmU2MrrGUJyCMsR33kAPu
+         DE8mOxVZnLpyaGYRTc5reYjeFAtSEkrNcaQfOqXFsyXWHCkWbN7B6AoKMglqhVXYk/X4
+         202A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Return-Path: <x-fn-spp@sl.ntt-tx.co.jp>
+Received: from mail04.ics.ntt-tx.co.jp (mail05.ics.ntt-tx.co.jp. [210.232.35.69])
+        by mx.google.com with ESMTPS id m145si4741133pfd.263.2020.01.08.18.52.50
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 Jan 2020 18:52:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) client-ip=210.232.35.69;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp@sl.ntt-tx.co.jp designates 210.232.35.69 as permitted sender) smtp.mailfrom=x-fn-spp@sl.ntt-tx.co.jp
+Received: from gwchk03.silk.ntt-tx.co.jp (gwchk03.silk.ntt-tx.co.jp [10.107.0.111])
+	by mail04.ics.ntt-tx.co.jp (unknown) with ESMTP id 0092qlaj006519;
+	Thu, 9 Jan 2020 11:52:47 +0900
+Received: (from root@localhost)
+	by gwchk03.silk.ntt-tx.co.jp (unknown) id 0092qleY006404;
+	Thu, 9 Jan 2020 11:52:47 +0900
+Received: from gwchk.silk.ntt-tx.co.jp [10.107.0.110] 
+	 by gwchk03.silk.ntt-tx.co.jp with ESMTP id MAA06240;
+	 Thu, 9 Jan 2020 11:51:13 +0900
+Received: from imss04.silk.ntt-tx.co.jp (localhost [127.0.0.1]) by imss01.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDdS027701; Thu, 9 Jan 2020 11:51:13 +0900
+Received: from mgate02.silk.ntt-tx.co.jp (smtp02.silk.ntt-tx.co.jp [10.107.0.37]) by imss04.silk.ntt-tx.co.jp (unknown) with ESMTP id 0092pDtS027698; Thu, 9 Jan 2020 11:51:13 +0900
+Message-Id: <202001090251.0092pDtS027698@imss04.silk.ntt-tx.co.jp>
+Received: from localhost by mgate02.silk.ntt-tx.co.jp (unknown)
+	id 0092pDl5004326 ; Thu, 9 Jan 2020 11:51:13 +0900
+From: x-fn-spp@sl.ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 2/7] rcps: fix rcps for setting up spp_vf
+Date: Thu,  9 Jan 2020 11:51:08 +0900
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+References: <20200109025113.22689-1-x-fn-spp@sl.ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch set fixes setting up configuration of spp_vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps | 2 +-
+ recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+index e864628..305d4eb 100644
+--- a/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
++++ b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+@@ -1,5 +1,5 @@
+ # Start component for path1
+-vf 1; component start cls1 2 classifier_mac
++vf 1; component start cls1 2 classifier
+ vf 1; component start fwd1 3 forward
+ vf 1; component start fwd2 4 forward
+ vf 1; component start fwd3 5 forward
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+index 7ce2c0d..686b906 100644
+--- a/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
++++ b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+@@ -1,5 +1,5 @@
+ # Start component for path2
+-vf 1; component start cls2 8 classifier_mac
++vf 1; component start cls2 8 classifier
+ vf 1; component start fwd5 9 forward
+ vf 1; component start fwd6 10 forward
+ vf 1; component start fwd7 11 forward
+-- 
+2.17.1
+
