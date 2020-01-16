@@ -1,4 +1,4 @@
-From 17c6d451fa60a9a6c8017238db565ff433aaf2fb Mon Sep 17 00:00:00 2001
+From 964ec19d94e4e6b1b91d390b2069eb1aa9baace9 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Tue, 7 Jan 2020 18:36:12 +0900
 Subject: [PATCH 3/7] cli: add filter for running pri commands

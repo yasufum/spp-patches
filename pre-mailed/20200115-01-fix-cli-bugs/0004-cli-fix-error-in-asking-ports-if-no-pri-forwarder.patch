@@ -1,4 +1,4 @@
-From 67528094478c97052210a71ee339a676adeb86e8 Mon Sep 17 00:00:00 2001
+From 0a1f711a25ab7d17838e31505b2e1092fe0bc1f8 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Thu, 26 Dec 2019 13:32:07 +0900
 Subject: [PATCH 4/7] cli: fix error in asking ports if no pri forwarder

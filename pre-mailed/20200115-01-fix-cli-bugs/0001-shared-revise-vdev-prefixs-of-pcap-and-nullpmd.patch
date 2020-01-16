@@ -1,6 +1,6 @@
-From 8adfc8bf6ce00183ff8cab50d67468dbe6ce4f26 Mon Sep 17 00:00:00 2001
+From 625e897988442d548cf78f1a4f4627945be0a172 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
-Date: Wed, 25 Dec 2019 11:37:17 +0900
+Date: Thu, 16 Jan 2020 20:36:26 +0900
 Subject: [PATCH 1/7] shared: revise vdev prefixs of pcap and nullpmd
 
 In DPDK, there are two prefixes of RTE eth device, 'eth_' and 'net_' fo
@@ -59,12 +59,12 @@ index 3145617..a098aed 100644
  		*port_id = (int)strtol(pid_str, NULL, 10);
  		*port_type = PCAP;
 diff --git a/src/shared/common.h b/src/shared/common.h
-index 9c46a64..9535abb 100644
+index 431ad3e..ef8372a 100644
 --- a/src/shared/common.h
 +++ b/src/shared/common.h
 @@ -36,10 +36,10 @@
  #define VDEV_NET_RING "net_ring"
- #define VDEV_ETH_VHOST "eth_vhost"
+ #define VDEV_ETH_VHOST "spp_vhost"
  #define VDEV_NET_VHOST "net_vhost"
 -#define VDEV_PCAP "net_pcap"
 +#define VDEV_NET_PCAP "net_pcap"

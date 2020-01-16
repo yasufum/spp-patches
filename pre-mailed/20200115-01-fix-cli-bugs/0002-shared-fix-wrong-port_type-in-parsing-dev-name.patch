@@ -1,4 +1,4 @@
-From 586ddba3dfa4a2c322e9d6133aa80dc7232d8094 Mon Sep 17 00:00:00 2001
+From d034bf6e950a183a2589db304e9219711665d39b Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Wed, 25 Dec 2019 12:00:16 +0900
 Subject: [PATCH 2/7] shared: fix wrong port_type in parsing dev name

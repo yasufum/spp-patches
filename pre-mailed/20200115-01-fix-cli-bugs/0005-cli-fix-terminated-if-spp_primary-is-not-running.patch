@@ -1,4 +1,4 @@
-From c8afb221a8189232e84e9a8bf1376b13917b0c29 Mon Sep 17 00:00:00 2001
+From 0fe7533ee4075f93a7b6b118e9ab5153eab5932d Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
 Date: Thu, 26 Dec 2019 13:57:00 +0900
 Subject: [PATCH 5/7] cli: fix terminated if spp_primary is not running

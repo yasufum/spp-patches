@@ -1,6 +1,6 @@
-From 76f27217eb30f8d749ba5f8892571c7fc34d61cb Mon Sep 17 00:00:00 2001
+From d767466fd4328dc127026cc86f408d24bf61b646 Mon Sep 17 00:00:00 2001
 From: Yasufumi Ogawa <yasufum.o@gmail.com>
-Date: Tue, 7 Jan 2020 18:50:05 +0900
+Date: Thu, 16 Jan 2020 20:47:00 +0900
 Subject: [PATCH 0/7] Update for fixing errors for CLI
 
 There are some errors are occured if CLI reqests spp_primary for adding
