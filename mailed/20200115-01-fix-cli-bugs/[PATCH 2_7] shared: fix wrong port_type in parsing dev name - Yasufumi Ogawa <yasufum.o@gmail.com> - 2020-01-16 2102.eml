@@ -1,0 +1,43 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:98b6:858d:e282:492e])
+        by smtp.gmail.com with ESMTPSA id u7sm25392890pfh.128.2020.01.16.04.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2020 04:02:43 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/7] shared: fix wrong port_type in parsing dev name
+Date: Thu, 16 Jan 2020 21:02:30 +0900
+Message-Id: <20200116120235.31550-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200116120235.31550-1-yasufum.o@gmail.com>
+References: <20200116120235.31550-1-yasufum.o@gmail.com>
+
+Correct parse_dev_name() which returns port_type PCAP for eth_null
+wrongly because of a typo. This patch is to fix to return NULLPMD
+correctly.
+
+Fixes: 146516c139c2 ("shared: add parsing ethdev name")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index a098aed..85e2f06 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -126,7 +126,7 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		strncpy(pid_str, dev_name + strlen(VDEV_ETH_NULL),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+-		*port_type = PCAP;
++		*port_type = NULLPMD;
+ 
+ 	/* TODO(yasufum) add checking invalid port type and return -1 */
+ 	} else {
+-- 
+2.17.1
+

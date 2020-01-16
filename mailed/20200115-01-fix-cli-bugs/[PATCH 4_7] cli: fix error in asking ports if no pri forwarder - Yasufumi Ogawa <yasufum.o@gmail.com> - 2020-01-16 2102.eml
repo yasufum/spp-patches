@@ -1,0 +1,146 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:98b6:858d:e282:492e])
+        by smtp.gmail.com with ESMTPSA id u7sm25392890pfh.128.2020.01.16.04.02.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2020 04:02:46 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/7] cli: fix error in asking ports if no pri forwarder
+Date: Thu, 16 Jan 2020 21:02:32 +0900
+Message-Id: <20200116120235.31550-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200116120235.31550-1-yasufum.o@gmail.com>
+References: <20200116120235.31550-1-yasufum.o@gmail.com>
+
+SPP CLI retrieves status of spp_primary not only for `status` command
+but also others, such as `add` or `del`, to check the result of the
+commands. For the commands other than `status`, SPP CLI is terminated
+if it retrieves the status and forwarder thread is not running because
+SPP CLI expects to receive the status including 'forwarder' attribute,
+but does not exist.
+
+This update is to fix the issue. SPP CLI tells you that forwarder thread
+is not running for the cases.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/pri.py | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index 1443e9e..f7d86bb 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -263,6 +263,7 @@ class SppPrimary(object):
+                 pass
+             else:
+                 print('Error: unknown response for get_ports.')
++            return None
+ 
+     def _get_patches(self):
+         """Get all of patched ports as a list of dicts.
+@@ -285,6 +286,7 @@ class SppPrimary(object):
+                 pass
+             else:
+                 print('Error: unknown response for get_patches.')
++            return None
+ 
+     def _get_ports_and_patches(self):
+         """Get all of ports and patches at once.
+@@ -309,7 +311,8 @@ class SppPrimary(object):
+             elif res.status_code in error_codes:
+                 pass
+             else:
+-                print('Error: unknown response 3.')
++                print('Error: unknown response.')
++            return None, None
+ 
+     def _get_patched_ports(self):
+         """Get all of patched ports as a list.
+@@ -619,8 +622,16 @@ class SppPrimary(object):
+         if len(sub_tokens) < 3:
+             tmp_ary = []
+ 
++            # Update to current status
+             self.ports, self.patches = self._get_ports_and_patches()
+ 
++            if self.ports is None:
++                self.ports, self.patches = [], []
++                return []
++            elif self.patches is None:
++                self.ports, self.patches = [], []
++                return []
++
+             # Patched ports should not be included in the candidate of del.
+             patched_ports = self._get_patched_ports()
+ 
+@@ -635,7 +646,7 @@ class SppPrimary(object):
+                         else:
+                             tmp_ary.append(kw)
+ 
+-            # Physical port cannot be removed.
++            # Exclude phy ports which cannot be deleted.
+             for p in tmp_ary:
+                 if not p.startswith('phy:'):
+                     res.append(p)
+@@ -653,6 +664,13 @@ class SppPrimary(object):
+ 
+             self.ports, self.patches = self._get_ports_and_patches()
+ 
++            if self.ports is None:
++                self.ports, self.patches = [], []
++                return []
++            elif self.patches is None:
++                self.ports, self.patches = [], []
++                return []
++
+             # Get patched ports of src and dst to be used for completion.
+             src_ports = []
+             dst_ports = []
+@@ -735,8 +753,6 @@ class SppPrimary(object):
+         elif params[0] in self.ports:
+             print("'%s' is already added." % params[0])
+         else:
+-            self.ports = self._get_ports()
+-
+             req_params = {'action': 'add', 'port': params[0]}
+ 
+             res = self.spp_ctl_cli.put('primary/ports', req_params)
+@@ -749,6 +765,11 @@ class SppPrimary(object):
+                 else:
+                     print('Error: unknown response for add.')
+ 
++            self.ports = self._get_ports()  # update to current status
++            if self.ports is None:
++                print('Cannot retrieve ports from spp_primary')
++                self.ports = []
++
+     def _run_del(self, params):
+         """Run `del` command."""
+ 
+@@ -757,8 +778,6 @@ class SppPrimary(object):
+         elif 'phy:' in params[0]:
+             print("Cannot delete phy port '%s'." % params[0])
+         else:
+-            self.patches = self._get_patches()
+-
+             # Patched ports should not be deleted.
+             patched_ports = self._get_patched_ports()
+ 
+@@ -776,6 +795,11 @@ class SppPrimary(object):
+                     else:
+                         print('Error: unknown response for del.')
+ 
++            self.patches = self._get_patches()  # update to current status
++            if self.patches is None:
++                print('Cannot retrieve patches from spp_primary')
++                self.patches = []
++
+     def _run_forward_or_stop(self, cmd):
+         """Run `forward` or `stop` command."""
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,91 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:98b6:858d:e282:492e])
+        by smtp.gmail.com with ESMTPSA id u7sm25392890pfh.128.2020.01.16.04.02.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2020 04:02:41 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/7] shared: revise vdev prefixs of pcap and nullpmd
+Date: Thu, 16 Jan 2020 21:02:29 +0900
+Message-Id: <20200116120235.31550-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200116120235.31550-1-yasufum.o@gmail.com>
+References: <20200116120235.31550-1-yasufum.o@gmail.com>
+
+In DPDK, there are two prefixes of RTE eth device, 'eth_' and 'net_' fo
+r a reason of compatibility. 'eth_' is old one. SPP defines all of
+prefixes as following.
+
+  #define VDEV_ETH_VHOST "eth_vhost"
+  #define VDEV_NET_VHOST "net_vhost"
+  ...
+
+However, pcap and nullpmd have only 'eth_' or 'net_'. SPP defines them
+such as VDEV_NULL for simplicity, but it might be confusing for
+considering the naming rule. This update is revise the prefixes to avoid
+this ambiguity.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c | 16 ++++++++--------
+ src/shared/common.h |  4 ++--
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 3145617..a098aed 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -99,11 +99,11 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = VHOST;
+ 
+-	} else if (strncmp(dev_name, VDEV_PCAP,
+-			strlen(VDEV_PCAP)) == 0) {
+-		dev_str_len = strlen(VDEV_PCAP);
++	} else if (strncmp(dev_name, VDEV_NET_PCAP,
++			strlen(VDEV_NET_PCAP)) == 0) {
++		dev_str_len = strlen(VDEV_NET_PCAP);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_PCAP),
++		strncpy(pid_str, dev_name + strlen(VDEV_NET_PCAP),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = PCAP;
+@@ -119,11 +119,11 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = TAP;
+ 
+-	} else if (strncmp(dev_name, VDEV_NULL,
+-			strlen(VDEV_NULL)) == 0) {
+-		dev_str_len = strlen(VDEV_NULL);
++	} else if (strncmp(dev_name, VDEV_ETH_NULL,
++			strlen(VDEV_ETH_NULL)) == 0) {
++		dev_str_len = strlen(VDEV_ETH_NULL);
+ 		pid_len = dev_name_len - dev_str_len;
+-		strncpy(pid_str, dev_name + strlen(VDEV_NULL),
++		strncpy(pid_str, dev_name + strlen(VDEV_ETH_NULL),
+ 				pid_len);
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = PCAP;
+diff --git a/src/shared/common.h b/src/shared/common.h
+index 431ad3e..ef8372a 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -36,10 +36,10 @@
+ #define VDEV_NET_RING "net_ring"
+ #define VDEV_ETH_VHOST "spp_vhost"
+ #define VDEV_NET_VHOST "net_vhost"
+-#define VDEV_PCAP "net_pcap"
++#define VDEV_NET_PCAP "net_pcap"
+ #define VDEV_ETH_TAP "eth_tap"
+ #define VDEV_NET_TAP "net_tap"
+-#define VDEV_NULL "eth_null"
++#define VDEV_ETH_NULL "eth_null"
+ 
+ 
+ /* Command. */
+-- 
+2.17.1
+

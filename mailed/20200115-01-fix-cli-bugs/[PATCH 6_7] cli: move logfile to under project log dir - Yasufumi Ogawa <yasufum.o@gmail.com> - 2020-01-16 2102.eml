@@ -1,0 +1,120 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:98b6:858d:e282:492e])
+        by smtp.gmail.com with ESMTPSA id u7sm25392890pfh.128.2020.01.16.04.02.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2020 04:02:49 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 6/7] cli: move logfile to under project log dir
+Date: Thu, 16 Jan 2020 21:02:34 +0900
+Message-Id: <20200116120235.31550-7-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200116120235.31550-1-yasufum.o@gmail.com>
+References: <20200116120235.31550-1-yasufum.o@gmail.com>
+
+SPP CLI outputs log as `spp/cli/log/spp_cli.log` because the contents
+are mainly about implementation and no need for users. Some error
+messages for users are just displayed in the CLI. However, it is
+annoying that users have to remove the error message for failing
+completion.
+
+SPP CLI has got stabled and almost no need to output tiny logs of
+implementation. It is the time to move CLI's log to `spp/log` as similar
+to other processes.
+
+This update is to move logfile to `spp/log/spp_cli.log`, and to show
+the error messages in the logfile.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/spp_common.py     | 19 +++++++++++--------
+ src/cli/spp_ctl_client.py | 15 ++++++++-------
+ 2 files changed, 19 insertions(+), 15 deletions(-)
+
+diff --git a/src/cli/spp_common.py b/src/cli/spp_common.py
+index b717fb0..947a2fa 100644
+--- a/src/cli/spp_common.py
++++ b/src/cli/spp_common.py
+@@ -9,21 +9,24 @@ import os
+ PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
+ SEC_TYPES = ['nfv', 'vf', 'mirror', 'pcap']
+ 
+-LOGFILE = 'spp_cli.log'  # name of logfile under `/src/controller/log/`
++# Setup logger object
++# Logfile is generated as 'spp/log/spp_cli.log'.
++log_filename = 'spp_cli.log'  # name of logfile
++logdir = '{}/../../log'.format(os.path.dirname(__file__))
++logfile = '{}/{}'.format(logdir, log_filename)
+ 
+-# Current server under management of SPP CLI.
+-cur_server_addr = None
++os.system('mkdir -p {}'.format(logdir))
+ 
+-# Setup logger object
+-logger = logging.getLogger(__name__)
+ # handler = logging.StreamHandler()
+-os.system("mkdir -p %s/log" % (os.path.dirname(__file__)))
+-
+-logfile = '%s/log/%s' % (os.path.dirname(__file__), LOGFILE)
+ handler = logging.FileHandler(logfile)
+ handler.setLevel(logging.DEBUG)
+ formatter = logging.Formatter(
+     '%(asctime)s,[%(filename)s][%(name)s][%(levelname)s]%(message)s')
+ handler.setFormatter(formatter)
++
++logger = logging.getLogger(__name__)
+ logger.setLevel(logging.DEBUG)
+ logger.addHandler(handler)
++
++# Current server under management of SPP CLI.
++cur_server_addr = None
+diff --git a/src/cli/spp_ctl_client.py b/src/cli/spp_ctl_client.py
+index ff95136..7418353 100644
+--- a/src/cli/spp_ctl_client.py
++++ b/src/cli/spp_ctl_client.py
+@@ -2,6 +2,7 @@
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
++from .spp_common import logger
+ import requests
+ 
+ 
+@@ -29,17 +30,17 @@ class SppCtlClient(object):
+                 # TODO(yasufum) revise print message to more appropriate
+                 # for spp.py.
+                 if res.status_code == 400:
+-                    print('Syntax or lexical error, or SPP returns ' +
+-                          'error for the request.')
++                    logger.info('Syntax or lexical error, or SPP '
++                                    'returns error for the request.')
+                 elif res.status_code == 404:
+-                    print('URL is not supported, or no SPP process ' +
+-                          'of client-id in a URL.')
++                    logger.info('URL is not supported, or no SPP '
++                                    'process of client-id in a URL.')
+                 elif res.status_code == 500:
+-                    print('System error occured in spp-ctl.')
++                    logger.info('System error occured in spp-ctl.')
+ 
+                 return res
+             except requests.exceptions.ConnectionError:
+-                print('Error: Failed to connect to spp-ctl.')
++                logger.info('Error: Failed to connect to spp-ctl.')
+                 return None
+         return wrapper
+ 
+@@ -84,7 +85,7 @@ class SppCtlClient(object):
+                         if ent['type'] == ptype:
+                             ids.append(ent['client-id'])
+                 except KeyError as e:
+-                    print('Error: {} is not defined!'.format(e))
++                    logger.info('Error: {} is not defined!'.format(e))
+         return ids
+ 
+     def get_sec_procs(self, ptype):
+-- 
+2.17.1
+
