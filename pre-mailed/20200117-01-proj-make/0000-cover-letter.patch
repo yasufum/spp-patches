@@ -1,0 +1,21 @@
+From 4a3ec2b5c2314aa49aa9ffff4d5327c24fe25400 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 17 Jan 2020 17:56:58 +0900
+Subject: [PATCH 0/2] Update makefile and gitignore
+
+As dedicated vhost PMD is added to SPP project, this series of patches
+is to update Makefile for cleaning up all files generated while
+compiling, and .gitignore to exclude the file from under the management
+of git.
+
+Yasufumi Ogawa (2):
+  makefile: update dist-clean task
+  project: add gitignore entries for vhost PMD
+
+ .gitignore  | 11 +++++++++++
+ GNUmakefile |  4 ++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+-- 
+2.17.1
+
