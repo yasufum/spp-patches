@@ -1,0 +1,66 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:394a:f092:61ac:c869])
+        by smtp.gmail.com with ESMTPSA id b24sm41597380pfo.55.2020.01.20.23.36.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2020 23:36:37 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 1/2] makefile: update dist-clean task
+Date: Tue, 21 Jan 2020 16:36:30 +0900
+Message-Id: <20200121073631.12442-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200121073631.12442-1-yasufum.o@gmail.com>
+References: <20200117090243.43456-1-yasufum.o@gmail.com>
+ <20200121073631.12442-1-yasufum.o@gmail.com>
+
+This patch is to add drivers to dist-clean task. In this update,
+dist-clean is divided into two tasks. It is because files named as
+`_postclean` is generated in `src/drivers/*/` directory after cleaning
+and still remained. First task named as `_dist-clean` is for removing
+files generated while compilation, and second one is for removing
+`_postclean`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ GNUmakefile | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 274f709..9c0cea9 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -21,15 +21,24 @@ showversion:
+ # Compile RST documents
+ DOC_ROOT = docs/guides
+ 
++# Clean all files generated while compilation. It consists of two
++# tasks, _dist-clean and dist-clean. First one is for removing the
++# generated files, and second one is just for removing `_postclean`
++# which is generated after the first task.
+ .PHONY: dist-clean
+-dist-clean:
++dist-clean: _dist-clean
++	rm -f $(wildcard src/drivers/*/_postclean)
++
++.PHONY: _dist-clean
++_dist-clean:
+ 	make clean
+ 	rm -rf $(wildcard src/*/$(RTE_TARGET))
+-	rm -rf $(wildcard src/*/*.pyc)
+-	rm -rf $(wildcard src/*/__pycache__)
+ 	rm -rf $(wildcard src/*/shared)
+-	rm -rf $(wildcard src/mirror/vf)
+-	rm -rf $(wildcard src/pcap/vf)
++	rm -rf $(wildcard src/drivers/*/$(RTE_TARGET))
++	rm -f $(wildcard src/*/*.pyc)
++	rm -f $(wildcard src/*/*/*.pyc)
++	rm -rf $(wildcard src/*/__pycache__)
++	rm -rf $(wildcard src/*/*/__pycache__)
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.17.1
+
