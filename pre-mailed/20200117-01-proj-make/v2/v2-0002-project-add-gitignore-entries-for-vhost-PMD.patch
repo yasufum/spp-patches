@@ -1,0 +1,39 @@
+From c2b9b00938d4a0d733004c034d9bc115c244ebef Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Fri, 17 Jan 2020 18:02:43 +0900
+Subject: [PATCH v2 2/2] project: add gitignore entries for vhost PMD
+
+As dedicated vhost PMD is added, this update is to add files generated
+while compiling.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .gitignore | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/.gitignore b/.gitignore
+index 154c284..32b785d 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -11,6 +11,18 @@ src/*/x86_64-native-linuxapp-icc/
+ src/*/i686-native-linuxapp-gcc/
+ src/*/i686-native-linuxapp-icc/
+ 
++src/drivers/*/*.a
++src/drivers/*/*.o
++src/drivers/*/.*.o.d
++src/drivers/*/.*.a.cmd
++src/drivers/*/.*.o.cmd
++src/drivers/*/*.o.pmd.c
++src/drivers/*/*.o.pmd.o
++src/drivers/*/_postbuild
++src/drivers/*/_postinstall
++src/drivers/*/_postclean
++src/drivers/*/x86_64-native-linuxapp-gcc/
++
+ src/controller/3rd_party/*
+ 
+ tools/sppc/build/*/*/env.sh
+-- 
+2.17.1
+
