@@ -1,0 +1,80 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:394a:f092:61ac:c869])
+        by smtp.gmail.com with ESMTPSA id y5sm31331060pfn.185.2020.01.20.20.53.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2020 20:53:03 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 3/4] shared: add memif in status message
+Date: Tue, 21 Jan 2020 13:52:52 +0900
+Message-Id: <20200121045253.1071-4-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200121045253.1071-1-yasufum.o@gmail.com>
+References: <20200121045253.1071-1-yasufum.o@gmail.com>
+
+Add memif PMD in the result of status command and its log message.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/common.c       | 9 +++++++++
+ src/shared/common.h       | 2 ++
+ src/shared/port_manager.c | 1 +
+ 3 files changed, 12 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index 85e2f06..5fdb29f 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -119,6 +119,15 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = TAP;
+ 
++	} else if (strncmp(dev_name, VDEV_NET_MEMIF,
++			strlen(VDEV_NET_MEMIF)) == 0) {
++		dev_str_len = strlen(VDEV_NET_MEMIF);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_NET_MEMIF),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = MEMIF;
++
+ 	} else if (strncmp(dev_name, VDEV_ETH_NULL,
+ 			strlen(VDEV_ETH_NULL)) == 0) {
+ 		dev_str_len = strlen(VDEV_ETH_NULL);
+diff --git a/src/shared/common.h b/src/shared/common.h
+index ef8372a..adabb79 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -39,6 +39,7 @@
+ #define VDEV_NET_PCAP "net_pcap"
+ #define VDEV_ETH_TAP "eth_tap"
+ #define VDEV_NET_TAP "net_tap"
++#define VDEV_NET_MEMIF "net_memif"
+ #define VDEV_ETH_NULL "eth_null"
+ 
+ 
+@@ -82,6 +83,7 @@ enum port_type {
+ 	PCAP,
+ 	NULLPMD,
+ 	TAP,
++	MEMIF,
+ 	UNDEF,
+ };
+ 
+diff --git a/src/shared/port_manager.c b/src/shared/port_manager.c
+index 98d89c2..534af99 100644
+--- a/src/shared/port_manager.c
++++ b/src/shared/port_manager.c
+@@ -11,6 +11,7 @@ struct porttype_map portmap[] = {
+ 	{ .port_name = "pcap", .port_type = PCAP, },
+ 	{ .port_name = "nullpmd", .port_type = NULLPMD, },
+ 	{ .port_name = "tap", .port_type = TAP, },
++	{ .port_name = "memif", .port_type = MEMIF, },
+ 	{ .port_name = NULL,    .port_type = UNDEF, },
+ };
+ 
+-- 
+2.17.1
+

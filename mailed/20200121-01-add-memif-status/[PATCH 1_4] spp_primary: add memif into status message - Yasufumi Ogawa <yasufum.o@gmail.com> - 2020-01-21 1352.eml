@@ -1,0 +1,177 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:394a:f092:61ac:c869])
+        by smtp.gmail.com with ESMTPSA id y5sm31331060pfn.185.2020.01.20.20.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2020 20:52:59 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/4] spp_primary: add memif into status message
+Date: Tue, 21 Jan 2020 13:52:50 +0900
+Message-Id: <20200121045253.1071-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200121045253.1071-1-yasufum.o@gmail.com>
+References: <20200121045253.1071-1-yasufum.o@gmail.com>
+
+Add memif PMD in the result of status command and its log message. This
+update also includes tiny fixes for typo in which log label is replaced
+from `SHARED` to `PRIMARY`.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/main.c | 50 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 17 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index a1ca791..15152a0 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -433,6 +433,10 @@ append_port_info_json(char *str,
+ 			sprintf(str + strlen(str), "\"tap:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case MEMIF:
++			sprintf(str + strlen(str), "\"memif:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+ 			sprintf(str + strlen(str), "\"udf\",");
+@@ -466,8 +470,8 @@ append_patch_info_json(char *str,
+ 		if (ports_fwd_array[i].in_port_id == PORT_RESET)
+ 			continue;
+ 
+-		RTE_LOG(INFO, SHARED, "Port ID %d\n", i);
+-		RTE_LOG(INFO, SHARED, "Status %d\n",
++		RTE_LOG(INFO, PRIMARY, "Port ID %d\n", i);
++		RTE_LOG(INFO, PRIMARY, "Status %d\n",
+ 			ports_fwd_array[i].in_port_id);
+ 
+ 		memset(patch_str, '\0', sizeof(patch_str));
+@@ -476,43 +480,49 @@ append_patch_info_json(char *str,
+ 
+ 		switch (port_map[i].port_type) {
+ 		case PHY:
+-			RTE_LOG(INFO, SHARED, "Type: PHY\n");
++			RTE_LOG(INFO, PRIMARY, "Type: PHY\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"phy:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case RING:
+-			RTE_LOG(INFO, SHARED, "Type: RING\n");
++			RTE_LOG(INFO, PRIMARY, "Type: RING\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"ring:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case VHOST:
+-			RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++			RTE_LOG(INFO, PRIMARY, "Type: VHOST\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"vhost:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case PCAP:
+-			RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++			RTE_LOG(INFO, PRIMARY, "Type: PCAP\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"pcap:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case NULLPMD:
+-			RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++			RTE_LOG(INFO, PRIMARY, "Type: NULLPMD\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"nullpmd:%u\",",
+ 					port_map[i].id);
+ 			break;
+ 		case TAP:
+-			RTE_LOG(INFO, SHARED, "Type: TAP\n");
++			RTE_LOG(INFO, PRIMARY, "Type: TAP\n");
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"tap:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case MEMIF:
++			RTE_LOG(INFO, PRIMARY, "Type: MEMIF\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"memif:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+-			RTE_LOG(INFO, SHARED, "Type: UDF\n");
++			RTE_LOG(INFO, PRIMARY, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+ 			sprintf(patch_str + strlen(patch_str),
+ 					"\"udf\",");
+@@ -521,7 +531,7 @@ append_patch_info_json(char *str,
+ 
+ 		sprintf(patch_str + strlen(patch_str), "\"dst\":");
+ 
+-		RTE_LOG(INFO, SHARED, "Out Port ID %d\n",
++		RTE_LOG(INFO, PRIMARY, "Out Port ID %d\n",
+ 				ports_fwd_array[i].out_port_id);
+ 
+ 		if (ports_fwd_array[i].out_port_id == PORT_RESET) {
+@@ -532,43 +542,49 @@ append_patch_info_json(char *str,
+ 			unsigned int j = ports_fwd_array[i].out_port_id;
+ 			switch (port_map[j].port_type) {
+ 			case PHY:
+-				RTE_LOG(INFO, SHARED, "Type: PHY\n");
++				RTE_LOG(INFO, PRIMARY, "Type: PHY\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"phy:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case RING:
+-				RTE_LOG(INFO, SHARED, "Type: RING\n");
++				RTE_LOG(INFO, PRIMARY, "Type: RING\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"ring:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case VHOST:
+-				RTE_LOG(INFO, SHARED, "Type: VHOST\n");
++				RTE_LOG(INFO, PRIMARY, "Type: VHOST\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"vhost:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case PCAP:
+-				RTE_LOG(INFO, SHARED, "Type: PCAP\n");
++				RTE_LOG(INFO, PRIMARY, "Type: PCAP\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"pcap:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case NULLPMD:
+-				RTE_LOG(INFO, SHARED, "Type: NULLPMD\n");
++				RTE_LOG(INFO, PRIMARY, "Type: NULLPMD\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"nullpmd:%u\"",
+ 						port_map[j].id);
+ 				break;
+ 			case TAP:
+-				RTE_LOG(INFO, SHARED, "Type: TAP\n");
++				RTE_LOG(INFO, PRIMARY, "Type: TAP\n");
+ 				sprintf(patch_str + strlen(patch_str),
+ 						"\"tap:%u\"",
+ 						port_map[j].id);
+ 				break;
++			case MEMIF:
++				RTE_LOG(INFO, PRIMARY, "Type: MEMIF\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"memif:%u\"",
++						port_map[j].id);
++				break;
+ 			case UNDEF:
+-				RTE_LOG(INFO, SHARED, "Type: UDF\n");
++				RTE_LOG(INFO, PRIMARY, "Type: UDF\n");
+ 				/*
+ 				 * TODO(yasufum) Need to remove print for
+ 				 * undefined ?
+-- 
+2.17.1
+
