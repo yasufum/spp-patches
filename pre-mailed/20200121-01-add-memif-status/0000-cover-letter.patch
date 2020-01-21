@@ -1,0 +1,25 @@
+From 768941ef8282e4113a9bb3f0eaecc6508ae23faf Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 21 Jan 2020 13:48:36 +0900
+Subject: [PATCH 0/4] Add memif in status message
+
+This series of update is to add memif in the list of ports in status
+message.
+
+Yasufumi Ogawa (4):
+  spp_primary: add memif into status message
+  spp_nfv: add memif into status message
+  shared: add memif in status message
+  spp-ctl: add memif port type
+
+ src/nfv/nfv_status.c      | 16 +++++++++++++
+ src/primary/main.c        | 50 ++++++++++++++++++++++++++-------------
+ src/shared/common.c       |  9 +++++++
+ src/shared/common.h       |  2 ++
+ src/shared/port_manager.c |  1 +
+ src/spp-ctl/spp_webapi.py |  4 ++--
+ 6 files changed, 63 insertions(+), 19 deletions(-)
+
+-- 
+2.17.1
+

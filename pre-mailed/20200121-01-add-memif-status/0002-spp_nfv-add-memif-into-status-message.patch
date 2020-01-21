@@ -1,0 +1,56 @@
+From 4bee6f4d0dad8a80c9927e048eb0c8cabda71f46 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 6 Jan 2020 03:07:08 +0900
+Subject: [PATCH 2/4] spp_nfv: add memif into status message
+
+Add memif PMD in the result of status command and its log message.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/nfv/nfv_status.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index a092fac..3947a84 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -115,6 +115,10 @@ append_port_info_json(char *str,
+ 			sprintf(str + strlen(str), "\"tap:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case MEMIF:
++			sprintf(str + strlen(str), "\"memif:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+ 			sprintf(str + strlen(str), "\"udf\",");
+@@ -201,6 +205,12 @@ append_patch_info_json(char *str,
+ 					"\"tap:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case MEMIF:
++			RTE_LOG(INFO, SHARED, "Type: MEMIF\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"memif:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			RTE_LOG(INFO, SHARED, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+@@ -257,6 +267,12 @@ append_patch_info_json(char *str,
+ 						"\"tap:%u\"",
+ 						port_map[j].id);
+ 				break;
++			case MEMIF:
++				RTE_LOG(INFO, SHARED, "Type: MEMIF\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"memif:%u\"",
++						port_map[j].id);
++				break;
+ 			case UNDEF:
+ 				RTE_LOG(INFO, SHARED, "Type: UDF\n");
+ 				/*
+-- 
+2.17.1
+
