@@ -1,0 +1,51 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([192.47.164.146])
+        by smtp.gmail.com with ESMTPSA id k23sm26555763pgg.7.2020.01.17.01.02.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jan 2020 01:02:50 -0800 (PST)
+From: yasufum.o@gmail.com
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] project: add gitignore entries for vhost PMD
+Date: Fri, 17 Jan 2020 18:02:43 +0900
+Message-Id: <20200117090243.43456-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200117090243.43456-1-yasufum.o@gmail.com>
+References: <20200117090243.43456-1-yasufum.o@gmail.com>
+
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+
+As dedicated vhost PMD is added, this update is to add files generated
+while compiling.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .gitignore | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/.gitignore b/.gitignore
+index 154c284..e67c72f 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -11,6 +11,17 @@ src/*/x86_64-native-linuxapp-icc/
+ src/*/i686-native-linuxapp-gcc/
+ src/*/i686-native-linuxapp-icc/
+ 
++src/drivers/*/*.a
++src/drivers/*/*.o
++src/drivers/*/.*.o.d
++src/drivers/*/.*.a.cmd
++src/drivers/*/.*.o.cmd
++src/drivers/*/*.o.pmd.c
++src/drivers/*/*.o.pmd.o
++src/drivers/*/_postbuild
++src/drivers/*/_postinstall
++src/drivers/*/x86_64-native-linuxapp-gcc/
++
+ src/controller/3rd_party/*
+ 
+ tools/sppc/build/*/*/env.sh
+-- 
+2.17.1
+
