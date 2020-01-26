@@ -1,0 +1,39 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:b50a:4377:14ac:92ae])
+        by smtp.gmail.com with ESMTPSA id h7sm13639086pfq.36.2020.01.26.10.45.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jan 2020 10:45:44 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/4] cli: add completion for adding memif
+Date: Mon, 27 Jan 2020 03:45:33 +0900
+Message-Id: <20200126184533.10762-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200126184533.10762-1-yasufum.o@gmail.com>
+References: <20200126184533.10762-1-yasufum.o@gmail.com>
+
+This update is to add `memif` to the list of port types for completion.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/spp_common.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cli/spp_common.py b/src/cli/spp_common.py
+index 947a2fa..a3108fa 100644
+--- a/src/cli/spp_common.py
++++ b/src/cli/spp_common.py
+@@ -6,7 +6,7 @@ import logging
+ import os
+ 
+ # Type definitions.
+-PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
++PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'memif', 'nullpmd']
+ SEC_TYPES = ['nfv', 'vf', 'mirror', 'pcap']
+ 
+ # Setup logger object
+-- 
+2.17.1
+

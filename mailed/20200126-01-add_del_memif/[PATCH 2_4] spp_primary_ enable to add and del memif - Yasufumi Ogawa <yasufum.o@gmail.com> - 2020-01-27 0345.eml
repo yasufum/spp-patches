@@ -1,0 +1,55 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:b50a:4377:14ac:92ae])
+        by smtp.gmail.com with ESMTPSA id h7sm13639086pfq.36.2020.01.26.10.45.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jan 2020 10:45:41 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/4] spp_primary: enable to add and del memif
+Date: Mon, 27 Jan 2020 03:45:31 +0900
+Message-Id: <20200126184533.10762-3-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200126184533.10762-1-yasufum.o@gmail.com>
+References: <20200126184533.10762-1-yasufum.o@gmail.com>
+
+This update is to enable spp_primary to add and del while running.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/main.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 15152a0..d3828e8 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -831,6 +831,11 @@ add_port(char *p_type, int p_id)
+ 		port_id_list[cnt].port_id = p_id;
+ 		port_id_list[cnt].type = PCAP;
+ 
++	} else if (!strcmp(p_type, "memif")) {
++		res = add_memif_pmd(p_id);
++		port_id_list[cnt].port_id = p_id;
++		port_id_list[cnt].type = MEMIF;
++
+ 	} else if (!strcmp(p_type, "nullpmd")) {
+ 		res = add_null_pmd(p_id);
+ 		port_id_list[cnt].port_id = p_id;
+@@ -906,6 +911,12 @@ del_port(char *p_type, int p_id)
+ 			return -1;
+ 		dev_detach_by_port_id(dev_id);
+ 
++	} else if (!strcmp(p_type, "memif")) {
++		dev_id = find_ethdev_id(p_id, MEMIF);
++		if (dev_id == PORT_RESET)
++			return -1;
++		dev_detach_by_port_id(dev_id);
++
+ 	} else if (!strcmp(p_type, "nullpmd")) {
+ 		dev_id = find_ethdev_id(p_id, NULLPMD);
+ 		if (dev_id == PORT_RESET)
+-- 
+2.17.1
+
