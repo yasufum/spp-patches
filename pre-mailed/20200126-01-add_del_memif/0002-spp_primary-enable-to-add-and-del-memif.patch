@@ -1,0 +1,44 @@
+From 09a8a083257e485a7895112b32eb5604600b3bbc Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 22 Jan 2020 16:30:40 +0900
+Subject: [PATCH 2/4] spp_primary: enable to add and del memif
+
+This update is to enable spp_primary to add and del while running.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/main.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 15152a0..d3828e8 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -831,6 +831,11 @@ add_port(char *p_type, int p_id)
+ 		port_id_list[cnt].port_id = p_id;
+ 		port_id_list[cnt].type = PCAP;
+ 
++	} else if (!strcmp(p_type, "memif")) {
++		res = add_memif_pmd(p_id);
++		port_id_list[cnt].port_id = p_id;
++		port_id_list[cnt].type = MEMIF;
++
+ 	} else if (!strcmp(p_type, "nullpmd")) {
+ 		res = add_null_pmd(p_id);
+ 		port_id_list[cnt].port_id = p_id;
+@@ -906,6 +911,12 @@ del_port(char *p_type, int p_id)
+ 			return -1;
+ 		dev_detach_by_port_id(dev_id);
+ 
++	} else if (!strcmp(p_type, "memif")) {
++		dev_id = find_ethdev_id(p_id, MEMIF);
++		if (dev_id == PORT_RESET)
++			return -1;
++		dev_detach_by_port_id(dev_id);
++
+ 	} else if (!strcmp(p_type, "nullpmd")) {
+ 		dev_id = find_ethdev_id(p_id, NULLPMD);
+ 		if (dev_id == PORT_RESET)
+-- 
+2.17.1
+

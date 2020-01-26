@@ -1,0 +1,24 @@
+From 12d05d480b6a5dae31a4af2c1a53fbd5af824853 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 27 Jan 2020 01:22:57 +0900
+Subject: [PATCH 0/4] Add memif allocation for spp_primary adn spp_nfv
+
+This series of update is to add features for adding or deleting memif
+PMD while running to spp_primary and spp_nfv.
+
+Yasufumi Ogawa (4):
+  shared/sec: add function add_memif
+  spp_primary: enable to add and del memif
+  spp_nfv: enable to add and del memif
+  cli: add completion for adding memif
+
+ src/cli/spp_common.py           |  2 +-
+ src/nfv/commands.h              | 10 +++++
+ src/primary/main.c              | 11 +++++
+ src/shared/secondary/add_port.c | 76 +++++++++++++++++++++++++++++++++
+ src/shared/secondary/add_port.h | 20 +++++++++
+ 5 files changed, 118 insertions(+), 1 deletion(-)
+
+-- 
+2.17.1
+

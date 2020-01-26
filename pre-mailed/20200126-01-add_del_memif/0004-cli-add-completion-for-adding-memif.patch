@@ -1,0 +1,28 @@
+From 12d05d480b6a5dae31a4af2c1a53fbd5af824853 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 22 Jan 2020 17:26:12 +0900
+Subject: [PATCH 4/4] cli: add completion for adding memif
+
+This update is to add `memif` to the list of port types for completion.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/spp_common.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cli/spp_common.py b/src/cli/spp_common.py
+index 947a2fa..a3108fa 100644
+--- a/src/cli/spp_common.py
++++ b/src/cli/spp_common.py
+@@ -6,7 +6,7 @@ import logging
+ import os
+ 
+ # Type definitions.
+-PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'nullpmd']
++PORT_TYPES = ['phy', 'ring', 'vhost', 'pcap', 'memif', 'nullpmd']
+ SEC_TYPES = ['nfv', 'vf', 'mirror', 'pcap']
+ 
+ # Setup logger object
+-- 
+2.17.1
+

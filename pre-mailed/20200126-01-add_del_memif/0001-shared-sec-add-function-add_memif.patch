@@ -1,0 +1,156 @@
+From 008b9e8df74d5a3a3e4b8a48b2ff69d296f90585 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 22 Jan 2020 16:22:12 +0900
+Subject: [PATCH 1/4] shared/sec: add function add_memif
+
+Memif PMD is attached only when launching spp_primary via `--vdev`
+option, and cannot attach while running SPP. This update is add_memif()
+for adding memif PMD dynamically after launching from not only
+spp_primary but also other processes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/shared/secondary/add_port.c | 76 +++++++++++++++++++++++++++++++++
+ src/shared/secondary/add_port.h | 20 +++++++++
+ 2 files changed, 96 insertions(+)
+
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index d845250..652ef69 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -46,6 +46,14 @@ get_pcap_pmd_name(int id)
+ 	return buffer;
+ }
+ 
++static inline const char *
++get_memif_pmd_name(int id)
++{
++	static char buffer[sizeof(MEMIF_PMD_DEV_NAME) + 2];
++	snprintf(buffer, sizeof(buffer) - 1, MEMIF_PMD_DEV_NAME, id);
++	return buffer;
++}
++
+ static inline const char *
+ get_null_pmd_name(int id)
+ {
+@@ -310,6 +318,74 @@ add_pcap_pmd(int index)
+ 	return pcap_pmd_port_id;
+ }
+ 
++int
++add_memif_pmd(int index)
++{
++	struct rte_eth_conf port_conf = {
++			.rxmode = { .max_rx_pkt_len = RTE_ETHER_MAX_LEN }
++	};
++
++	struct rte_mempool *mp;
++	const char *name;
++	char devargs[64];
++	char sock_fn[32];
++	uint16_t memif_pmd_port_id;
++	uint16_t nr_queues = 1;
++
++	int ret;
++
++	memset(devargs, '\0', sizeof(devargs));
++	memset(sock_fn, '\0', sizeof(sock_fn));
++
++	mp = rte_mempool_lookup(PKTMBUF_POOL_NAME);
++	if (mp == NULL)
++		rte_exit(EXIT_FAILURE, "Cannon get mempool for mbuf\n");
++
++	name = get_memif_pmd_name(index);
++	sprintf(devargs, "%s,id=%d,role=%s,socket=%s",
++			name, index, MEMIF_ROLE, MEMIF_SOCK);
++	RTE_LOG(DEBUG, SHARED, "Devargs for memif: '%s'.\n", devargs);
++	ret = dev_attach_by_devargs(devargs, &memif_pmd_port_id);
++	if (ret < 0)
++		return ret;
++
++	ret = rte_eth_dev_configure(
++			memif_pmd_port_id, nr_queues, nr_queues,
++			&port_conf);
++	if (ret < 0)
++		return ret;
++
++	/* Allocate and set up 1 RX queue per Ethernet port. */
++	uint16_t q;
++	for (q = 0; q < nr_queues; q++) {
++		ret = rte_eth_rx_queue_setup(
++				memif_pmd_port_id, q, NR_DESCS,
++				rte_eth_dev_socket_id(
++					memif_pmd_port_id), NULL, mp);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Allocate and set up 1 TX queue per Ethernet port. */
++	for (q = 0; q < nr_queues; q++) {
++		ret = rte_eth_tx_queue_setup(
++				memif_pmd_port_id, q, NR_DESCS,
++				rte_eth_dev_socket_id(
++					memif_pmd_port_id),
++				NULL);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = rte_eth_dev_start(memif_pmd_port_id);
++	if (ret < 0)
++		return ret;
++
++	RTE_LOG(DEBUG, SHARED, "memif port id %d\n", memif_pmd_port_id);
++
++	return memif_pmd_port_id;
++}
++
+ int
+ add_null_pmd(int index)
+ {
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index a75b28b..d686f20 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -13,11 +13,20 @@
+ #define VHOST_BACKEND_NAME "spp_vhost%u"
+ 
+ #define PCAP_PMD_DEV_NAME "eth_pcap%u"
++#define MEMIF_PMD_DEV_NAME "net_memif%u"
+ #define NULL_PMD_DEV_NAME "eth_null%u"
+ 
+ #define PCAP_IFACE_RX "/tmp/spp-rx%d.pcap"
+ #define PCAP_IFACE_TX "/tmp/spp-tx%d.pcap"
+ 
++/**
++ * SPP provides memif for other processes as "master" role and via socket
++ * file "/tmp/spp-memif.sock". Details of memif is described in here.
++ * https://doc.dpdk.org/guides/nics/memif.html
++ */
++#define MEMIF_ROLE "master"
++#define MEMIF_SOCK "/tmp/spp-memif.sock"
++
+ #define RTE_LOGTYPE_SHARED RTE_LOGTYPE_USER1
+ 
+ /**
+@@ -77,6 +86,17 @@ add_vhost_pmd(int index);
+ int
+ add_pcap_pmd(int index);
+ 
++/**
++ * Create a memif PMD with given ID.
++ *
++ * @param port_id
++ *   ID of the next possible valid port.
++ * @return
++ *   Unique port ID
++ */
++int
++add_memif_pmd(int index);
++
+ /**
+  * Create a null PMD with given ID.
+  *
+-- 
+2.17.1
+
