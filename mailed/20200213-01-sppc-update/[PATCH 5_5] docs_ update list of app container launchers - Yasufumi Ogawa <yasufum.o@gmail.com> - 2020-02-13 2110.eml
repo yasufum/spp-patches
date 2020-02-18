@@ -1,0 +1,39 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:c476:8ede:b61b:c7f6])
+        by smtp.gmail.com with ESMTPSA id v8sm2862476pff.151.2020.02.13.04.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2020 04:10:46 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 5/5] docs: update list of app container launchers
+Date: Thu, 13 Feb 2020 21:10:29 +0900
+Message-Id: <20200213121029.27702-6-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200213121029.27702-1-yasufum.o@gmail.com>
+References: <20200213121029.27702-1-yasufum.o@gmail.com>
+
+This update is to add `suricata.py` to the list of app container
+launchers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index f89dbdf..3dc4bbb 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -25,6 +25,7 @@ inside a container.
+     |--- pktgen.py
+     |--- spp-nfv.py
+     |--- spp-primary.py
++    |--- suricata.py
+     ---- testpmd.py
+ 
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,45 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:c476:8ede:b61b:c7f6])
+        by smtp.gmail.com with ESMTPSA id v8sm2862476pff.151.2020.02.13.04.10.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2020 04:10:44 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/5] tools/sppc: remove duplicated options
+Date: Thu, 13 Feb 2020 21:10:28 +0900
+Message-Id: <20200213121029.27702-5-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200213121029.27702-1-yasufum.o@gmail.com>
+References: <20200213121029.27702-1-yasufum.o@gmail.com>
+
+Remove adding docker's `-d` or `-it` options twice.
+
+Fixes: 4956e9cc4719 ("tools/sppc: add spp-nfv app container")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-nfv.py | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/tools/sppc/app/spp-nfv.py b/tools/sppc/app/spp-nfv.py
+index 34d87c9..da9853b 100755
+--- a/tools/sppc/app/spp-nfv.py
++++ b/tools/sppc/app/spp-nfv.py
+@@ -68,12 +68,6 @@ def main():
+         container_image, '\\'
+     ]
+ 
+-    # This container is running in backgroud in defualt.
+-    if args.foreground is not True:
+-        docker_run_opt = '-d'
+-    else:
+-        docker_run_opt = '-it'
+-
+     # Setup spp_nfv command.
+     spp_cmd = ['spp_nfv', '\\']
+ 
+-- 
+2.17.1
+

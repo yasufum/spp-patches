@@ -1,0 +1,203 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:c476:8ede:b61b:c7f6])
+        by smtp.gmail.com with ESMTPSA id v8sm2862476pff.151.2020.02.13.04.10.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Feb 2020 04:10:38 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/5] tools/sppc: python3 support for sppc apps
+Date: Thu, 13 Feb 2020 21:10:25 +0900
+Message-Id: <20200213121029.27702-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200213121029.27702-1-yasufum.o@gmail.com>
+References: <20200213121029.27702-1-yasufum.o@gmail.com>
+
+Although python2 support was dropped in SPP itself, it is still remained
+in SPP container tools. This update is to make the tools run with
+python3.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/helloworld.py    | 2 +-
+ tools/sppc/app/l2fwd.py         | 2 +-
+ tools/sppc/app/l3fwd-acl.py     | 2 +-
+ tools/sppc/app/l3fwd.py         | 2 +-
+ tools/sppc/app/load-balancer.py | 2 +-
+ tools/sppc/app/pktgen.py        | 2 +-
+ tools/sppc/app/spp-nfv.py       | 2 +-
+ tools/sppc/app/spp-primary.py   | 2 +-
+ tools/sppc/app/suricata.py      | 2 +-
+ tools/sppc/app/testpmd.py       | 2 +-
+ tools/sppc/lib/app_helper.py    | 7 +++----
+ tools/sppc/lib/common.py        | 7 +++----
+ 12 files changed, 16 insertions(+), 18 deletions(-)
+
+diff --git a/tools/sppc/app/helloworld.py b/tools/sppc/app/helloworld.py
+index fada61e..2d2837b 100755
+--- a/tools/sppc/app/helloworld.py
++++ b/tools/sppc/app/helloworld.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/l2fwd.py b/tools/sppc/app/l2fwd.py
+index 3b7789c..90a1270 100755
+--- a/tools/sppc/app/l2fwd.py
++++ b/tools/sppc/app/l2fwd.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/l3fwd-acl.py b/tools/sppc/app/l3fwd-acl.py
+index 059aaf2..6a7afff 100755
+--- a/tools/sppc/app/l3fwd-acl.py
++++ b/tools/sppc/app/l3fwd-acl.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/l3fwd.py b/tools/sppc/app/l3fwd.py
+index d7e8528..1732648 100755
+--- a/tools/sppc/app/l3fwd.py
++++ b/tools/sppc/app/l3fwd.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/load-balancer.py b/tools/sppc/app/load-balancer.py
+index 0f6d6e1..5ec156e 100755
+--- a/tools/sppc/app/load-balancer.py
++++ b/tools/sppc/app/load-balancer.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/pktgen.py b/tools/sppc/app/pktgen.py
+index 708633b..e673b3b 100755
+--- a/tools/sppc/app/pktgen.py
++++ b/tools/sppc/app/pktgen.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/spp-nfv.py b/tools/sppc/app/spp-nfv.py
+index 96e25e7..100d20d 100755
+--- a/tools/sppc/app/spp-nfv.py
++++ b/tools/sppc/app/spp-nfv.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index 6a71490..ac7facd 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/suricata.py b/tools/sppc/app/suricata.py
+index 5bbff5f..f206036 100755
+--- a/tools/sppc/app/suricata.py
++++ b/tools/sppc/app/suricata.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/app/testpmd.py b/tools/sppc/app/testpmd.py
+index e79f3f6..f6197fe 100755
+--- a/tools/sppc/app/testpmd.py
++++ b/tools/sppc/app/testpmd.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index 6e25074..85762ea 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -1,8 +1,7 @@
+-#!/usr/bin/env python
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+-import common
++from . import common
+ import os
+ import sys
+ 
+@@ -215,7 +214,7 @@ def dev_ids_to_list(dev_ids):
+     for dev_id_part in dev_ids.split(','):
+         if '-' in dev_id_part:
+             cl = dev_id_part.split('-')
+-            res = res + range(int(cl[0]), int(cl[1])+1)
++            res = res + list(range(int(cl[0]), int(cl[1])+1))
+         else:
+             res.append(int(dev_id_part))
+     return res
+@@ -287,7 +286,7 @@ def cores_to_list(core_opt):
+         for core_part in core_opt['val'].split(','):
+             if '-' in core_part:
+                 cl = core_part.split('-')
+-                res = res + range(int(cl[0]), int(cl[1])+1)
++                res = res + list(range(int(cl[0]), int(cl[1])+1))
+             else:
+                 res.append(int(core_part))
+     else:
+diff --git a/tools/sppc/lib/common.py b/tools/sppc/lib/common.py
+index 7102d43..a4903cd 100644
+--- a/tools/sppc/lib/common.py
++++ b/tools/sppc/lib/common.py
+@@ -1,16 +1,15 @@
+-#!/usr/bin/env python
+ # SPDX-License-Identifier: BSD-3-Clause
+ # Copyright(c) 2018 Nippon Telegraph and Telephone Corporation
+ 
+ 
+ def print_pretty_commands(cmds):
+-    """Print given command in pretty format"""
++    """Print given command in pretty format."""
+ 
+     print(' '.join(cmds).replace('\\', '\\\n'))
+ 
+ 
+ def container_img_name(base, dist_name, dist_ver):
+-    """Generate container image name
++    """Generate container image name.
+ 
+     Return the name of container image for '-t' of docker command
+     such as 'sppc/dpdk-ubuntu:16.04' or 'sppc/spp-ubuntu:18.04'.
+@@ -20,7 +19,7 @@ def container_img_name(base, dist_name, dist_ver):
+ 
+ 
+ def error_exit(objname):
+-    """Print error message and exit
++    """Print error message and exit.
+ 
+     This function is used for notifying an argument for the object
+     is not given.
+-- 
+2.17.1
+
