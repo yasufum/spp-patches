@@ -1,0 +1,96 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1698780oog;
+        Fri, 14 Feb 2020 01:18:51 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyPmupUsnrftJ62fSqZX2hftChEjzusWVuqM0YPP5IsgGWlEwExtmNAytUfmUjzvNr7jjEp
+X-Received: by 2002:a63:e54b:: with SMTP id z11mr2495602pgj.160.1581671931544;
+        Fri, 14 Feb 2020 01:18:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1581671931; cv=none;
+        d=google.com; s=arc-20160816;
+        b=GTH5Tn2XrLSxxExEsqUZwdsyooMj1soSFRtkH5wJYxmyajlIB5yEbBNaVaIiaaGcVj
+         7CMouEpwsZxlYJ2TghwC7uDCivApD49aq2iODclhRrYInvfFUzALGY2qSjvin9rIoTbk
+         vGm1Ld8jEdcmt62aJUwVcjtppqajisgCNWgppJPyIN8Wn4JPBEmw2zeLPtQQI+NH2Sqh
+         yzEZzP33odOx+5dEJQeQNelmDpBgRcYi1Iub74fTrlQaGh9HYFzC2vudEPydbpKnErBK
+         BCppiHS0GKdczDvs5evuNM+1o/xTx9DOjsLOzpK/LsOEldn8YbT0OWSFZ1p8zxInwyDA
+         k2dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=message-id:date:subject:cc:to:from;
+        bh=TOcmnaZBLrrjitIGXTxhb/FmzcArSXaJ7AWnvc0jXfg=;
+        b=QPchqV6FdSxpza16C+8sMlzXvMhVC+PDaaX/z4xWKSlm4o9Yv0PdiUWoL3cebO6svi
+         tjbsQCoNcHOG6Qvp0zfe4/zeBwt2NaF96r5p+TnQGr2s99ftRCg3SzKm1q+9t/64By7v
+         tAcyC23yvkHV1FYTJbjjORvZbahz9GFJ1fElGa44wwZD7yfIN4Xn6+8pxleTsmo/keSm
+         ASAnpOrWFpO0SGQWovXQFfvmi9WrK3sR1KfeHJ2twA5Oz0ekENLfclnOwgSXWVATDE48
+         S/GOuoWF5pXpcRJZu2aM/gRvOFpgVtaA3siSybzWWHmXXGMDScDPqL5uT6ok/OVLBrac
+         ytPg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id s16si4062770pgv.535.2020.02.14.01.18.50
+        for <yasufum.o@gmail.com>;
+        Fri, 14 Feb 2020 01:18:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id 4E9D312011E;
+	Fri, 14 Feb 2020 18:18:50 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q5O00IDIPVE2030@dDREAMS>; Fri,
+ 14 Feb 2020 18:18:50 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP id 237E47E6038;	Fri,
+ 14 Feb 2020 18:18:50 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 216FA8E605E;	Fri,
+ 14 Feb 2020 18:18:50 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 1F6958E605D;	Fri, 14 Feb 2020 18:18:50 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 537EF8E605A;	Fri,
+ 14 Feb 2020 18:18:49 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP;	Fri,
+ 14 Feb 2020 18:18:49 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH] spp-ctl: fix exception when receiving large data
+Date: Fri, 14 Feb 2020 18:18:49 +0900
+Message-id: <20200214091849.22194-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+Upon receiving large size response, spp-ctl tries
+to refer self variable which does not exist
+and thus exception takes place.
+This patch tries to refer Class Object instead.
+
+Fixes: f747dcf8 ("spp-ctl: add updating for no existing sec procs")
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/spp-ctl/spp_ctl.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/spp-ctl/spp_ctl.py b/src/spp-ctl/spp_ctl.py
+index ea19aa6..9e11097 100644
+--- a/src/spp-ctl/spp_ctl.py
++++ b/src/spp-ctl/spp_ctl.py
+@@ -124,7 +124,7 @@ class Controller(object):
+             data = conn.recv(MSG_SIZE)
+             if data and len(data) == MSG_SIZE:
+                 # could not receive data at once. recieve remining data.
+-                data += self._continue_recv(conn)
++                data += Controller._continue_recv(conn)
+             if data:
+                 data = data.decode()
+         except Exception as e:
+-- 
+2.17.1
+
