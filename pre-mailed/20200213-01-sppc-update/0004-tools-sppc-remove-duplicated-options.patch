@@ -1,0 +1,34 @@
+From 4971d6b34112de05e262c07c6764f9d00647049c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 13 Feb 2020 20:37:01 +0900
+Subject: [PATCH 4/5] tools/sppc: remove duplicated options
+
+Remove adding docker's `-d` or `-it` options twice.
+
+Fixes: 4956e9cc4719 ("tools/sppc: add spp-nfv app container")
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-nfv.py | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/tools/sppc/app/spp-nfv.py b/tools/sppc/app/spp-nfv.py
+index 34d87c9..da9853b 100755
+--- a/tools/sppc/app/spp-nfv.py
++++ b/tools/sppc/app/spp-nfv.py
+@@ -68,12 +68,6 @@ def main():
+         container_image, '\\'
+     ]
+ 
+-    # This container is running in backgroud in defualt.
+-    if args.foreground is not True:
+-        docker_run_opt = '-d'
+-    else:
+-        docker_run_opt = '-it'
+-
+     # Setup spp_nfv command.
+     spp_cmd = ['spp_nfv', '\\']
+ 
+-- 
+2.17.1
+

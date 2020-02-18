@@ -1,0 +1,31 @@
+From 4219aae2cf124be04264f78b19dbfc22568a5e0f Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 13 Feb 2020 11:55:04 +0900
+Subject: [PATCH 2/5] tools/sppc: check mandatory params for suricata
+
+Suricata container app is failed if no dev ID is given because of
+accessing None object. This update is to add checking this parameter.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/suricata.py | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tools/sppc/app/suricata.py b/tools/sppc/app/suricata.py
+index f206036..ad4e053 100755
+--- a/tools/sppc/app/suricata.py
++++ b/tools/sppc/app/suricata.py
+@@ -29,6 +29,10 @@ def parse_args():
+ def main():
+     args = parse_args()
+ 
++    # Check for other mandatory opitons.
++    if args.dev_ids is None:
++        common.error_exit('--dev-ids')
++
+     # Setup for vhost devices with given device IDs.
+     dev_ids_list = app_helper.dev_ids_to_list(args.dev_ids)
+     sock_files = app_helper.sock_files(dev_ids_list)
+-- 
+2.17.1
+

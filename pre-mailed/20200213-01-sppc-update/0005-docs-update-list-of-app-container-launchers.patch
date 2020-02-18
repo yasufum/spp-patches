@@ -1,0 +1,28 @@
+From 57e4918a1117681e0acf29ed477f8d00d26b1205 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 13 Feb 2020 20:53:33 +0900
+Subject: [PATCH 5/5] docs: update list of app container launchers
+
+This update is to add `suricata.py` to the list of app container
+launchers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index f89dbdf..3dc4bbb 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -25,6 +25,7 @@ inside a container.
+     |--- pktgen.py
+     |--- spp-nfv.py
+     |--- spp-primary.py
++    |--- suricata.py
+     ---- testpmd.py
+ 
+ 
+-- 
+2.17.1
+

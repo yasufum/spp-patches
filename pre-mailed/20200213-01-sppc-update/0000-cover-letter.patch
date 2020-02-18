@@ -1,0 +1,36 @@
+From 57e4918a1117681e0acf29ed477f8d00d26b1205 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Thu, 13 Feb 2020 21:02:34 +0900
+Subject: [PATCH 0/5] Update SPP Container tools
+
+Although python2 support was dropped from SPP, but remained in SPP
+Container tools. This series of patches is to update to python3,
+refactor some codes ambiguous in meaning, and update docs.
+
+Yasufumi Ogawa (5):
+  tools/sppc: python3 support for sppc apps
+  tools/sppc: check mandatory params for suricata
+  tools/sppc: refactor container image names
+  tools/sppc: remove duplicated options
+  docs: update list of app container launchers
+
+ docs/guides/tools/sppc/app_launcher.rst |  1 +
+ tools/sppc/app/helloworld.py            | 14 +++++++++----
+ tools/sppc/app/l2fwd.py                 | 14 +++++++++----
+ tools/sppc/app/l3fwd-acl.py             | 14 +++++++++----
+ tools/sppc/app/l3fwd.py                 | 14 +++++++++----
+ tools/sppc/app/load-balancer.py         | 14 +++++++++----
+ tools/sppc/app/pktgen.py                | 14 +++++++++----
+ tools/sppc/app/spp-nfv.py               | 28 ++++++++-----------------
+ tools/sppc/app/spp-primary.py           | 22 ++++++++-----------
+ tools/sppc/app/suricata.py              | 18 ++++++++++++----
+ tools/sppc/app/testpmd.py               | 14 +++++++++----
+ tools/sppc/build/main.py                |  2 +-
+ tools/sppc/conf/env.py                  |  8 -------
+ tools/sppc/lib/app_helper.py            | 22 ++++---------------
+ tools/sppc/lib/common.py                | 16 +++++++++-----
+ 15 files changed, 119 insertions(+), 96 deletions(-)
+
+-- 
+2.17.1
+
