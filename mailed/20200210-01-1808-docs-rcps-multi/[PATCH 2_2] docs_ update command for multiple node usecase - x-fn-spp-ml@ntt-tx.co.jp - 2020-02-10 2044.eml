@@ -1,0 +1,96 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp3916908oog;
+        Mon, 10 Feb 2020 03:44:14 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzsPsxIelljaTCRFEXDgAwQUMOWID4h+Y9UtKqMw18yG0Ut/zhvN4GawPdKnQ0DHIbrk5Ud
+X-Received: by 2002:a62:7a8a:: with SMTP id v132mr824144pfc.111.1581335054258;
+        Mon, 10 Feb 2020 03:44:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1581335054; cv=none;
+        d=google.com; s=arc-20160816;
+        b=ytb8gCPvgk7YTYDYb+M3PTxfF0CFYLnZ0hMeJzXreTITgK5m8h6oZVymnCpl64wN4o
+         mxtkARP8IL1WibnqqEKefHeD3anqZXZ/v/Nq7/hGHApqd4iJyrZHcgsAKas9IpxHARF/
+         okEMeR4LCaaxwhuQ2ek6e4hvsT2yn/LBeYYH/Nm3+MDhsUGt2kBjYKmpmiRH9bTM0hIF
+         1vOWM0g59/MaboIjAfw5xSVS9ObKp4va5zDB6F44kyDIlqP4gaKcJNDoq0pZSuXb9VHU
+         Z/2PGluRyhqofYEZ8cS1bR83KlCUZBujvjy3ivLK74U633qwmyMME3bM8916lbTETE/G
+         vGkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=2i0DrA52L/pcM1OxvFrcR25vfeMqCH8tdqtSSfHsXas=;
+        b=FGly5mYWkN3moDn405lViWQspUJuyj+2aurBsJFImdyBFVTk39nzVbB06fAPROdwIw
+         9PQFIARgw1OdFlJ6WDd8lTamAg+GX0/1tlN6DuirIIlctPt9ZinRC4d07M0y9hl5J50A
+         KShcFBeghE9O8G4qxLONDoWBjOdcQCZWPJjzZLxYl3l7keM29bumaVeUyNlofaOq6G3n
+         x+MrieEB5nbzg/Jhxu2bjPoh93ItAOinY5o405ao7tYbveQXgtMDwrk7tFhEKDiOIv3M
+         /FXW0ju4SzS71vkIrERzMzfZ33qz7RMSWTZjc7Xf9jJEDmlb7WLlJ7/EGObS7eeMcUwg
+         pNtg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id n4si119084plk.58.2020.02.10.03.44.14
+        for <yasufum.o@gmail.com>;
+        Mon, 10 Feb 2020 03:44:14 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd102.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id 863BB1200E1;
+	Mon, 10 Feb 2020 20:44:13 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd102.ddreams.local
+ (dDREAMS) with ESMTP id <0Q5H00DF9HXP6U50@dDREAMS>; Mon,
+ 10 Feb 2020 20:44:13 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP id 52CA67E6032;	Mon,
+ 10 Feb 2020 20:44:13 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 51BFC8E6056;	Mon,
+ 10 Feb 2020 20:44:13 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 50B408E6050;	Mon, 10 Feb 2020 20:44:13 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79D558E6050;	Mon,
+ 10 Feb 2020 20:44:12 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP;	Mon,
+ 10 Feb 2020 20:44:12 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 2/2] docs: update command for multiple node usecase
+Date: Mon, 10 Feb 2020 20:44:10 +0900
+Message-id: <20200210114410.29741-3-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200210114410.29741-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200210114410.29741-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: tx-spp <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+This patch fixes missing command string for multiple
+node usecase.
+
+Fixes: 359d5a3b ("docs: add multiple nodes section in usecases")
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/usecases/multi_nodes.rst | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/docs/guides/usecases/multi_nodes.rst b/docs/guides/usecases/multi_nodes.rst
+index 3eaed0c..5d45e91 100644
+--- a/docs/guides/usecases/multi_nodes.rst
++++ b/docs/guides/usecases/multi_nodes.rst
+@@ -156,6 +156,8 @@ For host2, swith server to host2 and run nfv commands.
+     Switch spp-ctl to "2: 192.168.1.102:7777".
+ 
+     # configure
++    spp > nfv 1; add vhost:0
++    Add vhost:0.
+     spp > nfv 1; patch phy:0 vhost:0
+     Patch ports (phy:0 -> vhost:0).
+     spp > nfv 1; patch vhost:0 phy:1
+-- 
+2.17.1
+
