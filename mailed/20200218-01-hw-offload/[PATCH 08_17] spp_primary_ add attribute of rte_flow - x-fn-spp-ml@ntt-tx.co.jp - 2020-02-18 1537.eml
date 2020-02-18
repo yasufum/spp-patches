@@ -1,0 +1,214 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp6069323oog;
+        Mon, 17 Feb 2020 22:37:31 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxt2clgl7gPeXdj/jfJ9dl67zNRRnuoJqQnDKIf43+Hizxy6H3aYTfD/zrsl77K/7S47FZ0
+X-Received: by 2002:a63:ad0c:: with SMTP id g12mr21055043pgf.228.1582007851393;
+        Mon, 17 Feb 2020 22:37:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582007851; cv=none;
+        d=google.com; s=arc-20160816;
+        b=iRb6NenQLW77KObhL3sXAcCXlIB2IQz4DqaCQMLXHV9vEDlndE1OUW+aaTehB0O22/
+         He+MJ7Md1ewpOrsRW+9b289r5HluftRBurVKRiAT/A5lRng7BLgOiRSO/01H50Ykb14t
+         /Rz+ZOMt0xTaYhcRmh0GR1ewOiMIPi+tFsKqVudoX20J/un+fRN6r9h0NGxcckXzgfV+
+         QrH+8zWJ8E2lbMTSoZPeamde+PM/XUpelIRqHKLu0GVcnUdtWkFgq1RZoy1kXm5WN5bT
+         e9nnppfWeeJW5jb0JT8u+1iM27ydE3K5X85itB3HOnn67awsQWWtkNjfabXBXN3iPLYO
+         +5Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=2WRQRbbpyUA19AOPSlg8lJN8TcbZMl8xKc9Gm9gOKlQ=;
+        b=BkMRSkBtp7OOtSeRUXuOh2KCDQm9GJimm2Eh8HZ0CAxHyL9a7r9RmzVxQ0S37C2Mhv
+         RRICm2+fSOMpxSvdG58Yy7T42WaNKMx8D5RLtXUoEg8eDjPYk/TqDO1Urejd+9lucD9k
+         ZgP6UFU+ZgfEnFhTg1pGwltpVlNrB/9hWapCk6mC8YPv/l4zyPr1roB7hveCDEdle8/r
+         IWIh8W+Mi5BZuYGM7NNGNyDnAcS4l5OSJ0fViqavxJclA2mEGN6M4jN2Cb+jyDF/YQXd
+         mzDrRqX2Qsjbu/UplOdzwmTGg669jN9alliAyaolH1tMQhu1BkHWI3cpXidT+EgtEwlk
+         RuFQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id h16si1858365pfq.145.2020.02.17.22.37.31
+        for <yasufum.o@gmail.com>;
+        Mon, 17 Feb 2020 22:37:31 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd101.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id 9A857120138;
+	Tue, 18 Feb 2020 15:37:30 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd101.ddreams.local
+ (dDREAMS) with ESMTP id <0Q5V00KRQX2IB980@dDREAMS>; Tue,
+ 18 Feb 2020 15:37:30 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP id 6BCC57E603A;	Tue,
+ 18 Feb 2020 15:37:30 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6A5178E605D;	Tue,
+ 18 Feb 2020 15:37:30 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 693028E605E;	Tue, 18 Feb 2020 15:37:30 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1BDE8E605E;	Tue,
+ 18 Feb 2020 15:37:29 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP;	Tue,
+ 18 Feb 2020 15:37:29 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 08/17] spp_primary: add attribute of rte_flow
+Date: Tue, 18 Feb 2020 15:37:11 +0900
+Message-id: <20200218063720.6597-9-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200218063720.6597-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200218063720.6597-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+To support rte_flow in SPP, this patch provides support of various
+attribute of rte_flow.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/primary/flow/attr.c | 105 ++++++++++++++++++++++++++++++++++++++++
+ src/primary/flow/attr.h |  13 +++++
+ 2 files changed, 118 insertions(+)
+ create mode 100644 src/primary/flow/attr.c
+ create mode 100644 src/primary/flow/attr.h
+
+diff --git a/src/primary/flow/attr.c b/src/primary/flow/attr.c
+new file mode 100644
+index 0000000..8be7319
+--- /dev/null
++++ b/src/primary/flow/attr.c
+@@ -0,0 +1,105 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <rte_flow.h>
++
++#include "attr.h"
++
++int
++parse_flow_attr(char *token_list[], int *index,
++	struct rte_flow_attr *attr)
++{
++	int ret;
++	char *token;
++	char *end;
++	unsigned long temp = 0;
++
++	while (token_list[*index] != NULL) {
++		token = token_list[*index];
++
++		if (!strcmp(token, "group")) {
++			/* "group" requires option argument */
++			if (token_list[*index + 1] == NULL) {
++				ret = -1;
++				break;
++			}
++
++			temp = strtoul(token_list[*index + 1], &end, 10);
++			if (end == NULL || *end != '\0') {
++				ret = -1;
++				break;
++			}
++
++			attr->group = (uint32_t)temp;
++			(*index)++;
++
++		} else if (!strcmp(token, "priority")) {
++			/* "priority" requires option argument */
++			if (token_list[*index + 1] == NULL) {
++				ret = -1;
++				break;
++			}
++
++			temp = strtoul(token_list[*index + 1], &end, 10);
++			if (end == NULL || *end != '\0') {
++				ret = -1;
++				break;
++			}
++
++			attr->priority = (uint32_t)temp;
++			(*index)++;
++
++		} else if (!strcmp(token, "ingress")) {
++			attr->ingress = 1;
++
++		} else if (!strcmp(token, "egress")) {
++			attr->egress = 1;
++
++		} else if (!strcmp(token, "transfer")) {
++			attr->transfer = 1;
++
++		} else if (!strcmp(token, "pattern")) {
++			/* Attribute parameter end */
++			ret = 0;
++			break;
++
++		} else {
++			/* Illegal parameter */
++			ret = -1;
++			break;
++
++		}
++
++		(*index)++;
++	}
++
++	if (token_list[*index] == NULL)
++		ret = -1;
++
++	return ret;
++}
++
++int
++append_flow_attr_json(const struct rte_flow_attr *attr, int buf_size,
++	char *attr_str)
++{
++	char tmp_str[128] = { 0 };
++
++	snprintf(tmp_str, 128,
++		"{\"group\":%d,"
++		"\"priority\":%d,"
++		"\"ingress\":%d,"
++		"\"egress\":%d,"
++		"\"transfer\":%d}",
++		attr->group, attr->priority, attr->ingress,
++		attr->egress, attr->transfer);
++
++	if ((int)strlen(attr_str) + (int)strlen(tmp_str)
++		> buf_size)
++		return -1;
++
++	strncat(attr_str, tmp_str, strlen(tmp_str));
++
++	return 0;
++}
+diff --git a/src/primary/flow/attr.h b/src/primary/flow/attr.h
+new file mode 100644
+index 0000000..5fb22e3
+--- /dev/null
++++ b/src/primary/flow/attr.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _PRIMARY_FLOW_ATTR_H_
++#define _PRIMARY_FLOW_ATTR_H_
++
++int parse_flow_attr(char *token_list[], int *index,
++	struct rte_flow_attr *attr);
++int append_flow_attr_json(const struct rte_flow_attr *attr,
++	int buf_size, char *attr_str);
++
++#endif
+-- 
+2.17.1
+
