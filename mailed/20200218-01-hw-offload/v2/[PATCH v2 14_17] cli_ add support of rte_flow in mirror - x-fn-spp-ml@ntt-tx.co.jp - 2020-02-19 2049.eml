@@ -1,0 +1,311 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp448139oog;
+        Wed, 19 Feb 2020 03:50:05 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzgyeOwDSsO2VJGwlzM30fE8tax5A6q5i/H1uDDfYE+tTEaF+F2JGtg3P5AXIAf4/w+X+i6
+X-Received: by 2002:a62:36c2:: with SMTP id d185mr27491085pfa.203.1582113005567;
+        Wed, 19 Feb 2020 03:50:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582113005; cv=none;
+        d=google.com; s=arc-20160816;
+        b=KL0BX10JO/28nE2BMLJ2uGMel6Cjczbng1coQfDI855ohO7u+A98PcRtrmHAkjSR4b
+         Yo1AJ2US8E30R5Iug1lm1z2xOsIqe8qU2ZAfCPbo49wuDiJIJk6l5U0SHgurJ8stzkhe
+         zGufee6ZFl4INnjFeGu6jEA5VnIX4sK78rWyQg+ZRxYl0/O5Jg5JPXN/BygbqaztETnY
+         40kUy4li9IPp/S+oEiDdM/+soBov8A4L16C8CuVqSSdrAPJgjkTK94awUUXXhe4O25iD
+         FZNRvV2mAr+5qi4BJAHkutLJaukm2YYGn01bBDFv1cWU55NWGh75q9/BmiMYO+gflDpQ
+         fJCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=9ai0yeDyILKBZ04pr6DFDX6x6v+V6g8r0nXB+076eKc=;
+        b=IcfpN/TTV1UWznljRemD9oOqEBMclnKGakiU4pZC2d4e/mtp+dPyj+iNe5R5RJP3BV
+         TTpsFa/4J9JzwvjESYlvgb3Fxgq20wNsDCiBVuiRMiqUWKw+6wnNLT4r+kCHiEfVdbqy
+         7N67LjTjft97ViKb9ndJZoFNIHKRLtlkwhhnCQ00QvPRUcHiBv1GN+l52gj6aaoS9lYO
+         DmEQ1t1FdxO77uuJca3l6hrUhsZHkJiDnNjrEs5Ol14gwlYLpNWSLxt7sa4MnlUK1GQV
+         QgX08J0usGxIawOnxFJOdImhEJA/x/3cpNuwdrIL1ZubnDPh/VCx9Z/J5n4eDJt9Qk9y
+         D7XQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id 73si1635174plb.84.2020.02.19.03.50.05
+        for <yasufum.o@gmail.com>;
+        Wed, 19 Feb 2020 03:50:05 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id C94961200DF;
+	Wed, 19 Feb 2020 20:50:04 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q5Y00VM667GOG10@dDREAMS>; Wed,
+ 19 Feb 2020 20:50:04 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP id A3A0C7E6034;	Wed,
+ 19 Feb 2020 20:50:04 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A299C8E6054;	Wed,
+ 19 Feb 2020 20:50:04 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id A0FA78E6056;	Wed, 19 Feb 2020 20:50:04 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D075B8E6051;	Wed,
+ 19 Feb 2020 20:50:03 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP;	Wed,
+ 19 Feb 2020 20:50:03 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 14/17] cli: add support of rte_flow in mirror
+Date: Wed, 19 Feb 2020 20:49:44 +0900
+Message-id: <20200219114947.14134-15-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200218063720.6597-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200218063720.6597-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch implements support of multi-queue in mirror command.
+  - mirror; status
+  - mirror; port
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ src/cli/commands/mirror.py | 175 +++++++++++++++++++++++++++++--------
+ 1 file changed, 137 insertions(+), 38 deletions(-)
+
+diff --git a/src/cli/commands/mirror.py b/src/cli/commands/mirror.py
+index d7ea4cd..10c29f9 100644
+--- a/src/cli/commands/mirror.py
++++ b/src/cli/commands/mirror.py
+@@ -56,7 +56,8 @@ class SppMirror(object):
+             self.unused_core_ids = core_ids  # used while completion to exclude
+ 
+             self.workers = mirror_status['workers']
+-            self.worker_names = [attr['name'] for attr in mirror_status['workers']]
++            self.worker_names = [attr['name']
++                                 for attr in mirror_status['workers']]
+ 
+         cmd = cmdline.split(' ')[0]
+         params = cmdline.split(' ')[1:]
+@@ -184,8 +185,9 @@ class SppMirror(object):
+ 
+         To update status of the instance of SppMirror, get the status from
+         spp-ctl. This method returns the result as a dict. For considering
+-        behaviour of spp_mirror, it is enough to return worker's name and core
+-        IDs as the status, but might need to be update for future updates.
++        behaviour of spp_mirror, it is enough to return worker's name, core
++        IDs and ports as the status, but might need to be update for future
++        updates.
+ 
+         # return worker's name and used core IDs, and all of core IDs.
+         {
+@@ -194,12 +196,13 @@ class SppMirror(object):
+             {'name': 'mr2', 'core_id': 6},
+             ...
+           ],
+-          'core_ids': [5, 6, 7, ...]
++          'core_ids': [5, 6, 7, ...],
++          'ports': ['phy:0', 'phy:1', ...]
+         }
+ 
+         """
+ 
+-        status = {'workers': [], 'core_ids': []}
++        status = {'workers': [], 'core_ids': [], 'ports': []}
+         res = self.spp_ctl_cli.get('mirrors/%d' % self.sec_id)
+         if res is not None:
+             if res.status_code == 200:
+@@ -214,8 +217,45 @@ class SppMirror(object):
+                                             'core_id': wk['core']})
+                             status['core_ids'].append(wk['core'])
+ 
++                if 'ports' in json_obj:
++                    status['ports'] = json_obj.get('ports')
++
+         return status
+ 
++    def _get_candidate_phy_queue_no(self, res_uid):
++        """Get phy queue_no candidate.
++
++        If res_uid is phy and multi-queue, return queue_no in list type.
++        Otherwise returns None.
++        """
++
++        try:
++            port, _ = res_uid.split(":")
++        except Exception as _:
++            return None
++
++        if port != "phy":
++            return None
++
++        status = self._get_status(self.sec_id)
++
++        queue_no_list = []
++        for port in status["ports"]:
++            if not port.startswith(res_uid):
++                continue
++
++            try:
++                _, queue_no = port.split("nq")
++            except Exception as _:
++                continue
++
++            queue_no_list.append(queue_no.strip(" "))
++
++        if len(queue_no_list) == 0:
++            return None
++
++        return queue_no_list
++
+     def _run_status(self):
+         res = self.spp_ctl_cli.get('mirrors/%d' % self.sec_id)
+         if res is not None:
+@@ -267,20 +307,45 @@ class SppMirror(object):
+                     print('Error: unknown response.')
+ 
+     def _run_port(self, params):
+-        if len(params) == 4:
+-            if params[0] == 'add':
+-                action = 'attach'
+-            elif params[0] == 'del':
+-                action = 'detach'
+-            else:
+-                print('Error: Invalid action.')
+-                return None
++        params_index = 0
++        req_params = {}
++        name = None
++        flg_mq = False
++
++        while params_index < len(params):
++            if params_index == 0:
++                if params[params_index] == 'add':
++                    req_params["action"] = 'attach'
++                elif params[params_index] == 'del':
++                    req_params["action"] = 'detach'
++                else:
++                    print('Error: Invalid action.')
++                    return None
++
++            elif params_index == 1:
++                req_params["port"] = params[params_index]
++
++                if params_index + 2 < len(params):
++                    if params[params_index + 1] == "nq":
++                        params_index += 2
++                        req_params["port"] += "nq" + params[params_index]
++                        flg_mq = True
++                else:
++                    print("Error: Not enough parameters.")
++                    return None
++
++            elif ((params_index == 2 and flg_mq is False) or
++                    (params_index == 4 and flg_mq is True)):
++                req_params["dir"] = params[params_index]
+ 
+-            req_params = {'action': action, 'port': params[1],
+-                          'dir': params[2]}
++            elif ((params_index == 3 and flg_mq is False) or
++                    (params_index == 5 and flg_mq is True)):
++                name = params[params_index]
++
++            params_index += 1
+ 
+         res = self.spp_ctl_cli.put('mirrors/%d/components/%s/ports'
+-                                   % (self.sec_id, params[3]), req_params)
++                                   % (self.sec_id, name), req_params)
+         if res is not None:
+             error_codes = self.spp_ctl_cli.rest_common_error_codes
+             if res.status_code == 204:
+@@ -334,28 +399,62 @@ class SppMirror(object):
+             return res
+ 
+     def _compl_port(self, sub_tokens):
+-        if len(sub_tokens) < 9:
+-            subsub_cmds = ['add', 'del']
+-            res = []
+-            if len(sub_tokens) == 2:
+-                for kw in subsub_cmds:
+-                    if kw.startswith(sub_tokens[1]):
+-                        res.append(kw)
+-            elif len(sub_tokens) == 3:
+-                if sub_tokens[1] in subsub_cmds:
+-                    if 'RES_UID'.startswith(sub_tokens[2]):
+-                        res.append('RES_UID')
+-            elif len(sub_tokens) == 4:
+-                if sub_tokens[1] in subsub_cmds:
+-                    for direction in ['rx', 'tx']:
+-                        if direction.startswith(sub_tokens[3]):
+-                            res.append(direction)
+-            elif len(sub_tokens) == 5:
+-                if sub_tokens[1] in subsub_cmds:
+-                    for kw in self.worker_names:
+-                        if kw.startswith(sub_tokens[4]):
+-                            res.append(kw)
+-            return res
++        res = []
++        index = 0
++
++        # compl_phase "add_del" : candidate is add or del
++        # compl_phase "res_uid" : candidate is RES_UID
++        # compl_phase "nq"      : candidate is nq
++        # compl_phase "queue_no": candidate is queue no
++        # compl_phase "dir"     : candidate is DIR
++        # compl_phase "name"    : candidate is NAME
++        # compl_phase None      : candidate is None
++        compl_phase = "add_del"
++
++        while index < len(sub_tokens):
++            if compl_phase == "nq":
++                queue_no_list = self._get_candidate_phy_queue_no(
++                    sub_tokens[index - 1])
++
++                if queue_no_list is None:
++                    compl_phase = "dir"
++
++            if ((compl_phase == "add_del") and
++                    (sub_tokens[index - 1] == "port")):
++                res = ["add", "del"]
++                compl_phase = "res_uid"
++
++            elif ((compl_phase == "res_uid") and
++                    (sub_tokens[index - 1] == "add" or
++                     sub_tokens[index - 1] == "del")):
++                res = ["RES_UID"]
++                compl_phase = "nq"
++
++            elif compl_phase == "nq":
++                res = ["nq"]
++                compl_phase = "queue_no"
++
++            elif compl_phase == "queue_no":
++                res = queue_no_list
++                compl_phase = "dir"
++
++            elif compl_phase == "dir":
++                res = ["rx", "tx"]
++                compl_phase = "name"
++
++            elif compl_phase == "name":
++                res = ["NAME"]
++                compl_phase = None
++
++            else:
++                res = []
++
++            index += 1
++
++        res = [p for p in res
++               if p.startswith(sub_tokens[len(sub_tokens) - 1])]
++
++        return res
+ 
+     @classmethod
+     def help(cls):
+-- 
+2.17.1
+
