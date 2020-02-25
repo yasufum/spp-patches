@@ -1,0 +1,38 @@
+From d581045ad1ce08f6faebfe7974ebd148001f13ff Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 19 Feb 2020 11:59:29 +0900
+Subject: [PATCH 23/29] tools/sppc: skip checking rule file if dry run
+
+In l3fwd-acl container app, it checks rule file is existing even if for
+--dry-run, but has no meaning. This update is disable useless checking
+for --dry-run.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/l3fwd-acl.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/sppc/app/l3fwd-acl.py b/tools/sppc/app/l3fwd-acl.py
+index 11dcc85..15d0a26 100755
+--- a/tools/sppc/app/l3fwd-acl.py
++++ b/tools/sppc/app/l3fwd-acl.py
+@@ -209,14 +209,14 @@ def main():
+         if os.path.exists(args.rule_ipv4):
+             l3fwd_opts += ['--rule_ipv4', '"{:s}"'.format(args.rule_ipv4),
+                            '\\']
+-        else:
++        elif args.dry_run is not True:
+             print('Error: "{}" does not exist'.format(args.rule_ipv4))
+             exit()
+     if args.rule_ipv6 is not None:
+         if os.path.exists(args.rule_ipv6):
+             l3fwd_opts += ['--rule_ipv6', '"{:s}"'.format(args.rule_ipv6),
+                            '\\']
+-        else:
++        elif args.dry_run is not True:
+             print('Error: "{}" does not exist'.format(args.rule_ipv6))
+             exit()
+ 
+-- 
+2.17.1
+

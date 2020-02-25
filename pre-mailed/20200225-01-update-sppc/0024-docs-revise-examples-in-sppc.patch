@@ -1,0 +1,952 @@
+From f724eaf48490bce3f860499db835cf3e283767d4 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 25 Feb 2020 11:18:12 +0900
+Subject: [PATCH 24/29] docs: revise examples in sppc
+
+Some of examples in SPP container are wrong because for old or just
+typo. This update is to revise the examples.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst    | 220 ++++++++++-----------
+ docs/guides/tools/sppc/getting_started.rst | 137 ++++++-------
+ docs/guides/tools/sppc/usecases.rst        | 104 +++++-----
+ 3 files changed, 217 insertions(+), 244 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index 3dc4bbb..4d6492b 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -62,7 +62,7 @@ SPP controller should be launched before other SPP processes.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ 
+ .. _sppc_appl_spp_primary:
+@@ -98,25 +98,20 @@ physical ports.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary -l 0-1 -p 0x03 -fg
++    $ python3 app/spp-primary -l 0-1 -p 0x03 -fg
+ 
+ It is another example with one core and two ports in background mode.
+ 
+ .. code-block:: console
+ 
+-    $ python app/spp-primary -l 0 -p 0x03
++    $ python3 app/spp-primary -l 0 -p 0x03
+ 
+-SPP primary is able to run with virtual devices instead of
+-physical NICs for a case
+-you do not have dedicated NICs for DPDK.
+-SPP container supports two types of virtual device with options.
+-
+-* ``--dev-tap-ids`` or ``-dt``:  Add TAP devices
+-* ``--dev-vhost-ids`` or ``-dv``: Add vhost devices
++SPP primary is able to run with virtual devices instead of physical NICs
++for a case you do not have dedicated NICs for DPDK.
+ 
+ .. code-block:: console
+ 
+-    $ python app/spp-primary -l 0 -dt 1,2 -p 0x03
++    $ python3 app/spp-primary -l 0 -d vhost:1,vhost:2 -p 0x03
+ 
+ 
+ 
+@@ -141,7 +136,7 @@ On the other hand, application specific options are different each other.
+ 
+ .. code-block:: console
+ 
+-    $ python app/spp-primary.py -h
++    $ python3 app/spp-primary.py -h
+     usage: spp-primary.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                           [--socket-mem SOCKET_MEM]
+                           [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -211,7 +206,7 @@ options for secondary ID and core list (or core mask).
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-nfv.py -i 1 -l 2-3
++    $ python3 app/spp-nfv.py -i 1 -l 2-3
+ 
+ Refer help for all of options and usges.
+ It shows only application specific options for simplicity.
+@@ -219,7 +214,7 @@ It shows only application specific options for simplicity.
+ 
+ .. code-block:: console
+ 
+-    $ python app/spp-nfv.py -h
++    $ python3 app/spp-nfv.py -h
+     usage: spp-nfv.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                       [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
+                       [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -260,7 +255,7 @@ ports should be even number.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/l2fwd.py -l 6-7 -d 1,2 -p 0x03 -fg
++    $ python3 app/l2fwd.py -l 6-7 -d vhost:1,vhost:2 -p 0x03 -fg
+     ...
+ 
+ Refer help for all of options and usges.
+@@ -271,7 +266,7 @@ It shows options without of EAL and container for simplicity.
+ 
+ .. code-block:: console
+ 
+-    $ python app/l2fwd.py -h
++    $ python3 app/l2fwd.py -h
+     usage: l2fwd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                     [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
+                     [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -332,35 +327,35 @@ defined as ``virtio_...,queues=2,...``.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/l3fwd.py -l 1-2 -nq 2 -d 1,2 \
++    $ python3 app/l3fwd.py -l 1-2 -nq 2 -d vhost:1,vhost:2 \
+       -p 0x03 --config="(0,0,1),(1,0,2)" -fg
+-      sudo docker run \
+-      -it \
+-      ...
+-      --vdev virtio_user1,queues=2,path=/var/run/usvhost1 \
+-      --vdev virtio_user2,queues=2,path=/var/run/usvhost2 \
+-      --file-prefix spp-l3fwd-container1 \
+-      -- \
+-      -p 0x03 \
+-      --config "(0,0,8),(1,0,9)" \
+-      --parse-ptype ipv4
+-      EAL: Detected 16 lcore(s)
+-      EAL: Auto-detected process type: PRIMARY
+-      EAL: Multi-process socket /var/run/.spp-l3fwd-container1_unix
+-      EAL: Probing VFIO support...
+-      soft parse-ptype is enabled
+-      LPM or EM none selected, default LPM on
+-      Initializing port 0 ... Creating queues: nb_rxq=1 nb_txq=2...
+-      LPM: Adding route 0x01010100 / 24 (0)
+-      LPM: Adding route 0x02010100 / 24 (1)
+-      LPM: Adding route IPV6 / 48 (0)
+-      LPM: Adding route IPV6 / 48 (1)
+-      txq=8,0,0 txq=9,1,0
+-      Initializing port 1 ... Creating queues: nb_rxq=1 nb_txq=2...
+-
+-      Initializing rx queues on lcore 8 ... rxq=0,0,0
+-      Initializing rx queues on lcore 9 ... rxq=1,0,0
+-      ...
++     sudo docker run \
++     -it \
++     ...
++     --vdev virtio_user1,queues=2,path=/var/run/usvhost1 \
++     --vdev virtio_user2,queues=2,path=/var/run/usvhost2 \
++     --file-prefix spp-l3fwd-container1 \
++     -- \
++     -p 0x03 \
++     --config "(0,0,8),(1,0,9)" \
++     --parse-ptype ipv4
++    EAL: Detected 16 lcore(s)
++    EAL: Auto-detected process type: PRIMARY
++    EAL: Multi-process socket /var/run/.spp-l3fwd-container1_unix
++    EAL: Probing VFIO support...
++    soft parse-ptype is enabled
++    LPM or EM none selected, default LPM on
++    Initializing port 0 ... Creating queues: nb_rxq=1 nb_txq=2...
++    LPM: Adding route 0x01010100 / 24 (0)
++    LPM: Adding route 0x02010100 / 24 (1)
++    LPM: Adding route IPV6 / 48 (0)
++    LPM: Adding route IPV6 / 48 (1)
++    txq=8,0,0 txq=9,1,0
++    Initializing port 1 ... Creating queues: nb_rxq=1 nb_txq=2...
++
++    Initializing rx queues on lcore 8 ... rxq=0,0,0
++    Initializing rx queues on lcore 9 ... rxq=1,0,0
++    ...
+ 
+ You can increase lcores more than the number of ports, for instance,
+ four lcores for two ports.
+@@ -389,7 +384,7 @@ It shows options without of EAL and container for simplicity.
+ 
+ .. code-block:: console
+ 
+-    $ python app/l3fwd.py -h
++    $ python3 app/l3fwd.py -h
+     usage: l3fwd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                     [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
+                     [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -472,38 +467,38 @@ defined as ``virtio_...,queues=2,...``.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/l3fwd-acl.py -l 1-2 -nq 2 -d 1,2 \
+-      --rule_ipv4="./rule_ipv4.db" -- rule_ipv6="./rule_ipv6.db" --scalar \
++    $ python3 app/l3fwd-acl.py -l 1-2 -nq 2 -d vhost:1,vhost:2 \
++      --rule_ipv4="./rule_ipv4.db" --rule_ipv6="./rule_ipv6.db" --scalar \
+       -p 0x03 --config="(0,0,1),(1,0,2)" -fg
+-      sudo docker run \
+-      -it \
+-      ...
+-      --vdev virtio_user1,queues=2,path=/var/run/usvhost1 \
+-      --vdev virtio_user2,queues=2,path=/var/run/usvhost2 \
+-      --file-prefix spp-l3fwd-container1 \
+-      -- \
+-      -p 0x03 \
+-      --config "(0,0,8),(1,0,9)" \
+-      --rule_ipv4="./rule_ipv4.db" \
+-      --rule_ipv6="./rule_ipv6.db" \
+-      --scalar
+-      EAL: Detected 16 lcore(s)
+-      EAL: Auto-detected process type: PRIMARY
+-      EAL: Multi-process socket /var/run/.spp-l3fwd-container1_unix
+-      EAL: Probing VFIO support...
+-      soft parse-ptype is enabled
+-      LPM or EM none selected, default LPM on
+-      Initializing port 0 ... Creating queues: nb_rxq=1 nb_txq=2...
+-      LPM: Adding route 0x01010100 / 24 (0)
+-      LPM: Adding route 0x02010100 / 24 (1)
+-      LPM: Adding route IPV6 / 48 (0)
+-      LPM: Adding route IPV6 / 48 (1)
+-      txq=8,0,0 txq=9,1,0
+-      Initializing port 1 ... Creating queues: nb_rxq=1 nb_txq=2...
+-
+-      Initializing rx queues on lcore 8 ... rxq=0,0,0
+-      Initializing rx queues on lcore 9 ... rxq=1,0,0
+-      ...
++     sudo docker run \
++     -it \
++     ...
++     --vdev virtio_user1,queues=2,path=/var/run/usvhost1 \
++     --vdev virtio_user2,queues=2,path=/var/run/usvhost2 \
++     --file-prefix spp-l3fwd-container1 \
++     -- \
++     -p 0x03 \
++     --config "(0,0,8),(1,0,9)" \
++     --rule_ipv4="./rule_ipv4.db" \
++     --rule_ipv6="./rule_ipv6.db" \
++     --scalar
++    EAL: Detected 16 lcore(s)
++    EAL: Auto-detected process type: PRIMARY
++    EAL: Multi-process socket /var/run/.spp-l3fwd-container1_unix
++    EAL: Probing VFIO support...
++    soft parse-ptype is enabled
++    LPM or EM none selected, default LPM on
++    Initializing port 0 ... Creating queues: nb_rxq=1 nb_txq=2...
++    LPM: Adding route 0x01010100 / 24 (0)
++    LPM: Adding route 0x02010100 / 24 (1)
++    LPM: Adding route IPV6 / 48 (0)
++    LPM: Adding route IPV6 / 48 (1)
++    txq=8,0,0 txq=9,1,0
++    Initializing port 1 ... Creating queues: nb_rxq=1 nb_txq=2...
++
++    Initializing rx queues on lcore 8 ... rxq=0,0,0
++    Initializing rx queues on lcore 9 ... rxq=1,0,0
++    ...
+ 
+ You can increase lcores more than the number of ports, for instance,
+ four lcores for two ports.
+@@ -515,7 +510,7 @@ It shows options without of EAL and container for simplicity.
+ 
+ .. code-block:: console
+ 
+-    $ python app/l3fwd-acl.py -h
++    $ python3 app/l3fwd-acl.py -h
+     usage: l3fwd-acl.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                         [--socket-mem SOCKET_MEM]
+                         [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -577,15 +572,15 @@ This example is for launching ``testpmd`` in interactive mode.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/testpmd.py -l 6-8 -d 1,2 -fg -i
+-    sudo docker run \
++    $ python3 app/testpmd.py -l 6-8 -d vhost:1,vhost:2 -fg -i
++     sudo docker run \
+      ...
+      -- \
+      --interactive
+      ...
+-     Checking link statuses...
+-     Done
+-     testpmd>
++    Checking link statuses...
++    Done
++    testpmd>
+ 
+ Testpmd has many useful options. Please refer to
+ `Running the Application
+@@ -600,7 +595,8 @@ section for instructions.
+ 
+     .. code-block:: console
+ 
+-        $ python app/testpmd.py -l 1,2 -d 1,2 --port-topology=chained
++        $ python3 app/testpmd.py -l 1,2 -d vhost:1,vhost:2 \
++          --port-topology=chained
+         Error: '--port-topology' is not supported yet
+ 
+ 
+@@ -609,7 +605,7 @@ It shows options without of EAL and container.
+ 
+ .. code-block:: console
+ 
+-    $ python app/testpmd.py -h
++    $ python3 app/testpmd.py -h
+     usage: testpmd.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                       [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
+                       [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -819,8 +815,9 @@ and three vhost interfaces.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/pktgen.py -l 8-14 -d 1-3 -fg --dist-ver 16.04
+-    sudo docker run \
++    $ python3 app/pktgen.py -l 8-14 -d vhost:1,vhost:2,vhost:3 \
++      -fg --dist-ver 16.04
++     sudo docker run \
+      ...
+      sppc/pktgen-ubuntu:16.04 \
+      /root/dpdk/../pktgen-dpdk/app/x86_64-native-linuxapp-gcc/pktgen \
+@@ -846,7 +843,7 @@ calculation is to be complicated.
+ .. code-block:: console
+ 
+     # Assign five lcores for a slave is failed to launch
+-    $ python app/pktgen.py -l 6-11 -d 1
++    $ python3 app/pktgen.py -l 6-11 -d vhost:1
+     Error: Too many cores for calculation for port assignment!
+     Please consider to use '--matrix' for assigning directly
+ 
+@@ -859,7 +856,7 @@ Assign one lcore to master and two lcores two slaves for two ports.
+ 
+ .. code-block:: console
+ 
+-    $ python app/pktgen.py -l 6-8 -d 1,2
++    $ python3 app/pktgen.py -l 6-8 -d vhost:1,vhost:2
+      ...
+      -m 7.0,8.1 \
+ 
+@@ -871,7 +868,7 @@ three slaves for three ports.
+ 
+ .. code-block:: console
+ 
+-    $ python app/pktgen.py -l 6-12 -d 1,2,3
++    $ python3 app/pktgen.py -l 6-12 -d vhost:1,vhost:2,vhost:3
+      ...
+      -m [7:8].0,[9:10].1,[11:12].2 \
+ 
+@@ -885,7 +882,7 @@ equally, so given two lcores to rx and one core to tx.
+ 
+ .. code-block:: console
+ 
+-    $ python app/pktgen.py -l 6-12 -d 1,2
++    $ python3 app/pktgen.py -l 6-12 -d vhost:1,vhost:2
+      ...
+      -m [7-8:9].0,[10-11:12].1 \
+ 
+@@ -895,7 +892,7 @@ It shows options without of EAL and container for simplicity.
+ 
+ .. code-block:: console
+ 
+-    $ python app/pktgen.py -h
++    $ python3 app/pktgen.py -h
+     usage: pktgen.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                      [--socket-mem SOCKET_MEM] [--nof-memchan NOF_MEMCHAN]
+                      [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -975,9 +972,9 @@ The destination port is defined as ``--lpm`` option.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/load-balancer.py -fg -l 8-10  -d 1,2 \
+-    -rx "(0,0,8)" -tx "(0,8),(1,8)" -w 9,10 \
+-    --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1;"
++    $ python3 app/load-balancer.py -fg -l 8-10  -d vhost:1,vhost:2 \
++      -rx "(0,0,8)" -tx "(0,8),(1,8)" -w 9,10 \
++      --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1;"
+ 
+ If you are succeeded to launch the app container,
+ it shows details of rx, tx, worker lcores and LPM rules
+@@ -1076,11 +1073,11 @@ You notice that rx and tx have different lcore number, 8 and 9.
+ 
+ .. code-block:: console
+ 
+-    $ python app/load-balancer.py -fg -l 8-11 -d 1,2 \
+-    -rx "(0,0,8)" \
+-    -tx "(0,9),(1,9)" \
+-    -w 10,11 \
+-    --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1;"
++    $ python3 app/load-balancer.py -fg -l 8-11 -d vhost:1,vhost:2 \
++      -rx "(0,0,8)" \
++      -tx "(0,9),(1,9)" \
++      -w 10,11 \
++      --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1;"
+ 
+ **2. Assign multiple queues for rx**
+ 
+@@ -1092,18 +1089,20 @@ or failed to launch.
+ 
+ .. code-block:: console
+ 
+-    $ python app/load-balancer.py -fg -l 8-13 -d 1,2,3 -nq 2 \
+-    -rx "(0,0,8),(0,1,8)" \
+-    -tx "(0,9),(1,9),(2,9)" \
+-    -w 10,11,12,13 \
+-    --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1; 1.0.2.0/24=>2;"
++    $ python3 app/load-balancer.py -fg -l 8-13 \
++      -d vhost:1,vhost:2,vhost:3 \
++      -nq 2 \
++      -rx "(0,0,8),(0,1,8)" \
++      -tx "(0,9),(1,9),(2,9)" \
++      -w 10,11,12,13 \
++      --lpm "1.0.0.0/24=>0; 1.0.1.0/24=>1; 1.0.2.0/24=>2;"
+ 
+ 
+ Refer options and usages by ``load-balancer.py -h``.
+ 
+ .. code-block:: console
+ 
+-    $ python app/load-balancer.py -h
++    $ python3 app/load-balancer.py -h
+     usage: load-balancer.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                             [--socket-mem SOCKET_MEM]
+                             [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -1171,7 +1170,7 @@ which is built as described in
+ .. code-block:: console
+ 
+     $ docker cp your.cnf CONTAINER_ID:/path/to/conf/your.conf
+-    $ ./suricata.py -d 1,2 -fg -ci sppc/suricata-ubuntu2:latest
++    $ ./suricata.py -d vhost:1,vhost:2 -fg -ci sppc/suricata-ubuntu2:latest
+     # suricata --dpdk=/path/to/config
+ 
+ 
+@@ -1179,7 +1178,7 @@ Refer options and usages by ``load-balancer.py -h``.
+ 
+ .. code-block:: console
+ 
+-    $ python app/suricata.py -h
++    $ python3 app/suricata.py -h
+     usage: suricata.py [-h] [-l CORE_LIST] [-c CORE_MASK] [-m MEM]
+                        [--socket-mem SOCKET_MEM]
+                        [-b [PCI_BLACKLIST [PCI_BLACKLIST ...]]]
+@@ -1223,13 +1222,10 @@ An instruction for developing app container script is described in
+ 
+ Helloworld app container has no application specific options. There are
+ only EAL and app container options.
+-You should give ``-l``  and ``-d`` options for the simplest app
+-container.
+-Helloworld application does not use vhost and ``-d`` options is not
+-required for the app, but required to setup continer itself.
++You should give ``-l`` option for the simplest app container.
+ 
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/helloworld.py -l 4-6 -d 1 -fg
++    $ python3 app/helloworld.py -l 4-6 -fg
+     ...
+diff --git a/docs/guides/tools/sppc/getting_started.rst b/docs/guides/tools/sppc/getting_started.rst
+index e088661..9a6107a 100644
+--- a/docs/guides/tools/sppc/getting_started.rst
++++ b/docs/guides/tools/sppc/getting_started.rst
+@@ -86,15 +86,17 @@ All of images are referred from ``docker images`` command.
+ 
+ .. note::
+ 
+-    The Name of containers is defined as a set of target, name and
++    The Name of container image is defined as a set of target, name and
+     version of Linux distoribution.
+-    For example, container image targetting dpdk apps on Ubuntu 16.04
+-    is named as ``sppc/dpdk-ubuntu:16.04``.
++    For example, container image targetting dpdk apps on Ubuntu 18.04
++    is named as ``sppc/dpdk-ubuntu:18.04``.
+ 
+-    Build script understands which of Dockerfile should be used based
++    There are several Dockerfiles for supporting several applications and
++    distro versions under ``build/ubuntu/``.
++    Build script understands which of Dockerfiles should be used based
+     on the given options.
+-    If you run build script with options for dpdk and Ubuntu 16.04 as
+-    below, it finds ``build/ubuntu/dpdk/Dockerfile.16.04`` and runs
++    If you run build script with options for dpdk and Ubuntu 18.04 as
++    below, it finds ``build/ubuntu/dpdk/Dockerfile.18.04`` and runs
+     ``docker build``.
+     Options for Linux distribution have default value, ``ubuntu`` and
+     ``latest``. So, you do not need to specify them if you use default.
+@@ -112,14 +114,8 @@ All of images are referred from ``docker images`` command.
+         $ python build/main.py -t dpdk --dist-ver 16.04
+ 
+ 
+-.. warning::
+-
+-    Currently, the latest version of Ubuntu is 18.04 and DPDK is 18.05.
+-    However, SPP is not stable on the latest versions, especially
+-    running on containers.
+-
+-    It is better to use Ubuntu 16.04 and DPDK 18.02 for SPP containers
+-    until be stabled.
++    Version of other than distro is also configurable by specifying a branch
++    number via command line options.
+ 
+     .. code-block:: console
+ 
+@@ -134,15 +130,20 @@ All of images are referred from ``docker images`` command.
+ Launch SPP and App Containers
+ -----------------------------
+ 
+-Before launch containers, you should set IP address of host machine
+-as ``SPP_CTL_IP`` environment variable
+-for controller to be accessed from inside containers.
+-It is better to define this variable in ``$HOME/.bashrc``.
++.. note::
++
++    In usecase described in this chapter, SPP processes other than
++    ``spp-ctl`` and CLI are containerized, but it is available to run as on
++    host for communicating with other container applications.
++
++Before launch containers, you should set IP address of host machine as
++``SPP_CTL_IP`` environment variable for controller to be accessed from
++inside containers.
+ 
+ .. code-block:: console
+ 
+     # Set your host IP address
+-    export SPP_CTL_IP=HOST_IPADDR
++    $ export SPP_CTL_IP=YOUR_HOST_IPADDR
+ 
+ 
+ SPP Controller
+@@ -153,14 +154,14 @@ processes.
+ 
+ .. note::
+ 
+-    SPP controller provides ``topo term`` which shows network
+-    topology in a terminal.
++    SPP controller also provides ``topo term`` command for containers which
++    shows network topology in a terminal.
+ 
+     However, there are a few terminals supporing this feature.
+     ``mlterm`` is the most useful and easy to customize.
+     Refer :doc:`../../commands/experimental` for ``topo`` command.
+ 
+-``spp-ctl`` is launched in the termina l.
++``spp-ctl`` is launched in the terminal 1.
+ 
+ .. code-block:: console
+ 
+@@ -180,11 +181,9 @@ processes.
+ SPP Primary Container
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+-As ``SPP_CTL_IP`` is activated, you are enalbed to run
+-``app/spp-primary.py`` with options of EAL and SPP primary
+-in terminal 3.
+-In this case, launch spp-primary in background mode using one core
+-and two ports.
++As ``SPP_CTL_IP`` is activated, it is able to run ``app/spp-primary.py``
++with options. In this case, launch ``spp_primary`` in background mode using
++one core and two physical ports in terminal 3.
+ 
+ .. code-block:: console
+ 
+@@ -196,12 +195,11 @@ and two ports.
+ SPP Secondary Container
+ ~~~~~~~~~~~~~~~~~~~~~~~
+ 
+-For secondary process, ``spp_nfv`` is only supported for running on container
+-currently.
++``spp_nfv`` is only supported for running on container currently.
+ 
+-Launch ``spp_nfv`` in terminal 3
+-with options for secondary ID is ``1`` and
+-core list is ``1-2`` for using 2nd and 3rd cores.
++Launch ``spp_nfv`` in terminal 3 with options for secondary ID is
++``1`` and core list is ``1-2`` for using 2nd and 3rd cores.
++It is also run in background mode.
+ 
+ .. code-block:: console
+ 
+@@ -209,7 +207,7 @@ core list is ``1-2`` for using 2nd and 3rd cores.
+     $ python app/spp-nfv.py -i 1 -l 1-2
+ 
+ If it is succeeded, container is running in background.
+-You can find it with ``docker -ps`` command.
++You can find it with ``docker ps`` command.
+ 
+ 
+ App Container
+@@ -224,39 +222,13 @@ before launching the app container.
+ .. code-block:: console
+ 
+     # Terminal 2
+-    spp > nfv 1; add vhost 1
+-    spp > nfv 1; add vhost 2
+-
+-``spp_nfv`` of ID 1 running inside container creates
+-``vhost:1`` and ``vhost:2``.
+-Vhost PMDs are referred as an option ``-d 1,2`` from the
+-app container launcher.
+-
+-.. code-block:: console
++    spp > nfv 1; add vhost:1
++    spp > nfv 1; add vhost:2
+ 
+-    # Terminal 3
+-    $ cd /path/to/spp/tools/sppc
+-    $ app/testpmd.py -l 3-4 -d 1,2
+-    sudo docker run -it \
+-    ...
+-    EAL: Detected 16 lcore(s)
+-    EAL: Auto-detected process type: PRIMARY
+-    EAL: Multi-process socket /var/run/.testpmd1_unix
+-    EAL: Probing VFIO support...
+-    EAL: VFIO support initialized
+-    Interactive-mode selected
+-    Warning: NUMA should be configured manually by using --port-numa-...
+-    testpmd: create a new mbuf pool <mbuf_pool_socket_0>: n=155456,...
+-    testpmd: preferred mempool ops selected: ring_mp_mc
+-    Configuring Port 0 (socket 0)
+-    Port 0: 32:CB:1D:72:68:B9
+-    Configuring Port 1 (socket 0)
+-    Port 1: 52:73:C3:5B:94:F1
+-    Checking link statuses...
+-    Done
+-    testpmd>
+-
+-It launches ``testpmd`` in foreground mode.
++``spp_nfv`` of ID 1 running inside container creates ``vhost:1`` and
++``vhost:2``. So assign them to ``testpmd`` with ``-d`` option which is for
++attaching vdevs as a comma separated list of resource UIDs in SPP.
++``testpmd`` is launched in foreground mode with ``-fg`` option in this case.
+ 
+ .. note::
+ 
+@@ -268,10 +240,8 @@ It launches ``testpmd`` in foreground mode.
+     ``--pci-blacklist`` EAL option to exclude ports on host. PCI address of
+     port can be inspected by using ``dpdk-devbind.py -s``.
+ 
+-If you have ports on host and assign them to SPP, you should to exclude them
+-from the app container by specifying PCI addresses of the ports with ``-b``
+-or ``--pci-blacklist``.
+-
++To exclude ``testpmd`` container tries to own physical ports, you should
++specify PCI addresses of the ports with ``-b`` or ``--pci-blacklist``.
+ You can find PCI addresses from ``dpdk-devbind.py -s``.
+ 
+ .. code-block:: console
+@@ -294,13 +264,15 @@ with ``-b`` option.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ app/testpmd.py -l 3-4 -d 1,2 \
++    $ app/testpmd.py -l 3-4 \
++      -d vhost:1,vhost:2 \
++      -fg \
+       -b 0000:0a:00.0 0000:0a:00.1
+-    sudo docker run -it \
+-    ...
+-    -b 0000:0a:00.0 \
+-    -b 0000:0a:00.1 \
+-    ...
++     sudo docker run -it \
++     ...
++     -b 0000:0a:00.0 \
++     -b 0000:0a:00.1 \
++     ...
+ 
+ 
+ .. _sppc_gs_run_apps:
+@@ -326,16 +298,19 @@ with it.
+ .. code-block:: console
+ 
+     # Terminal 2
+-    spp > nfv 1; add ring 0
++    spp > nfv 1; add ring:0
+     spp > nfv 1; patch vhost:1 ring:0
+     spp > nfv 1; patch ring:0 vhost:2
+     spp > nfv 1; forward
+     spp > nfv 1; status
+-    status: running
+-    ports:
+-      - 'ring:0 -> vhost:2'
+-      - 'vhost:1 -> ring:0'
+-      - 'vhost:2'
++    - status: running
++    - lcore_ids:
++      - master: 1
++      - slave: 2
++    - ports:
++      - ring:0 -> vhost:2
++      - vhost:1 -> ring:0
++      - vhost:2
+ 
+ Start forwarding on port 0 by ``start tx_first``.
+ 
+diff --git a/docs/guides/tools/sppc/usecases.rst b/docs/guides/tools/sppc/usecases.rst
+index 80f0fac..8da7fd2 100644
+--- a/docs/guides/tools/sppc/usecases.rst
++++ b/docs/guides/tools/sppc/usecases.rst
+@@ -65,7 +65,7 @@ Then, ``spp.py`` in terminal 2.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ Move to terminal 3, launch app containers of ``spp_primary``
+ and ``spp_nfv`` step by step in background mode.
+@@ -79,27 +79,27 @@ You can also assign a physical port instead of this vhost device.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x01 -dv 1
+-    $ python app/spp-nfv.py -i 1 -l 1-2
+-    $ python app/spp-nfv.py -i 2 -l 3-4
++    $ python3 app/spp-primary.py -l 0 -p 0x01 -dv 1
++    $ python3 app/spp-nfv.py -i 1 -l 1-2
++    $ python3 app/spp-nfv.py -i 2 -l 3-4
+ 
+ Then, add two vhost PMDs for pktgen app container from SPP CLI.
+ 
+ .. code-block:: console
+ 
+     # Terminal 2
+-    spp > nfv 1; add vhost 1
+-    spp > nfv 2; add vhost 2
++    spp > nfv 1; add vhost:1
++    spp > nfv 2; add vhost:2
+ 
+ It is ready for launching pktgen app container. In this usecase,
+ use five lcores for pktgen. One lcore is used for master, and remaining
+ lcores are used for rx and tx evenly.
+-Device ID option ``-d 1,2`` is for refferring vhost 1 and 2.
++Device ID option ``-d vhost:1,vhost:2`` is for refferring vhost 1 and 2.
+ 
+ .. code-block:: console
+ 
+     # Terminal 3
+-    $ python app/pktgen.py -fg -l 5-9 -d 1,2
++    $ python3 app/pktgen.py -fg -l 5-9 -d vhost:1,vhost:2
+ 
+ Finally, configure network path from SPP controller,
+ 
+@@ -115,7 +115,7 @@ and start forwarding from pktgen.
+ 
+ .. code-block:: console
+ 
+-    # Terminal 2
++    # Terminal 3
+     $ Pktgen:/> start 1
+ 
+ You find that packet count of rx of port 0 and tx of port 1
+@@ -165,7 +165,7 @@ Then, launch ``spp.py`` in terminal 2.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ In terminal 3, launch ``spp_primary`` and ``spp_nfv`` containers
+ in background mode.
+@@ -176,11 +176,11 @@ portmask option.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x03
+-    $ python app/spp-nfv.py -i 1 -l 1-2
+-    $ python app/spp-nfv.py -i 2 -l 3-4
+-    $ python app/spp-nfv.py -i 3 -l 5-6
+-    $ python app/spp-nfv.py -i 4 -l 7-8
++    $ python3 app/spp-primary.py -l 0 -p 0x03
++    $ python3 app/spp-nfv.py -i 1 -l 1-2
++    $ python3 app/spp-nfv.py -i 2 -l 3-4
++    $ python3 app/spp-nfv.py -i 3 -l 5-6
++    $ python3 app/spp-nfv.py -i 4 -l 7-8
+ 
+ 
+ .. note::
+@@ -196,7 +196,7 @@ portmask option.
+ 
+     .. code-block:: console
+ 
+-        $ python tools/spp-launcher.py -n 4
++        $ python3 tools/spp-launcher.py -n 4
+ 
+     You will find that lcore assignment is the same as below.
+     Lcore is assigned from 0 for primary, and next two lcores for the
+@@ -204,11 +204,11 @@ portmask option.
+ 
+     .. code-block:: console
+ 
+-        $ python app/spp-primary.py -l 0 -p 0x03
+-        $ python app/spp-nfv.py -i 1 -l 1,2
+-        $ python app/spp-nfv.py -i 2 -l 3,4
+-        $ python app/spp-nfv.py -i 3 -l 5,6
+-        $ python app/spp-nfv.py -i 4 -l 7,8
++        $ python3 app/spp-primary.py -l 0 -p 0x03
++        $ python3 app/spp-nfv.py -i 1 -l 1,2
++        $ python3 app/spp-nfv.py -i 2 -l 3,4
++        $ python3 app/spp-nfv.py -i 3 -l 5,6
++        $ python3 app/spp-nfv.py -i 4 -l 7,8
+ 
+     You can also assign lcores with ``--shared`` to master lcore
+     be shared among ``spp_nfv`` processes.
+@@ -217,18 +217,18 @@ portmask option.
+ 
+     .. code-block:: console
+ 
+-        $ python tools/spp-launcher.py -n 4 --shared
++        $ python3 tools/spp-launcher.py -n 4 --shared
+ 
+     The result of assignment of this command is the same as below.
+     Master lcore 1 is shared among secondary processes.
+ 
+     .. code-block:: console
+ 
+-        $ python app/spp-primary.py -l 0 -p 0x03
+-        $ python app/spp-nfv.py -i 1 -l 1,2
+-        $ python app/spp-nfv.py -i 2 -l 1,3
+-        $ python app/spp-nfv.py -i 3 -l 1,4
+-        $ python app/spp-nfv.py -i 4 -l 1,5
++        $ python3 app/spp-primary.py -l 0 -p 0x03
++        $ python3 app/spp-nfv.py -i 1 -l 1,2
++        $ python3 app/spp-nfv.py -i 2 -l 1,3
++        $ python3 app/spp-nfv.py -i 3 -l 1,4
++        $ python3 app/spp-nfv.py -i 4 -l 1,5
+ 
+ Add ring PMDs considering which of rings is shared between which of
+ containers.
+@@ -311,7 +311,7 @@ First of all, launch ``spp-ctl`` and ``spp.py``.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ Then, launch ``spp_primary`` and ``spp_nfv`` containers in background.
+ It does not use physical NICs as similar to
+@@ -322,11 +322,11 @@ Use four of ``spp_nfv`` containers for using four vhost PMDs.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x01 -dv 9
+-    $ python app/spp-nfv.py -i 1 -l 1-2
+-    $ python app/spp-nfv.py -i 2 -l 3-4
+-    $ python app/spp-nfv.py -i 3 -l 5-6
+-    $ python app/spp-nfv.py -i 4 -l 7-8
++    $ python3 app/spp-primary.py -l 0 -p 0x01 -dv 9
++    $ python3 app/spp-nfv.py -i 1 -l 1-2
++    $ python3 app/spp-nfv.py -i 2 -l 3-4
++    $ python3 app/spp-nfv.py -i 3 -l 5-6
++    $ python3 app/spp-nfv.py -i 4 -l 7-8
+ 
+ Assign ring and vhost PMDs. Each of vhost IDs to be the same as
+ its secondary ID.
+@@ -353,7 +353,7 @@ In this case, ``pktgen`` container owns vhost 1 and 2,
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/pktgen.py -l 9-11 -d 1,2
++    $ python3 app/pktgen.py -l 9-11 -d vhost:1,vhost:2
+ 
+ and ``l2fwd`` container owns vhost 3 and 4.
+ 
+@@ -361,7 +361,7 @@ and ``l2fwd`` container owns vhost 3 and 4.
+ 
+     # Terminal 4
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/l2fwd.py -l 12-13 -d 3,4
++    $ python app/l2fwd.py -l 12-13 -d vhost:3,vhost:4
+ 
+ 
+ Then, configure network path by pactching each of ports
+@@ -419,7 +419,7 @@ First of all, launch ``spp-ctl`` and ``spp.py``.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ Launch ``spp_primary`` and ``spp_nfv`` containers in background.
+ It does not use physical NICs as similar to
+@@ -430,9 +430,9 @@ Use two of ``spp_nfv`` containers for using four vhost PMDs.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x01 -dv 9
+-    $ python app/spp-nfv.py -i 1 -l 1,2
+-    $ python app/spp-nfv.py -i 2 -l 1,3
++    $ python3 app/spp-primary.py -l 0 -p 0x01 -dv 9
++    $ python3 app/spp-nfv.py -i 1 -l 1,2
++    $ python3 app/spp-nfv.py -i 2 -l 1,3
+ 
+ The number of process and CPUs are fewer than previous example.
+ You can reduce the number of ``spp_nfv`` processes by assigning
+@@ -464,7 +464,7 @@ In this case, ``pktgen`` container uses vhost 1 and 2,
+ .. code-block:: console
+ 
+     # Terminal 3
+-    $ python app/pktgen.py -l 1,4,5 -d 1,2
++    $ python app/pktgen.py -l 1,4,5 -d vhost:1,vhost:2
+ 
+ and ``l2fwd`` container uses vhost 3 and 4.
+ 
+@@ -472,7 +472,7 @@ and ``l2fwd`` container uses vhost 3 and 4.
+ 
+     # Terminal 4
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/l2fwd.py -l 1,6 -d 3,4
++    $ python app/l2fwd.py -l 1,6 -d vhost:3,vhost:4
+ 
+ 
+ Then, configure network path by pactching each of ports
+@@ -548,7 +548,7 @@ First of all, launch ``spp-ctl`` and ``spp.py``.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ Launch ``spp_primary`` and ``spp_nfv`` containers in background.
+ It does not use physical NICs as similar to
+@@ -559,13 +559,13 @@ Use six ``spp_nfv`` containers for using six vhost PMDs.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x01 -dv 9
+-    $ python app/spp-nfv.py -i 1 -l 1,2
+-    $ python app/spp-nfv.py -i 2 -l 1,3
+-    $ python app/spp-nfv.py -i 3 -l 1,4
+-    $ python app/spp-nfv.py -i 4 -l 1,5
+-    $ python app/spp-nfv.py -i 5 -l 1,6
+-    $ python app/spp-nfv.py -i 6 -l 1,7
++    $ python3 app/spp-primary.py -l 0 -p 0x01 -dv 9
++    $ python3 app/spp-nfv.py -i 1 -l 1,2
++    $ python3 app/spp-nfv.py -i 2 -l 1,3
++    $ python3 app/spp-nfv.py -i 3 -l 1,4
++    $ python3 app/spp-nfv.py -i 4 -l 1,5
++    $ python3 app/spp-nfv.py -i 5 -l 1,6
++    $ python3 app/spp-nfv.py -i 6 -l 1,7
+ 
+ Assign ring and vhost PMDs. Each of vhost IDs to be the same as
+ its secondary ID.
+@@ -624,7 +624,7 @@ For ``pktgen`` container, assign lcores 8-10 and vhost 1-3.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/pktgen.py -l 8-10 -d 1-3 -T
++    $ python3 app/pktgen.py -l 8-10 -d vhost:1,vhost:2,vhost:3 -T
+ 
+ 
+ For ``load_balancer`` container, assign lcores 12-15 and vhost 4-6.
+@@ -636,7 +636,9 @@ or more queues. In this case, assign 4 queues.
+ 
+     # Terminal 4
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/load_balancer.py -l 11-14 -d 4-6 -fg -nq 4
++    $ python3 app/load_balancer.py -l 11-14 \
++      -d vhost:4,vhost:5,vhost:6 \
++      -fg -nq 4 \
+       -rx "(0,0,11),(0,1,11),(0,2,11)" \
+       -tx "(0,12),(1,12),(2,12)" \
+       -w 13,14 \
+-- 
+2.17.1
+

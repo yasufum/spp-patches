@@ -1,0 +1,68 @@
+From f6c0dcf55eb37345c0f824f1f0a9e2cbe2fd3016 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Tue, 25 Feb 2020 19:24:53 +0900
+Subject: [PATCH 00/29] Update SPP Container tools
+
+SPP Container tools do not work correctly with the latest SPP because
+vdev or other options are updated.
+
+This series of patches is for updating options of the tools for the
+latest SPP. Vdevs other than vhost are added to supported devices by
+this update. It also includes revising implementations, and updating
+documentation.
+
+Yasufumi Ogawa (29):
+  tools/sppc: update options for assigning devices
+  tools/sppc: update dev options of l2fwd
+  tools/sppc: add container name option
+  tools/sppc: update l2fwd app for name option
+  tools/sppc: update dev options of l3fwd
+  tools/sppc: update dev options of l3fwd-acl
+  tools/sppc: update dev options of testpmd
+  tools/sppc: update dev options of pktgen
+  tools/sppc: update dev options of load-balancer
+  tools/sppc: version checker for container DPDK ver
+  tools/sppc: check DPDK ver in load-balancer
+  tools/sppc: setup spp_pri opts in app_helper
+  tools/sppc: define file prefix for SPP
+  tools/sppc: update dev options of spp_primary
+  tools/sppc: setup with docker opts in SPP pri
+  tools/sppc: update calling setup_docker_opts()
+  tools/sppc: update dev options of helloworld
+  tools/sppc: update dev options of suricata
+  tools/sppc: update dev options of spp_nfv
+  tools/sppc: change to gen EAL opts with app name
+  tools/sppc: remove nouse variable
+  bin: remove sock files created by docker
+  tools/sppc: skip checking rule file if dry run
+  docs: revise examples in sppc
+  docs: update versions in examples in sppc
+  docs: update old example in spp_primary container
+  tools/sppc: python3 support for sppc build tool
+  docs: update app container help msg
+  docs: update howto define app container guide
+
+ bin/spp_pri.sh                             |   4 +-
+ docs/guides/tools/sppc/app_launcher.rst    | 447 +++++++++++----------
+ docs/guides/tools/sppc/build_img.rst       |  44 +-
+ docs/guides/tools/sppc/getting_started.rst | 167 ++++----
+ docs/guides/tools/sppc/howto_launcher.rst  | 210 ++++------
+ docs/guides/tools/sppc/usecases.rst        | 119 +++---
+ tools/sppc/app/helloworld.py               |  31 +-
+ tools/sppc/app/l2fwd.py                    |  48 ++-
+ tools/sppc/app/l3fwd-acl.py                |  76 ++--
+ tools/sppc/app/l3fwd.py                    |  72 ++--
+ tools/sppc/app/load-balancer.py            |  66 +--
+ tools/sppc/app/pktgen.py                   |  44 +-
+ tools/sppc/app/spp-nfv.py                  |  41 +-
+ tools/sppc/app/spp-primary.py              |  87 +---
+ tools/sppc/app/suricata.py                 |  20 +-
+ tools/sppc/app/testpmd.py                  | 201 ++++-----
+ tools/sppc/build/main.py                   |  81 ++--
+ tools/sppc/lib/app_helper.py               | 384 +++++++++++++-----
+ tools/sppc/lib/common.py                   |   3 +
+ 19 files changed, 1125 insertions(+), 1020 deletions(-)
+
+-- 
+2.17.1
+

@@ -1,0 +1,36 @@
+From f44ca48075b49fe04b1a62393c856a333f0248df Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 19 Feb 2020 11:48:14 +0900
+Subject: [PATCH 22/29] bin: remove sock files created by docker
+
+If docker does mount a sock file without created before from DPDK while
+launching a container, docker create an empty directory which name is
+the same as the sock file.
+
+SPP startup script removes existing sock files before launching SPP
+processes, but does not directories. This update is to enable to remove
+directory.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/spp_pri.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index c0b0e1e..aca23a9 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -15,8 +15,8 @@ SOCK_MEMIF="/tmp/spp-memif.sock"
+ 
+ function clean_sock_files() {
+     # clean /tmp/sock*
+-    sudo rm -f ${SOCK_VHOST}*
+-    sudo rm -f ${SOCK_MEMIF}
++    sudo rm -rf ${SOCK_VHOST}*
++    sudo rm -rf ${SOCK_MEMIF}
+ }
+ 
+ # Add vhost vdevs named as such as `eth_vhost0`.
+-- 
+2.17.1
+

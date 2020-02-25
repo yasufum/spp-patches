@@ -1,0 +1,199 @@
+From ce54a255bcaa3bca55aca2d769e32a0ebed6651a Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 17 Feb 2020 20:17:15 +0900
+Subject: [PATCH 16/29] tools/sppc: update calling setup_docker_opts()
+
+As getting args of setup_docker_opts() was changed for supporting
+spp_primary, this update is to change the method call.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/l2fwd.py         |  6 +++---
+ tools/sppc/app/l3fwd-acl.py     | 12 +++++++-----
+ tools/sppc/app/l3fwd.py         |  6 +++---
+ tools/sppc/app/load-balancer.py |  6 +++---
+ tools/sppc/app/pktgen.py        |  6 +++---
+ tools/sppc/app/spp-primary.py   |  4 ++--
+ tools/sppc/app/testpmd.py       |  6 +++---
+ 7 files changed, 24 insertions(+), 22 deletions(-)
+
+diff --git a/tools/sppc/app/l2fwd.py b/tools/sppc/app/l2fwd.py
+index d6156a8..3bbaf34 100755
+--- a/tools/sppc/app/l2fwd.py
++++ b/tools/sppc/app/l2fwd.py
+@@ -59,8 +59,7 @@ def main():
+ 
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, container_image, sock_files)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+     # Check if the number of ports is even for l2fwd.
+     nof_ports = app_helper.count_ports(args.port_mask)
+@@ -93,7 +92,8 @@ def main():
+                      format(int(args.port_mask, 16), 'b')))
+         exit()
+ 
+-    cmds = docker_cmd + docker_opts + l2fwd_cmd + eal_opts + l2fwd_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        l2fwd_cmd + eal_opts + l2fwd_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/l3fwd-acl.py b/tools/sppc/app/l3fwd-acl.py
+index 46163f4..93c4866 100755
+--- a/tools/sppc/app/l3fwd-acl.py
++++ b/tools/sppc/app/l3fwd-acl.py
+@@ -163,8 +163,7 @@ def main():
+ 
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, container_image, sock_files)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+     # Check given number of ports is enough for portmask.
+     if (args.port_mask is None) or (args.dev_uids is None):
+@@ -209,13 +208,15 @@ def main():
+ 
+     if args.rule_ipv4 is not None:
+         if os.path.exists(args.rule_ipv4):
+-            l3fwd_opts += ['--rule_ipv4', '"{:s}"'.format(args.rule_ipv4), '\\']
++            l3fwd_opts += ['--rule_ipv4', '"{:s}"'.format(args.rule_ipv4),
++                           '\\']
+         else:
+             print('Error: "{}" does not exist'.format(args.rule_ipv4))
+             exit()
+     if args.rule_ipv6 is not None:
+         if os.path.exists(args.rule_ipv6):
+-            l3fwd_opts += ['--rule_ipv6', '"{:s}"'.format(args.rule_ipv6), '\\']
++            l3fwd_opts += ['--rule_ipv6', '"{:s}"'.format(args.rule_ipv6),
++                           '\\']
+         else:
+             print('Error: "{}" does not exist'.format(args.rule_ipv6))
+             exit()
+@@ -231,7 +232,8 @@ def main():
+     if args.no_numa is True:
+         l3fwd_opts += ['--no-numa', '\\']
+ 
+-    cmds = docker_cmd + docker_opts + l3fwd_cmd + eal_opts + l3fwd_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        l3fwd_cmd + eal_opts + l3fwd_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/l3fwd.py b/tools/sppc/app/l3fwd.py
+index 356b281..4a3d2a2 100755
+--- a/tools/sppc/app/l3fwd.py
++++ b/tools/sppc/app/l3fwd.py
+@@ -198,8 +198,7 @@ def main():
+ 
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, container_image, sock_files)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+     # Check given number of ports is enough for portmask.
+     if (args.port_mask is None) or (args.dev_uids is None):
+@@ -285,7 +284,8 @@ def main():
+     if args.ipv6 is True:
+         l3fwd_opts += ['--ipv6', '\\']
+ 
+-    cmds = docker_cmd + docker_opts + l3fwd_cmd + eal_opts + l3fwd_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        l3fwd_cmd + eal_opts + l3fwd_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/load-balancer.py b/tools/sppc/app/load-balancer.py
+index ec504e7..ea5fa19 100755
+--- a/tools/sppc/app/load-balancer.py
++++ b/tools/sppc/app/load-balancer.py
+@@ -91,8 +91,7 @@ def main():
+ 
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, container_image, sock_files)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+     cmd_path = '{0:s}/examples/{1:s}/{2:s}/{1:s}'.format(
+         env.RTE_SDK, app_name, env.RTE_TARGET)
+@@ -138,7 +137,8 @@ def main():
+     if args.pos_lb is not None:
+         lb_opts += ['--pos-lb', str(args.pos_lb)]
+ 
+-    cmds = docker_cmd + docker_opts + lb_cmd + eal_opts + lb_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        lb_cmd + eal_opts + lb_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/pktgen.py b/tools/sppc/app/pktgen.py
+index a7112e6..bcc8d42 100755
+--- a/tools/sppc/app/pktgen.py
++++ b/tools/sppc/app/pktgen.py
+@@ -92,8 +92,7 @@ def main():
+     else:
+         wd = '/root/pktgen-dpdk'
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-            args, container_image, sock_files, wd)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files, wd)
+ 
+     # Setup pktgen command
+     pktgen_cmd = ['pktgen', '\\']
+@@ -181,7 +180,8 @@ def main():
+     if args.numa is True:
+         pktgen_opts += ['-N', '\\']
+ 
+-    cmds = docker_cmd + docker_opts + pktgen_cmd + eal_opts + pktgen_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        pktgen_cmd + eal_opts + pktgen_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index 25f94ef..80b0c7b 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -103,8 +103,8 @@ def main():
+     else:
+         spp_opts += ['-s', '{}:{}'.format(ctl_ip, args.ctl_port), '\\']
+ 
+-    cmds = docker_cmd + docker_opts + [container_image] + spp_cmd + \
+-        eal_opts + spp_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        spp_cmd + eal_opts + spp_opts
+ 
+     if cmds[-1] == '\\':
+         cmds.pop()
+diff --git a/tools/sppc/app/testpmd.py b/tools/sppc/app/testpmd.py
+index 1ffb6eb..a84a175 100755
+--- a/tools/sppc/app/testpmd.py
++++ b/tools/sppc/app/testpmd.py
+@@ -475,8 +475,7 @@ def main():
+ 
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(
+-        args, container_image, sock_files)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+     cmd_path = 'testpmd'
+ 
+@@ -916,7 +915,8 @@ def main():
+     if args.no_mlockall is True:
+         testpmd_opts += ['--no-mlockall', '\\']
+ 
+-    cmds = docker_cmd + docker_opts + testpmd_cmd + eal_opts + testpmd_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        testpmd_cmd + eal_opts + testpmd_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+-- 
+2.17.1
+

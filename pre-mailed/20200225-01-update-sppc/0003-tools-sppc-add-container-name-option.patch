@@ -1,0 +1,40 @@
+From 1b92c2f3302c4e82184933a2c33f7b7fa6d8df92 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Sun, 16 Feb 2020 00:24:51 +0900
+Subject: [PATCH 03/29] tools/sppc: add container name option
+
+To assign a name of container, add `--name` option for docker.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index b5669da..cc042e5 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -98,6 +98,10 @@ def add_appc_args(parser):
+         '-v', '--volume',
+         nargs='*', type=str,
+         help='Bind mount a volume (for docker)')
++    parser.add_argument(
++        '--name',
++        type=str,
++        help='Name of container')
+     parser.add_argument(
+         '-nq', '--nof-queues',
+         type=int,
+@@ -206,6 +210,9 @@ def setup_docker_opts(args, container_image, sock_files, workdir=None):
+     if workdir is not None:
+         docker_opts += ['--workdir', workdir, '\\']
+ 
++    if args.name is not None:
++        docker_opts += ['--name', args.name, '\\']
++
+     if args.no_privileged is not True:
+         docker_opts += ['--privileged', '\\']
+ 
+-- 
+2.17.1
+

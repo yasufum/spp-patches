@@ -1,0 +1,39 @@
+From b644d04192ff09f00dd4438fe7d8080f62124db9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 19 Feb 2020 09:05:18 +0900
+Subject: [PATCH 21/29] tools/sppc: remove nouse variable
+
+This update is to remove variable `sock_files` which is not used
+anymore.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-primary.py | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index c719760..aa2bc81 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -60,18 +60,6 @@ def main():
+             common.IMG_BASE_NAMES['spp'],
+             args.dist_name, args.dist_ver)
+ 
+-    # Setup devices with given device UIDs.
+-    dev_uids_list = None
+-    # TODO(yasufum) Remove no need sock_files
+-    sock_files = []
+-    if args.dev_uids is not None:
+-        if app_helper.is_valid_dev_uids(args.dev_uids) is False:
+-            print('Invalid option: {}'.format(args.dev_uids))
+-            exit()
+-
+-        dev_uids_list = args.dev_uids.split(',')
+-        sock_files = app_helper.sock_files(dev_uids_list, is_spp_pri=True)
+-
+     app_opts = [
+         '-v', '/var/run/:/var/run/', '\\',
+         '-v', '/tmp:/tmp', '\\']
+-- 
+2.17.1
+

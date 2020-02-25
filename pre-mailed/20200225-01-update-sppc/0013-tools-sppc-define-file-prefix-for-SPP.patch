@@ -1,0 +1,30 @@
+From 78adea0d9cefed2b7d138728d8b0220f6604922c Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 17 Feb 2020 13:03:47 +0900
+Subject: [PATCH 13/29] tools/sppc: define file prefix for SPP
+
+Considering running multiple DPDK processes on the same host, add file
+prefix for containerized SPP processes.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/common.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tools/sppc/lib/common.py b/tools/sppc/lib/common.py
+index 657f812..a17a0dc 100644
+--- a/tools/sppc/lib/common.py
++++ b/tools/sppc/lib/common.py
+@@ -10,6 +10,9 @@ IMG_BASE_NAMES = {
+     }
+ 
+ 
++SPPC_FILE_PREFIX = 'sppc_spp_fp'
++
++
+ def print_pretty_commands(cmds):
+     """Print given command in pretty format."""
+ 
+-- 
+2.17.1
+

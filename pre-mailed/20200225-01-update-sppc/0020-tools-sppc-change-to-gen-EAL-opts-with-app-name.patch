@@ -1,0 +1,377 @@
+From 9422fc330e18e67a843822f1b5ae9b763a661c3e Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Wed, 19 Feb 2020 08:30:47 +0900
+Subject: [PATCH 20/29] tools/sppc: change to gen EAL opts with app name
+
+EAL options are setup in setup_eal_opts() which takes file prefix as an
+argument. The file prefix is generated before calling the method
+dynamically by using app name. However, the file prefix is only used by
+the method, so it is better to give app name to the method directly.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/helloworld.py    | 12 +++++-------
+ tools/sppc/app/l2fwd.py         | 13 ++++++-------
+ tools/sppc/app/l3fwd-acl.py     | 13 ++++++-------
+ tools/sppc/app/l3fwd.py         | 13 ++++++-------
+ tools/sppc/app/load-balancer.py | 15 ++++++---------
+ tools/sppc/app/pktgen.py        | 13 ++++++-------
+ tools/sppc/app/spp-nfv.py       | 12 +-----------
+ tools/sppc/app/spp-primary.py   | 13 ++++++++-----
+ tools/sppc/app/testpmd.py       | 11 +++++------
+ tools/sppc/lib/app_helper.py    | 12 ++++++++++--
+ 10 files changed, 59 insertions(+), 68 deletions(-)
+
+diff --git a/tools/sppc/app/helloworld.py b/tools/sppc/app/helloworld.py
+index 3b0b021..f6088e5 100755
+--- a/tools/sppc/app/helloworld.py
++++ b/tools/sppc/app/helloworld.py
+@@ -14,6 +14,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'helloworld'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for l2fwd application container")
+@@ -29,7 +32,6 @@ def parse_args():
+ 
+ def main():
+     args = parse_args()
+-    app_name = 'helloworld'
+ 
+     # Container image name such as 'sppc/dpdk-ubuntu:18.04'
+     if args.container_image is not None:
+@@ -56,15 +58,11 @@ def main():
+ 
+     # Setup helloworld run on container.
+     cmd_path = '{0:s}/examples/{2:s}/{1:s}/{2:s}'.format(
+-        env.RTE_SDK, env.RTE_TARGET, app_name)
++        env.RTE_SDK, env.RTE_TARGET, APP_NAME)
+ 
+     hello_cmd = [cmd_path, '\\']
+ 
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix(app_name)
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # No application specific options for helloworld
+     hello_opts = []
+diff --git a/tools/sppc/app/l2fwd.py b/tools/sppc/app/l2fwd.py
+index 3bbaf34..654a512 100755
+--- a/tools/sppc/app/l2fwd.py
++++ b/tools/sppc/app/l2fwd.py
+@@ -14,6 +14,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'l2fwd'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for l2fwd application container")
+@@ -68,17 +71,13 @@ def main():
+         exit()
+ 
+     # Setup l2fwd command run on container.
+-    cmd_path = '{0:s}/examples/l2fwd/{1:s}/l2fwd'.format(
+-        env.RTE_SDK, env.RTE_TARGET)
++    cmd_path = '{0:s}/examples/{2:s}/{1:s}/{2:s}'.format(
++        env.RTE_SDK, env.RTE_TARGET, APP_NAME)
+ 
+     l2fwd_cmd = [cmd_path, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix('l2fwd')
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # Setup l2fwd options.
+     l2fwd_opts = ['-p', args.port_mask, '\\']
+diff --git a/tools/sppc/app/l3fwd-acl.py b/tools/sppc/app/l3fwd-acl.py
+index 93c4866..11dcc85 100755
+--- a/tools/sppc/app/l3fwd-acl.py
++++ b/tools/sppc/app/l3fwd-acl.py
+@@ -15,6 +15,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'l3fwd-acl'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for l3fwd-acl application container")
+@@ -175,17 +178,13 @@ def main():
+         exit()
+ 
+     # Setup l3fwd-acl command runs on container.
+-    cmd_path = '{0:s}/examples/l3fwd-acl/{1:s}/l3fwd-acl'.format(
+-        env.RTE_SDK, env.RTE_TARGET)
++    cmd_path = '{0:s}/examples/{2:s}/{1:s}/{2:s}'.format(
++        env.RTE_SDK, env.RTE_TARGET, APP_NAME)
+ 
+     l3fwd_cmd = [cmd_path, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix('l3fwd-acl')
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # Setup l3fwd-acl options.
+     l3fwd_opts = ['-p', args.port_mask, '\\']
+diff --git a/tools/sppc/app/l3fwd.py b/tools/sppc/app/l3fwd.py
+index 4a3d2a2..7c6146f 100755
+--- a/tools/sppc/app/l3fwd.py
++++ b/tools/sppc/app/l3fwd.py
+@@ -15,6 +15,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'l3fwd'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for l3fwd application container")
+@@ -210,17 +213,13 @@ def main():
+         exit()
+ 
+     # Setup l3fwd command runs on container.
+-    cmd_path = '{0:s}/examples/l3fwd/{1:s}/l3fwd'.format(
+-        env.RTE_SDK, env.RTE_TARGET)
++    cmd_path = '{0:s}/examples/{2:s}/{1:s}/{2:s}'.format(
++        env.RTE_SDK, env.RTE_TARGET, APP_NAME)
+ 
+     l3fwd_cmd = [cmd_path, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix('l3fwd')
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # Setup l3fwd options.
+     l3fwd_opts = ['-p', args.port_mask, '\\']
+diff --git a/tools/sppc/app/load-balancer.py b/tools/sppc/app/load-balancer.py
+index ea5fa19..3a3aa47 100755
+--- a/tools/sppc/app/load-balancer.py
++++ b/tools/sppc/app/load-balancer.py
+@@ -14,6 +14,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'load_balancer'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for load-balancer application container")
+@@ -58,8 +61,6 @@ def parse_args():
+ def main():
+     args = parse_args()
+ 
+-    app_name = 'load_balancer'
+-
+     # Container image name such as 'sppc/dpdk-ubuntu:18.04'
+     if args.container_image is not None:
+         container_image = args.container_image
+@@ -93,18 +94,14 @@ def main():
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+     docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+-    cmd_path = '{0:s}/examples/{1:s}/{2:s}/{1:s}'.format(
+-        env.RTE_SDK, app_name, env.RTE_TARGET)
++    cmd_path = '{0:s}/examples/{2:s}/{1:s}/{2:s}'.format(
++        env.RTE_SDK, env.RTE_TARGET, APP_NAME)
+ 
+     # Setup testpmd command.
+     lb_cmd = [cmd_path, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix(app_name)
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     lb_opts = []
+ 
+diff --git a/tools/sppc/app/pktgen.py b/tools/sppc/app/pktgen.py
+index bcc8d42..6b2f87e 100755
+--- a/tools/sppc/app/pktgen.py
++++ b/tools/sppc/app/pktgen.py
+@@ -14,6 +14,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'pktgen'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for pktgen-dpdk application container")
+@@ -92,17 +95,13 @@ def main():
+     else:
+         wd = '/root/pktgen-dpdk'
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = app_helper.setup_docker_opts(args, sock_files, wd)
++    docker_opts = app_helper.setup_docker_opts(args, sock_files, None, wd)
+ 
+     # Setup pktgen command
+-    pktgen_cmd = ['pktgen', '\\']
++    pktgen_cmd = [APP_NAME, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix('pktgen')
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # Setup matrix for assignment of cores and ports.
+     if args.matrix is not None:
+diff --git a/tools/sppc/app/spp-nfv.py b/tools/sppc/app/spp-nfv.py
+index 3d608f3..2019552 100755
+--- a/tools/sppc/app/spp-nfv.py
++++ b/tools/sppc/app/spp-nfv.py
+@@ -65,17 +65,7 @@ def main():
+     # Setup spp_nfv command.
+     spp_cmd = [app_name, '\\']
+ 
+-    # Do not use 'app_helper.setup_eal_opts()' because spp_nfv does
+-    # not use virtio.
+-    #core_opt = app_helper.get_core_opt(args)
+-    #mem_opt = app_helper.get_mem_opt(args)
+-    #eal_opts = [
+-    #    core_opt['attr'], core_opt['val'], '\\',
+-    #    '-n', str(args.nof_memchan), '\\',
+-    #    mem_opt['attr'], mem_opt['val'], '\\',
+-    #    '--proc-type', 'secondary', '\\',
+-    #    '--', '\\']
+-    eal_opts = app_helper.setup_eal_opts(args, common.SPPC_FILE_PREFIX,
++    eal_opts = app_helper.setup_eal_opts(args, app_name=None,
+                                          proc_type='secondary')
+ 
+     spp_opts = []
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index 5cc12ed..c719760 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -74,8 +74,12 @@ def main():
+ 
+     app_opts = [
+         '-v', '/var/run/:/var/run/', '\\',
+-        '-v', '/tmp:/tmp', '\\',
+-        '--net', 'host', '\\']
++        '-v', '/tmp:/tmp', '\\']
++
++    # Use host network if attaching TAP device to show them on the host.
++    for dev_uid in args.dev_uids.split(','):
++        if 'tap' in dev_uid:
++            app_opts += ['--net', 'host', '\\']
+ 
+     docker_opts = app_helper.setup_docker_opts(
+             args, None, app_opts)
+@@ -83,9 +87,8 @@ def main():
+     # Setup spp primary command.
+     spp_cmd = [app_name, '\\']
+ 
+-    eal_opts = app_helper.setup_eal_opts(args, common.SPPC_FILE_PREFIX,
+-                                         proc_type='primary',
+-                                         is_spp_pri=True)
++    eal_opts = app_helper.setup_eal_opts(args, app_name=None,
++                                         proc_type='primary', is_spp_pri=True)
+ 
+     spp_opts = []
+     # Check for other mandatory opitons.
+diff --git a/tools/sppc/app/testpmd.py b/tools/sppc/app/testpmd.py
+index a84a175..225a85d 100755
+--- a/tools/sppc/app/testpmd.py
++++ b/tools/sppc/app/testpmd.py
+@@ -15,6 +15,9 @@ from lib import app_helper
+ from lib import common
+ 
+ 
++APP_NAME = 'testpmd'
++
++
+ def parse_args():
+     parser = argparse.ArgumentParser(
+         description="Launcher for testpmd application container")
+@@ -477,17 +480,13 @@ def main():
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+     docker_opts = app_helper.setup_docker_opts(args, sock_files)
+ 
+-    cmd_path = 'testpmd'
++    cmd_path = APP_NAME  # testpmd is included in $PATH on container
+ 
+     # Setup testpmd command.
+     testpmd_cmd = [cmd_path, '\\']
+ 
+     # Setup EAL options.
+-    if args.name is not None:
+-        file_prefix = app_helper.gen_sppc_file_prefix(args.name)
+-    else:
+-        file_prefix = app_helper.gen_sppc_file_prefix('testpmd')
+-    eal_opts = app_helper.setup_eal_opts(args, file_prefix)
++    eal_opts = app_helper.setup_eal_opts(args, APP_NAME)
+ 
+     # Setup testpmd options
+     testpmd_opts = []
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index f5c65f8..7c48198 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -159,7 +159,7 @@ def get_mem_opt(args):
+     return mem_opt
+ 
+ 
+-def setup_eal_opts(args, file_prefix, proc_type='auto', is_spp_pri=False,
++def setup_eal_opts(args, app_name=None, proc_type='auto', is_spp_pri=False,
+                    hugedir=None):
+     core_opt = get_core_opt(args)
+     mem_opt = get_mem_opt(args)
+@@ -224,6 +224,14 @@ def setup_eal_opts(args, file_prefix, proc_type='auto', is_spp_pri=False,
+     if args.single_file_segments is True:
+         eal_opts += ['--single-file-segments', '\\']
+ 
++    # Generate unique --file-prefix value for app container, or use common
++    # value for spp_primary and secondary.
++    if args.name is not None:
++        file_prefix = _gen_sppc_file_prefix(args.name)
++    elif app_name is not None and app_name.__class__ is str:
++        file_prefix = _gen_sppc_file_prefix(app_name)
++    else:
++        file_prefix = common.SPPC_FILE_PREFIX
+     eal_opts += [
+         '--file-prefix', file_prefix, '\\',
+         '--', '\\']
+@@ -400,7 +408,7 @@ def cores_to_list(core_opt):
+     return res
+ 
+ 
+-def gen_sppc_file_prefix(app_name):
++def _gen_sppc_file_prefix(app_name):
+     """Generate a unique file prefix of DPDK for SPP Container app."""
+ 
+     return 'sppc-{:s}-{:s}'.format(app_name, secrets.token_hex(8))
+-- 
+2.17.1
+
