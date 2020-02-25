@@ -1,0 +1,173 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1198503oog;
+        Mon, 24 Feb 2020 21:56:53 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyRF7mWlTTCT/jsIdZlGV8+jc6tBmPUUebHMgBcebMYIGzSGxc8sdntsxpKevl0Udokc5gm
+X-Received: by 2002:a63:8c18:: with SMTP id m24mr58159967pgd.70.1582610212820;
+        Mon, 24 Feb 2020 21:56:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582610212; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Uy47rAztQmjocMtRSkjAdR5TX0Ao09yvP3kAUOlzjR2hs6DUztyFZ2irDentNBhiqp
+         Zos/SGkEV242rg1JgcEYDOXrytgahBdTkouMK/fC98BzXBF5xVpHOAe7rZJ1qbTVQwyr
+         WDVRhveQ4ig5ju7fmdKsBhzFI1jihxUBlJUwNyETZwN6M4XcezWAHBl3YwSKsoEdyvWU
+         xDjj2zPv8KZczC3jDfeK5adsQ7NRR2WwK2Ok1xK8DhO7r0ICuoBYLkhlUJmIqEMHP+9L
+         6HvbOfPh06WaC8njog5Ss0Pkx9cHyV+xKS0hkdC4eH6vWPazo3E9X2ts2InP5godHo52
+         u7qA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=0tRjVajlv3Crhx3yR4l9jqh9zioXDozmEkwJNyFc4Vs=;
+        b=Cq3YNJ2WGFuxh9vPY6XQfgCzaJKssMu84yRXGBi2G92KmEVcnCGwDUI3sR87hhusZS
+         BrC3m/VVTU9G9pQN7QijinpLbXlSCaw0RBxiSfqOn7bjSeKVx/PVHyOz56Dile2LEUDS
+         OMbjCAZsSqj+bzpEr0bMMlAF4w8fVhIwv4ZcJv5gytl3wXe3f8ROEfxqKLkaEYiT42EL
+         rRQfedQj+WdyRPFM8QHuyLV9qp8bsoqyvdwxxGok1MsLmgC6ihKkBXyyxvHX32SO59H5
+         T4Lu7GRZbPtO/jKstmqna8x6E/9B+3jCmafJGt6RKm9Zii+HhB4br8onIlBGo70T9bx9
+         djFg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id y21si15006608pfm.184.2020.02.24.21.56.52
+        for <yasufum.o@gmail.com>;
+        Mon, 24 Feb 2020 21:56:52 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd102.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id F252E120068;
+	Tue, 25 Feb 2020 14:56:51 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd102.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6800WMATURXFB0@dDREAMS>; Tue,
+ 25 Feb 2020 14:56:51 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP id CFCB67E603C;	Tue,
+ 25 Feb 2020 14:56:51 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE7CB8E6056;	Tue,
+ 25 Feb 2020 14:56:51 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id CCED08E6051;	Tue, 25 Feb 2020 14:56:51 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7A93C8E6056;	Tue,
+ 25 Feb 2020 14:56:51 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP;	Tue,
+ 25 Feb 2020 14:56:51 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v3 11/17] bin: add parameter for hardrare offload
+Date: Tue, 25 Feb 2020 14:56:33 +0900
+Message-id: <20200225055639.31616-12-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+References: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds config for the following to support hardware offload:
+  - multi-queue setting
+  - whitelist
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ bin/sample/config.sh | 15 +++++++++++++++
+ bin/spp_pri.sh       | 26 +++++++++++++++++++++++++-
+ bin/start.sh         |  2 ++
+ 3 files changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/bin/sample/config.sh b/bin/sample/config.sh
+index ec4d4b8..214757e 100644
+--- a/bin/sample/config.sh
++++ b/bin/sample/config.sh
+@@ -29,3 +29,18 @@ PRI_PORTMASK=0x03  # total num of ports of spp_primary.
+ # Log files are created in 'spp/log/'.
+ SPP_CTL_LOG=spp_ctl.log
+ PRI_LOG=spp_primary.log
++
++# number of ports for multi-queue setting.
++#PRI_PORT_QUEUE=(
++#    "0 rxq 16 txq 16"
++#)
++
++# Add a PCI device in white list.
++# `dv_flow_en=1` is required for HW offload with Mellanox NIC.
++# Set a nonzero value to enables the DV flow steering assuming it is
++# supported by the driver.
++# https://doc.dpdk.org/guides/nics/mlx5.html
++#PRI_WHITE_LIST=(
++#    "0000:04:00.0,dv_flow_en=1"
++#    "0000:05:00.0"
++#)
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index c0b0e1e..6238ee1 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -9,6 +9,8 @@ SPP_PRI_RING=""
+ SPP_PRI_TAP=""
+ SPP_PRI_MEMIF=""
+ SPP_PRI_VDEVS=""
++SPP_PRI_PORT_QUEUE=""
++SPP_PRI_WHITE_LIST=""
+ 
+ SOCK_VHOST="/tmp/sock"
+ SOCK_MEMIF="/tmp/spp-memif.sock"
+@@ -64,6 +66,26 @@ function setup_vdevs() {
+     fi
+ }
+ 
++# Add queue number to port
++function setup_queue_number() {
++    if [ ${#PRI_PORT_QUEUE[@]} ]; then
++        for (( i=0; i < ${#PRI_PORT_QUEUE[@]}; i++)); do
++            SPP_PRI_PORT_QUEUE="
++                ${SPP_PRI_PORT_QUEUE} --port-num ${PRI_PORT_QUEUE[${i}]}"
++        done
++    fi
++}
++
++# Add whitelist
++function setup_whitelist() {
++    if [ ${#PRI_WHITE_LIST[@]} ]; then
++        for (( i=0; i < ${#PRI_WHITE_LIST[@]}; i++)); do
++            SPP_PRI_WHITE_LIST="
++                ${SPP_PRI_WHITE_LIST} -w ${PRI_WHITE_LIST[${i}]}"
++        done
++    fi
++}
++
+ # Launch spp_primary.
+ function spp_pri() {
+     SPP_PRI_BIN=${SPP_DIR}/src/primary/${RTE_TARGET}/spp_primary
+@@ -86,10 +108,12 @@ function spp_pri() {
+         ${SPP_PRI_TAP} \
+         ${SPP_PRI_MEMIF} \
+         ${SPP_PRI_VDEVS} \
++        ${SPP_PRI_WHITE_LIST} \
+         -- \
+         -p ${PRI_PORTMASK} \
+         -n ${NUM_RINGS} \
+-        -s ${SPP_CTL_IP}:5555"
++        -s ${SPP_CTL_IP}:5555 \
++        ${SPP_PRI_PORT_QUEUE}"
+ 
+     if [ ${DRY_RUN} ]; then
+         echo ${cmd}
+diff --git a/bin/start.sh b/bin/start.sh
+index eecb2ed..28dc3d9 100755
+--- a/bin/start.sh
++++ b/bin/start.sh
+@@ -45,6 +45,8 @@ function start_spp_pri() {
+     setup_tap_vdevs  # setup vdevs of net_tap
+     setup_memif_vdevs  # setup vdevs of net_memif
+     setup_vdevs  # setup any of vdevs
++    setup_queue_number  # setup port number
++    setup_whitelist  # setup whitelist
+     spp_pri  # launch spp_primary
+ }
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,349 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1198608oog;
+        Mon, 24 Feb 2020 21:57:01 -0800 (PST)
+X-Google-Smtp-Source: APXvYqx5CdBlIX39qQUTaFy+MoZYItARmiji6I7vg/h4ABba7uiSBRs//OpNid1cjoY2GRo+QLXZ
+X-Received: by 2002:a17:90a:d103:: with SMTP id l3mr3420000pju.116.1582610220712;
+        Mon, 24 Feb 2020 21:57:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582610220; cv=none;
+        d=google.com; s=arc-20160816;
+        b=CXUr2YyIopvDEE8JD5YJMDa7fGD/RxdVae0kCj8Y3p1YSdKGXfbkPNSnD6w5qa/2p9
+         OmZDIR2lx+oyF2JnIQipDj5TNDN25cmhU1NCJV7xkOwXfK72pbnFpvkBA/5JDSk8U3T9
+         kEaz2K8kCJGkjzAjk2dk8HQPTGqQ1A6Vu8Lo5d4MKqsa9Sge9SGP4kkRWeh/Q8Vw+8q9
+         9dOiUghW3+B9aaHKqLSPAALPEJ2PiRsPDaBtT7H13m/IbRDM5t4ZxE4xKd3/A11XLHTi
+         8zfnqnys9w5V8SwOnH78s/QI32g/BUc5NElo9UPTgj/MCln8nRQuRWhoBCk00a6RmPdk
+         Y9MA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=636p9lZd5B/C6mVJSMmwun5ZOLBT9e1aO5F+8qu2hT0=;
+        b=wOFdaTW/x3W28npk8YxKO/lpUoZZ11IoTLQlu1oeCtzG6YdTuW9cZyQxML8PWE8Q16
+         qkHNBk06CFfUsi3ai7Ik24fmTaJ6PQSQeUAcPmNC71p4r2y825aTjOQHHhQekZz/gd3J
+         +je6RPVD9MRgRir13eqV4iT6/cgX1ujqC/n+sCJF6Ld5oyVlQOV602CbCDSpdt/Mb9jk
+         UVng5JS6NiYMaW+ZaL2dNIYZCfeoVlAExbcILjjFKRMtCuLOKHP9rnDr5+jxPVci5dJa
+         m7OqgfNiL2Uo+lhdf0eSNdaMIgSWWUumHeVD3DDKNH5PB8idpoULKbw7mEsLfx7EyZ27
+         Kjog==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id y5si12075614pgb.130.2020.02.24.21.57.00
+        for <yasufum.o@gmail.com>;
+        Mon, 24 Feb 2020 21:57:00 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd101.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id EC51912010F;
+	Tue, 25 Feb 2020 14:56:59 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd101.ddreams.local
+ (dDREAMS) with ESMTP id <0Q680035STUXJ560@dDREAMS>; Tue,
+ 25 Feb 2020 14:56:57 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP id 149747E603B;	Tue,
+ 25 Feb 2020 14:56:57 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11A6A8E605A;	Tue,
+ 25 Feb 2020 14:56:57 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 072B78E6062;	Tue, 25 Feb 2020 14:56:57 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0E98D8E6055;	Tue,
+ 25 Feb 2020 14:56:56 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP;	Tue,
+ 25 Feb 2020 14:56:56 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v3 15/17] cli: add support of rte_flow in nfv
+Date: Tue, 25 Feb 2020 14:56:37 +0900
+Message-id: <20200225055639.31616-16-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+References: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch implements support of multi-queue in nfv command.
+  - nfv; status
+  - nfv; port
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ src/cli/commands/nfv.py | 245 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 179 insertions(+), 66 deletions(-)
+
+diff --git a/src/cli/commands/nfv.py b/src/cli/commands/nfv.py
+index 6349823..0feb4ac 100644
+--- a/src/cli/commands/nfv.py
++++ b/src/cli/commands/nfv.py
+@@ -260,49 +260,123 @@ class SppNfv(object):
+     def _compl_patch(self, sub_tokens):
+         """Complete `patch` command."""
+ 
+-        # Patch command consists of three tokens max, for instance,
+-        # `nfv 1; patch phy:0 ring:1`.
+-        if len(sub_tokens) < 4:
+-            res = []
+-
+-            if self.use_cache is False:
+-                self.ports, self.patches = self._get_ports_and_patches()
++        res = []
++        candidates = []
++        # index 0 is "port", so from 1
++        index = 1
++
++        # compl_phase "src_res_uid" : candidate is src RES_UID or reset
++        # compl_phase "src_nq"      : candidate is nq
++        # compl_phase "src_q_no"    : candidate is queue no
++        # compl_phase "dst_res_uid" : candidate is dst RES_UID
++        # compl_phase "dst_nq"      : candidate is nq
++        # compl_phase "dst_q_no"    : candidate is queue no
++        # compl_phase None          : candidate is None
++        compl_phase = "src_res_uid"
++
++        if self.use_cache is False:
++            self.ports, self.patches = self._get_ports_and_patches()
++
++        # Get patched ports of src and dst to be used for completion.
++        src_ports = []
++        dst_ports = []
++        for pt in self.patches:
++            src_ports.append(pt['src'])
++            dst_ports.append(pt['dst'])
++
++        while index < len(sub_tokens):
++            if compl_phase == "src_nq" or compl_phase == "dst_nq":
++                if sub_tokens[index - 1] == "reset":
++                    candidates = []
++                    compl_phase = None
++                    continue
++
++                queue_no_list = []
++                for port in self.ports:
++                    split_port = port.split()
++                    if len(split_port) != 3:
++                        continue
++                    if sub_tokens[index - 1] != split_port[0]:
++                        continue
++                    queue_no_list.append(split_port[2])
++
++                if len(queue_no_list) == 0:
++                    if compl_phase == "src_nq":
++                        compl_phase = "dst_res_uid"
++                    elif compl_phase == "dst_nq":
++                        compl_phase = None
++
++            if compl_phase == "src_res_uid":
++                candidates = []
++                for port in self.ports:
++                    if port in src_ports:
++                        continue
++                    if port in candidates:
++                        continue
++                    candidates.append(port.split()[0])
++
++                # If some of ports are patched, `reset` should be included
++                if len(self.patches) != 0:
++                    candidates.append("reset")
++
++                compl_phase = "src_nq"
++
++            elif compl_phase == "src_nq":
++                candidates = ["nq"]
++                compl_phase = "src_q_no"
++
++            elif compl_phase == "src_q_no":
++                candidates = []
++                for queue_no in queue_no_list:
++                    res_uid = "{0} nq {1}".format(
++                        sub_tokens[index - 2], queue_no)
++                    if res_uid in src_ports:
++                        continue
++                    candidates.append(queue_no)
++                compl_phase = "dst_res_uid"
++
++            elif compl_phase == "dst_res_uid":
++                candidates = []
++                for port in self.ports:
++                    if port in dst_ports:
++                        continue
++                    if port in candidates:
++                        continue
++                    candidates.append(port.split()[0])
++
++                compl_phase = "dst_nq"
++
++            elif compl_phase == "dst_nq":
++                candidates = ["nq"]
++                compl_phase = "dst_q_no"
++
++            elif compl_phase == "dst_q_no":
++                candidates = []
++                for queue_no in queue_no_list:
++                    res_uid = "{0} nq {1}".format(
++                        sub_tokens[index - 2], queue_no)
++                    if res_uid in dst_ports:
++                        continue
++                    candidates.append(queue_no)
++                compl_phase = None
+ 
+-            # Get patched ports of src and dst to be used for completion.
+-            src_ports = []
+-            dst_ports = []
+-            for pt in self.patches:
+-                src_ports.append(pt['src'])
+-                dst_ports.append(pt['dst'])
+-
+-            # Remove patched ports from candidates.
+-            target_idx = len(sub_tokens) - 1  # target is src or dst
+-            tmp_ports = self.ports[:]  # candidates
+-            if target_idx == 1:  # find src port
+-                # If some of ports are patched, `reset` should be included.
+-                if self.patches != []:
+-                    tmp_ports.append('reset')
+-                for pt in src_ports:
+-                    tmp_ports.remove(pt)  # remove patched ports
+-            else:  # find dst port
+-                # If `reset` is given, no need to show dst ports.
+-                if sub_tokens[target_idx - 1] == 'reset':
+-                    tmp_ports = []
++            else:
++                candidates = []
++                compl_phase = None
++
++            index += 1
++
++        last_index = len(sub_tokens) - 1
++        for candidate in candidates:
++            if candidate.startswith(sub_tokens[last_index]):
++                # Completion does not work correctly if `:` is included in
++                # tokens. Required to create keyword only after `:`.
++                if ':' in sub_tokens[last_index]:  # 'ring:' or 'ring:0'
++                    res.append(candidate.split(':')[1])  # add only after `:`
+                 else:
+-                    for pt in dst_ports:
+-                        tmp_ports.remove(pt)
+-
+-            # Return candidates.
+-            for kw in tmp_ports:
+-                if kw.startswith(sub_tokens[target_idx]):
+-                    # Completion does not work correctly if `:` is included in
+-                    # tokens. Required to create keyword only after `:`.
+-                    if ':' in sub_tokens[target_idx]:  # 'ring:' or 'ring:0'
+-                        res.append(kw.split(':')[1])  # add only after `:`
+-                    else:
+-                        res.append(kw)
++                    res.append(candidate)
+ 
+-            return res
++        return res
+ 
+     def _run_status(self):
+         """Run `status` command."""
+@@ -407,34 +481,73 @@ class SppNfv(object):
+     def _run_patch(self, params):
+         """Run `patch` command."""
+ 
++        params_index = 0
++        req_params = {}
++        flg_reset = False
++        flg_mq = False
++
+         if len(params) == 0:
+-            print('Params are required!')
+-        elif params[0] == 'reset':
+-            res = self.spp_ctl_cli.delete('nfvs/%d/patches' % self.sec_id)
+-            if res is not None:
+-                error_codes = self.spp_ctl_cli.rest_common_error_codes
+-                if res.status_code == 204:
+-                    print('Clear all of patches.')
+-                elif res.status_code in error_codes:
+-                    pass
+-                else:
+-                    print('Error: unknown response.')
++            print('Error: Params are required!')
++            return
++
++        while params_index < len(params):
++            if params_index == 0 and params[0] == "reset":
++                flg_reset = True
++                break
++
++            elif params_index == 0:
++                req_params["src"] = params[params_index]
++
++                if params_index + 2 < len(params):
++                    if params[params_index + 1] == "nq":
++                        params_index += 2
++                        req_params["src"] += "nq" + params[params_index]
++                        flg_mq = True
++
++            elif ((params_index == 1 and flg_mq is False) or
++                    (params_index == 3 and flg_mq is True)):
++                req_params["dst"] = params[params_index]
++
++                if params_index + 2 < len(params):
++                    if params[params_index + 1] == "nq":
++                        params_index += 2
++                        req_params["dst"] += "nq" + params[params_index]
++
++            params_index += 1
++
++        if flg_reset is False:
++            if "src" not in req_params:
++                print("Error: Src port is required!")
++                return
++
++            if "dst" not in req_params:
++                print("Error: Dst port is required!")
++                return
++
++        url = "nfvs/{0}/patches".format(self.sec_id)
++        if flg_reset:
++            res = self.spp_ctl_cli.delete(url)
+         else:
+-            if len(params) < 2:
+-                print('Dst port is required!')
+-            else:
+-                req_params = {'src': params[0], 'dst': params[1]}
+-                res = self.spp_ctl_cli.put(
+-                        'nfvs/%d/patches' % self.sec_id, req_params)
+-                if res is not None:
+-                    error_codes = self.spp_ctl_cli.rest_common_error_codes
+-                    if res.status_code == 204:
+-                        print('Patch ports (%s -> %s).' % (
+-                            params[0], params[1]))
+-                    elif res.status_code in error_codes:
+-                        pass
+-                    else:
+-                        print('Error: unknown response.')
++            res = self.spp_ctl_cli.put(url, req_params)
++
++        if res is None:
++            return
++
++        error_codes = self.spp_ctl_cli.rest_common_error_codes
++        if res.status_code in error_codes:
++            pass
++        elif res.status_code != 204:
++            print('Error: unknown response.')
++            return
++
++        if flg_reset:
++            print("Clear all of patches.")
++        else:
++            src = (req_params["src"].replace("nq", " nq ")
++                   if "nq" in req_params["src"] else req_params["src"])
++            dst = (req_params["dst"].replace("nq", " nq ")
++                   if "nq" in req_params["dst"] else req_params["dst"])
++            print("Patch ports ({0} -> {1}).".format(src, dst))
+ 
+     def _run_exit(self):
+         """Run `exit` command."""
+-- 
+2.17.1
+

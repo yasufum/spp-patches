@@ -1,0 +1,146 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1198383oog;
+        Mon, 24 Feb 2020 21:56:44 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxDcLm0cCEOSd3U06LZyyhEfAuIUkoqa6IVqjrlHbl7yoEYWaQ8KMyKCQ6sJ8JQIYlMlmvr
+X-Received: by 2002:a17:902:76c5:: with SMTP id j5mr53723756plt.172.1582610204610;
+        Mon, 24 Feb 2020 21:56:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582610204; cv=none;
+        d=google.com; s=arc-20160816;
+        b=FqrVHILRC84eebqfrLzdjCrlqQ+Jr32A9bgBrmytkcphh3LCPRHuDIdbswm/MWfbht
+         MkBfleswAD8Sr1uBT9xdLOd6BKr9m5tks4cULfwolAH5bZruCQeyc+uf9AL6kSB0HF5Z
+         LRqLDiON+jebpooQ0qutFK3/cByvyUi6zJeS+tPA8raDKQsqRY7ag78qBnf+eY2i+BA+
+         rxEhZkmX6iJhM3AY2v4U3JJDayynRIYn5iO5Pmgrk8tBScy0NajvFph1/gePiwGLN3iu
+         cSVAgPSF3MFyC0bTHgf9IabNMIcZD1upYgkyw0US4/ApFU8A+f7j2sVxIwviV0+h8/q7
+         GX1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=A5w+Y9OCVg4LVN7INOvlAPzZrGOhZQyygitRvWxi9ZE=;
+        b=csMpVw/U9PyOAML/W1M7WGHcsYKi1jAb+Tf1m0nUe9l7+p0A1/dopZc4CRhdDujmUp
+         nmp/eZS4sYjOE1YS7J8CG7Zn7qnwQPf4HWwYTqkXgxJ8CF1r2kZ/tE+t3+VXYJIBp2Ga
+         F6eqcki7xVEbyfom4xXS1mqf8ne4OGkpkVjftjQNDkHbLU1GIMrsB93D1t33USV/gmFH
+         rKMbkSBHCywU6/sF02svDQDo/cUpEkQqPYlkW1E9NDnV/dYSufPBbPhP9d5BMi6N6X9n
+         uzdGBb2IS59VzaJqayrCfWY7d0ataJ7unjtBi4OYOykVea30FF0SbpP+n5zYf0/jI9f6
+         hlXQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id b190si15757966pga.234.2020.02.24.21.56.44
+        for <yasufum.o@gmail.com>;
+        Mon, 24 Feb 2020 21:56:44 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd105.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id D2370120100;
+	Tue, 25 Feb 2020 14:56:43 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd105.ddreams.local
+ (dDREAMS) with ESMTP id <0Q68012PTTUJ1690@dDREAMS>; Tue,
+ 25 Feb 2020 14:56:43 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP id B40617E6034;	Tue,
+ 25 Feb 2020 14:56:43 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B2D3E8E605D;	Tue,
+ 25 Feb 2020 14:56:43 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id B1C4A8E605C;	Tue, 25 Feb 2020 14:56:43 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8317E8E605A;	Tue,
+ 25 Feb 2020 14:56:42 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP;	Tue,
+ 25 Feb 2020 14:56:42 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v3 03/17] spp_mirror: add support of multi-queue
+Date: Tue, 25 Feb 2020 14:56:25 +0900
+Message-id: <20200225055639.31616-4-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+References: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+By changing common code under shared directory to achieve multi-queue,
+existing code of spp_mirror should be changed also for successful
+compile.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ src/mirror/mir_cmd_runner.c |  3 ++-
+ src/mirror/spp_mirror.c     | 12 ++++++++----
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/src/mirror/mir_cmd_runner.c b/src/mirror/mir_cmd_runner.c
+index fb1695f..5153b65 100644
+--- a/src/mirror/mir_cmd_runner.c
++++ b/src/mirror/mir_cmd_runner.c
+@@ -156,7 +156,8 @@ update_port(enum sppwk_action wk_action,
+ 	sppwk_get_mng_data(NULL, &comp_info_base, NULL, NULL,
+ 			&change_component, NULL);
+ 	comp_info = (comp_info_base + comp_lcore_id);
+-	port_info = get_sppwk_port(port->iface_type, port->iface_no);
++	port_info = get_sppwk_port(port->iface_type, port->iface_no,
++			port->queue_no);
+ 	if (dir == SPPWK_PORT_DIR_RX) {
+ 		nof_ports = &comp_info->nof_rx;
+ 		ports = comp_info->rx_ports;
+diff --git a/src/mirror/spp_mirror.c b/src/mirror/spp_mirror.c
+index e5852aa..2bfbf66 100644
+--- a/src/mirror/spp_mirror.c
++++ b/src/mirror/spp_mirror.c
+@@ -340,7 +340,8 @@ mirror_proc(int id)
+ 	nb_rx = sppwk_eth_ring_stats_rx_burst(rx->ethdev_port_id,
+ 			rx->iface_type, rx->iface_no, 0, bufs, MAX_PKT_BURST);
+ #else
+-	nb_rx = rte_eth_rx_burst(rx->ethdev_port_id, 0, bufs, MAX_PKT_BURST);
++	nb_rx = rte_eth_rx_burst(rx->ethdev_port_id, rx->queue_no, bufs,
++			MAX_PKT_BURST);
+ #endif
+ 
+ 	if (unlikely(nb_rx == 0))
+@@ -403,8 +404,8 @@ mirror_proc(int id)
+ 					tx->ethdev_port_id, tx->iface_type,
+ 					tx->iface_no, 0, copybufs, cnt);
+ #else
+-			nb_tx2 = rte_eth_tx_burst(tx->ethdev_port_id, 0,
+-					copybufs, cnt);
++			nb_tx2 = rte_eth_tx_burst(tx->ethdev_port_id,
++					tx->queue_no, copybufs, cnt);
+ #endif
+ 	}
+ 
+@@ -415,7 +416,8 @@ mirror_proc(int id)
+ 		nb_tx1 = sppwk_eth_ring_stats_tx_burst(tx->ethdev_port_id,
+ 				tx->iface_type, tx->iface_no, 0, bufs, nb_rx);
+ #else
+-		nb_tx1 = rte_eth_tx_burst(tx->ethdev_port_id, 0, bufs, nb_rx);
++		nb_tx1 = rte_eth_tx_burst(tx->ethdev_port_id, tx->queue_no,
++				bufs, nb_rx);
+ #endif
+ 	nb_tx = nb_tx1;
+ 
+@@ -685,12 +687,14 @@ get_mirror_status(unsigned int lcore_id, int id,
+ 	for (cnt = 0; cnt < path->nof_rx; cnt++) {
+ 		rx_ports[cnt].iface_type = path->ports[cnt].rx.iface_type;
+ 		rx_ports[cnt].iface_no   = path->ports[cnt].rx.iface_no;
++		rx_ports[cnt].queue_no   = path->ports[cnt].rx.queue_no;
+ 	}
+ 
+ 	memset(tx_ports, 0x00, sizeof(tx_ports));
+ 	for (cnt = 0; cnt < path->nof_tx; cnt++) {
+ 		tx_ports[cnt].iface_type = path->ports[cnt].tx.iface_type;
+ 		tx_ports[cnt].iface_no   = path->ports[cnt].tx.iface_no;
++		tx_ports[cnt].queue_no   = path->ports[cnt].tx.queue_no;
+ 	}
+ 
+ 	/* Set the information with the function specified by the command. */
+-- 
+2.17.1
+

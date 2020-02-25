@@ -1,0 +1,275 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp1198462oog;
+        Mon, 24 Feb 2020 21:56:50 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxXX4TOmH2h0/UpszpO4CBv7FN8tWOaR0tTuZxb0zeZlsoz9sbnPOTdIVmZ8StA4VjgmSGI
+X-Received: by 2002:aa7:8392:: with SMTP id u18mr55955599pfm.41.1582610210494;
+        Mon, 24 Feb 2020 21:56:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582610210; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Mlh6xZgnE+qOpUJtJJs+Zs+cGQG9Skd8UVPgpMoIVowsSoKAxLEJC1qM0k0CDLEi90
+         NJlcyzKaXD/RPH9MVC497zkQ4I5ngRg0x0iiyEVfJILg7Lp3083yXtFOv4RzsrPU9eJw
+         +LC1CnXGrcsQnwqr/D8N1OAn/ysdLfdbEWjl3qiD7vI+nDa6l75kX/HlEr9ikRdmxcCz
+         dn0O6riqNnjdWipP5jKmuQZAbeNX+Bpy9EDRLE/PTWCyN+Njnzzrt9D9BAT+990pP3OE
+         m5l/Y+INoRFwZ2nFTCudW2YkP8rxz4TzhubclzBXk4Hu6rAre9lNLWUbeQ06XzVSIMol
+         SnmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=6nw3bPvL8WFm6taI/lK77Q/AJeTJa6YsgvUmtYhPZ6o=;
+        b=rM3ghy7VHQ018LG6S3VEt8ewMPngFtJUT8XcuWiuFsq9wQyJjI5Zrydo/oRtgb68VR
+         OET4fvY0Omgzwy++8VhSHxVXvs0mILsh3bxFJtQm2UA9/bygxOct4eM4p17rIGX78mb6
+         TQ/EAUp0Hz/snoYzurqONVEMrCMLPd3U7/0k04Ot5xijTNTCGz0VAhfNt+bJVghioQtm
+         9xvzWLQYsNMfcn7G6QUmUOoUPg4PP+zinkL4fyliGahI9eecHw8lSeqDdniuzJ8VzVmM
+         lRUFwhVzKrZjHSqAoMcbaCkS4Ir4m8W8V8tn0XnpA4vj5ZS7A0ReZABA1Ua7uW4CF9hU
+         kWgA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id a18si1992842pjs.23.2020.02.24.21.56.50
+        for <yasufum.o@gmail.com>;
+        Mon, 24 Feb 2020 21:56:50 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id B2681120115;
+	Tue, 25 Feb 2020 14:56:49 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q680090TTUPPD90@dDREAMS>; Tue,
+ 25 Feb 2020 14:56:49 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP id 922D57E6036;	Tue,
+ 25 Feb 2020 14:56:49 +0900 (JST)
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90BB88E605D;	Tue,
+ 25 Feb 2020 14:56:49 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 8F77A8E605C;	Tue, 25 Feb 2020 14:56:49 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf101.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 440C28E6056;	Tue,
+ 25 Feb 2020 14:56:49 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf101.ddreams.local (Postfix) with ESMTP;	Tue,
+ 25 Feb 2020 14:56:49 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v3 09/17] spp_primary: add patterns of rte_flow
+Date: Tue, 25 Feb 2020 14:56:31 +0900
+Message-id: <20200225055639.31616-10-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+References: <20200219112155.13964-1-yamashita.hideyuki@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+To support rte_flow in SPP, this patch adds the following
+patterns of rte_flow.
+   - eth
+   - vlan
+Additional files should be added when new pattern should be
+newly supported by SPP.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ src/primary/flow/pattern/eth.c  | 63 +++++++++++++++++++++++++++++
+ src/primary/flow/pattern/eth.h  | 13 ++++++
+ src/primary/flow/pattern/vlan.c | 71 +++++++++++++++++++++++++++++++++
+ src/primary/flow/pattern/vlan.h | 13 ++++++
+ 4 files changed, 160 insertions(+)
+ create mode 100644 src/primary/flow/pattern/eth.c
+ create mode 100644 src/primary/flow/pattern/eth.h
+ create mode 100644 src/primary/flow/pattern/vlan.c
+ create mode 100644 src/primary/flow/pattern/vlan.h
+
+diff --git a/src/primary/flow/pattern/eth.c b/src/primary/flow/pattern/eth.c
+new file mode 100644
+index 0000000..d718b77
+--- /dev/null
++++ b/src/primary/flow/pattern/eth.c
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <rte_flow.h>
++
++#include "primary/flow/flow.h"
++#include "primary/flow/common.h"
++#include "eth.h"
++
++/* Define item "eth" operations */
++struct flow_detail_ops eth_ops_list[] = {
++	{
++		.token = "src",
++		.offset = offsetof(struct rte_flow_item_eth, src),
++		.size = sizeof(struct rte_ether_addr),
++		.flg_value = 1,
++		.parse_detail = str_to_rte_ether_addr,
++	},
++	{
++		.token = "dst",
++		.offset = offsetof(struct rte_flow_item_eth, dst),
++		.size = sizeof(struct rte_ether_addr),
++		.flg_value = 1,
++		.parse_detail = str_to_rte_ether_addr,
++	},
++	{
++		.token = "type",
++		.offset = offsetof(struct rte_flow_item_eth, type),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = str_to_rte_be16_t,
++	},
++	{
++		.token = NULL,
++	},
++};
++
++int
++append_item_eth_json(const void *element, int buf_size, char *pattern_str)
++{
++	const struct rte_flow_item_eth *eth = element;
++	char dst_mac[RTE_ETHER_ADDR_FMT_SIZE] = { 0 };
++	char src_mac[RTE_ETHER_ADDR_FMT_SIZE] = { 0 };
++	char tmp_str[128] = { 0 };
++
++	rte_ether_format_addr(dst_mac, RTE_ETHER_ADDR_FMT_SIZE, &eth->dst);
++	rte_ether_format_addr(src_mac, RTE_ETHER_ADDR_FMT_SIZE, &eth->src);
++
++	snprintf(tmp_str, 128,
++		"{\"dst\":\"%s\","
++		"\"src\":\"%s\","
++		"\"type\":\"0x%04x\"}",
++		dst_mac, src_mac, eth->type);
++
++	if ((int)strlen(pattern_str) + (int)strlen(tmp_str)
++		> buf_size)
++		return -1;
++
++	strncat(pattern_str, tmp_str, strlen(tmp_str));
++
++	return 0;
++}
+diff --git a/src/primary/flow/pattern/eth.h b/src/primary/flow/pattern/eth.h
+new file mode 100644
+index 0000000..550813e
+--- /dev/null
++++ b/src/primary/flow/pattern/eth.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _PRIMARY_FLOW_PATTERN_ETH_H_
++#define _PRIMARY_FLOW_PATTERN_ETH_H_
++
++extern struct flow_detail_ops eth_ops_list[];
++
++int append_item_eth_json(const void *element, int buf_size,
++	char *pattern_str);
++
++#endif
+diff --git a/src/primary/flow/pattern/vlan.c b/src/primary/flow/pattern/vlan.c
+new file mode 100644
+index 0000000..3ca8ebc
+--- /dev/null
++++ b/src/primary/flow/pattern/vlan.c
+@@ -0,0 +1,71 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#include <rte_flow.h>
++
++#include "primary/flow/flow.h"
++#include "primary/flow/common.h"
++#include "vlan.h"
++
++/* Define item "vlan" operations */
++struct flow_detail_ops vlan_ops_list[] = {
++	{
++		.token = "tci",
++		.offset = offsetof(struct rte_flow_item_vlan, tci),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = str_to_tci,
++	},
++	{
++		.token = "pcp",
++		.offset = offsetof(struct rte_flow_item_vlan, tci),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = set_pcp_in_tci,
++	},
++	{
++		.token = "dei",
++		.offset = offsetof(struct rte_flow_item_vlan, tci),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = set_dei_in_tci,
++	},
++	{
++		.token = "vid",
++		.offset = offsetof(struct rte_flow_item_vlan, tci),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = set_vid_in_tci,
++	},
++	{
++		.token = "inner_type",
++		.offset = offsetof(struct rte_flow_item_vlan, inner_type),
++		.size = sizeof(rte_be16_t),
++		.flg_value = 1,
++		.parse_detail = str_to_rte_be16_t,
++	},
++	{
++		.token = NULL,
++	},
++};
++
++int
++append_item_vlan_json(const void *element, int buf_size, char *pattern_str)
++{
++	const struct rte_flow_item_vlan *vlan = element;
++	char tmp_str[128] = { 0 };
++
++	snprintf(tmp_str, 128,
++		"{\"tci\":\"0x%04x\","
++		"\"inner_type\":\"0x%04x\"}",
++		vlan->tci, vlan->inner_type);
++
++	if ((int)strlen(pattern_str) + (int)strlen(tmp_str)
++		> buf_size)
++		return -1;
++
++	strncat(pattern_str, tmp_str, strlen(tmp_str));
++
++	return 0;
++}
+diff --git a/src/primary/flow/pattern/vlan.h b/src/primary/flow/pattern/vlan.h
+new file mode 100644
+index 0000000..50aef96
+--- /dev/null
++++ b/src/primary/flow/pattern/vlan.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: BSD-3-Clause
++ * Copyright(c) 2019 Nippon Telegraph and Telephone Corporation
++ */
++
++#ifndef _PRIMARY_FLOW_PATTERN_VLAN_H_
++#define _PRIMARY_FLOW_PATTERN_VLAN_H_
++
++extern struct flow_detail_ops vlan_ops_list[];
++
++int append_item_vlan_json(const void *element, int buf_size,
++	char *pattern_str);
++
++#endif
+-- 
+2.17.1
+
