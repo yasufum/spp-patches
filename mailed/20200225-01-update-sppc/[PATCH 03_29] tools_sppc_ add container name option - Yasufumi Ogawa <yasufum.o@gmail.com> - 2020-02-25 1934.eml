@@ -1,0 +1,51 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:34:56 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 03/29] tools/sppc: add container name option
+Date: Tue, 25 Feb 2020 19:34:20 +0900
+Message-Id: <20200225103446.8243-4-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+To assign a name of container, add `--name` option for docker.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index b5669da..cc042e5 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -98,6 +98,10 @@ def add_appc_args(parser):
+         '-v', '--volume',
+         nargs='*', type=str,
+         help='Bind mount a volume (for docker)')
++    parser.add_argument(
++        '--name',
++        type=str,
++        help='Name of container')
+     parser.add_argument(
+         '-nq', '--nof-queues',
+         type=int,
+@@ -206,6 +210,9 @@ def setup_docker_opts(args, container_image, sock_files, workdir=None):
+     if workdir is not None:
+         docker_opts += ['--workdir', workdir, '\\']
+ 
++    if args.name is not None:
++        docker_opts += ['--name', args.name, '\\']
++
+     if args.no_privileged is not True:
+         docker_opts += ['--privileged', '\\']
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,130 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:24 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 19/29] tools/sppc: update dev options of spp_nfv
+Date: Tue, 25 Feb 2020 19:34:36 +0900
+Message-Id: <20200225103446.8243-20-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+Update options for vdevs of spp_nfv container app.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-nfv.py     | 45 ++++++++++++++++-------------------
+ tools/sppc/app/spp-primary.py |  1 +
+ 2 files changed, 22 insertions(+), 24 deletions(-)
+
+diff --git a/tools/sppc/app/spp-nfv.py b/tools/sppc/app/spp-nfv.py
+index da9853b..3d608f3 100755
+--- a/tools/sppc/app/spp-nfv.py
++++ b/tools/sppc/app/spp-nfv.py
+@@ -18,6 +18,7 @@ def parse_args():
+         description="Launcher for spp-nfv application container")
+ 
+     parser = app_helper.add_eal_args(parser)
++    parser = app_helper.add_appc_args(parser)
+ 
+     # Application specific arguments
+     parser.add_argument(
+@@ -35,16 +36,16 @@ def parse_args():
+         help="Port for secondary of spp-ctl")
+ 
+     parser = app_helper.add_sppc_args(parser)
+-
+     return parser.parse_args()
+ 
+ 
+ def main():
+     args = parse_args()
+ 
++    app_name = 'spp_nfv'
++
+     # Setup docker command.
+     docker_cmd = ['sudo', 'docker', 'run', '\\']
+-    docker_opts = []
+ 
+     # Container image name such as 'sppc/spp-ubuntu:18.04'
+     if args.container_image is not None:
+@@ -54,33 +55,28 @@ def main():
+             common.IMG_BASE_NAMES['spp'],
+             args.dist_name, args.dist_ver)
+ 
+-    # This container is running in backgroud in defualt.
+-    if args.foreground is not True:
+-        docker_opts += ['-d', '\\']
+-    else:
+-        docker_opts += ['-it', '\\']
+-
+-    docker_opts += [
+-        '--privileged', '\\',  # should be privileged
+-        '-v', '/dev/hugepages:/dev/hugepages', '\\',
++    app_opts = [
+         '-v', '/var/run/:/var/run/', '\\',
+-        '-v', '/tmp/:/tmp/', '\\',
+-        container_image, '\\'
+-    ]
++        '-v', '/tmp/:/tmp/', '\\']
++
++    docker_opts = app_helper.setup_docker_opts(
++            args, None, app_opts)
+ 
+     # Setup spp_nfv command.
+-    spp_cmd = ['spp_nfv', '\\']
++    spp_cmd = [app_name, '\\']
+ 
+     # Do not use 'app_helper.setup_eal_opts()' because spp_nfv does
+     # not use virtio.
+-    core_opt = app_helper.get_core_opt(args)
+-    mem_opt = app_helper.get_mem_opt(args)
+-    eal_opts = [
+-        core_opt['attr'], core_opt['val'], '\\',
+-        '-n', str(args.nof_memchan), '\\',
+-        mem_opt['attr'], mem_opt['val'], '\\',
+-        '--proc-type', 'secondary', '\\',
+-        '--', '\\']
++    #core_opt = app_helper.get_core_opt(args)
++    #mem_opt = app_helper.get_mem_opt(args)
++    #eal_opts = [
++    #    core_opt['attr'], core_opt['val'], '\\',
++    #    '-n', str(args.nof_memchan), '\\',
++    #    mem_opt['attr'], mem_opt['val'], '\\',
++    #    '--proc-type', 'secondary', '\\',
++    #    '--', '\\']
++    eal_opts = app_helper.setup_eal_opts(args, common.SPPC_FILE_PREFIX,
++                                         proc_type='secondary')
+ 
+     spp_opts = []
+     # Check for other mandatory opitons.
+@@ -97,7 +93,8 @@ def main():
+     else:
+         spp_opts += ['-s', '{}:{}'.format(ctl_ip, args.ctl_port), '\\']
+ 
+-    cmds = docker_cmd + docker_opts + spp_cmd + eal_opts + spp_opts
++    cmds = docker_cmd + docker_opts + [container_image, '\\'] + \
++        spp_cmd + eal_opts + spp_opts
+     if cmds[-1] == '\\':
+         cmds.pop()
+     common.print_pretty_commands(cmds)
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index 80b0c7b..5cc12ed 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -62,6 +62,7 @@ def main():
+ 
+     # Setup devices with given device UIDs.
+     dev_uids_list = None
++    # TODO(yasufum) Remove no need sock_files
+     sock_files = []
+     if args.dev_uids is not None:
+         if app_helper.is_valid_dev_uids(args.dev_uids) is False:
+-- 
+2.17.1
+

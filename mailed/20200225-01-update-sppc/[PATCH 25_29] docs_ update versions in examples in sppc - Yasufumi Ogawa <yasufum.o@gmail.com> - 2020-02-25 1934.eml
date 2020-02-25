@@ -1,0 +1,332 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:34 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 25/29] docs: update versions in examples in sppc
+Date: Tue, 25 Feb 2020 19:34:42 +0900
+Message-Id: <20200225103446.8243-26-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+In examples, versions of Ubuntu and DPDK are just bit old. This patch
+is update them.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ docs/guides/tools/sppc/app_launcher.rst    | 20 ++--------
+ docs/guides/tools/sppc/build_img.rst       | 44 +++++++++++-----------
+ docs/guides/tools/sppc/getting_started.rst | 32 ++++++++--------
+ docs/guides/tools/sppc/usecases.rst        | 11 ------
+ 4 files changed, 41 insertions(+), 66 deletions(-)
+
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index 4d6492b..f1a590d 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -29,18 +29,6 @@ inside a container.
+     ---- testpmd.py
+ 
+ 
+-.. note::
+-
+-    As described in
+-    :ref:`sppc_gs_build_docker_imgs`
+-    section, you had better to use Ubuntu 16.04 with
+-    ``--dist-ver`` option because SPP container is not stable for running
+-    on the latest version.
+-
+-    Please notice that examples in this section does not use ``dist-ver``
+-    options explicitly for simplicity.
+-
+-
+ .. _sppc_appl_setup:
+ 
+ Setup
+@@ -816,10 +804,10 @@ and three vhost interfaces.
+ 
+     $ cd /path/to/spp/tools/sppc
+     $ python3 app/pktgen.py -l 8-14 -d vhost:1,vhost:2,vhost:3 \
+-      -fg --dist-ver 16.04
++      -fg
+      sudo docker run \
+      ...
+-     sppc/pktgen-ubuntu:16.04 \
++     sppc/pktgen-ubuntu:latest \
+      /root/dpdk/../pktgen-dpdk/app/x86_64-native-linuxapp-gcc/pktgen \
+      -l 8-14 \
+      ...
+@@ -1018,8 +1006,8 @@ and kill it.
+ 
+     $ docker ps
+     CONTAINER ID  IMAGE                   ...  NAMES
+-    80ce3711b85e  sppc/dpdk-ubuntu:16.04  ...  competent_galileo  # kill it
+-    281aa8f236ef  sppc/spp-ubuntu:16.04   ...  youthful_mcnulty
++    80ce3711b85e  sppc/dpdk-ubuntu:latest ...  competent_galileo  # kill it
++    281aa8f236ef  sppc/spp-ubuntu:latest  ...  youthful_mcnulty
+     $ docker kill competent_galileo
+ 
+ 
+diff --git a/docs/guides/tools/sppc/build_img.rst b/docs/guides/tools/sppc/build_img.rst
+index 21046a1..148b5d4 100644
+--- a/docs/guides/tools/sppc/build_img.rst
++++ b/docs/guides/tools/sppc/build_img.rst
+@@ -19,14 +19,15 @@ with DPDK 18.11 as following.
+ .. code-block:: console
+ 
+     $ cd /path/to/spp/tools/sppc
+-    $ python build/main.py --dpdk-branch v18.11 \
++    $ python3 build/main.py -t spp \
++      --dpdk-branch v18.11 \
+       --spp-repo https://github.com/your/spp.git
+ 
+ Refer all of options running with ``-h`` option.
+ 
+ .. code-block:: console
+ 
+-    $ python build/main.py -h
++    $ python3 build/main.py -h
+     usage: main.py [-h] [-t TARGET] [-ci CONTAINER_IMAGE]
+                    [--dist-name DIST_NAME] [--dist-ver DIST_VER]
+                    [--dpdk-repo DPDK_REPO] [--dpdk-branch DPDK_BRANCH]
+@@ -74,8 +75,8 @@ Version Control for Images
+ 
+ SPP container provides version control as combination of
+ target name, Linux distribution name and version.
+-Built images are referred such as ``sppc/dpdk-ubuntu:latest`` or
+-``sppc/spp-ubuntu:16.04``.
++Built images are referred such as ``sppc/dpdk-ubuntu:latest``,
++``sppc/spp-ubuntu:16.04`` or so.
+ ``sppc`` is just a prefix to indicate an image of SPP container.
+ 
+ Build script decides a name from given options or default values.
+@@ -85,10 +86,10 @@ name and version, it uses default values ``ubuntu`` and ``latest``.
+ .. code-block:: console
+ 
+     # build 'sppc/dpdk-ubuntu:latest'
+-    $ python build/main.py -t dpdk
++    $ python3 build/main.py -t dpdk
+ 
+     # build 'sppc/spp-ubuntu:16.04'
+-    $ python build/main.py -t spp --dist-ver 16.04
++    $ python3 build/main.py -t spp --dist-ver 16.04
+ 
+ .. note::
+ 
+@@ -104,28 +105,28 @@ name and version, it uses default values ``ubuntu`` and ``latest``.
+ 
+ 
+ App container scripts also understand this naming rule.
+-For launching ``testpmd`` on Ubuntu 16.04,
++For launching ``testpmd`` on Ubuntu 18.04,
+ simply give ``--dist-ver`` to indicate the version and other options
+ for ``testpmd`` itself.
+ 
+ .. code-block:: console
+ 
+-    # launch testpmd on 'sppc/dpdk-ubuntu:16.04'
+-    $ python app/testpmd.py --dist-ver 16.04 -l 3-4 ...
++    # launch testpmd on 'sppc/dpdk-ubuntu:18.04'
++    $ python3 app/testpmd.py --dist-ver 18.04 -l 3-4 ...
+ 
+ But, how can we build images for different versions of DPDK,
+-such as 17.11 and 18.05, on the same distribution?
++such as 18.11 and 19.11, on the same distribution?
+ In this case, you can use ``--container-image`` or ``-ci`` option for
+ using any of names. It is also referred from app container scripts.
+ 
+ .. code-block:: console
+ 
+     # build image with arbitrary name
+-    $ python build/main.py -t dpdk -ci sppc/dpdk17.11-ubuntu:latest \
+-      --dpdk-branch v17.11
++    $ python3 build/main.py -t dpdk -ci sppc/dpdk18.11-ubuntu:latest \
++      --dpdk-branch v18.11
+ 
+     # launch testpmd with '-ci'
+-    $ python app/testpmd.py -ci sppc/dpdk17.11-ubuntu:latest -l 3-4 ...
++    $ python3 app/testpmd.py -ci sppc/dpdk18.11-ubuntu:latest -l 3-4 ...
+ 
+ 
+ .. _sppc_build_img_dockerfiles:
+@@ -177,21 +178,20 @@ script. However, building suricata requires few additional few steps.
+ 
+ 
+ First, build an image with ``main.py`` script as similar to other apps.
+-In this example, use DPDK v18.11 and Ubuntu 16.04.
++In this example, use DPDK v18.11 and Ubuntu 18.04.
+ 
+ .. code-block:: console
+ 
+-    $ python build/main.py -t suricata --dpdk-branch v18.11 --dist-ver 16.04
++    $ python3 build/main.py -t suricata --dpdk-branch v18.11 --dist-ver 18.04
+ 
+ After build is completed, you can find image named as
+-``sppc/suricata-ubuntu:16.04`` from ``docker images``.
++``sppc/suricata-ubuntu:18.04`` from ``docker images``.
+ Run bash command with this image, and execute an installer script in home
+ directory which is created while building.
+ 
+ .. code-block:: console
+ 
+-    sppc/suricata-ubuntu  16.04 ...
+-    $ docker run -it sppc/suricata-ubuntu:16.04 /bin/bash
++    $ docker run -it sppc/suricata-ubuntu:18.04 /bin/bash
+     # ./install_suricata.sh
+ 
+ It clones and compiles suricata under home directory. You can find
+@@ -204,14 +204,14 @@ with ``docker commit`` command.
+ 
+ Logout and create a new docker image with ``docker commit`` image's
+ container ID. In this example, new image is named as
+-`sppc/suricata-ubuntu2:16.04`.
++`sppc/suricata-ubuntu2:18.04`.
+ 
+ .. code-block:: console
+ 
+     # exit
+     $ docker ps -a
+-    CONTAINER_ID  sppc/suricata-ubuntu:16.04  "/bin/bash"  3 minutes ...
+-    $ docker commit CONTAINER_ID sppc/suricata-ubuntu2:16.04
++    CONTAINER_ID  sppc/suricata-ubuntu:18.04  "/bin/bash"  3 minutes ...
++    $ docker commit CONTAINER_ID sppc/suricata-ubuntu2:18.04
+ 
+ You can run compiled suricata with the new image with docker as following,
+ or app container launcher with specific options as described in.
+@@ -219,7 +219,7 @@ or app container launcher with specific options as described in.
+ 
+ .. code-block:: console
+ 
+-    $ docker run -it sppc/suricata-ubuntu:16.04 /bin/bash
++    $ docker run -it sppc/suricata-ubuntu:18.04 /bin/bash
+     # suricata --build-info
+ 
+ 
+diff --git a/docs/guides/tools/sppc/getting_started.rst b/docs/guides/tools/sppc/getting_started.rst
+index 9a6107a..ac8cc68 100644
+--- a/docs/guides/tools/sppc/getting_started.rst
++++ b/docs/guides/tools/sppc/getting_started.rst
+@@ -53,21 +53,19 @@ for the latest DPDK, pktgen or SPP.
+ 
+     # Terminal 1
+     $ cd /path/to/spp/tools/sppc
+-    $ python build/main.py -t dpdk
+-    $ python build/main.py -t pktgen
+-    $ python build/main.py -t spp
++    $ python3 build/main.py -t dpdk
++    $ python3 build/main.py -t pktgen
++    $ python3 build/main.py -t spp
+ 
+ Of course DPDK is required from pktgen and SPP, and it causes a
+ problem of compatibility between them sometimes.
+-At the time writing this document, SPP v18.02 is not compatible with
+-the latest DPDK v18.05 and it is failed to compile.
+ In this case, you should build SPP with ``--dpdk-branch`` option to tell
+ the version of DPDK explicitly.
+ 
+ .. code-block:: console
+ 
+     # Terminal 1
+-    $ python build/main.py -t spp --dpdk-branch v18.02
++    $ python3 build/main.py -t spp --dpdk-branch v19.11
+ 
+ You can find all of options by ``build/main.py -h``.
+ 
+@@ -105,13 +103,13 @@ All of images are referred from ``docker images`` command.
+     .. code-block:: console
+ 
+         # latest DPDK on latest Ubuntu
+-        $ python build/main.py -t dpdk --dist-name ubuntu --dist-ver latest
++        $ python3 build/main.py -t dpdk --dist-name ubuntu --dist-ver latest
+ 
+         # it is also the same
+-        $ python build/main.py -t dpdk
++        $ python3 build/main.py -t dpdk
+ 
+-        # or use Ubuntu 16.04
+-        $ python build/main.py -t dpdk --dist-ver 16.04
++        # or use Ubuntu 18.04
++        $ python3 build/main.py -t dpdk --dist-ver 18.04
+ 
+ 
+     Version of other than distro is also configurable by specifying a branch
+@@ -119,10 +117,10 @@ All of images are referred from ``docker images`` command.
+ 
+     .. code-block:: console
+ 
+-        $ python build/main.py -t dpdk --dist-ver 16.04 --dpdk-branch v18.02
+-        $ python build/main.py -t pktgen --dist-ver 16.04 \
++        $ python3 build/main.py -t dpdk --dist-ver 18.04 --dpdk-branch v19.11
++        $ python3 build/main.py -t pktgen --dist-ver 18.04 \
+           --dpdk-branch v18.02 --pktgen-branch pktgen-3.4.9
+-        $ python build/main.py -t spp --dist-ver 16.04 --dpdk-branch v18.02
++        $ python3 build/main.py -t spp --dist-ver 18.04 --dpdk-branch v19.11
+ 
+ 
+ .. _sppc_gs_launch_containers:
+@@ -175,7 +173,7 @@ processes.
+ 
+     # Terminal 2
+     $ cd /path/to/spp
+-    $ python src/spp.py
++    $ python3 src/spp.py
+ 
+ 
+ SPP Primary Container
+@@ -189,7 +187,7 @@ one core and two physical ports in terminal 3.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ python app/spp-primary.py -l 0 -p 0x03
++    $ python3 app/spp-primary.py -l 0 -p 0x03
+ 
+ 
+ SPP Secondary Container
+@@ -204,7 +202,7 @@ It is also run in background mode.
+ .. code-block:: console
+ 
+     # Terminal 3
+-    $ python app/spp-nfv.py -i 1 -l 1-2
++    $ python3 app/spp-nfv.py -i 1 -l 1-2
+ 
+ If it is succeeded, container is running in background.
+ You can find it with ``docker ps`` command.
+@@ -264,7 +262,7 @@ with ``-b`` option.
+ 
+     # Terminal 3
+     $ cd /path/to/spp/tools/sppc
+-    $ app/testpmd.py -l 3-4 \
++    $ python3 app/testpmd.py -l 3-4 \
+       -d vhost:1,vhost:2 \
+       -fg \
+       -b 0000:0a:00.0 0000:0a:00.1
+diff --git a/docs/guides/tools/sppc/usecases.rst b/docs/guides/tools/sppc/usecases.rst
+index 8da7fd2..8d3b73d 100644
+--- a/docs/guides/tools/sppc/usecases.rst
++++ b/docs/guides/tools/sppc/usecases.rst
+@@ -19,17 +19,6 @@ using expensive servers.
+ 
+ This chapter describes examples of simple use cases of SPP container.
+ 
+-.. note::
+-
+-    As described in
+-    :ref:`sppc_gs_build_docker_imgs`
+-    section, you had better to use Ubuntu 16.04 with
+-    ``--dist-ver`` option because SPP container is not stable for running
+-    on the latest version.
+-
+-    Please notice that examples in this section does not use ``dist-ver``
+-    options explicitly for simplicity.
+-
+ 
+ .. _sppc_usecases_test_vhost_single:
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,47 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:29 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 22/29] bin: remove sock files created by docker
+Date: Tue, 25 Feb 2020 19:34:39 +0900
+Message-Id: <20200225103446.8243-23-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+If docker does mount a sock file without created before from DPDK while
+launching a container, docker create an empty directory which name is
+the same as the sock file.
+
+SPP startup script removes existing sock files before launching SPP
+processes, but does not directories. This update is to enable to remove
+directory.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ bin/spp_pri.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bin/spp_pri.sh b/bin/spp_pri.sh
+index c0b0e1e..aca23a9 100644
+--- a/bin/spp_pri.sh
++++ b/bin/spp_pri.sh
+@@ -15,8 +15,8 @@ SOCK_MEMIF="/tmp/spp-memif.sock"
+ 
+ function clean_sock_files() {
+     # clean /tmp/sock*
+-    sudo rm -f ${SOCK_VHOST}*
+-    sudo rm -f ${SOCK_MEMIF}
++    sudo rm -rf ${SOCK_VHOST}*
++    sudo rm -rf ${SOCK_MEMIF}
+ }
+ 
+ # Add vhost vdevs named as such as `eth_vhost0`.
+-- 
+2.17.1
+

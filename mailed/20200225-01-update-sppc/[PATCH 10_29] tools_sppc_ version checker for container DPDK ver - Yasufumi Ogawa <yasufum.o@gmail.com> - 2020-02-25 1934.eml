@@ -1,0 +1,78 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:08 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 10/29] tools/sppc: version checker for container DPDK ver
+Date: Tue, 25 Feb 2020 19:34:27 +0900
+Message-Id: <20200225103446.8243-11-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+You need to check version of DPDK on a container because some of
+application might be deprecated or removed from some specific version.
+For instance, load balancer example app was removed after v19.08-rc.
+
+This update is to add methods for getting DPDK version from container,
+and comparing it with expected version.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/lib/app_helper.py | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/tools/sppc/lib/app_helper.py b/tools/sppc/lib/app_helper.py
+index cc042e5..b918aeb 100644
+--- a/tools/sppc/lib/app_helper.py
++++ b/tools/sppc/lib/app_helper.py
+@@ -4,6 +4,7 @@
+ from . import common
+ import os
+ import secrets
++import subprocess
+ import sys
+ 
+ 
+@@ -337,6 +338,34 @@ def gen_sppc_file_prefix(app_name):
+     return 'sppc-{}-{}'.format(app_name, secrets.token_hex(8))
+ 
+ 
++def get_dpdk_ver_in_container(rte_sdk, c_image):
++    """Get DPDK version on a container.
++
++    The version is retrieved by reading `${RTE_SDK/VERION` file.
++    """
++
++    cmd = ['cat', '{:s}/VERSION'.format(rte_sdk)]
++    cmd = ['docker', 'run', '-it', c_image] + cmd
++    # Decode the result of byte type to utf-8.
++    return subprocess.check_output(cmd).decode('utf-8').strip()
++
++
++def compare_version(expected, target):
++    """Compare given versions.
++
++    If two versions are equal, return 0. On the other hand, return -1 if
++    expected ver is less than target, or return 1.
++    """
++
++    from distutils.version import LooseVersion
++    if LooseVersion(expected) == LooseVersion(target):
++        return 0
++    elif LooseVersion(expected) < LooseVersion(target):
++        return 1
++    else:
++        return -1
++
++
+ def _uniq(dup_list):
+     """Remove duplicated elements in a list and return a unique list.
+ 
+-- 
+2.17.1
+

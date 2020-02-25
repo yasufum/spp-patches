@@ -1,0 +1,50 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:10 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 11/29] tools/sppc: check DPDK ver in load-balancer
+Date: Tue, 25 Feb 2020 19:34:28 +0900
+Message-Id: <20200225103446.8243-12-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+This update is to add checking DPDK version in load-balancer app
+launcher because this example app was removed from v19.08-rc1. If DPDK
+version on container is larger than v19.08-rc1, launcher stops
+launching.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/load-balancer.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/tools/sppc/app/load-balancer.py b/tools/sppc/app/load-balancer.py
+index d86a04b..ec504e7 100755
+--- a/tools/sppc/app/load-balancer.py
++++ b/tools/sppc/app/load-balancer.py
+@@ -68,6 +68,16 @@ def main():
+             common.IMG_BASE_NAMES['dpdk'],
+             args.dist_name, args.dist_ver)
+ 
++    c_dpdk_ver = app_helper.get_dpdk_ver_in_container(
++            env.RTE_SDK, container_image)
++    expected = '19.08-rc1'
++    if app_helper.compare_version(expected, c_dpdk_ver) > 0:
++        print("Load-balancer example was removed after DPDK 'v{}'.".
++              format(expected))
++        print("You cannot run it because DPDK in the container is 'v{}'.".
++              format(c_dpdk_ver))
++        exit()
++
+     # Setup devices with given device UIDs.
+     dev_uids = None
+     sock_files = None
+-- 
+2.17.1
+

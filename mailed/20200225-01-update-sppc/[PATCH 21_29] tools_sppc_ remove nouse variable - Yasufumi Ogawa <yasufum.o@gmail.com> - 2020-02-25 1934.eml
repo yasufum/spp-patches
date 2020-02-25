@@ -1,0 +1,50 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:35bc:b9a3:f404:3cf2])
+        by smtp.gmail.com with ESMTPSA id a10sm15819987pgk.71.2020.02.25.02.35.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Feb 2020 02:35:27 -0800 (PST)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 21/29] tools/sppc: remove nouse variable
+Date: Tue, 25 Feb 2020 19:34:38 +0900
+Message-Id: <20200225103446.8243-22-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225103446.8243-1-yasufum.o@gmail.com>
+References: <20200225103446.8243-1-yasufum.o@gmail.com>
+
+This update is to remove variable `sock_files` which is not used
+anymore.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ tools/sppc/app/spp-primary.py | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/tools/sppc/app/spp-primary.py b/tools/sppc/app/spp-primary.py
+index c719760..aa2bc81 100755
+--- a/tools/sppc/app/spp-primary.py
++++ b/tools/sppc/app/spp-primary.py
+@@ -60,18 +60,6 @@ def main():
+             common.IMG_BASE_NAMES['spp'],
+             args.dist_name, args.dist_ver)
+ 
+-    # Setup devices with given device UIDs.
+-    dev_uids_list = None
+-    # TODO(yasufum) Remove no need sock_files
+-    sock_files = []
+-    if args.dev_uids is not None:
+-        if app_helper.is_valid_dev_uids(args.dev_uids) is False:
+-            print('Invalid option: {}'.format(args.dev_uids))
+-            exit()
+-
+-        dev_uids_list = args.dev_uids.split(',')
+-        sock_files = app_helper.sock_files(dev_uids_list, is_spp_pri=True)
+-
+     app_opts = [
+         '-v', '/var/run/:/var/run/', '\\',
+         '-v', '/tmp:/tmp', '\\']
+-- 
+2.17.1
+
