@@ -1,0 +1,133 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2331121oog;
+        Tue, 25 Feb 2020 17:37:48 -0800 (PST)
+X-Google-Smtp-Source: APXvYqw1zsZv1IkvE1Rjpp5SnUzbuDe9MeZYPXwAGBw76ErCfiwrIwb1TvzuzKF9Xcv4+Gm6A/+K
+X-Received: by 2002:a63:e4d:: with SMTP id 13mr1267203pgo.343.1582681068298;
+        Tue, 25 Feb 2020 17:37:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582681068; cv=none;
+        d=google.com; s=arc-20160816;
+        b=JVSx3NBnyUO3tCTqsU6zz7XIYpzGSbj6RY6K/D0n/T6XA/GjBcTNcn8s0uMrL3yCQN
+         kzpGzAr5rlPvfIcob1cA94utcaZfjS7/w/5UMr+L8yeF/BW6SJbxDGlXAMwxgPfwZqo5
+         60iBj1Yau5m3lk1XTQDp8lZ/Nja8hkb0zDRHgu9jUzXTq6CNLNxxAfVFF/LCWw2ueRaZ
+         3vOMRi1gylwePS44bsTJMEySUANmtwSVIQSf71xkG3DQScNi4tx0DvgoIr1VrOfPYL68
+         p2Yss1l9pS12uKnt8PuqEIFHU4LnAHbTdo8QcVslVD0ssDrfOKR7ovNPficXYTkZ3GbN
+         1o+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=3jDnpij1iM/fi/9EaLcZCWLpGDerTQVi3azdPnrtjpI=;
+        b=fa2ICEAEYp08I53anPV3wJn1byy0kDmp37nLEPI2LNQmj3JzrRGhYQI2OJd3x16Ofk
+         UaQGHLjc4MA9ElXOFzGOz9mhKBrii90hoLml0mzxomaeI+A1qGbTQ2AnYljvuJ5mtbfm
+         Ks7etHDAbCjwf6FadjSAX8rXTfNN9qDtClxlq9la3B3BY4eCJ7RYSqXFE+BcgRcZsXJW
+         aXeqCLoxUav7DUs0h7jgPQkm3u7847tBFxn7Q8iro5rC4wC61knvynF0mV9/wj7DUQl6
+         ISUmh5ZGUV6b51jnN47Ne+xaSmxaXa43y92i2s1vFksr1xpfss3kVnqgKDhxV+Z4DQEE
+         /Xcg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id a20si501828pls.163.2020.02.25.17.37.47
+        for <yasufum.o@gmail.com>;
+        Tue, 25 Feb 2020 17:37:48 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 05D2D240882; Wed, 26 Feb 2020 10:37:46 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 4/5] spp-ctl: enable add pipe port to the primary
+Date: Wed, 26 Feb 2020 10:37:45 +0900
+Message-Id: <20200226013746.2875-5-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226013746.2875-1-oda@valinux.co.jp>
+References: <20200226013746.2875-1-oda@valinux.co.jp>
+
+This patch adds pipe type to add port REST API to the primary.
+Note that del port API is common among all port types including
+pipe.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/spp-ctl/spp_proc.py   |  7 +++++--
+ src/spp-ctl/spp_webapi.py | 24 ++++++++++++++++++++----
+ 2 files changed, 25 insertions(+), 6 deletions(-)
+
+diff --git a/src/spp-ctl/spp_proc.py b/src/spp-ctl/spp_proc.py
+index 35919fb..c784f56 100644
+--- a/src/spp-ctl/spp_proc.py
++++ b/src/spp-ctl/spp_proc.py
+@@ -294,8 +294,11 @@ class PrimaryProc(SppProc):
+         return "clear"
+ 
+     @exec_command
+-    def port_add(self, port):
+-        return "add {port}".format(**locals())
++    def port_add(self, port, rx=None, tx=None):
++        if rx is not None and tx is not None:
++            return "add {port} {rx} {tx}".format(**locals())
++        else:
++            return "add {port}".format(**locals())
+ 
+     @exec_command
+     def port_del(self, port):
+diff --git a/src/spp-ctl/spp_webapi.py b/src/spp-ctl/spp_webapi.py
+index 31befe2..c7d8271 100644
+--- a/src/spp-ctl/spp_webapi.py
++++ b/src/spp-ctl/spp_webapi.py
+@@ -13,7 +13,8 @@ import sys
+ 
+ import spp_proc
+ 
+-PORT_TYPES = ["phy", "vhost", "ring", "pcap", "nullpmd", "tap", "memif"]
++PORT_TYPES = ["phy", "vhost", "ring", "pcap", "nullpmd", "tap", "memif",
++              "pipe"]
+ VF_PORT_TYPES = ["phy", "vhost", "ring"] # TODO(yasufum) add other ports
+ # TODO(yasufum) consider PCAP_PORT_TYPES is required.
+ 
+@@ -50,10 +51,10 @@ class BaseHandler(bottle.Bottle):
+         res.content_type = "text/plain"
+         return res.body
+ 
+-    def _validate_port(self, port):
++    def _validate_port(self, port, port_types=PORT_TYPES):
+         try:
+             if_type, if_num = port.split(":")
+-            if if_type not in PORT_TYPES:
++            if if_type not in port_types:
+                 raise
+             int(if_num)
+         except Exception:
+@@ -514,12 +515,27 @@ class V1PrimaryHandler(BaseHandler):
+             raise KeyInvalid('action', body['action'])
+         self._validate_port(body['port'])
+ 
++    def _validate_pipe_args(self, rx_ring, tx_ring):
++        try:
++            self._validate_port(rx_ring, ["ring"])
++        except Exception:
++            raise KeyInvalid('rx', rx_ring)
++        try:
++            self._validate_port(tx_ring, ["ring"])
++        except Exception:
++            raise KeyInvalid('tx', tx_ring)
++
+     def primary_port(self, body):
+         self._validate_nfv_port(body)
+         proc = self._get_proc()
+ 
+         if body['action'] == "add":
+-            proc.port_add(body['port'])
++            if body['port'].startswith("pipe:"):
++                self._validate_pipe_args(body.get('rx', ""),
++                                         body.get('tx', ""))
++                proc.port_add(body['port'], body['rx'], body['tx'])
++            else:
++                proc.port_add(body['port'])
+         else:
+             proc.port_del(body['port'])
+ 
+-- 
+2.17.1
+
