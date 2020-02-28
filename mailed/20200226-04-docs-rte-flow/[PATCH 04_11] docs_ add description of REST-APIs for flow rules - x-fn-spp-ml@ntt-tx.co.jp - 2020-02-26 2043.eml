@@ -1,0 +1,296 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2894055oog;
+        Wed, 26 Feb 2020 03:43:41 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxOyTKQme5yarQlwk8md025X5q2D87qKasAAHgGQzvM0P+E+N6vyTrlW7U3ZwvZ+ZFiVgqa
+X-Received: by 2002:a17:902:760e:: with SMTP id k14mr3529688pll.119.1582717420998;
+        Wed, 26 Feb 2020 03:43:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582717420; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Qj4kT0wZEOjbz6mZ9pyt09fg69GO6jDZIUowek1/dXq0pnOoFfCH1Ky/XXnH/PteLe
+         S30bo9b6JY00O6QqkCBg1BxpF4qygcffq9INWydjdU8fE7XCADKCUDlmvH3IFGkPfThN
+         sQSg9N3QA+Kn87Asqlb2AX9HqDhtB95tDvKfM8HvF/KyjLNqkdiM8Pji0h/6DJOikjQV
+         kNCPuDpBmKnJRjC6uEvPrqPCW+cXNIb5TFkugqT2JwkILhXU0wQwfviOCIn2S0XbvzjM
+         Lge0Q0HLwfg2F+5OqmTZge4oX82rP0MoMwlwJUgohlDidZ2THBLa40DoRVu0mDhhY4MP
+         ZKaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=MKcWEFibGBib5VhvNKwk65O21smmKuWV31aiNf1WKtA=;
+        b=IQweg7iGF9eUbCUpxB28metphXbvgcdD6UyqQ67A6QfxcV6YmuzhYAnaenAhTEg2UO
+         yhbm/FyXuCBsn3Qyq2RC5fdZFrl3jcL4WY8d6ptc2PsuCZ4wL/q/0mNXLB/XVxadGmQn
+         f75R9+FOfq46SVENBjSywDT/31LGx05ULie10XXlsSeMP4v6D3g+g0ypImIZQRnppf50
+         f3VEewPa/e+vZkkMG4FYXpevrlOXOa34wl88tzzDNKQ5hYg9zY6kAgivw1VhwUeQiTW9
+         CQoelYdn5VqPjkRld1KMqlNm8s2QgATPp0ZeQO8jyJ1ZDNOA634CxUIscGvd2Hh4HwG5
+         jkgQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id y8si2437574pfg.55.2020.02.26.03.43.40
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 03:43:40 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd101.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id 3F7B21200CD;
+	Wed, 26 Feb 2020 20:43:40 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd101.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6B00VPD4KSHOC0@dDREAMS>; Wed,
+ 26 Feb 2020 20:43:40 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 13EC67E6032;	Wed,
+ 26 Feb 2020 20:43:40 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 12BF48E6055;	Wed,
+ 26 Feb 2020 20:43:40 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 119EE8E6042;	Wed, 26 Feb 2020 20:43:40 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B53A08E6042;	Wed,
+ 26 Feb 2020 20:43:39 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 26 Feb 2020 20:43:39 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 04/11] docs: add description of REST-APIs for flow rules
+Date: Wed, 26 Feb 2020 20:43:28 +0900
+Message-id: <20200226114335.3865-5-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds REST-API description for flow rules.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/api_ref/spp_primary.rst | 208 ++++++++++++++++++++++++++++
+ 1 file changed, 208 insertions(+)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index 382915f..afb37c6 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -438,3 +438,211 @@ Equivalent CLI command
+ .. code-block:: none
+ 
+     pri; launch {proc_type} {sec_id} {eal_opts} -- {app_opts}
++
++POST /v1/primary/flow_rules/port_id/{port_id}/validate
++------------------------------------------------------
++
++Validate flow rule for specific port_id.
++
++* Normal response codes: 200
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X POST \
++           http://127.0.0.1:7777/v1/primary/flow_rules/port_id/0/validate \
++           -H "Content-type: application/json" \
++           -d '{ \
++               "rule": \
++                  { \
++                  "group": 0, \
++                  "priority": 0, \
++                  "direction": "ingress", \
++                  "transfer": true, \
++                  "pattern": \
++                    [ \
++                      "eth dst is 11:22:33:44:55:66 type mask 0xffff", \
++                      "vlan vid is 100" \
++                    ], \
++                  "actions": \
++                    [ \
++                      "queue index 1", \
++                      "of_pop_vlan" \
++                    ] \
++                  } \
++               }'
++
++Response
++~~~~~~~~
++
++.. _table_spp_ctl_primary_flow_validate:
++
++.. table:: Response params of validate.
++
++    +------------+--------+----------------------------------------+
++    | Name       | Type   | Description                            |
++    |            |        |                                        |
++    +============+========+========================================+
++    | result     | string | Validation result.                     |
++    +------------+-------++----------------------------------------+
++    | message    | string | Additional information if any.         |
++    +------------+-------++----------------------------------------+
++
++Response example
++~~~~~~~~~~~~~~~~
++
++.. code-block:: json
++
++        {
++                "result" : "success",
++                "message" : "Flow rule validated"
++        }
++
++POST /v1/primary/flow_rules/port_id/{port_id}
++---------------------------------------------
++
++Create flow rule for specific port_id.
++
++* Normal response codes: 200
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X POST http://127.0.0.1:7777/v1/primary/flow_rules/port_id/0 \
++           -H "Content-type: application/json" \
++           -d '{ \
++               "rule": \
++                  { \
++                  "group": 0, \
++                  "priority": 0, \
++                  "direction": "ingress", \
++                  "transfer": true, \
++                  "pattern": \
++                    [ \
++                      "eth dst is 11:22:33:44:55:66 type mask 0xffff", \
++                      "vlan vid is 100" \
++                    ], \
++                  "actions": \
++                    [ \
++                      "queue index 1", \
++                      "of_pop_vlan" \
++                    ] \
++                  } \
++               }'
++
++Response
++~~~~~~~~
++
++.. _table_spp_ctl_primary_flow_create:
++
++.. table:: Response params of flow creation.
++
++    +------------+--------+----------------------------------------+
++    | Name       | Type   | Description                            |
++    |            |        |                                        |
++    +============+========+========================================+
++    | result     | string | Creation result.                       |
++    +------------+--------+----------------------------------------+
++    | message    | string | Additional information if any.         |
++    +------------+--------+----------------------------------------+
++    | rule_id    | string | Rule id allocated if successful.       |
++    +------------+--------+----------------------------------------+
++
++Response example
++~~~~~~~~~~~~~~~~
++
++.. code-block:: json
++
++        {
++                "result" : "success",
++                "message" : "Flow rule #0 created",
++                "rule_id" : "0"
++        }
++
++DELETE /v1/primary/flow_rule/port_id/{port_id}
++----------------------------------------------
++
++Delete all flow rule for specific port_id.
++
++* Normal response codes: 200
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X DELETE http://127.0.0.1:7777/v1/primary/flow_rule/port_id/0
++
++Response
++~~~~~~~~
++
++.. _table_spp_ctl_primary_flow_flush:
++
++.. table:: Response params of flow flush.
++
++    +------------+--------+----------------------------------------+
++    | Name       | Type   | Description                            |
++    |            |        |                                        |
++    +============+========+========================================+
++    | result     | string | Deletion result.                       |
++    +------------+--------+----------------------------------------+
++    | message    | string | Additional information if any.         |
++    +------------+--------+----------------------------------------+
++
++Response example
++~~~~~~~~~~~~~~~~
++
++.. code-block:: json
++
++        {
++                "result" : "success",
++                "message" : "Flow rule all destroyed"
++        }
++
++DELETE /v1/primary/flow_rule/{rule_id}/port_id/{port_id}
++--------------------------------------------------------
++
++Delete specific flow rule for specific port_id.
++
++* Normal response codes: 200
++
++
++Request example
++~~~~~~~~~~~~~~~
++
++.. code-block:: console
++
++    $ curl -X DELETE http://127.0.0.1:7777/v1/primary/flow_rules/0/port_id/0
++
++Response
++~~~~~~~~
++
++.. _table_spp_ctl_primary_flow_delete:
++
++.. table:: Response params of flow deletion.
++
++    +------------+--------+----------------------------------------+
++    | Name       | Type   | Description                            |
++    |            |        |                                        |
++    +============+========+========================================+
++    | result     | string | Deletion result.                       |
++    +------------+--------+----------------------------------------+
++    | message    | string | Additional information if any.         |
++    +------------+--------+----------------------------------------+
++
++Response example
++~~~~~~~~~~~~~~~~
++
++.. code-block:: json
++
++        {
++                "result" : "success",
++                "message" : "Flow rule #0 destroyed"
++        }
+-- 
+2.17.1
+

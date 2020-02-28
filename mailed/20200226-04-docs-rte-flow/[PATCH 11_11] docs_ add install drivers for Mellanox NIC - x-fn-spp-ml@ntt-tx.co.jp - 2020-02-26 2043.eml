@@ -1,0 +1,103 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2894212oog;
+        Wed, 26 Feb 2020 03:43:49 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyXfi/otej5WtTIdrCN8cX0AUG/1SlndHGBYFXfrH8s+b9Yd7VW9YRA0km0mVH660un1MEd
+X-Received: by 2002:aa7:8ad9:: with SMTP id b25mr3946483pfd.70.1582717429262;
+        Wed, 26 Feb 2020 03:43:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582717429; cv=none;
+        d=google.com; s=arc-20160816;
+        b=GU1GIyoyMdu1/UJXXB4762PmljIs1YzNEK7cK8G1HZzMLhTUpbKZNVTG6FnIhozrtI
+         iC7Qe97kyIJCVN7Do5GsUVwdHMcXOjynvDj2inalU7pi6LjL+GGUKbygXWjvFj3SKox8
+         t+jOWlA9b2dggadDVhEr6aevCRN3eePa7ggE+SXHh1qTB/T8qNzKwaeQdhyoTMGOaH8V
+         SXIA7PAfHFDG6jPkCNFebjgQwiVWG1Y/o5mutAxZrolfm3IyzZmW5pXgXatGLbh8cV78
+         PK9h7mgEqL1RqfO4OSeCkP4QbTjBjUQA/EWNT8UOQShty+3fC8rOJ9Dxd9oK0qPW3qvT
+         Rfxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=0SvaD6fYnQD3gs9U+E+rUhJnarQ2jqCtlG1YzrdRAH0=;
+        b=RI6RCz/UyWMCEhOdh3f/LQzeq8CJKHjF6idsnZ9+HbtqCXsT40XqXfMaaU4CLg42vQ
+         6aDoGkVEiYQ3+FdyUqprrcXkHMV0eVD8R0mfWnz2r/lEwjMBiZbhtcQ05M67LIO6devQ
+         vezjXzJqa7/7lPqXhbYHQ0pwIAqljGeHnRBaoBDIR4QyaqiODjYNQ0+cBzPAQ8WBuckA
+         dzAfX0gv6enYEggdLE3G+vUXVjwIiux8PZgoPrEO+oIheEEUgTa7X/48LznQYnIte4/Q
+         j0LJtoc2zvU/ZHswK31fSvb8+GxqAdlq64oBUU70dwQwy9De9KSgdOMLNQyyjZkXVi7u
+         JlLg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id z7si2323442pln.378.2020.02.26.03.43.49
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 03:43:49 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd101.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou104.ddreams.local (Postfix) with ESMTP id 89B151200DA;
+	Wed, 26 Feb 2020 20:43:48 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd101.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6B00VQP4L0HOC0@dDREAMS>; Wed,
+ 26 Feb 2020 20:43:48 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 64C607E6032;	Wed,
+ 26 Feb 2020 20:43:48 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6331E8E6057;	Wed,
+ 26 Feb 2020 20:43:48 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 60C0F8E6042;	Wed, 26 Feb 2020 20:43:48 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 921B58E6042;	Wed,
+ 26 Feb 2020 20:43:47 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 26 Feb 2020 20:43:47 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 11/11] docs: add install drivers for Mellanox NIC
+Date: Wed, 26 Feb 2020 20:43:35 +0900
+Message-id: <20200226114335.3865-12-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch is to add description of installing drivers of Mellanox NIC.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/setup.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/docs/guides/gsg/setup.rst b/docs/guides/gsg/setup.rst
+index 9bd30ef..4769e13 100644
+--- a/docs/guides/gsg/setup.rst
++++ b/docs/guides/gsg/setup.rst
+@@ -285,6 +285,18 @@ Python 2 or 3 ?
+ Without SPP container tools, Python2 is not supported anymore.
+ SPP container will also be updated to Python3.
+ 
++Drivers for Mellanox NIC
++------------------------
++
++In case of using MLX5 NIC, you have to install Driver.
++You can download driver from Mellanox's `SW/Drivers
++<https://www.mellanox.com/page/mlnx_ofed_matrix?mtag=linux_sw_drivers>`.
++The following example assumes that MLNX_OFED_LINUX-4.7-1.0.0.1-ubuntu18.04-x86_64.tgz is downloaded.
++
++.. code-block:: console
++
++   $cd MLNX_OFED_LINUX-4.7-1.0.0.1-ubuntu18.04-x86_64/
++   $sudo ./mlnxofedinstall --upstream-libs --dpdk --force
+ 
+ Reference
+ ---------
+-- 
+2.17.1
+

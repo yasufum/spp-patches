@@ -1,0 +1,195 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2894068oog;
+        Wed, 26 Feb 2020 03:43:42 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwkh+HD/OlzJflsYdxUCNl9MODZgxqWfFrd6a6o0yXQNPxvft3iA513x17ZEglEoeCcuk6M
+X-Received: by 2002:a63:e4d:: with SMTP id 13mr3467474pgo.343.1582717421970;
+        Wed, 26 Feb 2020 03:43:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582717421; cv=none;
+        d=google.com; s=arc-20160816;
+        b=st+WhiBVg1oGnhmp29qCtjfUvri7h/0HnXKiGpDzUuiIyAs/rLXfG0IoiSToYuVj/M
+         DAKpQxOkuspGW7T8bKPJWi4MSkVE9VqlwOAgkvDnhHp2QbZGQXJZXQDjbHT2Xy6c56os
+         2z42/F1GipuAgjLAthkh+WmdWCoCTGXAfSdI1c3NJAoTeMJDH7jrZ+sv+4VVex8u1CKA
+         +o8D8zSvznNxIXi7AQmhi3geBs/9jczOWq7Hv+Yj0QCIuVhCBoFeE0sOejVuFFRHWx8e
+         X1EH6PCPqXfRtIcgl7JbzumhyUESdCc4P8e91oRILMQJjsXJfffPfZYx7H6OBXd7Z0oa
+         gjRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=Xjb9HrChGFkA7Pp1JDtsffWuAhPN51qvgu5nK0b+fTA=;
+        b=gjEe6YyRpnETrmLo/oqk+z8Ef8kQri7CQSXUGLhiFDl9aPGQo3rYCZrQp3uxrf4HZ4
+         lIrghgT0Gwzv71lJmpiAz2F+zXoABSBBaHZDzQ48vafT9bLsbh5af0U8uk0+ELx5cvcc
+         e2MY6szTmmEQR143NIWSLQic7D0rJkuKvXmR3IuZ0fo+ZaO3zksjbLjhtPWCGozbKTkZ
+         SoGStSH+ztV/vFEYmvLY8MqOojDQQRDtSxDAPCsiaf6gpEWR1ASxxSHeyarXliRQEEHw
+         qB0aAom8CBBWdjiDScvnABF0NsWgfKTWCmJsz5bJ8HHHYbf45og5QPZkEzFEP+x44G2u
+         N0Gw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id c23si2821171pgn.185.2020.02.26.03.43.41
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 03:43:41 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id 3B5FB1200D3;
+	Wed, 26 Feb 2020 20:43:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6B006MK4KT8NB0@dDREAMS>; Wed,
+ 26 Feb 2020 20:43:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 14CE07E6032;	Wed,
+ 26 Feb 2020 20:43:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13C708E6055;	Wed,
+ 26 Feb 2020 20:43:41 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 12AEA8E6042;	Wed, 26 Feb 2020 20:43:41 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA38F8E6057;	Wed,
+ 26 Feb 2020 20:43:40 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 26 Feb 2020 20:43:40 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 05/11] docs: support flow syntax in primary command
+Date: Wed, 26 Feb 2020 20:43:29 +0900
+Message-id: <20200226114335.3865-6-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds description of flow syntax
+in primary command.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/commands/primary.rst | 99 +++++++++++++++++++++++++++++++-
+ 1 file changed, 96 insertions(+), 3 deletions(-)
+
+diff --git a/docs/guides/commands/primary.rst b/docs/guides/commands/primary.rst
+index 54aead4..fd799e3 100644
+--- a/docs/guides/commands/primary.rst
++++ b/docs/guides/commands/primary.rst
+@@ -53,9 +53,10 @@ Show status fo ``spp_primary`` and forwarding statistics of each of ports.
+       - master: 0
+     - stats
+       - physical ports:
+-          ID          rx          tx    tx_drop  mac_addr
+-           0           0           0           0  56:48:4f:53:54:00
+-           1           0           0           0  56:48:4f:53:54:01
++          ID          rx          tx    tx_drop   rxq  txq mac_addr
++           0           0           0           0   16   16 3c:fd:fe:b6:c4:28
++           1           0           0           0 1024 1024 3c:fd:fe:b6:c4:29
++           2           0           0           0    1    1 3c:fd:fe:b6:c4:30
+       - ring ports:
+           ID          rx          tx     rx_drop     tx_drop
+            0           0           0           0           0
+@@ -247,3 +248,95 @@ In terms of log, each of secondary processes are output its log messages to
+ files under ``log`` directory of project root. The name of log file is defined
+ with type of process and secondary ID. For instance, ``nfv 2``, the path of log
+ file is ``log/spp_nfv-2.log``.
++
++.. _commands_primary_flow:
++
++flow
++----
++
++Manipulate flow rules.
++
++You can request ``validate`` before creating flow rule.
++
++.. code-block:: console
++
++   spp > pri; flow validate phy:0 ingress group 1 pattern eth dst is
++         10:22:33:44:55:66 / vlan vid is 100 / end actions queue index 0 /
++         of_pop_vlan / end
++   Flow rule validated
++
++
++You can create rules by using ``create`` request.
++
++.. code-block:: console
++
++   spp > pri; flow create phy:0 ingress group 1 pattern eth dst is
++         10:22:33:44:55:66 / vlan vid is 100 / end actions queue index 0 /
++         of_pop_vlan / end
++   Flow rule #0 created
++
++.. note::
++
++   ``validate`` and/or ``create`` in flow command tends to take long
++   parameters. But you should enter it as one line.
++   CLI assumes that new line means ``commmand is entered``. So command
++   should be entered without using new line.
++
++You can delete specific flow rule.
++
++.. code-block:: console
++
++   spp > pri; flow destroy phy:0 0
++   Flow rule #0 destroyed
++
++Listing flow rules per physical port is supported.
++
++.. code-block:: console
++
++   spp > pri; flow list phy:0
++   ID      Group   Prio    Attr    Rule
++   0       1       0       -e-     ETH => OF_PUSH_VLAN OF_SET_VLAN_VID OF_SET_VLAN_PCP
++   1       1       0       i--     ETH VLAN => QUEUE OF_POP_VLAN
++   2       0       0       i--     ETH => JUMP
++
++The following is the paraemters to be displayed.
++
++* ``ID``: Identifier of the rule which is unique per physical port.
++* ``Group``: Group number the rule belongs.
++* ``Prio``: Priority value of the rule.
++* ``Attr``: Attributes for the rule which is independent each other.
++  The possible values of ``Attr`` are ``i`` or ``e`` or ``t``. ``i`` means
++  ingress. ``e`` means egress and ``t`` means transfer.
++* ``Rule``: Rule notation.
++
++Flow detail can be listed.
++
++.. code-block:: console
++
++   spp > pri; flow status phy:0 0
++   Attribute:
++     Group   Priority Ingress Egress Transfer
++     1       0        true    false  false
++   Patterns:
++     - eth:
++       - spec:
++         - dst: 10:22:33:44:55:66
++         - src: 00:00:00:00:00:00
++         - type: 0xffff
++       - last:
++       - mask:
++         - dst: ff:ff:ff:ff:ff:ff
++         - src: 00:00:00:00:00:00
++         - type: 0xffff
++     - vlan:
++       - spec:
++         - tci: 0x0064
++         - inner_type: 0x0000
++       - last:
++       - mask:
++         - tci: 0xffff
++         - inner_type: 0x0000
++   Actions:
++     - queue:
++       - index: 0
++     - of_pop_vlan:
+-- 
+2.17.1
+

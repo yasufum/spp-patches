@@ -1,0 +1,199 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2894089oog;
+        Wed, 26 Feb 2020 03:43:43 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwQJY3/PQQfMzK20FCzgfG/46bBhIeIw1roTPlL+YLob1jVnQfa7B1rtKP6sYfqBe2AgzD+
+X-Received: by 2002:aa7:9a52:: with SMTP id x18mr3953109pfj.73.1582717423043;
+        Wed, 26 Feb 2020 03:43:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582717423; cv=none;
+        d=google.com; s=arc-20160816;
+        b=mOg6MER7XJ1jRexft0AX6L8XYRHk7aLuQNMgsi4b/kJlnsWCjR0KRbPEfekk9i/54A
+         rqXgmn/iB0ze/iBu5sXhENr1Ta4vZO2y/8/lobgUEBCc/W1vBZ9JJyq1sh8e1aotfJLk
+         lHp7+VTPNQ7PQlzdmvlB0969oGNnSft2PnGqlrGqKFQ2LYRExHAeSZ7lpUw573HkBBSX
+         cNZTAdwIts17ZbM3K+S23pFnV9fQtSWhdXUr0pMul+48A0fWV9TuHPXn8WruIn342Fe9
+         HrBPeIxYVnGytbVFHBvp1syIchM7efoWtIkHC/3R4gGjBNuEFVjkZHwc73WHUmkLZbaJ
+         Ayeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=xMm7zMTQBYCyK6SLDl4Jk5UJ4Nfl3JH0ugSfafIgZU0=;
+        b=q8QoEV69Kbv041p6As7UyGBx7fjhAl3Y9lSZ5CuN4eITigh8oWOX9CVCHfRGRAUm94
+         StjIUkZNWvZA6RIThttOlpF06C6Fl6qQWufOsXFck8l7/50IMqeyWywaF0sH1NujiM1P
+         XAlo7AMbbgT6R1gUeqlQvjlRivr67B/vAgtWaX3pfumBr7AnZXknRtPShqpZtF66oxFt
+         GnCR8kgYxfgxkj30X+06N083RGoPDTN+AEmj79jLfpwu7tKzJ+cPQpMdYCl6lKzFalYV
+         AzY+jaLxTOOH7/VgX3FCOsBR9tsdK5/dntiK+Ch+0NO4vjJ4Pn67ETt2KUq+FakS/fSi
+         xy2w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id e15si2379849pgg.307.2020.02.26.03.43.42
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 03:43:43 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd103.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou104.ddreams.local (Postfix) with ESMTP id 3FE8C1200DA;
+	Wed, 26 Feb 2020 20:43:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd103.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6B018844KU5J40@dDREAMS>; Wed,
+ 26 Feb 2020 20:43:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 203237E6034;	Wed,
+ 26 Feb 2020 20:43:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F6B58E6042;	Wed,
+ 26 Feb 2020 20:43:42 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 1E3E18E6055;	Wed, 26 Feb 2020 20:43:42 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD80F8E6055;	Wed,
+ 26 Feb 2020 20:43:41 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 26 Feb 2020 20:43:41 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 06/11] docs: support multi-queue in spp_vf command
+Date: Wed, 26 Feb 2020 20:43:30 +0900
+Message-id: <20200226114335.3865-7-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds description of multi-queue
+in spp_vf command.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/commands/secondary/spp_vf.rst | 54 ++++++++++++++---------
+ 1 file changed, 34 insertions(+), 20 deletions(-)
+
+diff --git a/docs/guides/commands/secondary/spp_vf.rst b/docs/guides/commands/secondary/spp_vf.rst
+index 1bbd7bf..dff749f 100644
+--- a/docs/guides/commands/secondary/spp_vf.rst
++++ b/docs/guides/commands/secondary/spp_vf.rst
+@@ -109,24 +109,24 @@ consists of three parts.
+ 
+     spp > vf 1; status
+     Basic Information:
+-      - client-id: 3
+-      - ports: [phy:0, phy:1, ring:0, ring:1, ring:2, ring:3, ring:4]
+-      - lcore_ids:
+-        - master: 2
+-        - slaves: [3, 4, 5, 6]
++     - client-id: 1
++     - ports: [phy:0 nq 0, phy:0 nq 1, ring:0, ring:1, ring:2]
++     - lcore_ids:
++       - master: 1
++       - slaves: [2, 3 ,4, 5]
+     Classifier Table:
+-      - C0:8E:CD:38:EA:A8, ring:4
+-      - C0:8E:CD:38:BC:E6, ring:3
++     - C0:8E:CD:38:EA:A8, ring:1
++     - C0:8E:CD:38:BC:E6, ring:2
+     Components:
+-      - core:5 'fw1' (type: forward)
+-        - rx: ring:0
+-        - tx: ring:1
+-      - core:6 'mg' (type: merge)
+-      - core:7 'cls' (type: classifier)
+-        - rx: ring:2
+-        - tx: ring:3
+-        - tx: ring:4
+-      - core:8 '' (type: unuse)
++     - core:2 'fwd1' (type: forward)
++       - rx: phy:0 nq 0
++       - tx: ring:0
++     - core:3 'mg' (type: merge)
++     - core:4 'cls' (type: classifier)
++       - rx: phy:0 nq 1
++       - tx: ring:1
++       - tx: ring:2
++     - core:5 '' (type: unuse)
+ 
+ ``Basic Information`` is for describing attributes of ``spp_vf`` itself.
+ ``client-id`` is a secondary ID of the process and ``ports`` is a list of
+@@ -214,10 +214,12 @@ Adding port
+ 
+ .. code-block:: console
+ 
+-    spp > vf SEC_ID; port add RES_UID DIR NAME
++    spp > vf SEC_ID; port add RES_UID [nq QUEUE_NUM] DIR NAME
+ 
+ ``RES_UID`` is with replaced with resource UID such as ``ring:0`` or
+ ``vhost:1``. ``spp_vf`` supports three types of port.
++``nq QUEUE_NUM`` is the queue number when multi-queue is configured.
++This is optional parameter.
+ 
+   * ``phy`` : Physical NIC
+   * ``ring`` : Ring PMD
+@@ -237,6 +239,9 @@ by referring the table. How to configure the table is described in
+     # recieve from 'phy:0'
+     spp > vf 2; port add phy:0 rx cls1
+ 
++    # receive from queue 1 of 'phy:0'
++    spp > vf 2; port add phy:0 nq 1 rx cls1
++
+     # send to 'ring:0' and 'ring:1'
+     spp > vf 2; port add ring:0 tx cls1
+     spp > vf 2; port add ring:1 tx cls1
+@@ -252,14 +257,14 @@ To remove VLAN tag, simply add ``del_vlantag`` sub command without arguments.
+ 
+ .. code-block:: console
+ 
+-    spp > vf SEC_ID; port add RES_UID DIR NAME del_vlantag
++    spp > vf SEC_ID; port add RES_UID [nq QUEUE_NUM] DIR NAME del_vlantag
+ 
+ On the other hand, use ``add_vlantag`` which takes two arguments,
+ ``VID`` and ``PCP``, for adding VLAN tag to the packets.
+ 
+ .. code-block:: console
+ 
+-    spp > vf SEC_ID; port add RES_UID DIR NAME add_vlantag VID PCP
++    spp > vf SEC_ID; port add RES_UID [nq QUEUE_NUM] DIR NAME add_vlantag VID PCP
+ 
+ ``VID`` is a VLAN ID and ``PCP`` is a Priority Code Point defined in
+ `IEEE 802.1p
+@@ -300,7 +305,7 @@ Delete a port which is not used anymore.
+ 
+ .. code-block:: console
+ 
+-    spp > vf SEC_ID; port del RES_UID DIR NAME
++    spp > vf SEC_ID; port del RES_UID [nq QUEUE_NUM] DIR NAME
+ 
+ It is same as the adding port, but no need to add additional sub command
+ for VLAN features.
+@@ -312,6 +317,9 @@ Here is an example.
+     # delete rx port 'ring:0' from 'cls1'
+     spp > vf 2; port del ring:0 rx cls1
+ 
++    # delete rx port queue 1 of 'phy:0' from 'cls1'
++    spp > vf 2; port del phy:0 nq 1 rx cls1
++
+     # delete tx port 'vhost:1' from 'mgr1'
+     spp > vf 2; port del vhost:1 tx mgr1
+ 
+@@ -336,6 +344,12 @@ a table of classifier.
+     # delete entry
+     spp > vf SEC_ID; classifier_table del mac MAC_ADDRESS RES_ID
+ 
++    # add entry with multi-queue support
++    spp > vf SEC_ID; classifier_table add mac MAC_ADDR RES_UID [nq QUEUE_NUM]
++
++    # delete entry with multi-queue support
++    spp > vf SEC_ID; classifier_table del mac MAC_ADDRESS RES_ID [nq QUEUE_NUM]
++
+ This is an example to register MAC address ``52:54:00:01:00:01``
+ with port ``ring:0``.
+ 
+-- 
+2.17.1
+

@@ -1,0 +1,112 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2894046oog;
+        Wed, 26 Feb 2020 03:43:40 -0800 (PST)
+X-Google-Smtp-Source: APXvYqz2zk1hLNjgxy7wPQTM0guMqDE0HFHsNfwsliIJcxk1hgQ1izaEou15ppswKksJZimWBFIq
+X-Received: by 2002:a17:902:7203:: with SMTP id ba3mr3600419plb.249.1582717419869;
+        Wed, 26 Feb 2020 03:43:39 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582717419; cv=none;
+        d=google.com; s=arc-20160816;
+        b=ZynRAp6ISX+aGdzHtGUr+sXjmuxNk2qNCeOSDbQ3PYDx46xy2+VIR1nRTti3SKqxWx
+         Du4TkN50KImckPy3RvB+ScJdQqKLVUrvMRmUsBMFUM2lXoDm/vGmHX3xi/qRv5eB0nmb
+         b3lr3qjIgimaxplLH0INQmbxNMagslcb2GRTfKWhsx9jm5EoW9vi1UaQlKWP6TZYc1+p
+         kotF/rhkhZHFN1sxW9SCKvJm/wJ2flDiqd+SwkCWwffJ0taz7IV//6ylND0E5asDWsZM
+         Rieuyg0MrD4LHpCWtFjEVVd+mFMdQK1urytNqAydqPvVSD0msCzzUeNF1F05Jz9tWonI
+         PU5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from;
+        bh=r7pR4JjIptuhdjQJpLpvOMYWCID0koqjBbJnVDNbIQw=;
+        b=ONUk2GwEvVcxxxtSiUr3aIoVmpOeC42Me71jdGkwScyItb9H2RMqq7N4pshOAHYJDf
+         kl03oufaBgaUfIjW+nrWk0tBiTIp9wmxV3zkkE0O70z826MbEHTjA4s4SNvBk5Ych4p7
+         HXEnuXti7Qk9nLxKHuIyh5vcucnVGTds8c2lNR7qBup7wHx5fhxFh6Bf+6WN/T/oImBN
+         KSQ3jD9QbFk2o0tjGDHhvgBve+EobsWnVRfytBcoczwoK8nEw31bJLnNq7R54VJZAoLn
+         wyY2lV1SXs4m5RQ5p20jh2Ydh7RgB3AgJQ2t6VNsgVqohVm1EcrvnzpBPBW9R/jnfJAJ
+         ms0g==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id c2si2098470pls.350.2020.02.26.03.43.39
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 03:43:39 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd102.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id 2F17E1200DB;
+	Wed, 26 Feb 2020 20:43:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd102.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6B016M84KRWA40@dDREAMS>; Wed,
+ 26 Feb 2020 20:43:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 12C277E6032;	Wed,
+ 26 Feb 2020 20:43:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11B038E6055;	Wed,
+ 26 Feb 2020 20:43:39 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 108B58E6042;	Wed, 26 Feb 2020 20:43:39 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A26898E6057;	Wed,
+ 26 Feb 2020 20:43:38 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 26 Feb 2020 20:43:38 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: ferruh.yigit@intel.com, yasufum.o@gmail.com
+Cc: spp@dpdk.org
+Subject: [PATCH 03/11] docs: change primary process startup parameter
+Date: Wed, 26 Feb 2020 20:43:27 +0900
+Message-id: <20200226114335.3865-4-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226114335.3865-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds change on primary process startup command
+when using offload with MLX5 supported NIC.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index b0824d4..6d84be7 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -415,6 +415,26 @@ secondary processes.
+         -n 10 \
+         -s 192.168.1.100:5555
+ 
++In case of using MLX5 supported NIC, you must add ``dv_flow_en=1``
++with white list option.
++
++.. code-block:: console
++
++    # terminal 3
++    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++        -l 0 -n 4 \
++        -w 0000:03:00.0,dv_flow_en=1 \
++        -w 0000:04:00.0,dv_flow_en=1 \
++        -w 0000:05:00.0 \
++        --socket-mem 512,512 \
++        --huge-dir /dev/hugepages \
++        --proc-type primary \
++        --base-virtaddr 0x100000000
++        -- \
++        -p 0x03 \
++        -n 10 \
++        -s 192.168.1.100:5555
++
+ - EAL options:
+ 
+   - ``-l``: core list
+-- 
+2.17.1
+
