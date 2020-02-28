@@ -1,0 +1,194 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp4124633oog;
+        Thu, 27 Feb 2020 01:44:32 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwD076RkZ/UR0CZlh5el3FPeHpBOWI17gorbWv2E/+hNvgYXfmKyQKBJo7YfE20ToCV4raX
+X-Received: by 2002:a63:4282:: with SMTP id p124mr3405900pga.59.1582796672693;
+        Thu, 27 Feb 2020 01:44:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582796672; cv=none;
+        d=google.com; s=arc-20160816;
+        b=IEgVdi9ehN1PyQrRPlbVeNPHDxxWRsbRRWev6qA3I6Nd458f35Th3RzEUF/3NZtbHk
+         WqmU7FMhS+y7Yi7IO3vRoPBj3YHtZk6c6bzFFm5AilVyOJlflLQ5Ozk2h7WO4UJRyuop
+         SvB4B369TR3Tjti9S5ceF9fZVuWLob/HM6sgsMW3aBasHgVx79WM4Ds4Bdr3CUXuXrPO
+         zfIrICOY9fgIOUEDE8Bs/0/YkYpk+zjfOrM291VJNzz34mKtakFsMMtr7s7Kw1JILPEt
+         JW2k1zlKTOrm/t6jOOEvrzaIQhXPGscx5lpH4j74aeux6nlP6884iixAhZW+AcCjWDvk
+         XBnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=YGq6oQDYvdA0AcARpuUyXh/gHDR0BYTaXaz4f4QmNvM=;
+        b=bCoqh10BSzSj2VIAHeJ7zq+1Lcyk9UA5yz+3sKlCAtMIxlAxHJSaFqBj2fiTbSEbpP
+         LiymHbLx/3PkSRMcGcKwT5DcXRtKuDVvT2P2G9A03tXyHZhquY/1Yj3SXz8f1dFEE93W
+         meImoXilAbc00OGmi8sBatfcnN31o85rdMv2b72/svV702o99oWGt5I0ErcpFV12k5CT
+         WpPm4xjyMNtX5nMLz7gR4g26gcLU2Hgsc42PgPmPHb1PFLPZo+DijUk7yWwIEt1Zad90
+         ASoTNuMD0/QCiJoPspUqTQO1/h+zggLQZ6mgSz2iZNeBqrDo5Rlek4yfefV1sceO/5ic
+         +iXg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id a24si2798444pgv.148.2020.02.27.01.44.32
+        for <yasufum.o@gmail.com>;
+        Thu, 27 Feb 2020 01:44:32 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd102.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id E823F1202AB;
+	Thu, 27 Feb 2020 18:44:31 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd102.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6C00G0RTQ72GA0@dDREAMS>; Thu,
+ 27 Feb 2020 18:44:31 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP id B462E7E6036;	Thu,
+ 27 Feb 2020 18:44:31 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B32408E605A;	Thu,
+ 27 Feb 2020 18:44:31 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id B0EC08E6060;	Thu, 27 Feb 2020 18:44:31 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5EC2B8E6052;	Thu,
+ 27 Feb 2020 18:44:31 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP;	Thu,
+ 27 Feb 2020 18:44:31 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH 8/8] docs: fix incorrect commands in usecases.
+Date: Thu, 27 Feb 2020 18:44:22 +0900
+Message-id: <20200227094422.7429-9-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@po.ntt-tx.co.jp>
+
+There are several incorrectness whih regards to
+usecases, how to use parts.
+So this patch set provides the fix.
+
+Fixes: d76cb64c ("docs: update how to use section for using spp-ctl")
+Fixes: 359d5a3b ("docs: add multiple nodes section in usecases")
+Fixes: e3fecafd ("docs: remove spp_vm from usecases")
+Fixes: 454c7ef2 ("docs: move usecase of spp_vf")
+Fixes: 215c18f4 ("docs: update usecase of ssh with spp_vf")
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst        |  9 ++++++---
+ docs/guides/usecases/multi_nodes.rst |  6 ++++--
+ docs/guides/usecases/spp_nfv.rst     |  2 +-
+ docs/guides/usecases/spp_vf.rst      | 10 +++++-----
+ 4 files changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 4e42c58..965b8c7 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -219,8 +219,9 @@ All of options can be referred with help option ``-h``.
+ 
+ .. code-block:: console
+ 
+-    python3 ./src/spp-ctl/spp-ctl -h
+-    usage: spp-ctl [-h] [-b BIND_ADDR] [-p PRI_PORT] [-s SEC_PORT] [-a API_PORT]
++    $ python3 ./src/spp-ctl/spp-ctl -h
++    usage: spp-ctl [-h] [-b BIND_ADDR] [-p PRI_PORT]
++                   [-s SEC_PORT] [-a API_PORT]
+ 
+     SPP Controller
+ 
+@@ -322,7 +323,7 @@ All of options can be referred with help option ``-h``.
+ .. code-block:: console
+ 
+     $ python3 src/spp.py -h
+-    usage: spp.py [-h] [-b BIND_ADDR] [-a API_PORT]
++    usage: spp.py [-h] [-b BIND_ADDR] [--wait-pri] [--config CONFIG]
+ 
+     SPP Controller
+ 
+@@ -330,6 +331,8 @@ All of options can be referred with help option ``-h``.
+       -h, --help            show this help message and exit
+       -b BIND_ADDR, --bind-addr BIND_ADDR
+                             bind address, default=127.0.0.1:7777
++      --wait-pri            Wait for spp_primary is launched
++      --config CONFIG       Config file path
+ 
+ 
+ All of SPP CLI commands are described in :doc:`../../commands/index`.
+diff --git a/docs/guides/usecases/multi_nodes.rst b/docs/guides/usecases/multi_nodes.rst
+index 3eaed0c..e380620 100644
+--- a/docs/guides/usecases/multi_nodes.rst
++++ b/docs/guides/usecases/multi_nodes.rst
+@@ -156,6 +156,8 @@ For host2, swith server to host2 and run nfv commands.
+     Switch spp-ctl to "2: 192.168.1.102:7777".
+ 
+     # configure
++    spp > nfv 1; add vhost:0
++    Add vhost:0.
+     spp > nfv 1; patch phy:0 vhost:0
+     Patch ports (phy:0 -> vhost:0).
+     spp > nfv 1; patch vhost:0 phy:1
+@@ -173,8 +175,8 @@ Finally, change path from blue lines to red lines.
+ .. code-block:: console
+ 
+     # switch to server 1
+-    spp > server 2
+-    Switch spp-ctl to "2: 192.168.1.102:7777".
++    spp > server 1
++    Switch spp-ctl to "1: 192.168.1.101:7777".
+ 
+     # remove blue path
+     spp > nfv 1; stop
+diff --git a/docs/guides/usecases/spp_nfv.rst b/docs/guides/usecases/spp_nfv.rst
+index cc18b08..488fdec 100644
+--- a/docs/guides/usecases/spp_nfv.rst
++++ b/docs/guides/usecases/spp_nfv.rst
+@@ -385,7 +385,7 @@ to confirm that network on host is configured.
+ 
+ .. code-block:: console
+ 
+-    $ sudo $RE_SDK/examples/build/l2fwd -l 0-1 -- -p 0x03
++    $ sudo $RTE_SDK/examples/build/l2fwd -l 0-1 -- -p 0x03
+ 
+ .. _figure_spp_nfv_l2fwd_vhost:
+ 
+diff --git a/docs/guides/usecases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+index ee18439..c45feb8 100644
+--- a/docs/guides/usecases/spp_vf.rst
++++ b/docs/guides/usecases/spp_vf.rst
+@@ -199,14 +199,14 @@ First, delete entries of ``classifier_table`` and ports of components.
+ 
+     # forwarders
+     spp > vf 1; port del ring:0 rx fwd1
+-    spp > vf 1; port del vhost:0 tx fwd1
++    spp > vf 1; port del ring:2 tx fwd1
+     spp > vf 1; port del ring:1 rx fwd2
+-    spp > vf 1; port del vhost:2 tx fwd2
++    spp > vf 1; port del ring:3 tx fwd2
+ 
+     # mergers
+     spp > vf 1; port del ring:2 rx mgr
+     spp > vf 1; port del ring:3 rx mgr
+-    spp > vf 1; port del phy:0 tx mgr
++    spp > vf 1; port del phy:1 tx mgr
+ 
+ Then, stop components.
+ 
+@@ -587,8 +587,8 @@ Delete entries from the table and ports from each of components.
+     spp > vf 1; port del vhost:3 tx fwd6
+     spp > vf 1; port del vhost:1 rx fwd7
+     spp > vf 1; port del ring:6 tx fwd7
+-    spp > vf 1; port del vhost:3 tx fwd8
+-    spp > vf 1; port del ring:7 rx fwd8
++    spp > vf 1; port del vhost:3 rx fwd8
++    spp > vf 1; port del ring:7 tx fwd8
+ 
+     # merger
+     spp > vf 1; port del ring:6 rx mgr2
+-- 
+2.17.1
+
