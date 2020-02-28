@@ -1,0 +1,243 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2618209oog;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxWZLk4aXiqR87cdSQaFcyzyLxblgg5mmUxJyzx93uiddtoFw1dDUxBJub9yHfr/89s0TRc
+X-Received: by 2002:a63:ba05:: with SMTP id k5mr2391251pgf.174.1582700772468;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582700772; cv=none;
+        d=google.com; s=arc-20160816;
+        b=bv6H5BvPl5Wi7DQa/BGuwrxvzfTqvb9AAHFuX6ZVfWjAQAWEuKCSW/MPMttTqZeKAy
+         UG7acmNPlpIOANSMHaEHrSUCiMO3RCnbpCAvsuwr3y8dqWD/d3LP2hdKzWTJ1qL08cds
+         LzUyXkZYjevSImwTVRd/hftuR0JndZPnyibQrR2AZpnfa0AGJHAhvUK8RfbSFcCAERuH
+         mlPxWlROa9gznaKs08QEFR3Ecur1L5Sqp1kiG/gepdVqiDnY52iUeMFUdtAQMONCbjqt
+         57cOoTxQ2ynI34fMRshNMmymiRyktdun7JKldwzvvzT2s8uVySded94+vo+5Lv1z3MEC
+         Ybgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=XhBpX9ENHaJgAMq/S20ChhiVVNpEXqS3WinGKB6/k54=;
+        b=t5oKhjSFJAZhwzpu5Jw10D+yLxlYmpwqW3sv6UoapTVdnrMD68lm5q6wa6aMptSOps
+         nx1XbQykz3FwEqhUkwIJ7zIZSyCFijBfQ2FQ+VrFIrVCcwJlORbYrgJ+gQIsa0sDqX/2
+         aULms96BZeSrGc3KYoo3SGVuLDvqJY3OvjkdD2x2W8q1Q2u4aYizEd6mXbosjAVMB4Qv
+         AXH5hxfjAL8zIuKEkHBZj1PxwfWfqyeitXz0Mrp+9K0jqeKJqgMe+an9RJ77slEulTy1
+         P45nA8cPZBSEfL943VD6A94YQ0zzFLC1iJQHCv3WFgObrQBJ0x3I9JF8siFNUuh/vOlk
+         3X4Q==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id d20si1497835pll.76.2020.02.25.23.06.12
+        for <yasufum.o@gmail.com>;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id D4AC124086A; Wed, 26 Feb 2020 16:06:10 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 2/5] primary: suport pipe PMD
+Date: Wed, 26 Feb 2020 16:06:07 +0900
+Message-Id: <20200226070610.3496-3-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226070610.3496-1-oda@valinux.co.jp>
+References: <20200226013746.2875-1-oda@valinux.co.jp>
+ <20200226070610.3496-1-oda@valinux.co.jp>
+
+This patch enables the primary to handle add/del request of
+pipe PMD. The primary comes to return infomation of pipes in
+the response of status request too.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/primary/main.c | 86 +++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 78 insertions(+), 8 deletions(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 4ef9cb1..872f820 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -28,7 +28,9 @@
+  */
+ #define PRI_BUF_SIZE_LCORE 128
+ #define PRI_BUF_SIZE_PHY 30720
+-#define PRI_BUF_SIZE_RING (MSG_SIZE - PRI_BUF_SIZE_LCORE - PRI_BUF_SIZE_PHY)
++#define PRI_BUF_SIZE_PIPE 512
++#define PRI_BUF_SIZE_RING \
++	(MSG_SIZE - PRI_BUF_SIZE_LCORE - PRI_BUF_SIZE_PHY - PRI_BUF_SIZE_PIPE)
+ 
+ #define SPP_PATH_LEN 1024  /* seems enough for path of spp procs */
+ #define NOF_TOKENS 48  /* seems enough to contain tokens */
+@@ -50,6 +52,7 @@
+ struct port_id_map {
+ 	int port_id;
+ 	enum port_type type;
++	int rx_ring_id, tx_ring_id;  /* for pipe */
+ };
+ 
+ struct port_id_map port_id_list[RTE_MAX_ETHPORTS];
+@@ -436,6 +439,10 @@ append_port_info_json(char *str)
+ 			sprintf(str + strlen(str), "\"memif:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case PIPE:
++			sprintf(str + strlen(str), "\"pipe:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+ 			sprintf(str + strlen(str), "\"udf\",");
+@@ -518,6 +525,12 @@ append_patch_info_json(char *str)
+ 					"\"memif:%u\",",
+ 					port_map[i].id);
+ 			break;
++		case PIPE:
++			RTE_LOG(INFO, SHARED, "Type: PIPE\n");
++			sprintf(patch_str + strlen(patch_str),
++					"\"pipe:%u\",",
++					port_map[i].id);
++			break;
+ 		case UNDEF:
+ 			RTE_LOG(INFO, PRIMARY, "Type: UDF\n");
+ 			/* TODO(yasufum) Need to remove print for undefined ? */
+@@ -580,6 +593,12 @@ append_patch_info_json(char *str)
+ 						"\"memif:%u\"",
+ 						port_map[j].id);
+ 				break;
++			case PIPE:
++				RTE_LOG(INFO, SHARED, "Type: PIPE\n");
++				sprintf(patch_str + strlen(patch_str),
++						"\"pipe:%u\"",
++						port_map[j].id);
++				break;
+ 			case UNDEF:
+ 				RTE_LOG(INFO, PRIMARY, "Type: UDF\n");
+ 				/*
+@@ -740,6 +759,34 @@ ring_port_stats_json(char *str)
+ 	return 0;
+ }
+ 
++static int
++pipes_json(char *str)
++{
++	uint16_t dev_id;
++	char pipe_buf[30];  /* it is enough if port_id < 1000 */
++	int find = 0;
++
++	strcpy(str, "\"pipes\":[");
++	for (dev_id = 0; dev_id < RTE_MAX_ETHPORTS; dev_id++) {
++		if (port_id_list[dev_id].type != PIPE)
++			continue;
++		sprintf(pipe_buf, "{\"id\":%d,\"rx\":%d,\"tx\":%d}",
++				port_id_list[dev_id].port_id,
++				port_id_list[dev_id].rx_ring_id,
++				port_id_list[dev_id].tx_ring_id);
++		if (strlen(str) + strlen(pipe_buf) > PRI_BUF_SIZE_PIPE - 3) {
++			RTE_LOG(ERR, PRIMARY, "Cannot send all of pipes\n");
++			break;
++		}
++		if (find)
++			strcat(str, ",");
++		find = 1;
++		strcat(str, pipe_buf);
++	}
++	strcat(str, "]");
++	return 0;
++}
++
+ /**
+  * Retrieve all of statu of ports as JSON format managed by primary.
+  *
+@@ -781,28 +828,33 @@ get_status_json(char *str)
+ 	char buf_lcores[PRI_BUF_SIZE_LCORE];
+ 	char buf_phy_ports[PRI_BUF_SIZE_PHY];
+ 	char buf_ring_ports[PRI_BUF_SIZE_RING];
++	char buf_pipes[PRI_BUF_SIZE_PIPE];
+ 	memset(buf_phy_ports, '\0', PRI_BUF_SIZE_PHY);
+ 	memset(buf_ring_ports, '\0', PRI_BUF_SIZE_RING);
+ 	memset(buf_lcores, '\0', PRI_BUF_SIZE_LCORE);
++	memset(buf_pipes, '\0', PRI_BUF_SIZE_PIPE);
+ 
+ 	append_lcore_info_json(buf_lcores, lcore_id_used);
+ 	phy_port_stats_json(buf_phy_ports);
+ 	ring_port_stats_json(buf_ring_ports);
++	pipes_json(buf_pipes);
+ 
+-	RTE_LOG(INFO, PRIMARY, "%s, %s\n", buf_phy_ports, buf_ring_ports);
++	RTE_LOG(INFO, PRIMARY, "%s, %s, %s\n", buf_phy_ports, buf_ring_ports,
++			buf_pipes);
+ 
+ 	if (get_forwarding_flg() == 1) {
+ 		char tmp_buf[512];
+ 		memset(tmp_buf, '\0', sizeof(tmp_buf));
+ 		forwarder_status_json(tmp_buf);
+ 
+-		sprintf(str, "{%s,%s,%s,%s}",
++		sprintf(str, "{%s,%s,%s,%s,%s}",
+ 				buf_lcores, tmp_buf, buf_phy_ports,
+-				buf_ring_ports);
++				buf_ring_ports, buf_pipes);
+ 
+ 	} else {
+-		sprintf(str, "{%s,%s,%s}",
+-				buf_lcores, buf_phy_ports, buf_ring_ports);
++		sprintf(str, "{%s,%s,%s,%s}",
++				buf_lcores, buf_phy_ports, buf_ring_ports,
++				buf_pipes);
+ 	}
+ 
+ 	return 0;
+@@ -814,7 +866,7 @@ get_status_json(char *str)
+  */
+ /* TODO(yasufum) consider to merge do_add in nfv/commands.h */
+ static int
+-add_port(char *p_type, int p_id)
++add_port(char *p_type, int p_id, char **token_list)
+ {
+ 	uint16_t dev_id;
+ 	uint16_t port_id;
+@@ -851,6 +903,18 @@ add_port(char *p_type, int p_id)
+ 		res = add_null_pmd(p_id);
+ 		port_id_list[cnt].port_id = p_id;
+ 		port_id_list[cnt].type = NULLPMD;
++	} else if (!strcmp(p_type, "pipe")) {
++		char *dummy_type;
++		uint16_t dummy_queue;
++		res = add_pipe_pmd(p_id, token_list[0], token_list[1]);
++		if (res < 0)
++			return -1;
++		port_id_list[cnt].port_id = p_id;
++		port_id_list[cnt].type = PIPE;
++		parse_resource_uid(token_list[0], &dummy_type,
++				&port_id_list[cnt].rx_ring_id, &dummy_queue);
++		parse_resource_uid(token_list[1], &dummy_type,
++				&port_id_list[cnt].tx_ring_id, &dummy_queue);
+ 	}
+ 
+ 	if (res < 0)
+@@ -933,6 +997,12 @@ del_port(char *p_type, int p_id)
+ 		if (dev_id == PORT_RESET)
+ 			return -1;
+ 		dev_detach_by_port_id(dev_id);
++
++	} else if (!strcmp(p_type, "pipe")) {
++		dev_id = find_ethdev_id(p_id, PIPE);
++		if (dev_id == PORT_RESET)
++			return -1;
++		dev_detach_by_port_id(dev_id);
+ 	}
+ 
+ 	port_id_list[dev_id].port_id = PORT_RESET;
+@@ -1037,7 +1107,7 @@ parse_command(char *str)
+ 			return ret;
+ 		}
+ 
+-		if (add_port(p_type, p_id) < 0) {
++		if (add_port(p_type, p_id, &token_list[2]) < 0) {
+ 			RTE_LOG(ERR, PRIMARY, "Failed to add_port()\n");
+ 			sprintf(result, "%s", "\"failed\"");
+ 		} else
+-- 
+2.17.1
+

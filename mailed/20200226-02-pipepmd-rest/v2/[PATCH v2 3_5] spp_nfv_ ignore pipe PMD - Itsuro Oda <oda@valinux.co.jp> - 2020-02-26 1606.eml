@@ -1,0 +1,94 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2618213oog;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+X-Google-Smtp-Source: APXvYqy9T66yygUG6sTEAA2ne9Wnqsfj5eIQXYAxF449nFIn+netI6bRBx/S/b+4ZFnzH6QYZ3WE
+X-Received: by 2002:a17:902:8215:: with SMTP id x21mr2771816pln.59.1582700772594;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582700772; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Cdr7iXMpMXCfNaeILzFGNMYIJ0llkA8UsV4zcqKWByGwjrVmtrMFD30sRb6cBAd2sT
+         fvQC3O5aYVkZcwLxHZy9QhbpFlFGLgNOjBAbZ6Tfs+LDOqbJTuL27JZoBrwUUviVtQfM
+         XhijqtqhQSy3n7wC3w8TuTdcxBZ4HNpN9XwjRm8mWyFhX5F7qbQflW/MwB1+C/t6PZvm
+         p+44OEWMtl8jOW8jVvzPZlqzfD/2BaoJUoh9sdNQ1pxMWAt9gxwqjkh3dKor0AJFE8eT
+         wM4lfRN3zvNCOJX0tzvyT/FSq5S8+R8Js7cFtF/ET3u4WVZdQoYyKvuKnDXeCmIQvN5p
+         DMBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=ByInZtwEvkbEnvECu+gFqm7yEqKxSamG52gUTXhwuaE=;
+        b=WHLHHTlD5UqtPNZDo4/t8YtgsrPxluKDvGkU9Mk7U7NvSsTxGV5t6NGtYFkBpj/LNq
+         xtHutEl14XPREqDgnwQVuuNZyf+mtGY3Lp4mwQyoMT0tAKPovMVCW9omV+9SlPoAny4D
+         e1YI6FfyGsIU0L5yq1NIlGdx31Fzogcff3VLGogHGdmClyYSWmO+CFSvenejcEUG/tI3
+         Ml6VHdDtNL8hcwqnEa6/JtzDy2OhSZnECzUN2rP1FXJjHvL1j/cVufHH1CWD67b/cJeW
+         y8cEMQ+0dQ9HktFR1Ir6HIBvE8tg6T1Eh9RlhdSj1L2C9U53VMgUrhYiAeobv0vwxHWJ
+         YB5w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id s7si1796223pgp.340.2020.02.25.23.06.12
+        for <yasufum.o@gmail.com>;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id E01F424087F; Wed, 26 Feb 2020 16:06:10 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 3/5] spp_nfv: ignore pipe PMD
+Date: Wed, 26 Feb 2020 16:06:08 +0900
+Message-Id: <20200226070610.3496-4-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226070610.3496-1-oda@valinux.co.jp>
+References: <20200226013746.2875-1-oda@valinux.co.jp>
+ <20200226070610.3496-1-oda@valinux.co.jp>
+
+Because spp_nfv does not handle pipe PMDs, spp_nfv ignores them.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/nfv/main.c       | 2 +-
+ src/nfv/nfv_status.c | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/nfv/main.c b/src/nfv/main.c
+index 32f1074..2b76672 100644
+--- a/src/nfv/main.c
++++ b/src/nfv/main.c
+@@ -212,7 +212,7 @@ main(int argc, char *argv[])
+ 		if (port_type == PHY) {
+ 			port_id = nof_phy_port;
+ 			nof_phy_port++;
+-		} else if (port_type == VHOST)
++		} else if (port_type == VHOST || port_type == PIPE)
+ 			continue;
+ 		/* NOTE: vhost may be used another process. even if no
+ 		 * process uses, it is necessary to "add vhost" explicitly.
+diff --git a/src/nfv/nfv_status.c b/src/nfv/nfv_status.c
+index d5d7f44..134fb3f 100644
+--- a/src/nfv/nfv_status.c
++++ b/src/nfv/nfv_status.c
+@@ -125,6 +125,8 @@ append_port_info_json(char *str)
+ 				sprintf(str + strlen(str), "\"memif:%u\",",
+ 						port_map[i].id);
+ 				break;
++			case PIPE:
++				break;
+ 			case UNDEF:
+ 				/*
+ 				 * TODO(yasufum) Need to remove print for
+@@ -189,6 +191,9 @@ append_port_string(char *str, enum port_type port_type,
+ 		sprintf(str, "\"memif:%u\"", port_id);
+ 		break;
+ 
++	case PIPE:
++		break;
++
+ 	case UNDEF:
+ 		RTE_LOG(INFO, SHARED, "Type: UDF\n");
+ 		/* TODO(yasufum) Need to remove print for undefined ? */
+-- 
+2.17.1
+

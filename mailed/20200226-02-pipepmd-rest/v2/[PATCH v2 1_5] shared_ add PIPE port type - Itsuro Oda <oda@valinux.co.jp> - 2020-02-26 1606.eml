@@ -1,0 +1,195 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2618211oog;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxuFK0+VQZc+1OShdGFZLCN7SLukqnWMRqzFNlm6nMTpyzzOd5cTY9VE7AGDLHy0/5OHHAw
+X-Received: by 2002:a63:3349:: with SMTP id z70mr2430730pgz.408.1582700772557;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582700772; cv=none;
+        d=google.com; s=arc-20160816;
+        b=d2VPtlvDle1LvQxt0g4ezkWXRJPDy2X+k5L4p6Qoh6tNwrgpAAVcOWr2FC15mgNg0W
+         aJ8i/OHjfnzl7v21XTWkcI4UebHRJWkaiBb8JURSQuXI3A1kimkQYizTL2E4FS4FbARg
+         KTri+KuOOy9JqW9qwFG6hwOAXqwM0jTmy2MkvB14iHwOJMgev9Y44Bh7rby+gL8lYqbC
+         PLq/FyIm1cphmq1UT0RYD5X8//eYgDB15a6mBsvw+n6qJMhCGlC+cDjc+Sxm2RCv2RwF
+         SuP6lVRYPbBuBz1h/bIC7MtYrvuQDIQIFgo5nKoC0Z+WxNn/RTRAjGhTPj7gQJk42uur
+         laaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=hIUa2+CNXq0R9EwLIKFwevH71uIRXUl0Z7kmtJFA4q0=;
+        b=nFk8GWUsiLfJ0atA3g2CwQq66dZa3mbeYxoKh2CGpzk9ISwSLNfvvcTS7lKjEueLut
+         gJg4XED54gc5K2AKQ8rnD9orAmHIRuC0lhI/IOqF/hfqVCNR0jYeuCuJl5oPPrPCVBRg
+         7994SFd/GyqoGlqD5AhXYxMVx0+pYV/iU6q177oCdJwubgTIDC2XuHWN+Pv0OEqsqP3n
+         7BCS98mWQZUVfNqZq2wWBco47Bg8Gs8fKfHvjJfM71BgHFuB/+ProEVt8ZWdO0isJupW
+         /4OMyjo9YyQsgH/iVsZdlaosDHohMn07UWff92mPWZkRtsBg5Edvf5vqSdkIwf2no9VR
+         epgw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id u23si1564596plq.186.2020.02.25.23.06.12
+        for <yasufum.o@gmail.com>;
+        Tue, 25 Feb 2020 23:06:12 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id C9A1724035F; Wed, 26 Feb 2020 16:06:10 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 1/5] shared: add PIPE port type
+Date: Wed, 26 Feb 2020 16:06:06 +0900
+Message-Id: <20200226070610.3496-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226070610.3496-1-oda@valinux.co.jp>
+References: <20200226013746.2875-1-oda@valinux.co.jp>
+ <20200226070610.3496-1-oda@valinux.co.jp>
+
+This patch adds PIPE port type and related functions.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/shared/common.c                           |  9 +++++
+ src/shared/common.h                           |  2 ++
+ src/shared/secondary/add_port.c               | 34 +++++++++++++++++++
+ src/shared/secondary/add_port.h               | 16 +++++++++
+ .../secondary/spp_worker_th/cmd_utils.c       |  2 ++
+ 5 files changed, 63 insertions(+)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index d878c5a..d1c3e36 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -139,6 +139,15 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 		*port_id = (int)strtol(pid_str, NULL, 10);
+ 		*port_type = NULLPMD;
+ 
++	} else if (strncmp(dev_name, VDEV_SPP_PIPE,
++			strlen(VDEV_SPP_PIPE)) == 0) {
++		dev_str_len = strlen(VDEV_SPP_PIPE);
++		pid_len = dev_name_len - dev_str_len;
++		strncpy(pid_str, dev_name + strlen(VDEV_SPP_PIPE),
++				pid_len);
++		*port_id = (int)strtol(pid_str, NULL, 10);
++		*port_type = PIPE;
++
+ 	/* TODO(yasufum) add checking invalid port type and return -1 */
+ 	} else {
+ 		*port_id = 0;
+diff --git a/src/shared/common.h b/src/shared/common.h
+index d311e82..fd3102c 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -57,6 +57,7 @@
+ #define VDEV_ETH_TAP "eth_tap"
+ #define VDEV_NET_TAP "net_tap"
+ #define VDEV_NET_MEMIF "net_memif"
++#define VDEV_SPP_PIPE "spp_pipe"
+ #define VDEV_ETH_NULL "eth_null"
+ 
+ 
+@@ -109,6 +110,7 @@ enum port_type {
+ 	NULLPMD,
+ 	TAP,
+ 	MEMIF,
++	PIPE,
+ 	UNDEF,
+ };
+ 
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index 652ef69..a7b7261 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -62,6 +62,14 @@ get_null_pmd_name(int id)
+ 	return buffer;
+ }
+ 
++static inline const char *
++get_pipe_pmd_name(int id)
++{
++	static char buffer[sizeof(PIPE_PMD_DEV_NAME) + 2];
++	snprintf(buffer, sizeof(buffer) - 1, PIPE_PMD_DEV_NAME, id);
++	return buffer;
++}
++
+ /*
+  * Create an empty rx pcap file to given path if it does not exit
+  * Return 0 for succeeded, or -1 for failed.
+@@ -447,3 +455,29 @@ add_null_pmd(int index)
+ 
+ 	return null_pmd_port_id;
+ }
++
++/*
++ * Create a pipe. Note that this function used by primary only.
++ * Because a pipe is used by an application as a normal ether
++ * device, this function does creation only but does not do
++ * configuration etc.
++ */
++int
++add_pipe_pmd(int index, const char *rx_ring, const char *tx_ring)
++{
++	const char *name;
++	char devargs[64];
++	uint16_t pipe_pmd_port_id;
++
++	int ret;
++
++	name = get_pipe_pmd_name(index);
++	sprintf(devargs, "%s,rx=%s,tx=%s", name, rx_ring, tx_ring);
++	ret = dev_attach_by_devargs(devargs, &pipe_pmd_port_id);
++	if (ret < 0)
++		return ret;
++
++	RTE_LOG(DEBUG, SHARED, "pipe port id %d\n", pipe_pmd_port_id);
++
++	return pipe_pmd_port_id;
++}
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index d686f20..39feb50 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -15,6 +15,7 @@
+ #define PCAP_PMD_DEV_NAME "eth_pcap%u"
+ #define MEMIF_PMD_DEV_NAME "net_memif%u"
+ #define NULL_PMD_DEV_NAME "eth_null%u"
++#define PIPE_PMD_DEV_NAME "spp_pipe%u"
+ 
+ #define PCAP_IFACE_RX "/tmp/spp-rx%d.pcap"
+ #define PCAP_IFACE_TX "/tmp/spp-tx%d.pcap"
+@@ -108,4 +109,19 @@ add_memif_pmd(int index);
+ int
+ add_null_pmd(int index);
+ 
++/**
++ * Create a pipe PMD with given ID.
++ *
++ * @param port_id
++ *   ID of the next possible valid port.
++ * @param rx_ring
++ *   Ring name for rx
++ * @param tx_ring
++ *   Ring name for tx
++ * @return
++ *   Unique port ID
++ */
++int
++add_pipe_pmd(int index, const char *rx_ring, const char *tx_ring);
++
+ #endif
+diff --git a/src/shared/secondary/spp_worker_th/cmd_utils.c b/src/shared/secondary/spp_worker_th/cmd_utils.c
+index 3dea02c..9f0d3fb 100644
+--- a/src/shared/secondary/spp_worker_th/cmd_utils.c
++++ b/src/shared/secondary/spp_worker_th/cmd_utils.c
+@@ -470,6 +470,8 @@ init_host_port_info(void)
+ 			p_iface_info->ring[port_id].iface_type = port_type;
+ 			p_iface_info->ring[port_id].ethdev_port_id = port_id;
+ 			break;
++		case PIPE:
++			break;
+ 		default:
+ 			RTE_LOG(ERR, WK_CMD_UTILS,
+ 					"Unsupported port on host, "
+-- 
+2.17.1
+

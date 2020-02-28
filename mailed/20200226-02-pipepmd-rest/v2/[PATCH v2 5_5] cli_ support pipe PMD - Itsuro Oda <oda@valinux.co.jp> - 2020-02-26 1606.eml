@@ -1,0 +1,87 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp2618244oog;
+        Tue, 25 Feb 2020 23:06:13 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwQaOBJZrDzIAVzJ5gpCkmWzs+2v1+8GZGSIIVwCfdin4fT3rhjEdhB3rZTzxAQ1oImiq6K
+X-Received: by 2002:a17:902:9a86:: with SMTP id w6mr2559022plp.37.1582700773380;
+        Tue, 25 Feb 2020 23:06:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582700773; cv=none;
+        d=google.com; s=arc-20160816;
+        b=RWuPS13qtvZXTkQyb6Ja/tOHW31vmJFNfQu9RYJLU14cOS/fyxRLgmMbu28/xP23is
+         XTZSOzZMCfp545iYiKSk01qgKfnLb+OnTx1u2CFOBIlPiGG5PZhnHSamkSLN3stlrG93
+         LEOH3SK2IpC9DK0w7z7TXY3vJ2+ehukdcXKcKiTQf/sG8FCiFJrGgqV9nbsBwJg+zbBI
+         gR5TfD9DJBjNkJCmohu2VD+hFnmvOINnIJHprOZPTbzSKOL2vnFP1lgmJBGaHVd6TVnS
+         lfyhBDaF7vvgFDi3eklSl51eRIPltVV5HLZefTOdMRSAItZ06cace1DzsdULRNbaPT4Z
+         cjvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=zDPWK34c9LuakdTyv0jEG8AmFcVW94dfdqSFsWJHVWg=;
+        b=rOZ1AJe8QgwrnIUHopobFeg7rekKT4luaE6ZITRAqG+Q7Da2ot3qHTijDyrRTrQq3E
+         DdR/2h+sf06tlOFWPFAP97ao8GIZ2sWfzov5tTC1jtIHFDs9iPRiFwPpgEHVBVRZwuWm
+         PblyG38cMb7+7e0lcmH2zJHkZLE/NbBL863TBq5jBgFFSbXWF5sHziM2fK2J6lOe06qY
+         6NmenNOKVYsZN4mcfDU/gW1TzV4m4+qubp0UVeQfoavERA3OZc95/0cnJt/EP7eEtlWM
+         uUkcGoIoypvMSQTAThv7UWO03bqwVFa3u1Q0juhol+eaXUozNvgaP+DO8RATSrXfTav7
+         hQvg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id v15si1542210pfn.194.2020.02.25.23.06.13
+        for <yasufum.o@gmail.com>;
+        Tue, 25 Feb 2020 23:06:13 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 051E42408A1; Wed, 26 Feb 2020 16:06:11 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 5/5] cli: support pipe PMD
+Date: Wed, 26 Feb 2020 16:06:10 +0900
+Message-Id: <20200226070610.3496-6-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200226070610.3496-1-oda@valinux.co.jp>
+References: <20200226013746.2875-1-oda@valinux.co.jp>
+ <20200226070610.3496-1-oda@valinux.co.jp>
+
+This patch adds add pipe command to the primary.
+Infomation about pipe is added to the output of status command
+of the primary too.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/cli/commands/pri.py | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index dbe56d5..6fc7f00 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -229,6 +229,12 @@ class SppPrimary(object):
+                     else:
+                         print('    - {} -> {}'.format(port, dst))
+ 
++            if ('pipes' in json_obj):
++                print('  - pipes:')
++                for pipe in json_obj['pipes']:
++                    print('    - pipe:{} ring:{} ring:{}'.format(pipe['id'],
++                        pipe['rx'], pipe['tx']))
++
+             if ('phy_ports' in json_obj) or ('ring_ports' in json_obj):
+                 print('- stats')
+ 
+@@ -798,6 +804,10 @@ class SppPrimary(object):
+             print("'%s' is already added." % params[0])
+         else:
+             req_params = {'action': 'add', 'port': params[0]}
++            if len(params) == 3:
++                # add pipe:X ring:A ring:B
++                req_params['rx'] = params[1]
++                req_params['tx'] = params[2]
+ 
+             res = self.spp_ctl_cli.put('primary/ports', req_params)
+             if res is not None:
+-- 
+2.17.1
+
