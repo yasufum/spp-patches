@@ -1,0 +1,216 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp4259928oog;
+        Thu, 27 Feb 2020 03:50:45 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyc7mg/f0bjqhFeOAk4u1PbG5E+/HCK+8sHqAOa897+M5N2PzlaTtQiRPP7qlBw0l/bmnSI
+X-Received: by 2002:a63:257:: with SMTP id 84mr3672359pgc.304.1582804244938;
+        Thu, 27 Feb 2020 03:50:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582804244; cv=none;
+        d=google.com; s=arc-20160816;
+        b=y8TN8jga8/KBa10JAED/i5LjoAPUq7aMGd0Lq7kEPrR0P20nII2gp/RuqU8zqEU0/M
+         hIs4/3DssQQ5SbqL/fJvOxbdETbP6bKjT1EnmfNpY8faLK0lXwEkTjD4T4ZpvezYov67
+         NFJsf+FkplOFUDebpwcTjPotbs8pfYhBLrBzOG8cIF9oCZ1jmJf7RULURBLzTH/FDmRx
+         UkS6dzYcg060eGbqtkx9Bq3IrSb2OtQ0Yqb2N7kyVj37G9BkZmrnO/52RTdMGKI36Hb3
+         D4cLJa4Sn86FSX2BpbOEJgEHdlmMVrTJ7zPQo1ogCpFuXzA8YKaqppX7KcaaTJQUPXNg
+         KP2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=vjT/q3T6VHppwji3pOEiRH5YJQrA/yB11jYqHPNB4P0=;
+        b=Rs1k2Ep7dLoLm6ppppJPzvgD2ZKp5q5JZ767BU4bYtI5nKQnpZQL4A94lqWeOd9L5g
+         OLy589P6FEswJ/UemXHBj1sStIXKYsVA5NROpFyjK5//UFZoT+/lGtUNTanUrP2F72W2
+         tj8/4LD09rwb1C1LAKR3yjFhtrE/P0zeqAiFChYSZ60UPC/V7o/JQ6/LP4zhaW/0DNrH
+         DPM91Ch9681iFkUOMcfFTAAPNeAI9+sPaRrqEsB83nAe9AAuZNhBL5FB8HzQUZIvFVHr
+         Wpc0FtHI6L3p0HhQt9HuffU9UgHWpklVOU3fHI/aGa76dQXoo0AnV+sNI9IF29CYQJJG
+         auPQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id a11si2672659pls.301.2020.02.27.03.50.44
+        for <yasufum.o@gmail.com>;
+        Thu, 27 Feb 2020 03:50:44 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id 2F84D120143;
+	Thu, 27 Feb 2020 20:50:44 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6C01BGWZKK1S10@dDREAMS>; Thu,
+ 27 Feb 2020 20:50:44 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 068D87E6032;	Thu,
+ 27 Feb 2020 20:50:44 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0547C8E6057;	Thu,
+ 27 Feb 2020 20:50:44 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 03D888E6042;	Thu, 27 Feb 2020 20:50:44 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1177C8E6042;	Thu,
+ 27 Feb 2020 20:50:43 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Thu,
+ 27 Feb 2020 20:50:43 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 1/2] recipes: update recipes for multiple node usecase
+Date: Thu, 27 Feb 2020 20:50:40 +0900
+Message-id: <20200227115041.7735-2-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200227115041.7735-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200227115041.7735-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp> 
+
+This patch set provides rcps for multiple node usecase.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ .../usecases/multiple_nodes/10_host3_stop_fwd.rcps    |  6 ++++++
+ .../usecases/multiple_nodes/11_host4_stop_fwd.rcps    |  6 ++++++
+ .../usecases/multiple_nodes/3_host1_start_fwd.rcps    |  7 +++++++
+ .../usecases/multiple_nodes/4_host2_start_fwd.rcps    |  8 ++++++++
+ .../usecases/multiple_nodes/5_host3_start_fwd.rcps    |  8 ++++++++
+ .../usecases/multiple_nodes/6_host4_start_fwd.rcps    |  8 ++++++++
+ .../usecases/multiple_nodes/7_config_change_path.rcps | 11 +++++++++++
+ recipes/usecases/multiple_nodes/8_host1_stop_fwd.rcps |  6 ++++++
+ recipes/usecases/multiple_nodes/9_host2_stop_fwd.rcps |  6 ++++++
+ 9 files changed, 66 insertions(+)
+ create mode 100644 recipes/usecases/multiple_nodes/10_host3_stop_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/11_host4_stop_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/3_host1_start_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/4_host2_start_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/5_host3_start_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/6_host4_start_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/7_config_change_path.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/8_host1_stop_fwd.rcps
+ create mode 100644 recipes/usecases/multiple_nodes/9_host2_stop_fwd.rcps
+
+diff --git a/recipes/usecases/multiple_nodes/10_host3_stop_fwd.rcps b/recipes/usecases/multiple_nodes/10_host3_stop_fwd.rcps
+new file mode 100644
+index 0000000..d3389d0
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/10_host3_stop_fwd.rcps
+@@ -0,0 +1,6 @@
++# Switch to server 3
++server 3
++
++# Stop forwarding
++nfv 1; stop
++nfv 1; patch reset
+diff --git a/recipes/usecases/multiple_nodes/11_host4_stop_fwd.rcps b/recipes/usecases/multiple_nodes/11_host4_stop_fwd.rcps
+new file mode 100644
+index 0000000..d894f74
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/11_host4_stop_fwd.rcps
+@@ -0,0 +1,6 @@
++# Switch to server 4
++server 4
++
++# Stop forwarding
++nfv 1; stop
++nfv 1; patch reset
+diff --git a/recipes/usecases/multiple_nodes/3_host1_start_fwd.rcps b/recipes/usecases/multiple_nodes/3_host1_start_fwd.rcps
+new file mode 100644
+index 0000000..552ca03
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/3_host1_start_fwd.rcps
+@@ -0,0 +1,7 @@
++# Switch to server 1
++server 1
++
++# Configure forwarding
++nfv 1; patch phy:1 phy:2
++nfv 1; patch phy:3 phy:0
++nfv 1; forward
+diff --git a/recipes/usecases/multiple_nodes/4_host2_start_fwd.rcps b/recipes/usecases/multiple_nodes/4_host2_start_fwd.rcps
+new file mode 100644
+index 0000000..7959551
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/4_host2_start_fwd.rcps
+@@ -0,0 +1,8 @@
++# Switch to server 2
++server 2
++
++# Configure forwarding
++nfv 1; add vhost:0
++nfv 1; patch phy:0 vhost:0
++nfv 1; patch vhost:0 phy:1
++nfv 1; forward
+diff --git a/recipes/usecases/multiple_nodes/5_host3_start_fwd.rcps b/recipes/usecases/multiple_nodes/5_host3_start_fwd.rcps
+new file mode 100644
+index 0000000..97215da
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/5_host3_start_fwd.rcps
+@@ -0,0 +1,8 @@
++# Switch to server 3
++server 3
++
++# Configure forwarding
++nfv 1; add vhost:0
++nfv 1; patch phy:0 vhost:0
++nfv 1; patch vhost:0 phy:1
++nfv 1; forward
+diff --git a/recipes/usecases/multiple_nodes/6_host4_start_fwd.rcps b/recipes/usecases/multiple_nodes/6_host4_start_fwd.rcps
+new file mode 100644
+index 0000000..eee55f9
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/6_host4_start_fwd.rcps
+@@ -0,0 +1,8 @@
++# Switch to server 4
++server 4
++
++# Configure forwarding
++nfv 1; add vhost:0
++nfv 1; patch phy:0 vhost:0
++nfv 1; patch vhost:0 phy:1
++nfv 1; forward
+diff --git a/recipes/usecases/multiple_nodes/7_config_change_path.rcps b/recipes/usecases/multiple_nodes/7_config_change_path.rcps
+new file mode 100644
+index 0000000..ad3cc9c
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/7_config_change_path.rcps
+@@ -0,0 +1,11 @@
++# Switch to server 1
++server 1
++
++# Remove blue path
++nfv 1; stop
++nfv 1; patch reset
++
++# Configure forwarding
++nfv 2; patch phy:1 phy:4
++nfv 2; patch phy:5 phy:0
++nfv 2; forward
+diff --git a/recipes/usecases/multiple_nodes/8_host1_stop_fwd.rcps b/recipes/usecases/multiple_nodes/8_host1_stop_fwd.rcps
+new file mode 100644
+index 0000000..6498d56
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/8_host1_stop_fwd.rcps
+@@ -0,0 +1,6 @@
++# Switch to server 1
++server 1
++
++# Stop forwarding
++nfv 2; stop
++nfv 2; patch reset
+diff --git a/recipes/usecases/multiple_nodes/9_host2_stop_fwd.rcps b/recipes/usecases/multiple_nodes/9_host2_stop_fwd.rcps
+new file mode 100644
+index 0000000..5b2287c
+--- /dev/null
++++ b/recipes/usecases/multiple_nodes/9_host2_stop_fwd.rcps
+@@ -0,0 +1,6 @@
++# Switch to server 2
++server 2
++
++# Stop forwarding
++nfv 1; stop
++nfv 1; patch reset
+-- 
+2.17.1
+
