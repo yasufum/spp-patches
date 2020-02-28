@@ -1,0 +1,81 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp3849194oog;
+        Wed, 26 Feb 2020 20:25:14 -0800 (PST)
+X-Google-Smtp-Source: APXvYqwktALn4C2GjUelXAI1Pkv5SBdp156i//9kLUjRyPofMIC49wr1s/NDeCrfbm/uJRHqNd7M
+X-Received: by 2002:a17:902:b28a:: with SMTP id u10mr2767776plr.1.1582777513942;
+        Wed, 26 Feb 2020 20:25:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1582777513; cv=none;
+        d=google.com; s=arc-20160816;
+        b=t2W+xajxhyZcfUsxHzTEPouGoVw9FBxiMFqzoMWUleBMCbFHbPePYTU8Q/ZgqZ26D7
+         Ziq9CUIFPe2Ym/yurn+5HK1zLgpgKSX2ivhD8mJbQ+ao9/vQ72DHVrqOWAzs+OsQHBWJ
+         d7QY52pMbocAd12uMtDrpUMPnbmYNgiPe2nYOn5ecctCWt1GrHb9oa/v0kumWfXrXRbo
+         VecKHc72wsh8ivUG7HWiSWrmO+cIKo3fs4WpLRlkjJOHhpICF1zVbRbb+anwRFw7mu/a
+         8RyRDbiXIuf2nbqpiGR05UK2XK7hhjfDb7dY4OYaqRviXXZVODrwNVPJ4/2g1vZ8isEm
+         Fysg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=qqLshuL5aTG6qtPFsjVzwf/QjT40yeiQGuJ7WpLtmWU=;
+        b=XisLpx1vkJ1QDrzeICkAlgf0TwHkxQuB+bvIYNSIwEy+xy1yqNg4yrOw6a7x6b1g0R
+         2o4//PLMY6rsRXw2Gb/bJ36vL4axgwp+qH26I3UpW1xxl4r3IBEs6/uv56g9tXaq8Nih
+         DMgl4qjok+MfOcIoCEuP7bxk5WO5r8cP8GFsQcWEKscWG9IF5bteA0+lorT/zx0Ph2+f
+         2wtmXf7heLD18gdqAAk1Pj2rIq5kyyD1r1xtjRDZgxK6bA6zvylZSyZTQnEYbsG4glel
+         E2r+TI4nn5400a1T6sBqXBuJjUAHsp/UlhGgnzj/aS9iyqI8VBxZvrlgB/N37TYs5TJ5
+         PIBw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from valinux.co.jp (vagw.valinux.co.jp. [210.128.90.14])
+        by mx.google.com with ESMTP id 37si1938899plf.322.2020.02.26.20.25.13
+        for <yasufum.o@gmail.com>;
+        Wed, 26 Feb 2020 20:25:13 -0800 (PST)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) client-ip=210.128.90.14;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.14 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: by valinux.co.jp (Postfix, from userid 1000)
+	id 788CF240CF2; Thu, 27 Feb 2020 13:25:12 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH v2 3/3] makefile: add make of tools directory
+Date: Thu, 27 Feb 2020 13:25:12 +0900
+Message-Id: <20200227042512.22098-4-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200227042512.22098-1-oda@valinux.co.jp>
+References: <20200226020245.3037-1-oda@valinux.co.jp>
+ <20200227042512.22098-1-oda@valinux.co.jp>
+
+This patch adds make of tools directory to build vdev_test.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ GNUmakefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 9c0cea9..e44a31f 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -9,7 +9,10 @@ RTE_TARGET ?= x86_64-native-linuxapp-gcc
+ 
+ include $(RTE_SDK)/mk/rte.vars.mk
+ 
++DEPDIRS-tools := src
++
+ DIRS-y += src
++DIRS-y += tools
+ 
+ include $(RTE_SDK)/mk/rte.extsubdir.mk
+ endif
+@@ -39,6 +42,8 @@ _dist-clean:
+ 	rm -f $(wildcard src/*/*/*.pyc)
+ 	rm -rf $(wildcard src/*/__pycache__)
+ 	rm -rf $(wildcard src/*/*/__pycache__)
++	rm -rf $(wildcard tools/vdev_test/build)
++	rm -rf $(wildcard tools/vdev_test/$(RTE_TARGET))
+ 
+ .PHONY: doc
+ doc: doc-all
+-- 
+2.17.1
+
