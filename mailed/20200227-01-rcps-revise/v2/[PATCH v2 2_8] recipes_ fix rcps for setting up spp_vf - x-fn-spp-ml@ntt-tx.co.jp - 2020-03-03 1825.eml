@@ -1,0 +1,104 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp3737244oog;
+        Tue, 3 Mar 2020 01:25:25 -0800 (PST)
+X-Google-Smtp-Source: ADFU+vtmImQyNDKmALlK2JRpcmlI+BHlRXTK57UWIfmGuQZK6QO9tKaFEPjoWnJbsnpUwYtW0+Uf
+X-Received: by 2002:a17:90a:858c:: with SMTP id m12mr2965368pjn.127.1583227525336;
+        Tue, 03 Mar 2020 01:25:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1583227525; cv=none;
+        d=google.com; s=arc-20160816;
+        b=JP2uTeHfhjkq4zdyVl/UjnciTqg4KPxdMWeaqOoxrrG1JXgXX7R+LF4OSsz0+bkmsx
+         R4QCA9WzIfVT0TAQFRknC2Ugdcd48Ygyc/XAwiuxd9pYYzPYJyTkKwaFn5sNIvPwd+KX
+         wBx0qbEhemujp1MCfY94aly07ju86PzZZJKH0HdD25uaJJtio4E4vJcRRMl6AHQ4gDfo
+         EpjBOgTxmq3yvH5YW4+vYm/NS8AjdzbD0ujaojTKeiN82utf5wwGYihD9fMQ679ecUXs
+         tcc6ltl7fyrQfHCxEalK/FMkX05cl1ng0xYSe+5R6DJwLkrOQ4y9+hkfZpbMOLAxU06z
+         UicQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=yNISVV5AgiO62Fnnd2CWFPB3GekN2ne/2utsKgsWTZQ=;
+        b=YCU1eyhL3HSuSkZSqEm4YLfMSUgPQNhy6J4aqBgQpF0Pk0E0S90Fcv94CLtPtavXlO
+         bzUhnNTVkhXTl6TT4T0DpoCuSknS/rw6uxTlifDF4yN9DjmRSeaMQljaiemUiKLHnJrd
+         62jkc0e3wIK1rs3659feV5Jp+SE/GjuspJtclHJiXG+uM4hEuDRGktb5/sisBGV5cjj+
+         0cbrFtoxvpAiADrJ5F64WfizwY2hBMOzP+Hrf+GReaf2oeoS0hEbmMVUQgO63Qg63cFz
+         IZuZozDB6MWPiHqR7ll5HNrHeOuEVvt1xpMleoCNJOjCuFeR4freRcvfG7yr6R49laxl
+         xAAw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id l24si1367280pjt.89.2020.03.03.01.25.25
+        for <yasufum.o@gmail.com>;
+        Tue, 03 Mar 2020 01:25:25 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id 9ACC5120115;
+	Tue,  3 Mar 2020 18:25:24 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6M019JO26C6H50@dDREAMS>; Tue,
+ 03 Mar 2020 18:25:24 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP id 7559F7E603A;	Tue,
+ 3 Mar 2020 18:25:24 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 73A408E6060;	Tue,
+ 3 Mar 2020 18:25:24 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 726478E6050;	Tue,  3 Mar 2020 18:25:24 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CEA598E6060;	Tue,
+ 3 Mar 2020 18:25:23 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP;	Tue,
+ 3 Mar 2020 18:25:23 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 2/8] recipes: fix rcps for setting up spp_vf
+Date: Tue, 03 Mar 2020 18:25:15 +0900
+Message-id: <20200303092521.22882-3-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch set fixes setting up configuration of spp_vf.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ .../usecases/spp_vf/ssh_login/setup/1_start_components.rcps   | 4 ++--
+ .../usecases/spp_vf/ssh_login/setup/4_start_components.rcps   | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+index e864628..b1c63ad 100644
+--- a/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
++++ b/recipes/usecases/spp_vf/ssh_login/setup/1_start_components.rcps
+@@ -1,5 +1,5 @@
+-# Start component for path1
+-vf 1; component start cls1 2 classifier_mac
++# Start components for path1
++vf 1; component start cls1 2 classifier
+ vf 1; component start fwd1 3 forward
+ vf 1; component start fwd2 4 forward
+ vf 1; component start fwd3 5 forward
+diff --git a/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+index 7ce2c0d..e784891 100644
+--- a/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
++++ b/recipes/usecases/spp_vf/ssh_login/setup/4_start_components.rcps
+@@ -1,5 +1,5 @@
+-# Start component for path2
+-vf 1; component start cls2 8 classifier_mac
++# Start components for path2
++vf 1; component start cls2 8 classifier
+ vf 1; component start fwd5 9 forward
+ vf 1; component start fwd6 10 forward
+ vf 1; component start fwd7 11 forward
+-- 
+2.17.1
+

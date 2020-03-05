@@ -1,0 +1,226 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a4a:8406:0:0:0:0:0 with SMTP id l6csp3737299oog;
+        Tue, 3 Mar 2020 01:25:28 -0800 (PST)
+X-Google-Smtp-Source: ADFU+vuiTwkD6KGyhYZg5djeHhKokf6I/Lc3F3CxMcv4ltW8rCas51ZTEnkCVqmOMBdL2xTKN0d9
+X-Received: by 2002:a63:8f17:: with SMTP id n23mr3385936pgd.161.1583227528819;
+        Tue, 03 Mar 2020 01:25:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1583227528; cv=none;
+        d=google.com; s=arc-20160816;
+        b=y1W+6XsQiZzaZSe5bOR0+Fcy5YEOq/A5mbpOAY/Fm8hwIYD4HnKnwF7GpMDWoLBCOH
+         h7PqdiEPpXm9/EnyluQmioD1geqfc82+VZUksKRRznO/3BibdJszeM1H01EMbgnjrOU2
+         FGqB32lYSe/v/OSRWd6+a6iMyCpGINop++BGO+vGebmrNIwDmMA8LAWJn175i2PUbBB5
+         iN64x9BvQ13N3RyfNetaikTLuKxpy2lsVj7ZueuxkuHR+gXGSRdpCz0tZ6fC1zqyX59o
+         dqcNHZijy6wn3DtVB6NiBdTxiXDRpRw7YLTkqIl0l4QGbyvCq0ut2Pxf5pGZEFsp8krr
+         7R1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=+aPsNxwsFwIfafuoLpJ4isxK1r0cl1VeDybwzsVZWZ4=;
+        b=jDzoCtazz/wj8DjHXU/CYdR43atTcbH1hEZDsp8tiQl5vGxkvRVqT+AzMamyer061r
+         /1f9riIuMT3s1ZOAV8J6twbITtkakWb24FblgIFCWjkOyNSfEy2egy6h3FlK+SlmpaBs
+         KZarzPW/t4m1/xOE6AP6FggwH2DkZQfCdJhpXlMhgk0MPqh9xzLCywZc2IAIel2BdWdU
+         jiyEs/4lNE7Pso8ofzdWrA774An33ObFIZWq68ec2b65cvaaD2dNPhTeMawhhDqLTcQo
+         Rtnayi+/E+kzqMoOsbRKSTSq0NUuxNNTDF+jRceQAEzkvIF0BC7rEOQ4EthzmLHuceKP
+         DnXQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id z21si13554105pge.161.2020.03.03.01.25.28
+        for <yasufum.o@gmail.com>;
+        Tue, 03 Mar 2020 01:25:28 -0800 (PST)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id 0AFB312010E;
+	Tue,  3 Mar 2020 18:25:28 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0Q6M019LP26F6H50@dDREAMS>; Tue,
+ 03 Mar 2020 18:25:27 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP id D98E77E603A;	Tue,
+ 3 Mar 2020 18:25:27 +0900 (JST)
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D84A78E6063;	Tue,
+ 3 Mar 2020 18:25:27 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id D711D8E6050;	Tue,  3 Mar 2020 18:25:27 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf104.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 20B258E6050;	Tue,
+ 3 Mar 2020 18:25:27 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf104.ddreams.local (Postfix) with ESMTP;	Tue,
+ 3 Mar 2020 18:25:27 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 5/8] recipes: add rcps for spp_mirror
+Date: Tue, 03 Mar 2020 18:25:18 +0900
+Message-id: <20200303092521.22882-6-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.18.0
+In-reply-to: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200227094422.7429-1-x-fn-spp-ml@ntt-tx.co.jp>
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch provides rcps for spp_mirror usecase.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ .../monitoring/1_vf_start_comp.rcps           |  8 +++++++
+ .../spp_mirror/monitoring/2_vf_add_ports.rcps | 21 +++++++++++++++++++
+ .../spp_mirror/monitoring/3_vf_reg_mac.rcps   |  3 +++
+ .../monitoring/4_mir_start_monitoring.rcps    |  7 +++++++
+ .../monitoring/5_mir_stop_monitoring.rcps     | 10 +++++++++
+ .../spp_mirror/monitoring/6_vf_del_mac.rcps   |  3 +++
+ .../spp_mirror/monitoring/7_vf_del_ports.rcps | 21 +++++++++++++++++++
+ .../spp_mirror/monitoring/8_vf_stop_comp.rcps | 11 ++++++++++
+ 8 files changed, 84 insertions(+)
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/1_vf_start_comp.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/2_vf_add_ports.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/3_vf_reg_mac.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/4_mir_start_monitoring.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/5_mir_stop_monitoring.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/6_vf_del_mac.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/7_vf_del_ports.rcps
+ create mode 100644 recipes/usecases/spp_mirror/monitoring/8_vf_stop_comp.rcps
+
+diff --git a/recipes/usecases/spp_mirror/monitoring/1_vf_start_comp.rcps b/recipes/usecases/spp_mirror/monitoring/1_vf_start_comp.rcps
+new file mode 100644
+index 0000000..4852398
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/1_vf_start_comp.rcps
+@@ -0,0 +1,8 @@
++# Start components
++vf 1; component start cls 2 classifier
++vf 1; component start mgr 3 merge
++vf 1; component start fwd1 4 forward
++vf 1; component start fwd2 5 forward
++vf 1; component start fwd3 6 forward
++vf 1; component start fwd4 7 forward
++vf 1; component start fwd5 8 forward
+diff --git a/recipes/usecases/spp_mirror/monitoring/2_vf_add_ports.rcps b/recipes/usecases/spp_mirror/monitoring/2_vf_add_ports.rcps
+new file mode 100644
+index 0000000..2156ecb
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/2_vf_add_ports.rcps
+@@ -0,0 +1,21 @@
++# Configure classifier
++vf 1; port add phy:0 rx cls
++vf 1; port add ring:0 tx cls
++vf 1; port add ring:1 tx cls
++
++# Configure merger
++vf 1; port add ring:2 rx mgr
++vf 1; port add ring:3 rx mgr
++vf 1; port add phy:0 tx mgr
++
++# Configure forwarders
++vf 1; port add ring:5 rx fwd1
++vf 1; port add vhost:0 tx fwd1
++vf 1; port add ring:1 rx fwd2
++vf 1; port add vhost:2 tx fwd2
++vf 1; port add vhost:1 rx fwd3
++vf 1; port add ring:2 tx fwd3
++vf 1; port add vhost:3 rx fwd4
++vf 1; port add ring:3 tx fwd4
++vf 1; port add ring:4 rx fwd5
++vf 1; port add vhost:4 tx fwd5
+diff --git a/recipes/usecases/spp_mirror/monitoring/3_vf_reg_mac.rcps b/recipes/usecases/spp_mirror/monitoring/3_vf_reg_mac.rcps
+new file mode 100644
+index 0000000..4731f91
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/3_vf_reg_mac.rcps
+@@ -0,0 +1,3 @@
++# Register MAC address for classifier
++vf 1; classifier_table add mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table add mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_mirror/monitoring/4_mir_start_monitoring.rcps b/recipes/usecases/spp_mirror/monitoring/4_mir_start_monitoring.rcps
+new file mode 100644
+index 0000000..20fe64b
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/4_mir_start_monitoring.rcps
+@@ -0,0 +1,7 @@
++# Start component
++mirror 2; component start mir 9 mirror
++
++# Add port for mirror
++mirror 2; port add ring:0 rx mir
++mirror 2; port add ring:4 tx mir
++mirror 2; port add ring:5 tx mir
+diff --git a/recipes/usecases/spp_mirror/monitoring/5_mir_stop_monitoring.rcps b/recipes/usecases/spp_mirror/monitoring/5_mir_stop_monitoring.rcps
+new file mode 100644
+index 0000000..a13004f
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/5_mir_stop_monitoring.rcps
+@@ -0,0 +1,10 @@
++# Delete port for mirror
++mirror 2; port del ring:0 rx mir
++mirror 2; port del ring:4 tx mir
++mirror 2; port del ring:5 tx mir
++
++# Stop component
++mirror 2; component stop mir 9 mirror
++
++# Exit spp_mirror
++mirror 2; exit
+diff --git a/recipes/usecases/spp_mirror/monitoring/6_vf_del_mac.rcps b/recipes/usecases/spp_mirror/monitoring/6_vf_del_mac.rcps
+new file mode 100644
+index 0000000..d042e7c
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/6_vf_del_mac.rcps
+@@ -0,0 +1,3 @@
++# Delete MAC address for classifier
++vf 1; classifier_table del mac 52:54:00:12:34:56 ring:0
++vf 1; classifier_table del mac 52:54:00:12:34:58 ring:1
+diff --git a/recipes/usecases/spp_mirror/monitoring/7_vf_del_ports.rcps b/recipes/usecases/spp_mirror/monitoring/7_vf_del_ports.rcps
+new file mode 100644
+index 0000000..e1bdbd3
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/7_vf_del_ports.rcps
+@@ -0,0 +1,21 @@
++# Delete ports on classifier
++vf 1; port del phy:0 rx cls
++vf 1; port del ring:0 tx cls
++vf 1; port del ring:1 tx cls
++
++# Delete ports on forwarders
++vf 1; port del ring:5 rx fwd1
++vf 1; port del vhost:0 tx fwd1
++vf 1; port del ring:1 rx fwd2
++vf 1; port del vhost:2 tx fwd2
++vf 1; port del vhost:1 rx fwd3
++vf 1; port del ring:2 tx fwd3
++vf 1; port del vhost:3 rx fwd4
++vf 1; port del ring:3 tx fwd4
++vf 1; port del ring:4 rx fwd5
++vf 1; port del vhost:4 tx fwd5
++
++# Delete ports on merger
++vf 1; port del ring:2 rx mgr
++vf 1; port del ring:3 rx mgr
++vf 1; port del phy:0 tx mgr
+diff --git a/recipes/usecases/spp_mirror/monitoring/8_vf_stop_comp.rcps b/recipes/usecases/spp_mirror/monitoring/8_vf_stop_comp.rcps
+new file mode 100644
+index 0000000..739e7e6
+--- /dev/null
++++ b/recipes/usecases/spp_mirror/monitoring/8_vf_stop_comp.rcps
+@@ -0,0 +1,11 @@
++# Stop components
++vf 1; component stop cls
++vf 1; component stop mgr
++vf 1; component stop fwd1
++vf 1; component stop fwd2
++vf 1; component stop fwd3
++vf 1; component stop fwd4
++vf 1; component stop fwd5
++
++# Exit spp_vf
++vf 1; exit
+-- 
+2.17.1
+
