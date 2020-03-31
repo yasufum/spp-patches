@@ -1,0 +1,101 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp2329131nkk;
+        Thu, 26 Mar 2020 21:57:35 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vutpZtIxg6kQoM2iyDetzVDfoX35ozSVoLr67Fvbg8dEAr46umnuN18iRTEYCRqMxzINV6U
+X-Received: by 2002:a63:24a:: with SMTP id 71mr12571472pgc.119.1585285055378;
+        Thu, 26 Mar 2020 21:57:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585285055; cv=none;
+        d=google.com; s=arc-20160816;
+        b=LbKo85Hc4LU/wmeERyYZuhWMSDUDTOHgM7fBOpvqAHgLN0Kl8e8iJp/ZW5ZuGjrXgo
+         vnINrWs7ys4WZbkZiBKSiXJobc1k9HwuhdnvCQQ+01y01dJzyQDQX94ot8GaJ91fI02F
+         GGKa4MQEpGoHtb0J+pobdrB2WOW67bLxrNQge2o+hPmA1gqv732S/9q2rTGIZO6K3212
+         MNycOy6zWzUoSDbp3TC2BObRBuS7nbYDfuq0d4Zw6BQTbQcUTEeIe7Mqxgk7g9cs2ewo
+         wLabvKy4VVT6RXKNFURwmZQT9cELXgnHZqr1GPpYTKxSNz1HVrqBB7OGWkpDlsYa3WhU
+         Y9Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=/hMKjCCHQ+EcnyKrd37ApVn8CQdCXYjaSPEl19Ep30E=;
+        b=guNXU9WuubwKPZn6+cHjmu4GpYRyEJw73oakp8gDK9msjIqM6mQEHKq6wyc4Br/hQn
+         4DpsglB77GHURLZIN37xWxaOEsRrUIbIGU/CNsfkc6P0+PyFCMrg04eWk1DMW+1Srgqi
+         eaDXZU1YWQdjzKFiuEvzFTZveztKYSaLbP/mtmO3EJndwdSJKZYpBEvY4GTGKKpgOFAN
+         /6xydGLalhGb3kUmMJE8ngofShhJWo4jTI9xQe9QukZ1DA6jhbUljSLZvpHXV+vWAFPI
+         XvMRyaOXsOKPm5vFrY/kphXjiID88TkD+UdIsoYV2Q+5YMYbC+6214IKQV1kLd5bL111
+         GCYA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id r9si3368561pgu.364.2020.03.26.21.57.35
+        for <yasufum.o@gmail.com>;
+        Thu, 26 Mar 2020 21:57:35 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd106.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou104.ddreams.local (Postfix) with ESMTP id A7285120106;
+	Fri, 27 Mar 2020 13:57:34 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd106.ddreams.local
+ (dDREAMS) with ESMTP id <0Q7U005KF5RW1I80@dDREAMS>; Fri,
+ 27 Mar 2020 13:57:34 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 852537E603B;	Fri,
+ 27 Mar 2020 13:57:34 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83C058E605F;	Fri,
+ 27 Mar 2020 13:57:34 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 81F248E6066;	Fri, 27 Mar 2020 13:57:34 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A82478E6061;	Fri,
+ 27 Mar 2020 13:57:33 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Fri,
+ 27 Mar 2020 13:57:33 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 01/11] docs: add support for rte_flow
+Date: Fri, 27 Mar 2020 13:57:22 +0900
+Message-id: <20200327045732.18463-2-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200226113521.3787-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226113521.3787-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+Packet classification and distribution based on destination MAC address
+can be done using NIC capability. By doing so, resource consumption of
+host can be reduced. VLAN tag manipulation(entag/detag) can be done
+using NIC capability in some NICs.
+Primary process is enhanced to invoke such hardware capability using
+DPDK rte_flow APIs and description is added in design section.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/design/spp_primary.rst | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/docs/guides/design/spp_primary.rst b/docs/guides/design/spp_primary.rst
+index 35e4bbb..9ad3cc8 100644
+--- a/docs/guides/design/spp_primary.rst
++++ b/docs/guides/design/spp_primary.rst
+@@ -25,6 +25,9 @@ the server process of the sample application.
+ It does not work for packet forwaring without in some usecases, but just
+ provide rings and memory pools for secondary processes.
+ 
++Primary process supports ``rte_flow`` of DPDK for hardware offloading.
++Packet distribution based on dst MAC address and/or VLAN ID
++is supported. Entag/detag of VLAN is also supported.
+ 
+ Master and Worker Threads
+ -------------------------
+-- 
+2.17.1
+

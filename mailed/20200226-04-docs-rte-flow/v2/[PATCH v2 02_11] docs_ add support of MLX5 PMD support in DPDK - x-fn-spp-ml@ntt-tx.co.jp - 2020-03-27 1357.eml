@@ -1,0 +1,130 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp2329147nkk;
+        Thu, 26 Mar 2020 21:57:36 -0700 (PDT)
+X-Google-Smtp-Source: ADFU+vu6BiZ4uhRC5KrJq8VcRDSXCyfhYlqHrFCRHt9OpaAvkcISqKaRW9nHCrgIUHp8OToabvmq
+X-Received: by 2002:a17:90a:9b06:: with SMTP id f6mr3823977pjp.76.1585285056464;
+        Thu, 26 Mar 2020 21:57:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585285056; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Gr6a4WM5rWaRqvtLvLyeuAfoFwr4C7UGfKha3yKtGx18ByCUH+gwzgTiF+e9PxlYzO
+         ibsZvRfKAz7S7BXasbJBCKE1CKWYbJhXK/zcwGFI2i+AJK5lqjU6T5tHgVTEPHeaJiXy
+         5/5C6cfCk6OPc5YXd2sMpqAgvmJf/C0ov46es7Dr+HCx2U3z3N+jwp3KNBby990xVSDD
+         kAuMLzDg1gHXeChhiZNzxMdlZGalFPDHP5nnyKAnCTFjSGMYl5hH6J61JHRqHhRcejPz
+         4pnNIk/Ggyt10alGfabaT3qf7ye4kQeCQxtE1qGGQlu2ekz29otHHOLGhs/smY1OZZro
+         1Q6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=UHZt2i8R4xDMoDg9vX2cXC3Y7341TA6RNcdEpD5Vy34=;
+        b=TSXH1L99137sYKnkpyBHdFlIpICvjgJYmxCtJijJLwUi8vKuPTiBg4ZgWC7KSH4yfP
+         l8GbRtV2skdOWpb0s7RTQGeyYSsL7qnj7wuPDNg+TqEABYfHlUuquKOSEXzt8+lwWA3Y
+         pcoAySSaF7rnLKuwUue7NVjIgVZhzjdDpAlS97SKSc3UtKj0N6mvkHdy0kH9nyeq5s0E
+         p8suZkpILNZWLjhTCEZgqrZc48aRlVhfV8YtLGZSnG2G63NlDAtgdtzterz/NaXUTTb1
+         cUdjkDj/E+gzIHH5XjlNtJuxAuV8xKoo91hr1VUd9FzFTfIR9AIsNZQ63qYlcV0mPuRA
+         ii1A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id q16si3511891pfg.141.2020.03.26.21.57.36
+        for <yasufum.o@gmail.com>;
+        Thu, 26 Mar 2020 21:57:36 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd105.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou101.ddreams.local (Postfix) with ESMTP id BC40212013B;
+	Fri, 27 Mar 2020 13:57:35 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd105.ddreams.local
+ (dDREAMS) with ESMTP id <0Q7U00VX95RZX940@dDREAMS>; Fri,
+ 27 Mar 2020 13:57:35 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 9867E7E6032;	Fri,
+ 27 Mar 2020 13:57:35 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9729A8E6061;	Fri,
+ 27 Mar 2020 13:57:35 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 95E158E605A;	Fri, 27 Mar 2020 13:57:35 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC1378E6055;	Fri,
+ 27 Mar 2020 13:57:34 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Fri,
+ 27 Mar 2020 13:57:34 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH v2 02/11] docs: add support of MLX5 PMD support in DPDK
+Date: Fri, 27 Mar 2020 13:57:23 +0900
+Message-id: <20200327045732.18463-3-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200226113521.3787-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200226113521.3787-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds configuration change of DPDK
+to support MLX5 PMD in DPDK compilation.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/install.rst | 25 +++++--------------------
+ 1 file changed, 5 insertions(+), 20 deletions(-)
+
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 335a151..2abf330 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -129,29 +129,15 @@ config file ``common_base`` should be changed to ``y`` to enable PCAP.
+     ...
+     CONFIG_RTE_PORT_PCAP=y
+ 
+-Compile DPDK with target environment.
+-
+-.. code-block:: console
+-
+-    $ cd dpdk
+-    $ export RTE_SDK=$(pwd)
+-    $ export RTE_TARGET=x86_64-native-linuxapp-gcc  # depends on your env
+-    $ make install T=$RTE_TARGET
+-
++If you use MLX5 NIC, ``CONFIG_RTE_LIBRTE_MLX5_PMD`` defined in
++config file ``common_base`` should be changed to ``y``.
+ 
+-PCAP is disabled by default in DPDK configuration, so should be changed
+-if you use this feature.
+-``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` defined in
+-config file ``common_base`` should be changed to ``y`` to enable PCAP.
+-
+-.. code-block:: console
++.. code-block:: none
+ 
+     # dpdk/config/common_base
+-    CONFIG_RTE_LIBRTE_PMD_PCAP=y
+-    ...
+-    CONFIG_RTE_PORT_PCAP=y
++    CONFIG_RTE_LIBRTE_MLX5_PMD=y
+ 
+-Compile DPDK with options for target environment.
++Compile DPDK with target environment.
+ 
+ .. code-block:: console
+ 
+@@ -160,7 +146,6 @@ Compile DPDK with options for target environment.
+     $ export RTE_TARGET=x86_64-native-linuxapp-gcc  # depends on your env
+     $ make install T=$RTE_TARGET
+ 
+-
+ Pyhton
+ ------
+ 
+-- 
+2.17.1
+
