@@ -1,0 +1,77 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp1278900nkk;
+        Wed, 1 Apr 2020 17:06:36 -0700 (PDT)
+X-Google-Smtp-Source: APiQypJI+eiDum+HnxGMSySiItPugKCW6UkVdbGaMViRHcHLbDY7aC6+PcZN8yVvfqPVFAOugYum
+X-Received: by 2002:a17:902:9003:: with SMTP id a3mr382534plp.71.1585785996240;
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585785996; cv=none;
+        d=google.com; s=arc-20160816;
+        b=BDsdyAbhIraEtVVE71fQSCGRsnjBrriSn1ptgPbazC2zsbXMfYMYHVVbgYAtf543E2
+         hGZsWk8qK4oSn5vFZLsDJ3kStunKgAH09PkVLyrg84fQg1gpv0XwZpMF8AWhVUW/sxe+
+         7GGsdQrR1rsqzxroEeoz6SFcGOfP7BruAGvXtVK/s6jth2cA61wKQDINzmjUEJdghBtk
+         synnO9mq4zEO5p+LDW26KCxYuJkJQx6oeuPuUstoOEWfYtk3XediDztI+jt/l6ixF8Dz
+         cxOu/CkyOZxNQF5es6wseLYN+sbbYKlVfYmFnAAKdheq2uylGpgk3bWE4yixMuFNomZm
+         W5yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=1l6LpAHiEy0cKEECx0iVvexAJoRTrkzfI2NYD8ISG3U=;
+        b=HJ8cEuEMZSuZbyvIhfvTquSC42snQxNGKIdj7SDvZBHKF7wmoiizjXx9quKEVnTmRf
+         h/V8cGVGvkOd4Cr4VouCUVihngaCA3gV2andCTpgu59PRBtASPHTohzo2jgpx2FgbrsD
+         U2lN3vn+cmmE8fbIKTfQ0nivGAoQAlMuYPy781CeDlNKJzM1n+s8PfPqTZNcds23WDEA
+         FE9z7HX0VdeeB77QsQUQW5RAGhGCdF0c8654E4Ruhpw5nog4/j94sTHyc4WdJUolxxpT
+         8E5BUjdVEr4ER9ya/sIJxnRRYuAFqhG1ikZ77LLohmNYzpxlWoXduuwkMzCD+nc6cLaZ
+         pZ3w==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id e2si2366858pfj.210.2020.04.01.17.06.35
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 20DB5B6205;
+	Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id j-RYFFC1hgPK; Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 06FAEB630A;
+	Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 04/11] spp_primary: remove link to vhost PMD in Makefile
+Date: Thu,  2 Apr 2020 09:06:26 +0900
+Message-Id: <20200402000633.3391-5-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200402000633.3391-1-oda@valinux.co.jp>
+References: <20200402000633.3391-1-oda@valinux.co.jp>
+
+This patch removes link to SPP dedicated vhost PMD in Makefile.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/primary/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/primary/Makefile b/src/primary/Makefile
+index 156b7cd..35520ef 100644
+--- a/src/primary/Makefile
++++ b/src/primary/Makefile
+@@ -52,6 +52,6 @@ endif
+ EXTRA_CFLAGS += -fno-strict-aliasing
+ 
+ SPP_DRIVERS_DIR = $(BASE_OUTPUT)/src/drivers
+-EXTRA_LDLIBS = -L$(SPP_DRIVERS_DIR)/vhost -L$(SPP_DRIVERS_DIR)/pipe --whole-archive -lrte_pmd_spp_vhost -lrte_pmd_spp_pipe --no-whole-archive
++EXTRA_LDLIBS = -L$(SPP_DRIVERS_DIR)/pipe --whole-archive -lrte_pmd_spp_pipe --no-whole-archive
+ 
+ include $(RTE_SDK)/mk/rte.extapp.mk
+-- 
+2.17.0
+

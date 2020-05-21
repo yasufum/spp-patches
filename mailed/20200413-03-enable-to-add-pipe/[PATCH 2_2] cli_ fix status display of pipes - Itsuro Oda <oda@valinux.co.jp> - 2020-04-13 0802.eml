@@ -1,0 +1,85 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:d072:0:0:0:0 with SMTP id x18csp2016378nkx;
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKL5x/copaZS1t09huLcNXDfuge6neFqUyHuG/wCGwtZF7bOHuAwEQjx9maZxxgA7vKcFCB
+X-Received: by 2002:a17:90a:3568:: with SMTP id q95mr10134925pjb.47.1586732542719;
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1586732542; cv=none;
+        d=google.com; s=arc-20160816;
+        b=hPzDvGqASS312/ldSUVEQs4HQSV9YDe0msFwUK2Te8Ihf9gOY5GXJ2RA7f5VIli9jS
+         k75XVPswbTBbpBjdNWL/IxaA5s5ymOhQf0OtvMqYwhuVO5MzM83kB4g3tkI5EDB1FVaf
+         6k5Px75Sye3Eaz2MetURBXKpBDfLv0aM3oGxlQlo3RFCNWmnJM9opowT9g16UMApMh2T
+         C+pDetDL0FOLhqN7MWLS13Cm0YjRy2tMF2p2Se5xeJ0JU+ILTNeU00W/BgplTUkeoo7T
+         QnbZw7ECaFvCKlXsK2ynEcuJ/+luOn5/p047D6EziyLHhkxFobyETtkLmSO5oI3AdmRy
+         ofOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=7znCDIvgG0u0b58scbPY5YKtD4pl0OiCqPOPq26BUC4=;
+        b=zkxG9uCGPoMXMSirUtSinydHNLpT0lWZqePgbx2tSksYzQASNEo8ah0seEQ7VQWz89
+         zlDlJb95WVoXmRtDvqm2wEoRV/NYF1jB5ray+Qv/iJMyJAFEDyBZltO/LO0PGdBh2ldw
+         45S+2EyAryvdAKqksyeddeKQD40pxLlCxx9Iw0htZF0eiMhuT1+39VPRo4YRjjWZzmu4
+         0gcaMTRpVPl9uSX8jgSX9cLor9ppUcQp/3cGEMLbKJE+VhMny3QDlUKja4jHW4GvUTua
+         z8ZMoaSozHLjiQBIT3xQ4ZlnCPgexHnTPZr48G9nGexqzNfa6gHURU8iE3t459WHnk/b
+         Ydwg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id 21si6303859pgf.535.2020.04.12.16.02.22
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 9AD639F6FC;
+	Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id vUIr5gdEwHV6; Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 6FA6C9FC97;
+	Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/2] cli: fix status display of pipes
+Date: Mon, 13 Apr 2020 08:02:21 +0900
+Message-Id: <20200412230221.28737-3-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200412230221.28737-1-oda@valinux.co.jp>
+References: <20200412230221.28737-1-oda@valinux.co.jp>
+
+This patch fixes the indent of pipes in the status display of
+the spp_primary. It should be the most left side because it
+is a top attribute of json response.
+
+Fixes: 427350f31cfe (cli: support pipe PMD)
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/cli/commands/pri.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index 3f5da29..77297b3 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -239,9 +239,9 @@ class SppPrimary(object):
+                         print('    - {} -> {}'.format(port, dst))
+ 
+             if ('pipes' in json_obj):
+-                print('  - pipes:')
++                print('- pipes:')
+                 for pipe in json_obj['pipes']:
+-                    print('    - pipe:{} ring:{} ring:{}'.format(pipe['id'],
++                    print('  - pipe:{} ring:{} ring:{}'.format(pipe['id'],
+                         pipe['rx'], pipe['tx']))
+ 
+             if ('phy_ports' in json_obj) or ('ring_ports' in json_obj):
+-- 
+2.17.0
+

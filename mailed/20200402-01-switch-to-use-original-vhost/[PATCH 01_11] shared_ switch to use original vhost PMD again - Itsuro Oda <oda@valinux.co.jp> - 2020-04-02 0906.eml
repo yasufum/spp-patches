@@ -1,0 +1,138 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp1278901nkk;
+        Wed, 1 Apr 2020 17:06:36 -0700 (PDT)
+X-Google-Smtp-Source: APiQypLIu+YLctTPrj8NPNwvihZnCSrixqj99mhZ9sedH56yv7CpVbVQKwYMXztPCPNWnEgMG/wm
+X-Received: by 2002:a62:55c2:: with SMTP id j185mr367251pfb.318.1585785996267;
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585785996; cv=none;
+        d=google.com; s=arc-20160816;
+        b=UrXE0QQS/QWAzcFOL6CmiEviccjXGMcUUeOH4YWTkUGrKrUbXjP/43kbVR2yGiI+2B
+         Ne64jYP9DdfYnyXSOxV9C2ePNFmBk50/wgRvawQigVRx3s5cuohpPLvm1bVfUWxlsGqI
+         3FSeFNJhCFZoZvZ385kq3cEYNFRjM6DYonNrcpVhvaciEyUPqj94qJME8FpR8pI+s0zE
+         TaAYE2xw+VvcL7qd4bFBsoDsjUOBLbujAydnm9fpqBf4DqJLTykBZdb2ruejbUBihGa8
+         YyQ1fieVRAaaC6UgJ1X5SPzSM67CP5mW/H+r8tBgJLNnWuzPeZ430LhLvcj0iukikj8c
+         DQFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=wVc5ADFqHAMl2dpTIHbWYtS9VJG+IeYJavYuT9ahJfs=;
+        b=dmaA7RtvAqplVFjfCf8tB/eCnepFDIQCjdZbhQaw9oviraAMFIb0Fv9rqMonoQJFdo
+         E6CIi6ESx7F2NbGdEWWFfezyiVxbpS0a6dKfs2fcsZ2vHHcGpbjTVneZzJsTEOraLniv
+         ZpfnL/Yh1YAhftnZX6w7t/UzQ9e2UfwLGHPog4hbiBWO7ELYml85ezzyfVnJcCUlkMb2
+         1vA3QDosLtooRQbhuYIjSE1ZC472mvxYXhlrrr9DrXrFp7zjIk+Xe0cukIKAFi/U1Zgz
+         Uaj7JGuweSUo3rF7t2f67vnhxBxAwBaLer0GI3TUmOt7onw9L0ooxfitO/lDsKsG9CED
+         ZUgw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id q4si2511471pjm.123.2020.04.01.17.06.35
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id EF755B6381;
+	Thu,  2 Apr 2020 09:06:33 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id pnQ5ECg_s9tW; Thu,  2 Apr 2020 09:06:33 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id CB416B630A;
+	Thu,  2 Apr 2020 09:06:33 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 01/11] shared: switch to use original vhost PMD again
+Date: Thu,  2 Apr 2020 09:06:23 +0900
+Message-Id: <20200402000633.3391-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200402000633.3391-1-oda@valinux.co.jp>
+References: <20200402000633.3391-1-oda@valinux.co.jp>
+
+Original vhost PMD was fixed to be used by a secondary process
+in DPDK v20.02.
+This patch switches to use original vhost PMD instead of SPP
+dedicated vhost PMD.
+This patch also modifies comment about vhost in detail more.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/shared/common.c             |  4 +---
+ src/shared/common.h             |  1 -
+ src/shared/secondary/add_port.c | 15 ++++++++++-----
+ src/shared/secondary/add_port.h |  2 +-
+ 4 files changed, 12 insertions(+), 10 deletions(-)
+
+diff --git a/src/shared/common.c b/src/shared/common.c
+index d1c3e36..61db6ba 100644
+--- a/src/shared/common.c
++++ b/src/shared/common.c
+@@ -91,9 +91,7 @@ int parse_dev_name(char *dev_name, int *port_type, int *port_id)
+ 	} else if (strncmp(dev_name, VDEV_ETH_VHOST,
+ 				strlen(VDEV_ETH_VHOST)) == 0 ||
+ 			strncmp(dev_name, VDEV_NET_VHOST,
+-				strlen(VDEV_NET_VHOST)) == 0 ||
+-			strncmp(dev_name, VDEV_SPP_VHOST,
+-				strlen(VDEV_SPP_VHOST)) == 0) {
++				strlen(VDEV_NET_VHOST)) == 0) {
+ 		dev_str_len = strlen(VDEV_NET_VHOST);
+ 		pid_len = dev_name_len - dev_str_len;
+ 		strncpy(pid_str, dev_name + strlen(VDEV_NET_VHOST),
+diff --git a/src/shared/common.h b/src/shared/common.h
+index fd3102c..f2909c2 100644
+--- a/src/shared/common.h
++++ b/src/shared/common.h
+@@ -52,7 +52,6 @@
+ #define VDEV_NET_RING "net_ring"
+ #define VDEV_ETH_VHOST "eth_vhost"
+ #define VDEV_NET_VHOST "net_vhost"
+-#define VDEV_SPP_VHOST "spp_vhost"
+ #define VDEV_NET_PCAP "net_pcap"
+ #define VDEV_ETH_TAP "eth_tap"
+ #define VDEV_NET_TAP "net_tap"
+diff --git a/src/shared/secondary/add_port.c b/src/shared/secondary/add_port.c
+index a7b7261..bca18b1 100644
+--- a/src/shared/secondary/add_port.c
++++ b/src/shared/secondary/add_port.c
+@@ -186,11 +186,16 @@ add_vhost_pmd(int index)
+ 		return ret;
+ 	}
+ 
+-	/* NOTE: make sure the eth_dev is stopped.
+-	 * it is for the case a secondary process which used the vhost
+-	 * was down without stopping the device.
+-	 * note that it is still user responsibility to prevent multipul
+-	 * processes use a vhost at the same time.
++	/* NOTE:
++	 * A vhost PMD is shared among multi processes, but it
++	 * can be used by only one process. It is user responsibility
++	 * to prevent multipul processes use a vhost at the same time.
++	 * The same vhost interface can be used after the vhost is
++	 * deleted (and created again) or the process which used the
++	 * vhost is down.
++	 * dev_attach_by_devargs will succeed even if the device exists.
++	 * rte_eth_dev_stop is necessary to configure the device again.
++	 * It is no-op if the device is stopped.
+ 	 */
+ 	rte_eth_dev_stop(vhost_port_id);
+ 
+diff --git a/src/shared/secondary/add_port.h b/src/shared/secondary/add_port.h
+index 39feb50..d41969b 100644
+--- a/src/shared/secondary/add_port.h
++++ b/src/shared/secondary/add_port.h
+@@ -10,7 +10,7 @@
+ #define NR_DESCS 128
+ 
+ #define VHOST_IFACE_NAME "/tmp/sock%u"
+-#define VHOST_BACKEND_NAME "spp_vhost%u"
++#define VHOST_BACKEND_NAME "eth_vhost%u"
+ 
+ #define PCAP_PMD_DEV_NAME "eth_pcap%u"
+ #define MEMIF_PMD_DEV_NAME "net_memif%u"
+-- 
+2.17.0
+

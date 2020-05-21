@@ -1,0 +1,78 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp1278904nkk;
+        Wed, 1 Apr 2020 17:06:36 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKl3chliLtLxlHY72uBFrp8Kw03Kf0rUpL419R4IXkDbF1VFRrJzgvP2dmjUvxTX1JXTXVu
+X-Received: by 2002:a17:90a:b282:: with SMTP id c2mr706160pjr.6.1585785996317;
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585785996; cv=none;
+        d=google.com; s=arc-20160816;
+        b=Z8lKlTw8iqkHDQGzO1uwlsAj0z3z4+BhDaLJpkKKP3Hs541JnFTr9h7T2dQBYyezcm
+         OENcChmqNpXVtyxvHEJEAeFzkIppGNg86XI6K7P/jzyVykukXdB4E/DXgxddJpqk2nCE
+         1I/OVv16eWHauK227mGy+rrx4hKYnV2Xjbj2SNM2hmllIk6ny2B0NyWV+SR39KH1vbfp
+         sIcOiDqaNZoPYFKUAW1D7RMxVrItdQz9ESnikOtp38WLSGgQ8YjKrpnByPmprVeKIopS
+         OxPRFF4UKh32NMLyupoZmrZm4ee75CdJtondiUtK84uQAZnBgC5oF2xYDCBfjV0U09us
+         2kiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=eB8/Y5W0g7FZb/6yzBrIYXHV5Ybds3rZL2jH0R8jnMQ=;
+        b=pkYFdh7O6EJZiIGixhhHt5hL6Gf2P667U6ASKHTGcRXsCE9twuM2SPNWCaBbhNHbf5
+         /VR8V3knsoNDZntWVLGktVFeo0ICDFwRxExaikkUxBym02aM9xOz7XD7JoiXfpY9AgLR
+         lGi5n7xKVW3blwQAs7Yzbr8Vo3EGvMoWyypdD1IUwNI0oIPLOderFUBRw/lCaUjmKHJR
+         WmTTk5XeIIa43kwncm7s3KFXntrK7f9mbXasc7oE8lBy+Jf1pgFZ2N/G7F86zghpo4Ti
+         6fR0eTumXxcbLPcuTclD6ZGJ7aNELYlzSnKwBvVwZfqoWiePrO3wvnxaPqT+T0bciAVH
+         1pUQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id w4si2559268pgm.392.2020.04.01.17.06.35
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2020 17:06:36 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 13724B6380;
+	Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DsgQnToQQtiE; Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id EAE64B6205;
+	Thu,  2 Apr 2020 09:06:33 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 03/11] spp_primary: remove unnecessary code for vhost
+Date: Thu,  2 Apr 2020 09:06:25 +0900
+Message-Id: <20200402000633.3391-4-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200402000633.3391-1-oda@valinux.co.jp>
+References: <20200402000633.3391-1-oda@valinux.co.jp>
+
+This patch removes an unnecessary code for original vhost PMD
+which was necessary for SPP dedicated vhost PMD.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/primary/main.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/primary/main.c b/src/primary/main.c
+index 872f820..6d3ec96 100644
+--- a/src/primary/main.c
++++ b/src/primary/main.c
+@@ -970,7 +970,6 @@ del_port(char *p_type, int p_id)
+ 		dev_id = find_ethdev_id(p_id, VHOST);
+ 		if (dev_id == PORT_RESET)
+ 			return -1;
+-		rte_eth_dev_stop(dev_id);
+ 		dev_detach_by_port_id(dev_id);
+ 
+ 	} else if (!strcmp(p_type, "ring")) {
+-- 
+2.17.0
+

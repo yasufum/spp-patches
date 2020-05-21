@@ -1,0 +1,158 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:d072:0:0:0:0 with SMTP id x18csp2015110nkx;
+        Sun, 12 Apr 2020 16:01:00 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKIufdAM78k3Bt0zlyNSBDHcQLEasZmn/xdU+eoM5BZsYnRgMgkOJuLT7nhj0pJgYQalYxe
+X-Received: by 2002:a17:90a:8989:: with SMTP id v9mr8742504pjn.119.1586732460851;
+        Sun, 12 Apr 2020 16:01:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1586732460; cv=none;
+        d=google.com; s=arc-20160816;
+        b=YgYUYlMLHBRwCtFZnvk8eIeNeApIQb6uVqIwi3cSfj7Tx7p0BrCHc1dSeSp/+x4o/1
+         hBrvLSzvTaUMbm87yJKYArw38T/e1ZxBti1fOSGxTjfydEJ45jD6NDyqppoYgnQNoMpZ
+         aaboQb7EJzTK/kCxEFQhe/OayMR6X87E/CQ70Dwguhztg2K0n6+Xf9gRZIjd1aFDdwzl
+         Zvc6U/DqNI1han4W/5AvLd/lSnNjNfNvdw450Ojz5ah4RZuDlSAgvOdxg6Gj13/ZSQ1M
+         SqjsaZIsBZ2dBtWNUK8g4XbZEYT/pf+DhA1EiSK1FBLCXGALNOd4aGj8uVU2TocjAqWj
+         wwjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=8YHrFT+n6RCyRFhVRGSCaxTDVrnxVThq6iY56LP5irI=;
+        b=Eyn9EtXL4UCvqGvXBpxS8RNSYr4V5IMDzV9cYAyYMC+BdouQfFgX4JWKK98rtKCx9J
+         2FJjSKzsEVEr+MxFl641BSXJHV7q2bV3A1HXye89fTZ1rkvHaad+7RHYEvTU4ENzW0qI
+         wmPG4n7Eqi1IqAWuoFMSja5IZDpLkOWhnUZOZOXYFNL4QBiIdx6zHI+OfihrLgSmWPCS
+         BYjj7CJ2ybJXZdSCKoasGkMoSVGW1M9WprCuzr5DVUSTffVwR6W36HyQRENCqpQ8VvlK
+         IqwQ8/Bwu3c/yE/A7J5mLBa0Lz3ZVFukKjDwWDBD/9WnhA5Nxz7pjSNDs73GTQ3uHEvR
+         1/Ww==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id np15si7181236pjb.25.2020.04.12.16.01.00
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 12 Apr 2020 16:01:00 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 4E5AF9F6FC;
+	Mon, 13 Apr 2020 08:00:58 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id HA5lYphJN2s8; Mon, 13 Apr 2020 08:00:58 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 1EDE59FC97;
+	Mon, 13 Apr 2020 08:00:58 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 2/3] docs: add REST API for pipe PMD
+Date: Mon, 13 Apr 2020 08:00:56 +0900
+Message-Id: <20200412230057.28631-3-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200412230057.28631-1-oda@valinux.co.jp>
+References: <20200412230057.28631-1-oda@valinux.co.jp>
+
+This patch adds description about REST API for pipe PMD.
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ docs/guides/api_ref/spp_primary.rst | 54 ++++++++++++++++++++++++-----
+ 1 file changed, 46 insertions(+), 8 deletions(-)
+
+diff --git a/docs/guides/api_ref/spp_primary.rst b/docs/guides/api_ref/spp_primary.rst
+index fbf8874..28596cb 100644
+--- a/docs/guides/api_ref/spp_primary.rst
++++ b/docs/guides/api_ref/spp_primary.rst
+@@ -41,6 +41,8 @@ Response
+     +------------+-------+----------------------------------------+
+     | ring_ports | array | Array of statistics of ring ports.     |
+     +------------+-------+----------------------------------------+
++    | pipes      | array | Array of pipe ports.                   |
++    +------------+-------+----------------------------------------+
+ 
+ Physical port object.
+ 
+@@ -84,6 +86,23 @@ Ring port object.
+     | tx_drop | integer | The total number of dropped packets of transferred. |
+     +---------+---------+-----------------------------------------------------+
+ 
++Pipe port object.
++
++.. _table_spp_ctl_primary_status_pipe:
++
++.. table:: Attributes of pipe port of primary status.
++
++    +---------+---------+-----------------------------------------------------+
++    | Name    | Type    | Description                                         |
++    |         |         |                                                     |
++    +=========+=========+=====================================================+
++    | id      | integer | Port ID of the pipe port.                           |
++    +---------+---------+-----------------------------------------------------+
++    | rx      | integer | Port ID of the ring port for rx.                    |
++    +---------+---------+-----------------------------------------------------+
++    | tx      | integer | Port ID of the ring port for tx.                    |
++    +---------+---------+-----------------------------------------------------+
++
+ 
+ Response example
+ ~~~~~~~~~~~~~~~~
+@@ -132,6 +151,13 @@ Response example
+           "tx": 0,
+           "tx_drop": 0
+         }
++      ],
++      "pipes": [
++        {
++          "id": 0,
++          "rx": 0,
++          "tx": 1
++        }
+       ]
+     }
+ 
+@@ -192,14 +218,18 @@ Request (body)
+ 
+ .. table:: Request body params of ports of ``spp_primary``.
+ 
+-    +--------+--------+--------------------------------------------------+
+-    | Name   | Type   | Description                                      |
+-    |        |        |                                                  |
+-    +========+========+==================================================+
+-    | action | string | ``add`` or ``del``.                              |
+-    +--------+--------+--------------------------------------------------+
+-    | port   | string | Resource UID of {port_type}:{port_id}.           |
+-    +--------+--------+--------------------------------------------------+
++    +--------+--------+---------------------------------------------------------+
++    | Name   | Type   | Description                                             |
++    |        |        |                                                         |
++    +========+========+=========================================================+
++    | action | string | ``add`` or ``del``.                                     |
++    +--------+--------+---------------------------------------------------------+
++    | port   | string | Resource UID of {port_type}:{port_id}.                  |
++    +--------+--------+---------------------------------------------------------+
++    | rx     | string | Rx ring for pipe. It is necessary for adding pipe only. |
++    +--------+--------+---------------------------------------------------------+
++    | tx     | string | Tx ring for pipe. It is necessary for adding pipe only. |
++    +--------+--------+---------------------------------------------------------+
+ 
+ 
+ Request example
+@@ -211,6 +241,14 @@ Request example
+       -d '{"action": "add", "port": "ring:0"}' \
+       http://127.0.0.1:7777/v1/primary/ports
+ 
++For adding pipe.
++
++.. code-block:: console
++
++    $ curl -X PUT -H 'application/json' \
++      -d '{"action": "add", "port": "pipe:0", \
++      "rx": "ring:0", "tx": "ring:1"}' \
++      http://127.0.0.1:7777/v1/primary/ports
+ 
+ Response
+ ~~~~~~~~
+-- 
+2.17.0
+

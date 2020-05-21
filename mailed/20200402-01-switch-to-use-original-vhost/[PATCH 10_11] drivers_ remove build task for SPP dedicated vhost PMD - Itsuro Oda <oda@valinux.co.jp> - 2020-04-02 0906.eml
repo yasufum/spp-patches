@@ -1,0 +1,77 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:1159:0:0:0:0 with SMTP id l25csp1278933nkk;
+        Wed, 1 Apr 2020 17:06:37 -0700 (PDT)
+X-Google-Smtp-Source: APiQypIXyxoZsnyqgRWStHETcPfDAcy17TKwEfgdrxJw8MU6G+e/7+nNAGfyuGAvQ2rSyb9Dktsv
+X-Received: by 2002:a63:6fc6:: with SMTP id k189mr728054pgc.175.1585785997634;
+        Wed, 01 Apr 2020 17:06:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1585785997; cv=none;
+        d=google.com; s=arc-20160816;
+        b=XfgD6DIa0owBtAuKWl6zpwpb5FGaxnVzZbXeAwv5XB8qL+fby/usJ0hZppXNyOEzop
+         Mi0xwvQAD9oC2jvBPPB1g5cNtuTECZDGkZjwxk7AvJZEKwWyOzjPoUWZNzgBIJ7SEZ20
+         SzgajGii30NUj+2IEICKdG6Wxn7W6a1FGOkfshAWrlNIw09dISlHe4N1cfpmoPLDB03U
+         B/CVgTQACiVs9RMjvL+O8GHkOYChFFI14RrU5jy3gNF3kWkYOiguNytrQ+632gfanZ9Y
+         TLJbdg5peDozJ+ahbgeGooXPos4I3E7RBGRks/amniRLxjFpfthdFpZV9S8EZPTSJRYG
+         J9Cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=qGqHkGCAFe6eaKNeWANsXCB0QJWWBYJmPTQZiBnL6Mc=;
+        b=GqGJejH7a0RmRZu5mxfsSquzAOtUepTH1NauyWbNtZC5OZOua1A7U2NFbLrlQSDyQL
+         kq00NckYCgJdJSj5hQAvl21Qqd3rb6qwz/bDSpJzE+5NX6hC+aVQcK+XzMMo1XUh7RZe
+         qzUa5CUxC6nYIQljC8zkZ/tnx7iEuVdIU7vHoAzAE6Hp7kv2AH7m3Dq09jrHqM73ONp6
+         GQixZGUzhEBppqj4QWKGL1j1NT+SV3HubHUXsfUVJ8gC0L5YA1DaFUCyvLCmHL/idQN4
+         9scEIzdUdlhzCKmQ9dm2vXHvXQSDgXsnBXOvnXj+y1lJ6xiMrvBsI9++7DWAOcVhzBK4
+         JSnw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id q6si2454717pll.307.2020.04.01.17.06.37
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 Apr 2020 17:06:37 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 81071B6389;
+	Thu,  2 Apr 2020 09:06:36 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id RxTu3-p5nipr; Thu,  2 Apr 2020 09:06:36 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 6B8ECB6384;
+	Thu,  2 Apr 2020 09:06:34 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 10/11] drivers: remove build task for SPP dedicated vhost PMD
+Date: Thu,  2 Apr 2020 09:06:32 +0900
+Message-Id: <20200402000633.3391-11-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200402000633.3391-1-oda@valinux.co.jp>
+References: <20200402000633.3391-1-oda@valinux.co.jp>
+
+This patch remove build task for SPP dedicated vhost PMD
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/drivers/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/drivers/Makefile b/src/drivers/Makefile
+index f759238..fae05e8 100644
+--- a/src/drivers/Makefile
++++ b/src/drivers/Makefile
+@@ -10,7 +10,6 @@ RTE_TARGET ?= x86_64-native-linuxapp-gcc
+ 
+ include $(RTE_SDK)/mk/rte.vars.mk
+ 
+-DIRS-y += vhost
+ DIRS-y += pipe
+ 
+ include $(RTE_SDK)/mk/rte.extsubdir.mk
+-- 
+2.17.0
+

@@ -1,0 +1,147 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:d072:0:0:0:0 with SMTP id x18csp2016376nkx;
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKm6TY1BG6bPptwX2xBjm3bbMgYH1LlS1icQVOjMMFtWYylA+imBdrEOqGWYa2/D6MoLtLu
+X-Received: by 2002:a17:902:20b:: with SMTP id 11mr13463369plc.209.1586732542662;
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1586732542; cv=none;
+        d=google.com; s=arc-20160816;
+        b=N5fvZbskL9KvOM2vkjOzHnNOOplefyGwFKbRQNR4pUsQy0QrCE2C5KCz1CQNmK9Gzs
+         ZAoXk3YZ7u1DPmhwEEiosxNUrjbSQ/22pXDl8jaYaD92PeQqLRsZnCiFHv8Zt4eMUaBL
+         K18aHNe8juoX4RhOkO74sENudv56uCnBnYHpod/KkEMzqR8a1jBRD5PNoBXUNt3MnsuZ
+         xDUOOdch0iDraOkCm1QPu5XvFRBwfuQwDIHG9fuctUnkdVjr3JwyUPGtdlJ2hEvHyrZB
+         V6/6fhFAt2waVjl7SxYFDPjyZKD/TNEZ6MLb3EzZu9ei652A4zIwk3hs/Dwc48KgATup
+         XdsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=references:in-reply-to:message-id:date:subject:to:from;
+        bh=nug3mrztBbho+dw6uFnUrN/zCR5kNw5JMH0bOYHEfu0=;
+        b=yGMyZ7Hkh/CBMTXBxvi8ERosiF8eiYYSVofYO+MHZHefezE72LA8ODilUIPVK1KCX1
+         qxhooZy2GK/J0SGPmwxMv84zkIrKICury/O8TT1PusPUNehHyRZewh9IIBGjrcL0nfbL
+         krsweUI7iSXNm0Dk9oQhH3lBc9W43uXtaO9KlMiahZLtIs6GWfWmakKBnsQmrSew8iwb
+         /3w/bzM9KMioPlRProCeUg/rnH0N8P4qtwfkw5cO63sWWIoxrm5rWi4aPBxmPGM7ra2m
+         a5XNZZzAf+loTyjNRVkewjJW+iVAkz9VhOXpgtViJo8X2D6aQNAIhcIHbDXkGvR/sJkD
+         KCCA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Return-Path: <oda@valinux.co.jp>
+Received: from mail.valinux.co.jp (mail.valinux.co.jp. [210.128.90.3])
+        by mx.google.com with ESMTPS id y24si6673872pge.500.2020.04.12.16.02.22
+        for <yasufum.o@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 12 Apr 2020 16:02:22 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) client-ip=210.128.90.3;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: best guess record for domain of oda@valinux.co.jp designates 210.128.90.3 as permitted sender) smtp.mailfrom=oda@valinux.co.jp
+Received: from localhost (localhost [127.0.0.1])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 835CB9FC9B;
+	Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+X-Virus-Scanned: Debian amavisd-new at valinux.co.jp
+Received: from mail.valinux.co.jp ([127.0.0.1])
+	by localhost (mail.valinux.co.jp [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Ahx-yWaAWvM8; Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+Received: from valinux.co.jp (vagw.valinux.co.jp [210.128.90.14])
+	by mail.valinux.co.jp (Postfix) with ESMTP id 6BCB69FC90;
+	Mon, 13 Apr 2020 08:02:21 +0900 (JST)
+From: Itsuro Oda <oda@valinux.co.jp>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/2] cli: enable to add pipe without forwarder
+Date: Mon, 13 Apr 2020 08:02:20 +0900
+Message-Id: <20200412230221.28737-2-oda@valinux.co.jp>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200412230221.28737-1-oda@valinux.co.jp>
+References: <20200412230221.28737-1-oda@valinux.co.jp>
+
+Pipe port is independent of the forwarder but it can be added
+only if the forwarder exists currently.
+This patch enables to add pipe port even if the forwarder does
+not exist.
+
+Fixes: 427350f31cfe (cli: support pipe PMD)
+
+Signed-off-by: Itsuro Oda <oda@valinux.co.jp>
+---
+ src/cli/commands/pri.py | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
+
+diff --git a/src/cli/commands/pri.py b/src/cli/commands/pri.py
+index 6fc7f00..3f5da29 100644
+--- a/src/cli/commands/pri.py
++++ b/src/cli/commands/pri.py
+@@ -49,6 +49,9 @@ class SppPrimary(object):
+ 
+         self.flow = SppPrimaryFlow(spp_ctl_cli)
+ 
++    def _port_is_pipe(self, params):
++        return len(params) > 0 and params[0].startswith("pipe:")
++
+     def _do_if_forwarder_exists(self, status, func, params):
+         """Execute command of func if forwarder thread is existing.
+ 
+@@ -103,10 +106,16 @@ class SppPrimary(object):
+                     print('Error: unknown response from status.')
+ 
+         elif subcmd == 'add':
+-            self._do_if_forwarder_exists(status, self._run_add, params)
++            if self._port_is_pipe(params):
++                self._run_add(params, is_pipe=True)
++            else:
++                self._do_if_forwarder_exists(status, self._run_add, params)
+ 
+         elif subcmd == 'del':
+-            self._do_if_forwarder_exists(status, self._run_del, params)
++            if self._port_is_pipe(params):
++                self._run_del(params, is_pipe=True)
++            else:
++                self._do_if_forwarder_exists(status, self._run_del, params)
+ 
+         elif subcmd == 'forward' or subcmd == 'stop':
+             self._do_if_forwarder_exists(status,
+@@ -795,7 +804,7 @@ class SppPrimary(object):
+             index += 1
+         return opts_dict
+ 
+-    def _run_add(self, params):
++    def _run_add(self, params, is_pipe=False):
+         """Run `add` command."""
+ 
+         if len(params) == 0:
+@@ -819,12 +828,13 @@ class SppPrimary(object):
+                 else:
+                     print('Error: unknown response for add.')
+ 
+-            self.ports = self._get_ports()  # update to current status
+-            if self.ports is None:
+-                print('Cannot retrieve ports from spp_primary')
+-                self.ports = []
++            if not is_pipe:
++                self.ports = self._get_ports()  # update to current status
++                if self.ports is None:
++                    print('Cannot retrieve ports from spp_primary')
++                    self.ports = []
+ 
+-    def _run_del(self, params):
++    def _run_del(self, params, is_pipe=False):
+         """Run `del` command."""
+ 
+         if len(params) == 0:
+@@ -849,10 +859,11 @@ class SppPrimary(object):
+                     else:
+                         print('Error: unknown response for del.')
+ 
+-            self.patches = self._get_patches()  # update to current status
+-            if self.patches is None:
+-                print('Cannot retrieve patches from spp_primary')
+-                self.patches = []
++            if not is_pipe:
++                self.patches = self._get_patches()  # update to current status
++                if self.patches is None:
++                    print('Cannot retrieve patches from spp_primary')
++                    self.patches = []
+ 
+     def _run_forward_or_stop(self, cmd):
+         """Run `forward` or `stop` command."""
+-- 
+2.17.0
+
