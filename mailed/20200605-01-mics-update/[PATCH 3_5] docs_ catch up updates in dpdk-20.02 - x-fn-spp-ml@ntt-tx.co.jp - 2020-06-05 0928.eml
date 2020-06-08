@@ -1,0 +1,342 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp1839259nkp;
+        Thu, 4 Jun 2020 17:29:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy2EJ97wxewrR4Bm7GVewPygkMenIKnjuvZpy3MtDq95vAlR/BhaohimENW977+1kFTkKTc
+X-Received: by 2002:a17:90a:ce11:: with SMTP id f17mr8765607pju.123.1591316939816;
+        Thu, 04 Jun 2020 17:28:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1591316939; cv=none;
+        d=google.com; s=arc-20160816;
+        b=gIXyGd8DJWHGc5KdU1OzKg0beDyxBD/FyZRS+c8zdILzAFy6q2k+XXRQW57S1F2vud
+         DWOKiExhA7If9AdUfaM6GRgE+LcwE4tn299wmKJKq8pjj39cjcwzzCc6gJjy7oqQGb3a
+         FoBt1/3+nmXGvM+k+lcPBH+eCf3HjwiS20Y2SoVh49BHr5LnIP5/SNIJNFYqn67Ua014
+         5T4l4HXM1VMlD0w9jAF3dbeqEIn//SNhJrqj2KdbNvvUM9MobdqYwQ29FdZ5RrZDxIMT
+         kDK1AHrKv3RbUeUn6djLziyMbYB77JvdBz30qfvDtZKFBYyhJ25J0naZHD/5T/fzSKWx
+         G7mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=K03WzzYRqnVgnpRcL8qqdnmhQD98i31yLVuEOJ+IRDA=;
+        b=cL4lV3pzQmLh1T4piqYnQTByKxVH4cfjwnFTOinf/SBDmxGdAGiXOBgSxLhLyZmzud
+         E+awJSkV03jPmhkzPnM3R/oPHayTdAgPIPzCG8FPlu04Vv/98m5PEmRgVbvWmHURG3YE
+         4LvWXceLg4wbeSCOTZ1nXpQJRfRn8M/TkPnh3yK3tMyRBxUpXijkKuOT2gARl8SyrAqK
+         rDZCZsPE+vjX9p96xtpo+TlgVMw1suBLIW2++ZceguIGgfTRlNzpZmJqdG5XtpwoTqe1
+         O1c3eYzHlvqeRpi2AeGlP1UTLu6QpEhLi0TnzSDBshmxfHCgNfOBvP/XbreZ0Ybo7D+L
+         EzDw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id i7si5965817plt.349.2020.06.04.17.28.59
+        for <yasufum.o@gmail.com>;
+        Thu, 04 Jun 2020 17:28:59 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd106.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id F0F441200FA;
+	Fri,  5 Jun 2020 09:28:58 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd106.ddreams.local
+ (dDREAMS) with ESMTP id <0QBF014NGG0ACR90@dDREAMS>; Fri,
+ 05 Jun 2020 09:28:58 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP id D9F317E6036;	Fri,
+ 5 Jun 2020 09:28:58 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D87AD8E6060;	Fri,
+ 5 Jun 2020 09:28:58 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id CC6298E6058;	Fri,  5 Jun 2020 09:28:58 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E74338E6058;	Fri,
+ 5 Jun 2020 09:28:57 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP;	Fri,
+ 5 Jun 2020 09:28:57 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH 3/5] docs: catch up updates in dpdk-20.02
+Date: Fri, 05 Jun 2020 09:28:52 +0900
+Message-id: <20200605002854.24054-4-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200605002854.24054-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200605002854.24054-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch catch up the following updates in dpdk-20.02.
+- new config to generate IGB_UIO module
+- change supported target from x86_64-native-linuxapp-gcc to
+x86_64_native-linux-gcc
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst           | 20 ++++++++++----------
+ docs/guides/gsg/install.rst             |  9 ++++++---
+ docs/guides/tools/sppc/app_launcher.rst |  2 +-
+ docs/guides/usecases/spp_mirror.rst     | 10 +++++-----
+ docs/guides/usecases/spp_pcap.rst       |  4 ++--
+ docs/guides/usecases/spp_vf.rst         |  8 ++++----
+ 6 files changed, 28 insertions(+), 25 deletions(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index a57813d..f182198 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -120,7 +120,7 @@ It is same as following options launching from terminal.
+ 
+ .. code-block:: console
+ 
+-    $ sudo ./src/nfv/x86_64-native-linuxapp-gcc/spp_nfv \
++    $ sudo ./src/nfv/x86_64-native-linux-gcc/spp_nfv \
+         -l 1,2 -n 4 -m 512 \
+         --proc-type secondary \
+         --file-prefix spp \
+@@ -383,7 +383,7 @@ To launch SPP primary, run ``spp_primary`` with specific options.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 0 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir /dev/hugepages \
+@@ -430,7 +430,7 @@ Here is an example for launching ``spp_primary`` with monitor thread.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 0-1 -n 4 \   # two lcores
+         --socket-mem 512,512 \
+         --huge-dir /dev/hugepages \
+@@ -453,7 +453,7 @@ secondary processes.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 0 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir=/dev/hugepages \
+@@ -473,7 +473,7 @@ with white list option.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 0 -n 4 \
+         -w 0000:03:00.0,dv_flow_en=1 \
+         -w 0000:04:00.0,dv_flow_en=1 \
+@@ -524,7 +524,7 @@ as ``l2fwd``.
+ 
+     # terminal 4
+     $ cd /path/to/spp
+-    $ sudo ./src/nfv/x86_64-native-linuxapp-gcc/spp_nfv \
++    $ sudo ./src/nfv/x86_64-native-linux-gcc/spp_nfv \
+         -l 2-3 -n 4 \
+         --proc-type secondary \
+         --file-prefix $SPP_FILE_PREFIX \
+@@ -559,7 +559,7 @@ spp_vf
+ 
+ .. code-block:: console
+ 
+-    $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
++    $ sudo ./src/vf/x86_64-native-linux-gcc/spp_vf \
+         -l 2-13 -n 4 \
+         --proc-type secondary \
+         --file-prefix $SPP_FILE_PREFIX \
+@@ -584,7 +584,7 @@ and options are same as ``spp_vf``.
+ 
+ .. code-block:: console
+ 
+-    $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/spp_mirror \
++    $ sudo ./src/mirror/x86_64-native-linux-gcc/spp_mirror \
+         -l 2,3 -n 4 \
+         --proc-type secondary \
+         --file-prefix $SPP_FILE_PREFIX \
+@@ -611,7 +611,7 @@ SPP provides ``spp_pcap`` for capturing comparatively heavy traffic.
+ 
+ .. code-block:: console
+ 
+-    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
++    $ sudo ./src/pcap/x86_64-native-linux-gcc/spp_pcap \
+         -l 2-5 -n 4 \
+         --proc-type secondary \
+         --file-prefix $SPP_FILE_PREFIX \
+@@ -828,7 +828,7 @@ launching DPDK processes.
+     # terminal 6
+     $ ssh user@192.168.122.100
+     $ cd /path/to/spp
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 1 -n 4 \
+         -m 1024 \
+         --huge-dir=/dev/hugepages \
+diff --git a/docs/guides/gsg/install.rst b/docs/guides/gsg/install.rst
+index 2abf330..f561f60 100644
+--- a/docs/guides/gsg/install.rst
++++ b/docs/guides/gsg/install.rst
+@@ -119,8 +119,9 @@ Installing on Ubuntu and CentOS are almost the same, but required packages
+ are just bit different.
+ 
+ PCAP is disabled by default in DPDK configuration.
+-``CONFIG_RTE_LIBRTE_PMD_PCAP`` and ``CONFIG_RTE_PORT_PCAP`` defined in
+-config file ``common_base`` should be changed to ``y`` to enable PCAP.
++``CONFIG_RTE_LIBRTE_PMD_PCAP``, ``CONFIG_RTE_PORT_PCAP`` and
++``CONFIG_RTE_EAL_IGB_UIO`` defined in config file ``common_base`` should be
++changed to ``y`` to enable PCAP.
+ 
+ .. code-block:: console
+ 
+@@ -128,6 +129,8 @@ config file ``common_base`` should be changed to ``y`` to enable PCAP.
+     CONFIG_RTE_LIBRTE_PMD_PCAP=y
+     ...
+     CONFIG_RTE_PORT_PCAP=y
++    ...
++    CONFIG_RTE_EAL_IGB_UIO=y
+ 
+ If you use MLX5 NIC, ``CONFIG_RTE_LIBRTE_MLX5_PMD`` defined in
+ config file ``common_base`` should be changed to ``y``.
+@@ -143,7 +146,7 @@ Compile DPDK with target environment.
+ 
+     $ cd dpdk
+     $ export RTE_SDK=$(pwd)
+-    $ export RTE_TARGET=x86_64-native-linuxapp-gcc  # depends on your env
++    $ export RTE_TARGET=x86_64-native-linux-gcc  # depends on your env
+     $ make install T=$RTE_TARGET
+ 
+ Pyhton
+diff --git a/docs/guides/tools/sppc/app_launcher.rst b/docs/guides/tools/sppc/app_launcher.rst
+index b368a15..40f40ca 100644
+--- a/docs/guides/tools/sppc/app_launcher.rst
++++ b/docs/guides/tools/sppc/app_launcher.rst
+@@ -831,7 +831,7 @@ and three vhost interfaces.
+      sudo docker run \
+      ...
+      sppc/pktgen-ubuntu:latest \
+-     /root/dpdk/../pktgen-dpdk/app/x86_64-native-linuxapp-gcc/pktgen \
++     /root/dpdk/../pktgen-dpdk/app/x86_64-native-linux-gcc/pktgen \
+      -l 8-14 \
+      ...
+      -- \
+diff --git a/docs/guides/usecases/spp_mirror.rst b/docs/guides/usecases/spp_mirror.rst
+index 4164a16..00d6eef 100644
+--- a/docs/guides/usecases/spp_mirror.rst
++++ b/docs/guides/usecases/spp_mirror.rst
+@@ -70,7 +70,7 @@ three ports ``-p 0x07``.
+ .. code-block:: console
+ 
+    # terminal 3
+-   $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++   $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+        -l 1 -n 4 \
+        --socket-mem 512,512 \
+        --huge-dir=/run/hugepages/kvm \
+@@ -87,7 +87,7 @@ Run secondary process ``spp_mirror``.
+ .. code-block:: console
+ 
+     # terminal 4
+-    $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/app/spp_mirror \
++    $ sudo ./src/mirror/x86_64-native-linux-gcc/app/spp_mirror \
+      -l 0,2 -n 4 \
+      --proc-type secondary \
+      -- \
+@@ -230,7 +230,7 @@ Start spp_primary with core list option ``-l 1``.
+ 
+     # terminal 3
+     # Type the following in different terminal
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 1 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir=/run/hugepages/kvm \
+@@ -261,7 +261,7 @@ Launch ``VM1``, ``VM2`` and ``spp_vf`` with core list ``-l 0,2-8``.
+ .. code-block:: console
+ 
+    # terminal 4
+-   $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
++   $ sudo ./src/vf/x86_64-native-linux-gcc/spp_vf \
+        -l 0,2-8 \
+        -n 4 --proc-type secondary \
+        -- \
+@@ -329,7 +329,7 @@ Run ``spp_mirror``.
+ .. code-block:: console
+ 
+     # terminal 6
+-    $ sudo ./src/mirror/x86_64-native-linuxapp-gcc/app/spp_mirror \
++    $ sudo ./src/mirror/x86_64-native-linux-gcc/app/spp_mirror \
+       -l 0,9 \
+       -n 4 --proc-type secondary \
+       -- \
+diff --git a/docs/guides/usecases/spp_pcap.rst b/docs/guides/usecases/spp_pcap.rst
+index 543538d..e94cfc4 100644
+--- a/docs/guides/usecases/spp_pcap.rst
++++ b/docs/guides/usecases/spp_pcap.rst
+@@ -59,7 +59,7 @@ Then, run ``spp_primary`` with one physical port.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 0 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir /run/hugepages/kvm \
+@@ -79,7 +79,7 @@ writer threads.
+ .. code-block:: console
+ 
+     # terminal 4
+-    $ sudo ./src/pcap/x86_64-native-linuxapp-gcc/spp_pcap \
++    $ sudo ./src/pcap/x86_64-native-linux-gcc/spp_pcap \
+        -l 1-6 -n 4 --proc-type=secondary \
+        -- \
+        --client-id 1 -s 192.168.1.100:6666 \
+diff --git a/docs/guides/usecases/spp_vf.rst b/docs/guides/usecases/spp_vf.rst
+index c45feb8..6056636 100644
+--- a/docs/guides/usecases/spp_vf.rst
++++ b/docs/guides/usecases/spp_vf.rst
+@@ -52,7 +52,7 @@ Launch ``spp-ctl`` and SPP CLI before primary and secondary processes.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 1 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir=/run/hugepages/kvm \
+@@ -68,7 +68,7 @@ worker threads.
+ .. code-block:: console
+ 
+      # terminal 4
+-     $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
++     $ sudo ./src/vf/x86_64-native-linux-gcc/spp_vf \
+         -l 2-6 \
+         -n 4 --proc-type=secondary \
+         -- \
+@@ -281,7 +281,7 @@ Launch ``spp-ctl`` and SPP CLI before primary and secondary processes.
+ .. code-block:: console
+ 
+     # terminal 3
+-    $ sudo ./src/primary/x86_64-native-linuxapp-gcc/spp_primary \
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
+         -l 1 -n 4 \
+         --socket-mem 512,512 \
+         --huge-dir=/run/hugepages/kvm \
+@@ -295,7 +295,7 @@ to use twelve lcores.
+ .. code-block:: console
+ 
+     # terminal 4
+-    $ sudo ./src/vf/x86_64-native-linuxapp-gcc/spp_vf \
++    $ sudo ./src/vf/x86_64-native-linux-gcc/spp_vf \
+         -l 0,2-13 \
+         -n 4 --proc-type=secondary \
+         -- \
+-- 
+2.25.1
+

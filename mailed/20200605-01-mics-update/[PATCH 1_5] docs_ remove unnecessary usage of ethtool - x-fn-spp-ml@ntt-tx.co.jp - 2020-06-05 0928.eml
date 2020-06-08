@@ -1,0 +1,98 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp1839231nkp;
+        Thu, 4 Jun 2020 17:28:57 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJytWHPJ3Kfcx/rG5Xt+UXgT7MRe4LFAfxyGdWK0p8saX++2w05XtSHIMzC1IXU3Lpm/yyhS
+X-Received: by 2002:a62:6d03:: with SMTP id i3mr6541289pfc.249.1591316937350;
+        Thu, 04 Jun 2020 17:28:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1591316937; cv=none;
+        d=google.com; s=arc-20160816;
+        b=OhMb1Y9FLfu0WHIKcRtEw9oHMVvMsZh6rfIBruBw9aUKmXwaJMoUFRLE4fq+19YeCp
+         5NqFDitYQwW722xoFxCmNzuKtXPI1nxEeYTM4+gelo9qmSN9DtBRhJQv/g9eG3hGBxyc
+         R/lO3xm3laue0dY3gzM7zM69O5KXjxsNf44j/iQa0wliWGc+1MEWc3MpNUPHwDpOgm3C
+         DU9lZfDCOZv9NgM5ia1Ixf69Zj/erpLIdKNVxyXa4sI64bhPt/yx6uvWezKc7JtzVOJB
+         VUXKwT8bWL6pAUC96DBjU16nCfcyHebJufbIuFXSGATdNIwMxdJvJ3NINq7hEP3LHzap
+         f9Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=YmXz8LtQ5JzjxWFs8CN+m1I0VKB8ep/RYukv9SvRiAI=;
+        b=bcKI3uO5wGDyHe9VCdd4izsiN0BNZ0a8OdwWtwQcBycUOdPSfiG39XA6qmOnMrVACG
+         vjwNNVqsuPr5UEGWux8N5PX4AMdd5L8q5+sQJ1haNw8b/Qkb+ZkrQ4jAGOumptjuVZLK
+         tQrA3aTBJzUyxgcDp/nCDEN6OGUc3Y+25CFZlkAUXa+XB10Uj1ZoVlNsINaLuUXNQozL
+         jRxTxw5FKKOW/hNVJ+BwNwTo/Ur6Uqo8dXDxjYw0tOvACRY567HBFxaPbUSC249TfUaU
+         CjwE6mYbDwt4zweAEVa2ukX5hWLjvTr9DeO0gd8KHraQVtXQiQR44sfAzs4HA1U10QRM
+         cX0A==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id k9si6765151pfu.246.2020.06.04.17.28.57
+        for <yasufum.o@gmail.com>;
+        Thu, 04 Jun 2020 17:28:57 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd106.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou102.ddreams.local (Postfix) with ESMTP id A0A611200F8;
+	Fri,  5 Jun 2020 09:28:56 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd106.ddreams.local
+ (dDREAMS) with ESMTP id <0QBF014LIG08CR90@dDREAMS>; Fri,
+ 05 Jun 2020 09:28:56 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP id 84D7A7E603A;	Fri,
+ 5 Jun 2020 09:28:56 +0900 (JST)
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 832ED8E6060;	Fri,
+ 5 Jun 2020 09:28:56 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 8199D8E6066;	Fri,  5 Jun 2020 09:28:56 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf105.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BE9858E6060;	Fri,
+ 5 Jun 2020 09:28:55 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf105.ddreams.local (Postfix) with ESMTP;	Fri,
+ 5 Jun 2020 09:28:55 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, ferruh.yigit@intel.com, yasufum.o@gmail.com
+Subject: [PATCH 1/5] docs: remove unnecessary usage of ethtool
+Date: Fri, 05 Jun 2020 09:28:50 +0900
+Message-id: <20200605002854.24054-2-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200605002854.24054-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200605002854.24054-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch removes unnecessary usage of ethtool on host side
+in how_to_use section.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/howto_use.rst | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/docs/guides/gsg/howto_use.rst b/docs/guides/gsg/howto_use.rst
+index 2e4be2f..a57813d 100644
+--- a/docs/guides/gsg/howto_use.rst
++++ b/docs/guides/gsg/howto_use.rst
+@@ -1035,10 +1035,3 @@ On the VMs, add an interface and disable offload.
+ 
+     # Disable offload
+     $ sudo ethtool -K IF_NAME tx off
+-
+-On host machine, it is also required to disable offload.
+-
+-.. code-block:: console
+-
+-    # Disable offload for VM
+-    $ sudo ethtool -K IF_NAME tx off
+-- 
+2.25.1
+
