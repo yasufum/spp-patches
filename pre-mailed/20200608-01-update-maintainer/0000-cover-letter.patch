@@ -1,0 +1,19 @@
+From 5db85319f235ad94fc915d4879f43c51439678e9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 8 Jun 2020 16:02:11 +0900
+Subject: [PATCH 0/1] Update SPP maintainers
+
+As asked from Ferruh, this patch is to take him from SPP maintainers
+because he had made a great contributions for SPP, but nothing lately.
+Thanks a lot!
+
+Yasufumi Ogawa (1):
+  Update SPP maintainers
+
+ CONTRIBUTING.txt | 1 -
+ MAINTAINERS      | 1 -
+ 2 files changed, 2 deletions(-)
+
+-- 
+2.17.1
+

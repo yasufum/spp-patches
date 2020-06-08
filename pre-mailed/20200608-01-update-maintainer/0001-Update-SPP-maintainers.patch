@@ -1,0 +1,37 @@
+From 5db85319f235ad94fc915d4879f43c51439678e9 Mon Sep 17 00:00:00 2001
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+Date: Mon, 8 Jun 2020 15:56:05 +0900
+Subject: [PATCH 1/1] Update SPP maintainers
+
+This update is to take Ferruh Yigit off from SPP maintainers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ CONTRIBUTING.txt | 1 -
+ MAINTAINERS      | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/CONTRIBUTING.txt b/CONTRIBUTING.txt
+index 2467547..957b7fb 100644
+--- a/CONTRIBUTING.txt
++++ b/CONTRIBUTING.txt
+@@ -48,5 +48,4 @@ Coding Guidelines
+ Maintainer
+ ----------
+ 
+-* Ferruh Yigit <ferruh.yigit@intel.com>
+ * Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b848ae6..892db3f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23,6 +23,5 @@ General Project Administration
+ ------------------------------
+ 
+ Main Branch
+-M: Ferruh Yigit <ferruh.yigit@intel.com>
+ M: Yasufumi Ogawa <yasufum.o@gmail.com>
+ T: git://dpdk.org/apps/spp
+-- 
+2.17.1
+
