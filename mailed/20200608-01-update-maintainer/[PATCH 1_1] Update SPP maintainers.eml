@@ -1,0 +1,48 @@
+Return-Path: <yasufum.o@gmail.com>
+Received: from localhost.localdomain ([2400:4050:c8c2:de00:24f0:5bb7:ec39:8998])
+        by smtp.gmail.com with ESMTPSA id mu17sm16499743pjb.53.2020.06.08.00.24.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2020 00:24:18 -0700 (PDT)
+From: Yasufumi Ogawa <yasufum.o@gmail.com>
+To: spp@dpdk.org,
+	ferruh.yigit@intel.com,
+	yasufum.o@gmail.com
+Subject: [PATCH 1/1] Update SPP maintainers
+Date: Mon,  8 Jun 2020 16:24:12 +0900
+Message-Id: <20200608072412.18349-2-yasufum.o@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200608072412.18349-1-yasufum.o@gmail.com>
+References: <20200608072412.18349-1-yasufum.o@gmail.com>
+
+This update is to take Ferruh Yigit off from SPP maintainers.
+
+Signed-off-by: Yasufumi Ogawa <yasufum.o@gmail.com>
+---
+ CONTRIBUTING.txt | 1 -
+ MAINTAINERS      | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/CONTRIBUTING.txt b/CONTRIBUTING.txt
+index 2467547..957b7fb 100644
+--- a/CONTRIBUTING.txt
++++ b/CONTRIBUTING.txt
+@@ -48,5 +48,4 @@ Coding Guidelines
+ Maintainer
+ ----------
+ 
+-* Ferruh Yigit <ferruh.yigit@intel.com>
+ * Yasufumi Ogawa <ogawa.yasufumi@lab.ntt.co.jp>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b848ae6..892db3f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23,6 +23,5 @@ General Project Administration
+ ------------------------------
+ 
+ Main Branch
+-M: Ferruh Yigit <ferruh.yigit@intel.com>
+ M: Yasufumi Ogawa <yasufum.o@gmail.com>
+ T: git://dpdk.org/apps/spp
+-- 
+2.17.1
+
