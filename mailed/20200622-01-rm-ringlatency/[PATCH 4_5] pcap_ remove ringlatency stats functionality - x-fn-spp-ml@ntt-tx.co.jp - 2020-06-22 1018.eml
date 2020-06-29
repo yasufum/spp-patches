@@ -1,0 +1,110 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp2728497nkp;
+        Sun, 21 Jun 2020 18:19:00 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxFuhv8YVWJ0z9MNe5E5cf4xZed6xJ1/IiZuvTKazih3ub32/cl0JSmz5SQURNc3cDLYy2W
+X-Received: by 2002:aa7:924c:: with SMTP id 12mr17706828pfp.225.1592788740651;
+        Sun, 21 Jun 2020 18:19:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1592788740; cv=none;
+        d=google.com; s=arc-20160816;
+        b=JJ0X12lJGhbFg1K1TseQT9oKBBwWyT6F7x5KMfGznAxP7SYLvYXjbiLNxcuewYxNre
+         aYXaNnMxTuGfUC4bvfKlbk4JeZhY6VI25BgwogWIT88o6B+KxuZ/pbw4bzlEPvyHsajW
+         dFYKuglCfZFUrA5LKXxCI+Esszkpn/kjScJa/e2kRczY1Kk5Y4qSRbKVb9zK5ynLGPqI
+         o9qZ19+oeSag1t1mFciL4QnYYCA98rL9XQ/sfbLP50PtPrqT0iHMx0JLe/KwgXNiycgg
+         LCUpGnIryQpXvECUSdPovfZJ0qbStq13cBlG9DE8eB20DAys2orBtvKfSI3GFhIPe4RL
+         lwQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=Fh9r47u2UDJ02pHrP3WIXaYQA6MjfclBW9kbbL1YNcY=;
+        b=e0tADdTt/p2WIDOTLuudl98uADjKCRmvteMcY8koT/gJKxUICD+zU78JcoC8p5cJIL
+         ngBSzkn2ugJmtlprNicygEFv/a0KijZ/EeGo4FXsya5yE8qYdWv98UAkfz5fd1+km9ZG
+         VI4p8bKd6hRCZXatrQ6LTnkX1mDt1CWKpP2U42b159Coj7kpxreznSUDXsuyTdgDW8B6
+         oGzc3tjY8kOh5gccPgYtsbBVM9dTWkjzOCNAmmqMqxjWzRoElf9YdQeCx1m4KBuBgYKr
+         ZxzLr50kLMnCLvR62EvDQ0yWX0nW9xGJjy7MjIFF59j3pCm+nFN16fWpIzatOd+GBumO
+         nhjA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id g16si8833805plj.48.2020.06.21.18.19.00
+        for <yasufum.o@gmail.com>;
+        Sun, 21 Jun 2020 18:19:00 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd103.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou104.ddreams.local (Postfix) with ESMTP id EA2921200DC;
+	Mon, 22 Jun 2020 10:18:59 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd103.ddreams.local
+ (dDREAMS) with ESMTP id <0QCA00RIVZNN2D50@dDREAMS>; Mon,
+ 22 Jun 2020 10:18:59 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 71A667E603A;	Mon,
+ 22 Jun 2020 10:18:59 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 708448E6063;	Mon,
+ 22 Jun 2020 10:18:59 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 6EBD88E605A;	Mon, 22 Jun 2020 10:18:59 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5072F8E6069;	Mon,
+ 22 Jun 2020 10:18:59 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Mon,
+ 22 Jun 2020 10:18:59 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, yasufum.o@gmail.com
+Subject: [PATCH 4/5] pcap: remove ringlatency stats functionality
+Date: Mon, 22 Jun 2020 10:18:53 +0900
+Message-id: <20200622011854.8059-5-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200622011854.8059-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200622011854.8059-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch tries to remove ringlatency stats functionality.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ src/pcap/spp_pcap.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/src/pcap/spp_pcap.c b/src/pcap/spp_pcap.c
+index 1f20e1e..5bb987f 100644
+--- a/src/pcap/spp_pcap.c
++++ b/src/pcap/spp_pcap.c
+@@ -23,9 +23,6 @@
+ #include "shared/secondary/utils.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-#include "shared/secondary/spp_worker_th/latency_stats.h"
+-#endif
+ 
+ /* Declare global variables */
+ #define RTE_LOGTYPE_SPP_PCAP RTE_LOGTYPE_USER2
+@@ -847,13 +844,8 @@ static int pcap_proc_receive(int lcore_id)
+ 
+ 	/* Receive packets */
+ 	rx = &g_pcap_option.port_cap;
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	nb_rx = sppwk_eth_ring_stats_rx_burst(rx->ethdev_port_id,
+-			rx->iface_type, rx->iface_no, 0, bufs, MAX_PCAP_BURST);
+-#else
+ 	nb_rx = rte_eth_rx_burst(rx->ethdev_port_id, rx->queue_no, bufs,
+ 			MAX_PCAP_BURST);
+-#endif
+ 	if (unlikely(nb_rx == 0))
+ 		return SPPWK_RET_OK;
+ 
+-- 
+2.17.1
+
