@@ -1,0 +1,101 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp156113nkp;
+        Tue, 23 Jun 2020 21:47:42 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzLfiLUg3+PdVMI19Z8uX0kRLoll0KOcUYDi9oO9r2kUZA6qW31c5dP92thel6uGuVOPiBT
+X-Received: by 2002:a17:90a:fa95:: with SMTP id cu21mr25838555pjb.56.1592974062188;
+        Tue, 23 Jun 2020 21:47:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1592974062; cv=none;
+        d=google.com; s=arc-20160816;
+        b=OKwdKmE751N29pEReypQZPsyXEWDwyPkpdtOEJemzycdW0CDor3rxjf7/XAa9T9fVd
+         qWiznpnrI3zZnTGdwiSdX5H9J9da5uykXlUhO/S1CVSelHBLKv9Az3PNneUnMCGiBTuL
+         oRAPKzZaxcP8Qdx02lOifAffkWtaSNvZBc480vifac56hZpwKogSPL4J76luO+RzoKc2
+         sEr5hA/uMGWf+pnRZvz2L6dRdf/OGhudXtNtn5qTXgI3hXj/hdo4nVvfsPEOwKFkjNpH
+         m9MIGdYjwa+5LNeAWjtc/eVQcmV1KxNwYdv2cFISpjuWkqO+EGB0SfHsefNRyA3XmaHO
+         XtNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=wGpap0tupSTSEJ4yakOrLKOua0P0HVoHAGWaV4KkeFw=;
+        b=DW6HnmyrsvojlH3gOY8jakYzCPmXpFtt0rvptbPFssdmx+STPTj56EYjbCL1iF1jj7
+         huXf8LCw8f6o930wS6bg+A7T5+PgszgenFqUNOEcP8qXhVXfxk3ywIgcYBvzUncCIXzk
+         SQtL3Xh39Rvrqcq+hXBseLr+cwN+Ul8TDHHE7vOY2nwmb31OSaoYuolrwn7rWVEnmXmE
+         nrscjFCV6Z1vNPGAlGpcm94IjtC0YQrjR5+dRzEddalqHcwPuAWt0igHsh4sTj5cO5Ca
+         LVPZYzC+I6HQSSLmQWlH6R/oPdeNlx24TzDuxLegeh3z7I2+fOfr/nAT2obs8Tfn5LPd
+         Xyog==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id j10si13198184plj.54.2020.06.23.21.47.41
+        for <yasufum.o@gmail.com>;
+        Tue, 23 Jun 2020 21:47:42 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd104.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id 785501200FD;
+	Wed, 24 Jun 2020 13:47:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd104.ddreams.local
+ (dDREAMS) with ESMTP id <0QCE016IMYNHR860@dDREAMS>; Wed,
+ 24 Jun 2020 13:47:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 59B1B7E6032;	Wed,
+ 24 Jun 2020 13:47:41 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 577848E605F;	Wed,
+ 24 Jun 2020 13:47:41 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 566288E605A;	Wed, 24 Jun 2020 13:47:41 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF7778E605F;	Wed,
+ 24 Jun 2020 13:47:40 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 24 Jun 2020 13:47:40 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, yasufum.o@gmail.com
+Subject: [PATCH v2 4/5] makefile: change default build target
+Date: Wed, 24 Jun 2020 13:47:35 +0900
+Message-id: <20200624044736.14540-5-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch changes default build target from x86_64-native-linuxapp-gcc
+to x86_64-native-linux-gcc.
+
+From the following link, x86_64-native-linuxapp-gcc is not supported.
+
+https://doc.dpdk.org/guides-20.02/linux_gsg/
+build_dpdk.html#compiling-and-installing-dpdk-system-wide
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ GNUmakefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 0db3aaa..555dbb3 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -5,7 +5,7 @@ VERSION := 19.11
+ 
+ ifneq ($(RTE_SDK),)
+ # Default target, can be overriden by command line or environment
+-RTE_TARGET ?= x86_64-native-linuxapp-gcc
++RTE_TARGET ?= x86_64-native-linux-gcc
+ 
+ include $(RTE_SDK)/mk/rte.vars.mk
+ 
+-- 
+2.17.1
+

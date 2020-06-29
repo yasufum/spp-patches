@@ -1,0 +1,103 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp156090nkp;
+        Tue, 23 Jun 2020 21:47:40 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzKf+AVbJ+N9rxlcwkjjxEHBf2/niq5IydY2dbAtHADFEbbPxIvJkqDA3jFASifYjmD3Ort
+X-Received: by 2002:aa7:8d4a:: with SMTP id s10mr6063399pfe.245.1592974059841;
+        Tue, 23 Jun 2020 21:47:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1592974059; cv=none;
+        d=google.com; s=arc-20160816;
+        b=sDIBB0LIkbc267eJE5szQxhdQRYaDfMjDUwSRon3d3p4V8ywesSvtApV+HaN1QEj3G
+         R4TJGxNP86oxoDey9Psv10gOYY3Y9bUuDWfwNghWwzHFLsqpkG2NKeraY4YO9OWWdPQO
+         mlS73ppNuZN+kmpWVV1Yo79V6D4ms/i+hLgB5x4KVb4uHIsdzSLxtDVZGDeyJxnyFR5l
+         h54nGdeRNH9eE77P4nx4xXplm89b9Sn3qtM2ydGlTR31xooAeD09YRbJn29c3ckaDBT9
+         FziLLwksEqvjbQDxXH7GYopxB/opVgcnUfhJnCcIXQrRVkLGbSt89tilKMa25IYUIIIF
+         0CEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=kuOvpBAGiVdEg6nndsWThO8gZNjdRLSY/aBzbH4LQUY=;
+        b=U9I75qNhTE31XripLwlYE12Yqc+AL2Jaa3Smkc82bqEkySMoAE4X+osUSXqIbnxsha
+         AL/gR4u7+g5lCZiKnm0EPiQpmRD2FldOcb5V+ndnwgcATTU3l1cz1SAkA6nXzra+lITi
+         kykM+QFx9dTVvKukzwdpSOy77p2WZ0zstDmZ0+ohUnhmeVJVDxL6y2ERy37Gii29k/uM
+         NcFBMVynM+sNdoSdO4KX2yqvJLHO5+Aa9WgpOPSxqn3GuCRHyipHis5JIv8Lripky8ys
+         k0p1TuwhxtIM3RloqKNJtHwQ8JKSVzlvsWRomdLDMuEuP5vNzLoanBm/yC1CXRPbzXEO
+         T1cA==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id r196si541547pfc.94.2020.06.23.21.47.39
+        for <yasufum.o@gmail.com>;
+        Tue, 23 Jun 2020 21:47:39 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd101.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id 26045120107;
+	Wed, 24 Jun 2020 13:47:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd101.ddreams.local
+ (dDREAMS) with ESMTP id <0QCE010YAYNFSY50@dDREAMS>; Wed,
+ 24 Jun 2020 13:47:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 0561A7E6034;	Wed,
+ 24 Jun 2020 13:47:39 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 041608E6066;	Wed,
+ 24 Jun 2020 13:47:39 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 026958E605F;	Wed, 24 Jun 2020 13:47:39 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF88F8E605A;	Wed,
+ 24 Jun 2020 13:47:38 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 24 Jun 2020 13:47:38 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, yasufum.o@gmail.com
+Subject: [PATCH v2 2/5] docs: resolve broken reference link
+Date: Wed, 24 Jun 2020 13:47:33 +0900
+Message-id: <20200624044736.14540-3-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch resolves broken link in reference section.
+This is pointed out by DPDK bugzilla.
+
+https://bugs.dpdk.org/show_bug.cgi?id=441
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/design/spp.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/docs/guides/design/spp.rst b/docs/guides/design/spp.rst
+index 2c3ee46..43da0d4 100644
+--- a/docs/guides/design/spp.rst
++++ b/docs/guides/design/spp.rst
+@@ -27,11 +27,11 @@ SPP primary process is responsible for resource management, for example,
+ initializing ports, mbufs or shared memory. On the other hand,
+ secondary processes of ``spp_nfv`` are working for forwarding
+ `[1]
+-<https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_.
++<https://www.dpdk.org/wp-content/uploads/sites/35/2018/06/Implementation-and-Testing-of-Soft-Patch-Panel.pdf>`_.
+ 
+ 
+ Reference
+ ---------
+ 
+ * [1] `Implementation and Testing of Soft Patch Panel
+-  <https://dpdksummit.com/Archive/pdf/2017USA/Implementation%20and%20Testing%20of%20Soft%20Patch%20Panel.pdf>`_
++  <https://www.dpdk.org/wp-content/uploads/sites/35/2018/06/Implementation-and-Testing-of-Soft-Patch-Panel.pdf>`_
+-- 
+2.17.1
+

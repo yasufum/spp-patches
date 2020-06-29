@@ -1,0 +1,152 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6838:a241:0:0:0:0 with SMTP id t1csp156131nkp;
+        Tue, 23 Jun 2020 21:47:43 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzQDZeHwk1IvNlLBn5NuMWx+29NFYTIWLwf1saav3N+V/IGENIbmpe7jo/1AtYwAEah1Lw/
+X-Received: by 2002:a62:81c4:: with SMTP id t187mr720338pfd.287.1592974063481;
+        Tue, 23 Jun 2020 21:47:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1592974063; cv=none;
+        d=google.com; s=arc-20160816;
+        b=wZAKHw/Qy+6uPUDxNfk3pPjdAcaIs/9x0jERiYOuiswphk92RbSLW61vMYcr09D/Ao
+         gMb3fwQ6ZWBHBAEK6vKJe2VcQLRjxEzVI7OKcbSjm4QOm8WIEWvmxAIPNNH9DGkwGT1l
+         tRLffRw8MZ0PWBgmLwnFVXwwJ3mXEF1/gbTIUB9bGkxq/t5duL//4bcycE2JjWjU1t3Z
+         j4HtVUO48odSPiCCK0y2MZFxiaAn7etUJ005iuMN/BludhRgG27G/jfIfzCfDyJFvgen
+         VE0HXHDLN5Vswnqksb7f6SXsz8MPyF27KOJEidGBWZ/WjXmRm43wNi602T6ordVUnmp3
+         84Vw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=WhIQxbpHxFEiJO7garvhG2F05EQpEbiLea972EWHNRM=;
+        b=ae+7+NLUR1R1e6gjnYG+ANRz8Hp0/mYqXgTuGQjUaD5+tTOePZWICQUv/GGI6j2tZK
+         OOqvBswHj4d/fk//l07A4xXKBOyD0f6JyjWvHi+izDfz4kU31h9SmRy5w0a0n4NgFsrW
+         NZKBkH6iFmN3zCFqo8svl+v7XODW8YU3CwiJfPmxu0N0kVfVnpwXGP5wzFmzkdKXoghG
+         E+ProhgeQXGE83/MSAl8xnWcLuc7MpAbZKe/JsfNQZBEGYjFv3rY+xGQF3hXTeUFtsVk
+         Cho2T/aAUx02uP2dNjoekJV1wpN4R2nKek/hkNjqOLbXVuadsKdl78pQj0G+Ul32P0ec
+         6GUw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id v13si13330567plo.248.2020.06.23.21.47.43
+        for <yasufum.o@gmail.com>;
+        Tue, 23 Jun 2020 21:47:43 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd105.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou104.ddreams.local (Postfix) with ESMTP id B31F7120111;
+	Wed, 24 Jun 2020 13:47:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd105.ddreams.local
+ (dDREAMS) with ESMTP id <0QCE004Z3YNIE4A0@dDREAMS>; Wed,
+ 24 Jun 2020 13:47:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP id 927D47E603B;	Wed,
+ 24 Jun 2020 13:47:42 +0900 (JST)
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90E348E6069;	Wed,
+ 24 Jun 2020 13:47:42 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 8E5C78E606D;	Wed, 24 Jun 2020 13:47:42 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf106.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F1EC48E6042;	Wed,
+ 24 Jun 2020 13:47:41 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf106.ddreams.local (Postfix) with ESMTP;	Wed,
+ 24 Jun 2020 13:47:41 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, yasufum.o@gmail.com
+Subject: [PATCH v2 5/5] docs: add note regarding NUMA configuration
+Date: Wed, 24 Jun 2020 13:47:36 +0900
+Message-id: <20200624044736.14540-6-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200529110932.26508-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch adds new notes for NUMA configuration when starting
+spp_primary.
+
+This is pointed out by the following DPDK Bugzilla tickets.
+https://bugs.dpdk.org/show_bug.cgi?id=457
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ docs/guides/gsg/performance_opt.rst | 55 +++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
+
+diff --git a/docs/guides/gsg/performance_opt.rst b/docs/guides/gsg/performance_opt.rst
+index 6fea4cb..24436a5 100644
+--- a/docs/guides/gsg/performance_opt.rst
++++ b/docs/guides/gsg/performance_opt.rst
+@@ -71,6 +71,61 @@ and so on.
+     pid 192626's current affinity list: 0-31
+     pid 192626's new affinity list: 7
+ 
++Consideration of NUMA node
++--------------------------
++
++``spp_primary`` tries to create memory pool in the same NUMA node where
++it is launched. Under NUMA configuration, the NUMA node where ``spp_primary``
++is launched and the NUMA node where NIC is connected can be different
++(e.g. spp_primary runs in NUMA node 0 while NIC is connected with NUMA
++node 1).
++Such configuration may cause performance degradation. In general, under
++NUMA configuration, it is best practice to use CPU and NIC which belongs
++to the same NUMA node for best performance. So user should align those
++when performance degradation makes the situation critical.
++
++To check NUMA node which CPU/NIC core belongs, ``lstopo`` command can be used.
++In the following example, CPU core 0 belongs to NUMA node 0 while
++``enp175s0f0`` belongs to NUMA node 1.
++
++.. code-block:: console
++
++    $ lstopo
++    Machine (93GB total)
++      NUMANode L#0 (P#0 46GB)
++        Package L#0 + L3 L#0 (17MB)
++          L2 L#0 (1024KB) + L1d L#0 (32KB) + L1i L#0 (32KB) + Core L#0
++    .....
++      NUMANode L#1 (P#1 47GB)
++        Package L#1 + L3 L#1 (17MB)
++          L2 L#12 (1024KB) + L1d L#12 (32KB) + L1i L#12 (32KB) + Core L#12
++            PU L#24 (P#1)
++            PU L#25 (P#25)
++    .....
++        HostBridge L#10
++          PCIBridge
++            PCI 8086:1563
++              Net L#10 "enp175s0f0"
++            PCI 8086:1563
++              Net L#11 "enp175s0f1"
++
++CPU core where ``spp_primary`` run can be specified
++using -l option.
++
++.. code-block:: console
++
++    # terminal 3
++    $ sudo ./src/primary/x86_64-native-linux-gcc/spp_primary \
++        -l 0 -n 4 \
++        --socket-mem 512,512 \
++        --huge-dir /dev/hugepages \
++        --proc-type primary \
++        --file-prefix $SPP_FILE_PREFIX \
++        --base-virtaddr 0x100000000
++        -- \
++        -p 0x03 \
++        -n 10 \
++        -s 192.168.1.100:5555
+ 
+ Reference
+ ---------
+-- 
+2.17.1
+
