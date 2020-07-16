@@ -1,0 +1,238 @@
+Delivered-To: yasufum.o@gmail.com
+Received: by 2002:a05:6839:21d0:0:0:0:0 with SMTP id j16csp1193612nkq;
+        Wed, 8 Jul 2020 22:30:33 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzK2fWCM5+j5uEzjDdKeFB9goIuuXua+7zVQhKghhfUNkwj9uuLj30Ji983rMs9rYsYaZgL
+X-Received: by 2002:a62:e203:: with SMTP id a3mr46460270pfi.295.1594272632920;
+        Wed, 08 Jul 2020 22:30:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1594272632; cv=none;
+        d=google.com; s=arc-20160816;
+        b=nXcdVJEq7estRGi3ZIz0VfpUT73Dc5NdMSD3gZ2YOM0Q24YNW3CuuCjXmslcPRD3BT
+         BWlI/XAjYXeZXBDYmhD0yXAgYlts3X1prRV7IJN13PD2mYENlPpzJghxpkB0b3fLA4N1
+         4tdWsmS01BeEo1FUQlYNvRPUmdyZHP+mJqrOViDGUg41TlQngilP9bGMtFQCBLUdf7hx
+         WUfXLHLPl1ON133QAto6GWrvdHojmL3/JdCGNCqxa/qOzYgN9NaICxhup8ULRTBhB1HL
+         jeKR5OuyLyaP8HWkD7mKAydJFLYZarlKwTcJOOHDSbGFHyTfKNpqcTrXLZw4Qv1vxLdE
+         pOfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from;
+        bh=Cc3DiSzuo5eyYiLrMmORHZrDTyNAozrrryZe1Lorei4=;
+        b=c4WRjgFroXwXYXPF/p5yW8aDxxOQ9TJxYCfLptQCNSBClMWikJ9Ya06d85pfvR6XwY
+         4oDMyDDxxTBtgk5JQnF5EwEyk35zt0RYMkQRRDFKMH9JiebiFXSLYWS422lcrc5pBdNt
+         aw3Po38vlGm8swhHJRJ5hqw7VKfwes0YC0/dTCiQCLXDAw1iy9PFtGtRzThTziuUdtYL
+         5qjP9k2xMnRrw/53oQmzAGx2nQ7IKH1sYQEi9Eu/txLXjpWiXBJ2Am18NkDORCawDtiE
+         Cahgc7maCe9ySppnEOGwzcbzxTOGvvZaO/dpDC/fy08jxx9XXo7L/xIr+bxvshW12p/h
+         CAHw==
+ARC-Authentication-Results: i=1; mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+Return-Path: <x-fn-spp-ml@ntt-tx.co.jp>
+Received: from dish-sg.nttdocomo.co.jp (dish-sg.nttdocomo.co.jp. [202.19.227.74])
+        by mx.google.com with ESMTP id h71si1387334pgc.228.2020.07.08.22.30.32
+        for <yasufum.o@gmail.com>;
+        Wed, 08 Jul 2020 22:30:32 -0700 (PDT)
+Received-SPF: pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) client-ip=202.19.227.74;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of x-fn-spp-ml@ntt-tx.co.jp designates 202.19.227.74 as permitted sender) smtp.mailfrom=x-fn-spp-ml@ntt-tx.co.jp
+X-dD-Source: Outbound
+Received: from zssg-mailmd102.ddreams.local (zssg-mailmd900.ddreams.local [10.160.172.63])
+	by zssg-mailou103.ddreams.local (Postfix) with ESMTP id 2B65E12012F;
+	Thu,  9 Jul 2020 14:30:32 +0900 (JST)
+Received: from zssg-mailmf103.ddreams.local
+ (zssg-mailmf900.ddreams.local [10.160.172.84]) by zssg-mailmd102.ddreams.local
+ (dDREAMS) with ESMTP id <0QD601EF0SMW7X60@dDREAMS>; Thu,
+ 09 Jul 2020 14:30:32 +0900 (JST)
+Received: from zssg-mailmf103.ddreams.local (unknown [127.0.0.1])
+	by zssg-mailmf103.ddreams.local (Postfix) with ESMTP id 11B7C7E6038;	Thu,
+ 9 Jul 2020 14:30:32 +0900 (JST)
+Received: from zssg-mailmf103.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0E68B8E605C;	Thu,
+ 9 Jul 2020 14:30:32 +0900 (JST)
+Received: from localhost (unknown [127.0.0.1])	by IMSVA (Postfix)
+ with SMTP id 0DBC08E6054;	Thu,  9 Jul 2020 14:30:32 +0900 (JST)
+X-IMSS-HAND-OFF-DIRECTIVE: localhost:10026
+Received: from zssg-mailmf103.ddreams.local (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 02DF18E6056;	Thu,
+ 9 Jul 2020 14:30:31 +0900 (JST)
+Received: from davinci.ntt-tx.co.jp (unknown [10.160.183.139])
+	by zssg-mailmf103.ddreams.local (Postfix) with ESMTP;	Thu,
+ 9 Jul 2020 14:30:30 +0900 (JST)
+From: x-fn-spp-ml@ntt-tx.co.jp
+To: spp@dpdk.org, yasufum.o@gmail.com
+Subject: [PATCH v2 4/5] spp_vf: remove ringlatency stats functionality
+Date: Thu, 09 Jul 2020 14:30:25 +0900
+Message-id: <20200709053026.21265-5-x-fn-spp-ml@ntt-tx.co.jp>
+X-Mailer: git-send-email 2.25.1
+In-reply-to: <20200622011854.8059-1-x-fn-spp-ml@ntt-tx.co.jp>
+References: <20200622011854.8059-1-x-fn-spp-ml@ntt-tx.co.jp>
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
+X-TM-AS-GCONF: 00
+
+From: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+
+This patch tries to remove ringlatency stats functionality.
+
+Signed-off-by: Hideyuki Yamashita <yamashita.hideyuki@ntt-tx.co.jp>
+Signed-off-by: Naoki Takada <ntakada14@gmail.com>
+---
+ src/vf/classifier.c | 19 ++++---------------
+ src/vf/forwarder.c  | 19 ++++---------------
+ src/vf/spp_vf.c     | 27 ---------------------------
+ 3 files changed, 8 insertions(+), 57 deletions(-)
+
+diff --git a/src/vf/classifier.c b/src/vf/classifier.c
+index 2d95289..58d0f03 100644
+--- a/src/vf/classifier.c
++++ b/src/vf/classifier.c
+@@ -29,9 +29,6 @@
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-#include "shared/secondary/spp_worker_th/latency_stats.h"
+-#endif
+ 
+ #define RTE_LOGTYPE_VF_CLS RTE_LOGTYPE_USER1
+ 
+@@ -424,15 +421,11 @@ transmit_packets(struct cls_port_info *clsd_data)
+ 	uint16_t n_tx;
+ 
+ 	/* transmit packets */
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	n_tx = sppwk_eth_vlan_ring_stats_tx_burst(clsd_data->ethdev_port_id,
+-			clsd_data->iface_type, clsd_data->iface_no,
+-			0, clsd_data->pkts, clsd_data->nof_pkts);
+-#else
++
+ 	n_tx = sppwk_eth_vlan_tx_burst(clsd_data->ethdev_port_id,
+ 			clsd_data->queue_no, clsd_data->pkts,
+ 			clsd_data->nof_pkts);
+-#endif
++
+ 
+ 	/* free cannot transmit packets */
+ 	if (unlikely(n_tx != clsd_data->nof_pkts)) {
+@@ -758,14 +751,10 @@ classify_packets(int comp_id)
+ 		return SPPWK_RET_OK;
+ 
+ 	/* Retrieve packets */
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	n_rx = sppwk_eth_vlan_ring_stats_rx_burst(clsd_data_rx->ethdev_port_id,
+-			clsd_data_rx->iface_type, clsd_data_rx->iface_no,
+-			0, rx_pkts, MAX_PKT_BURST);
+-#else
++
+ 	n_rx = sppwk_eth_vlan_rx_burst(clsd_data_rx->ethdev_port_id,
+ 			clsd_data_rx->queue_no, rx_pkts, MAX_PKT_BURST);
+-#endif
++
+ 	if (unlikely(n_rx == 0))
+ 		return SPPWK_RET_OK;
+ 
+diff --git a/src/vf/forwarder.c b/src/vf/forwarder.c
+index 66e1682..a95d472 100644
+--- a/src/vf/forwarder.c
++++ b/src/vf/forwarder.c
+@@ -9,9 +9,6 @@
+ #include "shared/secondary/spp_worker_th/vf_deps.h"
+ #include "shared/secondary/spp_worker_th/port_capability.h"
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-#include "shared/secondary/spp_worker_th/latency_stats.h"
+-#endif
+ 
+ #define RTE_LOGTYPE_FORWARD RTE_LOGTYPE_USER1
+ 
+@@ -214,27 +211,19 @@ forward_packets(int id)
+ 		rx = &path->ports[cnt].rx;
+ 		tx = &path->ports[cnt].tx;
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-		nb_rx = sppwk_eth_vlan_ring_stats_rx_burst(rx->ethdev_port_id,
+-				rx->iface_type, rx->iface_no, 0,
+-				bufs, MAX_PKT_BURST);
+-#else
++
+ 		nb_rx = sppwk_eth_vlan_rx_burst(rx->ethdev_port_id,
+ 				rx->queue_no, bufs, MAX_PKT_BURST);
+-#endif
++
+ 		if (unlikely(nb_rx == 0))
+ 			continue;
+ 
+ 		/* Send packets */
+ 		if (tx->ethdev_port_id >= 0)
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-			nb_tx = sppwk_eth_vlan_ring_stats_tx_burst(
+-					tx->ethdev_port_id, tx->iface_type,
+-					tx->iface_no, 0, bufs, nb_rx);
+-#else
++
+ 			nb_tx = sppwk_eth_vlan_tx_burst(tx->ethdev_port_id,
+ 					tx->queue_no, bufs, nb_rx);
+-#endif
++
+ 
+ 		/* Discard remained packets to release mbuf */
+ 		if (unlikely(nb_tx < nb_rx)) {
+diff --git a/src/vf/spp_vf.c b/src/vf/spp_vf.c
+index ab2e9f2..c2cc795 100644
+--- a/src/vf/spp_vf.c
++++ b/src/vf/spp_vf.c
+@@ -19,9 +19,6 @@
+ 
+ #define RTE_LOGTYPE_SPP_VF RTE_LOGTYPE_USER1
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-#include "shared/secondary/spp_worker_th/latency_stats.h"
+-#endif
+ 
+ /* getopt_long return value for long option */
+ enum SPP_LONGOPT_RETVAL {
+@@ -280,24 +277,6 @@ main(int argc, char *argv[])
+ 		if (unlikely(ret != SPPWK_RET_OK))
+ 			break;
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-		int port_type, port_id;
+-		char dev_name[RTE_DEV_NAME_MAX_LEN] = { 0 };
+-		int nof_rings = 0;
+-		for (int i = 0; i < RTE_MAX_ETHPORTS; i++) {
+-			if (!rte_eth_dev_is_valid_port(i))
+-				continue;
+-			rte_eth_dev_get_name_by_port(i, dev_name);
+-			ret = parse_dev_name(dev_name, &port_type, &port_id);
+-			if (port_type == RING)
+-				nof_rings++;
+-		}
+-		ret = sppwk_init_ring_latency_stats(
+-				SPP_RING_LATENCY_STATS_SAMPLING_INTERVAL,
+-				nof_rings);
+-		if (unlikely(ret != SPPWK_RET_OK))
+-			break;
+-#endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ 		/* Start worker threads of classifier and forwarder */
+ 		RTE_LCORE_FOREACH_SLAVE(lcore_id) {
+@@ -332,9 +311,6 @@ main(int argc, char *argv[])
+ 			*/
+ 			usleep(100);
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-			print_ring_latency_stats(&g_iface_info);
+-#endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 		}
+ 
+ 		if (unlikely(ret != SPPWK_RET_OK)) {
+@@ -358,9 +334,6 @@ main(int argc, char *argv[])
+ 	 */
+ 	del_vhost_sockfile(g_iface_info.vhost);
+ 
+-#ifdef SPP_RINGLATENCYSTATS_ENABLE
+-	sppwk_clean_ring_latency_stats();
+-#endif /* SPP_RINGLATENCYSTATS_ENABLE */
+ 
+ 	RTE_LOG(INFO, SPP_VF, "Exit spp_vf.\n");
+ 	return ret;
+-- 
+2.17.1
+
